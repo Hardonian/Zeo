@@ -155,3 +155,98 @@ The `@zeo/calibration` package tracks forecast accuracy:
 - **Reliability**: Systematic over/under-confidence detection
 
 **Anti-bullshit loop**: If forecasts are poorly calibrated, widen future uncertainty bands automatically.
+
+---
+
+## Learning System Constraints (v0.3.0)
+
+Zeo learns from outcomes without violating epistemic discipline:
+
+### What Zeo learns
+- **Prior distributions** for assumption types (e.g., "timeline pressure assumptions in procurement")
+- **Calibration patterns** (how well do our intervals track reality?)
+- **Weak signals** across decisions (hypotheses, not rules)
+- **Regret patterns** (systematic decision quality issues)
+
+### What Zeo never learns
+- **Deterministic rules**: Zeo never induces "always" or "never" from data
+- **Causal claims**: Without explicit causal identification
+- **Overconfidence**: Learning only increases uncertainty, never decreases it
+- **Hindsight bias**: Counterfactuals respect original uncertainty
+
+### Learning workflow
+
+```typescript
+// 1. Record decision with full context
+const decision = await memory.recordDecision(spec, graph, action, branch, {
+  userId: "user123",
+  domain: "negotiation"
+});
+
+// 2. Later, record outcome (may be partial/ambiguous)
+await memory.recordOutcome(decision.id, branchId, {
+  description: "Partial acceptance achieved",
+  status: "partially_resolved", // Not forced to binary
+  confidence: { level: "medium", rationale: "..." }
+});
+
+// 3. Update priors (Bayesian, increases uncertainty when violated)
+const updates = priorEngine.updateFromOutcome(decision, outcome, "timeline_pressure");
+// Result: "Timeline pressure assumptions in procurement: 40% reliability (increase uncertainty)"
+
+// 4. Apply learned priors to future decisions
+const result = priorEngine.applyPriors(interval, {
+  domain: "negotiation",
+  assumptionType: "timeline_pressure"
+});
+// Result: Widened interval due to learned unreliability
+```
+
+### Hierarchical priors
+
+Priors are organized hierarchically:
+- **Global**: Default assumptions about reliability
+- **Domain**: Context-specific patterns (e.g., "procurement assumptions")
+- **User**: Individual calibration patterns
+- **Decision**: Specific decision context
+
+Higher levels influence lower levels but do not override them. Epistemic discipline is maintained at all levels.
+
+### Pattern detection
+
+Cross-decision patterns are always presented as **hypotheses**:
+- Explicit confidence level (very_low, low, moderate, tentative)
+- Sample size and diversity requirements
+- Falsification conditions
+- Never presented as rules or facts
+
+Example:
+```
+HYPOTHESIS: Timeline pressure claims are often violated in procurement
+Confidence: LOW (based on 8 decisions across 2 domains)
+Falsification: 15+ confirmed timeline pressure claims in similar contexts
+Limitations: May reflect negotiation tactics rather than actual constraints
+```
+
+### Learning audit trail
+
+All learning is auditable:
+- Every prior update has provenance (which decision/outcome triggered it)
+- Updates are timestamped and versioned
+- Sample sizes tracked explicitly
+- "Confidence in confidence" - how much data supports each learned prior
+
+### Reset and audit
+
+Learning can be reset or audited:
+```typescript
+// Get all updates for an assumption type
+const updates = priorEngine.getUpdates()
+  .filter(u => u.trigger.assumptionType === "timeline_pressure");
+
+// Get priors at specific level
+const domainPriors = priorEngine.getPriors("domain", "procurement");
+
+// Clear all learning (for testing)
+priorEngine.clear();
+```

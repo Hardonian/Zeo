@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Example HTML Panel</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 16px;
+      background: #f9fafb;
+      color: #111827;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    h2 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #374151;
+    }
+    .status {
+      padding: 12px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 12px;
+    }
+    .status-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+    .status-value {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .btn {
+      width: 100%;
+      padding: 10px 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #1d4ed8;
+    }
+    .btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    .log {
+      margin-top: 12px;
+      padding: 12px;
+      background: #1f2937;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 11px;
+      color: #10b981;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+    .log-entry {
+      margin-bottom: 4px;
+    }
+    .log-time {
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Example HTML Panel</h2>
+    
+    <div class="status">
+      <div class="status-label">Decision State</div>
+      <div class="status-value" id="decision-state">No decision loaded</div>
+    </div>
+    
+    <button class="btn" id="run-btn" disabled>Run Decision</button>
+    
+    <div class="log" id="log">
+      <div class="log-entry"><span class="log-time">[INIT]</span> Panel initialized</div>
+    </div>
+  </div>
+
+  <script>
+    const log = document.getElementById('log');
+    const decisionState = document.getElementById('decision-state');
+    const runBtn = document.getElementById('run-btn');
+
+    function addLog(message) {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      entry.innerHTML = `<span class="log-time">[${new Date().toLocaleTimeString()}]</span> ${message}`;
+      log.appendChild(entry);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function sendMessage(type, payload) {
+      return new Promise((resolve, reject) => {
+        const requestId = crypto.randomUUID();
+        const timeout = setTimeout(() => {
+          reject(new Error('Request timeout'));
+        }, 5000);
+
+        window.addEventListener('message', function handler(event) {
+          if (event.data.requestId === requestId) {
+            clearTimeout(timeout);
+            window.removeEventListener('message', handler);
+            if (event.data.type === 'error') {
+              reject(new Error(event.data.payload?.message || 'Unknown error'));
+            } else {
+              resolve(event.data.payload);
+            }
+          }
+        });
+
+        window.parent.postMessage({
+          direction: 'panel->host',
+          requestId,
+          type,
+          payload
+        }, window.location.origin);
+      });
+    }
+
+    async function init() {
+      addLog('Requesting state...');
+      try {
+        const state = await sendMessage('get_state', null);
+        updateState(state);
+        addLog('State received');
+        runBtn.disabled = false;
+      } catch (err) {
+        addLog('Error: ' + err.message);
+      }
+    }
+
+    function updateState(state) {
+      if (state.decision && state.decision.spec) {
+        decisionState.textContent = state.decision.spec.title || 'Decision loaded';
+      } else {
+        decisionState.textContent = 'No decision loaded';
+      }
+    }
+
+    runBtn.addEventListener('click', async () => {
+      runBtn.disabled = true;
+      addLog('Running decision...');
+      
+      try {
+        const state = await sendMessage('get_state', null);
+        if (state.decision && state.decision.spec) {
+          const result = await sendMessage('run_decision', state.decision.spec);
+          addLog('Decision completed!');
+          addLog('Result: ' + (result.success ? 'Success' : 'Failed'));
+        } else {
+          addLog('No decision spec to run');
+        }
+      } catch (err) {
+        addLog('Error: ' + err.message);
+      } finally {
+        runBtn.disabled = false;
+      }
+    });
+
+    window.addEventListener('message', (event) => {
+      if (event.data.direction === 'host->panel' && event.data.type === 'get_state') {
+        updateState(event.data.payload);
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>

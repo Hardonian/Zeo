@@ -104,6 +104,7 @@ This repository is intentionally lightweight: it ships a proprietary core engine
 │  ├─ core/               # Proprietary branching + evaluation engine with QuantEngine integration
 │  ├─ contracts/          # Shared types: EvidenceEvent, DecisionSpec, BranchGraph
 │  ├─ adapters/           # Vendor adapter interfaces (OCR, STT, Market/News, etc.)
+│  ├─ memory/             # Decision memory + learning system (v0.3.0)
 │  ├─ models/             # World state modeling with Bayesian inference (PyMC backend)
 │  ├─ rsl/                # Reality Signal Layer: Kalman/Particle filters for state estimation
 │  ├─ timeseries/         # ARIMA/GARCH time series analysis with volatility modeling
@@ -136,6 +137,78 @@ const result = runDecision(spec, { useQuantEngine: true });
 
 ---
 
+## How Zeo Learns (v0.3.0)
+
+Zeo learns from outcomes while maintaining epistemic discipline:
+
+### Decision Memory
+Every decision is recorded with full context:
+- Decision specification (actions, agents, constraints, assumptions)
+- Branch graph generated at decision time
+- Selected action and predicted outcomes
+- Context snapshot (what was known "at the time")
+
+```typescript
+const decision = await memory.recordDecision(spec, graph, action, branch, {
+  userId: "user123",
+  domain: "negotiation",
+  tags: ["procurement"]
+});
+```
+
+### Outcome Recording
+Outcomes may be partial or ambiguous:
+```typescript
+await memory.recordOutcome(decision.id, branchId, {
+  description: "Partial acceptance with conditions",
+  status: "partially_resolved",  // Not forced to binary success/failure
+  confidence: { level: "medium", rationale: "..." }
+});
+```
+
+### Learning Without Overfitting
+
+**Prior Updates (Bayesian)**:
+- Updates prior distributions, never creates rules
+- Example: "Timeline pressure assumptions are unreliable in procurement"
+- NOT: "Procurement actors always stall"
+
+```typescript
+const updates = priorEngine.updateFromOutcome(decision, outcome, "timeline_pressure");
+// Result: Widened uncertainty for future similar assumptions
+```
+
+**Hierarchical Priors**:
+- Global → Domain → User → Decision
+- Higher levels influence but don't override lower levels
+
+**Calibration**:
+- Tracks if X% intervals contain outcomes ~X% of the time
+- Miscalibration widens future intervals (never narrows)
+
+### Pattern Detection
+Weak signals across decisions, presented as hypotheses:
+```
+HYPOTHESIS: Timeline pressure claims often violated in procurement
+Confidence: LOW (8 decisions, 2 domains)
+Falsification: 15+ confirmed claims in similar contexts
+```
+
+### Counterfactual Analysis
+- "If action B had been taken, what outcomes were plausible?"
+- Respects original uncertainty (no hindsight bias)
+- Distinguishes bad outcome from bad decision
+
+### Auditing and Reset
+All learning is auditable:
+```typescript
+const updates = priorEngine.getUpdates();
+const priors = priorEngine.getPriors("domain", "procurement");
+priorEngine.clear(); // Reset all learning
+```
+
+---
+
 ## Quickstart (local)
 Prereqs: Node 20+ and pnpm 9+
 
@@ -160,6 +233,14 @@ pnpm -C apps/cli start -- --example ops --out result.json
 ---
 
 ## Status
+- v0.3.0 Decision Memory + Learning System (2026-02-07)
+  - Decision persistence with immutable records
+  - Outcome mapping with partial/ambiguous support
+  - Bayesian prior updates (hierarchical: global → domain → user → decision)
+  - Interval calibration with coverage testing
+  - Cross-decision pattern detection (weak signals only)
+  - Counterfactual and regret analysis
+  - Epistemic discipline: learning increases uncertainty, not confidence
 - v0.1.1 engine improvements (2026-02-07)
   - Deterministic branch hashing and cache keys
   - Pruning config (maxNodes, maxEdges, maxDepth)
