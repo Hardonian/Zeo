@@ -55,13 +55,47 @@ Avoid storing raw:
 
 ## Cost controls
 - Shallow branching by default (2–3 steps), expandable on demand
-- Caching by decision hash + assumption set
+- Caching by decision hash + assumption set (see below)
 - Interval probabilities (cheap) before Monte Carlo (expensive)
 - Vendor calls gated (fallback only; or metered)
+- Pruning config (maxNodes, maxEdges, maxDepth) enforced during graph generation
+
+---
+
+## Caching by decision + assumption hash
+
+The core engine provides deterministic hashing for `DecisionSpec` and assumption sets:
+- `hashDecisionSpec(spec)` produces a SHA-256 hash of structural content (title, context, agents, actions, constraints, assumptions), excluding volatile fields (id, createdAt).
+- `hashAssumptionSet(assumptions)` hashes the assumption array independently.
+- `cacheKey(spec)` combines both: `{decisionHash}:{assumptionHash}`.
+
+If both hashes match a previous run, the branch graph can be served from cache without re-generation.
+
+---
+
+## Pruning config
+
+Branch graph generation enforces hard limits via `PruningConfig`:
+- `maxNodes` (default 50): caps the total node count
+- `maxEdges` (default 80): caps the total edge count
+- `maxDepth` (default 3): removes nodes beyond this depth from the root
+
+Pruning runs after generation and does not mutate the original graph. Callers can override defaults via `runDecision(spec, { pruning: { maxNodes: 20 } })`.
+
+---
+
+## Doctor script
+
+Run `pnpm doctor` from the repo root to verify the development environment:
+- Node/pnpm version checks
+- Workspace structure validation
+- Typecheck, test, and lint across all packages
+- Prints next actionable failures with file paths
 
 ---
 
 ## Trust controls
 - Provenance-first UI
 - Uncertainty shown as ranges
-- “What would change the answer?” always included
+- "What would change the answer?" always included via flip-condition generator
+- Flip conditions reference specific assumption IDs and provide heuristic thresholds
