@@ -227,7 +227,9 @@ async function main(): Promise<void> {
   }
 }
 
-if (require.main === module) {
+const isMainModule = process.argv[1] && import.meta.url.endsWith(process.argv[1]);
+
+if (isMainModule) {
   main().catch((err) => {
     if (err instanceof Error && ZeoError) {
       const zeError = ZeoError.from(err);
