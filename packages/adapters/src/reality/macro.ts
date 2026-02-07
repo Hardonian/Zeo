@@ -197,7 +197,7 @@ export function createMacroAdapter(): Adapter {
           valueBand: { low: item.value, high: item.value },
           weightApplied: 0.7,
           qualityScore,
-          biasAdjustmentsApplied: [],
+          biasAdjustmentsApplied: [] as string[],
           provenance: [provenance],
           sourceId: item.sourceId,
           rawRef: { kind: "macro", id: `${item.indicator}:${item.period}` },
