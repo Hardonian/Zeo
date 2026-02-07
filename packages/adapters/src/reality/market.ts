@@ -197,8 +197,9 @@ function generateMockHistory(
     const change = price * 0.02 * (Math.random() - 0.5);
     price = Math.max(price + change, basePrice * 0.9);
     
+    const dateStr = current.toISOString().split("T")[0] || "2000-01-01";
     results.push({
-      Date: current.toISOString().split("T")[0],
+      Date: dateStr,
       Open: price - change / 2,
       High: price + Math.abs(change),
       Low: price - Math.abs(change),
@@ -228,8 +229,10 @@ export function createMarketAdapter(): Adapter {
     async fetch(params: Record<string, unknown>): Promise<RawAdapterOutput> {
       const symbols = (params["symbols"] as string[]) || DEFAULT_MARKET_PAIRS;
       const mode = (params["mode"] as string) || "quote";
-      const startDate = (params["startDate"] as string) || new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
-      const endDate = (params["endDate"] as string) || new Date().toISOString().split("T")[0];
+      const startDateStr = (params["startDate"] as string) || new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0] || "2000-01-01";
+      const endDateStr = (params["endDate"] as string) || new Date().toISOString().split("T")[0] || "2099-12-31";
+      const startDate = startDateStr;
+      const endDate = endDateStr;
       
       const allItems: MarketSeriesItem[] = [];
       
