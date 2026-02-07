@@ -449,8 +449,9 @@ export function isValidDirectionality(dir: string): dir is Directionality {
   ].includes(dir);
 }
 
-export function isRawSourceItem(item: Record<string, unknown>): item is RawSourceItem {
-  const kind = item.kind;
+export function isRawSourceItem(item: unknown): item is RawSourceItem {
+  if (typeof item !== "object" || item === null) return false;
+  const kind = (item as Record<string, unknown>).kind;
   if (typeof kind !== "string") return false;
   return ["market", "news", "macro", "geopolitics"].includes(kind);
 }

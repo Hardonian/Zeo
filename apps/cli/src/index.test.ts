@@ -35,8 +35,13 @@ describe("parseArgs", () => {
     expect(args.depth).toBe(3);
   });
 
-  it("ignores invalid --depth value", () => {
+  it("parses --depth 5", () => {
     const args = parseArgs(["--depth", "5"]);
+    expect(args.depth).toBe(5);
+  });
+
+  it("ignores out-of-range --depth value", () => {
+    const args = parseArgs(["--depth", "6"]);
     expect(args.depth).toBe(2);
   });
 
