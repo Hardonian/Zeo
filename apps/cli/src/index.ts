@@ -15,6 +15,12 @@ import { DecisionSpec, ZeoError } from "@zeo/contracts";
 import { inferPosterior, computeVoi } from "@zeo/models";
 import type { WorldModelSpec, EvidenceCandidate, PosteriorState, VoiReport } from "@zeo/contracts";
 import { parseReplayArgs, runReplayCommand, type ReplayCliArgs } from "./replay-cli.js";
+import {
+  parseWarehouseArgs,
+  parseAnalyticsArgs,
+  runWarehouseCommand,
+  runAnalyticsCommand,
+} from "./warehouse-cli.js";
 
 interface CliArgs extends ReplayCliArgs {
   example: "negotiation" | "ops";
@@ -107,7 +113,7 @@ export function parseArgs(argv: string[]): CliArgs {
 
 function printHelp(): void {
   console.log(`
-Zeo CLI - Epistemic Decision Engine v0.3.1
+Zeo CLI - Epistemic Decision Engine v0.3.3
 
 Usage: zeo [options]
 
@@ -117,6 +123,8 @@ Commands:
   --replay <file>             Run replay dataset for calibration testing
   --case <id>                 Run specific case from replay dataset
   --report-out <dir>          Write replay reports to directory
+  --warehouse <cmd>           Warehouse management (export/import/list)
+  --analytics <cmd>           Analytics pipeline (build-dataset/run)
 
 Options:
   --catalog <dir>             Catalog directory (default: external/catalog)
@@ -137,6 +145,13 @@ Examples:
   zeo --example negotiation --voi --world
   zeo signals ./data/market_signals.json --catalog ./catalog
   zeo --replay external/examples/replay/sample_dataset.json --report-out ./reports
+  zeo --warehouse export --out ./backup.json
+  zeo --analytics build-dataset --out ./analysis
+  zeo --analytics run --dataset ./analysis/dataset.csv --out ./analysis --target outcome --features f1,f2
+
+For warehouse/analytics help:
+  zeo --warehouse
+  zeo --analytics
 `);
 }
 
@@ -168,7 +183,25 @@ async function writePacketFiles(packetDir: string, json: string, markdown: strin
 }
 
 async function main(): Promise<void> {
-  const args = parseArgs(process.argv.slice(2));
+  const argv = process.argv.slice(2);
+
+  // Check for warehouse command
+  const warehouseIdx = argv.indexOf("--warehouse");
+  if (warehouseIdx !== -1) {
+    const warehouseArgs = parseWarehouseArgs(argv.slice(warehouseIdx + 1));
+    const exitCode = await runWarehouseCommand(warehouseArgs);
+    process.exit(exitCode);
+  }
+
+  // Check for analytics command
+  const analyticsIdx = argv.indexOf("--analytics");
+  if (analyticsIdx !== -1) {
+    const analyticsArgs = parseAnalyticsArgs(argv.slice(analyticsIdx + 1));
+    const exitCode = await runAnalyticsCommand(analyticsArgs);
+    process.exit(exitCode);
+  }
+
+  const args = parseArgs(argv);
 
   if (args.replay) {
     const exitCode = await runReplayCommand(args);

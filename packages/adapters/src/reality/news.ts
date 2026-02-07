@@ -93,9 +93,11 @@ function generateMockNews(query: string, limit: number): GNewsResponse {
   const articles: GNewsResponse["articles"] = [];
   
   for (let i = 0; i < limit; i++) {
-    const topic = topics[Math.floor(Math.random() * topics.length)];
+    const topicRaw = topics[Math.floor(Math.random() * topics.length)];
+    const topic = topicRaw ?? "general";
     const sourceNames = ["Reuters", "Bloomberg", "CNBC", "WSJ", "Financial Times", "MarketWatch"];
-    const sourceName = sourceNames[Math.floor(Math.random() * sourceNames.length)];
+    const sourceNameRaw = sourceNames[Math.floor(Math.random() * sourceNames.length)];
+    const sourceName = sourceNameRaw ?? "Unknown";
     const baseTime = Date.now() - Math.random() * 48 * 60 * 60 * 1000;
     
     articles.push({
@@ -105,7 +107,7 @@ function generateMockNews(query: string, limit: number): GNewsResponse {
       url: `https://example.com/news/${topic}/${Date.now()}`,
       image: `https://example.com/images/${topic}.jpg`,
       publishedAt: new Date(baseTime).toISOString(),
-      source: { name: sourceName, url: `https://${sourceName.toLowerCase().replace(" ", "")}.com` },
+      source: { name: sourceName, url: `https://${sourceName.toLowerCase().replace(/\s+/g, "")}.com` },
     });
   }
   
