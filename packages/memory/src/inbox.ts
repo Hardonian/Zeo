@@ -235,7 +235,7 @@ export function createMemoryAdapter(): InboxStorage {
         scenarioTextProvenance: draft.scenarioTextProvenance,
         scenarioDraft: draft.scenarioDraft,
         status,
-        tags: draft.tags,
+        tags: draft.tags ?? [],
       };
       
       if (options?.snoozeUntil) {
