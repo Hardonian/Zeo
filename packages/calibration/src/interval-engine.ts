@@ -1,5 +1,6 @@
 import type { ForecastRecord, CalibrationBucket, ScoreResult, CalibrationReport } from "./types.js";
-import type { DecisionRecord, ProbabilityInterval } from "@zeo/memory";
+import type { DecisionRecord } from "@zeo/memory";
+import type { ProbabilityInterval } from "@zeo/contracts";
 
 /**
  * Calibration bucket with interval coverage testing.
