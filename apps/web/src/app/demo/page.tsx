@@ -9,7 +9,9 @@ export default function DemoPage() {
   const [panels, setPanels] = useState<UiPanelManifest[]>([]);
 
   useEffect(() => {
-    setPanels(getAllRegisteredPanels());
+    const allPanels = getAllRegisteredPanels();
+    console.log('Registered panels:', allPanels);
+    setPanels(allPanels);
   }, []);
 
   return (
