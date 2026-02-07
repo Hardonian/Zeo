@@ -311,7 +311,7 @@ export function assertReplayCase(value: unknown): asserts value is ReplayCase {
   }
 
   for (let i = 0; i < c.observationBatches.length; i++) {
-    assertObservationBatch(c.observationBatches[i]);
+    assertReplayObservationBatch(c.observationBatches[i]);
   }
 
   if (!c.horizons || typeof c.horizons !== "object") {

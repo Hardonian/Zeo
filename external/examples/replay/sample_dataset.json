@@ -1,0 +1,356 @@
+{
+  "datasetId": "sample_negotiation_backtest_v1",
+  "description": "Sample replay dataset for negotiation backtesting. Tests Zeo's ability to predict counterpart behavior under uncertainty.",
+  "createdAt": "2026-02-07T16:30:00.000Z",
+  "timeZone": "America/New_York",
+  "catalogHashes": {
+    "signals": "abc123def456",
+    "sources": "xyz789ghi012",
+    "mappings": "mno345pqr678"
+  },
+  "cases": [
+    {
+      "caseId": "negotiation_case_001",
+      "label": "Supplier negotiation - timeline pressure scenario",
+      "decisionSpec": {
+        "id": "dec_neg_001",
+        "title": "Negotiate supplier contract extension",
+        "context": "Q2 procurement cycle - supplier demanding 15% price increase citing raw material costs",
+        "createdAt": "2026-01-15T09:00:00.000Z",
+        "horizon": "weeks",
+        "agents": [
+          {
+            "id": "agent_self",
+            "name": "Procurement Team",
+            "role": "self"
+          },
+          {
+            "id": "agent_supplier",
+            "name": "Acme Materials",
+            "role": "counterparty"
+          }
+        ],
+        "actions": [
+          {
+            "id": "action_accept",
+            "label": "Accept 15% increase",
+            "actorId": "agent_self",
+            "kind": "commit"
+          },
+          {
+            "id": "action_counter",
+            "label": "Counter at 5% with volume commitment",
+            "actorId": "agent_self",
+            "kind": "change_terms"
+          },
+          {
+            "id": "action_delay",
+            "label": "Delay and explore alternatives",
+            "actorId": "agent_self",
+            "kind": "delay"
+          }
+        ],
+        "constraints": [
+          {
+            "id": "const_budget",
+            "name": "Budget ceiling",
+            "value": "No more than 10% increase acceptable",
+            "status": "fact",
+            "provenance": [
+              {
+                "kind": "document",
+                "sourceId": "budget_doc_001",
+                "selector": "Section 3.2",
+                "capturedAt": "2026-01-10T10:00:00.000Z",
+                "checksum": "sha256:a1b2c3d4"
+              }
+            ]
+          }
+        ],
+        "assumptions": [
+          {
+            "id": "assm_timeline",
+            "text": "Supplier has timeline pressure to close Q2",
+            "status": "belief",
+            "confidence": "medium",
+            "probability": {
+              "low": 0.4,
+              "high": 0.7
+            },
+            "tags": ["negotiation", "timeline"]
+          },
+          {
+            "id": "assm_alternatives",
+            "text": "Alternative suppliers available at 8% premium",
+            "status": "assumption",
+            "confidence": "medium",
+            "tags": ["procurement", "alternatives"]
+          }
+        ]
+      },
+      "observationBatches": [
+        {
+          "batchId": "batch_001_initial",
+          "timestamp": "2026-01-15T09:00:00.000Z",
+          "observations": [
+            {
+              "observationId": "obs_001",
+              "signalId": "supplier_flexibility_index",
+              "value": 0.35,
+              "timestamp": "2026-01-15T09:00:00.000Z",
+              "provenance": [
+                {
+                  "kind": "text",
+                  "sourceId": "market_intel_001",
+                  "offset": 150,
+                  "length": 200,
+                  "capturedAt": "2026-01-15T08:30:00.000Z",
+                  "checksum": "sha256:e5f6g7h8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "batchId": "batch_002_mid",
+          "timestamp": "2026-01-18T14:00:00.000Z",
+          "observations": [
+            {
+              "observationId": "obs_002",
+              "signalId": "supplier_flexibility_index",
+              "value": 0.45,
+              "timestamp": "2026-01-18T14:00:00.000Z",
+              "provenance": [
+                {
+                  "kind": "text",
+                  "sourceId": "market_intel_002",
+                  "offset": 300,
+                  "length": 150,
+                  "capturedAt": "2026-01-18T13:00:00.000Z",
+                  "checksum": "sha256:i9j0k1l2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "evidenceEvents": [
+        {
+          "id": "ev_001",
+          "type": "document",
+          "sourceId": "supplier_proposal_doc",
+          "capturedAt": "2026-01-15T09:00:00.000Z",
+          "checksum": "sha256:m3n4o5p6",
+          "observations": ["Initial 15% increase proposal received"],
+          "claims": [
+            {
+              "id": "claim_001",
+              "text": "Raw material costs increased 12% YoY",
+              "status": "belief",
+              "confidence": "high",
+              "tags": ["costs", "materials"]
+            }
+          ],
+          "constraints": []
+        }
+      ],
+      "horizons": {
+        "asOf": "2026-01-15T09:00:00.000Z",
+        "resolveBy": "2026-02-01T00:00:00.000Z"
+      },
+      "outcome": {
+        "status": "partially_resolved",
+        "resolvedAt": "2026-01-28T16:00:00.000Z",
+        "metrics": [
+          {
+            "metricId": "metric_final_price",
+            "label": "Final price increase",
+            "kind": "continuous",
+            "value": {
+              "kind": "continuous",
+              "actual": 7.5,
+              "band": {
+                "low": 7.0,
+                "high": 8.0
+              },
+              "units": "percent"
+            },
+            "mapping": {
+              "linksTo": "action_outcome",
+              "targetId": "action_counter"
+            },
+            "provenance": [
+              {
+                "kind": "document",
+                "sourceId": "signed_contract_001",
+                "selector": "Pricing clause",
+                "capturedAt": "2026-01-28T16:00:00.000Z",
+                "checksum": "sha256:q7r8s9t0"
+              }
+            ]
+          },
+          {
+            "metricId": "metric_agreement_reached",
+            "label": "Agreement reached",
+            "kind": "binary",
+            "value": {
+              "kind": "binary",
+              "occurred": true,
+              "confidenceBand": {
+                "low": 0.95,
+                "high": 1.0
+              }
+            },
+            "mapping": {
+              "linksTo": "branch_event",
+              "targetId": "branch_agreement"
+            },
+            "provenance": [
+              {
+                "kind": "document",
+                "sourceId": "signed_contract_001",
+                "selector": "Execution page",
+                "capturedAt": "2026-01-28T16:00:00.000Z",
+                "checksum": "sha256:u1v2w3x4"
+              }
+            ]
+          }
+        ],
+        "narrative": {
+          "text": "Counterparty accepted 7.5% increase with volume commitment, below initial 15% ask. Timeline pressure hypothesis partially confirmed - supplier had Q2 targets.",
+          "provenance": [
+            {
+              "kind": "text",
+              "sourceId": "negotiation_summary_001",
+              "offset": 0,
+              "length": 500,
+              "capturedAt": "2026-01-29T10:00:00.000Z",
+              "checksum": "sha256:y5z6a7b8"
+            }
+          ]
+        }
+      },
+      "notes": "Clean case for testing price prediction calibration."
+    },
+    {
+      "caseId": "negotiation_case_002",
+      "label": "Failed negotiation - alternatives hypothesis tested",
+      "decisionSpec": {
+        "id": "dec_neg_002",
+        "title": "Negotiate with backup supplier",
+        "context": "Primary supplier negotiations failed, need to secure backup",
+        "createdAt": "2026-01-20T10:00:00.000Z",
+        "horizon": "days",
+        "agents": [
+          {
+            "id": "agent_self",
+            "name": "Procurement Team",
+            "role": "self"
+          },
+          {
+            "id": "agent_backup",
+            "name": "Beta Supplies",
+            "role": "counterparty"
+          }
+        ],
+        "actions": [
+          {
+            "id": "action_urgent",
+            "label": "Accept higher rate for speed",
+            "actorId": "agent_self",
+            "kind": "commit"
+          },
+          {
+            "id": "action_negotiate",
+            "label": "Negotiate standard rate",
+            "actorId": "agent_self",
+            "kind": "change_terms"
+          }
+        ],
+        "constraints": [
+          {
+            "id": "const_timeline",
+            "name": "Hard deadline",
+            "value": "Must secure supply by Feb 1",
+            "status": "fact"
+          }
+        ],
+        "assumptions": [
+          {
+            "id": "assm_urgency",
+            "text": "Urgency weakens negotiating position",
+            "status": "belief",
+            "confidence": "high",
+            "probability": {
+              "low": 0.7,
+              "high": 0.95
+            },
+            "tags": ["urgency", "power_dynamics"]
+          }
+        ]
+      },
+      "observationBatches": [
+        {
+          "batchId": "batch_003_urgent",
+          "timestamp": "2026-01-20T10:00:00.000Z",
+          "observations": [
+            {
+              "observationId": "obs_003",
+              "signalId": "days_to_deadline",
+              "value": 12,
+              "timestamp": "2026-01-20T10:00:00.000Z",
+              "provenance": [
+                {
+                  "kind": "text",
+                  "sourceId": "project_plan_001",
+                  "offset": 50,
+                  "length": 100,
+                  "capturedAt": "2026-01-20T09:00:00.000Z",
+                  "checksum": "sha256:c9d0e1f2"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "horizons": {
+        "asOf": "2026-01-20T10:00:00.000Z",
+        "resolveBy": "2026-01-25T00:00:00.000Z"
+      },
+      "outcome": {
+        "status": "resolved",
+        "resolvedAt": "2026-01-24T14:30:00.000Z",
+        "metrics": [
+          {
+            "metricId": "metric_premium_paid",
+            "label": "Premium paid vs standard rate",
+            "kind": "continuous",
+            "value": {
+              "kind": "continuous",
+              "actual": 18,
+              "band": {
+                "low": 17,
+                "high": 19
+              },
+              "units": "percent"
+            },
+            "mapping": {
+              "linksTo": "action_outcome",
+              "targetId": "action_urgent"
+            },
+            "provenance": [
+              {
+                "kind": "document",
+                "sourceId": "backup_contract_001",
+                "selector": "Pricing terms",
+                "capturedAt": "2026-01-24T14:30:00.000Z",
+                "checksum": "sha256:g3h4i5j6"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Tests calibration on high-urgency scenarios."
+    }
+  ]
+}
