@@ -1,4 +1,4 @@
-import type { TimeSeries, TimeSeriesAnalysis, ForecastResult, ModelFit, ChangePoint, VolatilityRegime } from "./types.js";
+import type { TimeSeries, TimeSeriesAnalysis, ForecastResult, ModelFit, ChangePoint, VolatilityRegime, ModelType } from "./types.js";
 import { spawn } from "child_process";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
@@ -78,16 +78,16 @@ export class TimeSeriesEngine {
         changePoints: (result.change_points as Record<string, unknown>[]).map((cp) => ({
           index: cp.index as number,
           timestamp: cp.timestamp as string,
-          fromModel: cp.from_model as string,
-          toModel: cp.to_model as string,
+          fromModel: cp.from_model as ModelType,
+          toModel: cp.to_model as ModelType,
           confidence: cp.confidence as number,
           cusumScore: cp.cusum_score as number,
         })),
-        volatilityRegimes: result.volatility_regimes,
+        volatilityRegimes: result.volatility_regimes as VolatilityRegime[],
         recommendation: {
-          usable: result.usable,
-          rationale: result.rationale,
-          uncertaintyMultiplier: result.uncertainty_multiplier,
+          usable: result.usable as boolean,
+          rationale: result.rationale as string,
+          uncertaintyMultiplier: result.uncertainty_multiplier as number,
         },
       };
       
