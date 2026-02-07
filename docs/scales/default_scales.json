@@ -1,0 +1,132 @@
+{
+  "packId": "default-qual-scales",
+  "version": "0.3.2",
+  "createdAt": "2026-02-07T00:00:00.000Z",
+  "description": "Default qualitative scales for Zeo v0.3.2. These scales provide structured bands for human observations while enforcing honest uncertainty.",
+  "scales": [
+    {
+      "scaleId": "confidence",
+      "levels": [
+        { "label": "very_low", "band": { "low": 0.0, "high": 0.2 } },
+        { "label": "low", "band": { "low": 0.15, "high": 0.35 } },
+        { "label": "medium", "band": { "low": 0.30, "high": 0.70 } },
+        { "label": "high", "band": { "low": 0.65, "high": 0.90 } },
+        { "label": "very_high", "band": { "low": 0.85, "high": 1.0 } }
+      ],
+      "rules": {
+        "monotonic": true,
+        "defaultLevel": "medium",
+        "notes": "Confidence in own judgment. Self-reports must include confirmation flag to narrow bands."
+      }
+    },
+    {
+      "scaleId": "urgency",
+      "levels": [
+        { "label": "none", "band": { "low": 0.0, "high": 0.1 } },
+        { "label": "low", "band": { "low": 0.1, "high": 0.3 } },
+        { "label": "medium", "band": { "low": 0.25, "high": 0.55 } },
+        { "label": "high", "band": { "low": 0.5, "high": 0.8 } },
+        { "label": "critical", "band": { "low": 0.75, "high": 1.0 } }
+      ],
+      "rules": {
+        "monotonic": true,
+        "defaultLevel": "low"
+      }
+    },
+    {
+      "scaleId": "trust",
+      "levels": [
+        { "label": "distrust", "band": { "low": 0.0, "high": 0.2 } },
+        { "label": "low", "band": { "low": 0.15, "high": 0.35 } },
+        { "label": "moderate", "band": { "low": 0.30, "high": 0.60 } },
+        { "label": "high", "band": { "low": 0.55, "high": 0.85 } },
+        { "label": "full", "band": { "low": 0.80, "high": 1.0 } }
+      ],
+      "rules": {
+        "monotonic": true,
+        "defaultLevel": "moderate"
+      }
+    },
+    {
+      "scaleId": "reversibility",
+      "levels": [
+        { "label": "irreversible", "band": { "low": 0.0, "high": 0.1 } },
+        { "label": "hard", "band": { "low": 0.1, "high": 0.3 } },
+        { "label": "moderate", "band": { "low": 0.25, "high": 0.55 } },
+        { "label": "easy", "band": { "low": 0.5, "high": 0.8 } },
+        { "label": "trivial", "band": { "low": 0.75, "high": 1.0 } }
+      ],
+      "rules": {
+        "monotonic": true,
+        "defaultLevel": "moderate"
+      }
+    },
+    {
+      "scaleId": "volatility_hint",
+      "levels": [
+        { "label": "stable", "band": { "low": 0.0, "high": 0.15 } },
+        { "label": "low", "band": { "low": 0.1, "high": 0.3 } },
+        { "label": "moderate", "band": { "low": 0.25, "high": 0.55 } },
+        { "label": "high", "band": { "low": 0.5, "high": 0.8 } },
+        { "label": "chaotic", "band": { "low": 0.75, "high": 1.0 } }
+      ],
+      "rules": {
+        "monotonic": true,
+        "defaultLevel": "moderate"
+      }
+    },
+    {
+      "scaleId": "evidence_strength",
+      "levels": [
+        { "label": "anecdotal", "band": { "low": 0.0, "high": 0.2 } },
+        { "label": "weak", "band": { "low": 0.15, "high": 0.35 } },
+        { "label": "moderate", "band": { "low": 0.30, "high": 0.60 } },
+        { "label": "strong", "band": { "low": 0.55, "high": 0.85 } },
+        { "label": "definitive", "band": { "low": 0.80, "high": 1.0 } }
+      ],
+      "rules": {
+        "monotonic": true,
+        "defaultLevel": "anecdotal",
+        "notes": "Strength of supporting evidence. Narrow bands require quality provenance."
+      }
+    }
+  ],
+  "mappings": [
+    {
+      "mappingId": "trust-low-to-counterparty-good-faith",
+      "scaleId": "trust",
+      "levelLabel": "low",
+      "mapsToAssumption": {
+        "assumptionId": "counterparty_good_faith",
+        "band": { "low": 0.1, "high": 0.35 }
+      }
+    },
+    {
+      "mappingId": "trust-moderate-to-counterparty-good-faith",
+      "scaleId": "trust",
+      "levelLabel": "moderate",
+      "mapsToAssumption": {
+        "assumptionId": "counterparty_good_faith",
+        "band": { "low": 0.35, "high": 0.65 }
+      }
+    },
+    {
+      "mappingId": "volatility-high-to-market-volatile",
+      "scaleId": "volatility_hint",
+      "levelLabel": "high",
+      "mapsToAssumption": {
+        "assumptionId": "market_volatility",
+        "band": { "low": 0.6, "high": 0.9 }
+      }
+    },
+    {
+      "mappingId": "reversibility-irreversible-to-constraint",
+      "scaleId": "reversibility",
+      "levelLabel": "irreversible",
+      "mapsToAssumption": {
+        "assumptionId": "reversibility_assessment",
+        "band": { "low": 0.0, "high": 0.15 }
+      }
+    }
+  ]
+}

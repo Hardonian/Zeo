@@ -324,3 +324,80 @@ Source-specific adapters normalize vendor formats:
 - Missing URLs or single sources reduce weight
 - All bias adjustments are explicit and inspectable
 
+
+---
+
+## Replay Harness (v0.3.1)
+
+Zeo includes a deterministic replay runner for empirical calibration and backtesting. This makes Zeo empirically accountable by measuring how well prediction intervals cover actual outcomes.
+
+### What Replay Does
+
+1. **Replays historical decisions** against actual outcomes
+2. **Measures calibration** - how often prediction intervals contain outcomes
+3. **Identifies miscalibration** - when intervals are too narrow or wide  
+4. **Recommends adjustments** - widen uncertainty bands empirically
+
+### Key Features
+
+- **Deterministic**: Same dataset + seed → same results
+- **Epistemically conservative**: Handles partial/ambiguous outcomes
+- **Widen-only calibration**: Intervals may only widen, never narrow (prevents overfitting)
+- **Coverage tracking**: Per-metric, per-domain, and overall
+- **Proper scoring**: Brier scores for binary, interval scores for continuous
+
+### Running Replay
+
+```bash
+# Run sample dataset
+pnpm -C apps/cli start -- --replay external/examples/replay/sample_dataset.json --report-out ./reports
+
+# Run specific case
+pnpm -C apps/cli start -- --replay dataset.json --case negotiation_case_001 --report-out ./reports
+
+# Reports generated:
+# - replay_results.json: Detailed checkpoint predictions
+# - calibration_report.md: Human-readable summary
+```
+
+### CLI Flags
+
+| Flag | Description |
+|------|-------------|
+| `--replay <path>` | Path to replay dataset JSON |
+| `--case <id>` | Run specific case (optional) |
+| `--report-out <dir>` | Write reports to directory (optional) |
+| `--strict` | Exit non-zero on validation failures |
+
+### Calibration Philosophy
+
+**What calibration proves:**
+- Whether intervals are too narrow (underconfidence is better than overconfidence)
+- Empirical coverage rates across domains
+- Where to widen uncertainty
+
+**What calibration does NOT claim:**
+- Future outcomes will match past patterns
+- Narrower intervals are always better
+- Point predictions are accurate
+
+**Widen-Only Rule (v0.3.1):**
+- Under-coverage → widen intervals
+- Adequate coverage → no change
+- Never narrow from calibration alone
+
+This prevents the common failure mode of overfitting to historical data and becoming overconfident.
+
+### Web Replay Viewer
+
+Access the replay viewer at `/replay` in the web application:
+- Upload replay dataset JSON files
+- View dataset contents and case details
+- See calibration notes and CLI instructions
+
+### Documentation
+
+- `docs/REPLAY_FORMAT.md` - Dataset schema and format specification
+- `external/examples/replay/sample_dataset.json` - Example dataset
+- `packages/replay/` - Replay runner implementation
+

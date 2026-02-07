@@ -288,10 +288,13 @@ export function assertQualitativeScale(scale: {
   }
   if (scale.rules?.monotonic === true) {
     for (let i = 1; i < scale.levels.length; i++) {
-      if (scale.levels[i].band.low < scale.levels[i - 1].band.high) {
+      const currentLevel = scale.levels[i];
+      const prevLevel = scale.levels[i - 1];
+      if (!currentLevel || !prevLevel) continue;
+      if (currentLevel.band.low < prevLevel.band.high) {
         throw new ZeoError(
           "QUAL_SCALE_INVALID",
-          `monotonic scale violation at level "${scale.levels[i].label}"`,
+          `monotonic scale violation at level "${currentLevel.label}"`,
           { field: "monotonic", context: { levelIndex: i } }
         );
       }

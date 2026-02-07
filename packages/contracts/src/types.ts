@@ -443,6 +443,54 @@ export interface ScalePack {
 }
 
 // =============================================================================
+// DECISION DRAFT / INBOX TYPES (v0.3.2)
+// =============================================================================
+
+export type DecisionDraftSource = "nl_intake" | "panel_capture" | "quick_capture" | "import";
+
+export type DecisionDraftStatus = "new" | "snoozed" | "dismissed" | "promoted";
+
+export interface DecisionDraftPromotion {
+  decisionId: string;
+  promotedAt: string;
+}
+
+export interface DecisionDraftRecord {
+  draftId: string;
+  createdAt: string;
+  source: DecisionDraftSource;
+  scenarioTextChecksum: string;
+  scenarioTextProvenance: ProvenancePointer[];
+  scenarioDraft: ScenarioDraft;
+  status: DecisionDraftStatus;
+  snoozeUntil?: string;
+  tags?: string[];
+  promotion?: DecisionDraftPromotion;
+}
+
+export interface ScenarioDraft {
+  titleSuggestion: string;
+  summary: string;
+  extractedEntities: string[];
+  candidateActions: Array<{
+    id: string;
+    label: string;
+    kind?: string;
+  }>;
+  candidateAssumptions: Array<{
+    id: string;
+    label: string;
+    band: { low: number; high: number };
+    provenance: ProvenancePointer[];
+  }>;
+  qualObservations: QualObservation[];
+  evidenceCandidates: EvidenceCandidate[];
+  warnings: string[];
+}
+
+// =============================================================================
+// WORLD MODEL TYPES (v0.3.0)
+// =============================================================================
 // RUNTIME GUARDS
 // =============================================================================
 

@@ -30,3 +30,11 @@ jobs:
       - name: Web E2E Tests
         run: pnpm -C apps/web test:e2e
         continue-on-error: false
+      - name: Build CLI
+        run: pnpm -C apps/cli build
+      - name: Replay Sample Dataset
+        run: pnpm -C apps/cli start -- --replay external/examples/replay/sample_dataset.json --report-out /tmp/zeo-replay
+      - name: Verify Replay Reports
+        run: |
+          test -f /tmp/zeo-replay/replay_results.json
+          test -f /tmp/zeo-replay/calibration_report.md
