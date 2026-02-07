@@ -1,0 +1,20 @@
+export {
+  createRegistry,
+  addHypothesis,
+  recordTest,
+  addEvidence,
+  linkToDecision,
+  queryHypotheses,
+  getRegistryStats,
+  createReplayIntegration,
+  type Hypothesis,
+  type HypothesisTest,
+  type HypothesisEvidence,
+  type HypothesisRegistry,
+  type RegistryQuery,
+  type RegistryStats,
+  type ReplayIntegration,
+  type HypothesisSource,
+  type HypothesisStatus,
+  type HypothesisDomain
+} from "./registry.js";

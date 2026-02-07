@@ -150,6 +150,22 @@ importers:
         specifier: ^25.2.1
         version: 25.2.1
 
+  packages/analysis-planner:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@zeo/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.1
+        version: 2.1.9(@types/node@25.2.1)(jsdom@28.0.0)
+
   packages/analytics:
     dependencies:
       '@zeo/contracts':
@@ -254,6 +270,22 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@25.2.1)(jsdom@28.0.0)
 
+  packages/feature-discovery:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@zeo/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.1
+        version: 2.1.9(@types/node@25.2.1)(jsdom@28.0.0)
+
   packages/game:
     dependencies:
       '@zeo/contracts':
@@ -311,6 +343,9 @@ importers:
       '@zeo/contracts':
         specifier: workspace:*
         version: link:../contracts
+      nanoid:
+        specifier: ^5.0.0
+        version: 5.1.6
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
