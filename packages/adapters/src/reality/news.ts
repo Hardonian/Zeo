@@ -195,7 +195,7 @@ export function createNewsAdapter(): Adapter {
           valueBand: { low: surpriseProxy, high: surpriseProxy },
           weightApplied: 0.3,
           qualityScore,
-          biasAdjustmentsApplied: [],
+          biasAdjustmentsApplied: [] as string[],
           provenance: [provenance],
           sourceId: article.source?.name || "unknown",
           rawRef: { kind: "news", id: article.url },
