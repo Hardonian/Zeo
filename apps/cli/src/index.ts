@@ -107,32 +107,36 @@ export function parseArgs(argv: string[]): CliArgs {
 
 function printHelp(): void {
   console.log(`
-Zeo CLI - Epistemic Decision Engine v0.3.0
+Zeo CLI - Epistemic Decision Engine v0.3.1
 
 Usage: zeo [options]
 
 Commands:
-  signals <file>      Process external signal payloads (JSON)
-  --signals <file>   Process external signal payloads (JSON)
+  signals <file>              Process external signal payloads (JSON)
+  --signals <file>            Process external signal payloads (JSON)
+  --replay <file>             Run replay dataset for calibration testing
+  --case <id>                 Run specific case from replay dataset
+  --report-out <dir>          Write replay reports to directory
 
 Options:
-  --catalog <dir>     Catalog directory (default: external/catalog)
-  --example <name>    Example to run: "negotiation" or "ops" (default: negotiation)
-  --depth <n>        Branching depth: 1-5 (default: 2)
-  --json-only        Output JSON only, no summary
-  --out <path>       Write JSON result to file
-  --seed <string>    Random seed for deterministic runs (optional)
-  --strict           Exit non-zero on invariant violations (default: true)
-  --packet-out <path> Write evidence packet (JSON + MD) to directory
-  --voi              Print Value of Information (VOI) ranked list
-  --world            Print World Model posterior state
-  --help, -h         Show this help message
+  --catalog <dir>             Catalog directory (default: external/catalog)
+  --example <name>            Example to run: "negotiation" or "ops" (default: negotiation)
+  --depth <n>                 Branching depth: 1-5 (default: 2)
+  --json-only                 Output JSON only, no summary
+  --out <path>                Write JSON result to file
+  --seed <string>             Random seed for deterministic runs (optional)
+  --strict                    Exit non-zero on invariant violations (default: true)
+  --packet-out <path>         Write evidence packet (JSON + MD) to directory
+  --voi                       Print Value of Information (VOI) ranked list
+  --world                     Print World Model posterior state
+  --help, -h                  Show this help message
 
 Examples:
   zeo --example negotiation --depth 3
   zeo --example ops --seed my-seed --packet-out ./output
   zeo --example negotiation --voi --world
   zeo signals ./data/market_signals.json --catalog ./catalog
+  zeo --replay external/examples/replay/sample_dataset.json --report-out ./reports
 `);
 }
 

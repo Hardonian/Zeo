@@ -239,3 +239,167 @@ export function assertBranchGraphValid(graph: {
     }
   }
 }
+
+export function assertBandFinite(
+  band: { low: number; high: number },
+  fieldName: string = "band"
+): void {
+  if (!Number.isFinite(band.low) || !Number.isFinite(band.high)) {
+    throw new ZeoError(
+      "INVALID_INTERVAL",
+      `${fieldName}: low and high must be finite numbers`,
+      { field: fieldName, value: band }
+    );
+  }
+}
+
+export function assertQualitativeScale(scale: {
+  scaleId: string;
+  levels: Array<{ label: string; band: { low: number; high: number } }>;
+  rules?: {
+    monotonic?: boolean;
+    defaultLevel?: string;
+    notes?: string;
+  };
+}): void {
+  if (!scale.scaleId || typeof scale.scaleId !== "string") {
+    throw new ZeoError(
+      "QUAL_SCALE_INVALID",
+      "scaleId is required and must be a string",
+      { field: "scaleId", value: scale.scaleId }
+    );
+  }
+  if (!scale.levels || !Array.isArray(scale.levels) || scale.levels.length < 2) {
+    throw new ZeoError(
+      "QUAL_SCALE_INVALID",
+      "scale must have at least 2 levels",
+      { field: "levels", value: scale.levels }
+    );
+  }
+  for (const level of scale.levels) {
+    if (!level.label || typeof level.label !== "string") {
+      throw new ZeoError(
+        "QUAL_SCALE_INVALID",
+        "each level must have a label string",
+        { field: "level.label", value: level.label }
+      );
+    }
+    assertBandFinite(level.band, `level.${level.label}.band`);
+  }
+  if (scale.rules?.monotonic === true) {
+    for (let i = 1; i < scale.levels.length; i++) {
+      if (scale.levels[i].band.low < scale.levels[i - 1].band.high) {
+        throw new ZeoError(
+          "QUAL_SCALE_INVALID",
+          `monotonic scale violation at level "${scale.levels[i].label}"`,
+          { field: "monotonic", context: { levelIndex: i } }
+        );
+      }
+    }
+  }
+}
+
+export function assertQualObservation(observation: {
+  id: string;
+  kind: string;
+  scaleId: string;
+  levelLabel: string;
+  band: { low: number; high: number };
+  textProvenance?: Array<{ sourceId?: string; checksum?: string; offset?: { start: number; end: number } }>;
+  sourceId?: string;
+  checksum: string;
+}): void {
+  if (!observation.id || typeof observation.id !== "string") {
+    throw new ZeoError(
+      "QUAL_OBSERVATION_INVALID",
+      "observation.id is required and must be a string",
+      { field: "id", value: observation.id }
+    );
+  }
+  const validKinds = ["self_report", "note_extract", "sensor_meta", "third_party"];
+  if (!validKinds.includes(observation.kind)) {
+    throw new ZeoError(
+      "QUAL_OBSERVATION_INVALID",
+      `kind must be one of: ${validKinds.join(", ")}`,
+      { field: "kind", value: observation.kind }
+    );
+  }
+  assertBandFinite(observation.band, "band");
+  if (!observation.checksum || typeof observation.checksum !== "string") {
+    throw new ZeoError(
+      "QUAL_OBSERVATION_INVALID",
+      "checksum is required",
+      { field: "checksum", value: observation.checksum }
+    );
+  }
+  if (observation.kind === "note_extract" || observation.kind === "self_report") {
+    if (!observation.textProvenance || observation.textProvenance.length === 0) {
+      throw new ZeoError(
+        "QUAL_OBSERVATION_INVALID",
+        `${observation.kind} requires textProvenance`,
+        { field: "textProvenance", context: { kind: observation.kind } }
+      );
+    }
+    for (const prov of observation.textProvenance) {
+      if (!prov.checksum) {
+        throw new ZeoError(
+          "QUAL_OBSERVATION_INVALID",
+          "textProvenance items must have checksum",
+          { field: "textProvenance.checksum" }
+        );
+      }
+    }
+  }
+}
+
+const DEFAULT_MIN_BAND_WIDTH = 0.15;
+
+export function enforceNoFakePrecision(params: {
+  band: { low: number; high: number };
+  sourceKind: string;
+  hasNumericAnchor: boolean;
+  minWidth?: number;
+}): void {
+  const minWidth = params.minWidth ?? DEFAULT_MIN_BAND_WIDTH;
+  const width = params.band.high - params.band.low;
+  if (params.sourceKind === "note_extract" && !params.hasNumericAnchor && width < minWidth) {
+    throw new ZeoError(
+      "FAKE_PRECISION",
+      `Band width ${width.toFixed(3)} is too narrow for text-derived observation without numeric anchor. Minimum width: ${minWidth}`,
+      { field: "band", value: params.band, context: { sourceKind: params.sourceKind, hasNumericAnchor: params.hasNumericAnchor, minWidth } }
+    );
+  }
+}
+
+export function assertQuantifiedAssumption(assumption: {
+  assumptionId: string;
+  label: string;
+  band: { low: number; high: number };
+  derivedFrom?: {
+    qualObservationId?: string;
+    mappingRuleId?: string;
+  };
+}): void {
+  if (!assumption.assumptionId || typeof assumption.assumptionId !== "string") {
+    throw new ZeoError(
+      "ASSUMPTION_INVALID",
+      "assumptionId is required and must be a string",
+      { field: "assumptionId", value: assumption.assumptionId }
+    );
+  }
+  if (!assumption.label || typeof assumption.label !== "string") {
+    throw new ZeoError(
+      "ASSUMPTION_INVALID",
+      "label is required and must be a string",
+      { field: "label", value: assumption.label }
+    );
+  }
+  assertBandFinite(assumption.band, "band");
+  if (assumption.band.low < 0 || assumption.band.high > 1) {
+    throw new ZeoError(
+      "ASSUMPTION_INVALID",
+      "probability-like bands must be in range [0, 1]",
+      { field: "band", value: assumption.band }
+    );
+  }
+}

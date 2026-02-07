@@ -380,6 +380,69 @@ export interface CatalogHashes {
 }
 
 // =============================================================================
+// QUAL -> QUANT ENCODING TYPES (v0.3.2)
+// =============================================================================
+
+export type QualObservationKind = "self_report" | "note_extract" | "sensor_meta" | "third_party";
+
+export interface QualitativeScaleLevel {
+  label: string;
+  band: { low: number; high: number };
+}
+
+export interface QualitativeScaleRules {
+  monotonic?: boolean;
+  defaultLevel?: string;
+  notes?: string;
+}
+
+export interface QualitativeScale {
+  scaleId: string;
+  levels: QualitativeScaleLevel[];
+  rules?: QualitativeScaleRules;
+}
+
+export interface QualObservation {
+  id: string;
+  createdAt: string;
+  kind: QualObservationKind;
+  scaleId: string;
+  levelLabel: string;
+  band: { low: number; high: number };
+  textProvenance?: ProvenancePointer[];
+  sourceId?: string;
+  checksum: string;
+}
+
+export interface QuantifiedAssumption {
+  assumptionId: string;
+  label: string;
+  band: { low: number; high: number };
+  derivedFrom?: {
+    qualObservationId: string;
+    mappingRuleId: string;
+  };
+}
+
+export interface QualToQuantMapping {
+  mappingId: string;
+  scaleId: string;
+  levelLabel: string;
+  mapsToAssumption: {
+    assumptionId: string;
+    band: { low: number; high: number };
+  };
+}
+
+export interface ScalePack {
+  packId: string;
+  version: string;
+  scales: QualitativeScale[];
+  mappings: QualToQuantMapping[];
+  createdAt: string;
+}
+
+// =============================================================================
 // RUNTIME GUARDS
 // =============================================================================
 
