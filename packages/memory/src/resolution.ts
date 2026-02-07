@@ -362,4 +362,36 @@ export class ResolutionEngine {
     
     return false;
   }
+
+  /**
+   * Simple stemming function to normalize words.
+   * Strips common suffixes to match words like "accepted" -> "accept"
+   */
+  private stem(word: string): string {
+    const lower = word.toLowerCase();
+    
+    // Handle common irregular forms
+    const irregulars: Record<string, string> = {
+      "accepted": "accept",
+      "rejected": "reject",
+      "countered": "counter",
+      "received": "receive",
+      "provided": "provide",
+      "increased": "increase",
+      "decreased": "decrease",
+    };
+    
+    if (irregulars[lower]) return irregulars[lower];
+    
+    // Strip common suffixes
+    const suffixes = ["ing", "ed", "s", "ly", "tion", "ness", "ment", "able", "ible", "ful", "less"];
+    
+    for (const suffix of suffixes) {
+      if (lower.endsWith(suffix) && lower.length > suffix.length + 2) {
+        return lower.slice(0, -suffix.length);
+      }
+    }
+    
+    return lower;
+  }
 }
