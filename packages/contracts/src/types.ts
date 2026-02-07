@@ -130,3 +130,70 @@ export type FactCandidate = {
   rawConfidence: ConfidenceBand;
   tags: string[];
 };
+
+export type UiPanelSlot = "leftSidebar" | "main" | "rightInspector" | "modal" | "footer";
+
+export type UiPanelKind = "react" | "iframe";
+
+export type UiPanelCapabilities = {
+  needsNetwork?: boolean;
+  needsFiles?: boolean;
+  needsCamera?: boolean;
+  needsMic?: boolean;
+  needsOcr?: boolean;
+  needsStt?: boolean;
+};
+
+export type UiPanelPermissions = {
+  requireUserConfirm?: boolean;
+};
+
+export type UiPanelManifest = {
+  id: string;
+  title: string;
+  description?: string;
+  route: string;
+  slot: UiPanelSlot;
+  kind: UiPanelKind;
+  entry: string;
+  version: string;
+  capabilities: UiPanelCapabilities;
+  dataDeps: string[];
+  permissions: UiPanelPermissions;
+};
+
+export type UiBridgeDirection = "panel->host" | "host->panel";
+
+export type UiBridgeRequestType =
+  | "ping"
+  | "get_state"
+  | "set_decision"
+  | "run_decision"
+  | "ingest_evidence_note"
+  | "ingest_signals_batch"
+  | "export_packet"
+  | "toast"
+  | "error";
+
+export type UiBridgeMessage = {
+  direction: UiBridgeDirection;
+  requestId: string;
+  type: UiBridgeRequestType;
+  payload: unknown;
+};
+
+export type UiStateSnapshot = {
+  decision: {
+    spec: unknown | null;
+    result: unknown | null;
+    lastRun: string | null;
+  };
+  evidence: {
+    notes: unknown[];
+    files: unknown[];
+  };
+  signals: {
+    lastBatch: unknown | null;
+    lastRslState: unknown | null;
+  };
+};
