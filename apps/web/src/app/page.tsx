@@ -18,6 +18,12 @@ export default function Home() {
           >
             Open Demo
           </Link>
+          <Link
+            href="/intake"
+            className="px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
+          >
+            New Intake
+          </Link>
           <a
             href="https://github.com/anomalyco/Zeo"
             className="px-6 py-3 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors"
@@ -33,20 +39,20 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-2 gap-4 text-left">
             <div className="p-4 bg-gray-100 rounded-lg">
+              <h3 className="font-medium">NL Intake</h3>
+              <p className="text-sm text-gray-600">Describe decisions in natural language, auto-extract actions and assumptions</p>
+            </div>
+            <div className="p-4 bg-gray-100 rounded-lg">
+              <h3 className="font-medium">Decision Inbox</h3>
+              <p className="text-sm text-gray-600">Review, snooze, and promote drafts to full decisions</p>
+            </div>
+            <div className="p-4 bg-gray-100 rounded-lg">
               <h3 className="font-medium">Panel Host</h3>
               <p className="text-sm text-gray-600">Plugin-style architecture for React and iframe panels</p>
             </div>
             <div className="p-4 bg-gray-100 rounded-lg">
               <h3 className="font-medium">Offline First</h3>
               <p className="text-sm text-gray-600">IndexedDB persistence with localStorage fallback</p>
-            </div>
-            <div className="p-4 bg-gray-100 rounded-lg">
-              <h3 className="font-medium">Bridge Protocol</h3>
-              <p className="text-sm text-gray-600">Schema-validated postMessage communication</p>
-            </div>
-            <div className="p-4 bg-gray-100 rounded-lg">
-              <h3 className="font-medium">Sandboxed iframes</h3>
-              <p className="text-sm text-gray-600">No same-origin, strict capability gating</p>
             </div>
           </div>
         </div>
