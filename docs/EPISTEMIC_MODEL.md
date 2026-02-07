@@ -57,6 +57,36 @@ Outputs must include:
 
 ---
 
+## FactCandidate and promotion rules
+
+External data enters Zeo as a `FactCandidate` — an unverified claim that **cannot** be promoted to `Fact` without explicit provenance.
+
+### FactCandidate type
+```typescript
+type FactCandidate = {
+  id: UUID;
+  text: string;
+  sourceDescription: string;
+  capturedAt: string;
+  rawConfidence: ConfidenceBand;
+  tags: string[];
+};
+```
+
+### Promotion
+- `promoteFactCandidate(candidate, provenance)` -> `Claim(status="fact")` with provenance attached.
+- Provenance must be non-empty and each pointer must have a valid `sourceId`, `checksum`, and `capturedAt`.
+- If provenance is unavailable, use `downgradeToBelief(candidate)` -> `Claim(status="belief")`.
+
+### Runtime enforcement
+- `enforceNoFactWithoutProvenance({ claims, constraints, events })` scans all claims and constraints. It throws `ProvenanceRequiredError` on the first fact missing valid provenance.
+- The engine already calls `requireProvenanceForFacts` during branch generation for constraints.
+
+### Design rationale
+This boundary prevents OCR output, transcripts, or news items from being silently treated as ground truth. Every fact in Zeo must be traceable to a specific source location and timestamp.
+
+---
+
 ## Quantifying the unquantifiable
 Zeo converts qualitative ambiguity into operational structure:
 - bounds

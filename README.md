@@ -117,15 +117,32 @@ Prereqs: Node 20+ and pnpm 9+
 
 ```bash
 pnpm i
-pnpm -r typecheck
-pnpm -r test
+pnpm doctor              # verify environment, typecheck, test, lint
+pnpm -r build
 pnpm -C apps/cli start -- --example negotiation
+pnpm -C apps/cli start -- --example ops --depth 3
+pnpm -C apps/cli start -- --example negotiation --json-only
+pnpm -C apps/cli start -- --example ops --out result.json
 ```
+
+### CLI flags
+| Flag | Values | Default | Description |
+|------|--------|---------|-------------|
+| `--example` | `negotiation`, `ops` | `negotiation` | Built-in decision scenario |
+| `--depth` | `2`, `3` | `2` | Branch depth (2 = shallow, 3 = second-order) |
+| `--json-only` | (flag) | off | Output raw JSON only, no summary |
+| `--out` | `<path>` | none | Write result JSON to file |
 
 ---
 
 ## Status
-- v0.1.0 scaffold is complete (2026-02-07)
+- v0.1.1 engine improvements (2026-02-07)
+  - Deterministic branch hashing and cache keys
+  - Pruning config (maxNodes, maxEdges, maxDepth)
+  - Flip-condition generator with assumption-specific thresholds
+  - FactCandidate type and promotion rules
+  - CLI depth/json/out flags
+- v0.1.0 scaffold (2026-02-07)
 - Next: MVP build per `plan/PROJECT_PLAN.md`
 
 ---
