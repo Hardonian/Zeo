@@ -1,0 +1,292 @@
+/**
+ * Replay CLI Module
+ *
+ * CLI commands for running replay datasets and generating calibration reports.
+ */
+
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { resolve, join } from "node:path";
+import type { ReplayDataset, ReplayResult } from "@zeo/contracts";
+import { assertReplayDataset } from "@zeo/contracts";
+import { replayCase } from "@zeo/replay";
+
+export interface ReplayCliArgs {
+  replay: string | undefined;
+  case: string | undefined;
+  reportOut: string | undefined;
+  strict: boolean;
+}
+
+export function parseReplayArgs(argv: string[]): ReplayCliArgs {
+  const result: ReplayCliArgs = {
+    replay: undefined,
+    case: undefined,
+    reportOut: undefined,
+    strict: true,
+  };
+
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    const next = argv[i + 1];
+
+    if ((arg === "--replay" || arg === "-r") && next) {
+      result.replay = next;
+      i++;
+    } else if (arg === "--case" && next) {
+      result.case = next;
+      i++;
+    } else if (arg === "--report-out" && next) {
+      result.reportOut = next;
+      i++;
+    } else if (arg === "--strict") {
+      const val = next;
+      if (val && (val === "false" || val === "0")) {
+        result.strict = false;
+        i++;
+      } else {
+        result.strict = true;
+      }
+    }
+  }
+
+  return result;
+}
+
+export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
+  if (!args.replay) {
+    console.error("Error: --replay <path> is required");
+    return 1;
+  }
+
+  // Read and parse dataset
+  let dataset: ReplayDataset;
+  try {
+    const content = readFileSync(resolve(args.replay), "utf8");
+    dataset = JSON.parse(content) as ReplayDataset;
+  } catch (err) {
+    console.error(`Error reading dataset: ${(err as Error).message}`);
+    return 1;
+  }
+
+  // Validate dataset
+  try {
+    assertReplayDataset(dataset);
+  } catch (err) {
+    console.error(`Validation error: ${(err as Error).message}`);
+    if (args.strict) {
+      return 1;
+    }
+  }
+
+  console.log(`\nRunning replay: ${dataset.datasetId}`);
+  console.log(`Description: ${dataset.description ?? "N/A"}`);
+  console.log(`Cases: ${dataset.cases.length}`);
+  console.log("");
+
+  // Filter cases if --case specified
+  const casesToRun = args.case
+    ? dataset.cases.filter(c => c.caseId === args.case)
+    : dataset.cases;
+
+  if (args.case && casesToRun.length === 0) {
+    console.error(`Error: Case "${args.case}" not found in dataset`);
+    return 1;
+  }
+
+  // Run each case
+  const results: ReplayResult[] = [];
+  let hasErrors = false;
+
+  for (const replayCaseData of casesToRun) {
+    console.log(`\nProcessing case: ${replayCaseData.caseId}`);
+    console.log(`  Label: ${replayCaseData.label}`);
+
+    try {
+      const result = await replayCase(replayCaseData, {
+        depth: 3,
+        limits: {},
+        strict: args.strict,
+      });
+
+      results.push(result);
+
+      // Print summary
+      console.log(`  Checkpoints: ${result.checkpoints.length}`);
+      console.log(`  Coverage: ${(result.scoring.coverage.overall * 100).toFixed(1)}%`);
+      console.log(
+        `  Recommended widen factor: ${result.scoring.recommendedAdjustment.widenFactorOverall.toFixed(2)}x`
+      );
+    } catch (err) {
+      console.error(`  Error: ${(err as Error).message}`);
+      hasErrors = true;
+      if (args.strict) {
+        return 1;
+      }
+    }
+  }
+
+  // Aggregate results
+  const aggregateCoverage =
+    results.reduce((sum, r) => sum + r.scoring.coverage.overall, 0) /
+    Math.max(results.length, 1);
+
+  const aggregateWidenFactor =
+    results.reduce((sum, r) => sum + r.scoring.recommendedAdjustment.widenFactorOverall, 0) /
+    Math.max(results.length, 1);
+
+  console.log("\n" + "=".repeat(60));
+  console.log("REPLAY SUMMARY");
+  console.log("=".repeat(60));
+  console.log(`Total cases: ${results.length}`);
+  console.log(`Overall coverage: ${(aggregateCoverage * 100).toFixed(1)}%`);
+  console.log(`Recommended widen factor: ${aggregateWidenFactor.toFixed(2)}x`);
+
+  // Per-domain breakdown
+  const domainStats: Record<string, { coverages: number[]; widenFactors: number[] }> = {};
+  for (const result of results) {
+    for (const [domain, coverage] of Object.entries(result.scoring.coverage.byDomain)) {
+      if (!domainStats[domain]) {
+        domainStats[domain] = { coverages: [], widenFactors: [] };
+      }
+      domainStats[domain].coverages.push(coverage);
+    }
+    for (const [domain, factor] of Object.entries(result.scoring.recommendedAdjustment.widenFactorByDomain)) {
+      if (!domainStats[domain]) {
+        domainStats[domain] = { coverages: [], widenFactors: [] };
+      }
+      domainStats[domain].widenFactors.push(factor);
+    }
+  }
+
+  if (Object.keys(domainStats).length > 0) {
+    console.log("\nPer-domain:");
+    for (const [domain, stats] of Object.entries(domainStats)) {
+      const avgCoverage =
+        stats.coverages.reduce((a, b) => a + b, 0) / Math.max(stats.coverages.length, 1);
+      const avgWiden =
+        stats.widenFactors.reduce((a, b) => a + b, 0) / Math.max(stats.widenFactors.length, 1);
+      console.log(`  ${domain}: ${(avgCoverage * 100).toFixed(1)}% coverage, ${avgWiden.toFixed(2)}x widen`);
+    }
+  }
+
+  // Generate reports if output directory specified
+  if (args.reportOut) {
+    const outputDir = resolve(args.reportOut);
+    if (!existsSync(outputDir)) {
+      mkdirSync(outputDir, { recursive: true });
+    }
+
+    // Write JSON report
+    const reportJson = {
+      datasetId: dataset.datasetId,
+      runAt: new Date().toISOString(),
+      summary: {
+        totalCases: results.length,
+        overallCoverage: aggregateCoverage,
+        recommendedWidenFactor: aggregateWidenFactor,
+        byDomain: Object.fromEntries(
+          Object.entries(domainStats).map(([domain, stats]) => [
+            domain,
+            {
+              coverage:
+                stats.coverages.reduce((a, b) => a + b, 0) / Math.max(stats.coverages.length, 1),
+              widenFactor:
+                stats.widenFactors.reduce((a, b) => a + b, 0) / Math.max(stats.widenFactors.length, 1),
+            },
+          ])
+        ),
+      },
+      caseResults: results,
+    };
+
+    const jsonPath = join(outputDir, "replay_results.json");
+    writeFileSync(jsonPath, JSON.stringify(reportJson, null, 2), "utf8");
+    console.log(`\nJSON report: ${jsonPath}`);
+
+    // Write markdown report
+    const mdPath = join(outputDir, "calibration_report.md");
+    const mdContent = generateMarkdownReport(dataset, reportJson);
+    writeFileSync(mdPath, mdContent, "utf8");
+    console.log(`Markdown report: ${mdPath}`);
+  }
+
+  console.log("");
+  return hasErrors ? 1 : 0;
+}
+
+function generateMarkdownReport(
+  dataset: ReplayDataset,
+  reportJson: {
+    runAt: string;
+    summary: {
+      totalCases: number;
+      overallCoverage: number;
+      recommendedWidenFactor: number;
+      byDomain: Record<string, { coverage: number; widenFactor: number }>;
+    };
+    caseResults: ReplayResult[];
+  }
+): string {
+  const lines: string[] = [];
+
+  lines.push(`# Calibration Report: ${dataset.datasetId}`);
+  lines.push("");
+  lines.push(`**Generated:** ${reportJson.runAt}`);
+  lines.push(`**Description:** ${dataset.description ?? "N/A"}`);
+  lines.push("");
+
+  lines.push("## Summary");
+  lines.push("");
+  lines.push(`- **Total Cases:** ${reportJson.summary.totalCases}`);
+  lines.push(`- **Overall Coverage:** ${(reportJson.summary.overallCoverage * 100).toFixed(1)}%`);
+  lines.push(`- **Recommended Widen Factor:** ${reportJson.summary.recommendedWidenFactor.toFixed(2)}x`);
+  lines.push("");
+
+  if (Object.keys(reportJson.summary.byDomain).length > 0) {
+    lines.push("### By Domain");
+    lines.push("");
+    lines.push("| Domain | Coverage | Widen Factor |");
+    lines.push("|--------|----------|--------------|");
+    for (const [domain, stats] of Object.entries(reportJson.summary.byDomain)) {
+      lines.push(
+        `| ${domain} | ${(stats.coverage * 100).toFixed(1)}% | ${stats.widenFactor.toFixed(2)}x |`
+      );
+    }
+    lines.push("");
+  }
+
+  lines.push("## Results by Case");
+  lines.push("");
+
+  for (const result of reportJson.caseResults) {
+    lines.push(`### ${result.caseId}`);
+    lines.push("");
+    lines.push(`- **Checkpoints:** ${result.checkpoints.length}`);
+    lines.push(`- **Coverage:** ${(result.scoring.coverage.overall * 100).toFixed(1)}%`);
+    lines.push(
+      `- **Widen Factor:** ${result.scoring.recommendedAdjustment.widenFactorOverall.toFixed(2)}x`
+    );
+    lines.push(
+      `- **Rationale:** ${result.scoring.recommendedAdjustment.rationale}`
+    );
+
+    if (Object.keys(result.scoring.coverage.byMetricId).length > 0) {
+      lines.push("");
+      lines.push("**Per-Metric Coverage:**");
+      lines.push("");
+      for (const [metricId, coverage] of Object.entries(result.scoring.coverage.byMetricId)) {
+        lines.push(`- ${metricId}: ${(coverage * 100).toFixed(1)}%`);
+      }
+    }
+
+    lines.push("");
+  }
+
+  lines.push("---");
+  lines.push("");
+  lines.push("*This report was generated by Zeo Replay Runner v0.3.1*");
+  lines.push("*Calibration follows the widen-only rule: intervals may only be widened, never narrowed.*");
+  lines.push("");
+
+  return lines.join("\n");
+}
