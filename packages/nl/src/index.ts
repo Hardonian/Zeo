@@ -3,6 +3,7 @@ import {
   QualObservation,
   EvidenceCandidate,
   QualitativeScale,
+  QualitativeScaleLevel,
   ScalePack,
   enforceNoFakePrecision,
 } from "@zeo/contracts";
@@ -85,7 +86,10 @@ function createProvenancePointer(
   checksum: string
 ): ProvenancePointer {
   return {
-    offset: { start, end },
+    kind: "text",
+    sourceId: checksum,
+    offset: start,
+    length: end - start,
     capturedAt: new Date().toISOString(),
     checksum,
   };
@@ -153,9 +157,11 @@ function extractCandidateActions(
       sentence
     );
     if (orMatch) {
+      const part1 = orMatch[1]?.replace(/[.()]/g, "").trim() ?? "option1";
+      const part2 = orMatch[2]?.replace(/[.()]/g, "").trim() ?? "option2";
       actions.push({
         id: `action_${actionId++}`,
-        label: `${orMatch[1].replace(/[.()]/g, "").trim()} or ${orMatch[2].replace(/[.()]/g, "").trim()}`,
+        label: `${part1} or ${part2}`,
         kind: "binary_choice",
       });
     }
@@ -253,7 +259,7 @@ function generateQualObservations(
     const match = keyword.pattern.exec(text);
     if (match) {
       const scale = scales.find((s) => s.scaleId === "urgency");
-      const level = scale?.levels.find((l) => l.label === keyword.level);
+      const level = scale?.levels.find((l: QualitativeScaleLevel) => l.label === keyword.level);
       observations.push({
         id: `qual_obs_${obsId++}`,
         createdAt: now,
@@ -263,9 +269,12 @@ function generateQualObservations(
         band: level?.band ?? { low: 0.3, high: 0.7 },
         textProvenance: [
           {
+            kind: "text",
+            sourceId: checksum,
+            offset: match.index,
+            length: match[0]?.length ?? 0,
             capturedAt: now,
             checksum,
-            offset: { start: match.index, end: match.index + match[0].length },
           },
         ],
         checksum,

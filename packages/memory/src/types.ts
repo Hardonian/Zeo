@@ -1,4 +1,4 @@
-import type { UUID, DecisionSpec, BranchGraph, ProbabilityInterval, Claim, EpistemicStatus } from "@zeo/contracts";
+import type { UUID, DecisionSpec, BranchGraph, ProbabilityInterval, Claim, EpistemicStatus, DecisionDraftRecord } from "@zeo/contracts";
 
 /**
  * Resolution status for outcomes.
