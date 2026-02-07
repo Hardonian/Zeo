@@ -699,3 +699,102 @@ export interface FlipCondition {
   confidence: "low" | "medium" | "high";
   reasoning: string;
 }
+
+// =============================================================================
+// REGIME DETECTION TYPES (v0.3.5)
+// =============================================================================
+
+export type RegimeDomain = "market" | "macro" | "news" | "user";
+
+export type RegimeKind =
+  | "change_point"
+  | "volatility_break"
+  | "mean_shift"
+  | "distribution_shift"
+  | "cadence_shift";
+
+export interface RegimeEvent {
+  id: string;
+  createdAt: string;
+  domain: RegimeDomain;
+  signalIds: string[];
+  window: { start: string; end: string };
+  kind: RegimeKind;
+  severityBand: { low: number; high: number };
+  confidenceBand: { low: number; high: number };
+  evidence: {
+    observationHashes: string[];
+    provenance: ProvenancePointer[];
+  };
+  notes: string[];
+}
+
+export interface RegimeState {
+  domain: RegimeDomain;
+  currentLabel: string;
+  updatedAt: string;
+  parameters: Record<string, number | { low: number; high: number }>;
+}
+
+// =============================================================================
+// CAUSAL HUMILITY TYPES (v0.3.6)
+// =============================================================================
+
+export interface Hypothesis {
+  id: string;
+  label: string;
+  target: { kind: string; id: string };
+  predictors: Array<{ kind: string; id: string }>;
+  effectBand: { low: number; high: number };
+  robustness: {
+    stabilityBand: { low: number; high: number };
+    confoundingRiskBand: { low: number; high: number };
+    leakageRiskBand: { low: number; high: number };
+    multicollinearityBand: { low: number; high: number };
+    sampleAdequacyBand: { low: number; high: number };
+  };
+  controlsUsed: string[];
+  negativeControlsRun: boolean;
+  disclaimers: string[];
+  provenance: ProvenancePointer[];
+}
+
+// =============================================================================
+// GOVERNANCE TYPES (v0.3.8)
+// =============================================================================
+
+export type RiskTier = "informational" | "operational" | "strategic" | "existential";
+
+export interface DecisionRiskProfile {
+  tier: RiskTier;
+  requiredEvidenceMin: number;
+  requiredCoolingOffMinutes: number;
+  requiresUserConfirm: boolean;
+  forbiddenDomains?: string[];
+}
+
+export interface AuditEntry {
+  id: string;
+  createdAt: string;
+  actor: "user" | "system" | "panel" | "adapter";
+  action: string;
+  inputHash: string;
+  outputHash: string;
+  decisionId?: string;
+  draftId?: string;
+  runId?: string;
+  provenanceRefs: string[];
+  notes: string[];
+}
+
+export interface PolicyConfig {
+  id: string;
+  version: string;
+  domainAllowlist: string[];
+  domainDenylist: string[];
+  inferenceTypeAllowlist: string[];
+  inferenceTypeDenylist: string[];
+  forbiddenScopes: string[];
+  createdAt: string;
+  updatedAt: string;
+}
