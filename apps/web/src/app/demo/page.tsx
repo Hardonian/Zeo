@@ -10,7 +10,7 @@ export default function DemoPage() {
 
   useEffect(() => {
     const allPanels = getAllRegisteredPanels();
-    console.log('Registered panels:', allPanels);
+    console.log('Registered panels:', allPanels.length, allPanels.map(p => p.id));
     setPanels(allPanels);
   }, []);
 
