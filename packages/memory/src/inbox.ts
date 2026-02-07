@@ -118,7 +118,7 @@ export function createLocalStorageAdapter(): InboxStorage {
         throw new Error(`Draft ${draftId} not found`);
       }
       
-      const updatedBase: DecisionDraftRecord = {
+      const updatedBase = {
         draftId: draft.draftId,
         createdAt: draft.createdAt,
         source: draft.source,
@@ -126,7 +126,7 @@ export function createLocalStorageAdapter(): InboxStorage {
         scenarioTextProvenance: draft.scenarioTextProvenance,
         scenarioDraft: draft.scenarioDraft,
         status,
-      };
+      } as DecisionDraftRecord;
       
       if (draft.tags) {
         updatedBase.tags = draft.tags;
@@ -227,7 +227,7 @@ export function createMemoryAdapter(): InboxStorage {
         throw new Error(`Draft ${draftId} not found`);
       }
       
-      const updatedDraft: DecisionDraftRecord = {
+      const updatedDraft = {
         draftId: draft.draftId,
         createdAt: draft.createdAt,
         source: draft.source,
@@ -235,8 +235,11 @@ export function createMemoryAdapter(): InboxStorage {
         scenarioTextProvenance: draft.scenarioTextProvenance,
         scenarioDraft: draft.scenarioDraft,
         status,
-        tags: draft.tags ?? [],
-      };
+      } as DecisionDraftRecord;
+      
+      if (draft.tags) {
+        updatedDraft.tags = draft.tags;
+      }
       
       if (options?.snoozeUntil) {
         updatedDraft.snoozeUntil = options.snoozeUntil;
