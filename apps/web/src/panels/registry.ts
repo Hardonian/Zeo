@@ -1,12 +1,12 @@
 import type { UiPanelManifest } from '@zeo/contracts';
 import { assertUiPanelManifest, denyDangerousPanel } from '@zeo/contracts';
 
-import decisionComposerManifest from './builtin/decision-composer/manifest.json';
-import branchExplorerManifest from './builtin/branch-explorer/manifest.json';
-import evidenceInboxManifest from './builtin/evidence-inbox/manifest.json';
-import signalsStripManifest from './builtin/signals-strip/manifest.json';
-import exampleHtmlManifest from './stitch/example-html/manifest.json';
-import exampleReactManifest from './stitch/example-react/manifest.json';
+import decisionComposerManifest from './builtin/decision-composer/manifest';
+import branchExplorerManifest from './builtin/branch-explorer/manifest';
+import evidenceInboxManifest from './builtin/evidence-inbox/manifest';
+import signalsStripManifest from './builtin/signals-strip/manifest';
+import exampleHtmlManifest from './stitch/example-html/manifest';
+import exampleReactManifest from './stitch/example-react/manifest';
 
 const BUILTIN_MANIFESTS: UiPanelManifest[] = [
   decisionComposerManifest as UiPanelManifest,
