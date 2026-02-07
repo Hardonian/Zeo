@@ -1,0 +1,94 @@
+{
+  "type": "macro_print",
+  "source": "fred_economic_data",
+  "ingestedAt": "2024-12-19T14:00:00Z",
+  "items": [
+    {
+      "indicator": "CPI YoY",
+      "value": 2.7,
+      "unit": "percent",
+      "date": "2024-11-30",
+      "source": "Bureau of Labor Statistics",
+      "previousValue": 2.6,
+      "revised": false,
+      "frequency": "monthly"
+    },
+    {
+      "indicator": "PCE YoY",
+      "value": 2.4,
+      "unit": "percent",
+      "date": "2024-11-30",
+      "source": "Bureau of Economic Analysis",
+      "previousValue": 2.3,
+      "revised": true,
+      "revisionMagnitude": 0.05,
+      "frequency": "monthly"
+    },
+    {
+      "indicator": "Unemployment Rate",
+      "value": 4.2,
+      "unit": "percent",
+      "date": "2024-11-30",
+      "source": "Bureau of Labor Statistics",
+      "previousValue": 4.3,
+      "revised": false,
+      "frequency": "monthly"
+    },
+    {
+      "indicator": "Nonfarm Payrolls",
+      "value": 227000,
+      "unit": "jobs",
+      "date": "2024-11-30",
+      "source": "Bureau of Labor Statistics",
+      "previousValue": 185000,
+      "revised": false,
+      "frequency": "monthly",
+      "revisions": {
+        "october": 156000,
+        "september": 297000
+      }
+    },
+    {
+      "indicator": "GDP Growth QoQ",
+      "value": 2.8,
+      "unit": "percent",
+      "date": "2024-10-31",
+      "source": "Bureau of Economic Analysis",
+      "previousValue": 3.0,
+      "revised": true,
+      "revisionMagnitude": -0.1,
+      "frequency": "quarterly",
+      "advanceEstimate": true
+    },
+    {
+      "indicator": "Federal Funds Rate",
+      "value": 4.50,
+      "unit": "percent",
+      "date": "2024-12-18",
+      "source": "Federal Reserve",
+      "previousValue": 4.75,
+      "revised": false,
+      "frequency": "continuous"
+    },
+    {
+      "indicator": "10Y Treasury Yield",
+      "value": 4.32,
+      "unit": "percent",
+      "date": "2024-12-19",
+      "source": "U.S. Treasury",
+      "previousValue": 4.25,
+      "revised": false,
+      "frequency": "daily"
+    },
+    {
+      "indicator": "Consumer Confidence",
+      "value": 114.8,
+      "unit": "index",
+      "date": "2024-12-18",
+      "source": "Conference Board",
+      "previousValue": 111.2,
+      "revised": false,
+      "frequency": "monthly"
+    }
+  ]
+}

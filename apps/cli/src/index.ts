@@ -1,4 +1,4 @@
-import { writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { writeFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import { resolve, join } from "node:path";
 import {
   makeNegotiationExample,
@@ -12,6 +12,8 @@ import {
   type RunMeta,
 } from "@zeo/core";
 import { DecisionSpec, ZeoError } from "@zeo/contracts";
+import { inferPosterior, computeVoi } from "@zeo/models";
+import type { WorldModelSpec, EvidenceCandidate, PosteriorState, VoiReport } from "@zeo/contracts";
 
 interface CliArgs {
   example: "negotiation" | "ops";
@@ -21,6 +23,10 @@ interface CliArgs {
   seed: string | undefined;
   strict: boolean;
   packetOut: string | undefined;
+  signals: string | undefined;
+  catalog: string | undefined;
+  voi: boolean;
+  world: boolean;
 }
 
 export function parseArgs(argv: string[]): CliArgs {
@@ -32,13 +38,26 @@ export function parseArgs(argv: string[]): CliArgs {
     seed: undefined,
     strict: true,
     packetOut: undefined,
+    signals: undefined,
+    catalog: undefined,
+    voi: false,
+    world: false,
   };
 
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     const next = argv[i + 1];
 
-    if (arg === "--example" && next) {
+    if (arg === "signals" && next) {
+      result.signals = next;
+      i++;
+    } else if (arg === "--signals" && next) {
+      result.signals = next;
+      i++;
+    } else if (arg === "--catalog" && next) {
+      result.catalog = next;
+      i++;
+    } else if (arg === "--example" && next) {
       if (next === "negotiation" || next === "ops") result.example = next;
       i++;
     } else if (arg === "--depth" && next) {
@@ -64,6 +83,10 @@ export function parseArgs(argv: string[]): CliArgs {
     } else if (arg === "--packet-out" && next) {
       result.packetOut = next;
       i++;
+    } else if (arg === "--voi") {
+      result.voi = true;
+    } else if (arg === "--world") {
+      result.world = true;
     } else if (arg === "--help" || arg === "-h") {
       printHelp();
       process.exit(0);
@@ -75,11 +98,16 @@ export function parseArgs(argv: string[]): CliArgs {
 
 function printHelp(): void {
   console.log(`
-Zeo CLI - Epistemic Decision Engine
+Zeo CLI - Epistemic Decision Engine v0.3.0
 
 Usage: zeo [options]
 
+Commands:
+  signals <file>      Process external signal payloads (JSON)
+  --signals <file>   Process external signal payloads (JSON)
+
 Options:
+  --catalog <dir>     Catalog directory (default: external/catalog)
   --example <name>    Example to run: "negotiation" or "ops" (default: negotiation)
   --depth <n>        Branching depth: 1-5 (default: 2)
   --json-only        Output JSON only, no summary
@@ -87,11 +115,15 @@ Options:
   --seed <string>    Random seed for deterministic runs (optional)
   --strict           Exit non-zero on invariant violations (default: true)
   --packet-out <path> Write evidence packet (JSON + MD) to directory
+  --voi              Print Value of Information (VOI) ranked list
+  --world            Print World Model posterior state
   --help, -h         Show this help message
 
 Examples:
   zeo --example negotiation --depth 3
   zeo --example ops --seed my-seed --packet-out ./output
+  zeo --example negotiation --voi --world
+  zeo signals ./data/market_signals.json --catalog ./catalog
 `);
 }
 
@@ -124,6 +156,12 @@ async function writePacketFiles(packetDir: string, json: string, markdown: strin
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
+
+  if (args.signals) {
+    await runSignalsCommand(args.signals, args.catalog);
+    return;
+  }
+
   const spec = args.example === "ops" ? makeOpsExample() : makeNegotiationExample();
 
   const errors: ZeoError[] = [];
@@ -212,6 +250,23 @@ async function main(): Promise<void> {
     }
   }
 
+  // v0.3.0: World Model and VOI output
+  if (args.world) {
+    const worldSpec = createDemoWorldModel();
+    const posterior = inferPosterior(worldSpec, [], seed);
+    printWorldState(posterior);
+  }
+
+  if (args.voi) {
+    const worldSpec = createDemoWorldModel();
+    const posterior = inferPosterior(worldSpec, [], seed);
+    const candidates = createDemoEvidenceCandidates();
+    const voiReport = computeVoi(worldSpec, posterior, candidates, seed, {
+      numSimulations: 30,
+    });
+    printVoiReport(voiReport);
+  }
+
   console.log("\nDeterminism Info:");
   console.log(`  Decision Hash: ${decisionHash}`);
   console.log(`  Observation Hash: none`);
@@ -227,7 +282,155 @@ async function main(): Promise<void> {
   }
 }
 
-const isMainModule = process.argv[1] && import.meta.url.endsWith(process.argv[1]);
+function createDemoWorldModel(): WorldModelSpec {
+  return {
+    id: "demo-world",
+    version: "0.3.0",
+    variables: [
+      {
+        id: "market_stress",
+        label: "Market Stress Level",
+        domain: "market",
+        priorBand: { low: 0.2, high: 0.8 },
+        volatilityHint: "medium",
+      },
+      {
+        id: "counterparty_trust",
+        label: "Counterparty Trust",
+        domain: "ops",
+        priorBand: { low: 0.4, high: 0.9 },
+      },
+      {
+        id: "timeline_pressure",
+        label: "Timeline Pressure",
+        domain: "ops",
+        priorBand: { low: 0.1, high: 0.6 },
+      },
+    ],
+    observationModels: [
+      {
+        id: "market_obs",
+        label: "Market Observation",
+        targetVariableIds: ["market_stress"],
+        effect: "narrow",
+        strength: 0.5,
+        minQualityThreshold: 0.3,
+        provenancePattern: "market:*",
+      },
+      {
+        id: "news_obs",
+        label: "News Observation",
+        targetVariableIds: ["market_stress"],
+        effect: "widen",
+        strength: 0.3,
+        minQualityThreshold: 0.2,
+        provenancePattern: "news:*",
+      },
+    ],
+  };
+}
+
+function createDemoEvidenceCandidates(): EvidenceCandidate[] {
+  return [
+    {
+      id: "cand1",
+      label: "Check VIX index",
+      kind: "market_check",
+      targetVariableIds: ["market_stress"],
+      expectedCost: { timeMinutes: 5, cognitiveLoad: "low" },
+      reliabilityBand: { low: 0.7, high: 0.9 },
+      provenancePlan: {
+        wouldHavePointer: true,
+        sourceKinds: ["bloomberg"],
+      },
+    },
+    {
+      id: "cand2",
+      label: "Ask counterparty about timeline",
+      kind: "question",
+      targetVariableIds: ["timeline_pressure", "counterparty_trust"],
+      expectedCost: { timeMinutes: 15, cognitiveLoad: "medium" },
+      reliabilityBand: { low: 0.4, high: 0.7 },
+      provenancePlan: {
+        wouldHavePointer: false,
+        sourceKinds: ["counterparty"],
+      },
+    },
+    {
+      id: "cand3",
+      label: "Review past deal history",
+      kind: "document",
+      targetVariableIds: ["counterparty_trust"],
+      expectedCost: { timeMinutes: 30, cognitiveLoad: "low" },
+      reliabilityBand: { low: 0.6, high: 0.8 },
+      provenancePlan: {
+        wouldHavePointer: true,
+        sourceKinds: ["crm", "contracts"],
+      },
+    },
+  ];
+}
+
+function printWorldState(posterior: PosteriorState): void {
+  console.log("\n=== World State (Posterior) ===");
+  console.log(`Model: ${posterior.worldSpecId}`);
+  console.log(`Seed: ${posterior.seed.slice(0, 16)}...`);
+  console.log(`Model Strength: ${(posterior.modelStrength * 100).toFixed(0)}%`);
+  console.log("");
+  
+  for (const variable of posterior.variables) {
+    const width = variable.posteriorBand.high - variable.posteriorBand.low;
+    console.log(`${variable.variableId}:`);
+    console.log(`  Band: [${variable.posteriorBand.low.toFixed(2)}, ${variable.posteriorBand.high.toFixed(2)}] (width: ${width.toFixed(2)})`);
+    console.log(`  Prior: [${variable.priorBand.low.toFixed(2)}, ${variable.priorBand.high.toFixed(2)}]`);
+    console.log(`  Observations: ${variable.observationCount}`);
+    console.log(`  Provenance: ${variable.provenanceRefs.length} refs`);
+    console.log("");
+  }
+}
+
+function printVoiReport(report: VoiReport): void {
+  console.log("\n=== Value of Information (VOI) ===");
+  console.log(`Baseline Uncertainty: ${report.baselineUncertainty.toFixed(3)}`);
+  console.log(`Seed: ${report.seed.slice(0, 16)}...`);
+  console.log("");
+  console.log("Ranked Evidence:");
+  console.log("-".repeat(80));
+  
+  for (let i = 0; i < report.candidates.length; i++) {
+    const c = report.candidates[i];
+    console.log(`${i + 1}. ${c.candidateId}`);
+    console.log(`   Expected Gain: ${c.expectedGain.toFixed(4)}`);
+    console.log(`   Cost-Adjusted Score: ${c.costAdjustedScore.toFixed(4)}`);
+    console.log(`   Targets: ${c.targetVariables.join(", ")}`);
+    console.log(`   Flip Relevance: ${c.flipRelevanceEstimate}`);
+    console.log("");
+  }
+}
+
+async function runSignalsCommand(inputPath: string, catalogDir: string | undefined): Promise<void> {
+  console.log("\n=== Zeo Signals ===");
+  console.log("Note: Signals command is a placeholder - full pipeline implementation pending");
+  console.log(`Input: ${inputPath}`);
+  console.log(`Catalog: ${catalogDir || "default"}`);
+
+  try {
+    const resolvedPath = resolve(inputPath);
+    const rawContent = readFileSync(resolvedPath, "utf8");
+    const payload = JSON.parse(rawContent);
+    console.log(`Type: ${payload.type || "unknown"}`);
+    console.log(`Items: ${payload.items?.length || 0}`);
+
+    console.log("\n--- Full Payload JSON ---\n");
+    process.stdout.write(formatJson(payload) + "\n");
+  } catch (err) {
+    console.error("Error reading signal file:", err instanceof Error ? err.message : err);
+    process.exit(1);
+  }
+}
+
+const isMainModule = process.argv[1] && 
+  import.meta.url.replace(/\\/g, '/').endsWith(process.argv[1].replace(/\\/g, '/'));
 
 if (isMainModule) {
   main().catch((err) => {

@@ -5,6 +5,8 @@ import decisionComposerManifest from './builtin/decision-composer/manifest';
 import branchExplorerManifest from './builtin/branch-explorer/manifest';
 import evidenceInboxManifest from './builtin/evidence-inbox/manifest';
 import signalsStripManifest from './builtin/signals-strip/manifest';
+import worldStateManifest from './builtin/world-state/manifest.json';
+import voiPanelManifest from './builtin/voi-panel/manifest.json';
 
 import stitchDecisionComposerManifest from './stitch/stitch_decision_branching_view/decision_composer_panel/manifest';
 import stitchBranchExplorerManifest from './stitch/stitch_decision_branching_view/branch_explorer_panel/manifest';
@@ -21,6 +23,8 @@ const BUILTIN_MANIFESTS: UiPanelManifest[] = [
   branchExplorerManifest as UiPanelManifest,
   evidenceInboxManifest as UiPanelManifest,
   signalsStripManifest as UiPanelManifest,
+  worldStateManifest as UiPanelManifest,
+  voiPanelManifest as UiPanelManifest,
 ];
 
 const STITCH_MANIFESTS: UiPanelManifest[] = [

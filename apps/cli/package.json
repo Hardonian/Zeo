@@ -13,6 +13,7 @@
   "dependencies": {
     "@zeo/contracts": "workspace:*",
     "@zeo/core": "workspace:*",
+    "@zeo/models": "workspace:*",
     "nanoid": "^5.0.7"
   },
   "devDependencies": {

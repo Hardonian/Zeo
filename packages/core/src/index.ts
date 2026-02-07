@@ -18,3 +18,10 @@ export type {
   LearningAwareDecisionOptions,
   LearningAwareDecisionResult,
 } from "./learning-integration.js";
+export {
+  evaluateActionsWithPosterior,
+  computeVariableSensitivity,
+  computeFlipConditions,
+  generateEvidenceCandidatesFromFlips,
+  type ActionScore,
+} from "./decision-coupling.js";

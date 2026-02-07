@@ -1,14 +1,14 @@
 {
   "panels\\PanelHost.tsx -> ./renderers/IframePanel": {
-    "id": "panels\\PanelHost.tsx -> ./renderers/IframePanel",
+    "id": 7696,
     "files": [
-      "static/chunks/_app-pages-browser_src_panels_renderers_IframePanel_tsx.js"
+      "static/chunks/696.331df19da62dbec9.js"
     ]
   },
   "panels\\PanelHost.tsx -> ./renderers/ReactPanel": {
-    "id": "panels\\PanelHost.tsx -> ./renderers/ReactPanel",
+    "id": 123,
     "files": [
-      "static/chunks/_app-pages-browser_src_panels_renderers_ReactPanel_tsx.js"
+      "static/chunks/123.5fdc328338d6aa30.js"
     ]
   }
 }

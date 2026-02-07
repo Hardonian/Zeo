@@ -33,11 +33,27 @@ Zeo prioritizes edge-first capture and inference for privacy, speed, and cost co
 
 The Quant Engine provides analytical rigor through dedicated packages:
 
-### @zeo/models - World State Modeling
-- **Purpose**: Represent latent world state with Bayesian updates
-- **Key Types**: `WorldState`, `LatentVariable`, `BeliefUpdate`, `ProbabilityDistribution`
-- **Python Backend**: PyMC for MCMC inference, returns posterior summaries with credible intervals
-- **Epistemic Discipline**: Explicit separation of epistemic (lack of knowledge) vs aleatoric (inherent randomness) uncertainty
+### @zeo/models - World State Modeling (v0.3.0)
+- **Purpose**: Represent latent world state with conservative interval inference
+- **Key Types**:
+  - `WorldModelSpec`: Variables, observation models, and constraints
+  - `LatentVariable`: Belief state with prior/posterior bands [low, high]
+  - `PosteriorState`: Result of inference with model strength score
+  - `EvidenceCandidate`: Candidate evidence for VOI analysis
+  - `VoiReport`: Ranked evidence by expected information gain per unit cost
+- **Inference Engine** (v0.3.0):
+  - **Interval-based**: Represents uncertainty as [low, high] bands rather than point estimates
+  - **Conservative**: Observations can narrow or widen bands; conflicting evidence widens
+  - **Deterministic**: Same inputs + seed → same posterior (reproducible)
+  - **Model Strength**: Tracks provenance quality; weak evidence has smaller effect
+- **VOI (Value of Information)**:
+  - Ranks candidate evidence by expected reduction in decision uncertainty
+  - Cost-adjusted scoring accounts for time, money, and cognitive load
+  - Flip relevance estimate: how likely evidence changes action dominance
+- **Epistemic Discipline**: 
+  - Never promotes observations to facts
+  - Explicit uncertainty quantification
+  - Sensitivity analysis on all inputs
 
 ### @zeo/rsl - Reality Signal Layer
 - **Purpose**: State-space estimation for external signals (markets, macro, geopolitics)

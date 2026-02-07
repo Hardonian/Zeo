@@ -105,7 +105,7 @@ This repository is intentionally lightweight: it ships a proprietary core engine
 │  ├─ contracts/          # Shared types: EvidenceEvent, DecisionSpec, BranchGraph
 │  ├─ adapters/           # Vendor adapter interfaces (OCR, STT, Market/News, etc.)
 │  ├─ memory/             # Decision memory + learning system (v0.3.0)
-│  ├─ models/             # World state modeling with Bayesian inference (PyMC backend)
+│  ├─ models/             # World state modeling with interval inference + VOI (v0.3.0)
 │  ├─ rsl/                # Reality Signal Layer: Kalman/Particle filters for state estimation
 │  ├─ timeseries/         # ARIMA/GARCH time series analysis with volatility modeling
 │  ├─ causal/             # Causal inference engine with DAG support
@@ -229,18 +229,37 @@ pnpm -C apps/cli start -- --example ops --out result.json
 | `--depth` | `2`, `3` | `2` | Branch depth (2 = shallow, 3 = second-order) |
 | `--json-only` | (flag) | off | Output raw JSON only, no summary |
 | `--out` | `<path>` | none | Write result JSON to file |
+| `--voi` | (flag) | off | Print Value of Information (VOI) ranked list |
+| `--world` | (flag) | off | Print World Model posterior state |
+| `--seed` | `<string>` | auto | Deterministic seed for reproducible runs |
+| `--packet-out` | `<path>` | none | Write evidence packet (JSON + MD) to directory |
 
 ---
 
 ## Status
-- v0.3.0 Decision Memory + Learning System (2026-02-07)
-  - Decision persistence with immutable records
-  - Outcome mapping with partial/ambiguous support
-  - Bayesian prior updates (hierarchical: global → domain → user → decision)
-  - Interval calibration with coverage testing
-  - Cross-decision pattern detection (weak signals only)
-  - Counterfactual and regret analysis
-  - Epistemic discipline: learning increases uncertainty, not confidence
+- v0.3.0 World Model + VOI + Robust Ranking (2026-02-07)
+  - **Interval Inference Engine**: Deterministic [low, high] band updates
+    - Conservative: conflicting evidence widens bands (never over-narrows)
+    - Deterministic: same inputs + seed → same posterior
+    - Model strength tracking based on provenance quality
+  - **Value of Information (VOI)**: Rank candidate evidence by expected uncertainty reduction
+    - Cost-adjusted scoring (time, money, cognitive load)
+    - Flip relevance estimation (how likely to change action dominance)
+    - Deterministic simulation with seeded sampling
+  - **Decision Coupling**: Quantified flip conditions
+    - Action scores evaluated across sampled posterior worlds
+    - Variable sensitivity analysis
+    - "What would change the answer?" now references latent variable thresholds
+  - **CLI flags**: `--voi`, `--world` for displaying VOI and World State
+  - **Web panels**: World State and Next Best Evidence views in /demo
+  - Decision Memory + Learning System
+    - Decision persistence with immutable records
+    - Outcome mapping with partial/ambiguous support
+    - Bayesian prior updates (hierarchical: global → domain → user → decision)
+    - Interval calibration with coverage testing
+    - Cross-decision pattern detection (weak signals only)
+    - Counterfactual and regret analysis
+    - Epistemic discipline: learning increases uncertainty, not confidence
 - v0.1.1 engine improvements (2026-02-07)
   - Deterministic branch hashing and cache keys
   - Pruning config (maxNodes, maxEdges, maxDepth)

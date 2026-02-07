@@ -121,28 +121,75 @@ Zeo explicitly separates two types of uncertainty:
 
 ---
 
-## Bayesian belief updating
+## Interval Inference (v0.3.0)
 
-The `@zeo/models` package implements Bayesian inference:
+Zeo v0.3.0 implements a conservative interval-based inference engine:
 
-1. **Prior**: Initial belief distribution (Beta, Normal, or empirical)
-2. **Likelihood**: How likely the evidence is under different hypotheses
-3. **Posterior**: Updated belief via Bayes' rule
-4. **Diagnostics**: R-hat, effective sample size, divergence checks
+### Why intervals first?
+- **Epistemic safety**: Intervals don't commit to false precision
+- **Conservative by design**: Can't overstate confidence accidentally
+- **Deterministic**: Same inputs + seed always produce same output
+- **Composable**: Scaffolding for full Bayesian PPL (PyMC/NumPyro) later
+
+### How it works
+1. **Latent Variables**: Represented as [low, high] bands (not point estimates)
+2. **Observations**: Apply bounded transforms to variable intervals:
+   - **Narrow**: High-quality evidence reduces uncertainty
+   - **Shift**: Observation moves interval center (bias adjustment)
+   - **Widen**: Low quality or conflicting evidence increases uncertainty
+3. **Conflict resolution**: When observations conflict, bands widen (never over-narrow)
+4. **Model strength**: Derived from provenance quality (0-1 scale)
 
 ```typescript
-const update = await updateBeliefs(worldState, [{
-  evidenceId: "ev_1",
-  observationValue: 0.7,
-  likelihood: {
-    variableId: "var_1",
-    likelihoodFunction: "gaussian",
-    parameters: { sigma: 0.15 }
-  }
-}]);
+const posterior = inferPosterior(worldSpec, observations, seed);
+// Returns:
+// - posterior bands for each variable
+// - observation counts
+// - provenance references
+// - model strength score
 ```
 
-**Constraint**: Never allow posterior variance < prior variance (would indicate overconfidence)
+### Comparison with full Bayesian
+| Aspect | Interval (v0.3.0) | Full Bayesian (future) |
+|--------|-------------------|------------------------|
+| Representation | [low, high] | Full distributions |
+| Updates | Bounded transforms | MCMC/variational |
+| Conflicts | Widen bands | Posterior mixture |
+| Speed | O(n) | O(n×samples) |
+| Precision | Conservative | Exact (given model) |
+
+**Constraint**: Intervals intentionally sacrifice precision for robustness. When we add full Bayesian inference, interval results serve as bounds checks.
+
+---
+
+## Value of Information (VOI)
+
+VOI ranks candidate evidence by expected reduction in decision uncertainty:
+
+### What VOI is
+- **Expectation over uncertainty reduction**: Not a guarantee, but an expectation
+- **Cost-adjusted**: Accounts for time, money, and cognitive load
+- **Decision-relevant**: Targets variables that could flip action rankings
+
+### How VOI works
+```typescript
+const report = computeVoi(worldSpec, posterior, candidates, seed);
+// Returns ranked candidates with:
+// - expectedGain: Expected uncertainty reduction
+// - costAdjustedScore: Gain per unit cost
+// - flipRelevance: How likely to change action dominance
+```
+
+### VOI is not truth
+- VOI estimates are expectations, not facts
+- High VOI doesn't guarantee useful evidence
+- Low VOI doesn't mean evidence is worthless
+- VOI changes as posterior updates
+
+### Epistemic discipline
+- VOI estimates include uncertainty bounds
+- Flip relevance is estimated (low/medium/high), not calculated exactly
+- Sensitivity analysis shows which variables most affect decisions
 
 ---
 

@@ -1,0 +1,52 @@
+{
+  "type": "news_items",
+  "source": "news_api",
+  "ingestedAt": "2024-12-19T14:35:00Z",
+  "items": [
+    {
+      "headline": "Federal Reserve Signals Potential Rate Cuts in 2025",
+      "publishedAt": "2024-12-19T10:30:00Z",
+      "source": "Reuters",
+      "entities": ["Federal Reserve", "Jerome Powell", "Federal Reserve Board"],
+      "sentiment": 0.65,
+      "sensationalismScore": 0.30,
+      "url": "https://www.reuters.com/markets/us/federal-reserve-signals-potential-rate-cuts-2025-2024-12-19/"
+    },
+    {
+      "headline": "China Announces New Stimulus Measures to Boost Economic Growth",
+      "publishedAt": "2024-12-19T09:15:00Z",
+      "source": "Bloomberg",
+      "entities": ["China", "CCP", "Chinese Premier Li Qiang", "Ministry of Finance"],
+      "sentiment": 0.55,
+      "sensationalismScore": 0.25,
+      "url": "https://www.bloomberg.com/news/articles/2024-12-19/china-announces-new-stimulus-measures"
+    },
+    {
+      "headline": "Tech Giants Face New EU Antitrust Probes",
+      "publishedAt": "2024-12-19T08:45:00Z",
+      "source": "Financial Times",
+      "entities": ["European Commission", "Google", "Apple", "Meta", "Microsoft"],
+      "sentiment": -0.40,
+      "sensationalismScore": 0.20,
+      "url": "https://www.ft.com/tech-giants-eu-antitrust-2024-12-19"
+    },
+    {
+      "headline": "Oil Prices Surge Amid Middle East Tensions",
+      "publishedAt": "2024-12-19T07:30:00Z",
+      "source": "Wall Street Journal",
+      "entities": ["OPEC", "Saudi Arabia", "Iran", "Brent Crude", "WTI"],
+      "sentiment": -0.55,
+      "sensationalismScore": 0.35,
+      "url": "https://www.wsj.com/oil-prices-surge-middle-east-2024-12-19"
+    },
+    {
+      "headline": "NVIDIA Unveils New AI Chip Architecture",
+      "publishedAt": "2024-12-19T06:00:00Z",
+      "source": "TechCrunch",
+      "entities": ["NVIDIA", "Jensen Huang", "Blackwell", "AI"],
+      "sentiment": 0.70,
+      "sensationalismScore": 0.40,
+      "url": "https://techcrunch.com/nvidia-blackwell-chip-2024-12-19"
+    }
+  ]
+}

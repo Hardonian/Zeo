@@ -455,3 +455,135 @@ export function isRawSourceItem(item: unknown): item is RawSourceItem {
   if (typeof kind !== "string") return false;
   return ["market", "news", "macro", "geopolitics"].includes(kind);
 }
+
+// =============================================================================
+// WORLD MODEL TYPES (v0.3.0)
+// =============================================================================
+
+/**
+ * A latent variable representing an uncertain quantity in the world.
+ */
+export interface LatentVariable {
+  id: string;
+  label: string;
+  domain: SignalDomain;
+  priorBand: { low: number; high: number };
+  volatilityHint?: VolatilityHint;
+}
+
+/**
+ * Observation model: maps evidence to likelihood impact on latent variables.
+ */
+export interface ObservationModel {
+  id: string;
+  label: string;
+  targetVariableIds: string[];
+  /**
+   * How this observation shifts the variable interval.
+   * - narrow: reduce uncertainty (band shrinks)
+   * - shift: move the interval center (bias adjustment)
+   * - widen: increase uncertainty (conflict or low quality)
+   */
+  effect: "narrow" | "shift" | "widen";
+  /**
+   * Magnitude of the effect (0-1 scale).
+   */
+  strength: number;
+  /**
+   * Minimum quality score required to apply this model.
+   */
+  minQualityThreshold: number;
+  /**
+   * Provenance pattern to match (e.g., "news:*", "market:*").
+   */
+  provenancePattern: string;
+}
+
+/**
+ * Simple linear constraint between variables: a*var1 + b*var2 <= c.
+ */
+export interface VariableConstraint {
+  id: string;
+  type: "inequality";
+  coefficients: Record<string, number>;
+  operator: "<=" | ">=" | "==";
+  rhs: number;
+}
+
+/**
+ * World model specification defining variables and observation models.
+ */
+export interface WorldModelSpec {
+  id: string;
+  version: string;
+  variables: LatentVariable[];
+  observationModels: ObservationModel[];
+  constraints?: VariableConstraint[];
+}
+
+/**
+ * Posterior state after inference.
+ */
+export interface PosteriorState {
+  worldSpecId: string;
+  variables: Array<{
+    variableId: string;
+    posteriorBand: { low: number; high: number };
+    priorBand: { low: number; high: number };
+    observationCount: number;
+    provenanceRefs: string[];
+  }>;
+  inferenceTimestamp: string;
+  seed: string;
+  modelStrength: number; // 0-1 based on provenance quality
+}
+
+/**
+ * Evidence candidate for VOI analysis.
+ */
+export interface EvidenceCandidate {
+  id: string;
+  label: string;
+  kind: "question" | "measurement" | "document" | "experiment" | "market_check";
+  targetVariableIds: string[];
+  expectedCost: {
+    timeMinutes?: number;
+    moneyUsd?: number;
+    cognitiveLoad?: "low" | "medium" | "high";
+  };
+  /**
+   * How strong could this evidence be (0-1).
+   */
+  reliabilityBand: { low: number; high: number };
+  provenancePlan: {
+    wouldHavePointer: boolean;
+    sourceKinds: string[];
+  };
+}
+
+/**
+ * VOI (Value of Information) report.
+ */
+export interface VoiReport {
+  baselineUncertainty: number;
+  candidates: Array<{
+    candidateId: string;
+    expectedGain: number;
+    costAdjustedScore: number;
+    targetVariables: string[];
+    flipRelevanceEstimate: "low" | "medium" | "high";
+  }>;
+  seed: string;
+  computationTimestamp: string;
+}
+
+/**
+ * Quantified flip condition linking latent variables to action dominance.
+ */
+export interface FlipCondition {
+  variableId: string;
+  thresholdBand: { low: number; high: number };
+  affectedActions: string[];
+  confidence: "low" | "medium" | "high";
+  reasoning: string;
+}

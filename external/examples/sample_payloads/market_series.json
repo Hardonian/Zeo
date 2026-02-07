@@ -1,0 +1,43 @@
+{
+  "type": "market_series",
+  "source": "yahoo_finance_api",
+  "ingestedAt": "2024-12-19T14:30:00Z",
+  "items": [
+    {
+      "symbol": "SPY",
+      "timestamp": "2024-12-19T14:00:00Z",
+      "open": 583.42,
+      "high": 585.10,
+      "low": 582.15,
+      "close": 584.78,
+      "volume": 45218923
+    },
+    {
+      "symbol": "SPY",
+      "timestamp": "2024-12-19T13:00:00Z",
+      "open": 582.15,
+      "high": 583.50,
+      "low": 581.80,
+      "close": 583.42,
+      "volume": 32104567
+    },
+    {
+      "symbol": "QQQ",
+      "timestamp": "2024-12-19T14:00:00Z",
+      "open": 521.45,
+      "high": 523.80,
+      "low": 520.12,
+      "close": 522.67,
+      "volume": 28934102
+    },
+    {
+      "symbol": "BTC-USD",
+      "timestamp": "2024-12-19T14:30:00Z",
+      "open": 104250.00,
+      "high": 105800.00,
+      "low": 103920.00,
+      "close": 105400.00,
+      "volume": 28541923412
+    }
+  ]
+}

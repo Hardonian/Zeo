@@ -31,10 +31,14 @@ export function canonicalizeDecisionSpec(spec: DecisionSpec): DecisionSpec {
 
   return {
     ...spec,
+    context: spec.context.trim().replace(/\s+/g, " "),
     agents: sortedAgents,
-    actions: sortedActions,
-    constraints: sortedConstraints,
-    assumptions: sortedAssumptions,
+    actions: sortedActions.map(canonicalizeAction),
+    constraints: sortedConstraints.map(canonicalizeConstraint),
+    assumptions: sortedAssumptions.map(a => ({
+      ...a,
+      text: a.text.trim().replace(/\s+/g, " "),
+    })),
   };
 }
 

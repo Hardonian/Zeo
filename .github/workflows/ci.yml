@@ -25,3 +25,8 @@ jobs:
         run: pnpm test
       - name: Lint
         run: pnpm lint
+      - name: Build Web
+        run: pnpm -C apps/web build
+      - name: Web E2E Tests
+        run: pnpm -C apps/web test:e2e
+        continue-on-error: false

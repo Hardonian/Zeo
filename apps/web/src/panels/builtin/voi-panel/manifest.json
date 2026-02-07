@@ -1,0 +1,13 @@
+{
+  "id": "voi-panel",
+  "title": "Next Best Evidence",
+  "description": "Value of Information ranking for candidate evidence",
+  "route": "/demo",
+  "slot": "rightInspector",
+  "kind": "react",
+  "entry": "./panel.tsx",
+  "version": "0.3.0",
+  "capabilities": {},
+  "dataDeps": ["decision", "result"],
+  "permissions": {}
+}

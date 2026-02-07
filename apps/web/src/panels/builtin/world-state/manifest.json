@@ -1,0 +1,13 @@
+{
+  "id": "world-state",
+  "title": "World State",
+  "description": "Latent variables with posterior bands and provenance",
+  "route": "/demo",
+  "slot": "rightInspector",
+  "kind": "react",
+  "entry": "./panel.tsx",
+  "version": "0.3.0",
+  "capabilities": {},
+  "dataDeps": ["decision", "result"],
+  "permissions": {}
+}
