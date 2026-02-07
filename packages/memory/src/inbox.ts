@@ -126,8 +126,11 @@ export function createLocalStorageAdapter(): InboxStorage {
         scenarioTextProvenance: draft.scenarioTextProvenance,
         scenarioDraft: draft.scenarioDraft,
         status,
-        tags: draft.tags,
       };
+      
+      if (draft.tags) {
+        updatedBase.tags = draft.tags;
+      }
       
       if (options?.snoozeUntil) {
         updatedBase.snoozeUntil = options.snoozeUntil;
@@ -225,10 +228,19 @@ export function createMemoryAdapter(): InboxStorage {
       }
       
       const updatedDraft: DecisionDraftRecord = {
-        ...draft,
+        draftId: draft.draftId,
+        createdAt: draft.createdAt,
+        source: draft.source,
+        scenarioTextChecksum: draft.scenarioTextChecksum,
+        scenarioTextProvenance: draft.scenarioTextProvenance,
+        scenarioDraft: draft.scenarioDraft,
         status,
-        snoozeUntil: options?.snoozeUntil ?? undefined,
+        tags: draft.tags,
       };
+      
+      if (options?.snoozeUntil) {
+        updatedDraft.snoozeUntil = options.snoozeUntil;
+      }
       
       memoryStore.set(draftId, updatedDraft);
       return updatedDraft;
