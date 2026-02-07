@@ -8,9 +8,10 @@
 import type { UUID, DecisionSpec, EvidenceEvent, ProvenancePointer } from "./types.js";
 
 /**
- * A batch of observations collected at a specific time.
+ * A batch of observations collected at a specific time (for replay datasets).
+ * Note: This is distinct from the signal catalog ObservationBatch.
  */
-export type ObservationBatch = {
+export type ReplayObservationBatch = {
   batchId: string;
   timestamp: string; // ISO timestamp
   observations: Array<{
@@ -74,7 +75,7 @@ export type ReplayCase = {
   caseId: string;
   label: string;
   decisionSpec: DecisionSpec;
-  observationBatches: ObservationBatch[]; // ordered by time
+  observationBatches: ReplayObservationBatch[]; // ordered by time
   evidenceEvents?: EvidenceEvent[] | undefined;
   horizons: ReplayHorizons;
   outcome: OutcomeRecord;
@@ -82,9 +83,10 @@ export type ReplayCase = {
 };
 
 /**
- * Catalog hashes for verifying dataset integrity.
+ * Catalog hashes for verifying dataset integrity (for replay datasets).
+ * Note: This is distinct from the signal catalog CatalogHashes.
  */
-export type CatalogHashes = {
+export type ReplayCatalogHashes = {
   signals: string;
   sources: string;
   mappings: string;
@@ -98,7 +100,7 @@ export type ReplayDataset = {
   description?: string | undefined;
   createdAt: string; // ISO timestamp
   timeZone?: string | undefined;
-  catalogHashes: CatalogHashes;
+  catalogHashes: ReplayCatalogHashes;
   cases: ReplayCase[];
 };
 
@@ -332,7 +334,7 @@ export function assertReplayCase(value: unknown): asserts value is ReplayCase {
   assertOutcomeRecord(c.outcome);
 }
 
-function assertObservationBatch(value: unknown): asserts value is ObservationBatch {
+function assertReplayObservationBatch(value: unknown): asserts value is ReplayObservationBatch {
   if (!value || typeof value !== "object") {
     throw new Error("ObservationBatch must be an object");
   }
