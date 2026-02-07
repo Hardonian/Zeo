@@ -13,7 +13,7 @@ interface DecisionState {
 interface DecisionActions {
   setDecision: (spec: DecisionSpec) => void;
   clearDecision: () => void;
-  setResult: (result: DecisionResult) => void;
+  setResult: (result: DecisionResult | null) => void;
   setLastRun: (time: string) => void;
   setIsRunning: (isRunning: boolean) => void;
   setError: (error: string | null) => void;
@@ -33,7 +33,7 @@ export const useDecisionStore = create<DecisionState & DecisionActions>()(
       ...initialState,
       setDecision: (spec: DecisionSpec) => set({ decision: spec, result: null, lastRun: null, error: null }),
       clearDecision: () => set(initialState),
-      setResult: (result: DecisionResult) => set({ result }),
+      setResult: (result: DecisionResult | null) => set({ result }),
       setLastRun: (time: string) => set({ lastRun: time }),
       setIsRunning: (isRunning: boolean) => set({ isRunning }),
       setError: (error: string | null) => set({ error }),

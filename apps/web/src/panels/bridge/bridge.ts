@@ -1,6 +1,6 @@
 import type { UiBridgeMessage, UiStateSnapshot } from '@zeo/contracts';
 import type { DecisionSpec, DecisionResult } from '@zeo/contracts';
-import { runDecision } from '@zeo/core/engine';
+import { runDecision } from '@zeo/core';
 import { nanoid } from 'nanoid';
 
 export type BridgeContext = {

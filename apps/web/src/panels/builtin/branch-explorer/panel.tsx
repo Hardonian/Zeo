@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import type { UiPanelManifest } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
-import { runDecision } from '@zeo/core/engine';
+import { runDecision } from '@zeo/core';
 
 interface BranchExplorerProps {
   manifest: UiPanelManifest;

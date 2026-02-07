@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getPanelManifest, getPanelsBySlot, getAllRegisteredPanels } from '../registry';
+import { getPanelManifest, getPanelsBySlot, getAllRegisteredPanels } from './registry';
 
 describe('Panel Registry', () => {
   beforeEach(() => {
