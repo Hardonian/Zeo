@@ -8,7 +8,11 @@ export type ZeoErrorCode =
   | "INTERNAL_ASSERTION"
   | "DECISION_ERROR"
   | "UNKNOWN_MESSAGE_TYPE"
-  | "VALIDATION_ERROR";
+  | "VALIDATION_ERROR"
+  | "FAKE_PRECISION"
+  | "QUAL_OBSERVATION_INVALID"
+  | "QUAL_SCALE_INVALID"
+  | "ASSUMPTION_INVALID";
 
 export interface ZeoErrorDetails {
   field?: string;
