@@ -19,3 +19,11 @@ export { InMemoryStorageAdapter } from "./storage.js";
 // Manager
 export type { CreateDecisionOptions, RecordOutcomeOptions } from "./manager.js";
 export { DecisionMemoryManager } from "./manager.js";
+
+// Resolution Engine
+export type { 
+  BranchMatch, 
+  ResolutionResult, 
+  MatchingOptions 
+} from "./resolution.js";
+export { ResolutionEngine } from "./resolution.js";
