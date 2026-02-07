@@ -167,3 +167,70 @@ Run `pnpm doctor` from the repo root to verify the development environment:
 - Uncertainty shown as ranges
 - "What would change the answer?" always included via flip-condition generator
 - Flip conditions reference specific assumption IDs and provide heuristic thresholds
+
+---
+
+## External Signals Layer (external/)
+
+The External Signals Layer normalizes raw data from various sources into `SignalObservation` objects. It is strictly deterministic and auditable.
+
+### Contract Boundary
+
+```
+external/          Raw → Normalized observations (deterministic)
+packages/rsl/       Inference → State variables with uncertainty
+packages/core/       Decisions consume posteriors (never raw sources)
+```
+
+- **external/**: Ingests raw data, normalizes to `SignalObservation[]`, produces `ObservationBatch` with provenance
+- **packages/rsl/**: Consumes `SignalObservation[]`, aggregates into state variables with uncertainty bands
+- **packages/core/**: Uses RSL outputs (posteriors), never raw source data
+
+### Pipeline Architecture
+
+```
+Raw Sources → Normalize → Weight → Validate → ObservationBatch → RSL
+                 ↓           ↓
+           Provenance    Counterweights
+```
+
+### Key Principles
+
+1. **No Vendor Lock-in**: All sources go behind adapters and normalize to the same contracts
+2. **News is Signal, Not Fact**: All news/media treated as noisy directional indicators
+3. **Explicit Weights**: All weight adjustments are inspectable and recorded
+4. **Mandatory Provenance**: Every observation carries source + timestamp + checksum
+5. **Determinism**: Given the same inputs and catalog config, outputs match exactly
+
+### Catalog Files
+
+- `signals.yaml`: Signal definitions (ID, domain, units, transforms)
+- `sources.yaml`: Source definitions (trust tier, weight bounds, penalties)
+- `mappings.yaml`: Mapping rules (raw variable → signal ID, transforms)
+
+### Output Types (see @zeo/contracts)
+
+- `SignalObservation`: Single normalized observation with provenance
+- `ObservationBatch`: Batched output with checksums
+- `SourceDescriptor`: Source configuration
+- `SignalCatalogEntry`: Signal configuration
+
+### CLI Usage
+
+```bash
+pnpm -C apps/cli start -- --signals ./external/examples/sample_payloads/market_series.json
+```
+
+### Deterministic Hashing
+
+The external layer uses SHA-256 for:
+- `catalogHash`: Hash of canonical signals configuration
+- `sourcesHash`: Hash of canonical sources configuration
+- `mappingsHash`: Hash of canonical mappings configuration
+- `inputChecksum`: Hash of normalized raw input items
+
+Canonicalization rules ensure:
+- Stable key ordering in JSON
+- Arrays sorted where order is not meaningful
+- Identical inputs → identical hashes
+

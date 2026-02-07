@@ -24,3 +24,38 @@
 - Added core types and a minimal branching engine demo.
 - Added CLI demo to exercise the engine deterministically.
 - Added CI, issue templates, and contribution guidelines.
+
+# Changelog
+
+## v0.1.2 - External Signals Scaffold (2026-02-07)
+
+### Added
+- **External Signals Layer** (`external/`): Production-grade external data integration surface
+  - `external/catalog/`: YAML-based catalog for signals, sources, and mappings
+  - `external/pipelines/`: Normalize, weight, provenance, and validate pipelines
+  - `external/adapters/`: Adapter interfaces for market, news, macro, geopolitics
+  - `external/examples/sample_payloads/`: Example input files
+
+- **@zeo/contracts**: New types for external signals
+  - `SourceDescriptor`, `SignalCatalogEntry`, `RawSourceItem` unions
+  - `SignalObservation`, `ObservationBatch` with full provenance
+  - Runtime guards: `enforceObservationProvenance`, `enforceWeightBounds`
+
+- **CLI Signals Command**: New `--signals` flag for processing external data
+  - `pnpm -C apps/cli start -- --signals ./external/examples/...`
+  - Outputs ObservationBatch and RSL aggregate estimates
+
+- **Pipeline Features**:
+  - Deterministic normalization (market, macro, news, geopolitics)
+  - Explicit bias counterweights (trust tier, recency, sensationalism, single-source)
+  - Mandatory provenance (source + timestamp + SHA-256 checksum)
+  - Disagreement detection (widens uncertainty bands when sources disagree)
+  - Stable hashing (canonical JSON → SHA-256)
+
+### Changed
+- `packages/contracts/src/types.ts`: Added external signals types with runtime guards
+- `apps/cli/src/index.ts`: Added `--signals` mode for pipeline execution
+- `docs/ARCHITECTURE.md`: Added External Signals Layer section
+- `docs/REALITY_SIGNAL_LAYER.md`: Added Observations Pipeline section
+- `README.md`: Added External Signals documentation
+

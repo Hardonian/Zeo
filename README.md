@@ -254,3 +254,54 @@ pnpm -C apps/cli start -- --example ops --out result.json
 
 ## License
 This repository is proprietary. See `LICENSE`.
+
+---
+
+## External Signals
+
+Zeo can ingest live data points (market, news, macro, geopolitical) and convert them into state variables with uncertainty.
+
+### Pipeline
+
+```
+Raw Data → Normalize → Weight → Aggregate → RSL State Variables
+```
+
+All transformations are:
+- **Deterministic**: Same inputs → Same outputs
+- **Auditable**: Every observation has provenance (source + timestamp + checksum)
+- **Weighted**: Explicit bias counterweights (trust tier, recency, sensationalism)
+
+### CLI Usage
+
+```bash
+pnpm -C apps/cli start -- --signals ./external/examples/sample_payloads/market_series.json
+pnpm -C apps/cli start -- --signals ./external/examples/sample_payloads/news_items.json --catalog ./external/catalog
+pnpm -C apps/cli start -- --signals ./external/examples/sample_payloads/macro_print.json --json-only
+```
+
+### Catalog Configuration
+
+The external layer is configured via YAML files in `external/catalog/`:
+
+- `signals.yaml`: Signal definitions (ID, domain, units, transforms)
+- `sources.yaml`: Source definitions (trust tier, weight bounds, penalties)
+- `mappings.yaml`: Mapping rules (raw variable → signal ID)
+
+### Adapters
+
+Source-specific adapters normalize vendor formats:
+- `external/adapters/market/`: Market data (Bloomberg, Refinitiv, CBOE)
+- `external/adapters/news/`: News (Reuters, FT, WSJ)
+- `external/adapters/macro/`: Macro data (BLS, BEA, Eurostat)
+- `external/adapters/geopolitics/`: Events (Reuters, AFP, AP)
+
+### No-Hype Policy
+
+**News is signal, not fact.**
+
+- News outputs are directional likelihood bands, not "truth"
+- No ML sentiment models—deterministic heuristics only
+- Missing URLs or single sources reduce weight
+- All bias adjustments are explicit and inspectable
+
