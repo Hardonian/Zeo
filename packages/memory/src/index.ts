@@ -27,3 +27,14 @@ export type {
   MatchingOptions 
 } from "./resolution.js";
 export { ResolutionEngine } from "./resolution.js";
+
+// Prior Update Engine
+export type {
+  PriorLevel,
+  PriorDistribution,
+  PriorUpdate,
+  HierarchicalPriors,
+  PriorLookupOptions,
+  AppliedPrior,
+} from "./priors.js";
+export { PriorUpdateEngine } from "./priors.js";
