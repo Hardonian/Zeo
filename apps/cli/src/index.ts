@@ -14,14 +14,14 @@ import {
 import { DecisionSpec, ZeoError } from "@zeo/contracts";
 import { inferPosterior, computeVoi } from "@zeo/models";
 import type { WorldModelSpec, EvidenceCandidate, PosteriorState, VoiReport } from "@zeo/contracts";
+import { parseReplayArgs, runReplayCommand, type ReplayCliArgs } from "./replay-cli.js";
 
-interface CliArgs {
+interface CliArgs extends ReplayCliArgs {
   example: "negotiation" | "ops";
   depth: number;
   jsonOnly: boolean;
   out: string | undefined;
   seed: string | undefined;
-  strict: boolean;
   packetOut: string | undefined;
   signals: string | undefined;
   catalog: string | undefined;
@@ -42,7 +42,16 @@ export function parseArgs(argv: string[]): CliArgs {
     catalog: undefined,
     voi: false,
     world: false,
+    replay: undefined,
+    case: undefined,
+    reportOut: undefined,
   };
+
+  // Parse replay-specific args first
+  const replayArgs = parseReplayArgs(argv);
+  result.replay = replayArgs.replay;
+  result.case = replayArgs.case;
+  result.reportOut = replayArgs.reportOut;
 
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
