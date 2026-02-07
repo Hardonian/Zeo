@@ -1,0 +1,29 @@
+name: Bug report
+description: Report a defect in Zeo behavior
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    attributes:
+      label: What happened?
+      description: Describe the observed behavior.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What did you expect?
+      description: Describe the expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: Provide deterministic steps and inputs.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Evidence / logs
+      description: Include CLI output or relevant evidence pointers (no secrets).
+    validations:
+      required: false

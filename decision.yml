@@ -1,0 +1,42 @@
+name: Decision intake
+description: Capture a real-world decision for Zeo to model
+title: "[decision] "
+labels: ["decision"]
+body:
+  - type: textarea
+    attributes:
+      label: Decision statement
+      description: One sentence. What decision must be made?
+      placeholder: "E.g., Accept counterparty offer A vs propose B with conditions"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Actions available
+      description: List the actions you can take.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Other agents / parties
+      description: Who else can act, and what do they control?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Constraints
+      description: Deadlines, policies, budget, hard requirements (facts if you can cite provenance).
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Unknowns & assumptions
+      description: What you don't know yet, and what you're assuming.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Stakes
+      description: What is the cost of being wrong? What regret looks like?
+    validations:
+      required: true

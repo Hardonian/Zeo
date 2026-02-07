@@ -1,0 +1,29 @@
+name: Reality signal / dataset
+description: Propose an external data source or signal for the Reality Signal Layer
+title: "[signal] "
+labels: ["signal"]
+body:
+  - type: textarea
+    attributes:
+      label: Signal description
+      description: What is the signal and why does it matter for decisions?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Variable mapping
+      description: Which state variable(s) does it influence (e.g., credit tightness, FX volatility)?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Source provenance
+      description: Links/names of sources (no API keys). Prefer primary data.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Bias considerations
+      description: What biases might affect this signal? How should we counterweight it?
+    validations:
+      required: true

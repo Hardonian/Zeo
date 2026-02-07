@@ -1,0 +1,29 @@
+name: Feature request
+description: Propose a product or engine feature
+title: "[feat] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    attributes:
+      label: Problem
+      description: What user pain does this solve?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Proposed solution
+      description: What should Zeo do? Include the minimal viable version.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Epistemic considerations
+      description: Facts vs beliefs vs assumptions; how uncertainty should be represented.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Acceptance criteria
+      description: How do we know it works?
+    validations:
+      required: true
