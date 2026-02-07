@@ -95,8 +95,8 @@ describe("DecisionMemoryManager", () => {
       
       // But retrieved record has new outcome
       const retrieved = await manager.getDecision(record.id);
-      expect(retrieved?.outcomes.length).toBe(1);
-      expect(retrieved?.outcomes[0].status).toBe("resolved");
+      expect(retrieved!.outcomes.length).toBe(1);
+      expect(retrieved!.outcomes[0].status).toBe("resolved");
     });
 
     it("should preserve ambiguous outcomes", async () => {
