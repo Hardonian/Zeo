@@ -7,6 +7,7 @@ import type {
   ReplayOptions,
   ReplayObservationBatch,
   DecisionSpec,
+  Agent,
 } from "@zeo/contracts";
 
 describe("Hashing", () => {
@@ -40,18 +41,18 @@ describe("Hashing", () => {
     });
 
     it("should be order-independent for arrays", () => {
-      const decision1 = {
+      const decision1: DecisionSpec = {
         ...sampleDecision,
         agents: [
-          { id: "agent2", name: "Second", role: "counterparty" },
-          { id: "agent1", name: "First", role: "self" },
+          { id: "agent2", name: "Second", role: "counterparty" as const },
+          { id: "agent1", name: "First", role: "self" as const },
         ],
       };
-      const decision2 = {
+      const decision2: DecisionSpec = {
         ...sampleDecision,
         agents: [
-          { id: "agent1", name: "First", role: "self" },
-          { id: "agent2", name: "Second", role: "counterparty" },
+          { id: "agent1", name: "First", role: "self" as const },
+          { id: "agent2", name: "Second", role: "counterparty" as const },
         ],
       };
       const hash1 = hashDecisionSpec(decision1);
