@@ -201,12 +201,13 @@ export class IndexedDBWarehouseAdapter implements WarehouseAdapter {
   }
 
   async exportBundle(options: ExportOptions): Promise<ImportBundle> {
-    const result = await this.list<unknown>({
-      kinds: options.kinds,
-      timeRange: options.timeRange,
-      tags: options.tags,
-      includeDeleted: options.includeDeleted,
-    });
+    const query: WarehouseQuery = {
+      ...(options.kinds ? { kinds: options.kinds } : {}),
+      ...(options.timeRange ? { timeRange: options.timeRange } : {}),
+      ...(options.tags ? { tags: options.tags } : {}),
+      ...(options.includeDeleted ? { includeDeleted: options.includeDeleted } : {}),
+    };
+    const result = await this.list<unknown>(query);
     
     return {
       version: '1.0.0',
