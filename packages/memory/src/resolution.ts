@@ -91,38 +91,62 @@ export class ResolutionEngine {
   private calculateBranchMatch(outcome: OutcomeRecord, branch: BranchNode): BranchMatch {
     const matchingFeatures: string[] = [];
     const conflictingFeatures: string[] = [];
-    
+
     // Extract key terms from branch label
     const branchTerms = this.extractTerms(branch.label);
     const outcomeTerms = this.extractTerms(outcome.outcomeData.description);
-    
-    // Check for term overlap
+    const outcomeLower = outcome.outcomeData.description.toLowerCase();
+    const branchLower = branch.label.toLowerCase();
+
+    // Check for term overlap with stemming-like matching
     for (const term of outcomeTerms) {
-      if (branchTerms.some(bt => this.similarity(term, bt) > 0.8)) {
+      // Direct match or high similarity
+      const stemmedTerm = this.stem(term);
+      if (branchTerms.some(bt => {
+        const stemmedBt = this.stem(bt);
+        return stemmedTerm === stemmedBt || this.similarity(term, bt) > 0.6;
+      })) {
         matchingFeatures.push(`Term match: ${term}`);
       }
     }
-    
+
+    // Also check if branch label appears directly in outcome text
+    const branchCoreTerms = branchTerms.filter(t => t.length > 3);
+    for (const coreTerm of branchCoreTerms) {
+      if (outcomeLower.includes(coreTerm) ||
+          outcomeLower.includes(this.stem(coreTerm))) {
+        if (!matchingFeatures.some(f => f.includes(coreTerm))) {
+          matchingFeatures.push(`Direct match: ${coreTerm}`);
+        }
+      }
+    }
+
     // Check for explicit conflicts in notes
     for (const note of branch.notes) {
       if (this.isConflicting(note, outcome.outcomeData.description)) {
         conflictingFeatures.push(`Conflict: ${note}`);
       }
     }
-    
+
     // Calculate base confidence from feature overlap
     const totalFeatures = branchTerms.length + outcomeTerms.length;
-    const overlapScore = totalFeatures > 0 
-      ? (2 * matchingFeatures.length) / totalFeatures 
+    const overlapScore = totalFeatures > 0
+      ? Math.min(1, (2 * matchingFeatures.length) / Math.max(5, totalFeatures))
       : 0;
-    
+
     // Adjust for conflicts
-    const conflictPenalty = conflictingFeatures.length * 0.2;
+    const conflictPenalty = conflictingFeatures.length * 0.15;
     let confidence = Math.max(0, overlapScore - conflictPenalty);
-    
+
+    // Boost confidence for direct label match in description
+    const branchLabelKey = branchLower.replace("outcome: ", "").trim();
+    if (outcomeLower.includes(branchLabelKey)) {
+      confidence = Math.min(1, confidence + 0.3);
+    }
+
     // Boost confidence for exact category match
-    if (outcome.outcomeData.category && 
-        branch.label.toLowerCase().includes(outcome.outcomeData.category.toLowerCase())) {
+    if (outcome.outcomeData.category &&
+        branchLower.includes(outcome.outcomeData.category.toLowerCase())) {
       confidence = Math.min(1, confidence + 0.2);
     }
     
