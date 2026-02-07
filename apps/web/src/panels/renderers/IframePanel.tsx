@@ -53,6 +53,11 @@ function tryConsume(bucket: RateLimitBucket, cost: number): boolean {
 
 export function IframePanelRenderer({ manifest, context }: iframePanelProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const panelEntryUrl = React.useMemo(() => {
+    const baseUrl = '/panels';
+    const panelDir = manifest.id.replace('stitch-', 'stitch/');
+    return `${baseUrl}/${panelDir}/${manifest.entry.replace('./', '')}`;
+  }, [manifest]);
   const [error, setError] = useState<string | null>(null);
   const [isReady, setIsReady] = useState(false);
   const rateLimits = useRef<Map<string, RateLimitBucket>>(new Map());
@@ -134,7 +139,7 @@ export function IframePanelRenderer({ manifest, context }: iframePanelProps) {
   return (
     <iframe
       ref={iframeRef}
-      src={manifest.entry}
+      src={panelEntryUrl}
       title={manifest.title}
       sandbox="allow-scripts allow-forms"
       className="w-full h-full border-0"
