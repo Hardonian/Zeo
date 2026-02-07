@@ -14,7 +14,7 @@
         - generic [ref=e12]:
           - generic [ref=e14]:
             - paragraph [ref=e15]: Panel Error
-            - paragraph [ref=e16]: "Failed to load panel: Failed to fetch dynamically imported module: http://localhost:3000/_next/static/chunks/panel.tsx"
+            - paragraph [ref=e16]: "Failed to load panel: Failed to fetch dynamically imported module: http://localhost:3004/_next/static/chunks/panel.tsx"
           - iframe [ref=e18]:
             - generic [active] [ref=f10e1]:
               - generic [ref=f10e3]:
@@ -25,7 +25,7 @@
           - generic [ref=e21]:
             - generic [ref=e23]:
               - paragraph [ref=e24]: Panel Error
-              - paragraph [ref=e25]: "Failed to load panel: Failed to fetch dynamically imported module: http://localhost:3000/_next/static/chunks/panel.tsx"
+              - paragraph [ref=e25]: "Failed to load panel: Failed to fetch dynamically imported module: http://localhost:3004/_next/static/chunks/panel.tsx"
             - iframe [ref=e27]:
               - generic [active] [ref=f11e1]:
                 - generic [ref=f11e3]:
@@ -47,7 +47,7 @@
           - generic [ref=e33]:
             - generic [ref=e35]:
               - paragraph [ref=e36]: Panel Error
-              - paragraph [ref=e37]: "Failed to load panel: Failed to fetch dynamically imported module: http://localhost:3000/_next/static/chunks/panel.tsx"
+              - paragraph [ref=e37]: "Failed to load panel: Failed to fetch dynamically imported module: http://localhost:3004/_next/static/chunks/panel.tsx"
             - iframe [ref=e39]:
               - generic [active] [ref=f14e1]:
                 - generic [ref=f14e3]:
@@ -63,7 +63,7 @@
         - generic [ref=e43]:
           - generic [ref=e45]:
             - paragraph [ref=e46]: Panel Error
-            - paragraph [ref=e47]: "Failed to load panel: Failed to fetch dynamically imported module: http://localhost:3000/_next/static/chunks/panel.tsx"
+            - paragraph [ref=e47]: "Failed to load panel: Failed to fetch dynamically imported module: http://localhost:3004/_next/static/chunks/panel.tsx"
           - iframe [ref=e49]:
             - generic [active] [ref=f16e1]:
               - generic [ref=f16e3]:
