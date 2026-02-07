@@ -1,7 +1,8 @@
-import type { DecisionDraftRecord, DecisionDraftStatus } from "@zeo/contracts";
+import type { ScenarioDraft, DecisionDraftRecord, DecisionDraftStatus } from "@zeo/contracts";
+import { nanoid } from "nanoid";
 
 export interface InboxStorage {
-  createDraft(draft: DecisionDraftRecord): Promise<DecisionDraftRecord>;
+  createDraft(scenario: ScenarioDraft, source: DecisionDraftSource): Promise<DecisionDraftRecord>;
   getDraft(draftId: string): Promise<DecisionDraftRecord | null>;
   listDrafts(options?: {
     status?: DecisionDraftStatus;
@@ -11,9 +12,9 @@ export interface InboxStorage {
   updateDraftStatus(
     draftId: string,
     status: DecisionDraftStatus,
-    options?: { snoozeUntil?: string }
+    options?: { snoozeUntil?: string; promotedAt?: string; targetPath?: string }
   ): Promise<DecisionDraftRecord>;
-  promoteDraft(draftId: string, decisionId: string): Promise<DecisionDraftRecord>;
+  promoteDraft(draftId: string, options: { promotedAt: string; targetPath?: string }): Promise<DecisionDraftRecord>;
   deleteDraft(draftId: string): Promise<void>;
 }
 
