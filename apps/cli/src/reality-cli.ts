@@ -89,7 +89,7 @@ export function parseRealityArgs(argv: string[]): RealityCliArgs {
   return result;
 }
 
-export function runRealityCommand(args: RealityCliArgs): number {
+export async function runRealityCommand(args: RealityCliArgs): Promise<number> {
   if (args.adapters) {
     return runAdaptersList();
   }
@@ -107,15 +107,15 @@ export function runRealityCommand(args: RealityCliArgs): number {
   }
 
   if (args.buildDataset) {
-    return runBuildDataset(args.buildDataset, args.range, args.out);
+    return await runBuildDataset(args.buildDataset, args.range, args.out);
   }
 
   if (args.replay) {
-    return runReplayPipeline(args.replay);
+    return await runReplayPipeline(args.replay);
   }
 
   if (args.nightly) {
-    return runNightlyPipeline(args.out, args.parallel);
+    return await runNightlyPipeline(args.out, args.parallel);
   }
 
   printRealityHelp();
@@ -198,11 +198,11 @@ function runAdapterEnable(adapterId: string, enabled: boolean): number {
   return 0;
 }
 
-function runBuildDataset(
+async function runBuildDataset(
   source: string,
   range: string | undefined,
   outDir: string | undefined
-): number {
+): Promise<number> {
   console.log("\n=== Zeo Dataset Builder ===\n");
   console.log(`Source: ${source}`);
   console.log(`Range: ${range ?? "default (last 30 days)"}`);
@@ -231,7 +231,7 @@ function runBuildDataset(
   const enabledAdapters = registry.getEnabled();
   console.log(`Enabled adapters: ${enabledAdapters.map((a: Adapter) => a.info.id).join(", ")}`);
 
-  const dataset = builder.buildDataset({
+  const dataset = await builder.buildDataset({
     adapterIds: enabledAdapters.map((a: Adapter) => a.info.id),
     timeRange: dateRange,
   });
@@ -271,7 +271,7 @@ function runBuildDataset(
   return 0;
 }
 
-async function runReplayPipeline(datasetPath: string): Promise<number> {
+export async function runReplayPipeline(datasetPath: string): Promise<number> {
   console.log(`\n=== Zeo Replay Pipeline ===\n`);
   console.log(`Dataset: ${datasetPath}`);
 
@@ -282,7 +282,7 @@ async function runReplayPipeline(datasetPath: string): Promise<number> {
   return 0;
 }
 
-async function runNightlyPipeline(
+export async function runNightlyPipeline(
   outDir: string | undefined,
   parallel: number
 ): Promise<number> {
@@ -302,7 +302,7 @@ async function runNightlyPipeline(
   const registry = createRealityAdapterRegistry();
   const enabledAdapters = registry.getEnabled();
 
-  const dataset = builder.buildDataset({
+  const dataset = await builder.buildDataset({
     adapterIds: enabledAdapters.map((a: Adapter) => a.info.id),
     timeRange: { start: startDate, end: endDate },
   });

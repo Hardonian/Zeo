@@ -16,7 +16,9 @@
       "@zeo/contracts": ["packages/contracts/src"],
       "@zeo/adapters": ["packages/adapters/src"],
       "@zeo/warehouse": ["packages/warehouse/src"],
-      "@zeo/analytics": ["packages/analytics/src"]
+      "@zeo/analytics": ["packages/analytics/src"],
+      "@zeo/dataset-builder": ["packages/dataset-builder/src"],
+      "@zeo/replay": ["packages/replay/src"]
     }
   }
 }
