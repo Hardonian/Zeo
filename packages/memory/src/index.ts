@@ -54,3 +54,7 @@ export type {
   RegretAnalysis,
 } from "./counterfactual.js";
 export { CounterfactualEngine } from "./counterfactual.js";
+
+// Inbox Storage
+export type { InboxStorage } from "./inbox.js";
+export { createInboxStorage, createLocalStorageAdapter, createMemoryAdapter } from "./inbox.js";

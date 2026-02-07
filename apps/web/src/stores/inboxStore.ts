@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import type { ScenarioDraft, DecisionDraftRecord, DecisionDraftStatus } from '@zeo/contracts';
+import type { ScenarioDraft, DecisionDraftRecord, DecisionDraftStatus, DecisionDraftSource } from '@zeo/contracts';
 import { createInboxStorage, InboxStorage } from '@zeo/memory';
 
 interface InboxState {
@@ -55,11 +55,12 @@ export const useInboxStore = create<InboxState & InboxActions>()(
         }
       },
 
-      createDraft: async (draft: ScenarioDraft) => {
+      createDraft: async (draft: ScenarioDraft, source: DecisionDraftSource = 'nl_intake') => {
         set({ loading: true, error: null });
         try {
           const storage = await getStorage();
-          const id = await storage.createDraft(draft);
+          const record = await storage.createDraft(draft, source);
+          const id = record.draftId;
           const updatedDrafts = await storage.listDrafts();
           set({ drafts: updatedDrafts, loading: false });
           return id;
@@ -146,7 +147,7 @@ export const useInboxStore = create<InboxState & InboxActions>()(
           if (!draft) {
             throw new Error(`Draft ${id} not found`);
           }
-          await storage.updateDraftStatus(id, 'snoozed', { promotedAt: draft.promotion?.promotedAt });
+          await storage.updateDraftStatus(id, 'snoozed');
           const updatedDrafts = await storage.listDrafts();
           set({ drafts: updatedDrafts, loading: false });
         } catch (err) {
@@ -163,7 +164,7 @@ export const useInboxStore = create<InboxState & InboxActions>()(
           if (!draft) {
             throw new Error(`Draft ${id} not found`);
           }
-          await storage.updateDraftStatus(id, 'pending', { promotedAt: draft.promotion?.promotedAt });
+          await storage.updateDraftStatus(id, 'new');
           const updatedDrafts = await storage.listDrafts();
           set({ drafts: updatedDrafts, loading: false });
         } catch (err) {

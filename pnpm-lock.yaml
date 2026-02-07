@@ -63,6 +63,12 @@ importers:
       '@zeo/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@zeo/memory':
+        specifier: workspace:*
+        version: link:../../packages/memory
+      '@zeo/nl':
+        specifier: workspace:*
+        version: link:../../packages/nl
       idb:
         specifier: ^8.0.0
         version: 8.0.3
