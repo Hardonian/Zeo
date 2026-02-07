@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import type { UiPanelManifest } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
 import { runDecision } from '@zeo/core/engine';
@@ -72,10 +72,10 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
               </div>
 
               <div className="bg-white border border-gray-200 rounded-lg p-3">
-                <h3 className="font-medium text-gray-900 mb-2">Branches ({result.graph.nodes.length})</h3>
-                <ul className="space-y-1">
+                <h3 className="font-medium text-gray-900 mb-2">Branches</h3>
+                <div className="space-y-1">
                   {result.graph.nodes.slice(0, 5).map((node: any) => (
-                    <li
+                    <div
                       key={node.id}
                       className={`text-sm px-2 py-1 rounded cursor-pointer ${
                         activeNode === node.id ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-100'
@@ -83,27 +83,14 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
                       onClick={() => setActiveNode(activeNode === node.id ? null : node.id)}
                     >
                       {node.label}
-                    </li>
+                    </div>
                   ))}
                   {result.graph.nodes.length > 5 && (
-                    <li className="text-sm text-gray-400 px-2 py-1">
+                    <p className="text-sm text-gray-400 px-2 py-1">
                       +{result.graph.nodes.length - 5} more
-                    </li>
-                  )}
-                </ul>
-              </div>
-              </div>
-
-              <div className="bg-white border border-gray-200 rounded-lg p-3">
-                <h3 className="font-medium text-gray-900 mb-2">Evaluations</h3>
-                {result.evaluations.map((eval: any) => (
-                  <div key={eval.lens} className="mb-2 last:mb-0">
-                    <p className="text-sm font-medium text-gray-700 capitalize">
-                      {eval.lens.replace('_', ' ')}
                     </p>
-                    <p className="text-xs text-gray-500">{eval.summary}</p>
-                  </div>
-                ))}
+                  )}
+                </div>
               </div>
             </div>
           )}
