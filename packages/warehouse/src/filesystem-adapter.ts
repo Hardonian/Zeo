@@ -92,10 +92,10 @@ export class FilesystemWarehouseAdapter implements WarehouseAdapter {
       kind: envelope.kind,
       createdAt: envelope.createdAt,
       updatedAt: envelope.updatedAt,
-      tags: envelope.tags,
       contentHash: envelope.hashes.contentHash,
       tenant: envelope.tenant,
-      softDeleted: envelope.softDeleted,
+      ...(envelope.tags ? { tags: envelope.tags } : {}),
+      ...(envelope.softDeleted ? { softDeleted: envelope.softDeleted } : {}),
     };
     
     await this.atomicWrite(indexPath, JSON.stringify(index, null, 2));
