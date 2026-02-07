@@ -68,7 +68,32 @@ The Quant Engine provides analytical rigor through dedicated packages:
 - **Purpose**: Track and improve forecast accuracy
 - **Scoring**: Brier score, log score, reliability/resolution decomposition
 - **Buckets**: Confidence bucket audits (are 70% claims true ~70%?)
+- **Interval Calibration**: Coverage tests - did X% intervals contain outcomes ~X% of time?
+- **Adjustment**: Miscalibration widens future intervals, never narrows them
 - **Python Backend**: properscoring, mapie
+
+### @zeo/memory - Decision Memory System (v0.3.0)
+- **Purpose**: Persist decisions, assumptions, branches, and outcomes for learning
+- **Key Types**: `DecisionRecord`, `BranchRecord`, `OutcomeRecord`, `ResolutionStatus`
+- **Storage**: Immutable records, temporal context switching ("at time" vs "today")
+- **Features**: 
+  - Post-hoc outcome mapping with confidence scores
+  - Handles partial/ambiguous resolutions
+  - Explicit "could not be resolved" state
+
+### @zeo/memory - Learning System (v0.3.0)
+- **Purpose**: Learn from outcomes without violating epistemic discipline
+- **Prior Update Engine**: Hierarchical Bayesian priors (global → domain → user → decision)
+  - Updates priors only, never induces rules
+  - Increases uncertainty when assumptions fail
+- **Pattern Detection**: Cross-decision hypothesis generation
+  - Weak signals only, never presented as facts
+  - Requires sample size and diversity disclosure
+- **Counterfactual Analysis**: Regret calculation
+  - Distinguishes bad outcome from bad decision
+  - No hindsight bias correction
+  - Respects original uncertainty in counterfactuals
+- **Epistemic Discipline**: All learning increases robustness, not confidence
 
 ---
 
