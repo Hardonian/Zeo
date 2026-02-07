@@ -237,6 +237,22 @@ importers:
         specifier: ^25.2.1
         version: 25.2.1
 
+  packages/replay:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@zeo/core':
+        specifier: workspace:*
+        version: link:../core
+      '@zeo/models':
+        specifier: workspace:*
+        version: link:../models
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.1
+
   packages/rsl:
     dependencies:
       '@zeo/contracts':
