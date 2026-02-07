@@ -1,4 +1,4 @@
-import type { ScenarioDraft, DecisionDraftRecord, DecisionDraftStatus } from "@zeo/contracts";
+import type { ScenarioDraft, DecisionDraftRecord, DecisionDraftStatus, DecisionDraftSource } from "@zeo/contracts";
 import { nanoid } from "nanoid";
 
 export interface InboxStorage {
@@ -62,11 +62,25 @@ function saveToStorage(drafts: Record<string, DecisionDraftRecord>): void {
 
 export function createLocalStorageAdapter(): InboxStorage {
   return {
-    async createDraft(draft: DecisionDraftRecord): Promise<DecisionDraftRecord> {
+    async createDraft(scenario: ScenarioDraft, source: DecisionDraftSource): Promise<DecisionDraftRecord> {
       const drafts = getFromStorage();
-      drafts[draft.draftId] = draft;
+      const now = new Date().toISOString();
+      const draftId = nanoid();
+      const checksum = scenario.summary + scenario.titleSuggestion;
+      
+      const record: DecisionDraftRecord = {
+        draftId,
+        createdAt: now,
+        source,
+        scenarioTextChecksum: checksum,
+        scenarioTextProvenance: [],
+        scenarioDraft: scenario,
+        status: "new",
+      };
+      
+      drafts[draftId] = record;
       saveToStorage(drafts);
-      return draft;
+      return record;
     },
 
     async getDraft(draftId: string): Promise<DecisionDraftRecord | null> {
@@ -142,7 +156,7 @@ export function createLocalStorageAdapter(): InboxStorage {
       return updatedBase;
     },
 
-    async promoteDraft(draftId: string, decisionId: string): Promise<DecisionDraftRecord> {
+    async promoteDraft(draftId: string, options: { promotedAt: string; targetPath?: string }): Promise<DecisionDraftRecord> {
       const drafts = getFromStorage();
       const draft = drafts[draftId];
       
@@ -154,8 +168,9 @@ export function createLocalStorageAdapter(): InboxStorage {
         ...draft,
         status: "promoted",
         promotion: {
-          decisionId,
-          promotedAt: new Date().toISOString(),
+          decisionId: nanoid(),
+          promotedAt: options.promotedAt,
+          ...(options.targetPath ? { targetPath: options.targetPath } : {}),
         },
       };
       
@@ -176,9 +191,23 @@ export function createMemoryAdapter(): InboxStorage {
   const memoryStore = new Map<string, DecisionDraftRecord>();
 
   return {
-    async createDraft(draft: DecisionDraftRecord): Promise<DecisionDraftRecord> {
-      memoryStore.set(draft.draftId, draft);
-      return draft;
+    async createDraft(scenario: ScenarioDraft, source: DecisionDraftSource): Promise<DecisionDraftRecord> {
+      const draftId = nanoid();
+      const now = new Date().toISOString();
+      const checksum = scenario.summary + scenario.titleSuggestion;
+      
+      const record: DecisionDraftRecord = {
+        draftId,
+        createdAt: now,
+        source,
+        scenarioTextChecksum: checksum,
+        scenarioTextProvenance: [{ type: 'derived', hash: checksum }],
+        scenarioDraft: scenario,
+        status: 'pending',
+      };
+      
+      memoryStore.set(draftId, record);
+      return record;
     },
 
     async getDraft(draftId: string): Promise<DecisionDraftRecord | null> {
