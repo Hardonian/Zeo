@@ -38,3 +38,19 @@ export type {
   AppliedPrior,
 } from "./priors.js";
 export { PriorUpdateEngine } from "./priors.js";
+
+// Pattern Detection
+export type {
+  PatternType,
+  PatternConfidence,
+  CrossDecisionPattern,
+  PatternDetectionOptions,
+} from "./patterns.js";
+export { PatternDetectionEngine } from "./patterns.js";
+
+// Counterfactual & Regret Analysis
+export type {
+  CounterfactualScenario,
+  RegretAnalysis,
+} from "./counterfactual.js";
+export { CounterfactualEngine } from "./counterfactual.js";
