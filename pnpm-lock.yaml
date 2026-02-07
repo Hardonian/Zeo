@@ -144,6 +144,25 @@ importers:
         specifier: ^25.2.1
         version: 25.2.1
 
+  packages/analytics:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@zeo/warehouse':
+        specifier: workspace:*
+        version: link:../warehouse
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.32
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@20.19.32)(jsdom@28.0.0)
+
   packages/calibration:
     dependencies:
       '@zeo/contracts':
