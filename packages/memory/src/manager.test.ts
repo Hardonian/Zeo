@@ -96,7 +96,7 @@ describe("DecisionMemoryManager", () => {
       // But retrieved record has new outcome
       const retrieved = await manager.getDecision(record.id);
       expect(retrieved!.outcomes.length).toBe(1);
-      expect(retrieved!.outcomes[0].status).toBe("resolved");
+      expect(retrieved!.outcomes[0]!.status).toBe("resolved");
     });
 
     it("should preserve ambiguous outcomes", async () => {
@@ -172,7 +172,7 @@ describe("DecisionMemoryManager", () => {
       });
 
       // Should show current state
-      expect(todayView?.spec.assumptions).toEqual(spec.assumptions);
+      expect(todayView!.spec.assumptions).toEqual(spec.assumptions);
     });
   });
 
@@ -203,7 +203,7 @@ describe("DecisionMemoryManager", () => {
       });
 
       expect(negotiations.length).toBe(1);
-      expect(negotiations[0].domain).toBe("negotiation");
+      expect(negotiations[0]!.domain).toBe("negotiation");
     });
 
     it("should filter by outcome status", async () => {
