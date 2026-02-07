@@ -28,7 +28,7 @@ export class TimeSeriesEngine {
       
       await writeFile(tempFile, JSON.stringify(request));
       
-      const result = await new Promise<any>((resolve, reject) => {
+      const result = await new Promise<Record<string, unknown>>((resolve, reject) => {
         const pythonProcess = spawn("python3", [PYTHON_SCRIPT_PATH, tempFile]);
         let output = "";
         let errorOutput = "";
@@ -44,8 +44,10 @@ export class TimeSeriesEngine {
         pythonProcess.on("close", async (code) => {
           try {
             await unlink(tempFile);
-          } catch {}
-          
+          } catch {
+            // Ignore cleanup errors
+          }
+
           if (code !== 0) {
             reject(new Error(`Python process exited with code ${code}: ${errorOutput}`));
             return;
@@ -63,23 +65,23 @@ export class TimeSeriesEngine {
       const analysis: TimeSeriesAnalysis = {
         series,
         modelFit: result.model_fit as ModelFit,
-        forecasts: result.forecasts.map((f: any) => ({
-          point: f.point,
+        forecasts: (result.forecasts as Record<string, unknown>[]).map((f) => ({
+          point: f.point as number,
           interval: {
-            lower: f.interval_lower,
-            upper: f.interval_upper,
-            confidence: f.confidence,
+            lower: f.interval_lower as number,
+            upper: f.interval_upper as number,
+            confidence: f.confidence as number,
           },
-          volatilityAdjusted: f.volatility_adjusted,
+          volatilityAdjusted: f.volatility_adjusted as boolean,
           regime: f.regime as VolatilityRegime,
         })),
-        changePoints: result.change_points.map((cp: any) => ({
-          index: cp.index,
-          timestamp: cp.timestamp,
-          fromModel: cp.from_model,
-          toModel: cp.to_model,
-          confidence: cp.confidence,
-          cusumScore: cp.cusum_score,
+        changePoints: (result.change_points as Record<string, unknown>[]).map((cp) => ({
+          index: cp.index as number,
+          timestamp: cp.timestamp as string,
+          fromModel: cp.from_model as string,
+          toModel: cp.to_model as string,
+          confidence: cp.confidence as number,
+          cusumScore: cp.cusum_score as number,
         })),
         volatilityRegimes: result.volatility_regimes,
         recommendation: {
@@ -93,13 +95,15 @@ export class TimeSeriesEngine {
     } catch (error) {
       try {
         await unlink(tempFile);
-      } catch {}
-      
+      } catch {
+        // Ignore cleanup errors
+      }
+
       // Return degraded analysis
       return {
         series,
         modelFit: {
-          modelType: "failed",
+          modelType: "arima",
           parameters: {},
           aic: 9999,
           bic: 9999,

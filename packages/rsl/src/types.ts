@@ -36,6 +36,7 @@ export type StateEstimate = {
 export type SignalObservation = {
   id: UUID;
   timestamp: string;
+  variableName: RSLStateVariable;
   sourceType: "market" | "news" | "macro" | "geopolitical" | "regulatory";
   rawValue: number;
   processedValue: number;

@@ -13,6 +13,7 @@ import type {
 import { pruneGraph, defaultPruningConfig } from "./pruning.js";
 import type { PruningConfig } from "./pruning.js";
 import { generateFlipConditions } from "./flip-conditions.js";
+import { QuantEngine } from "./quant-engine.js";
 
 /**
  * Zeo core engine: branching + evaluation.
@@ -221,6 +222,7 @@ function evaluateEvolutionary(spec: DecisionSpec): LensEvaluation {
 export type RunDecisionOpts = {
   depth?: 2 | 3;
   pruning?: Partial<PruningConfig>;
+  useQuantEngine?: boolean;
 };
 
 export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): DecisionResult {
@@ -228,14 +230,36 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
   const pruningConfig: PruningConfig = { ...defaultPruningConfig, ...opts?.pruning };
   const graph = pruneGraph(rawGraph, pruningConfig);
 
-  const evaluations = [
-    evaluateRobustness(spec, graph),
-    evaluateExpectedUtility(spec),
-    evaluateGameTheory(spec),
-    evaluateEvolutionary(spec),
-  ];
+  let evaluations: LensEvaluation[];
+  let flipConditions: Array<{ assumptionId: string; flipThreshold: string; reasoning: string }>;
 
-  const flipConditions = generateFlipConditions(spec, evaluations);
+  if (opts?.useQuantEngine) {
+    // Use quant engine for analytical evaluations
+    const quantEngine = new QuantEngine();
+    const robustnessEval = quantEngine.evaluateRobustnessWithGameTheory(spec);
+    evaluations = [
+      robustnessEval,
+      evaluateExpectedUtility(spec),
+      evaluateGameTheory(spec),
+      evaluateEvolutionary(spec),
+    ];
+    
+    const quantFlip = quantEngine.generateFlipConditions(spec, evaluations);
+    flipConditions = quantFlip.map(fc => ({
+      assumptionId: fc.assumptionId,
+      flipThreshold: `${(fc.requiredBeliefShift * 100).toFixed(0)}% belief shift`,
+      reasoning: fc.flipCondition,
+    }));
+  } else {
+    // Use heuristic evaluations
+    evaluations = [
+      evaluateRobustness(spec, graph),
+      evaluateExpectedUtility(spec),
+      evaluateGameTheory(spec),
+      evaluateEvolutionary(spec),
+    ];
+    flipConditions = generateFlipConditions(spec, evaluations);
+  }
 
   const nextBestEvidence = [
     {
@@ -259,7 +283,9 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
     explanation: {
       why: [
         "Zeo generated a conservative branch map emphasizing plausible counterparty responses.",
-        "Recommendations prioritize robustness: actions that retain value across uncertain assumptions.",
+        opts?.useQuantEngine 
+          ? "Robustness analysis uses game-theoretic dominance under interval payoffs."
+          : "Recommendations prioritize robustness: actions that retain value across uncertain assumptions.",
         "Uncertainty is represented as probability ranges and explicit dependencies.",
       ],
       whatWouldChange: flipConditions.map(fc => ({

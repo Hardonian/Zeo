@@ -94,3 +94,64 @@ Zeo converts qualitative ambiguity into operational structure:
 - dominance relations
 - regret surfaces
 - option value via reversibility/lock-in/info gain
+
+## Uncertainty decomposition
+
+Zeo explicitly separates two types of uncertainty:
+
+### Epistemic uncertainty
+**Definition**: Uncertainty due to lack of knowledge (reducible with more/better evidence)
+
+**Handling**:
+- Widen probability intervals when data is sparse
+- Track KL divergence between prior and posterior
+- Flag when uncertainty is primarily epistemic (can be reduced)
+
+**Example**: "We don't know their budget" → epistemic, can be reduced by asking
+
+### Aleatoric uncertainty
+**Definition**: Uncertainty due to inherent randomness in the world (irreducible)
+
+**Handling**:
+- Preserve variance even with infinite data
+- Use GARCH models to estimate volatility regimes
+- Never claim certainty about stochastic processes
+
+**Example**: "Market movements are inherently unpredictable" → aleatoric, cannot be eliminated
+
+---
+
+## Bayesian belief updating
+
+The `@zeo/models` package implements Bayesian inference:
+
+1. **Prior**: Initial belief distribution (Beta, Normal, or empirical)
+2. **Likelihood**: How likely the evidence is under different hypotheses
+3. **Posterior**: Updated belief via Bayes' rule
+4. **Diagnostics**: R-hat, effective sample size, divergence checks
+
+```typescript
+const update = await updateBeliefs(worldState, [{
+  evidenceId: "ev_1",
+  observationValue: 0.7,
+  likelihood: {
+    variableId: "var_1",
+    likelihoodFunction: "gaussian",
+    parameters: { sigma: 0.15 }
+  }
+}]);
+```
+
+**Constraint**: Never allow posterior variance < prior variance (would indicate overconfidence)
+
+---
+
+## Confidence calibration
+
+The `@zeo/calibration` package tracks forecast accuracy:
+
+- **Brier score**: Mean squared error of probability forecasts
+- **Calibration buckets**: Are 70% forecasts correct 70% of the time?
+- **Reliability**: Systematic over/under-confidence detection
+
+**Anti-bullshit loop**: If forecasts are poorly calibrated, widen future uncertainty bands automatically.

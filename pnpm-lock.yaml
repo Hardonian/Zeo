@@ -56,6 +56,26 @@ importers:
         specifier: ^25.2.1
         version: 25.2.1
 
+  packages/calibration:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.1
+
+  packages/causal:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.1
+
   packages/contracts:
     devDependencies:
       '@types/node':
@@ -64,12 +84,73 @@ importers:
 
   packages/core:
     dependencies:
+      '@zeo/calibration':
+        specifier: workspace:*
+        version: link:../calibration
+      '@zeo/causal':
+        specifier: workspace:*
+        version: link:../causal
       '@zeo/contracts':
         specifier: workspace:*
         version: link:../contracts
+      '@zeo/game':
+        specifier: workspace:*
+        version: link:../game
+      '@zeo/models':
+        specifier: workspace:*
+        version: link:../models
+      '@zeo/rsl':
+        specifier: workspace:*
+        version: link:../rsl
+      '@zeo/timeseries':
+        specifier: workspace:*
+        version: link:../timeseries
       nanoid:
         specifier: ^5.0.7
         version: 5.1.6
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.1
+
+  packages/game:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.1
+
+  packages/models:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.1
+
+  packages/rsl:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@zeo/models':
+        specifier: workspace:*
+        version: link:../models
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.1
+
+  packages/timeseries:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
     devDependencies:
       '@types/node':
         specifier: ^25.2.1

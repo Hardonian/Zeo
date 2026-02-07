@@ -46,7 +46,9 @@ export async function runInference(
       pythonProcess.on("close", async (code) => {
         try {
           await unlink(tempFile);
-        } catch {}
+        } catch {
+          // Ignore cleanup errors
+        }
         
         if (code !== 0) {
           reject(new Error(`Python process exited with code ${code}: ${errorOutput}`));
@@ -64,14 +66,18 @@ export async function runInference(
       pythonProcess.on("error", async (err) => {
         try {
           await unlink(tempFile);
-        } catch {}
+        } catch {
+          // Ignore cleanup errors
+        }
         reject(err);
       });
     });
   } catch (error) {
     try {
       await unlink(tempFile);
-    } catch {}
+    } catch {
+      // Ignore cleanup errors
+    }
     throw error;
   }
 }
@@ -154,10 +160,10 @@ function gammaRandom(shape: number, scale: number): number {
   const c = 1 / Math.sqrt(9 * d);
   
   for (;;) {
-    let x = normalRandom();
-    let v = Math.pow(1 + c * x, 3);
+    const x = normalRandom();
+    const v = Math.pow(1 + c * x, 3);
     if (v <= 0) continue;
-    let u = Math.random();
+    const u = Math.random();
     if (u < 1 - 0.0331 * x * x * x * x) return d * v * scale;
     if (Math.log(u) < 0.5 * x * x + d * (1 - v + Math.log(v))) return d * v * scale;
   }
@@ -206,7 +212,7 @@ export function credibleInterval(
   const lowIdx = Math.floor(alpha * sorted.length);
   const highIdx = Math.floor((1 - alpha) * sorted.length);
   return {
-    low: sorted[lowIdx],
-    high: sorted[highIdx],
+    low: sorted[lowIdx] ?? 0,
+    high: sorted[highIdx] ?? 1,
   };
 }

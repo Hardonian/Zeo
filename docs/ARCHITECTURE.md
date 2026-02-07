@@ -29,6 +29,49 @@ Zeo prioritizes edge-first capture and inference for privacy, speed, and cost co
 
 ---
 
+## Quant Engine Architecture
+
+The Quant Engine provides analytical rigor through dedicated packages:
+
+### @zeo/models - World State Modeling
+- **Purpose**: Represent latent world state with Bayesian updates
+- **Key Types**: `WorldState`, `LatentVariable`, `BeliefUpdate`, `ProbabilityDistribution`
+- **Python Backend**: PyMC for MCMC inference, returns posterior summaries with credible intervals
+- **Epistemic Discipline**: Explicit separation of epistemic (lack of knowledge) vs aleatoric (inherent randomness) uncertainty
+
+### @zeo/rsl - Reality Signal Layer
+- **Purpose**: State-space estimation for external signals (markets, macro, geopolitics)
+- **Filters**: Kalman (linear regimes) and Particle (non-linear/regime-shifting)
+- **Variables**: `volatility_regime`, `liquidity_stress`, `regulatory_uncertainty`, `geopolitical_escalation_band`
+- **Python Backend**: filterpy (Kalman), ruptures (change-point detection)
+- **Bias Counterweights**: Explicit bias adjustments for news/media sources
+
+### @zeo/timeseries - Volatility Modeling
+- **Purpose**: Time series analysis for probability interval calibration
+- **Models**: ARIMA (trend), GARCH/EGARCH (volatility), change-point detection
+- **Python Backend**: statsmodels, arch, ruptures
+- **Output**: Uncertainty bands only, never point predictions
+
+### @zeo/causal - Causal Inference
+- **Purpose**: Separate prediction from causation through DAG-based analysis
+- **Key Types**: `CausalDAG`, `CausalClaim` (identified effects), `PredictiveClaim` (correlations)
+- **Identification**: Backdoor criterion, explicit marking of "unidentified" claims
+- **Python Backend**: DoWhy (optional), guarded behind identifiability checks
+
+### @zeo/game - Strategic Analysis
+- **Purpose**: Robust game-theoretic reasoning with payoff uncertainty
+- **Features**: Interval utilities, maximin/minimax regret, dominance checking
+- **Repeated Games**: Discount factors, reputation, retaliation/forgiveness analysis
+- **Rule**: If payoff uncertainty is high, output dominance not equilibrium
+
+### @zeo/calibration - Forecast Scoring
+- **Purpose**: Track and improve forecast accuracy
+- **Scoring**: Brier score, log score, reliability/resolution decomposition
+- **Buckets**: Confidence bucket audits (are 70% claims true ~70%?)
+- **Python Backend**: properscoring, mapie
+
+---
+
 ## Composability contract
 
 All ingestion and external integrations must normalize to the same internal shape:

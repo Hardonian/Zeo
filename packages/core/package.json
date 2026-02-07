@@ -19,6 +19,12 @@
   },
   "dependencies": {
     "@zeo/contracts": "workspace:*",
+    "@zeo/models": "workspace:*",
+    "@zeo/rsl": "workspace:*",
+    "@zeo/timeseries": "workspace:*",
+    "@zeo/causal": "workspace:*",
+    "@zeo/game": "workspace:*",
+    "@zeo/calibration": "workspace:*",
     "nanoid": "^5.0.7"
   },
   "devDependencies": {

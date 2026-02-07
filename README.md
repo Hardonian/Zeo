@@ -101,13 +101,37 @@ This repository is intentionally lightweight: it ships a proprietary core engine
 ├─ apps/
 │  └─ cli/                # Minimal CLI demo to exercise the core engine
 ├─ packages/
-│  ├─ core/               # Proprietary branching + evaluation engine
+│  ├─ core/               # Proprietary branching + evaluation engine with QuantEngine integration
 │  ├─ contracts/          # Shared types: EvidenceEvent, DecisionSpec, BranchGraph
-│  └─ adapters/           # Vendor adapter interfaces (OCR, STT, Market/News, etc.)
+│  ├─ adapters/           # Vendor adapter interfaces (OCR, STT, Market/News, etc.)
+│  ├─ models/             # World state modeling with Bayesian inference (PyMC backend)
+│  ├─ rsl/                # Reality Signal Layer: Kalman/Particle filters for state estimation
+│  ├─ timeseries/         # ARIMA/GARCH time series analysis with volatility modeling
+│  ├─ causal/             # Causal inference engine with DAG support
+│  ├─ game/               # Game theory with interval utilities and robust equilibria
+│  └─ calibration/        # Forecast calibration tracking with proper scoring rules
 ├─ docs/
 ├─ plan/
 ├─ agents/
 └─ .github/
+```
+
+## Quant Engine
+
+Zeo now includes a **Quant Engine** that replaces heuristic branching with analytical rigor:
+
+- **Bayesian Inference** (`@zeo/models`): World state updates with posterior distributions, epistemic vs aleatoric uncertainty
+- **State-Space Modeling** (`@zeo/rsl`): Kalman and Particle filters for tracking hidden state variables (volatility_regime, liquidity_stress, etc.)
+- **Time Series Analysis** (`@zeo/timeseries`): ARIMA/GARCH for volatility-aware probability intervals
+- **Causal Inference** (`@zeo/causal`): DAG-based causal analysis with explicit identification checking
+- **Game Theory** (`@zeo/game`): Strategic analysis with interval payoffs, maximin/minimax regret
+- **Calibration** (`@zeo/calibration`): Brier/log scoring with bucketed calibration tracking
+
+Use the quant engine:
+```typescript
+import { runDecision } from "@zeo/core";
+
+const result = runDecision(spec, { useQuantEngine: true });
 ```
 
 ---

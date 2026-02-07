@@ -245,8 +245,10 @@ export class RSLEngine {
         pythonProcess.on("close", async (code) => {
           try {
             await unlink(tempFile);
-          } catch {}
-          
+          } catch {
+            // Ignore cleanup errors
+          }
+
           if (code !== 0) {
             reject(new Error(`Python process exited with code ${code}: ${errorOutput}`));
             return;
@@ -260,12 +262,14 @@ export class RSLEngine {
           }
         });
       });
-    } catch (error) {
+  } catch (error) {
       try {
         await unlink(tempFile);
-      } catch {}
+      } catch {
+        // Ignore cleanup errors
+      }
       throw error;
-    }
+  }
   }
 }
 
