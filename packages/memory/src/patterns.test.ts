@@ -65,7 +65,7 @@ describe("PatternDetectionEngine", () => {
     branchId: "node1",
     recordedAt: new Date().toISOString(),
     resolvedAt: new Date().toISOString(),
-    status: status as any,
+    status: status as import("./types.js").ResolutionStatus,
     confidence: {
       level: "high",
       rationale: "Test",

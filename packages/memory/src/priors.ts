@@ -434,7 +434,7 @@ export class PriorUpdateEngine {
                 "decision_placeholder";
     
     switch (prior.level) {
-      case "global":
+      case "global": {
         const globalIdx = this.priors.global.findIndex(p => p.name === prior.name);
         if (globalIdx >= 0) {
           this.priors.global[globalIdx] = prior;
@@ -442,7 +442,8 @@ export class PriorUpdateEngine {
           this.priors.global.push(prior);
         }
         break;
-      case "domain":
+      }
+      case "domain": {
         if (!this.priors.byDomain[key]) {
           this.priors.byDomain[key] = [];
         }
@@ -453,7 +454,8 @@ export class PriorUpdateEngine {
           this.priors.byDomain[key].push(prior);
         }
         break;
-      case "user":
+      }
+      case "user": {
         if (!this.priors.byUser[key]) {
           this.priors.byUser[key] = [];
         }
@@ -464,7 +466,8 @@ export class PriorUpdateEngine {
           this.priors.byUser[key].push(prior);
         }
         break;
-      case "decision":
+      }
+      case "decision": {
         if (!this.priors.byDecision[key]) {
           this.priors.byDecision[key] = [];
         }
@@ -475,6 +478,7 @@ export class PriorUpdateEngine {
           this.priors.byDecision[key].push(prior);
         }
         break;
+      }
     }
   }
   

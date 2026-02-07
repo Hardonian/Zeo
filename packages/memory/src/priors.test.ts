@@ -131,18 +131,20 @@ describe("PriorUpdateEngine", () => {
       
       const beforeViolation = engine.getPriors("domain", "negotiation")
         .find(p => p.name === "timeline_pressure_reliability");
-      const uncertaintyBefore = beforeViolation?.uncertainty.high! - beforeViolation?.uncertainty.low!;
-      
+      if (!beforeViolation) throw new Error("beforeViolation not found");
+      const uncertaintyBefore = beforeViolation.uncertainty.high - beforeViolation.uncertainty.low;
+
       // Now violate it
       engine.updateFromOutcome(decision, violatedOutcome, "timeline_pressure");
-      
+
       const afterViolation = engine.getPriors("domain", "negotiation")
         .find(p => p.name === "timeline_pressure_reliability");
-      const uncertaintyAfter = afterViolation?.uncertainty.high! - afterViolation?.uncertainty.low!;
-      
+      if (!afterViolation) throw new Error("afterViolation not found");
+      const uncertaintyAfter = afterViolation.uncertainty.high - afterViolation.uncertainty.low;
+
       // Uncertainty should have increased (or reliability decreased)
-      expect(afterViolation?.alpha! / (afterViolation?.alpha! + afterViolation?.beta!))
-        .toBeLessThan(beforeViolation?.alpha! / (beforeViolation?.alpha! + beforeViolation?.beta!));
+      expect(afterViolation.alpha / (afterViolation.alpha + afterViolation.beta))
+        .toBeLessThan(beforeViolation.alpha / (beforeViolation.alpha + beforeViolation.beta));
     });
 
     it("should create new priors for unknown assumption types", () => {

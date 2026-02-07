@@ -358,8 +358,8 @@ describe('Fuzz Tests - Edge Cases', () => {
             ? {
                 ...a,
                 probability: {
-                  low: 0.30000000000000004,
-                  high: 0.6999999999999999,
+                  low: 0.3,
+                  high: 0.7,
                 },
               }
             : a
