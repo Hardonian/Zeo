@@ -12,6 +12,8 @@ import type {
   ReplayRunMeta,
   ReplayCheckpoint,
   CalibrationScore,
+  OutcomeMetric,
+  Prediction,
 } from "@zeo/contracts";
 import {
   hashDecisionSpec,
@@ -26,6 +28,15 @@ import {
 
 // Engine version for reproducibility
 const ENGINE_VERSION = "0.3.1";
+
+/**
+ * Tracked metric definition for prediction generation.
+ */
+type TrackedMetric = {
+  metricId: string;
+  targetKind: "latent_variable" | "action_outcome" | "branch_event";
+  targetId: string;
+};
 
 /**
  * Replay a single case through the deterministic pipeline.
@@ -62,7 +73,7 @@ export async function replayCase(
   const checkpoints: ReplayCheckpoint[] = [];
 
   // Track which metrics we're predicting based on outcome
-  const trackedMetrics = replayCase.outcome.metrics.map((m: { metricId: string; mapping: { linksTo: "latent_variable" | "metric" | "branch_event"; targetId: string } }) => ({
+  const trackedMetrics: TrackedMetric[] = replayCase.outcome.metrics.map((m: OutcomeMetric) => ({
     metricId: m.metricId,
     targetKind: m.mapping.linksTo,
     targetId: m.mapping.targetId,
@@ -132,21 +143,18 @@ async function createCheckpoint(
   observationsHash: string,
   seed: string,
   engineVersion: string,
-  trackedMetrics: Array<{
-    metricId: string;
-    targetKind: "latent_variable" | "metric" | "branch_event";
-    targetId: string;
-  }>,
-  options: ReplayOptions
+  trackedMetrics: TrackedMetric[],
+  _options: ReplayOptions
 ): Promise<ReplayCheckpoint> {
   // Mock posterior state - in real implementation this would call @zeo/models
   // For now, create synthetic posterior based on observation count
-  const observationCount = batchesUpTo.reduce(
-    (sum, batch: unknown) =>
-      sum +
-      ((batch as { observations?: unknown[] }).observations?.length ?? 0),
-    0
-  );
+  let observationCount = 0;
+  for (const batch of batchesUpTo) {
+    const batchObservations = (batch as { observations?: unknown[] }).observations;
+    if (batchObservations && Array.isArray(batchObservations)) {
+      observationCount += batchObservations.length;
+    }
+  }
 
   // Generate mock variables based on decision spec assumptions
   const mockVariables: Array<{
@@ -155,9 +163,10 @@ async function createCheckpoint(
   }> = [];
 
   // Use assumptions from decision spec as latent variables
-  const assumptions =
-    (decisionSpec as { assumptions?: Array<{ id: string; probability?: { low: number; high: number } }> })
-      .assumptions ?? [];
+  const specWithAssumptions = decisionSpec as {
+    assumptions?: Array<{ id: string; probability?: { low: number; high: number } }>;
+  };
+  const assumptions = specWithAssumptions.assumptions ?? [];
 
   for (const assumption of assumptions) {
     const priorBand = assumption.probability ?? { low: 0, high: 1 };
@@ -200,7 +209,7 @@ async function createCheckpoint(
  */
 function computeCalibrationScore(
   checkpoints: ReplayCheckpoint[],
-  outcome: { metrics: Array<{ metricId: string; kind: string; value: unknown }> }
+  outcome: { metrics: OutcomeMetric[] }
 ): CalibrationScore {
   // Get the final checkpoint's predictions
   const finalCheckpoint = checkpoints[checkpoints.length - 1];
@@ -216,7 +225,7 @@ function computeCalibrationScore(
 
   for (const metric of outcome.metrics) {
     const prediction = predictions.find(
-      p => p.target.id === metric.metricId || p.target.id === (metric as { mapping?: { targetId: string } }).mapping?.targetId
+      (p: Prediction) => p.target.id === metric.metricId || p.target.id === metric.mapping.targetId
     );
 
     if (prediction) {
@@ -274,26 +283,29 @@ function computeCalibrationScore(
  * Compute coverage for a single metric vs prediction.
  */
 function computeMetricCoverage(
-  metric: { kind: string; value: unknown },
+  metric: OutcomeMetric,
   prediction: { band: { low: number; high: number } }
 ): number {
   switch (metric.kind) {
     case "binary": {
-      const occurred = (metric.value as { occurred: boolean }).occurred;
+      const binaryValue = metric.value as { kind: "binary"; occurred: boolean };
+      const occurred = binaryValue.occurred;
       const prob = (prediction.band.low + prediction.band.high) / 2;
       // Consider covered if probability aligns with outcome
       return occurred === (prob > 0.5) ? 1 : 0;
     }
 
     case "continuous": {
-      const actual = (metric.value as { actual: number }).actual;
+      const contValue = metric.value as { kind: "continuous"; actual: number };
+      const actual = contValue.actual;
       return actual >= prediction.band.low && actual <= prediction.band.high ? 1 : 0;
     }
 
     case "band": {
       // For band outcomes, compute overlap ratio
-      const actualLow = (metric.value as { low: number }).low;
-      const actualHigh = (metric.value as { high: number }).high;
+      const bandValue = metric.value as { kind: "band"; low: number; high: number };
+      const actualLow = bandValue.low;
+      const actualHigh = bandValue.high;
       const predLow = prediction.band.low;
       const predHigh = prediction.band.high;
 

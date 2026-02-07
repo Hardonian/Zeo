@@ -109,7 +109,7 @@ export type ReplayDataset = {
  */
 export type Prediction = {
   target: {
-    kind: "latent_variable" | "metric" | "branch_event";
+    kind: "latent_variable" | "action_outcome" | "branch_event";
     id: string;
   };
   band: { low: number; high: number };

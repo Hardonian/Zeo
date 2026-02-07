@@ -27,7 +27,7 @@ export function buildPredictionBundle(
   engineVersion: string,
   trackedMetrics: Array<{
     metricId: string;
-    targetKind: "latent_variable" | "metric" | "branch_event";
+    targetKind: "latent_variable" | "action_outcome" | "branch_event";
     targetId: string;
   }>
 ): PredictionBundle {
