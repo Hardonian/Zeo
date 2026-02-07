@@ -453,6 +453,7 @@ export type DecisionDraftStatus = "new" | "snoozed" | "dismissed" | "promoted";
 export interface DecisionDraftPromotion {
   decisionId: string;
   promotedAt: string;
+  targetPath?: string;
 }
 
 export interface DecisionDraftRecord {
