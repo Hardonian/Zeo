@@ -5,8 +5,16 @@ import decisionComposerManifest from './builtin/decision-composer/manifest';
 import branchExplorerManifest from './builtin/branch-explorer/manifest';
 import evidenceInboxManifest from './builtin/evidence-inbox/manifest';
 import signalsStripManifest from './builtin/signals-strip/manifest';
-import exampleHtmlManifest from './stitch/example-html/manifest';
-import exampleReactManifest from './stitch/example-react/manifest';
+
+import stitchDecisionComposerManifest from './stitch/stitch_decision_branching_view/decision_composer_panel/manifest';
+import stitchBranchExplorerManifest from './stitch/stitch_decision_branching_view/branch_explorer_panel/manifest';
+import stitchEvidenceInboxManifest from './stitch/stitch_decision_branching_view/evidence_inbox_panel_1/manifest';
+import stitchSignalsManifest from './stitch/stitch_decision_branching_view/signals_strip_panel/manifest';
+import stitchDecisionDashboardManifest from './stitch/stitch_decision_branching_view/zeo_decision_dashboard/manifest';
+import stitchDecisionBranchingManifest from './stitch/stitch_decision_branching_view/decision_branching_view_1/manifest';
+import stitchEvidenceLedgerManifest from './stitch/stitch_decision_branching_view/evidence_&_inputs_ledger/manifest';
+import stitchSensitivityManifest from './stitch/stitch_decision_branching_view/sensitivity_&_flip-thresholds_panel/manifest';
+import stitchBiasInspectorManifest from './stitch/stitch_decision_branching_view/bias_inspector_&_counterweights/manifest';
 
 const BUILTIN_MANIFESTS: UiPanelManifest[] = [
   decisionComposerManifest as UiPanelManifest,
@@ -16,8 +24,15 @@ const BUILTIN_MANIFESTS: UiPanelManifest[] = [
 ];
 
 const STITCH_MANIFESTS: UiPanelManifest[] = [
-  exampleHtmlManifest as UiPanelManifest,
-  exampleReactManifest as UiPanelManifest,
+  stitchDecisionComposerManifest as UiPanelManifest,
+  stitchBranchExplorerManifest as UiPanelManifest,
+  stitchEvidenceInboxManifest as UiPanelManifest,
+  stitchSignalsManifest as UiPanelManifest,
+  stitchDecisionDashboardManifest as UiPanelManifest,
+  stitchDecisionBranchingManifest as UiPanelManifest,
+  stitchEvidenceLedgerManifest as UiPanelManifest,
+  stitchSensitivityManifest as UiPanelManifest,
+  stitchBiasInspectorManifest as UiPanelManifest,
 ];
 
 export const ALL_PANELS = [...BUILTIN_MANIFESTS, ...STITCH_MANIFESTS];
