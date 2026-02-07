@@ -157,27 +157,66 @@ export class ResolutionEngine {
     
     // Get all outcome branches from the graph
     const branches = decision.branchGraph.nodes.filter((n: BranchNode) => n.kind === "outcome");
-    const matches = this.matchOutcomeToBranches(outcome, branches);
+    const matches = this.matchOutcomeToBranches(outcome, branches, opts);
     
-    const resolvedAspects: string[] = [];
-    const unresolvedAspects: string[] = [];
-    const conflictingEvidence: string[] = [];
+    // Determine resolution status and ambiguity
+    const topMatch = matches[0];
+    const secondMatch = matches[1];
     
-    // Analyze what aspects are resolved
-    for (const match of matches) {
-      if (match.confidence > 0.6) {
-        resolvedAspects.push(...match.matchingFeatures);
-      } else if (match.confidence > 0.3) {
-        unresolvedAspects.push(`Possible match to branch ${match.branchId} (${(match.confidence * 100).toFixed(0)}% confidence)`);
-      }
-      
-      conflictingEvidence.push(...match.conflictingFeatures);
+    let status: ResolutionStatus;
+    let ambiguityLevel: "none" | "low" | "medium" | "high";
+    let couldNotResolve = false;
+    let rationale = "";
+    
+    if (matches.length === 0 || !topMatch) {
+      // No match found
+      status = "unresolved";
+      ambiguityLevel = "high";
+      couldNotResolve = true;
+      rationale = "Outcome could not be mapped to any predicted branch.";
+    } else if (topMatch.confidence < 0.5) {
+      // Low confidence match
+      status = "ambiguous";
+      ambiguityLevel = "high";
+      rationale = `Low confidence match (${(topMatch.confidence * 100).toFixed(1)}%). Outcome may not correspond to any predicted branch.`;
+    } else if (secondMatch && (topMatch.confidence - secondMatch.confidence) < 0.2) {
+      // Close second match - ambiguous
+      status = "ambiguous";
+      ambiguityLevel = "medium";
+      rationale = `Multiple plausible branches. Top match: ${(topMatch.confidence * 100).toFixed(1)}%, Second: ${(secondMatch.confidence * 100).toFixed(1)}%`;
+    } else if (topMatch.confidence > opts.ambiguityThreshold && topMatch.matchingFeatures.length >= 3) {
+      // High confidence, good feature match
+      status = "resolved";
+      ambiguityLevel = "none";
+      rationale = `Clear match to branch with ${(topMatch.confidence * 100).toFixed(1)}% confidence.`;
+    } else {
+      // Moderate confidence - partial resolution
+      status = "partially_resolved";
+      ambiguityLevel = "low";
+      rationale = `Partial match with ${(topMatch.confidence * 100).toFixed(1)}% confidence. Some aspects may not align.`;
     }
     
-    // Calculate resolution degree (0-1)
-    const firstMatch = matches[0];
-    const resolutionDegree = firstMatch !== undefined
-      ? Math.min(1, firstMatch.confidence + (firstMatch.matchingFeatures.length * 0.1))
+    // Create mappings for top matches
+    const mappings: OutcomeMapping[] = matches.slice(0, 3).map(match => ({
+      outcomeId: outcome.id,
+      matchedBranchIds: [match.branchId],
+      matchConfidence: {
+        low: Math.max(0, match.confidence - 0.1),
+        high: Math.min(1, match.confidence + 0.1),
+      },
+      mappingRationale: match.rationale,
+      ambiguity: {
+        level: match.confidence > 0.8 ? "none" : match.confidence > 0.5 ? "low" : "medium",
+        description: match.conflictingFeatures.length > 0 
+          ? `Conflicts: ${match.conflictingFeatures.join("; ")}`
+          : "No major conflicts detected",
+      },
+    }));
+    
+    // Calculate overall confidence interval
+    const confidences = matches.map(m => m.confidence);
+    const avgConfidence = confidences.length > 0 
+      ? confidences.reduce((a, b) => a + b, 0) / confidences.length 
       : 0;
     
     return {
@@ -205,7 +244,7 @@ export class ResolutionEngine {
     decision: DecisionRecord,
     outcome: OutcomeRecord
   ): PartialResolution {
-    const branches = decision.branchGraph.nodes.filter(n => n.kind === "outcome");
+    const branches = decision.branchGraph.nodes.filter((n: BranchNode) => n.kind === "outcome");
     const matches = this.matchOutcomeToBranches(outcome, branches);
     
     const resolvedAspects: string[] = [];
@@ -224,8 +263,9 @@ export class ResolutionEngine {
     }
     
     // Calculate resolution degree (0-1)
-    const resolutionDegree = matches.length > 0
-      ? Math.min(1, matches[0].confidence + (matches[0].matchingFeatures.length * 0.1))
+    const firstMatch = matches[0];
+    const resolutionDegree = firstMatch !== undefined
+      ? Math.min(1, firstMatch.confidence + (firstMatch.matchingFeatures.length * 0.1))
       : 0;
     
     return {
@@ -245,7 +285,7 @@ export class ResolutionEngine {
       .toLowerCase()
       .replace(/[^\w\s]/g, " ")
       .split(/\s+/)
-      .filter(t => t.length > 2);
+      .filter((t: string) => t.length > 2);
   }
   
   /**
@@ -281,7 +321,7 @@ export class ResolutionEngine {
     const outcomeLower = outcome.toLowerCase();
     
     // Simple conflict detection - opposite outcomes
-    const opposites = [
+    const opposites: [string, string][] = [
       ["accept", "reject"],
       ["success", "failure"],
       ["win", "lose"],
