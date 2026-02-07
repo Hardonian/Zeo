@@ -1,6 +1,6 @@
-export * from "./types.js";
-export * from "./engine.js";
-export {
+export type * from "./types.js";
+export type * from "./engine.js";
+export type {
   IntervalCalibrationEngine,
   IntervalCalibrationBucket,
   ExtendedCalibrationResult,
