@@ -166,6 +166,11 @@ async function writePacketFiles(packetDir: string, json: string, markdown: strin
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
 
+  if (args.replay) {
+    const exitCode = await runReplayCommand(args);
+    process.exit(exitCode);
+  }
+
   if (args.signals) {
     await runSignalsCommand(args.signals, args.catalog);
     return;
