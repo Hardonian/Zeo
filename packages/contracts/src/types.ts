@@ -197,3 +197,260 @@ export type UiStateSnapshot = {
     lastRslState: unknown | null;
   };
 };
+
+// =============================================================================
+// EXTERNAL SIGNALS LAYER TYPES
+// =============================================================================
+
+export type SourceKind = "market" | "news" | "macro" | "geopolitics" | "ops" | "custom";
+
+export type TrustTier = "primary" | "secondary" | "commentary";
+
+export type UpdateFrequency = "realtime" | "hourly" | "daily" | "weekly" | "monthly" | "event";
+
+export type Directionality =
+  | "higher_is_risk"
+  | "lower_is_risk"
+  | "higher_is_better"
+  | "lower_is_better"
+  | "neutral";
+
+export type TransformMethod = "none" | "zscore" | "log" | "diff";
+
+export type VolatilityHint = "low" | "medium" | "high";
+
+export type SignalDomain = "market" | "macro" | "geopolitics" | "news" | "ops";
+
+export interface SourceWeightBounds {
+  min: number;
+  max: number;
+}
+
+export interface SourceDescriptor {
+  sourceId: string;
+  kind: SourceKind;
+  trustTier: TrustTier;
+  defaultWeightBounds: SourceWeightBounds;
+  recencyHalfLifeHours: number;
+  sensationalPenalty: number;
+  singleSourcePenalty: number;
+  notes?: string;
+}
+
+export interface DefaultPrior {
+  low: number;
+  high: number;
+  volatilityHint?: VolatilityHint;
+}
+
+export interface SignalTransform {
+  method: TransformMethod;
+  params?: Record<string, string | number>;
+}
+
+export interface ProvenanceRequirements {
+  requireUrl?: boolean;
+  requirePointer?: boolean;
+  requireChecksum: true;
+}
+
+export interface SignalCatalogEntry {
+  signalId: string;
+  displayName: string;
+  domain: SignalDomain;
+  units: string;
+  directionality: Directionality;
+  updateFrequency: UpdateFrequency;
+  allowedSourceIds: string[];
+  defaultPrior: DefaultPrior;
+  weightBounds: SourceWeightBounds;
+  transforms: SignalTransform;
+  provenanceRequirements: ProvenanceRequirements;
+}
+
+export interface MarketSeriesItem {
+  kind: "market";
+  sourceId: string;
+  variable: string;
+  t: string;
+  v: number;
+  meta?: Record<string, unknown>;
+}
+
+export interface NewsItem {
+  kind: "news";
+  sourceId: string;
+  id: string;
+  publishedAt: string;
+  title: string;
+  summary?: string;
+  url: string;
+  meta?: {
+    author?: string;
+    wordCount?: number;
+    hasImage?: boolean;
+  };
+}
+
+export interface MacroPrintItem {
+  kind: "macro";
+  sourceId: string;
+  indicator: string;
+  period: string;
+  value: number;
+  releasedAt: string;
+  meta?: {
+    previousValue?: number;
+    forecastValue?: number;
+    revision?: number;
+    source?: string;
+  };
+}
+
+export interface GeopoliticsItem {
+  kind: "geopolitics";
+  sourceId: string;
+  eventId: string;
+  occurredAt: string;
+  category: string;
+  summary: string;
+  url?: string;
+  meta?: {
+    participants?: string[];
+    severity?: "low" | "medium" | "high" | "critical";
+    relatedEvents?: string[];
+  };
+}
+
+export type RawSourceItem = MarketSeriesItem | NewsItem | MacroPrintItem | GeopoliticsItem;
+
+export interface ValueBand {
+  low: number;
+  high: number;
+}
+
+export interface RawReference {
+  kind: string;
+  id: string;
+}
+
+export interface SignalObservation {
+  observationId: string;
+  signalId: string;
+  t: string;
+  valueBand: ValueBand;
+  weightApplied: number;
+  qualityScore: number;
+  biasAdjustmentsApplied: string[];
+  provenance: ProvenancePointer[];
+  sourceId: string;
+  rawRef: RawReference;
+}
+
+export interface ObservationBatch {
+  batchId: string;
+  createdAt: string;
+  items: SignalObservation[];
+  catalogHash: string;
+  sourcesHash: string;
+  mappingsHash: string;
+  inputChecksum: string;
+}
+
+export interface SourceMappingRule {
+  rawKind: string;
+  rawVariable: string;
+  signalId: string;
+  transform: SignalTransform;
+  directionalHint?: string;
+  qualityFlags?: string[];
+  newsRules?: Record<string, unknown>;
+}
+
+export interface CatalogDocuments {
+  signals: SignalCatalogEntry[];
+  sources: SourceDescriptor[];
+  mappings: SourceMappingRule[];
+}
+
+export interface CatalogHashes {
+  catalogHash: string;
+  sourcesHash: string;
+  mappingsHash: string;
+}
+
+// =============================================================================
+// RUNTIME GUARDS
+// =============================================================================
+
+export function enforceObservationProvenance(observation: SignalObservation): void {
+  if (!observation.provenance || observation.provenance.length === 0) {
+    throw new Error(
+      `Observation ${observation.observationId} missing provenance. ` +
+      `Every observation must carry source, timestamp, and checksum.`
+    );
+  }
+
+  for (const pointer of observation.provenance) {
+    if (!pointer.sourceId) {
+      throw new Error(
+        `Provenance pointer missing sourceId for observation ${observation.observationId}`
+      );
+    }
+    if (!pointer.checksum) {
+      throw new Error(
+        `Provenance pointer missing checksum for observation ${observation.observationId}`
+      );
+    }
+    if (!pointer.capturedAt) {
+      throw new Error(
+        `Provenance pointer missing capturedAt for observation ${observation.observationId}`
+      );
+    }
+  }
+}
+
+export function enforceWeightBounds(
+  observation: SignalObservation,
+  catalogEntry: SignalCatalogEntry
+): void {
+  const { min, max } = catalogEntry.weightBounds;
+
+  if (observation.weightApplied < min || observation.weightApplied > max) {
+    throw new Error(
+      `Observation ${observation.observationId} weight ${observation.weightApplied} ` +
+      `outside bounds [${min}, ${max}] for signal ${catalogEntry.signalId}`
+    );
+  }
+
+  if (observation.qualityScore < 0 || observation.qualityScore > 1) {
+    throw new Error(
+      `Observation ${observation.observationId} qualityScore ${observation.qualityScore} ` +
+      `must be in range [0, 1]`
+    );
+  }
+}
+
+export function isValidSourceKind(kind: string): kind is SourceKind {
+  return ["market", "news", "macro", "geopolitics", "ops", "custom"].includes(kind);
+}
+
+export function isValidTrustTier(tier: string): tier is TrustTier {
+  return ["primary", "secondary", "commentary"].includes(tier);
+}
+
+export function isValidDirectionality(dir: string): dir is Directionality {
+  return [
+    "higher_is_risk",
+    "lower_is_risk",
+    "higher_is_better",
+    "lower_is_better",
+    "neutral",
+  ].includes(dir);
+}
+
+export function isRawSourceItem(item: Record<string, unknown>): item is RawSourceItem {
+  const kind = item.kind;
+  if (typeof kind !== "string") return false;
+  return ["market", "news", "macro", "geopolitics"].includes(kind);
+}
