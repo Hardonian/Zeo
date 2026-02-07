@@ -10,6 +10,13 @@
     "sourceMap": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@zeo/contracts": ["packages/contracts/src"],
+      "@zeo/adapters": ["packages/adapters/src"],
+      "@zeo/warehouse": ["packages/warehouse/src"],
+      "@zeo/analytics": ["packages/analytics/src"]
+    }
   }
 }

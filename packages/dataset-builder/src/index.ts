@@ -1,11 +1,12 @@
 import type { ObservationBatch, SignalObservation, DecisionSpec } from "@zeo/contracts";
 import type { Adapter } from "@zeo/adapters";
-import { checksum } from "@zeo/warehouse";
+import { computeSha256 } from "@zeo/warehouse";
 import {
   createRealityAdapterRegistry,
   getDefaultCatalogEntries,
   getDefaultSourceDescriptors,
 } from "@zeo/adapters";
+import { simpleHash } from "@zeo/adapters";
 
 export interface DatasetBuilderConfig {
   adapterIds?: string[];
@@ -30,11 +31,16 @@ export interface ReplayDataset {
   sourcesHash: string;
   observations: SignalObservation[];
   batches: ObservationBatch[];
-  decisions?: DecisionSpec[];
+  decisions: DecisionSpec[] | undefined;
   catalogEntries: ReturnType<typeof getDefaultCatalogEntries>;
   sourceDescriptors: ReturnType<typeof getDefaultSourceDescriptors>;
   adapterVersions: Record<string, string>;
   checksum: string;
+}
+
+async function hashData(data: unknown): Promise<string> {
+  const str = typeof data === "string" ? data : JSON.stringify(data);
+  return simpleHash(str);
 }
 
 export function createDatasetBuilder() {
@@ -86,6 +92,7 @@ export function createDatasetBuilder() {
     
     let batchIndex = 0;
     for (const [, obsList] of batchMap) {
+      const batchChecksum = await hashData(obsList);
       const batch: ObservationBatch = {
         batchId: `batch_${batchIndex.toString().padStart(4, "0")}`,
         createdAt: new Date().toISOString(),
@@ -93,7 +100,7 @@ export function createDatasetBuilder() {
         catalogHash: "",
         sourcesHash: "",
         mappingsHash: "",
-        inputChecksum: checksum(obsList),
+        inputChecksum: batchChecksum,
       };
       allBatches.push(batch);
       batchIndex++;
@@ -102,15 +109,25 @@ export function createDatasetBuilder() {
     const catalogEntries = getDefaultCatalogEntries();
     const sourceDescriptors = getDefaultSourceDescriptors();
     
-    const catalogHash = checksum(catalogEntries);
-    const sourcesHash = checksum(sourceDescriptors);
-    const mappingsHash = checksum({});
+    const catalogHash = await hashData(catalogEntries);
+    const sourcesHash = await hashData(sourceDescriptors);
+    const mappingsHash = await hashData({});
     
     for (const batch of allBatches) {
       batch.catalogHash = catalogHash;
       batch.sourcesHash = sourcesHash;
       batch.mappingsHash = mappingsHash;
     }
+    
+    const datasetChecksum = await hashData({
+      id: `dataset_${Date.now()}`,
+      version: "0.3.4",
+      timeRange: config.timeRange,
+      catalogHash,
+      sourcesHash,
+      observationCount: allObservations.length,
+      batchCount: allBatches.length,
+    });
     
     const dataset: ReplayDataset = {
       id: `dataset_${Date.now()}`,
@@ -121,22 +138,12 @@ export function createDatasetBuilder() {
       sourcesHash,
       observations: allObservations,
       batches: allBatches,
-      decisions: config.includeDecisions ? config.decisionTemplates : undefined,
+      decisions: config.includeDecisions ? config.decisionTemplates : [],
       catalogEntries,
       sourceDescriptors,
       adapterVersions: Object.fromEntries(enabledAdapters.map((a: Adapter) => [a.info.id, a.info.version])),
-      checksum: "",
+      checksum: datasetChecksum,
     };
-    
-    dataset.checksum = checksum({
-      id: dataset.id,
-      version: dataset.version,
-      timeRange: dataset.timeRange,
-      catalogHash: dataset.catalogHash,
-      sourcesHash: dataset.sourcesHash,
-      observationCount: dataset.observations.length,
-      batchCount: dataset.batches.length,
-    });
     
     return dataset;
   }
@@ -189,8 +196,11 @@ export function validateDataset(dataset: ReplayDataset): { valid: boolean; error
   }
   
   for (let i = 1; i < dataset.observations.length; i++) {
-    const prevTime = new Date(dataset.observations[i - 1].t).getTime();
-    const currTime = new Date(dataset.observations[i].t).getTime();
+    const prevObs = dataset.observations[i - 1];
+    const currObs = dataset.observations[i];
+    if (!prevObs || !currObs) continue;
+    const prevTime = new Date(prevObs.t).getTime();
+    const currTime = new Date(currObs.t).getTime();
     if (currTime < prevTime) {
       errors.push("Observations are not time-ordered");
       break;

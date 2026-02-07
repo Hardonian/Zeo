@@ -92,3 +92,12 @@ function canonicalizeDecisionSpec(spec: DecisionSpec): unknown {
 export function deriveSeedFromHashes(decisionHash: string, observationsHash: string): string {
   return createHash("sha256").update(`seed:${decisionHash}:${observationsHash}`).digest("hex").slice(0, 32);
 }
+
+export function hashDataset(dataset: { datasetId: string; cases: unknown[] }): string {
+  const canonical = {
+    datasetId: dataset.datasetId,
+    caseCount: dataset.cases.length,
+  };
+  const json = JSON.stringify(canonical);
+  return createHash("sha256").update(json).digest("hex");
+}
