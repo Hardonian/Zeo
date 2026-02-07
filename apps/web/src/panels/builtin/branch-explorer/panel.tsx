@@ -92,6 +92,7 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
                   )}
                 </ul>
               </div>
+              </div>
 
               <div className="bg-white border border-gray-200 rounded-lg p-3">
                 <h3 className="font-medium text-gray-900 mb-2">Evaluations</h3>
