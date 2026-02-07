@@ -201,9 +201,9 @@ export function createMemoryAdapter(): InboxStorage {
         createdAt: now,
         source,
         scenarioTextChecksum: checksum,
-        scenarioTextProvenance: [{ type: 'derived', hash: checksum }],
+        scenarioTextProvenance: [{ kind: 'text', sourceId: 'inbox', offset: 0, length: checksum.length, capturedAt: now, checksum: checksum }],
         scenarioDraft: scenario,
-        status: 'pending',
+        status: 'new',
       };
       
       memoryStore.set(draftId, record);
@@ -279,7 +279,7 @@ export function createMemoryAdapter(): InboxStorage {
       return updatedDraft;
     },
 
-    async promoteDraft(draftId: string, decisionId: string): Promise<DecisionDraftRecord> {
+    async promoteDraft(draftId: string, options: { promotedAt: string; targetPath?: string }): Promise<DecisionDraftRecord> {
       const draft = memoryStore.get(draftId);
       
       if (!draft) {
@@ -290,8 +290,9 @@ export function createMemoryAdapter(): InboxStorage {
         ...draft,
         status: "promoted",
         promotion: {
-          decisionId,
-          promotedAt: new Date().toISOString(),
+          decisionId: nanoid(),
+          promotedAt: options.promotedAt,
+          ...(options.targetPath ? { targetPath: options.targetPath } : {}),
         },
       };
       
