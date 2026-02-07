@@ -5,3 +5,8 @@ export * from "./hashing.js";
 export * from "./pruning.js";
 export * from "./flip-conditions.js";
 export * from "./evidence.js";
+export {
+  LearningDecisionRunner,
+  LearningAwareDecisionOptions,
+  LearningAwareDecisionResult,
+} from "./learning-integration.js";

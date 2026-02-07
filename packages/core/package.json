@@ -1,6 +1,6 @@
 {
   "name": "@zeo/core",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "main": "dist/index.js",
@@ -20,6 +20,7 @@
   "dependencies": {
     "@zeo/contracts": "workspace:*",
     "@zeo/models": "workspace:*",
+    "@zeo/memory": "workspace:*",
     "@zeo/rsl": "workspace:*",
     "@zeo/timeseries": "workspace:*",
     "@zeo/causal": "workspace:*",
