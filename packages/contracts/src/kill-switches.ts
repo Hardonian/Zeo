@@ -5,6 +5,9 @@
  * All kill-switches are controllable via environment variables.
  */
 
+// Declare process for environments that support it (Node.js)
+declare const process: { env: Record<string, string | undefined> } | undefined;
+
 export type KillSwitch =
   | 'ai_assist'
   | 'freeze_markets'
