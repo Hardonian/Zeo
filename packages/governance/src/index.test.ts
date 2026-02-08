@@ -8,84 +8,133 @@ import {
   getDefaultRiskProfile,
   GOVERNANCE_DEFAULTS,
   RISK_TIER_CONFIG,
-  DOMAIN_RISK_MATRIX
+  DOMAIN_RISK_MATRIX,
+  type DecisionSpec,
+  type EvidenceEvent,
+  type PolicyConfig,
+  type BranchGraph,
+  type BranchNode,
+  type BranchEdge
 } from "./index.js";
+
+// Helper to create minimal valid DecisionSpec
+function createDecisionSpec(overrides: Partial<DecisionSpec> = {}): DecisionSpec {
+  return {
+    id: "test-" + Math.random().toString(36).slice(2),
+    title: "Test Decision",
+    context: "Test context for governance evaluation",
+    createdAt: new Date().toISOString(),
+    horizon: "days",
+    agents: [],
+    actions: [],
+    constraints: [],
+    assumptions: [],
+    ...overrides
+  };
+}
+
+// Helper to create minimal valid EvidenceEvent
+function createEvidenceEvent(overrides: Partial<EvidenceEvent> = {}): EvidenceEvent {
+  return {
+    id: "evidence-" + Math.random().toString(36).slice(2),
+    type: "text",
+    sourceId: "test-source",
+    capturedAt: new Date().toISOString(),
+    checksum: "abc123",
+    observations: [],
+    claims: [],
+    constraints: [],
+    ...overrides
+  };
+}
+
+// Helper to create minimal valid BranchGraph
+function createBranchGraph(overrides: Partial<BranchGraph> = {}): BranchGraph {
+  return {
+    id: "graph-" + Math.random().toString(36).slice(2),
+    decisionId: "test-decision",
+    createdAt: new Date().toISOString(),
+    nodes: [],
+    edges: [],
+    ...overrides
+  };
+}
 
 describe("governance", () => {
   describe("evaluateRiskTier", () => {
     test("returns informational for research domain", () => {
-      const spec = { title: "Market Research Analysis", context: "Analyzing market trends" };
+      const spec = createDecisionSpec({ title: "Market Research Analysis", context: "Analyzing market trends" });
       const result = evaluateRiskTier(spec, 0);
       
       expect(result.tier).toBe("informational");
     });
 
     test("returns operational for ops domain", () => {
-      const spec = { title: "Ops Incident Response", context: "Handling production incident" };
+      const spec = createDecisionSpec({ title: "Ops Incident Response", context: "Handling production incident" });
       const result = evaluateRiskTier(spec, 0);
       
       expect(result.tier).toBe("operational");
     });
 
     test("returns strategic for negotiation domain", () => {
-      const spec = { title: "Vendor Negotiation", context: "Negotiating contract terms" };
+      const spec = createDecisionSpec({ title: "Vendor Negotiation", context: "Negotiating contract terms" });
       const result = evaluateRiskTier(spec, 0);
       
       expect(result.tier).toBe("strategic");
     });
 
     test("returns existential for legal domain", () => {
-      const spec = { title: "Legal Settlement", context: "Settlement agreement review" };
+      const spec = createDecisionSpec({ title: "Legal Settlement", context: "Settlement agreement review" });
       const result = evaluateRiskTier(spec, 0);
       
       expect(result.tier).toBe("existential");
     });
 
     test("escalates based on action count", () => {
-      const spec = { 
+      const spec = createDecisionSpec({ 
         title: "Simple Analysis", 
         context: "Basic analysis",
-        actions: Array(6).fill({}) // 6 actions
-      };
+        actions: Array(6).fill({ id: "a", label: "Action", actorId: "agent1", kind: "communicate" } as any)
+      });
       const result = evaluateRiskTier(spec, 0);
       
       expect(result.tier).toBe("operational"); // Escalated from informational
     });
 
     test("escalates based on agent count", () => {
-      const spec = { 
+      const spec = createDecisionSpec({ 
         title: "Team Analysis", 
         context: "Multi-agent review",
-        agents: Array(4).fill({}), // 4 agents
+        agents: Array(4).fill({ id: "a", name: "Agent", role: "self" }),
         actions: []
-      };
+      });
       const result = evaluateRiskTier(spec, 0);
       
       expect(result.tier).toBe("operational"); // Escalated from informational
     });
 
     test("detects existential keywords", () => {
-      const spec = { 
+      const spec = createDecisionSpec({ 
         title: "Emergency Protocol", 
         context: "Safety compliance review required"
-      };
+      });
       const result = evaluateRiskTier(spec, 0);
       
       expect(result.tier).toBe("existential");
     });
 
     test("detects strategic keywords", () => {
-      const spec = { 
+      const spec = createDecisionSpec({ 
         title: "Partnership Review", 
         context: "Strategic investment analysis"
-      };
+      });
       const result = evaluateRiskTier(spec, 0);
       
       expect(result.tier).toBe("strategic");
     });
 
     test("evidence count affects required minimum", () => {
-      const spec = { title: "Analysis", context: "Simple analysis" };
+      const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
       
       const result = evaluateRiskTier(spec, 10);
       
@@ -93,7 +142,7 @@ describe("governance", () => {
     });
 
     test("respects forbidden domains for strategic tier", () => {
-      const spec = { title: "Partnership Contract", context: "Strategic partnership" };
+      const spec = createDecisionSpec({ title: "Partnership Contract", context: "Strategic partnership" });
       const result = evaluateRiskTier(spec, 0);
       
       expect(result.forbiddenDomains).toContain("medical");
@@ -101,7 +150,7 @@ describe("governance", () => {
     });
 
     test("respects forbidden domains for existential tier", () => {
-      const spec = { title: "Legal Settlement", context: "Legal review" };
+      const spec = createDecisionSpec({ title: "Legal Settlement", context: "Legal review" });
       const result = evaluateRiskTier(spec, 0);
       
       expect(result.forbiddenDomains).toContain("medical");
@@ -114,9 +163,9 @@ describe("governance", () => {
   describe("evaluateEvidenceRisk", () => {
     test("returns meetsThreshold true when evidence meets required minimum", () => {
       const evidence = [
-        { id: "1", type: "text", capturedAt: new Date().toISOString(), claims: [] },
-        { id: "2", type: "document", capturedAt: new Date().toISOString(), claims: [] },
-        { id: "3", type: "text", capturedAt: new Date().toISOString(), claims: [] }
+        createEvidenceEvent({ type: "text" }),
+        createEvidenceEvent({ type: "document" }),
+        createEvidenceEvent({ type: "text" })
       ];
       
       const result = evaluateEvidenceRisk(evidence, 3);
@@ -127,7 +176,7 @@ describe("governance", () => {
 
     test("returns meetsThreshold false when evidence below minimum", () => {
       const evidence = [
-        { id: "1", type: "text", capturedAt: new Date().toISOString(), claims: [] }
+        createEvidenceEvent({ type: "text" })
       ];
       
       const result = evaluateEvidenceRisk(evidence, 3);
@@ -138,7 +187,7 @@ describe("governance", () => {
 
     test("checks for document or text evidence variety", () => {
       const evidence = [
-        { id: "1", type: "signal", capturedAt: new Date().toISOString(), claims: [] }
+        createEvidenceEvent({ type: "signal" as any })
       ];
       
       const result = evaluateEvidenceRisk(evidence, 1);
@@ -148,7 +197,7 @@ describe("governance", () => {
 
     test("accepts text evidence", () => {
       const evidence = [
-        { id: "1", type: "text", capturedAt: new Date().toISOString(), claims: [] }
+        createEvidenceEvent({ type: "text" })
       ];
       
       const result = evaluateEvidenceRisk(evidence, 1);
@@ -158,7 +207,7 @@ describe("governance", () => {
 
     test("accepts document evidence", () => {
       const evidence = [
-        { id: "1", type: "document", capturedAt: new Date().toISOString(), claims: [] }
+        createEvidenceEvent({ type: "document" })
       ];
       
       const result = evaluateEvidenceRisk(evidence, 1);
@@ -171,7 +220,7 @@ describe("governance", () => {
       oldDate.setDate(oldDate.getDate() - 10); // 10 days ago
       
       const evidence = [
-        { id: "1", type: "document", capturedAt: oldDate.toISOString(), claims: [] }
+        createEvidenceEvent({ capturedAt: oldDate.toISOString(), type: "document" })
       ];
       
       const result = evaluateEvidenceRisk(evidence, 1);
@@ -180,7 +229,7 @@ describe("governance", () => {
     });
 
     test("allows no evidence requirement", () => {
-      const evidence: Array<{ id: string; type: string; capturedAt: string; claims: unknown[] }> = [];
+      const evidence: EvidenceEvent[] = [];
       
       const result = evaluateEvidenceRisk(evidence, 0);
       
@@ -188,7 +237,7 @@ describe("governance", () => {
     });
 
     test("determines risk level based on gaps", () => {
-      const evidence: Array<{ id: string; type: string; capturedAt: string; claims: unknown[] }> = [];
+      const evidence: EvidenceEvent[] = [];
       
       const result = evaluateEvidenceRisk(evidence, 5);
       
@@ -197,7 +246,7 @@ describe("governance", () => {
 
     test("returns medium risk for single gap", () => {
       const evidence = [
-        { id: "1", type: "signal", capturedAt: new Date().toISOString(), claims: [] }
+        createEvidenceEvent({ type: "signal" as any })
       ];
       
       const result = evaluateEvidenceRisk(evidence, 5);
@@ -207,9 +256,9 @@ describe("governance", () => {
 
     test("returns low risk for no gaps", () => {
       const evidence = [
-        { id: "1", type: "document", capturedAt: new Date().toISOString(), claims: [] },
-        { id: "2", type: "document", capturedAt: new Date().toISOString(), claims: [] },
-        { id: "3", type: "document", capturedAt: new Date().toISOString(), claims: [] }
+        createEvidenceEvent({ type: "document" }),
+        createEvidenceEvent({ type: "document" }),
+        createEvidenceEvent({ type: "document" })
       ];
       
       const result = evaluateEvidenceRisk(evidence, 3);
@@ -276,7 +325,7 @@ describe("governance", () => {
 
   describe("validatePolicyConfig", () => {
     test("validates correct policy config", () => {
-      const config = {
+      const config: PolicyConfig = {
         id: "test-policy",
         version: "1.0.0",
         domainAllowlist: ["research", "analysis"],
@@ -295,7 +344,7 @@ describe("governance", () => {
     });
 
     test("rejects missing policy ID", () => {
-      const config = {
+      const config: PolicyConfig = {
         id: "",
         version: "1.0.0",
         domainAllowlist: [],
@@ -314,7 +363,7 @@ describe("governance", () => {
     });
 
     test("rejects missing version", () => {
-      const config = {
+      const config: PolicyConfig = {
         id: "test-policy",
         version: "",
         domainAllowlist: [],
@@ -333,7 +382,7 @@ describe("governance", () => {
     });
 
     test("rejects overlapping domain allowlist and denylist", () => {
-      const config = {
+      const config: PolicyConfig = {
         id: "test-policy",
         version: "1.0.0",
         domainAllowlist: ["research", "analysis", "legal"],
@@ -352,7 +401,7 @@ describe("governance", () => {
     });
 
     test("rejects overlapping inference type lists", () => {
-      const config = {
+      const config: PolicyConfig = {
         id: "test-policy",
         version: "1.0.0",
         domainAllowlist: [],
@@ -371,7 +420,7 @@ describe("governance", () => {
     });
 
     test("rejects invalid createdAt timestamp", () => {
-      const config = {
+      const config: PolicyConfig = {
         id: "test-policy",
         version: "1.0.0",
         domainAllowlist: [],
@@ -393,7 +442,7 @@ describe("governance", () => {
       const createdAt = new Date();
       const updatedAt = new Date(createdAt.getTime() - 1000);
       
-      const config = {
+      const config: PolicyConfig = {
         id: "test-policy",
         version: "1.0.0",
         domainAllowlist: [],
@@ -414,9 +463,9 @@ describe("governance", () => {
 
   describe("applyGovernanceRules", () => {
     test("approves decision with sufficient evidence", () => {
-      const spec = { title: "Analysis", context: "Research analysis" };
+      const spec = createDecisionSpec({ title: "Analysis", context: "Research analysis" });
       const evidence = [
-        { id: "1", type: "document", capturedAt: new Date().toISOString(), claims: [] }
+        createEvidenceEvent({ type: "document" })
       ];
       
       const result = applyGovernanceRules({
@@ -428,8 +477,8 @@ describe("governance", () => {
     });
 
     test("rejects decision with insufficient evidence", () => {
-      const spec = { title: "Strategic Analysis", context: "Partnership review" };
-      const evidence: Array<{ id: string; type: string; capturedAt: string; claims: unknown[] }> = [];
+      const spec = createDecisionSpec({ title: "Strategic Analysis", context: "Partnership review" });
+      const evidence: EvidenceEvent[] = [];
       
       const result = applyGovernanceRules({
         decisionSpec: spec,
@@ -440,7 +489,7 @@ describe("governance", () => {
     });
 
     test("includes risk profile in result", () => {
-      const spec = { title: "Analysis", context: "Simple analysis" };
+      const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
       
       const result = applyGovernanceRules({
         decisionSpec: spec,
@@ -453,7 +502,7 @@ describe("governance", () => {
     });
 
     test("creates audit entry for all reviews", () => {
-      const spec = { title: "Analysis", context: "Simple analysis" };
+      const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
       
       const result = applyGovernanceRules({
         decisionSpec: spec,
@@ -466,7 +515,7 @@ describe("governance", () => {
     });
 
     test("returns warnings for evidence gaps", () => {
-      const spec = { title: "Strategic Analysis", context: "Partnership review" };
+      const spec = createDecisionSpec({ title: "Strategic Analysis", context: "Partnership review" });
       
       const result = applyGovernanceRules({
         decisionSpec: spec,
@@ -477,8 +526,8 @@ describe("governance", () => {
     });
 
     test("blocks domain in policy denylist", () => {
-      const spec = { title: "Analysis", context: "Legal research" };
-      const policy = {
+      const spec = createDecisionSpec({ title: "Analysis", context: "Legal research" });
+      const policy: PolicyConfig = {
         id: "restrictive-policy",
         version: "1.0.0",
         domainAllowlist: [],
@@ -501,8 +550,8 @@ describe("governance", () => {
     });
 
     test("warns when domain not in policy allowlist", () => {
-      const spec = { title: "Analysis", context: "Research analysis" };
-      const policy = {
+      const spec = createDecisionSpec({ title: "Analysis", context: "Research analysis" });
+      const policy: PolicyConfig = {
         id: "allowlist-policy",
         version: "1.0.0",
         domainAllowlist: ["negotiation"],
@@ -524,20 +573,20 @@ describe("governance", () => {
     });
 
     test("warns for deep branching in informational decisions", () => {
-      const spec = { title: "Analysis", context: "Simple analysis" };
-      const branchGraph = {
+      const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
+      const branchGraph = createBranchGraph({
         nodes: [
-          { id: "root", type: "state", description: "Root" },
-          { id: "child1", type: "branch", description: "Child 1" },
-          { id: "child2", type: "branch", description: "Child 2" },
-          { id: "grandchild", type: "branch", description: "Grandchild" }
+          { id: "root", label: "Root", kind: "state", notes: [], dependencies: [] },
+          { id: "child1", label: "Child 1", kind: "branch", notes: [], dependencies: [] },
+          { id: "child2", label: "Child 2", kind: "branch", notes: [], dependencies: [] },
+          { id: "grandchild", label: "Grandchild", kind: "branch", notes: [], dependencies: [] }
         ],
         edges: [
-          { from: "root", to: "child1", probability: 0.5 },
-          { from: "root", to: "child2", probability: 0.5 },
-          { from: "child1", to: "grandchild", probability: 0.5 }
+          { id: "e1", from: "root", to: "child1", notes: [] },
+          { id: "e2", from: "root", to: "child2", notes: [] },
+          { id: "e3", from: "child1", to: "grandchild", notes: [] }
         ]
-      };
+      });
       
       const result = applyGovernanceRules({
         decisionSpec: spec,
@@ -549,15 +598,16 @@ describe("governance", () => {
     });
 
     test("warns for high dependency count", () => {
-      const spec = { title: "Analysis", context: "Simple analysis" };
-      const branchGraph = {
-        nodes: [{ id: "root", type: "state", description: "Root" }],
+      const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
+      const branchGraph = createBranchGraph({
+        nodes: [{ id: "root", label: "Root", kind: "state", notes: [], dependencies: [] }],
         edges: Array(15).fill(null).map((_, i) => ({
+          id: `e${i}`,
           from: `node${i}`,
           to: `node${i + 1}`,
-          probability: 0.5
+          notes: []
         }))
-      };
+      });
       
       const result = applyGovernanceRules({
         decisionSpec: spec,
@@ -569,20 +619,20 @@ describe("governance", () => {
     });
 
     test("handles missing branch graph gracefully", () => {
-      const spec = { title: "Analysis", context: "Simple analysis" };
+      const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
       
       const result = applyGovernanceRules({
         decisionSpec: spec,
-        evidenceEvents: []
+ []
       });
       
-      expect(result.approved).toBe(false); // No evidence
+        evidenceEvents:      expect(result.approved).toBe(false); // No evidence
       expect(result.riskProfile).toBeDefined();
     });
 
     test("rejects invalid policy config", () => {
-      const spec = { title: "Analysis", context: "Simple analysis" };
-      const invalidPolicy = {
+      const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
+      const invalidPolicy: PolicyConfig = {
         id: "",
         version: "1.0.0",
         domainAllowlist: [],

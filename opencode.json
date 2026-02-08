@@ -43,7 +43,7 @@
         "setCacheKey": true,
         "headers": {
           "HTTP-Referer": "https://opencode.ai",
-          "X-Title": "OpenCode Zen (Scott) — OpenRouter Only"
+          "X-Title": "OpenCode Zen (Scott) - OpenRouter Only"
         }
       },
       "models": {
