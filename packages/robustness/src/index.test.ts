@@ -427,6 +427,7 @@ describe("Result Structure", () => {
     const result = runAllRobustnessChecks(data);
 
     result.results.forEach((r) => {
+      expect(r.score).not.toBeNaN();
       expect(r.score).toBeGreaterThanOrEqual(0);
       expect(r.score).toBeLessThanOrEqual(1);
     });
@@ -437,6 +438,8 @@ describe("Result Structure", () => {
     const result = runAllRobustnessChecks(data);
 
     result.results.forEach((r) => {
+      expect(r.bands.low).not.toBeNaN();
+      expect(r.bands.high).not.toBeNaN();
       expect(r.bands.low).toBeLessThanOrEqual(r.bands.high);
       expect(r.bands.low).toBeGreaterThanOrEqual(0);
       expect(r.bands.high).toBeGreaterThanOrEqual(0);

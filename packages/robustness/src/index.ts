@@ -225,7 +225,9 @@ export function assessConfoundingRisk(
     correlation(treatmentValues, cov)
   );
 
-  const maxCovariateCorr = Math.max(...covariateCorrelations.map(Math.abs));
+  const maxCovariateCorr = covariateCorrelations.length > 0
+    ? Math.max(...covariateCorrelations.map(Math.abs))
+    : 0;
   const significantCovariates = covariateCorrelations.filter(
     c => Math.abs(c) > correlationThreshold
   ).length;
