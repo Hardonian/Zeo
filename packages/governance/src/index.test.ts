@@ -621,7 +621,7 @@ describe("governance", () => {
       const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
       const branchGraph = createBranchGraph({
         nodes: [{ id: "root", label: "Root", kind: "state", notes: [], dependencies: [] }],
-        edges: Array(15).fill(null).map((_, i) => ({
+        edges: Array(15).fill(null).map((_, i): { id: string; from: string; to: string; notes: string[] } => ({
           id: `e${i}`,
           from: `node${i}`,
           to: `node${i + 1}`,

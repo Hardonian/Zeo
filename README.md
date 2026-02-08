@@ -267,12 +267,34 @@ pnpm -C apps/cli start -- --example ops --out result.json
   - FactCandidate type and promotion rules
   - CLI depth/json/out flags
 - v0.1.0 scaffold (2026-02-07)
-- Next: MVP build per `plan/PROJECT_PLAN.md`
+## License
+
+MIT License - see `LICENSE` file.
+
+## Security
+
+For vulnerability reporting, see `SECURITY.md`. Do not open public issues for security concerns.
+
+---
+
+## External Signals
+## License
+
+MIT License - see `LICENSE` file.
+
+## Security
+
+For vulnerability reporting, see `SECURITY.md`. Do not open public issues for security concerns.
 
 ---
 
 ## License
-This repository is open source. See `LICENSE`.
+
+MIT License - see `LICENSE` file.
+
+## Security
+
+For vulnerability reporting, see `SECURITY.md`. Do not open public issues for security concerns.
 
 ---
 
