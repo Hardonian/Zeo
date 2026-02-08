@@ -453,7 +453,7 @@ describe("governance", () => {
       const result = validatePolicyConfig(config);
       
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.includes("inference types"))).toBe(true);
+      expect(result.errors.some(e => e.includes("Inference types"))).toBe(true);
     });
 
     test("rejects invalid createdAt timestamp", () => {
