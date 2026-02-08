@@ -11,6 +11,17 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import type { DecisionSpec, EvidenceEvent } from "@zeo/contracts";
 import {
+  // ACL
+  createACL,
+  addACLEntry,
+  getPermissions,
+  canRead,
+  canWrite,
+  canDelete,
+  validateTenantIsolation,
+  transferOwnership,
+  DEFAULT_ROLE_PERMISSIONS,
+  
   // Redaction
   redactDecisionSpec,
   redactEvidenceEvents,
@@ -633,7 +644,7 @@ describe("Reality Mode", () => {
             resourceType: "decision",
             ownerId,
             entries: [
-              { userId: viewerId, role: "viewer", grantedBy: ownerId },
+              { userId: viewerId, role: "viewer", grantedBy: ownerId, grantedAt: new Date().toISOString() },
             ],
             tenantId,
           },
