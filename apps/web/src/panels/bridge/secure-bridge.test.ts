@@ -404,8 +404,9 @@ describe('Secure Bridge', () => {
       
       if (response.type === 'error') {
         // Error message should not contain sensitive info
-        expect(response.payload.message).not.toContain('token-');
-        expect(response.payload.message).not.toContain('key-');
+        const errorPayload = response.payload as { message: string };
+        expect(errorPayload.message).not.toContain('token-');
+        expect(errorPayload.message).not.toContain('key-');
       }
     });
   });
