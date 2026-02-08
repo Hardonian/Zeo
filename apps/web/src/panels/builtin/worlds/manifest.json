@@ -1,0 +1,22 @@
+{
+  "id": "worlds-panel",
+  "title": "Parallel Worlds",
+  "description": "View parallel world models and robustness analysis",
+  "route": "/demo",
+  "slot": "rightInspector",
+  "kind": "react",
+  "entry": "./panel.tsx",
+  "version": "0.5.0",
+  "capabilities": {
+    "needsNetwork": false,
+    "needsFiles": false,
+    "needsCamera": false,
+    "needsMic": false,
+    "needsOcr": false,
+    "needsStt": false
+  },
+  "dataDeps": ["decision", "worlds"],
+  "permissions": {
+    "requireUserConfirm": false
+  }
+}

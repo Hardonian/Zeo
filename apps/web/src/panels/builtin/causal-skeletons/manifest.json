@@ -1,0 +1,22 @@
+{
+  "id": "causal-skeletons-panel",
+  "title": "Causal Skeletons",
+  "description": "View proposed causal DAG structures",
+  "route": "/demo",
+  "slot": "rightInspector",
+  "kind": "react",
+  "entry": "./panel.tsx",
+  "version": "0.5.0",
+  "capabilities": {
+    "needsNetwork": false,
+    "needsFiles": false,
+    "needsCamera": false,
+    "needsMic": false,
+    "needsOcr": false,
+    "needsStt": false
+  },
+  "dataDeps": ["decision", "causal-skeletons"],
+  "permissions": {
+    "requireUserConfirm": false
+  }
+}
