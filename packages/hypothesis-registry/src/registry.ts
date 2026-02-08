@@ -1,535 +1,253 @@
-/**
- * Hypothesis Registry
- * 
- * Stores and manages hypotheses with strict epistemic discipline:
- * - Hypotheses never become Facts
- * - Tracks tested/untested status
- * - Tracks falsified/weak/supported status
- * - Integrates with replay and calibration
- */
+import type { Hypothesis, HypothesisStatus, HypothesisRegistry as IRegistry, RegistryQuery } from "@zeo/contracts";
+import { v4 as uuidv4 } from "uuid";
 
-import type { 
-  UUID, 
-  ProvenancePointer,
-  ConfidenceBand 
-} from "@zeo/contracts";
-
-// =============================================================================
-// TYPES
-// =============================================================================
-
-export type HypothesisSource = 
-  | "analytics"
-  | "ai_proposal"
-  | "user_note"
-  | "literature"
-  | "expert_judgment";
-
-export type HypothesisStatus = 
-  | "untested"
-  | "under_test"
-  | "weakly_supported"
-  | "moderately_supported"
-  | "strongly_supported"
-  | "falsified"
-  | "inconclusive";
-
-export type HypothesisDomain = 
-  | "causal"
-  | "correlational"
-  | "predictive"
-  | "descriptive";
-
-export interface HypothesisEvidence {
-  evidenceId: string;
-  testId: string;
-  timestamp: string;
-  result: "supporting" | "contradicting" | "neutral";
-  strength: number; // 0-1
-  provenance: ProvenancePointer[];
-  notes: string[];
+export interface RegistryConfig {
+  maxHypotheses: number;
+  autoArchiveRejected: boolean;
+  archiveAfterDays: number;
 }
 
-export interface HypothesisTest {
-  testId: string;
-  hypothesisId: string;
-  timestamp: string;
-  testType: string;
-  description: string;
-  controls: string[];
-  result?: {
-    outcome: "passed" | "failed" | "inconclusive";
-    pValue?: number;
-    effectSize?: number;
-    confidenceInterval?: { low: number; high: number };
-  };
-  limitations: string[];
-  provenance: ProvenancePointer[];
-}
+export class HypothesisRegistry implements IRegistry {
+  private hypotheses: Map<string, Hypothesis> = new Map();
+  private config: RegistryConfig;
 
-export interface Hypothesis {
-  id: UUID;
-  createdAt: string;
-  updatedAt: string;
-  source: HypothesisSource;
-  domain: HypothesisDomain;
-  
-  statement: string;
-  variables: string[];
-  direction: "positive" | "negative" | "non_linear" | "unspecified";
-  
-  status: HypothesisStatus;
-  confidenceBand: ConfidenceBand;
-  
-  tests: HypothesisTest[];
-  evidence: HypothesisEvidence[];
-  
-  epistemicWarnings: string[];
-  neverBecomesFact: true; // Enforced constraint
-  
-  tags: string[];
-  decisionIds: string[]; // Links to decisions using this hypothesis
-  provenance: ProvenancePointer[];
-}
+  constructor(config: Partial<RegistryConfig> = {}) {
+    this.config = {
+      maxHypotheses: 1000,
+      autoArchiveRejected: true,
+      archiveAfterDays: 30,
+      ...config,
+    };
+  }
 
-export interface HypothesisRegistry {
-  id: UUID;
-  createdAt: string;
-  updatedAt: string;
-  hypotheses: Map<string, Hypothesis>;
-  
-  // Index for efficient queries
-  byStatus: Map<HypothesisStatus, string[]>;
-  bySource: Map<HypothesisSource, string[]>;
-  byDomain: Map<HypothesisDomain, string[]>;
-  byDecision: Map<string, string[]>;
-  byTag: Map<string, string[]>;
-}
-
-export interface RegistryQuery {
-  status?: HypothesisStatus[];
-  source?: HypothesisSource[];
-  domain?: HypothesisDomain[];
-  decisionId?: string;
-  tag?: string;
-  minConfidence?: ConfidenceBand;
-  untestedOnly?: boolean;
-}
-
-export interface RegistryStats {
-  total: number;
-  byStatus: Record<HypothesisStatus, number>;
-  bySource: Record<HypothesisSource, number>;
-  byDomain: Record<HypothesisDomain, number>;
-  untestedCount: number;
-  testedCount: number;
-  falsifiedCount: number;
-  supportedCount: number;
-}
-
-// =============================================================================
-// REGISTRY FACTORY
-// =============================================================================
-
-export function createRegistry(): HypothesisRegistry {
-  const now = new Date().toISOString();
-  
-  return {
-    id: generateUUID(),
-    createdAt: now,
-    updatedAt: now,
-    hypotheses: new Map(),
-    byStatus: new Map(),
-    bySource: new Map(),
-    byDomain: new Map(),
-    byDecision: new Map(),
-    byTag: new Map()
-  };
-}
-
-// =============================================================================
-// HYPOTHESIS OPERATIONS
-// =============================================================================
-
-export function addHypothesis(
-  registry: HypothesisRegistry,
-  params: {
-    source: HypothesisSource;
-    domain: HypothesisDomain;
-    statement: string;
-    variables: string[];
-    direction?: Hypothesis["direction"];
-    tags?: string[];
-    decisionIds?: string[];
-    provenance?: ProvenancePointer[];
-  }
-): Hypothesis {
-  const now = new Date().toISOString();
-  
-  const hypothesis: Hypothesis = {
-    id: generateUUID(),
-    createdAt: now,
-    updatedAt: now,
-    source: params.source,
-    domain: params.domain,
-    statement: params.statement,
-    variables: params.variables,
-    direction: params.direction ?? "unspecified",
-    status: "untested",
-    confidenceBand: "low",
-    tests: [],
-    evidence: [],
-    epistemicWarnings: generateEpistemicWarnings(params.domain, params.source),
-    neverBecomesFact: true,
-    tags: params.tags ?? [],
-    decisionIds: params.decisionIds ?? [],
-    provenance: params.provenance ?? []
-  };
-  
-  // Store in registry
-  registry.hypotheses.set(hypothesis.id, hypothesis);
-  
-  // Update indices
-  addToIndex(registry.byStatus, hypothesis.status, hypothesis.id);
-  addToIndex(registry.bySource, hypothesis.source, hypothesis.id);
-  addToIndex(registry.byDomain, hypothesis.domain, hypothesis.id);
-  
-  for (const decisionId of hypothesis.decisionIds) {
-    addToIndex(registry.byDecision, decisionId, hypothesis.id);
-  }
-  
-  for (const tag of hypothesis.tags) {
-    addToIndex(registry.byTag, tag, hypothesis.id);
-  }
-  
-  registry.updatedAt = now;
-  
-  return hypothesis;
-}
-
-export function recordTest(
-  registry: HypothesisRegistry,
-  hypothesisId: string,
-  test: Omit<HypothesisTest, "testId" | "hypothesisId">
-): HypothesisTest {
-  const hypothesis = registry.hypotheses.get(hypothesisId);
-  if (!hypothesis) {
-    throw new Error(`Hypothesis ${hypothesisId} not found`);
-  }
-  
-  const newTest: HypothesisTest = {
-    testId: generateUUID(),
-    hypothesisId,
-    ...test
-  };
-  
-  hypothesis.tests.push(newTest);
-  hypothesis.updatedAt = new Date().toISOString();
-  
-  // Update status based on test result
-  if (test.result) {
-    updateHypothesisStatus(hypothesis, test.result);
-    
-    // Update index
-    rebuildStatusIndex(registry);
-  }
-  
-  registry.updatedAt = hypothesis.updatedAt;
-  
-  return newTest;
-}
-
-export function addEvidence(
-  registry: HypothesisRegistry,
-  hypothesisId: string,
-  evidence: Omit<HypothesisEvidence, "evidenceId">
-): void {
-  const hypothesis = registry.hypotheses.get(hypothesisId);
-  if (!hypothesis) {
-    throw new Error(`Hypothesis ${hypothesisId} not found`);
-  }
-  
-  const newEvidence: HypothesisEvidence = {
-    evidenceId: generateUUID(),
-    ...evidence
-  };
-  
-  hypothesis.evidence.push(newEvidence);
-  hypothesis.updatedAt = new Date().toISOString();
-  registry.updatedAt = hypothesis.updatedAt;
-}
-
-export function linkToDecision(
-  registry: HypothesisRegistry,
-  hypothesisId: string,
-  decisionId: string
-): void {
-  const hypothesis = registry.hypotheses.get(hypothesisId);
-  if (!hypothesis) {
-    throw new Error(`Hypothesis ${hypothesisId} not found`);
-  }
-  
-  if (!hypothesis.decisionIds.includes(decisionId)) {
-    hypothesis.decisionIds.push(decisionId);
-    addToIndex(registry.byDecision, decisionId, hypothesisId);
-    hypothesis.updatedAt = new Date().toISOString();
-    registry.updatedAt = hypothesis.updatedAt;
-  }
-}
-
-// =============================================================================
-// QUERY OPERATIONS
-// =============================================================================
-
-export function queryHypotheses(
-  registry: HypothesisRegistry,
-  query: RegistryQuery
-): Hypothesis[] {
-  let ids: string[] | null = null;
-  
-  // Start with status filter if provided
-  if (query.status && query.status.length > 0) {
-    const statusIds = query.status.flatMap(s => registry.byStatus.get(s) ?? []);
-    ids = ids ? intersect(ids, statusIds) : statusIds;
-  }
-  
-  // Source filter
-  if (query.source && query.source.length > 0) {
-    const sourceIds = query.source.flatMap(s => registry.bySource.get(s) ?? []);
-    ids = ids ? intersect(ids, sourceIds) : sourceIds;
-  }
-  
-  // Domain filter
-  if (query.domain && query.domain.length > 0) {
-    const domainIds = query.domain.flatMap(d => registry.byDomain.get(d) ?? []);
-    ids = ids ? intersect(ids, domainIds) : domainIds;
-  }
-  
-  // Decision filter
-  if (query.decisionId) {
-    const decisionIds = registry.byDecision.get(query.decisionId) ?? [];
-    ids = ids ? intersect(ids, decisionIds) : decisionIds;
-  }
-  
-  // Tag filter
-  if (query.tag) {
-    const tagIds = registry.byTag.get(query.tag) ?? [];
-    ids = ids ? intersect(ids, tagIds) : tagIds;
-  }
-  
-  // Get hypotheses
-  const candidates = ids 
-    ? ids.map(id => registry.hypotheses.get(id)).filter((h): h is Hypothesis => h !== undefined)
-    : Array.from(registry.hypotheses.values());
-  
-  // Untested filter
-  if (query.untestedOnly) {
-    return candidates.filter(h => h.status === "untested");
-  }
-  
-  // Confidence filter
-  if (query.minConfidence) {
-    const confidenceOrder = ["low", "medium", "high"] as ConfidenceBand[];
-    const minIdx = confidenceOrder.indexOf(query.minConfidence);
-    return candidates.filter(h => confidenceOrder.indexOf(h.confidenceBand) >= minIdx);
-  }
-  
-  return candidates;
-}
-
-export function getRegistryStats(registry: HypothesisRegistry): RegistryStats {
-  const hypotheses = Array.from(registry.hypotheses.values());
-  
-  const byStatus = {
-    untested: 0,
-    under_test: 0,
-    weakly_supported: 0,
-    moderately_supported: 0,
-    strongly_supported: 0,
-    falsified: 0,
-    inconclusive: 0
-  } as Record<HypothesisStatus, number>;
-  
-  const bySource = {
-    analytics: 0,
-    ai_proposal: 0,
-    user_note: 0,
-    literature: 0,
-    expert_judgment: 0
-  } as Record<HypothesisSource, number>;
-  
-  const byDomain = {
-    causal: 0,
-    correlational: 0,
-    predictive: 0,
-    descriptive: 0
-  } as Record<HypothesisDomain, number>;
-  
-  for (const h of hypotheses) {
-    byStatus[h.status]++;
-    bySource[h.source]++;
-    byDomain[h.domain]++;
-  }
-  
-  return {
-    total: hypotheses.length,
-    byStatus,
-    bySource,
-    byDomain,
-    untestedCount: byStatus.untested,
-    testedCount: hypotheses.length - byStatus.untested,
-    falsifiedCount: byStatus.falsified,
-    supportedCount: byStatus.strongly_supported + byStatus.moderately_supported
-  };
-}
-
-// =============================================================================
-// HELPER FUNCTIONS
-// =============================================================================
-
-function generateEpistemicWarnings(
-  domain: HypothesisDomain,
-  source: HypothesisSource
-): string[] {
-  const warnings: string[] = [];
-  
-  warnings.push("This is a hypothesis, not a fact.");
-  warnings.push("Hypotheses can be supported or falsified by evidence, but never proven true.");
-  
-  if (domain === "causal") {
-    warnings.push("Causal claims require strong experimental or quasi-experimental evidence.");
-    warnings.push("Observational data alone cannot establish causation.");
-  }
-  
-  if (domain === "correlational") {
-    warnings.push("Correlation does not imply causation.");
-    warnings.push("Third variables may explain observed associations.");
-  }
-  
-  if (source === "ai_proposal") {
-    warnings.push("AI-proposed hypothesis requires human validation.");
-    warnings.push("Check for spurious patterns and data leakage.");
-  }
-  
-  return warnings;
-}
-
-function updateHypothesisStatus(
-  hypothesis: Hypothesis,
-  result: NonNullable<HypothesisTest["result"]>
-): void {
-  if (result.outcome === "failed") {
-    hypothesis.status = "falsified";
-    hypothesis.confidenceBand = "low";
-  } else if (result.outcome === "passed") {
-    // Update based on strength and existing evidence
-    const supportingEvidence = hypothesis.evidence.filter(e => e.result === "supporting").length;
-    
-    if (supportingEvidence >= 3 && (result.pValue ?? 1) < 0.01) {
-      hypothesis.status = "strongly_supported";
-      hypothesis.confidenceBand = "high";
-    } else if (supportingEvidence >= 1 && (result.pValue ?? 1) < 0.05) {
-      hypothesis.status = "moderately_supported";
-      hypothesis.confidenceBand = "medium";
-    } else {
-      hypothesis.status = "weakly_supported";
-      hypothesis.confidenceBand = "low";
+  register(hypothesis: Omit<Hypothesis, "id" | "createdAt" | "updatedAt">): Hypothesis {
+    if (this.hypotheses.size >= this.config.maxHypotheses) {
+      throw new Error(`Registry capacity exceeded: ${this.config.maxHypotheses}`);
     }
-  } else {
-    hypothesis.status = "inconclusive";
+
+    const now = new Date();
+    const fullHypothesis: Hypothesis = {
+      ...hypothesis,
+      id: uuidv4(),
+      status: hypothesis.status ?? "pending",
+      createdAt: now,
+      updatedAt: now,
+      evidence: hypothesis.evidence ?? [],
+      confidence: hypothesis.confidence ?? 0.5,
+      tags: hypothesis.tags ?? [],
+    };
+
+    this.hypotheses.set(fullHypothesis.id, fullHypothesis);
+    return fullHypothesis;
   }
-}
 
-function addToIndex(
-  index: Map<string, string[]>,
-  key: string,
-  value: string
-): void {
-  const existing = index.get(key) ?? [];
-  if (!existing.includes(value)) {
-    index.set(key, [...existing, value]);
+  get(id: string): Hypothesis | undefined {
+    return this.hypotheses.get(id);
   }
-}
 
-function rebuildStatusIndex(registry: HypothesisRegistry): void {
-  registry.byStatus.clear();
-  for (const [id, hypothesis] of registry.hypotheses) {
-    addToIndex(registry.byStatus, hypothesis.status, id);
+  update(id: string, updates: Partial<Hypothesis>): Hypothesis | undefined {
+    const existing = this.hypotheses.get(id);
+    if (!existing) return undefined;
+
+    const updated: Hypothesis = {
+      ...existing,
+      ...updates,
+      id: existing.id, // Prevent ID changes
+      updatedAt: new Date(),
+    };
+
+    this.hypotheses.set(id, updated);
+    return updated;
   }
-}
 
-function intersect<T>(a: T[], b: T[]): T[] {
-  const setB = new Set(b);
-  return a.filter(x => setB.has(x));
-}
+  delete(id: string): boolean {
+    return this.hypotheses.delete(id);
+  }
 
-function generateUUID(): UUID {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
+  query(query: RegistryQuery): Hypothesis[] {
+    let results = Array.from(this.hypotheses.values());
 
-// =============================================================================
-// REPLAY INTEGRATION
-// =============================================================================
+    if (query.status) {
+      results = results.filter((h) => h.status === query.status);
+    }
 
-export interface ReplayIntegration {
-  getHypothesesForDecision(decisionId: string): Hypothesis[];
-  getHypothesisHistory(hypothesisId: string): {
-    tests: HypothesisTest[];
-    evidence: HypothesisEvidence[];
-    statusChanges: { timestamp: string; from: HypothesisStatus; to: HypothesisStatus }[];
-  };
-}
+    if (query.tags && query.tags.length > 0) {
+      results = results.filter((h) =>
+        query.tags!.some((tag) => h.tags.includes(tag))
+      );
+    }
 
-export function createReplayIntegration(registry: HypothesisRegistry): ReplayIntegration {
-  return {
-    getHypothesesForDecision(decisionId: string): Hypothesis[] {
-      const ids = registry.byDecision.get(decisionId) ?? [];
-      return ids
-        .map(id => registry.hypotheses.get(id))
-        .filter((h): h is Hypothesis => h !== undefined);
-    },
-    
-    getHypothesisHistory(hypothesisId: string) {
-      const hypothesis = registry.hypotheses.get(hypothesisId);
-      if (!hypothesis) {
-        throw new Error(`Hypothesis ${hypothesisId} not found`);
-      }
-      
-      // Reconstruct status changes from tests
-      const statusChanges: { timestamp: string; from: HypothesisStatus; to: HypothesisStatus }[] = [];
-      let currentStatus: HypothesisStatus = "untested";
-      
-      for (const test of hypothesis.tests) {
-        if (test.result) {
-          const newStatus = inferStatusFromResult(test.result);
-          if (newStatus !== currentStatus) {
-            statusChanges.push({
-              timestamp: test.timestamp,
-              from: currentStatus,
-              to: newStatus
-            });
-            currentStatus = newStatus;
-          }
+    if (query.minConfidence !== undefined) {
+      results = results.filter((h) => h.confidence >= query.minConfidence!);
+    }
+
+    if (query.maxConfidence !== undefined) {
+      results = results.filter((h) => h.confidence <= query.maxConfidence!);
+    }
+
+    if (query.createdAfter) {
+      results = results.filter((h) => h.createdAt >= query.createdAfter!);
+    }
+
+    if (query.createdBefore) {
+      results = results.filter((h) => h.createdAt <= query.createdBefore!);
+    }
+
+    // Sort
+    if (query.sortBy) {
+      const sortField = query.sortBy;
+      const sortOrder = query.sortOrder === "desc" ? -1 : 1;
+
+      results.sort((a, b) => {
+        const aVal = a[sortField as keyof Hypothesis];
+        const bVal = b[sortField as keyof Hypothesis];
+        
+        if (typeof aVal === "number" && typeof bVal === "number") {
+          return (aVal - bVal) * sortOrder;
         }
-      }
-      
-      return {
-        tests: hypothesis.tests,
-        evidence: hypothesis.evidence,
-        statusChanges
-      };
+        
+        if (aVal instanceof Date && bVal instanceof Date) {
+          return (aVal.getTime() - bVal.getTime()) * sortOrder;
+        }
+        
+        return String(aVal).localeCompare(String(bVal)) * sortOrder;
+      });
     }
-  };
+
+    // Pagination
+    if (query.limit) {
+      const start = query.offset ?? 0;
+      results = results.slice(start, start + query.limit);
+    }
+
+    return results;
+  }
+
+  validate(id: string, evidence: string[], confidenceDelta: number): Hypothesis | undefined {
+    const hypothesis = this.hypotheses.get(id);
+    if (!hypothesis) return undefined;
+
+    const newConfidence = Math.min(1, hypothesis.confidence + confidenceDelta);
+    const newEvidence = [...hypothesis.evidence, ...evidence];
+
+    return this.update(id, {
+      confidence: newConfidence,
+      evidence: newEvidence,
+      status: this.determineStatus(newConfidence),
+    });
+  }
+
+  reject(id: string, reason: string): Hypothesis | undefined {
+    const hypothesis = this.hypotheses.get(id);
+    if (!hypothesis) return undefined;
+
+    const updated = this.update(id, {
+      status: "rejected",
+      rejectionReason: reason,
+    });
+
+    if (this.config.autoArchiveRejected) {
+      // In real implementation, would move to archive storage
+    }
+
+    return updated;
+  }
+
+  archive(id: string): boolean {
+    const hypothesis = this.hypotheses.get(id);
+    if (!hypothesis) return false;
+
+    this.update(id, { status: "archived" });
+    return true;
+  }
+
+  getStats(): Record<string, number> {
+    const stats = {
+      total: this.hypotheses.size,
+      pending: 0,
+      validated: 0,
+      rejected: 0,
+      archived: 0,
+      avgConfidence: 0,
+    };
+
+    let totalConfidence = 0;
+
+    for (const hypothesis of this.hypotheses.values()) {
+      stats[hypothesis.status]++;
+      totalConfidence += hypothesis.confidence;
+    }
+
+    stats.avgConfidence = this.hypotheses.size > 0 
+      ? totalConfidence / this.hypotheses.size 
+      : 0;
+
+    return stats;
+  }
+
+  findRelated(hypothesisId: string, threshold: number = 0.5): Hypothesis[] {
+    const source = this.hypotheses.get(hypothesisId);
+    if (!source) return [];
+
+    return Array.from(this.hypotheses.values()).filter((h) => {
+      if (h.id === hypothesisId) return false;
+      
+      // Simple similarity based on tag overlap
+      const commonTags = h.tags.filter((tag) => source.tags.includes(tag));
+      const similarity = commonTags.length / Math.max(h.tags.length, source.tags.length);
+      
+      return similarity >= threshold;
+    });
+  }
+
+  merge(hypothesisIds: string[]): Hypothesis | undefined {
+    if (hypothesisIds.length < 2) return undefined;
+
+    const hypotheses = hypothesisIds
+      .map((id) => this.hypotheses.get(id))
+      .filter((h): h is Hypothesis => h !== undefined);
+
+    if (hypotheses.length < 2) return undefined;
+
+    const merged: Hypothesis = {
+      id: uuidv4(),
+      statement: hypotheses.map((h) => h.statement).join(" AND "),
+      status: "pending",
+      confidence: hypotheses.reduce((sum, h) => sum + h.confidence, 0) / hypotheses.length,
+      evidence: hypotheses.flatMap((h) => h.evidence),
+      tags: [...new Set(hypotheses.flatMap((h) => h.tags))],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      mergedFrom: hypothesisIds,
+    };
+
+    this.hypotheses.set(merged.id, merged);
+
+    // Archive original hypotheses
+    for (const id of hypothesisIds) {
+      this.archive(id);
+    }
+
+    return merged;
+  }
+
+  export(): Hypothesis[] {
+    return Array.from(this.hypotheses.values());
+  }
+
+  import(hypotheses: Hypothesis[]): void {
+    for (const hypothesis of hypotheses) {
+      this.hypotheses.set(hypothesis.id, hypothesis);
+    }
+  }
+
+  private determineStatus(confidence: number): HypothesisStatus {
+    if (confidence >= 0.85) return "validated";
+    if (confidence <= 0.2) return "rejected";
+    return "pending";
+  }
 }
 
-function inferStatusFromResult(
-  result: NonNullable<HypothesisTest["result"]>
-): HypothesisStatus {
-  if (result.outcome === "failed") return "falsified";
-  if (result.outcome === "passed") return "weakly_supported";
-  return "inconclusive";
+export function createRegistry(config?: Partial<RegistryConfig>): HypothesisRegistry {
+  return new HypothesisRegistry(config);
 }

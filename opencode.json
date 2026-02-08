@@ -1,0 +1,277 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "disabled_providers": [
+    "openai",
+    "anthropic",
+    "gemini",
+    "xai",
+    "groq",
+    "mistral",
+    "together",
+    "fireworks",
+    "perplexity",
+    "cohere",
+    "azure",
+    "aws",
+    "cloudflare",
+    "replicate",
+    "huggingface"
+  ],
+
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "qwen3-coder": {
+          "name": "qwen3-coder"
+        }
+      }
+    },
+
+    "openrouter": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "OpenRouter",
+      "options": {
+        "apiKey": "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",
+        "baseURL": "https://openrouter.ai/api/v1",
+        "timeout": 600000,
+        "setCacheKey": true,
+        "headers": {
+          "HTTP-Referer": "https://opencode.ai",
+          "X-Title": "OpenCode Zen (Scott) — OpenRouter Only"
+        }
+      },
+      "models": {
+        "qwen/qwen3-coder:free": { "name": "Qwen3 Coder (free)" },
+        "deepseek/deepseek-r1:free": { "name": "DeepSeek R1 (free)" },
+
+        "qwen/qwen-2.5-coder-32b-instruct": { "name": "Qwen 2.5 Coder 32B Instruct" },
+        "qwen/qwen-2.5-coder-14b-instruct": { "name": "Qwen 2.5 Coder 14B Instruct" },
+
+        "deepseek/deepseek-coder": { "name": "DeepSeek Coder" }
+      }
+    }
+  },
+
+  "model": "ollama/qwen3-coder",
+  "small_model": "ollama/qwen3-coder",
+
+  "tui": {
+    "scroll_speed": 3,
+    "scroll_acceleration": { "enabled": true },
+    "diff_style": "auto"
+  },
+
+  "watcher": {
+    "ignore": [
+      "node_modules/**",
+      ".next/**",
+      "dist/**",
+      "build/**",
+      "coverage/**",
+      ".turbo/**",
+      ".git/**",
+      "**/*.log",
+      "**/*.tmp"
+    ]
+  },
+
+  "compaction": {
+    "auto": true,
+    "prune": true
+  },
+
+  "formatter": {
+    "prettier": { "disabled": false },
+    "eslint": { "disabled": false }
+  },
+
+  "instructions": [
+    "AGENTS.md",
+    "README.md",
+    "CONTRIBUTING.md",
+    "docs/**/*.md",
+    ".cursor/rules/*.md"
+  ],
+
+  "permission": {
+    "edit": "allow",
+    "webfetch": "allow",
+    "bash": {
+      "*": "ask",
+      "ls*": "allow",
+      "pwd*": "allow",
+      "cat *": "allow",
+      "sed *": "allow",
+      "grep *": "allow",
+      "rg *": "allow",
+      "find *": "allow",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git show*": "allow",
+      "git branch*": "allow",
+      "git rev-parse*": "allow",
+      "git fetch*": "ask",
+      "git pull*": "ask",
+      "git checkout*": "ask",
+      "git commit*": "ask",
+      "git push*": "ask",
+      "pnpm -v*": "allow",
+      "node -v*": "allow",
+      "pnpm lint*": "allow",
+      "pnpm typecheck*": "allow",
+      "pnpm test*": "allow",
+      "pnpm build*": "allow",
+      "pnpm verify*": "allow",
+      "turbo *": "allow",
+      "npx *": "ask",
+      "bash *": "ask"
+    }
+  },
+
+  "agent": {
+    "plan": {
+      "description": "Read-only planning & investigation (no edits).",
+      "mode": "primary",
+      "temperature": 0.1,
+      "maxSteps": 12,
+      "model": "ollama/qwen3-coder",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": true,
+        "webfetch": true
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "git show*": "allow",
+          "pnpm -v*": "allow",
+          "node -v*": "allow",
+          "pnpm verify:fast*": "allow",
+          "pnpm verify:full*": "allow"
+        }
+      },
+      "prompt": "You are a planning agent. You must not propose changes you cannot justify with concrete evidence from the repo. Prefer minimal diffs. Produce a clear plan, risks, and verification steps."
+    },
+
+    "build": {
+      "description": "Primary implementation agent (edits allowed; guarded bash).",
+      "mode": "primary",
+      "temperature": 0.2,
+      "maxSteps": 30,
+      "model": "ollama/qwen3-coder",
+      "prompt": "You are a production engineering agent. You must keep builds green and avoid partial fixes. Always run the repo's verification commands and report results. No TODOs."
+    },
+
+    "reviewer": {
+      "description": "Subagent: code review + risk scan + test plan (no edits).",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "maxSteps": 10,
+      "model": "openrouter/deepseek/deepseek-r1:free",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": true,
+        "webfetch": true
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "git show*": "allow",
+          "pnpm verify:fast*": "allow",
+          "pnpm verify:full*": "allow",
+          "pnpm lint*": "allow",
+          "pnpm typecheck*": "allow",
+          "pnpm test*": "allow",
+          "pnpm build*": "allow"
+        }
+      },
+      "prompt": "You are a strict reviewer. Identify concrete failure modes, missing env vars, App Router export issues, Prisma pitfalls, and CI risks. Output a checklist and exact commands to verify."
+    },
+
+    "settler": {
+      "description": "Settler.dev specialist: Next.js App Router + Vercel build-resilience + Supabase + Stripe.",
+      "mode": "all",
+      "temperature": 0.2,
+      "maxSteps": 35,
+      "model": "openrouter/qwen/qwen-2.5-coder-32b-instruct",
+      "prompt": "You are the Settler.dev senior engineer. Priorities: (1) Vercel build determinism (local=CI), (2) typed env validation, (3) App Router correctness scanning, (4) Stripe webhook correctness (raw body, Node runtime), (5) Supabase RLS safety. Always finish with: files changed, commands run, expected outputs, rollback notes."
+    },
+
+    "readylayer": {
+      "description": "ReadyLayer specialist: OSS-first product polish + UI cohesion + build gates.",
+      "mode": "all",
+      "temperature": 0.25,
+      "maxSteps": 30,
+      "model": "openrouter/qwen/qwen-2.5-coder-32b-instruct",
+      "prompt": "You are the ReadyLayer.com senior engineer. Priorities: OSS-first messaging clarity, UX cohesion, zero dead links, strong SEO fundamentals, and a green CI. Avoid over-engineering. Prefer composable components and stable patterns."
+    },
+
+    "keys": {
+      "description": "Keys specialist: agent persona system + prompt governance + multi-model routing (OSS-first).",
+      "mode": "all",
+      "temperature": 0.2,
+      "maxSteps": 35,
+      "model": "openrouter/qwen/qwen-2.5-coder-32b-instruct",
+      "prompt": "You are the Keys project senior engineer. Priorities: persona import/export, deterministic prompt formatting, safe storage, and clear CLI/UX. Keep everything OSS-first and avoid vendor-locked assumptions."
+    },
+
+    "aias": {
+      "description": "AIAS specialist: marketing site + docs + fast iteration with correctness.",
+      "mode": "all",
+      "temperature": 0.3,
+      "maxSteps": 25,
+      "model": "openrouter/qwen/qwen-2.5-coder-14b-instruct",
+      "prompt": "You are the AIAS site engineer. Priorities: fast, clean UX, perfect links, crisp copy, strong lighthouse basics, and no broken builds. Keep changes small and verifiable."
+    }
+  },
+
+  "command": {
+    "verify_fast": {
+      "description": "Run the fast verification gate (local=Vercel sanity).",
+      "agent": "build",
+      "model": "ollama/qwen3-coder",
+      "template": "Run: pnpm verify:fast\nIf it fails, fix the root cause(s) and re-run until green. Summarize: failure -> fix -> verification."
+    },
+    "verify_full": {
+      "description": "Run the full CI-grade verification gate.",
+      "agent": "build",
+      "model": "ollama/qwen3-coder",
+      "template": "Run: pnpm verify:full\nIf it fails, fix the root cause(s) and re-run until green. Then provide a minimal changelog and exact commands executed."
+    },
+    "vercel_contract": {
+      "description": "Enforce 'local = vercel build' contract (env + app router + build).",
+      "agent": "settler",
+      "model": "openrouter/qwen/qwen-2.5-coder-32b-instruct",
+      "template": "Goal: ensure pnpm verify deterministically catches anything that would fail vercel build. Audit: env validation, Next.js App Router exports, server/client env scoping, build logs, and CI parity. Implement smallest safe fixes. Verify green with pnpm verify:full."
+    },
+    "pr_review": {
+      "description": "Strict review subagent pass (no edits) with risk + test plan.",
+      "agent": "reviewer",
+      "model": "openrouter/deepseek/deepseek-r1:free",
+      "template": "Review the current repo diff and main risk areas. Output: top risks, required tests, and a verification checklist. Do not modify files."
+    },
+    "oss_polish": {
+      "description": "OSS-first messaging + UI cohesion pass (ReadyLayer/Keys/AIAS).",
+      "agent": "readylayer",
+      "model": "openrouter/qwen/qwen-2.5-coder-32b-instruct",
+      "template": "Do an OSS-first cohesion pass: nav/IA, CTA clarity, doc links, hero copy, install steps, and no broken routes. Make minimal verified changes. Finish with pnpm verify:fast."
+    }
+  }
+}
