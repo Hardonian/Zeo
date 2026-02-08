@@ -27,9 +27,9 @@ describe("Counterfactual Engine", () => {
   const createTestContext = (): DecisionContext =>
     createDecisionContext(
       "dec1",
-      createAction("action1", 0.8, { var1: 0.4, var2: 0.4 }),
+      createAction("action1", 0.8, { var1: 0.6, var2: 0.2 }), // var1 contribution is 0.6
       [
-        createAction("action2", 0.7, { var1: 0.3, var2: 0.4 }),
+        createAction("action2", 0.75, { var1: 0.3, var2: 0.45 }), // var1 contribution is 0.3
         createAction("action3", 0.6, { var1: 0.2, var2: 0.4 }),
       ],
       new Map([
