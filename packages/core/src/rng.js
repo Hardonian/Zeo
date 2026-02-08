@@ -1,22 +1,10 @@
 import { createHash } from "node:crypto";
-function xmur3(str) {
-    let h = 1779033703 ^ str.length;
-    for (let i = 0; i < str.length; i++) {
-        h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
-        h = h << 13 | h >>> 19;
-    }
-    return function () {
-        h = Math.imul(h ^ (h >>> 16), 2246822507);
-        h = Math.imul(h ^ (h >>> 13), 3266489909);
-        return (h ^= h >>> 16) >>> 0;
-    };
-}
 function xoshiro128ss(a, b, c, d) {
     return {
         nextFloat() {
             const t = b << 9;
             const rot = a * 5;
-            const res = ((c << 26) | (c >>> 6)) >>> 0;
+            const _res = ((c << 26) | (c >>> 6)) >>> 0;
             b ^= a;
             d ^= c;
             c ^= b;

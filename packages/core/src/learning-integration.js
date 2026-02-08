@@ -91,9 +91,9 @@ export class LearningDecisionRunner {
         if (!record)
             return;
         // Update priors for each assumption type
-        for (const assumption of record.spec.assumptions) {
+        for (const _assumption of record.spec.assumptions) {
             // Determine outcome type based on status
-            const outcomeType = outcome.status === "resolved" ? "confirmed" :
+            const _outcomeType = outcome.status === "resolved" ? "confirmed" :
                 outcome.status === "ambiguous" ? "partially_confirmed" : "violated";
             // This would need the actual outcome record
             // Simplified for integration

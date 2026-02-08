@@ -106,7 +106,7 @@ export function computeVariableSensitivity(spec, posterior, variableId, seed) {
         return 0;
     // Evaluate at endpoints
     const baseScores = evaluateActionsWithPosterior(spec, posterior, seed, 20);
-    const bestActionId = baseScores.reduce((best, current) => current.utilityBand.low > best.utilityBand.low ? current : best).actionId;
+    const _bestActionId = baseScores.reduce((best, current) => current.utilityBand.low > best.utilityBand.low ? current : best).actionId;
     // Test at low endpoint
     const lowPosterior = {
         ...posterior,

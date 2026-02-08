@@ -129,7 +129,7 @@ export class QuantEngine {
     /**
      * Generate "What would change the answer?" analysis with quantified thresholds.
      */
-    generateFlipConditions(spec, evaluations) {
+    generateFlipConditions(spec, _evaluations) {
         return spec.assumptions
             .filter(a => a.status === "assumption" || a.status === "belief")
             .slice(0, 3)

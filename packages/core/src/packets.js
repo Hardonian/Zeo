@@ -15,12 +15,6 @@ function formatDuration(startedAt, finishedAt) {
 function formatProvenance(provenance) {
     return provenance.map(p => `- ${p.sourceId} (${p.capturedAt}) checksum=${p.checksum.slice(0, 8)}...`).join("\n");
 }
-function formatAssumptions(spec) {
-    return spec.assumptions.map(a => {
-        const prob = a.probability ? ` [${(a.probability.low * 100).toFixed(0)}%-${(a.probability.high * 100).toFixed(0)}%]` : "";
-        return `- [${a.status}] ${a.text}${prob}`;
-    }).join("\n");
-}
 function formatTopSignals(evaluations) {
     const robust = evaluations.find(e => e.lens === "robustness");
     if (!robust)
