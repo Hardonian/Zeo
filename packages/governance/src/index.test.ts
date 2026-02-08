@@ -13,46 +13,29 @@ import {
 } from "./index.js";
 
 // Import types from contracts for reference in helpers
-type DecisionSpec = {
+import type { DecisionSpec, EvidenceEvent, BranchGraph, Action, Claim, BranchNode } from "@zeo/contracts/dist/types.js";
+
+type TestAction = {
   id: string;
-  title: string;
-  context: string;
-  createdAt: string;
-  horizon: "hours" | "days" | "weeks" | "months";
-  agents: Array<{ id: string; name: string; role: "self" | "counterparty" | "third_party" | "system" }>;
-  actions: Array<{ id: string; label: string; actorId: string; kind: string }>;
-  constraints: Array<unknown>;
-  assumptions: Array<unknown>;
+  label: string;
+  actorId: string;
+  kind: Action["kind"];
 };
 
-type EvidenceEvent = {
+type TestClaim = {
   id: string;
-  type: "document" | "audio" | "image" | "biometric" | "text";
-  sourceId: string;
-  capturedAt: string;
-  checksum: string;
-  observations: string[];
-  claims: Array<unknown>;
-  constraints: Array<unknown>;
+  text: string;
+  status: Claim["status"];
+  confidence: Claim["confidence"];
+  tags: string[];
 };
 
-type BranchGraph = {
+type TestBranchNode = {
   id: string;
-  decisionId: string;
-  createdAt: string;
-  nodes: Array<{
-    id: string;
-    label: string;
-    kind: "state" | "event" | "outcome";
-    notes: string[];
-    dependencies: Array<unknown>;
-  }>;
-  edges: Array<{
-    id: string;
-    from: string;
-    to: string;
-    notes: string[];
-  }>;
+  label: string;
+  kind: BranchNode["kind"];
+  notes: string[];
+  dependencies: TestClaim[];
 };
 
 // Helper to create minimal valid DecisionSpec
