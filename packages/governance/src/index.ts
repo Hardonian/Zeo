@@ -259,19 +259,29 @@ export function createAuditEntry(params: {
   provenanceRefs?: string[];
   notes?: string[];
 }): AuditEntry {
-  return {
+  const entry: AuditEntry = {
     id: nanoid(),
     createdAt: new Date().toISOString(),
     actor: params.actor,
     action: params.action,
     inputHash: params.inputHash,
     outputHash: params.outputHash || "",
-    decisionId: params.decisionId,
-    draftId: params.draftId,
-    runId: params.runId,
     provenanceRefs: params.provenanceRefs || [],
     notes: params.notes || []
   };
+  
+  // Only add optional properties if they have values
+  if (params.decisionId) {
+    entry.decisionId = params.decisionId;
+  }
+  if (params.draftId) {
+    entry.draftId = params.draftId;
+  }
+  if (params.runId) {
+    entry.runId = params.runId;
+  }
+  
+  return entry;
 }
 
 /**
