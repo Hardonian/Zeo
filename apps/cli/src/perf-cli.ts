@@ -654,7 +654,7 @@ async function runRegressionCommand(args: PerfCliArgs): Promise<number> {
     for (let j = 0; j < iterations; j++) {
       const start = performance.now();
       try {
-        await replayCase(testCase, { strict: false });
+        await replayCase(testCase, { depth: 2, limits: { maxCheckpoints: 10 }, strict: false });
       } catch (err) {
         // Continue even if case has issues - we're measuring performance
       }
