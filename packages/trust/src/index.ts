@@ -66,3 +66,15 @@ export {
   clearAuditLog,
   clearConsentHistory,
 } from "./consent.js";
+
+// Integration module
+export {
+  createTrustIntegration,
+  validatePanelConsent,
+  requiresUserConfirmation,
+  generateTrustBoundaryReport,
+  type PanelOperation,
+  type TrustIntegrationConfig,
+  type PanelConsentResult,
+  type TrustIntegration,
+} from "./integration.js";
