@@ -7,6 +7,7 @@
 
 import type { ConsentScope, TrustContract, ConsentValidationResult } from "@zeo/trust";
 import { 
+  createDefaultTrustContract, 
   createDefaultConsentScope, 
   updateConsentScope, 
   enforceConsentAtEntry,
