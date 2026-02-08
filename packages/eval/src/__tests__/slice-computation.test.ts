@@ -516,8 +516,8 @@ describe("Gating Rules", () => {
 });
 
 describe("CSV Export", () => {
-  const sampleSlice = {
-    slice: { dimension: "domain", value: "negotiation" },
+  const sampleSlice: import("../slice-types.js").SliceMetrics = {
+    slice: { dimension: "domain" as import("../slice-types.js").SliceDimension, value: "negotiation" },
     sampleSize: 100,
     coverage: { overall: 0.85, byMetricId: {} },
     properScores: { overall: 0.12, byMetricId: {} },
@@ -540,7 +540,7 @@ describe("CSV Export", () => {
   });
 
   it("should export slices to CSV with header", () => {
-    const report = {
+    const report: import("../slice-types.js").SliceEvaluationReport = {
       version: "0.5.1",
       createdAt: "2024-01-01",
       metadata: {
@@ -552,7 +552,7 @@ describe("CSV Export", () => {
         engineVersion: "0.5.1",
       },
       slices: [sampleSlice],
-      sliceIndex: {},
+      sliceIndex: { "domain:negotiation": sampleSlice },
       gatingRules: [],
       gatingResults: {
         overallPassed: true,
@@ -580,7 +580,7 @@ describe("CSV Export", () => {
   });
 
   it("should handle empty slices", () => {
-    const report = {
+    const report: import("../slice-types.js").SliceEvaluationReport = {
       version: "0.5.1",
       createdAt: "2024-01-01",
       metadata: {
