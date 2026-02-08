@@ -126,8 +126,8 @@ describe("HypothesisRegistry", () => {
 
   describe("getStats", () => {
     it("should return registry statistics", () => {
-      registry.register({ statement: "H1", status: "pending" });
-      registry.register({ statement: "H2", status: "validated", confidence: 0.9 });
+      registry.register({ statement: "H1", status: "pending", confidence: 0.5, evidence: [], tags: [] });
+      registry.register({ statement: "H2", status: "validated", confidence: 0.9, evidence: [], tags: [] });
 
       const stats = registry.getStats();
 
