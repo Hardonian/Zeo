@@ -111,6 +111,71 @@ The Quant Engine provides analytical rigor through dedicated packages:
   - Respects original uncertainty in counterfactuals
 - **Epistemic Discipline**: All learning increases robustness, not confidence
 
+### @zeo/values - Value System (v0.4.0)
+- **Purpose**: Explicit value function definition and guardrails
+- **Key Types**: `ValueProfile`, `ValueFunction`, `Objective`, `Attribute`, `Constraint`
+- **Features**:
+  - **Explicit Value Required**: No decision without defined value function
+  - **Multi-Value Robustness**: Actions evaluated across multiple plausible value functions
+  - **Constraint Enforcement**: Hard constraints eliminate infeasible actions
+  - **Normalization**: All attributes normalized before aggregation
+- **Integration**: Value profiles flow into decision scoring via `@zeo/core`
+- **See**: `docs/VALUES.md`
+
+### @zeo/time - Temporal Semantics (v0.4.0)
+- **Purpose**: Temporal decay models and information staleness
+- **Key Types**: `TemporalContext`, `DecayModel`, `TimeStampedEvidence`
+- **Decay Models**: Exponential, sigmoid, step, custom
+- **Features**:
+  - **Evidence Aging**: Confidence intervals widen as evidence ages
+  - **Future Information Prevention**: Temporal consistency enforcement
+  - **Decay Profiles**: Domain-specific decay configurations
+- **Integration**: Applied to evidence during ingestion and decision processing
+- **See**: `docs/TIME.md`
+
+### @zeo/strategy - Strategic Reasoning (v0.4.0)
+- **Purpose**: Multi-agent strategic analysis with epistemic discipline
+- **Key Types**: `StrategicWorld`, `AgentModel`, `IntervalPayoff`, `AdversarialAssumption`
+- **Evaluation Modes**: Maximin, minimax regret, dominance check, risk-aware expected utility
+- **Features**:
+  - **Explicit Adversarial Assumptions**: Worst-case, best-case, mixed response models
+  - **Interval Payoffs**: Uncertainty represented in strategic payoffs
+  - **Repeated Games**: Discount factors, reputation, strategic patterns
+- **Integration**: Strategic branches generated during decision expansion
+- **See**: `docs/STRATEGY.md`
+
+### @zeo/explain - Explanation System (v0.4.0)
+- **Purpose**: Tiered explanation generation with progressive disclosure
+- **Levels**: 0 (action only) → 1 (rationale) → 2 (factors) → 3 (branches) → 4 (full transparency)
+- **Features**:
+  - **Audience Adaptation**: Executive, analyst, expert modes
+  - **Consistency Verification**: Cross-level invariant checking
+  - **Uncertainty Representation**: Honest uncertainty at all levels
+- **Integration**: Explanations attached to decision results, rendered in UI
+- **See**: `docs/EXPLAINABILITY.md`
+
+### @zeo/meta - Meta-Learning (v0.4.0)
+- **Purpose**: Cross-decision pattern detection and learning
+- **Key Types**: `MetaLearningSystem`, `PriorEngine`, `PatternDetector`, `RegretAnalysis`
+- **Features**:
+  - **Prior Updates**: Bayesian updates to assumption reliability distributions
+  - **Pattern Detection**: Weak signal hypotheses across decisions
+  - **Counterfactual Analysis**: Regret computation with no hindsight bias
+  - **Epistemic Discipline**: Learning widens uncertainty, never narrows it
+- **Integration**: Connects to decision memory, feeds learned priors back to decision engine
+- **See**: `docs/META_LEARNING.md`
+
+### @zeo/trust - Trust & Consent (v0.4.0)
+- **Purpose**: Trust boundary enforcement and consent management
+- **Key Types**: `DataProcessingConsent`, `CapabilityAuthorization`, `TrustAuditEvent`
+- **Features**:
+  - **Explicit Consent**: No sensitive operation without user consent
+  - **Granular Permissions**: Operation-specific, time-limited authorizations
+  - **Audit Trail**: Immutable, tamper-evident trust event logging
+  - **Revocation**: User can revoke consent at any time
+- **Integration**: Enforced at all entry points (API, UI, file uploads)
+- **See**: `docs/TRUST.md`
+
 ---
 
 ## Composability contract

@@ -21,7 +21,8 @@
       "@zeo/replay": ["packages/replay/src"],
       "@zeo/regimes": ["packages/regimes/src"],
       "@zeo/core": ["packages/core/src"],
-      "@zeo/models": ["packages/models/src"]
+      "@zeo/models": ["packages/models/src"],
+      "@zeo/governance": ["packages/governance/src"]
     }
   }
 }
