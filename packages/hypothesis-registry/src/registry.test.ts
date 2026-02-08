@@ -172,15 +172,15 @@ describe("HypothesisRegistry", () => {
 
   describe("export/import", () => {
     it("should export all hypotheses", () => {
-      registry.register({ statement: "H1" });
-      registry.register({ statement: "H2" });
+      registry.register({ statement: "H1", status: "pending", confidence: 0.5, evidence: [], tags: [] });
+      registry.register({ statement: "H2", status: "pending", confidence: 0.5, evidence: [], tags: [] });
 
       const exported = registry.export();
       expect(exported.length).toBe(2);
     });
 
     it("should import hypotheses", () => {
-      const hypotheses = [
+      const hypotheses: import("./types.js").Hypothesis[] = [
         { id: "1", statement: "H1", status: "pending", confidence: 0.5, evidence: [], tags: [], createdAt: new Date(), updatedAt: new Date() },
       ];
 
