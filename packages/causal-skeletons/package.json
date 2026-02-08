@@ -1,0 +1,31 @@
+{
+  "name": "@zeo/causal-skeletons",
+  "version": "0.5.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@zeo/contracts": "workspace:*",
+    "@zeo/causal": "workspace:*",
+    "@zeo/feature-discovery": "workspace:*",
+    "@zeo/counterfactuals": "workspace:*",
+    "@zeo/models": "workspace:*",
+    "@zeo/audit": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.1"
+  }
+}
