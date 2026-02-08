@@ -1,4 +1,4 @@
-import type { Hypothesis, HypothesisStatus, HypothesisRegistry as IRegistry, RegistryQuery } from "@zeo/contracts";
+import type { Hypothesis, HypothesisStatus, HypothesisRegistry as IRegistry, RegistryQuery } from "./types.js";
 import { v4 as uuidv4 } from "uuid";
 
 export interface RegistryConfig {
