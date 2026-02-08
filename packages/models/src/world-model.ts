@@ -218,7 +218,7 @@ export function inferPosterior(
   for (const observation of canonicalObs) {
     // Find matching observation model
     const model = worldSpec.observationModels.find(m =>
-      observation.signalId.match(m.provenancePattern.replace("*", ".*"))
+      observation.signalId.match(m.provenancePattern.replace(/\*/g, ".*"))
     );
 
     if (!model) continue;
