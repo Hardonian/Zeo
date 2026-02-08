@@ -1,19 +1,15 @@
-import type { FeatureProposal, DiscoveryContext, DiscoveryResult } from "@zeo/contracts";
 import { v4 as uuidv4 } from "uuid";
+import type {
+  FeatureProposal,
+  DiscoveryContext,
+  DiscoveryResult,
+  DiscoveryConfig,
+  Pattern,
+  PriorityLevel,
+  ImpactLevel,
+} from "./types.js";
 
-export interface DiscoveryConfig {
-  minConfidence: number;
-  maxProposals: number;
-  enablePatternMatching: boolean;
-  similarityThreshold: number;
-}
-
-export interface Pattern {
-  id: string;
-  name: string;
-  matcher: (context: DiscoveryContext) => boolean;
-  proposalGenerator: (context: DiscoveryContext) => Partial<FeatureProposal>;
-}
+export type { FeatureProposal, DiscoveryContext, DiscoveryResult, DiscoveryConfig, Pattern };
 
 export class FeatureDiscovery {
   private config: DiscoveryConfig;
