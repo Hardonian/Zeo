@@ -86,7 +86,7 @@ export function BudgetControl({
           </div>
 
           {/* Warnings */}
-          {checkResult?.warnings.length > 0 && (
+          {checkResult && checkResult.warnings && checkResult.warnings.length > 0 && (
             <div className="mt-3 rounded bg-yellow-50 p-2 text-sm text-yellow-700">
               <div className="font-medium">Warnings:</div>
               <ul className="mt-1 list-inside list-disc">
@@ -100,7 +100,7 @@ export function BudgetControl({
           )}
 
           {/* Exceeded */}
-          {checkResult?.exceeded.length > 0 && (
+          {checkResult && checkResult.exceeded && checkResult.exceeded.length > 0 && (
             <div className="mt-3 rounded bg-red-50 p-2 text-sm text-red-700">
               <div className="font-medium">Budget Exceeded:</div>
               <ul className="mt-1 list-inside list-disc">
@@ -112,7 +112,7 @@ export function BudgetControl({
               </ul>
               <div className="mt-2 font-medium">Suggestions:</div>
               <ul className="mt-1 list-inside list-disc">
-                {checkResult.suggestions.map((s, i) => (
+                {checkResult.suggestions && checkResult.suggestions.map((s, i) => (
                   <li key={i}>{s}</li>
                 ))}
               </ul>

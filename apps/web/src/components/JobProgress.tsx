@@ -109,7 +109,7 @@ export function JobProgress({
           </button>
         )}
         
-        {isCompleted && job.result && (
+        {isCompleted && (
           <span className="text-sm text-green-600">✓ Completed</span>
         )}
       </div>
