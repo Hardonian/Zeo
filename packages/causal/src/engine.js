@@ -161,7 +161,7 @@ export class CausalEngine {
             provenance: data ? ["data_driven_estimation"] : [],
         };
     }
-    estimateEffect(treatmentId, outcomeId, data, _dag) {
+    estimateEffect(treatmentId, outcomeId, data) {
         const treatment = data[treatmentId] ?? [];
         const outcome = data[outcomeId] ?? [];
         if (treatment.length === 0 || outcome.length === 0) {
