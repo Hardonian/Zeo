@@ -187,25 +187,18 @@ export {
   rebalanceCredence,
   getTopHypotheses,
   getMarketSummary,
-  exportMarket,
-  importMarket,
   DEFAULT_REBALANCE_CONFIG,
 } from "@zeo/hypothesis-market";
 
 // Hypothesis Registry
 export type {
-  HypothesisRegistry,
   Hypothesis,
   HypothesisStatus,
-  HypothesisFilters,
+  RegistryConfig,
 } from "@zeo/hypothesis-registry";
 export {
+  HypothesisRegistry,
   createRegistry,
-  addHypothesis as addToRegistry,
-  updateHypothesisStatus,
-  getHypothesisById,
-  queryHypotheses,
-  getRegistryStats,
 } from "@zeo/hypothesis-registry";
 
 // Robustness - statistical robustness checks
@@ -275,14 +268,23 @@ export type {
   MeasurementScale,
   MeasurementValue,
   ScaleType,
-  ScaleDefinition,
+  MeasurementOperation,
+  ValueBand,
+  CompatibilityResult,
 } from "@zeo/measurement";
 export {
   scaleRegistry,
+  ScaleRegistry,
   assertCompatibleScales,
   assertOperationAllowed,
+  checkScaleCompatibility,
+  isOperationAllowed,
   computeMean as computeMeasurementMean,
+  computeDifference,
+  computeRatio,
   createMeasurementValue,
+  MeasurementError,
+  BUILTIN_SCALES,
 } from "@zeo/measurement";
 
 // Warehouse - local storage adapters
@@ -293,13 +295,26 @@ export {
 } from "@zeo/warehouse";
 
 // Replay - calibration and backtesting
-export type {
-  ReplayResult,
-  CalibrationReport,
-  CoverageMetrics,
-  ProperScores,
+export {
+  runReplay,
+  generateCalibrationReport,
+  computeCoverage,
+  computeBrierScore,
+  computeIntervalScore,
+  applyCalibrationWiden,
+  // Batch runner exports
+  runBatchReplay,
+  createBatchConfig,
+  // Prediction exports
+  extractPredictions,
+  scorePrediction,
+  // Report generator exports
+  generateMarkdownReport,
+  generateJSONReport,
+  // Hashing exports
+  computeDatasetHash,
+  computeCaseHash,
 } from "@zeo/replay";
-export { runReplay, generateCalibrationReport } from "@zeo/replay";
 
 // Audit - audit trail and compliance
 export type { AuditConfig, VerificationResult, AppendResult } from "@zeo/audit";
@@ -311,12 +326,16 @@ export {
 } from "@zeo/audit";
 
 // Semantic Clustering - evidence organization
-export type { ClusterResult, Cluster, ClusterConfig } from "@zeo/semantic-clustering";
+export type { Cluster, ClusterableItem, ClusteringResult, ClusteringOptions } from "@zeo/semantic-clustering";
 export { clusterItems } from "@zeo/semantic-clustering";
 
 // Dataset Builder - feature extraction
-export type { Dataset, DatasetRow, DatasetOptions } from "@zeo/dataset-builder";
-export { buildDataset, datasetToCsv, getDatasetStats } from "@zeo/dataset-builder";
+export type { DatasetBuilderConfig, ReplayDataset } from "@zeo/dataset-builder";
+export {
+  createDatasetBuilder,
+  validateDataset,
+  filterDatasetByTime,
+} from "@zeo/dataset-builder";
 
 // Analysis Planner - AI-driven analysis planning
 export type {
@@ -336,8 +355,9 @@ export { FeatureDiscovery, createFeatureDiscovery } from "@zeo/feature-discovery
 
 // Decision Synthesizer - decision implications
 export type {
+  DecisionContext as SynthesizerContext,
   DecisionImplication,
   SynthesisResult,
-  SynthesizerOptions,
+  SynthesisOptions,
 } from "@zeo/decision-synthesizer";
 export { synthesizeImplications } from "@zeo/decision-synthesizer";
