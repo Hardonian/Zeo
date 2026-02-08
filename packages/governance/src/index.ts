@@ -410,9 +410,9 @@ export function applyGovernanceRules(params: {
   // Check branch graph for risky patterns
   const branchWarnings: string[] = [];
   if (branchGraph) {
-    // Check for deep branching (more than 3 levels)
+    // Check for deep branching (3 or more levels)
     const maxDepth = calculateMaxDepth(branchGraph);
-    if (maxDepth > 3 && riskProfile.tier === "informational") {
+    if (maxDepth >= 3 && riskProfile.tier === "informational") {
       branchWarnings.push("Deep branching detected in informational decision");
     }
     

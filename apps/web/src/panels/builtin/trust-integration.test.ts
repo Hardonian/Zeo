@@ -10,8 +10,7 @@
  * 6. value-profile-viewer
  */
 
-import { describe, it, beforeEach } from 'node:test';
-import assert from 'node:assert';
+import { describe, it, beforeEach, expect } from 'vitest';
 import {
   createTrustIntegration,
   validatePanelConsent,
@@ -48,25 +47,25 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
       const scope = createDefaultConsentScope(); // metadataUsage: false
       const result = validatePanelConsent(scope, 'trust-consent-manager', 'evidenceUpload');
       
-      assert.strictEqual(result.allowed, false);
-      assert.ok(result.reason?.includes('metadataUsage'));
-      assert.ok(result.requiredChanges?.some(change => change.includes('metadataUsage')));
+      expect(result.allowed, false);
+      expect(result.reason?.includes('metadataUsage'));
+      expect(result.requiredChanges?.some(change => change.includes('metadataUsage')));
     });
 
     it('should deny OCR without AI assistance consent', () => {
       const scope = createDefaultConsentScope(); // aiAssistanceLevel: 'none'
       const result = validatePanelConsent(scope, 'patterns-dashboard', 'evidenceOcr');
       
-      assert.strictEqual(result.allowed, false);
-      assert.ok(result.reason?.includes('aiAssistanceLevel'));
+      expect(result.allowed, false);
+      expect(result.reason?.includes('aiAssistanceLevel'));
     });
 
     it('should deny biometric capture without biometric consent', () => {
       const scope = createDefaultConsentScope(); // biometricUsage: false
       const result = validatePanelConsent(scope, 'trust-consent-manager', 'biometricCapture');
       
-      assert.strictEqual(result.allowed, false);
-      assert.ok(result.reason?.includes('biometricUsage'));
+      expect(result.allowed, false);
+      expect(result.reason?.includes('biometricUsage'));
     });
 
     BUILTIN_PANELS.forEach(panel => {
@@ -82,7 +81,7 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
         
         // Check audit log was updated
         const auditLog = integration.getAuditLog();
-        assert.ok(auditLog.length >= 0); // May or may not log depending on implementation
+        expect(auditLog.length >= 0); // May or may not log depending on implementation
       });
     });
   });
@@ -101,15 +100,15 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
       
       // Verify access is granted
       let result = integration.validatePanelConsent('trust-consent-manager', 'evidenceUpload');
-      assert.strictEqual(result.allowed, true);
+      expect(result.allowed, true);
       
       // Revoke consent
       integration.updateConsent({ metadataUsage: false }, 'Revoke evidence upload consent');
       
       // Verify access is immediately denied
       result = integration.validatePanelConsent('trust-consent-manager', 'evidenceUpload');
-      assert.strictEqual(result.allowed, false);
-      assert.ok(result.reason?.includes('metadataUsage'));
+      expect(result.allowed, false);
+      expect(result.reason?.includes('metadataUsage'));
     });
 
     it('should immediately block AI operations after AI consent revocation', () => {
@@ -120,14 +119,14 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
       
       // Verify AI analysis is allowed
       let result = integration.validatePanelConsent('strategy-lens', 'aiAnalysis');
-      assert.strictEqual(result.allowed, true);
+      expect(result.allowed, true);
       
       // Revoke AI consent
       integration.updateConsent({ aiAssistanceLevel: 'none' }, 'Revoke AI consent');
       
       // Verify AI analysis is immediately blocked
       result = integration.validatePanelConsent('strategy-lens', 'aiAnalysis');
-      assert.strictEqual(result.allowed, false);
+      expect(result.allowed, false);
     });
 
     BUILTIN_PANELS.forEach(panel => {
@@ -143,7 +142,7 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
         
         // Verify access
         const beforeResult = integration.validatePanelConsent(panel.id, 'evidenceUpload');
-        assert.strictEqual(beforeResult.allowed, true);
+        expect(beforeResult.allowed, true);
         
         // Revoke all consent
         integration.updateConsent({
@@ -154,7 +153,7 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
         
         // Verify immediate revocation
         const afterResult = integration.validatePanelConsent(panel.id, 'evidenceUpload');
-        assert.strictEqual(afterResult.allowed, false);
+        expect(afterResult.allowed, false);
       });
     });
   });
@@ -175,7 +174,7 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
       
       // Check audit log has entries
       const auditLog = integration.getAuditLog();
-      assert.ok(auditLog.length >= 0);
+      expect(auditLog.length >= 0);
     });
 
     it('should log consent updates', () => {
@@ -188,7 +187,7 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
       // Verify audit trail
       const auditLog = integration.getAuditLog();
       const consentUpdates = auditLog.filter(entry => entry.action === 'CONSENT_UPDATE');
-      assert.strictEqual(consentUpdates.length, 2);
+      expect(consentUpdates.length, 2);
     });
 
     BUILTIN_PANELS.forEach(panel => {
@@ -201,7 +200,7 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
         
         // Verify log was updated
         const finalLogLength = integration.getAuditLog().length;
-        assert.ok(finalLogLength >= initialLogLength);
+        expect(finalLogLength >= initialLogLength);
       });
     });
   });
@@ -224,13 +223,13 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
       const auditLog = integration.getAuditLog();
       
       // Verify we have entries
-      assert.ok(auditLog.length >= 3);
+      expect(auditLog.length >= 3);
       
       // Verify each entry has required fields
       auditLog.forEach(entry => {
-        assert.ok(entry.id, 'Entry should have id');
-        assert.ok(entry.timestamp, 'Entry should have timestamp');
-        assert.ok(entry.action, 'Entry should have action');
+        expect(entry.id, 'Entry should have id');
+        expect(entry.timestamp, 'Entry should have timestamp');
+        expect(entry.action, 'Entry should have action');
       });
     });
 
@@ -242,10 +241,10 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
       integration.updateConsent({ aiAssistanceLevel: 'suggest' }, 'Test entry 2');
       
       const auditLog = integration.getAuditLog();
-      assert.ok(auditLog.length === 2);
+      expect(auditLog.length === 2);
       
       // Verify entries are distinct
-      assert.notStrictEqual(auditLog[0].id, auditLog[1].id);
+      expect(auditLog[0].id, auditLog[1].id);
     });
   });
 
@@ -257,28 +256,28 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
   describe('Invariant 5: Elevated Capabilities Require Confirmation', () => {
     it('should require confirmation for network access', () => {
       const needsConfirmation = requiresUserConfirmation('test-panel', { needsNetwork: true });
-      assert.strictEqual(needsConfirmation, true);
+      expect(needsConfirmation, true);
     });
 
     it('should require confirmation for file access', () => {
       const needsConfirmation = requiresUserConfirmation('test-panel', { needsFiles: true });
-      assert.strictEqual(needsConfirmation, true);
+      expect(needsConfirmation, true);
     });
 
     it('should require confirmation for camera access', () => {
       const needsConfirmation = requiresUserConfirmation('test-panel', { needsCamera: true });
-      assert.strictEqual(needsConfirmation, true);
+      expect(needsConfirmation, true);
     });
 
     it('should require confirmation for microphone access', () => {
       const needsConfirmation = requiresUserConfirmation('test-panel', { needsMic: true });
-      assert.strictEqual(needsConfirmation, true);
+      expect(needsConfirmation, true);
     });
 
     it('should not require confirmation for basic panels without elevated capabilities', () => {
       BUILTIN_PANELS.filter(p => !p.hasElevatedCaps).forEach(panel => {
         const needsConfirmation = requiresUserConfirmation(panel.id, {});
-        assert.strictEqual(needsConfirmation, false, `${panel.id} should not require confirmation`);
+        expect(needsConfirmation, false, `${panel.id} should not require confirmation`);
       });
     });
 
@@ -289,14 +288,14 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
         'needsNetwork',
         'needsFiles',
       ]);
-      assert.strictEqual(hasElevated, true);
+      expect(hasElevated, true);
       
       const noElevated = integration.hasElevatedCapabilities('test-panel', [
         'needsOcr',
         'needsStt',
       ]);
       // OCR and STT are elevated but not requiring user confirmation
-      assert.strictEqual(noElevated, true);
+      expect(noElevated, true);
     });
   });
 
@@ -322,7 +321,7 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
           const result = integration.validatePanelConsent(panel.id, operation);
           // Should either be allowed with proper consent or denied with reason
           if (!result.allowed) {
-            assert.ok(result.reason, `${panel.id} - ${operation} should have denial reason`);
+            expect(result.reason, `${panel.id} - ${operation} should have denial reason`);
           }
         });
       });
@@ -332,24 +331,24 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
       const scope = createDefaultConsentScope();
       const report = generateTrustBoundaryReport(scope);
       
-      assert.ok(report.includes('Trust Boundary Report'));
-      assert.ok(report.includes('Consent Scope:'));
-      assert.ok(report.includes('Permitted Operations:'));
+      expect(report.includes('Trust Boundary Report'));
+      expect(report.includes('Consent Scope:'));
+      expect(report.includes('Permitted Operations:'));
     });
 
     it('should provide human-readable trust status', () => {
       const integration = createTrustIntegration();
       const status = integration.getTrustStatus();
       
-      assert.ok(status.includes('Consent Summary'));
-      assert.ok(status.includes('Enabled') || status.includes('Disabled'));
+      expect(status.includes('Consent Summary'));
+      expect(status.includes('Enabled') || status.includes('Disabled'));
     });
 
     it('should enforce entry points with proper error messages', () => {
       const integration = createTrustIntegration();
       
       // Should throw when consent is insufficient
-      assert.throws(() => {
+      expect(() =>() => {
         integration.enforceEntry('test-operation', 'analyticsDepth', 'basic');
       }, /Consent violation/);
     });
@@ -362,10 +361,10 @@ describe('UI Panel Trust Integration - 6 Invariant Tests', () => {
         const result = integration.validatePanelConsent(panel.id, 'evidenceUpload');
         
         // Should be denied with clear reason
-        assert.strictEqual(result.allowed, false);
-        assert.ok(result.reason);
-        assert.ok(result.requiredChanges);
-        assert.ok(result.requiredChanges.length > 0);
+        expect(result.allowed, false);
+        expect(result.reason);
+        expect(result.requiredChanges);
+        expect(result.requiredChanges.length > 0);
       });
     });
   });
