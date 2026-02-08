@@ -89,12 +89,8 @@ export function createAdapterRuntime(
   config: AdapterRuntimeConfig = DEFAULT_RUNTIME_CONFIG,
   options?: { quarantineDir?: string }
 ): AdapterRuntime {
-  // Initialize components
-  const orchestrator = createFetchOrchestrator(
-    config.cache,
-    config.rateLimit,
-    config.retry
-  );
+  // Initialize components (orchestrator initialized but not yet used - placeholder for fetch implementation)
+  void createFetchOrchestrator(config.cache, config.rateLimit, config.retry);
   
   const normalizer = createNormalizer(config.normalization);
   const trustScorer = createTrustScorer(config.trust);

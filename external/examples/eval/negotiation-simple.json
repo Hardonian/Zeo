@@ -1,0 +1,45 @@
+{
+  "id": "negotiation-simple-001",
+  "title": "Negotiate exclusivity vs flexibility for a 12-month agreement",
+  "context": "You are negotiating a 12-month agreement. Counterparty requested exclusivity. You want flexibility and safe termination terms. Stakes: revenue and long-term optionality.",
+  "createdAt": "2026-02-08T00:00:00.000Z",
+  "horizon": "weeks",
+  "agents": [
+    { "id": "agent-self-001", "name": "You", "role": "self" },
+    { "id": "agent-other-001", "name": "Counterparty", "role": "counterparty" }
+  ],
+  "actions": [
+    { "id": "action-001", "label": "Propose revised terms (reduce exclusivity, add termination flexibility)", "actorId": "agent-self-001", "kind": "change_terms" },
+    { "id": "action-002", "label": "Ask clarifying question about timeline and approvals", "actorId": "agent-self-001", "kind": "verify" },
+    { "id": "action-003", "label": "Accept as-is to secure deal quickly", "actorId": "agent-self-001", "kind": "commit" },
+    { "id": "action-004", "label": "Delay decision pending internal review", "actorId": "agent-self-001", "kind": "delay" }
+  ],
+  "constraints": [
+    { "id": "constraint-001", "name": "Decision deadline", "value": "Within 7 days", "status": "belief" },
+    { "id": "constraint-002", "name": "Budget constraint", "value": "Must remain within internal pricing band", "status": "assumption" }
+  ],
+  "assumptions": [
+    {
+      "id": "assumption-001",
+      "text": "Counterparty is more sensitive to timeline than to price.",
+      "status": "assumption",
+      "confidence": "medium",
+      "tags": ["counterparty", "timeline"]
+    },
+    {
+      "id": "assumption-002",
+      "text": "Exclusivity is a bargaining anchor rather than a strict requirement.",
+      "status": "assumption",
+      "confidence": "low",
+      "tags": ["terms", "exclusivity"]
+    },
+    {
+      "id": "assumption-003",
+      "text": "A brief delay will not materially reduce trust or momentum.",
+      "status": "belief",
+      "confidence": "medium",
+      "probability": { "low": 0.4, "high": 0.7 },
+      "tags": ["relationship", "risk"]
+    }
+  ]
+}

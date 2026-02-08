@@ -1,0 +1,37 @@
+{
+  "id": "ops-simple-001",
+  "title": "Stabilize production latency spike during peak traffic",
+  "context": "Latency spiked during peak traffic. Users are impacted. Evidence is incomplete and time is limited. Goal: reduce user impact and preserve auditability.",
+  "createdAt": "2026-02-08T00:00:00.000Z",
+  "horizon": "hours",
+  "agents": [
+    { "id": "agent-lead-001", "name": "Incident lead", "role": "self" },
+    { "id": "agent-system-001", "name": "Production system", "role": "system" }
+  ],
+  "actions": [
+    { "id": "action-rollback-001", "label": "Roll back recent deployment", "actorId": "agent-lead-001", "kind": "commit" },
+    { "id": "action-verify-001", "label": "Verify database saturation and connection pool", "actorId": "agent-lead-001", "kind": "verify" },
+    { "id": "action-escalate-001", "label": "Escalate to vendor / SRE", "actorId": "agent-lead-001", "kind": "escalate" },
+    { "id": "action-monitor-001", "label": "Delay and monitor for 10 minutes", "actorId": "agent-lead-001", "kind": "delay" }
+  ],
+  "constraints": [
+    { "id": "constraint-peak-001", "name": "Peak traffic window", "value": "Next 2 hours", "status": "fact", "provenance": [{ "kind": "text", "sourceId": "ops-note", "offset": 0, "length": 18, "capturedAt": "2026-02-08T00:00:00.000Z", "checksum": "sha256:example" }] }
+  ],
+  "assumptions": [
+    {
+      "id": "assumption-deploy-001",
+      "text": "The incident is correlated with the most recent deployment.",
+      "status": "belief",
+      "confidence": "medium",
+      "probability": { "low": 0.35, "high": 0.65 },
+      "tags": ["ops", "change"]
+    },
+    {
+      "id": "assumption-rollback-001",
+      "text": "Rollback will restore service quickly with low side effects.",
+      "status": "assumption",
+      "confidence": "low",
+      "tags": ["ops", "rollback"]
+    }
+  ]
+}

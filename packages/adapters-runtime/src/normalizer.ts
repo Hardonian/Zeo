@@ -111,7 +111,7 @@ export function createNormalizer(
       
       // Stable sort
       if (options.stableSort) {
-        data = stableSort<SignalObservation>(data, options.sortBy);
+        data = stableSort(data as unknown as Record<string, unknown>[], options.sortBy) as unknown as SignalObservation[];
       }
       
       // Compute checksums

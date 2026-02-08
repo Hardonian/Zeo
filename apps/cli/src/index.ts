@@ -29,6 +29,7 @@ import {
   parseAdaptersRuntimeArgs,
   runAdaptersRuntimeCommand,
 } from "./adapters-runtime-cli.js";
+import { parseEvalArgs, runEvalCommand, type EvalCliArgs } from "./eval-cli.js";
 
 interface CliArgs extends ReplayCliArgs {
   example: "negotiation" | "ops";
@@ -228,6 +229,14 @@ async function main(): Promise<void> {
   if (adaptersIdx !== -1) {
     const adaptersArgs = parseAdaptersRuntimeArgs(argv.slice(adaptersIdx + 1));
     const exitCode = await runAdaptersRuntimeCommand(adaptersArgs);
+    process.exit(exitCode);
+  }
+
+  // Check for eval command
+  const evalIdx = argv.indexOf("eval");
+  if (evalIdx !== -1) {
+    const evalArgs = parseEvalArgs(argv.slice(evalIdx + 1));
+    const exitCode = await runEvalCommand(evalArgs);
     process.exit(exitCode);
   }
 

@@ -97,6 +97,15 @@ async function runReplayCommand(
 }
 
 /**
+ * Build decision command object with optional seed
+ */
+function buildDecisionCommand(spec: string, seed?: string): EvalCommand {
+  return seed !== undefined
+    ? { type: "decision", spec, seed }
+    : { type: "decision", spec };
+}
+
+/**
  * Run a decision command
  */
 async function runDecisionCommand(
@@ -109,7 +118,7 @@ async function runDecisionCommand(
 
   if (!existsSync(resolvedPath)) {
     return {
-      command: { type: "decision", spec: specPath, seed },
+      command: buildDecisionCommand(specPath, seed),
       success: false,
       durationMs: Date.now() - startTime,
       invariantResults: [],
@@ -127,7 +136,7 @@ async function runDecisionCommand(
     const hash = createHash("sha256").update(content).digest("hex");
 
     return {
-      command: { type: "decision", spec: specPath, seed },
+      command: buildDecisionCommand(specPath, seed),
       success: true,
       durationMs: Date.now() - startTime,
       outputHash: hash,
@@ -136,7 +145,7 @@ async function runDecisionCommand(
     };
   } catch (err) {
     return {
-      command: { type: "decision", spec: specPath, seed },
+      command: buildDecisionCommand(specPath, seed),
       success: false,
       durationMs: Date.now() - startTime,
       invariantResults: [],
