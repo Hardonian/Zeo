@@ -76,8 +76,7 @@ function applyObservationToBand(
   priorBand: { low: number; high: number },
   observation: SignalObservation,
   observationModel: ObservationModel,
-  qualityScore: number,
-  _rng: SeededRandom
+  qualityScore: number
 ): { low: number; high: number } {
   const width = priorBand.high - priorBand.low;
 
@@ -242,8 +241,7 @@ export function inferPosterior(
         varState.posteriorBand,
         observation,
         model,
-        quality,
-        rng
+        quality
       );
 
       if (!observationBandsByVariable.has(varId)) {
