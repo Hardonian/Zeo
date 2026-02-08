@@ -460,9 +460,9 @@ describe("Gating Rules", () => {
       },
     ];
 
-    const slices = [
+    const slices: import("../slice-types.js").SliceMetrics[] = [
       {
-        slice: { dimension: "domain", value: "test" },
+        slice: { dimension: "domain" as import("../slice-types.js").SliceDimension, value: "test" },
         sampleSize: 20,
         coverage: { overall: 0.8, byMetricId: {} },
         properScores: { overall: 0.1, byMetricId: {} },
@@ -493,9 +493,9 @@ describe("Gating Rules", () => {
       },
     ];
 
-    const slices = [
+    const slices: import("../slice-types.js").SliceMetrics[] = [
       {
-        slice: { dimension: "domain", value: "test" },
+        slice: { dimension: "domain" as import("../slice-types.js").SliceDimension, value: "test" },
         sampleSize: 5,
         coverage: { overall: 0.8, byMetricId: {} },
         properScores: { overall: 0.1, byMetricId: {} },
