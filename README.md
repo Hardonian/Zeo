@@ -94,14 +94,14 @@ Zeo avoids fake numbers. It uses:
 ---
 
 ## Repo layout
-This repository is intentionally lightweight: it ships a proprietary core engine plus composable adapter interfaces.
+This repository is intentionally lightweight: it ships a open-source core engine plus composable adapter interfaces.
 
 ```
 .
 ├─ apps/
 │  └─ cli/                # Minimal CLI demo to exercise the core engine
 ├─ packages/
-│  ├─ core/               # Proprietary branching + evaluation engine with QuantEngine integration
+│  ├─ core/               # Open-source branching + evaluation engine with QuantEngine integration
 │  ├─ contracts/          # Shared types: EvidenceEvent, DecisionSpec, BranchGraph
 │  ├─ adapters/           # Vendor adapter interfaces (OCR, STT, Market/News, etc.)
 │  ├─ memory/             # Decision memory + learning system (v0.3.0)
@@ -272,7 +272,7 @@ pnpm -C apps/cli start -- --example ops --out result.json
 ---
 
 ## License
-This repository is proprietary. See `LICENSE`.
+This repository is open source. See `LICENSE`.
 
 ---
 

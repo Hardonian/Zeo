@@ -490,37 +490,41 @@ function calculateMaxDepth(branchGraph: BranchGraph): number {
 }
 
 function calculateNodeDepth(
-  nodeId: string, 
-  branchGraph: BranchGraph, 
+  nodeId: string,
+  branchGraph: BranchGraph,
   visited: Set<string> = new Set()
 ): number {
   if (visited.has(nodeId)) {
     return 0;
   }
-  
+
   visited.add(nodeId);
-  
+
+  // Extract edges array with explicit type annotation
+  const edges: BranchEdge[] = branchGraph.edges || [];
+
   // Find incoming edges (using 'from' as per BranchEdge type)
-  const incomingEdges = branchGraph.edges?.filter(
+  const incomingEdges: BranchEdge[] = edges.filter(
     (edge: BranchEdge) => edge.to === nodeId
-  ) || [];
-  
+  );
+
   if (incomingEdges.length === 0) {
     return 1; // Root node
   }
-  
+
   const maxIncomingDepth = Math.max(
-    ...incomingEdges.map((edge: BranchEdge) => 
+    ...incomingEdges.map((edge: BranchEdge) =>
       calculateNodeDepth(edge.from, branchGraph, new Set(visited))
     ),
     0
   );
-  
+
   return maxIncomingDepth + 1;
 }
 
 function countDependencies(branchGraph: BranchGraph): number {
-  return branchGraph.edges?.length || 0;
+  const edges: BranchEdge[] = branchGraph.edges || [];
+  return edges.length;
 }
 
 function hashDecisionSpec(decisionSpec: DecisionSpec): string {

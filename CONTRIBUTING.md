@@ -1,6 +1,6 @@
 # Contributing
 
-Zeo is currently proprietary. Contributions may be accepted by invitation.
+Zeo is open source. Contributions are welcome.. Contributions may be accepted by invitation.
 
 ## Ground rules
 - Preserve epistemic integrity: no false precision; ranges by default.
