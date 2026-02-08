@@ -6,16 +6,13 @@
  */
 
 import type { EvidenceEvent } from "@zeo/contracts";
-import type { TimeStampedEvidence, DecayModel, TemporalContext } from "@zeo/time";
-import { computeCurrentReliability, assertTemporalConsistency } from "@zeo/time";
+import type { TemporalMetadata, DecayConfig, TemporalContext } from "@zeo/time";
+import { applyDecay, createTemporalContext, validateTemporalAlignment } from "@zeo/time";
 
 export interface EvidenceWithTemporalMetadata {
   evidence: EvidenceEvent;
-  temporalMetadata: {
-    capturedAt: string;
-    decayModel: DecayModel;
-    reliability: number;
-  };
+  temporalMetadata: TemporalMetadata;
+  reliability: number;
 }
 
 /**
@@ -23,22 +20,27 @@ export interface EvidenceWithTemporalMetadata {
  * Returns evidence weighted by current reliability.
  */
 export function applyTemporalDecayToEvidence(
-  evidence: TimeStampedEvidence[],
-  asOf: string
-): Array<{ evidence: TimeStampedEvidence; reliability: number }> {
+  evidence: Array<{ evidence: EvidenceEvent; temporalMetadata: TemporalMetadata; weight: number }>,
+  asOf: Date
+): Array<{ evidence: EvidenceEvent; temporalMetadata: TemporalMetadata; reliability: number; decayedWeight: number }> {
   return evidence.map(e => {
-    const reliability = computeCurrentReliability(e, asOf);
-    return { evidence: e, reliability };
+    const result = applyDecay(e.weight, e.temporalMetadata, asOf);
+    return { 
+      evidence: e.evidence, 
+      temporalMetadata: e.temporalMetadata, 
+      reliability: result.decayFactor,
+      decayedWeight: result.decayedWeight
+    };
   });
 }
 
 /**
  * Filter out stale evidence below reliability threshold.
  */
-export function filterStaleEvidence(
-  evidence: Array<{ evidence: TimeStampedEvidence; reliability: number }>,
+export function filterStaleEvidence<T extends { reliability: number }>(
+  evidence: T[],
   threshold: number = 0.1
-): Array<{ evidence: TimeStampedEvidence; reliability: number }> {
+): T[] {
   return evidence.filter(e => e.reliability >= threshold);
 }
 
@@ -47,56 +49,73 @@ export function filterStaleEvidence(
  * Throws if any evidence is from the future.
  */
 export function enforceTemporalConsistency(
-  decisionAsOf: string,
-  evidence: TimeStampedEvidence[]
+  decisionAsOf: Date,
+  evidence: Array<{ temporalMetadata: TemporalMetadata }>
 ): void {
-  assertTemporalConsistency(decisionAsOf, evidence);
+  const temporalContext = createTemporalContext(decisionAsOf);
+  
+  const items = evidence.map((e, i) => ({
+    id: `evidence-${i}`,
+    temporalMetadata: e.temporalMetadata,
+    weight: 1
+  }));
+  
+  const validation = validateTemporalAlignment(items, temporalContext);
+  
+  if (!validation.aligned) {
+    throw new TemporalInconsistencyError(
+      `Temporal consistency violation: ${validation.issues.join("; ")}`
+    );
+  }
 }
 
 /**
- * Create default decay model for evidence type.
+ * Create default decay config for evidence type.
  */
-export function createDefaultDecayModel(
+export function createDefaultDecayConfig(
   evidenceType: string
-): DecayModel {
+): DecayConfig {
   switch (evidenceType) {
     case "contract":
       return {
-        type: "step",
-        halfLifeHours: 8760, // 1 year (but step is binary)
-        floor: 0,
-        ceiling: 1,
+        model: "step",
+        stepThresholds: [
+          { ageMs: 31536000000, decayFactor: 1.0 }, // 1 year
+          { ageMs: 63072000000, decayFactor: 0.5 }, // 2 years
+        ]
       };
     case "market":
       return {
-        type: "exponential",
-        halfLifeHours: 1,
-        floor: 0.3,
-        ceiling: 1,
+        model: "exponential",
+        halfLifeMs: 3600000 // 1 hour
       };
     case "news":
       return {
-        type: "exponential",
-        halfLifeHours: 24,
-        floor: 0.1,
-        ceiling: 1,
+        model: "exponential",
+        halfLifeMs: 86400000 // 24 hours
       };
     case "relationship":
       return {
-        type: "sigmoid",
-        halfLifeHours: 168, // 1 week
-        floor: 0.2,
-        ceiling: 1,
+        model: "exponential",
+        halfLifeMs: 604800000 // 1 week
       };
     default:
       return {
-        type: "exponential",
-        halfLifeHours: 168,
-        floor: 0.2,
-        ceiling: 1,
+        model: "exponential",
+        halfLifeMs: 604800000 // 1 week
       };
   }
 }
 
-export { computeCurrentReliability, assertTemporalConsistency } from "@zeo/time";
-export type { TimeStampedEvidence, DecayModel, TemporalContext } from "@zeo/time";
+/**
+ * Error thrown when temporal consistency is violated.
+ */
+export class TemporalInconsistencyError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "TemporalInconsistencyError";
+  }
+}
+
+export { applyDecay, createTemporalContext, validateTemporalAlignment } from "@zeo/time";
+export type { TemporalMetadata, DecayConfig, TemporalContext } from "@zeo/time";
