@@ -352,7 +352,11 @@ describe("world-model", () => {
       const posteriorA = inferPosterior(baseWorldSpec, [obs1, obs2], "seed-123");
       const posteriorB = inferPosterior(baseWorldSpec, [obs2, obs1], "seed-123");
 
-      expect(posteriorA).toEqual(posteriorB);
+      // Compare everything except timestamps (which naturally differ between runs)
+      expect(posteriorA.worldSpecId).toEqual(posteriorB.worldSpecId);
+      expect(posteriorA.seed).toEqual(posteriorB.seed);
+      expect(posteriorA.modelStrength).toEqual(posteriorB.modelStrength);
+      expect(posteriorA.variables).toEqual(posteriorB.variables);
     });
   });
 

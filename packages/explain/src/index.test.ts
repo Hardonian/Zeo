@@ -255,7 +255,7 @@ describe("ExplanationSelector", () => {
 
       const history = selector.getSelectionHistory("d1");
       expect(history.length).toBe(1);
-      expect(history[0].decisionId).toBe("d1");
+      expect(history[0]!.decisionId).toBe("d1");
     });
   });
 

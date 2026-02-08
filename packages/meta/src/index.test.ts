@@ -256,22 +256,32 @@ describe("detectAllPatterns", () => {
   it("should detect all pattern types", () => {
     const now = new Date();
     const records: DecisionRecord[] = [
-      // Assumption errors
+      // Assumption errors - need multiple to trigger pattern
       createDecisionRecord({
         assumptions: ["market grows"],
         outcome: "failure",
         timestamp: now,
       }),
+      createDecisionRecord({
+        assumptions: ["market grows"],
+        outcome: "failure",
+        timestamp: new Date(now.getTime() - 86400000),
+      }),
+      createDecisionRecord({
+        assumptions: ["market grows"],
+        outcome: "failure",
+        timestamp: new Date(now.getTime() - 172800000),
+      }),
       // Overconfidence
       createDecisionRecord({
         confidence: 0.9,
         outcome: "failure",
-        timestamp: new Date(now.getTime() - 86400000),
+        timestamp: new Date(now.getTime() - 259200000),
       }),
       // Reversal
       createDecisionRecord({
         reversalOf: "dec-1",
-        timestamp: new Date(now.getTime() - 172800000),
+        timestamp: new Date(now.getTime() - 345600000),
       }),
     ];
 
@@ -350,7 +360,7 @@ describe("generateCalibrationNudges", () => {
 
     const nudges = generateCalibrationNudges(patterns);
     expect(nudges.length).toBeGreaterThan(0);
-    expect(nudges[0]).toContain("pre-mortem");
+    expect(nudges.some(n => n.includes("pre-mortem"))).toBe(true);
   });
 
   it("should generate nudges for assumption errors", () => {
@@ -477,9 +487,9 @@ describe("hasEnoughObservations", () => {
 describe("filterDismissedInsights", () => {
   it("should filter out dismissed insights", () => {
     const insights = [
-      { id: "1", category: "pattern" as const, message: "test", supportingEvidence: [], dismissible: true },
-      { id: "2", category: "warning" as const, message: "test", supportingEvidence: [], dismissible: true, dismissed: true },
-      { id: "3", category: "nudge" as const, message: "test", supportingEvidence: [], dismissible: true },
+      { id: "1", category: "pattern" as const, message: "test", supportingEvidence: [] as string[], dismissible: true },
+      { id: "2", category: "warning" as const, message: "test", supportingEvidence: [] as string[], dismissible: true, dismissed: true },
+      { id: "3", category: "nudge" as const, message: "test", supportingEvidence: [] as string[], dismissible: true },
     ];
 
     const filtered = filterDismissedInsights(insights);

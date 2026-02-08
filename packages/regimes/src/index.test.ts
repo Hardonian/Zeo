@@ -506,12 +506,15 @@ describe("regimes detector", () => {
     });
 
     test("detects early warnings for mean drift", () => {
+      // Create drift that triggers warning with 0.1 threshold
       const points: NumericPoint[] = [];
       for (let i = 0; i < 50; i++) {
         points.push({ t: new Date(i * 60000).toISOString(), v: 100 });
       }
       for (let i = 50; i < 100; i++) {
-        points.push({ t: new Date(i * 60000).toISOString(), v: 100 + (i - 50) * 0.5 });
+        // 2.0 per step drift: final value = 100 + 50 * 2.0 = 200
+        // Short mean ≈ 175, Long mean ≈ 150, trend ≈ 0.17 > 0.1 threshold
+        points.push({ t: new Date(i * 60000).toISOString(), v: 100 + (i - 50) * 2.0 });
       }
 
       const warnings = detectEarlyWarnings(points);

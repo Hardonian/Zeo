@@ -190,8 +190,11 @@ export class ExplanationSelector {
     ];
     const currentIndex = escalationOrder.indexOf(level);
 
-    if (currentIndex < escalationOrder.length - 1) {
-      return escalationOrder[currentIndex + 1];
+    if (currentIndex >= 0 && currentIndex < escalationOrder.length - 1) {
+      const nextLevel = escalationOrder[currentIndex + 1];
+      if (nextLevel) {
+        return nextLevel;
+      }
     }
 
     return level;
