@@ -94,3 +94,54 @@ export {
   DEFAULT_SLICE_DIMENSIONS,
   type SliceEvalOptions,
 } from "./slice-runner.js";
+
+// Re-export uncertainty ledger (Phase 3)
+export {
+  UncertaintyLedger,
+  UncertaintyBand,
+  UncertaintyCategory,
+  UncertaintyLedgerConfig,
+  createDefaultLedgerConfig,
+  computeMeasurementUncertainty,
+  computeModelUncertainty,
+  computeRegimeUncertainty,
+  computeAdversarialUncertainty,
+  computeAiProposalUncertainty,
+  aggregateUncertainty,
+  computeUncertaintyLedger,
+  checkUncertaintyConsistency,
+  exportLedgerToJson,
+  createLedgerSummary,
+} from "./uncertainty-ledger.js";
+
+// Re-export falsification suite (Phase 2)
+export {
+  type FalsificationTestType,
+  type FalsificationConfig,
+  type FalsificationTestResult,
+  type FalsificationReport,
+  createDefaultFalsificationConfig,
+  runFalsificationSuite,
+  exportFalsificationReport,
+  exportFalsificationReportMd,
+} from "./falsification.js";
+
+// Re-export regret metrics (Phase 4)
+export {
+  type RegretType,
+  type RegretPair,
+  type RegretConfig,
+  type RealizedRegretResult,
+  type RegretMetrics,
+  createDefaultRegretConfig,
+  deriveRegretSeed,
+  computeRealizedRegret,
+  computeIntervalScore,
+  computeProperScore,
+  computeExpectedRegret,
+  computeWorstCaseRegret,
+  comparePolicies,
+  computeRegretMetrics,
+  exportRegretMetrics,
+  createRegretSummary,
+} from "./regret.js";
