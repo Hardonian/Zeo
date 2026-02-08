@@ -2,6 +2,39 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { JobQueue, resetJobQueue, getJobQueue } from './queue.js';
 import type { JobHandler } from './types.js';
 
+// Helper to process all pending jobs synchronously
+async function processAllJobs(queue: JobQueue): Promise<void> {
+  // Keep processing until no more pending jobs
+  let hasMoreJobs = true;
+  while (hasMoreJobs) {
+    const stats = queue.getStats();
+    if (stats.byStatus.pending === 0 && stats.byStatus.running === 0) {
+      hasMoreJobs = false;
+      break;
+    }
+    
+    // Trigger processing
+    await queue['processNextJobs']();
+    
+    // Wait a bit for jobs to complete
+    await new Promise(r => setTimeout(r, 50));
+    
+    // Check if we're making progress
+    const newStats = queue.getStats();
+    if (newStats.byStatus.pending === stats.byStatus.pending && 
+        newStats.byStatus.running === stats.byStatus.running &&
+        newStats.byStatus.pending === 0) {
+      // No pending jobs, just wait for running to complete
+      while (queue.getStats().byStatus.running > 0) {
+        await new Promise(r => setTimeout(r, 10));
+      }
+      hasMoreJobs = false;
+    }
+  }
+  // Final wait for any async cleanup
+  await new Promise(r => setTimeout(r, 50));
+}
+
 describe('JobQueue', () => {
   beforeEach(() => {
     resetJobQueue();
@@ -25,8 +58,7 @@ describe('JobQueue', () => {
     queue.enqueue('replay', 'Job 3', 'third');
 
     // Process all jobs
-    await queue['processNextJobs']();
-    await new Promise(r => setTimeout(r, 200));
+    await processAllJobs(queue);
 
     expect(processed).toEqual(['first', 'second', 'third']);
   });
@@ -49,32 +81,43 @@ describe('JobQueue', () => {
     queue.enqueue('analytics', 'High priority', 'high', { priority: 1 });
     queue.enqueue('analytics', 'Medium priority', 'medium', { priority: 5 });
 
-    await queue['processNextJobs']();
-    await new Promise(r => setTimeout(r, 200));
+    await processAllJobs(queue);
 
     expect(processed).toEqual(['high', 'medium', 'low']);
   });
 
   it('should track job progress', async () => {
     const queue = new JobQueue({ autoStart: false });
-    let capturedProgress: { percentComplete: number; currentOperation: string } = { percentComplete: 0, currentOperation: '' };
+    let progressUpdates: Array<{ percentComplete: number; currentOperation: string }> = [];
 
     const handler: JobHandler<string, void> = {
       type: 'tournament',
       async execute(job, updateProgress) {
         updateProgress({ percentComplete: 50, currentOperation: 'Halfway' });
-        capturedProgress = job.progress as { percentComplete: number; currentOperation: string };
+        // Capture progress immediately after update
+        progressUpdates.push({
+          percentComplete: job.progress?.percentComplete ?? 0,
+          currentOperation: job.progress?.currentOperation ?? '',
+        });
+        // Add another update to ensure we're tracking
+        await new Promise(r => setTimeout(r, 10));
+        updateProgress({ percentComplete: 75, currentOperation: 'Almost done' });
+        progressUpdates.push({
+          percentComplete: job.progress?.percentComplete ?? 0,
+          currentOperation: job.progress?.currentOperation ?? '',
+        });
       },
     };
 
     queue.registerHandler(handler);
-    const job = queue.enqueue('tournament', 'Test', 'data');
+    queue.enqueue('tournament', 'Test', 'data');
 
-    await queue['processNextJobs']();
-    await new Promise(r => setTimeout(r, 100));
+    await processAllJobs(queue);
 
-    expect(capturedProgress.percentComplete).toBe(50);
-    expect(capturedProgress.currentOperation).toBe('Halfway');
+    // Should have captured the progress updates
+    expect(progressUpdates.length).toBeGreaterThanOrEqual(1);
+    expect(progressUpdates[0].percentComplete).toBe(50);
+    expect(progressUpdates[0].currentOperation).toBe('Halfway');
   });
 
   it('should handle job cancellation', async () => {
@@ -189,8 +232,7 @@ describe('Job Determinism', () => {
       queue.enqueue('replay', 'Job B', 'B', { priority: 2 });
       queue.enqueue('replay', 'Job C', 'C', { priority: 1 });
 
-      await queue['processNextJobs']();
-      await new Promise(r => setTimeout(r, 200));
+      await processAllJobs(queue);
 
       results.push(processed);
     }

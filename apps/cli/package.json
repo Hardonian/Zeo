@@ -19,6 +19,8 @@
     "@zeo/analytics": "workspace:*",
     "@zeo/regimes": "workspace:*",
     "@zeo/eval": "workspace:*",
+    "@zeo/budgets": "workspace:*",
+    "@zeo/jobs": "workspace:*",
     "nanoid": "^5.0.7"
   },
   "devDependencies": {

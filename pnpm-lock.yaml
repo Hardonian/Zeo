@@ -41,6 +41,9 @@ importers:
       '@zeo/analytics':
         specifier: workspace:*
         version: link:../../packages/analytics
+      '@zeo/budgets':
+        specifier: workspace:*
+        version: link:../../packages/budgets
       '@zeo/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -50,6 +53,9 @@ importers:
       '@zeo/eval':
         specifier: workspace:*
         version: link:../../packages/eval
+      '@zeo/jobs':
+        specifier: workspace:*
+        version: link:../../packages/jobs
       '@zeo/models':
         specifier: workspace:*
         version: link:../../packages/models
