@@ -9,8 +9,8 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve, join } from "node:path";
-import { detectRegimes, createRegimeEvent, createRegimeState, type DetectorConfig, type RegimeEvent, type RegimeState } from "@zeo/regimes";
-import type { ObservationBatch } from "@zeo/contracts";
+import { detectRegimes, type NumericPoint, type DetectorConfig } from "@zeo/regimes";
+import type { ObservationBatch, RegimeEvent, RegimeState, RegimeDomain, RegimeKind } from "@zeo/contracts";
 
 export interface RegimesCliArgs {
   detect: string | undefined;
@@ -125,6 +125,14 @@ async function runDetectCommand(
     return 1;
   }
 
+  // Convert observations to numeric points for regime detection
+  const numericPoints: NumericPoint[] = observations.map((obs, i) => ({
+    t: obs.t ?? new Date(Date.now() - (observations.length - i) * 86400000).toISOString(),
+    v: typeof obs.valueBand === "number" ? obs.valueBand : (obs.valueBand.low + obs.valueBand.high) / 2,
+  }));
+
+  const eventTimes = observations.map(obs => obs.t).filter((t): t is string => !!t);
+
   const config: DetectorConfig = {
     minWindowSize: 5,
     maxWindowSize: Math.min(50, Math.floor(observations.length / 3)),
@@ -140,14 +148,21 @@ async function runDetectCommand(
 
   console.log("\nRunning regime detection...");
 
-  const results = detectRegimes(observations, config);
+  const results = detectRegimes(
+    (domain ?? "market") as RegimeDomain,
+    numericPoints,
+    eventTimes.length > 0 ? eventTimes : undefined,
+    signalId ? [signalId] : [],
+    config
+  );
 
   console.log(`\nDetected ${results.events.length} regime events`);
-  console.log(`Current state: ${results.currentState ? `${results.currentState.currentLabel} (${results.currentState.domain})` : "unknown"}`);
+  const currentState = results.states[results.states.length - 1];
+  console.log(`Current state: ${currentState ? `${currentState.currentLabel} (${currentState.domain})` : "unknown"}`);
 
-  if (results.currentState) {
+  if (currentState) {
     console.log(`\nCurrent regime parameters:`);
-    for (const [key, value] of Object.entries(results.currentState.parameters)) {
+    for (const [key, value] of Object.entries(currentState.parameters)) {
       console.log(`  ${key}: ${typeof value === "number" ? value.toFixed(4) : value}`);
     }
   }
@@ -155,7 +170,7 @@ async function runDetectCommand(
   console.log("\n--- Regime Events ---");
   for (let i = 0; i < results.events.length; i++) {
     const event = results.events[i];
-    console.log(`${i + 1}. [${event.kind}] ${event.domain}: ${event.kind === "regime_shift" ? "shift" : event.kind} at ${event.window?.end ?? "unknown"}`);
+    console.log(`${i + 1}. [${event.kind}] ${event.domain}: ${event.kind === "mean_shift" ? "mean_shift" : event.kind} at ${event.window?.end ?? "unknown"}`);
     console.log(`   Confidence: ${(event.confidenceBand.low * 100).toFixed(0)}%-${(event.confidenceBand.high * 100).toFixed(0)}%`);
     console.log(`   Severity: ${event.severityBand.low.toFixed(2)}-${event.severityBand.high.toFixed(2)}`);
   }
@@ -164,12 +179,12 @@ async function runDetectCommand(
     version: "1.0.0",
     generatedAt: new Date().toISOString(),
     detectorConfig: config,
-    currentState: results.currentState,
+    currentState,
     events: results.events,
     summary: {
       totalEvents: results.events.length,
-      stablePeriods: results.events.filter((e: RegimeEvent) => e.kind === "stable").length,
-      shifts: results.events.filter((e: RegimeEvent) => e.kind === "regime_shift").length,
+      stablePeriods: results.events.filter((e: RegimeEvent) => e.kind === "mean_shift").length,
+      shifts: results.events.filter((e: RegimeEvent) => e.kind === "distribution_shift").length,
       volatilityEvents: results.events.filter((e: RegimeEvent) => e.kind === "volatility_break").length,
     },
   };
@@ -194,30 +209,36 @@ function runHistoryCommand(signalId: string): number {
   console.log("Note: Full history requires warehouse integration.");
   console.log("Placeholder output - regime storage not yet persisted.\n");
 
-  const mockHistory = [
+  const mockHistory: Array<RegimeEvent> = [
     {
       id: "evt1",
-      kind: "regime_shift",
+      kind: "distribution_shift",
       domain: "market",
       createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-      currentLabel: "volatile",
-      confidenceBand: { low: 0.75, high: 0.92 },
+      signalIds: [signalId],
+      window: { start: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(), end: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString() },
       severityBand: { low: 0.6, high: 0.85 },
+      confidenceBand: { low: 0.75, high: 0.92 },
+      evidence: { observationHashes: [], provenance: [] },
+      notes: ["Distribution shift detected"],
     },
     {
       id: "evt2",
-      kind: "stable",
+      kind: "mean_shift",
       domain: "market",
       createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-      currentLabel: "stable",
-      confidenceBand: { low: 0.85, high: 0.98 },
+      signalIds: [signalId],
+      window: { start: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000).toISOString(), end: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString() },
       severityBand: { low: 0.1, high: 0.3 },
+      confidenceBand: { low: 0.85, high: 0.98 },
+      evidence: { observationHashes: [], provenance: [] },
+      notes: ["Mean shift detected"],
     },
   ];
 
   console.log("Recent events:");
   for (const event of mockHistory) {
-    console.log(`  - [${(event as RegimeEvent).kind}] ${(event as RegimeEvent).domain}: ${(event as RegimeEvent).currentLabel} (${((event as RegimeEvent).confidenceBand.low * 100).toFixed(0)}%-${((event as RegimeEvent).confidenceBand.high * 100).toFixed(0)}% confidence)`);
+    console.log(`  - [${event.kind}] ${event.domain}: ${event.kind} (${(event.confidenceBand.low * 100).toFixed(0)}%-${(event.confidenceBand.high * 100).toFixed(0)}% confidence)`);
   }
 
   return 0;
