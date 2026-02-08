@@ -274,6 +274,9 @@ export function rebalanceCredence(
   market: MarketState,
   config: RebalanceConfig = DEFAULT_REBALANCE_CONFIG
 ): MarketState {
+  // Check kill-switch
+  requireMarketsActive();
+
   if (market.hypotheses.size === 0) {
     return market;
   }
