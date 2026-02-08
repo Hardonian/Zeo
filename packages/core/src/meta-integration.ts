@@ -1,6 +1,6 @@
 /**
  * Meta-Learning Integration
- * 
+ *
  * Links @zeo/meta to decision memory system.
  * Enables cross-decision learning without auto-modification.
  */
@@ -73,19 +73,24 @@ export function verifyNoAutoModification(
 ): { modified: boolean; changes: string[] } {
   const changes: string[] = [];
 
-  // Check spec hasn't changed
-  if (JSON.stringify(originalDecision.spec) !== JSON.stringify(afterLearning.spec)) {
-    changes.push("Decision spec was modified");
-  }
-
-  // Check decision ID hasn't changed
-  if (originalDecision.id !== afterLearning.id) {
+  // Check decisionId hasn't changed (property is decisionId, not id)
+  if (originalDecision.decisionId !== afterLearning.decisionId) {
     changes.push("Decision ID was modified");
   }
 
-  // Check timestamps
-  if (originalDecision.timestamp !== afterLearning.timestamp) {
+  // Check timestamps (timestamp is a Date object)
+  if (originalDecision.timestamp.getTime() !== afterLearning.timestamp.getTime()) {
     changes.push("Decision timestamp was modified");
+  }
+
+  // Check confidence hasn't changed
+  if (originalDecision.confidence !== afterLearning.confidence) {
+    changes.push("Decision confidence was modified");
+  }
+
+  // Check assumptions haven't changed
+  if (JSON.stringify(originalDecision.assumptions) !== JSON.stringify(afterLearning.assumptions)) {
+    changes.push("Decision assumptions were modified");
   }
 
   return {
@@ -99,18 +104,22 @@ export function verifyNoAutoModification(
  */
 export function createDecisionRecord(
   decisionId: string,
-  spec: unknown,
-  chosenAction: string,
-  outcome: DecisionOutcome,
-  context: Record<string, unknown> = {}
+  assumptions: string[],
+  confidence: number,
+  outcome?: DecisionOutcome,
+  clarifiersRequested: string[] = [],
+  clarifiersIgnored: string[] = [],
+  reversalOf?: string
 ): DecisionRecord {
   return {
-    id: decisionId,
-    timestamp: new Date().toISOString(),
-    spec,
-    chosenAction,
+    decisionId,
+    timestamp: new Date(),
+    assumptions,
+    confidence,
     outcome,
-    context,
+    clarifiersRequested,
+    clarifiersIgnored,
+    reversalOf,
   };
 }
 

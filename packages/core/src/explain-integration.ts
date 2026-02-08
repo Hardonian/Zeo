@@ -1,11 +1,11 @@
 /**
  * Explain Integration
- * 
+ *
  * Hooks @zeo/explain into result formatting.
  * Generates tiered explanations for decision results.
  */
 
-import type { DecisionResult } from "@zeo/contracts";
+import type { DecisionResult, UUID } from "@zeo/contracts";
 import type { ExplanationLevel, ExplanationContent, ExplanationSelectionContext } from "@zeo/explain";
 import { generateExplanation, autoSelectExplanationLevel, createDefaultRules } from "@zeo/explain";
 
@@ -30,14 +30,22 @@ export const DEFAULT_EXPLANATION_CONFIG: ExplanationConfig = {
  */
 export function enrichResultWithExplanation(
   result: DecisionResult,
+  _decisionId: UUID,
   config: ExplanationConfig = DEFAULT_EXPLANATION_CONFIG
-): DecisionResult & { explanation?: ExplanationContent } {
+): Omit<DecisionResult, 'explanation'> & { explanation: ExplanationContent } {
+  // Map numeric level to ExplanationLevel type
+  const levelMap: Record<number, ExplanationLevel> = {
+    0: 'executive',
+    1: 'executive',
+    2: 'operational',
+    3: 'analytical',
+    4: 'epistemic'
+  };
+
   const selectionContext: ExplanationSelectionContext = {
-    decisionId: result.decisionId,
-    hasUncertainty: true,
-    complexityScore: result.branches?.nodes?.length || 1,
-    userOverrideCount: 0,
-    previousLevel: config.maxLevel,
+    decisionRiskTier: 'operational',
+    userInteractionCount: result.evaluations?.length || 0,
+    recentOverrideCount: 0,
   };
 
   // Auto-select level based on context
@@ -46,14 +54,16 @@ export function enrichResultWithExplanation(
     createDefaultRules()
   );
 
-  const level = Math.min(config.maxLevel, autoSelectedLevel) as 0 | 1 | 2 | 3 | 4;
+  // Map auto-selected level to numeric and pick the lower of maxLevel
+  const autoSelectedNumeric = autoSelectedLevel === 'executive' ? 1 :
+                              autoSelectedLevel === 'operational' ? 2 :
+                              autoSelectedLevel === 'analytical' ? 3 : 4;
+  const levelNum = Math.min(config.maxLevel, autoSelectedNumeric) as 0 | 1 | 2 | 3 | 4;
+  const level = levelMap[levelNum];
 
-  // Generate explanation
-  const explanation = generateExplanation(level, {
-    decisionId: result.decisionId,
-    recommendedAction: result.recommendedAction,
-    confidence: result.confidence,
-  });
+  // Generate explanation - generateExplanation takes (result: unknown, level)
+  // Cast result to unknown first to match the expected type
+  const explanation = generateExplanation(result as unknown as Record<string, unknown>, level);
 
   return {
     ...result,
@@ -69,11 +79,14 @@ export function generateExplanationAtLevel(
   level: 0 | 1 | 2 | 3 | 4,
   format: ExplanationConfig['format'] = 'narrative'
 ): ExplanationContent {
-  return generateExplanation(level, {
-    decisionId: result.decisionId,
-    recommendedAction: result.recommendedAction,
-    confidence: result.confidence,
-  });
+  const levelMap: Record<number, ExplanationLevel> = {
+    0: 'executive',
+    1: 'executive',
+    2: 'operational',
+    3: 'analytical',
+    4: 'epistemic'
+  };
+  return generateExplanation(result, levelMap[level]);
 }
 
 /**
@@ -92,17 +105,36 @@ export function verifyExplanationConsistency(
 
     if (!lower || !higher) continue;
 
-    // Check for contradictions (simplified)
-    if (lower.recommendedAction && higher.recommendedAction &&
-        lower.recommendedAction !== higher.recommendedAction) {
-      issues.push(
-        `Level ${sortedLevels[i - 1]} recommends "${lower.recommendedAction}" ` +
-        `but level ${sortedLevels[i]} recommends "${higher.recommendedAction}"`
-      );
+    // Check for contradictions (simplified) - compare summaries
+    if (lower.summary && higher.summary &&
+        lower.summary !== higher.summary) {
+      // Check if the summary contradicts - this is a simplified check
+      const lowerActions = extractActionMentions(lower.summary);
+      const higherActions = extractActionMentions(higher.summary);
+
+      // Find conflicting recommendations
+      for (const action of lowerActions) {
+        if (higherActions.includes(`not-${action}`) ||
+            (lower.summary.includes('recommend') && higher.summary.includes('avoid'))) {
+          issues.push(
+            `Level ${sortedLevels[i - 1]} recommends "${action}" ` +
+            `but level ${sortedLevels[i]} appears to contradict this`
+          );
+        }
+      }
     }
   }
 
   return { consistent: issues.length === 0, issues };
+}
+
+/**
+ * Extract action mentions from summary text.
+ */
+function extractActionMentions(summary: string): string[] {
+  // Simple extraction - look for quoted strings or capitalized phrases
+  const matches = summary.match(/"([^"]+)"|(?:recommend|suggest|choose)\s+(\w+)/gi);
+  return matches || [];
 }
 
 export { generateExplanation, autoSelectExplanationLevel } from "@zeo/explain";
