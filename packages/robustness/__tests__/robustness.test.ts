@@ -8,7 +8,25 @@ import {
   assessHypothesisRobustness,
   runAllRobustnessChecks,
   type NumericDataPoint,
+  type RiskLevel,
+  generateAlternatives,
+  generateCompetingHypotheses,
+  rankHypotheses,
+  formatHypothesisForReview,
+  generateHypothesesFromPattern,
+  type HypothesisCandidate,
+  type EvidencePattern,
 } from "../src/index.js";
+
+function riskOrder(risk: RiskLevel): number {
+  const order: Record<RiskLevel, number> = {
+    critical: 4,
+    high: 3,
+    medium: 2,
+    low: 1,
+  };
+  return order[risk];
+}
 
 describe("Robustness Checks", () => {
   describe("assessStability", () => {
@@ -249,6 +267,187 @@ describe("Robustness Checks", () => {
       const result = runAllRobustnessChecks(data);
 
       expect(["high", "critical"]).toContain(result.overallRisk);
+    });
+  });
+
+  describe("Hypothesis Generator", () => {
+    describe("generateAlternatives", () => {
+      it("should generate reverse causality alternative", () => {
+        const primary = {
+          label: "X causes Y",
+          predictors: [{ kind: "variable", id: "X" }],
+          mechanism: "X directly affects Y through causal pathway",
+          expectedEffect: { direction: "positive" as const, magnitude: 0.5 },
+        };
+        const evidence: EvidencePattern[] = [
+          { observationId: "obs1", correlation: 0.7, temporalRelation: "before" as const, strength: 0.8 },
+        ];
+
+        const result = generateAlternatives(primary, evidence, "market");
+
+        expect(result.alternatives.length).toBeGreaterThan(0);
+        expect(result.primary.length).toBe(1);
+        expect(result.primary[0].label).toBe(primary.label);
+      });
+
+      it("should include confounding alternative", () => {
+        const primary = {
+          label: "Treatment affects outcome",
+          predictors: [{ kind: "variable", id: "treatment" }],
+          mechanism: "Treatment leads to outcome improvement",
+          expectedEffect: { direction: "positive" as const, magnitude: 0.6 },
+        };
+        const evidence: EvidencePattern[] = [];
+
+        const result = generateAlternatives(primary, evidence, "medical", {
+          includeConfounder: true,
+        });
+
+        const confounderAlt = result.alternatives.find(
+          a => a.label.includes("Confounder")
+        );
+        expect(confounderAlt).toBeDefined();
+      });
+
+      it("should respect maxAlternatives config", () => {
+        const primary = {
+          label: "Test hypothesis",
+          predictors: [{ kind: "variable", id: "v1" }, { kind: "variable", id: "v2" }],
+          mechanism: "Multiple factors involved",
+          expectedEffect: { direction: "positive" as const, magnitude: 0.4 },
+        };
+        const evidence: EvidencePattern[] = [];
+
+        const result = generateAlternatives(primary, evidence, "general", {
+          maxAlternatives: 2,
+          includeConfounder: true,
+          includeReverseCausality: true,
+          includeSelectionBias: true,
+        });
+
+        expect(result.alternatives.length).toBeLessThanOrEqual(2);
+      });
+    });
+
+    describe("generateCompetingHypotheses", () => {
+      it("should generate competing hypotheses", () => {
+        const hypotheses = [
+          {
+            label: "H1: X causes Y",
+            mechanism: "Direct effect from X to Y",
+            predictors: [{ kind: "variable", id: "X" }],
+            expectedEffect: { direction: "positive" as const, magnitude: 0.5 },
+          },
+          {
+            label: "H2: Z causes Y",
+            mechanism: "Alternative pathway through Z",
+            predictors: [{ kind: "variable", id: "Z" }],
+            expectedEffect: { direction: "positive" as const, magnitude: 0.4 },
+          },
+        ];
+        const evidence: EvidencePattern[] = [];
+
+        const result = generateCompetingHypotheses(hypotheses, evidence);
+
+        expect(result.length).toBe(2);
+        expect(result[0].confidence).toBeGreaterThan(result[1].confidence);
+      });
+    });
+
+    describe("rankHypotheses", () => {
+      it("should rank hypotheses by 综合 score", () => {
+        const hypotheses: HypothesisCandidate[] = [
+          {
+            id: "h1",
+            label: "H1",
+            description: "First hypothesis",
+            mechanism: "Mechanism 1",
+            predictors: [],
+            expectedEffect: { direction: "positive" as const, magnitude: 0.5 },
+            confidence: 0.9,
+            plausibilityScore: 0.8,
+            testabilityScore: 0.7,
+            parsimonyScore: 0.6,
+            notes: [],
+          },
+          {
+            id: "h2",
+            label: "H2",
+            description: "Second hypothesis",
+            mechanism: "Mechanism 2",
+            predictors: [],
+            expectedEffect: { direction: "negative" as const, magnitude: 0.3 },
+            confidence: 0.5,
+            plausibilityScore: 0.4,
+            testabilityScore: 0.9,
+            parsimonyScore: 0.9,
+            notes: [],
+          },
+        ];
+
+        const result = rankHypotheses(hypotheses);
+
+        expect(result.length).toBe(2);
+        expect(result[0].综合Score).toBeGreaterThan(result[1].综合Score);
+      });
+    });
+
+    describe("generateHypothesesFromPattern", () => {
+      it("should generate hypotheses from correlation pattern", () => {
+        const pattern = {
+          observationPattern: "Strong positive correlation between A and B",
+          variables: ["A", "B"],
+          correlationDirection: "positive" as const,
+          strength: 0.8,
+        };
+
+        const result = generateHypothesesFromPattern(pattern);
+
+        expect(result.length).toBe(4);
+        expect(result[0].label).toContain("Direct Effect");
+        expect(result[1].label).toContain("Reverse Causality");
+        expect(result[2].label).toContain("Confounding");
+        expect(result[3].label).toContain("Mediation");
+      });
+
+      it("should handle missing variables", () => {
+        const pattern = {
+          observationPattern: "Correlation observed",
+          variables: ["X"],
+          correlationDirection: "negative" as const,
+          strength: 0.5,
+        };
+
+        const result = generateHypothesesFromPattern(pattern);
+
+        expect(result.length).toBe(3);
+      });
+    });
+
+    describe("formatHypothesisForReview", () => {
+      it("should format hypothesis for review", () => {
+        const hypothesis: HypothesisCandidate & { 综合Score?: number } = {
+          id: "h1",
+          label: "Test Hypothesis",
+          description: "A test hypothesis",
+          mechanism: "Testing mechanism",
+          predictors: [{ kind: "variable", id: "V1" }],
+          expectedEffect: { direction: "positive" as const, magnitude: 0.5 },
+          confidence: 0.7,
+          plausibilityScore: 0.8,
+          testabilityScore: 0.6,
+          parsimonyScore: 0.9,
+          notes: ["Note 1", "Note 2"],
+        };
+
+        const result = formatHypothesisForReview(hypothesis);
+
+        expect(result).toContain("## Test Hypothesis");
+        expect(result).toContain("**Confidence:** 70%");
+        expect(result).toContain("**Parsimony:** 90%");
+        expect(result).toContain("variable: V1");
+        expect(result).toContain("Note 1");
+      });
     });
   });
 });

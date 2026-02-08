@@ -560,3 +560,16 @@ export function runAllRobustnessChecks(
     summary,
   };
 }
+
+export {
+  type HypothesisCandidate,
+  type GeneratedHypotheses,
+  type HypothesisGenerationConfig,
+  type EvidencePattern,
+  generateAlternatives,
+  generateCompetingHypotheses,
+  rankHypotheses,
+  formatHypothesisForReview,
+  createHypothesisGenerationReport,
+  generateHypothesesFromPattern,
+} from "./hypothesis-generator.js";
