@@ -24,6 +24,7 @@
     "@zeo/adapters": "workspace:*",
     "@zeo/adapters-runtime": "workspace:*",
     "@zeo/dataset-builder": "workspace:*",
+    "@zeo/perf": "workspace:*",
     "nanoid": "^5.0.7"
   },
   "devDependencies": {
