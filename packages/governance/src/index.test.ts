@@ -13,7 +13,7 @@ import {
 } from "./index.js";
 
 // Import types from contracts for reference in helpers
-import type { DecisionSpec, EvidenceEvent, BranchGraph, Action, Claim, BranchNode } from "@zeo/contracts/dist/types.js";
+import type { DecisionSpec, EvidenceEvent, BranchGraph, Action, Claim, BranchNode } from "@zeo/contracts";
 
 type TestAction = {
   id: string;
@@ -51,7 +51,7 @@ function createDecisionSpec(overrides: Partial<DecisionSpec> = {}): DecisionSpec
     constraints: [],
     assumptions: [],
     ...overrides
-  };
+  } as DecisionSpec;
 }
 
 // Helper to create minimal valid EvidenceEvent
