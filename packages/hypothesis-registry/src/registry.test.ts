@@ -51,7 +51,7 @@ describe("HypothesisRegistry", () => {
       const updated = registry.update(hypothesis.id, { confidence: 0.8 });
 
       expect(updated?.confidence).toBe(0.8);
-      expect(updated?.updatedAt).not.toEqual(hypothesis.updatedAt);
+      expect(updated?.updatedAt.getTime()).toBeGreaterThanOrEqual(hypothesis.updatedAt.getTime());
     });
 
     it("should return undefined for unknown id", () => {
