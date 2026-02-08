@@ -1,21 +1,35 @@
 {
   "name": "zeo",
   "private": true,
+  "version": "1.0.0",
+  "description": "Zeo — Decision intelligence under uncertainty",
+  "license": "MIT",
   "packageManager": "pnpm@9.15.5",
   "engines": {
-    "node": ">=20"
+    "node": ">=20.11.0",
+    "pnpm": ">=9.15.5"
+  },
+  "volta": {
+    "node": "20.11.0",
+    "pnpm": "9.15.5"
   },
   "scripts": {
     "doctor": "node scripts/doctor.mjs",
+    "doctor:secrets": "node scripts/secret-scan.mjs",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
     "lint": "pnpm -r lint",
     "verify": "pnpm run typecheck && pnpm run test && pnpm run lint",
-    "verify:full": "pnpm install && pnpm run build && pnpm run verify && pnpm audit",
+    "verify:fast": "pnpm run typecheck && pnpm run test && pnpm run lint",
+    "verify:full": "pnpm install && pnpm run build && pnpm run verify && pnpm audit && pnpm doctor:secrets",
     "audit": "pnpm audit --audit-level=moderate",
     "audit:fix": "pnpm audit --fix",
-    "eval": "pnpm -C apps/cli eval"
+    "eval": "pnpm -C apps/cli eval",
+    "quickstart:web": "pnpm install && pnpm -r build && pnpm -C apps/web dev",
+    "quickstart:cli": "pnpm install && pnpm -r build && pnpm -C apps/cli start -- --example negotiation",
+    "quickstart:demo": "pnpm install && pnpm -r build && pnpm -C apps/cli start -- --replay external/examples/replay/sample_dataset.json --report-out ./reports",
+    "quickstart:all": "pnpm verify:full && echo '=== Quickstart: CLI ===' && pnpm quickstart:cli && echo '=== Quickstart: Demo ===' && pnpm quickstart:demo"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",
@@ -33,5 +47,22 @@
       "next@>=10.0.0 <15.5.10": ">=15.5.10",
       "next@>=13.0.0 <15.0.8": ">=15.0.8"
     }
-  }
+  },
+  "keywords": [
+    "decision-intelligence",
+    "uncertainty",
+    "epistemology",
+    "negotiation",
+    "operations",
+    "branching-analysis",
+    "open-source"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scott/zeo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/scott/zeo/issues"
+  },
+  "homepage": "https://github.com/scott/zeo#readme"
 }
