@@ -487,7 +487,7 @@ export function runMatch(
 
   const event: TournamentEvent = {
     eventId: generateEventId(),
-    timestamp: completedMatch.completedAt,
+    timestamp: completedMatch.completedAt ?? new Date().toISOString(),
     eventType: 'match_completed',
     matchId,
     details: {
