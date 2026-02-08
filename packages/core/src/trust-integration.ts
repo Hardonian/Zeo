@@ -1,17 +1,17 @@
 /**
  * Trust Integration
- * 
+ *
  * Enforces @zeo/trust at all entry points.
  * Validates consent and trust boundaries before operations.
  */
 
 import type { ConsentScope, TrustContract, ConsentValidationResult } from "@zeo/trust";
-import { 
-  createDefaultTrustContract, 
-  createDefaultConsentScope, 
-  updateConsentScope, 
+import {
+  createDefaultTrustContract,
+  createDefaultConsentScope,
+  updateConsentScope,
   enforceConsentAtEntry,
-  isOperationPermitted 
+  isOperationPermitted
 } from "@zeo/trust";
 
 export interface TrustContext {
@@ -20,7 +20,7 @@ export interface TrustContext {
   userId: string;
 }
 
-export type OperationType = 
+export type OperationType =
   | "evidence-upload"
   | "ocr-processing"
   | "voice-recording"
@@ -28,6 +28,11 @@ export type OperationType =
   | "decision-export"
   | "ai-recommendation"
   | "auto-execution";
+
+interface ConsentMapping {
+  category: keyof ConsentScope;
+  requiredValue: ConsentScope[keyof ConsentScope];
+}
 
 /**
  * Create default trust context for user.
@@ -48,19 +53,18 @@ export function enforceTrustBoundary(
   operation: OperationType,
   context: TrustContext
 ): void {
-  const consentMapping = operationToConsentMapping(operation);
-  
+  const mapping = operationToConsentMapping(operation);
+
   try {
     enforceConsentAtEntry(
-      context.consentScope, 
-      operation, 
-      consentMapping.category,
-      consentMapping.requiredValue
+      context.consentScope,
+      operation,
+      mapping.category,
+      mapping.requiredValue
     );
   } catch (error) {
     throw new TrustBoundaryError(
-      `Trust boundary violation: ${operation} is not permitted. ` +
-      `Consent required for: ${consentMapping.category}`
+      `Trust boundary violation: ${operation} is not permitted. `
     );
   }
 }
@@ -72,15 +76,15 @@ export function checkOperationPermitted(
   operation: OperationType,
   context: TrustContext
 ): { permitted: boolean; reason?: string } {
-  const consentKey = operationToConsentKey(operation);
-  
-  if (!isOperationPermitted(context.consentScope, operation)) {
+  const mapping = operationToConsentMapping(operation);
+
+  if (!isOperationPermitted(context.consentScope, mapping.category, mapping.requiredValue)) {
     return {
       permitted: false,
-      reason: `Consent not granted for ${consentKey}`,
+      reason: `Consent not granted for ${String(mapping.category)}`,
     };
   }
-  
+
   return { permitted: true };
 }
 
@@ -96,9 +100,9 @@ export function updateConsent(
     context.consentScope,
     updates,
     reason,
-    context.userId
+    "user"
   );
-  
+
   return {
     ...context,
     consentScope: newScope,
@@ -106,19 +110,19 @@ export function updateConsent(
 }
 
 /**
- * Map operation type to consent key.
+ * Map operation type to consent category and required value.
  */
-function operationToConsentKey(operation: OperationType): string {
-  const mapping: Record<OperationType, string> = {
-    "evidence-upload": "allowDataIngestion",
-    "ocr-processing": "allowOcr",
-    "voice-recording": "allowVoiceCapture",
-    "external-api-call": "allowExternalCalls",
-    "decision-export": "allowDataExport",
-    "ai-recommendation": "allowAiFeatures",
-    "auto-execution": "allowAutoExecution",
+function operationToConsentMapping(operation: OperationType): ConsentMapping {
+  const mapping: Record<OperationType, ConsentMapping> = {
+    "evidence-upload": { category: "metadataUsage", requiredValue: true },
+    "ocr-processing": { category: "aiAssistanceLevel", requiredValue: "suggest" },
+    "voice-recording": { category: "biometricUsage", requiredValue: true },
+    "external-api-call": { category: "metadataUsage", requiredValue: true },
+    "decision-export": { category: "metadataUsage", requiredValue: true },
+    "ai-recommendation": { category: "aiAssistanceLevel", requiredValue: "suggest" },
+    "auto-execution": { category: "aiAssistanceLevel", requiredValue: "autonomous" },
   };
-  
+
   return mapping[operation];
 }
 
