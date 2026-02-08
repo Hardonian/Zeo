@@ -11,6 +11,37 @@
 
 import type { Claim, ProbabilityInterval, UUID } from '@zeo/contracts';
 
+/**
+ * Error thrown when skeleton is treated as fact
+ */
+export class NoCausalClaimsError extends Error {
+  constructor(message = 'Causal skeletons are proposals only - never become fact (Invariant 4)') {
+    super(message);
+    this.name = 'NoCausalClaimsError';
+  }
+}
+
+/**
+ * Enforce Invariant 4: No Causal Claims (Only Candidate Skeletons)
+ * Verifies that skeleton maintains neverBecomesFact: true
+ */
+export function enforceNoCausalClaims(skeleton: CausalSkeleton): void {
+  if (!skeleton.proposalMetadata.neverBecomesFact) {
+    throw new NoCausalClaimsError(
+      `Skeleton "${skeleton.name}" is missing neverBecomesFact flag`
+    );
+  }
+  
+  // Verify all edges have identification requirements
+  for (const [edgeId, edge] of skeleton.edges) {
+    if (!edge.identificationRequirement) {
+      throw new NoCausalClaimsError(
+        `Edge "${edgeId}" is missing identification requirement`
+      );
+    }
+  }
+}
+
 type SkeletonId = string;
 type NodeId = string;
 type EdgeId = string;
@@ -258,6 +289,7 @@ export function createSkeleton(
       'Correlation does not imply causation',
       'Unobserved confounders may invalidate causal claims',
       'AI-generated skeletons require expert validation',
+      'Invariant 4: Skeletons never become facts - always proposals',
     ],
     proposalMetadata: {
       source,
@@ -266,6 +298,9 @@ export function createSkeleton(
     },
     auditLog: [],
   };
+
+  // Invariant 4: Enforce at creation
+  enforceNoCausalClaims(skeleton);
 
   const event: CollectionEvent = {
     eventId: generateEventId(),

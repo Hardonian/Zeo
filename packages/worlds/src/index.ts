@@ -338,6 +338,26 @@ export function generateDefaultWorlds(
   return worlds.slice(0, count);
 }
 
+/**
+ * Error thrown when worldId is missing from results
+ */
+export class WorldIdRequiredError extends Error {
+  constructor(message = 'Decision result must include worldId (Invariant 6)') {
+    super(message);
+    this.name = 'WorldIdRequiredError';
+  }
+}
+
+/**
+ * Enforce Invariant 6: World Models Must Remain Explicit
+ * Every decision result must include worldId
+ */
+export function enforceWorldIdRequired(result: WorldDecisionResult): void {
+  if (!result.worldId || result.worldId === '') {
+    throw new WorldIdRequiredError();
+  }
+}
+
 export function computeWorld(
   ensemble: WorldsEnsemble,
   worldId: WorldId,
@@ -365,6 +385,9 @@ export function computeWorld(
     keyAssumptions: world.definition.assumptionVariants.map(a => a.assumptionId),
     sensitivityScore: Math.random() * 0.5,
   };
+
+  // Invariant 6: Enforce worldId is present
+  enforceWorldIdRequired(result);
 
   const completedWorld: WorldState = {
     ...computingWorld,

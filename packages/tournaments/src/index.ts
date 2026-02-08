@@ -682,6 +682,10 @@ function generateResults(tournament: Tournament): TournamentResults {
       'Real-world performance may differ from tournament performance',
       'Small sample sizes limit statistical confidence',
       'Champion strategy may be overfitted to test scenarios',
+      'Invariant 10: No strategy exceeds 60% win rate without explicit override',
+      ...(dominanceViolations.length > 0
+        ? ['DOMINANCE VIOLATIONS DETECTED:', ...dominanceViolations]
+        : []),
     ],
   };
 }
