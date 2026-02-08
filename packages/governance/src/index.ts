@@ -121,14 +121,18 @@ export const DOMAIN_RISK_MATRIX: Record<string, RiskTier> = {
 
 /**
  * Extract domain from decision spec (based on title/context keywords)
+ * Checks higher-risk domains first for proper prioritization
  */
 function extractDomain(decisionSpec: DecisionSpec): string {
   const titleLower = decisionSpec.title?.toLowerCase() || "";
   const contextLower = decisionSpec.context?.toLowerCase() || "";
   const fullText = `${titleLower} ${contextLower}`;
   
-  // Check for domain keywords
-  for (const [keyword, tier] of Object.entries(DOMAIN_RISK_MATRIX)) {
+  // Get entries in reverse order so higher-risk domains (defined later) are checked first
+  const entries = Object.entries(DOMAIN_RISK_MATRIX).reverse();
+  
+  // Check for domain keywords - existential first, then strategic, operational, informational
+  for (const [keyword, tier] of entries) {
     if (fullText.includes(keyword)) {
       return keyword;
     }
