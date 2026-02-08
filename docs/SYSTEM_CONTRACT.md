@@ -78,7 +78,7 @@ The engine enforces: `enforceNoFactWithoutProvenance()` - throws error if a fact
 
 ### Zeo IS NOT:
 - A prediction oracle
-- A "best decision" machine
+- A "recommended decision" machine
 - A lie detector or emotion analyzer
 - A geopolitical pundit tool
 - A replacement for human judgment
