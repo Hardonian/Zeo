@@ -1,5 +1,6 @@
 import { writeFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
-import { resolve, join } from "node:path";
+import { resolve, join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   makeNegotiationExample,
   makeOpsExample,
@@ -30,6 +31,18 @@ import {
   runAdaptersRuntimeCommand,
 } from "./adapters-runtime-cli.js";
 import { parseEvalArgs, runEvalCommand, type EvalCliArgs } from "./eval-cli.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Read version from package.json
+let CLI_VERSION = "1.0.0";
+try {
+  const pkgPath = resolve(__dirname, "../package.json");
+  const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
+  CLI_VERSION = pkg.version || CLI_VERSION;
+} catch {
+  // Use default version
+}
 
 interface CliArgs extends ReplayCliArgs {
   example: "negotiation" | "ops";
@@ -113,6 +126,9 @@ export function parseArgs(argv: string[]): CliArgs {
       result.world = true;
     } else if (arg === "--help" || arg === "-h") {
       printHelp();
+      process.exit(0);
+    } else if (arg === "--version" || arg === "-v") {
+      console.log(CLI_VERSION);
       process.exit(0);
     }
   }

@@ -28,7 +28,8 @@ export function redactDecisionSpec(
   spec: DecisionSpec,
   policy: RedactionPolicy
 ): DecisionSpec {
-  let redacted = { ...spec };
+  // Deep clone to avoid mutating original
+  let redacted: DecisionSpec = JSON.parse(JSON.stringify(spec));
 
   for (const rule of policy.rules) {
     switch (rule) {
