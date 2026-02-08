@@ -12,7 +12,9 @@ describe("HypothesisRegistry", () => {
     it("should register a new hypothesis", () => {
       const hypothesis = registry.register({
         statement: "Test hypothesis",
+        status: "pending",
         confidence: 0.7,
+        evidence: [],
         tags: ["test"],
       });
 
@@ -24,10 +26,10 @@ describe("HypothesisRegistry", () => {
 
     it("should throw when capacity exceeded", () => {
       const smallRegistry = createRegistry({ maxHypotheses: 2 });
-      smallRegistry.register({ statement: "H1" });
-      smallRegistry.register({ statement: "H2" });
+      smallRegistry.register({ statement: "H1", status: "pending", confidence: 0.5, evidence: [], tags: [] });
+      smallRegistry.register({ statement: "H2", status: "pending", confidence: 0.5, evidence: [], tags: [] });
 
-      expect(() => smallRegistry.register({ statement: "H3" })).toThrow();
+      expect(() => smallRegistry.register({ statement: "H3", status: "pending", confidence: 0.5, evidence: [], tags: [] })).toThrow();
     });
   });
 
