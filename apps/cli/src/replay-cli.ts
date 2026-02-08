@@ -9,6 +9,9 @@ import { resolve, join } from "node:path";
 import type { ReplayDataset, ReplayResult } from "@zeo/contracts";
 import { assertReplayDataset } from "@zeo/contracts";
 import { replayCase } from "@zeo/replay";
+import { createTracker, checkBudget, recordUsage, createBudgetGuard, SAFE_DEFAULTS } from "@zeo/budgets";
+import { getJobQueue } from "@zeo/jobs";
+import type { BudgetCheckResult } from "@zeo/budgets";
 
 export interface ReplayCliArgs {
   replay: string | undefined;
@@ -58,6 +61,11 @@ export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
     return 1;
   }
 
+  // Initialize budget tracking
+  const budgetContext = `replay-${Date.now()}`;
+  createTracker(SAFE_DEFAULTS, budgetContext);
+  const budgetGuard = createBudgetGuard(budgetContext);
+
   // Read and parse dataset
   let dataset: ReplayDataset;
   try {
@@ -78,6 +86,14 @@ export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
     }
   }
 
+  // Check budget before starting
+  const initialBudgetCheck = checkBudget(budgetContext);
+  if (!initialBudgetCheck.allowed) {
+    console.error("Error: Budget constraints exceeded before starting");
+    printBudgetIssues(initialBudgetCheck);
+    return 1;
+  }
+
   console.log(`\nRunning replay: ${dataset.datasetId}`);
   console.log(`Description: ${dataset.description ?? "N/A"}`);
   console.log(`Cases: ${dataset.cases.length}`);
@@ -93,15 +109,38 @@ export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
     return 1;
   }
 
+  // Check budget for expected cases
+  if (!budgetGuard.checkAndRecord("cases", casesToRun.length)) {
+    console.error(`Error: Case budget exceeded (${casesToRun.length} cases requested)`);
+    const budgetStatus = checkBudget(budgetContext);
+    printBudgetIssues(budgetStatus);
+    return 1;
+  }
+
+  // Initialize job queue for async processing
+  const jobQueue = getJobQueue({ autoStart: true });
+
   // Run each case
   const results: ReplayResult[] = [];
   let hasErrors = false;
 
   for (const replayCaseData of casesToRun) {
+    // Check budget before each case
+    const caseBudgetCheck = checkBudget(budgetContext);
+    if (!caseBudgetCheck.allowed) {
+      console.error(`\nBudget exceeded before case: ${replayCaseData.caseId}`);
+      printBudgetIssues(caseBudgetCheck);
+      hasErrors = true;
+      break;
+    }
+
     console.log(`\nProcessing case: ${replayCaseData.caseId}`);
     console.log(`  Label: ${replayCaseData.label}`);
 
     try {
+      // Record branch usage estimate
+      budgetGuard.record("branches", 50); // Estimate 50 branches per case
+
       const result = await replayCase(replayCaseData, {
         depth: 3,
         limits: {},
@@ -116,6 +155,12 @@ export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
       console.log(
         `  Recommended widen factor: ${result.scoring.recommendedAdjustment.widenFactorOverall.toFixed(2)}x`
       );
+
+      // Check budget warnings
+      const afterCaseBudget = checkBudget(budgetContext);
+      if (afterCaseBudget.warnings.length > 0) {
+        console.log(`  Budget warnings: ${afterCaseBudget.warnings.length}`);
+      }
     } catch (err) {
       console.error(`  Error: ${(err as Error).message}`);
       hasErrors = true;
@@ -212,6 +257,27 @@ export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
 
   console.log("");
   return hasErrors ? 1 : 0;
+}
+
+function printBudgetIssues(budgetCheck: BudgetCheckResult): void {
+  if (budgetCheck.exceeded.length > 0) {
+    console.error("\nBudget exceeded:");
+    for (const usage of budgetCheck.exceeded) {
+      console.error(`  - ${usage.resource}: ${usage.used}/${usage.limit} (${(usage.percentUsed * 100).toFixed(0)}%)`);
+    }
+  }
+  if (budgetCheck.warnings.length > 0) {
+    console.warn("\nBudget warnings:");
+    for (const usage of budgetCheck.warnings) {
+      console.warn(`  - ${usage.resource}: ${usage.used}/${usage.limit} (${(usage.percentUsed * 100).toFixed(0)}%)`);
+    }
+  }
+  if (budgetCheck.suggestions.length > 0) {
+    console.log("\nSuggestions:");
+    for (const suggestion of budgetCheck.suggestions) {
+      console.log(`  - ${suggestion}`);
+    }
+  }
 }
 
 function generateMarkdownReport(
