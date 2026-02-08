@@ -216,8 +216,8 @@ export async function verifyManifestSignature(
  * Uses Node.js crypto module.
  */
 export function verifyManifestSignatureSync(
-  manifest: SignedUiPanelManifest,
-  secretKey: string
+  _manifest: SignedUiPanelManifest,
+  _secretKey: string
 ): boolean {
   try {
     // For Node.js environments, we need to use dynamic import
