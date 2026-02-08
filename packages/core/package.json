@@ -26,6 +26,12 @@
     "@zeo/causal": "workspace:*",
     "@zeo/game": "workspace:*",
     "@zeo/calibration": "workspace:*",
+    "@zeo/values": "workspace:*",
+    "@zeo/time": "workspace:*",
+    "@zeo/strategy": "workspace:*",
+    "@zeo/explain": "workspace:*",
+    "@zeo/meta": "workspace:*",
+    "@zeo/trust": "workspace:*",
     "nanoid": "^5.0.7"
   },
   "devDependencies": {

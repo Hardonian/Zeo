@@ -8,7 +8,12 @@
     "sourceMap": true,
     "composite": true,
     "strictNullChecks": false,
-    "exactOptionalPropertyTypes": false
+    "exactOptionalPropertyTypes": false,
+    "baseUrl": ".",
+    "paths": {
+      "@zeo/contracts": ["../contracts/dist"]
+    }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

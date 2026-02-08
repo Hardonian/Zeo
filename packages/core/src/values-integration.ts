@@ -5,9 +5,9 @@
  * Ensures no decision is scored without explicit value function.
  */
 
-import type { DecisionSpec, DecisionResult, Action } from "@zeo/contracts";
-import type { ValueProfile } from "@zeo/values";
-import { evaluateActions, applyConstraints, ValueFunctionRequiredError } from "@zeo/values";
+import type { DecisionSpec, DecisionResult } from "@zeo/contracts";
+import type { ValueProfile, ValueFunction, ValueScoringContext } from "@zeo/values";
+import { runGuards, EXPLICIT_VALUE_FUNCTION_RULE } from "@zeo/values";
 
 export interface DecisionWithValue {
   spec: DecisionSpec;
@@ -15,61 +15,44 @@ export interface DecisionWithValue {
 }
 
 /**
- * Evaluate decision actions with value function.
- * Throws ValueFunctionRequiredError if no value profile provided.
+ * Error thrown when decision is missing required value function.
  */
-export function evaluateDecisionActions(
+export class ValueFunctionRequiredError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ValueFunctionRequiredError";
+  }
+}
+
+/**
+ * Validate that decision has explicit value function.
+ * Throws ValueFunctionRequiredError if validation fails.
+ */
+export function requireValueFunction(
   spec: DecisionSpec,
-  valueProfile: ValueProfile | undefined,
-  outcomes: Map<string, Record<string, number>>
-): Array<{ action: Action; score: number; violations: unknown[] }> {
-  if (!valueProfile) {
+  valueProfile: ValueProfile | undefined
+): void {
+  const guardContext = {
+    profile: valueProfile,
+    decisionId: spec.id,
+  };
+
+  const result = runGuards(guardContext, [EXPLICIT_VALUE_FUNCTION_RULE]);
+  
+  const missingValueError = result.errors.find(
+    e => e.code === "MISSING_VALUE_FUNCTION"
+  );
+  
+  if (missingValueError) {
     throw new ValueFunctionRequiredError(
       `Decision "${spec.title}" requires an explicit value function. ` +
       `Define what "good" means for this decision using a ValueProfile.`
     );
   }
-
-  const evaluated = evaluateActions(spec.actions, outcomes, valueProfile);
-  
-  return evaluated.map(e => ({
-    action: e.action,
-    score: e.score,
-    violations: e.violations || [],
-  }));
 }
 
 /**
- * Enrich decision result with value function information.
- */
-export function enrichResultWithValueInfo(
-  result: DecisionResult,
-  valueProfile: ValueProfile | undefined
-): DecisionResult {
-  if (!valueProfile) {
-    return {
-      ...result,
-      valueInfo: {
-        hasValueFunction: false,
-        warning: "Decision scored without explicit value function",
-      },
-    };
-  }
-
-  return {
-    ...result,
-    valueInfo: {
-      hasValueFunction: true,
-      profileId: valueProfile.id,
-      profileName: valueProfile.name,
-      objectiveCount: valueProfile.objectives.length,
-      constraintCount: valueProfile.constraints.filter(c => c.isHard).length,
-    },
-  };
-}
-
-/**
- * Check if value function is properly configured.
+ * Check if value function is properly configured for decision.
  */
 export function validateValueProfileForDecision(
   valueProfile: ValueProfile | undefined,
@@ -82,28 +65,37 @@ export function validateValueProfileForDecision(
     return { valid: false, errors };
   }
 
-  if (valueProfile.objectives.length === 0) {
-    errors.push("Value profile has no objectives");
+  if (!valueProfile.defaultValueFunctionId) {
+    errors.push("Value profile has no default value function");
   }
 
-  if (valueProfile.objectives.every(o => o.weight === 0)) {
-    errors.push("All objectives have zero weight");
-  }
+  const guardResult = runGuards({
+    profile: valueProfile,
+    decisionId: spec.id,
+  });
 
-  // Check if attributes cover decision context
-  const decisionAttributes = new Set(spec.actions.flatMap(a => 
-    Object.keys(a.expectedOutcome || {})
-  ));
-  
-  const profileAttributes = new Set(valueProfile.attributes.map(a => a.id));
-  
-  for (const attr of decisionAttributes) {
-    if (!profileAttributes.has(attr)) {
-      errors.push(`Decision references attribute "${attr}" not in value profile`);
-    }
+  for (const error of guardResult.errors.filter(e => e.severity === "error")) {
+    errors.push(error.message);
   }
 
   return { valid: errors.length === 0, errors };
 }
 
-export { ValueFunctionRequiredError } from "@zeo/values";
+/**
+ * Create value scoring context for decision.
+ */
+export function createValueScoringContext(
+  decisionId: string,
+  valueFunctionId: string,
+  lensId?: string
+): ValueScoringContext {
+  return {
+    decisionId,
+    lensId,
+    valueFunctionId,
+    timestamp: new Date(),
+  };
+}
+
+export { runGuards } from "@zeo/values";
+export type { ValueProfile, ValueFunction } from "@zeo/values";
