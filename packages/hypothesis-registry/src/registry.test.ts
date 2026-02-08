@@ -99,7 +99,7 @@ describe("HypothesisRegistry", () => {
 
   describe("validate", () => {
     it("should add evidence and increase confidence", () => {
-      const hypothesis = registry.register({ statement: "Test", confidence: 0.5 });
+      const hypothesis = registry.register({ statement: "Test", status: "pending", confidence: 0.5, evidence: [], tags: [] });
       const validated = registry.validate(hypothesis.id, ["evidence1"], 0.2);
 
       expect(validated?.confidence).toBe(0.7);
@@ -107,7 +107,7 @@ describe("HypothesisRegistry", () => {
     });
 
     it("should auto-promote to validated status", () => {
-      const hypothesis = registry.register({ statement: "Test", confidence: 0.8 });
+      const hypothesis = registry.register({ statement: "Test", status: "pending", confidence: 0.8, evidence: [], tags: [] });
       const validated = registry.validate(hypothesis.id, ["evidence"], 0.1);
 
       expect(validated?.status).toBe("validated");
@@ -116,7 +116,7 @@ describe("HypothesisRegistry", () => {
 
   describe("reject", () => {
     it("should mark hypothesis as rejected", () => {
-      const hypothesis = registry.register({ statement: "Test" });
+      const hypothesis = registry.register({ statement: "Test", status: "pending", confidence: 0.5, evidence: [], tags: [] });
       const rejected = registry.reject(hypothesis.id, "Insufficient evidence");
 
       expect(rejected?.status).toBe("rejected");
