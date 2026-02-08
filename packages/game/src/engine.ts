@@ -72,7 +72,6 @@ export class GameEngine {
 
         // Check if action is dominated by otherAction
         let strictlyDominated = true;
-        let weaklyDominated = true;
 
         for (const colAction of game.colActions) {
           const actionPayoff = game.payoffs.get(`${action}-${colAction}`)?.rowPlayer;
