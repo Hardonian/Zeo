@@ -9,7 +9,8 @@ import type {
   DecayConfig, 
   DecayResult, 
   TemporalMetadata,
-  EvidenceTemporalStatus 
+  EvidenceTemporalStatus,
+  StepThreshold
 } from "./types.js";
 
 export function applyDecay(
@@ -60,12 +61,18 @@ export function computeDecayFactor(
     }
       
     case "step": {
-      const defaultThresholds = [
+      const defaultThresholds: StepThreshold[] = [
         { ageMs: 86400000, decayFactor: 1.0 },
         { ageMs: 604800000, decayFactor: 0.5 },
         { ageMs: 2592000000, decayFactor: 0.1 }
       ];
-      const thresholds = parameters?.stepThresholds ?? defaultThresholds;
+      
+      let thresholds: StepThreshold[];
+      if (parameters && 'stepThresholds' in parameters && Array.isArray(parameters.stepThresholds)) {
+        thresholds = parameters.stepThresholds as StepThreshold[];
+      } else {
+        thresholds = defaultThresholds;
+      }
       
       let factor = 0;
       for (const threshold of thresholds) {
@@ -79,8 +86,9 @@ export function computeDecayFactor(
     }
       
     case "domain_specific": {
-      if (parameters && typeof parameters.domainFormula === 'function') {
-        return parameters.domainFormula(ageMs, parameters);
+      if (parameters && 'domainFormula' in parameters && typeof parameters.domainFormula === 'function') {
+        const domainFn = parameters.domainFormula as (ageMs: number, params: Record<string, number>) => number;
+        return domainFn(ageMs, parameters);
       }
       return 1.0;
     }

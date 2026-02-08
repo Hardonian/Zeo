@@ -19,11 +19,18 @@ export interface TemporalMetadata {
   ingestedAt: Date;
 }
 
+export interface StepThreshold {
+  ageMs: number;
+  decayFactor: number;
+}
+
+export type DomainFormula = (ageMs: number, params: Record<string, number>) => number;
+
 export interface DecayConfig {
   model: DecayModel;
   halfLifeMs?: number;
-  stepThresholds?: Array<{ ageMs: number; decayFactor: number }>;
-  domainFormula?: (ageMs: number, params: Record<string, number>) => number;
+  stepThresholds?: StepThreshold[];
+  domainFormula?: DomainFormula;
 }
 
 export interface DecayResult {
