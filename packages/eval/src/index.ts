@@ -81,8 +81,10 @@ export {
   computeSliceEvaluation,
   sliceMetricsToCsvRow,
   exportSlicesToCsv,
-  getGatingThresholds,
 } from "./slice-computation.js";
+
+// Re-export gating thresholds from slice-types
+export { getGatingThresholds } from "./slice-types.js";
 
 // Re-export slice runner
 export {
