@@ -257,7 +257,7 @@ export class RSLEngine {
           try {
             const result = JSON.parse(output);
             resolve(result);
-          } catch (e) {
+          } catch {
             reject(new Error(`Failed to parse Python output: ${output}`));
           }
         });
