@@ -44,6 +44,9 @@ importers:
       '@zeo/models':
         specifier: workspace:*
         version: link:../../packages/models
+      '@zeo/regimes':
+        specifier: workspace:*
+        version: link:../../packages/regimes
       '@zeo/replay':
         specifier: workspace:*
         version: link:../../packages/replay

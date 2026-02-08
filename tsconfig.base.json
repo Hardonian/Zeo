@@ -18,7 +18,10 @@
       "@zeo/warehouse": ["packages/warehouse/src"],
       "@zeo/analytics": ["packages/analytics/src"],
       "@zeo/dataset-builder": ["packages/dataset-builder/src"],
-      "@zeo/replay": ["packages/replay/src"]
+      "@zeo/replay": ["packages/replay/src"],
+      "@zeo/regimes": ["packages/regimes/src"],
+      "@zeo/core": ["packages/core/src"],
+      "@zeo/models": ["packages/models/src"]
     }
   }
 }

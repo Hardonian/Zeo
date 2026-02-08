@@ -34,8 +34,8 @@ export function parseRegimesArgs(argv: string[]): RegimesCliArgs {
   };
 
   for (let i = 0; i < argv.length; i++) {
-    const arg = argv[i];
-    const next = argv[i + 1];
+    const arg: string = argv[i]!;
+    const next: string | undefined = argv[i + 1];
 
     if ((arg === "--detect" || arg === "detect") && next) {
       result.detect = next;
@@ -168,9 +168,9 @@ async function runDetectCommand(
     events: results.events,
     summary: {
       totalEvents: results.events.length,
-      stablePeriods: results.events.filter(e => e.kind === "stable").length,
-      shifts: results.events.filter(e => e.kind === "regime_shift").length,
-      volatilityEvents: results.events.filter(e => e.kind === "volatility_break").length,
+      stablePeriods: results.events.filter((e: RegimeEvent) => e.kind === "stable").length,
+      shifts: results.events.filter((e: RegimeEvent) => e.kind === "regime_shift").length,
+      volatilityEvents: results.events.filter((e: RegimeEvent) => e.kind === "volatility_break").length,
     },
   };
 
@@ -217,7 +217,7 @@ function runHistoryCommand(signalId: string): number {
 
   console.log("Recent events:");
   for (const event of mockHistory) {
-    console.log(`  - [${event.kind}] ${event.domain}: ${event.currentLabel} (${event.confidenceBand.low * 100}%-${event.confidenceBand.high * 100}% confidence)`);
+    console.log(`  - [${(event as RegimeEvent).kind}] ${(event as RegimeEvent).domain}: ${(event as RegimeEvent).currentLabel} (${((event as RegimeEvent).confidenceBand.low * 100).toFixed(0)}%-${((event as RegimeEvent).confidenceBand.high * 100).toFixed(0)}% confidence)`);
   }
 
   return 0;
