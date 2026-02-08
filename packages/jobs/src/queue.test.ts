@@ -88,7 +88,7 @@ describe('JobQueue', () => {
 
   it('should track job progress', async () => {
     const queue = new JobQueue({ autoStart: false });
-    let progressUpdates: Array<{ percentComplete: number; currentOperation: string }> = [];
+    const progressUpdates: Array<{ percentComplete: number; currentOperation: string }> = [];
 
     const handler: JobHandler<string, void> = {
       type: 'tournament',

@@ -267,7 +267,7 @@ describe("Anomaly Detection", () => {
       const result = detector.detect(observations);
       
       const futureViolation = result.violations.find(
-        v => v.ruleId === "timestamp_inconsistency" && v.message.includes("future")
+        v => v.ruleId === "future_timestamp" && v.message.includes("future")
       );
       expect(futureViolation).toBeDefined();
     });
@@ -294,7 +294,7 @@ describe("Anomaly Detection", () => {
       const result = detector.detect(observations);
       
       const invertedViolation = result.violations.find(
-        v => v.ruleId === "value_band_anomalies" && v.message.includes("inverted")
+        v => v.ruleId === "inverted_band"
       );
       expect(invertedViolation).toBeDefined();
       expect(invertedViolation?.severity).toBe("critical");
