@@ -10,13 +10,3 @@
   },
   "include": ["src/**/*"]
 }
-  "compilerOptions": {
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "composite": true
-  },
-  "include": ["src/**/*"]
-}
