@@ -179,12 +179,24 @@ export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
     results.reduce((sum, r) => sum + r.scoring.recommendedAdjustment.widenFactorOverall, 0) /
     Math.max(results.length, 1);
 
+  // Print budget summary
+  const finalBudgetCheck = checkBudget(budgetContext);
+  
   console.log("\n" + "=".repeat(60));
   console.log("REPLAY SUMMARY");
   console.log("=".repeat(60));
   console.log(`Total cases: ${results.length}`);
   console.log(`Overall coverage: ${(aggregateCoverage * 100).toFixed(1)}%`);
   console.log(`Recommended widen factor: ${aggregateWidenFactor.toFixed(2)}x`);
+  
+  // Budget usage summary
+  if (finalBudgetCheck.usage.length > 0) {
+    console.log("\nBudget Usage:");
+    for (const usage of finalBudgetCheck.usage) {
+      const status = usage.isExceeded ? "EXCEEDED" : usage.isWarning ? "warning" : "ok";
+      console.log(`  ${usage.resource}: ${usage.used}/${usage.limit} (${(usage.percentUsed * 100).toFixed(0)}%) [${status}]`);
+    }
+  }
 
   // Per-domain breakdown
   const domainStats: Record<string, { coverages: number[]; widenFactors: number[] }> = {};
