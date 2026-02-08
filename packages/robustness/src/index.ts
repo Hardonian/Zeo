@@ -531,7 +531,7 @@ export function runAllRobustnessChecks(
     results.push(assessConfoundingRisk(treatmentValues, outcomeValues, [], options?.confounding));
   }
 
-  results.push(assessLeakage([treatmentValues], outcomeValues, ["treatment"], options?.leakage));
+  results.push(detectLeakage([treatmentValues], outcomeValues, ["treatment"], options?.leakage));
   results.push(assessMulticollinearity([treatmentValues], ["treatment"]));
   results.push(assessSampleAdequacy(computeStd(outcomeValues), data.length, options?.sampleAdequacy));
 
