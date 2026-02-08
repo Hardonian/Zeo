@@ -107,7 +107,7 @@ export interface AnomalyRule {
   name: string;
   enabled: boolean;
   severity: "low" | "medium" | "high" | "critical";
-  check: (observations: SignalObservation[], history?: SignalObservation[]) => AnomalyViolation[];
+  check: (observations: SignalObservation[], history?: SignalObservation[], context?: { asOf?: string }) => AnomalyViolation[];
 }
 
 export interface AnomalyViolation {

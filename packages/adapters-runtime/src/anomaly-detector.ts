@@ -255,7 +255,7 @@ export const DEFAULT_ANOMALY_RULES: AnomalyRule[] = [
     name: "Timestamp Inconsistency",
     enabled: true,
     severity: "critical",
-    check: (obs, _hist, context) => detectTimestampInconsistency(obs, context),
+    check: (obs, _hist, context?: { asOf?: string }) => detectTimestampInconsistency(obs, context),
   },
   {
     id: "value_band_anomalies",
