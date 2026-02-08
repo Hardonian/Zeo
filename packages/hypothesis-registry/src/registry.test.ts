@@ -35,7 +35,7 @@ describe("HypothesisRegistry", () => {
 
   describe("get", () => {
     it("should retrieve a hypothesis by id", () => {
-      const registered = registry.register({ statement: "Test" });
+      const registered = registry.register({ statement: "Test", status: "pending", confidence: 0.5, evidence: [], tags: [] });
       const retrieved = registry.get(registered.id);
 
       expect(retrieved).toEqual(registered);
@@ -49,7 +49,7 @@ describe("HypothesisRegistry", () => {
 
   describe("update", () => {
     it("should update hypothesis fields", () => {
-      const hypothesis = registry.register({ statement: "Test", confidence: 0.5 });
+      const hypothesis = registry.register({ statement: "Test", status: "pending", confidence: 0.5, evidence: [], tags: [] });
       const updated = registry.update(hypothesis.id, { confidence: 0.8 });
 
       expect(updated?.confidence).toBe(0.8);
@@ -64,9 +64,9 @@ describe("HypothesisRegistry", () => {
 
   describe("query", () => {
     beforeEach(() => {
-      registry.register({ statement: "H1", status: "pending", confidence: 0.6, tags: ["a", "b"] });
-      registry.register({ statement: "H2", status: "validated", confidence: 0.9, tags: ["b", "c"] });
-      registry.register({ statement: "H3", status: "rejected", confidence: 0.2, tags: ["a"] });
+      registry.register({ statement: "H1", status: "pending", confidence: 0.6, evidence: [], tags: ["a", "b"] });
+      registry.register({ statement: "H2", status: "validated", confidence: 0.9, evidence: [], tags: ["b", "c"] });
+      registry.register({ statement: "H3", status: "rejected", confidence: 0.2, evidence: [], tags: ["a"] });
     });
 
     it("should filter by status", () => {
