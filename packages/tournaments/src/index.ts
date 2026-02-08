@@ -10,6 +10,7 @@
  */
 
 import type { DecisionSpec, Action, ProbabilityInterval, UUID } from '@zeo/contracts';
+import { requireMarketsActive } from '@zeo/contracts';
 
 type TournamentId = string;
 type StrategyId = string;

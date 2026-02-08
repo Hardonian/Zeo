@@ -108,16 +108,32 @@ export interface RebalanceConfig {
 
 /**
  * Default rebalance configuration
+ *
+ * Invariant: maxCredenceCap <= 0.6 (diversity requirement)
+ * No single hypothesis may exceed 60% credence without explicit override.
  */
 export const DEFAULT_REBALANCE_CONFIG: RebalanceConfig = {
   minCredenceThreshold: 0.01,
-  maxCredenceCap: 0.4,
+  maxCredenceCap: 0.4, // INVARIANT: Never exceed 0.6 without explicit override
   decayRatePerDay: 0.005,
   rebalanceOnOutcome: true,
   robustnessWeight: 0.4,
   calibrationWeight: 0.4,
   recencyWeight: 0.2,
 };
+
+/**
+ * Validate rebalance config against invariants
+ */
+function validateRebalanceConfig(config: RebalanceConfig): void {
+  // Invariant: Diversity - no hypothesis may exceed 60% without override
+  if (config.maxCredenceCap > 0.6) {
+    throw new Error(
+      `Invariant violation: maxCredenceCap (${config.maxCredenceCap}) exceeds 0.6. ` +
+      'Use explicit override to allow dominance without diversity.'
+    );
+  }
+}
 
 /**
  * Create a new hypothesis market
@@ -276,6 +292,9 @@ export function rebalanceCredence(
 ): MarketState {
   // Check kill-switch
   requireMarketsActive();
+
+  // Validate invariants
+  validateRebalanceConfig(config);
 
   if (market.hypotheses.size === 0) {
     return market;
