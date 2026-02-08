@@ -77,7 +77,7 @@ function applyObservationToBand(
   observation: SignalObservation,
   observationModel: ObservationModel,
   qualityScore: number,
-  rng: SeededRandom
+  _rng: SeededRandom
 ): { low: number; high: number } {
   const width = priorBand.high - priorBand.low;
 
