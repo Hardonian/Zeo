@@ -7,6 +7,7 @@ export * from "./pruning.js";
 export * from "./flip-conditions.js";
 export * from "./evidence.js";
 export * from "./packets.js";
+export * from "./regime-integration.js";
 export type { RunMeta } from "./packets.js";
 export {
   hashDecisionSpec,
