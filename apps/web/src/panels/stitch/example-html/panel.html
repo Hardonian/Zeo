@@ -104,7 +104,11 @@
     function addLog(message) {
       const entry = document.createElement('div');
       entry.className = 'log-entry';
-      entry.innerHTML = `<span class="log-time">[${new Date().toLocaleTimeString()}]</span> ${message}`;
+      const timeSpan = document.createElement('span');
+      timeSpan.className = 'log-time';
+      timeSpan.textContent = '[' + new Date().toLocaleTimeString() + ']';
+      entry.appendChild(timeSpan);
+      entry.appendChild(document.createTextNode(' ' + message));
       log.appendChild(entry);
       log.scrollTop = log.scrollHeight;
     }
