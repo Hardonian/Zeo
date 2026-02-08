@@ -18,7 +18,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@zeo/contracts": "workspace:*"
+    "@zeo/contracts": "workspace:*",
+    "@zeo/regimes": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^25.2.1"
