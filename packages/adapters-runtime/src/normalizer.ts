@@ -70,9 +70,16 @@ export function stableSort<T extends Record<string, unknown>>(
 
 /**
  * Compute deterministic hash for an array of observations
+ * Order-independent: observations are sorted before hashing
  */
 export function computeDeterministicHash(observations: SignalObservation[]): string {
-  const canonical = observations.map(obs => canonicalize(obs));
+  // Sort observations by signalId then timestamp for order-independent hashing
+  const sorted = [...observations].sort((a, b) => {
+    const signalIdCompare = a.signalId.localeCompare(b.signalId);
+    if (signalIdCompare !== 0) return signalIdCompare;
+    return a.t.localeCompare(b.t);
+  });
+  const canonical = sorted.map(obs => canonicalize(obs));
   const json = JSON.stringify(canonical);
   return createHash("sha256").update(json).digest("hex");
 }
