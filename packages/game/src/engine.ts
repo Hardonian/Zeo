@@ -83,11 +83,6 @@ export class GameEngine {
           if (otherPayoff.low <= actionPayoff.high) {
             strictlyDominated = false;
           }
-
-          // Weak dominance: other action is never worse and sometimes better
-          if (otherPayoff.low < actionPayoff.low || otherPayoff.high < actionPayoff.high) {
-            weaklyDominated = false;
-          }
         }
 
         if (strictlyDominated) {
