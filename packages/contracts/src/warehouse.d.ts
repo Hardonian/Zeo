@@ -1,5 +1,5 @@
 import type { ProvenancePointer } from './types.js';
-export type WarehouseKind = 'decision' | 'decision-draft' | 'evidence-event' | 'signal-observation' | 'observation-batch' | 'run-result' | 'outcome-record' | 'calibration-report';
+export type WarehouseKind = 'decision' | 'decision-draft' | 'evidence-event' | 'signal-observation' | 'observation-batch' | 'run-result' | 'outcome-record' | 'calibration-report' | 'regime-event' | 'regime-state';
 export interface WarehouseEvidenceEvent {
     eventId: string;
     eventType: 'observation' | 'interpretation' | 'inference' | 'import';

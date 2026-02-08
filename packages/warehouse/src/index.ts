@@ -13,3 +13,8 @@ export {
   computeContentHash,
   generateStableId,
 } from './hashing.js';
+export {
+  createRegimeWarehouse,
+  createRegimeEvent,
+  createRegimeState,
+} from './regime-storage.js';

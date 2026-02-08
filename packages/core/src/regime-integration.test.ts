@@ -11,21 +11,21 @@ import type { PosteriorSummary } from "@zeo/models";
 
 describe("regime-aware band widening", () => {
   const stableRegime: RegimeState = {
-    domain: "temporal",
+    domain: "market",
     currentLabel: "stable",
     updatedAt: new Date().toISOString(),
     parameters: { transitionProbability: 0.05 },
   };
 
   const transitionRegime: RegimeState = {
-    domain: "temporal",
+    domain: "market",
     currentLabel: "transition",
     updatedAt: new Date().toISOString(),
     parameters: { transitionProbability: 0.5 },
   };
 
   const volatileRegime: RegimeState = {
-    domain: "temporal",
+    domain: "market",
     currentLabel: "volatile",
     updatedAt: new Date().toISOString(),
     parameters: { volatilityIndex: 0.8 },

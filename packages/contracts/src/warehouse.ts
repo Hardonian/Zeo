@@ -8,7 +8,9 @@ export type WarehouseKind =
   | 'observation-batch'
   | 'run-result'
   | 'outcome-record'
-  | 'calibration-report';
+  | 'calibration-report'
+  | 'regime-event'
+  | 'regime-state';
 
 export interface WarehouseEvidenceEvent {
   eventId: string;
