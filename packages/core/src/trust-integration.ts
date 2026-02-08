@@ -35,15 +35,7 @@ export type OperationType =
 export function createTrustContext(userId: string): TrustContext {
   return {
     consentScope: createDefaultConsentScope(),
-    trustContract: {
-      commitments: [
-        { type: "data_minimization", description: "Store only necessary data" },
-        { type: "provenance_required", description: "All facts require provenance" },
-        { type: "no_auto_causality", description: "Never assert causality without identification" },
-        { type: "uncertainty_transparent", description: "Always show uncertainty ranges" },
-      ],
-      version: "1.0.0",
-    },
+    trustContract: createDefaultTrustContract(),
     userId,
   };
 }
