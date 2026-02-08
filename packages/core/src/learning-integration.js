@@ -91,8 +91,10 @@ export class LearningDecisionRunner {
         if (!record)
             return;
         // Update priors for each assumption type
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const _assumption of record.spec.assumptions) {
             // Determine outcome type based on status
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const _outcomeType = outcome.status === "resolved" ? "confirmed" :
                 outcome.status === "ambiguous" ? "partially_confirmed" : "violated";
             // This would need the actual outcome record

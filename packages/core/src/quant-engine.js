@@ -129,6 +129,7 @@ export class QuantEngine {
     /**
      * Generate "What would change the answer?" analysis with quantified thresholds.
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     generateFlipConditions(spec, _evaluations) {
         return spec.assumptions
             .filter(a => a.status === "assumption" || a.status === "belief")

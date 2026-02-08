@@ -4,6 +4,7 @@ function xoshiro128ss(a, b, c, d) {
         nextFloat() {
             const t = b << 9;
             const rot = a * 5;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const _res = ((c << 26) | (c >>> 6)) >>> 0;
             b ^= a;
             d ^= c;
