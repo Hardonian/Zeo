@@ -134,8 +134,9 @@ Commands:
   --report-out <dir>          Write replay reports to directory
   --warehouse <cmd>           Warehouse management (export/import/list)
   --analytics <cmd>           Analytics pipeline (build-dataset/run)
-  adapters <cmd>              Adapter runtime (run/ingest/quarantine)
+  adapters <cmd>               Adapter runtime (run/ingest/quarantine)
   ingest                      Ingest from all enabled adapters
+  eval                        Run epistemic evaluation suite
 
 Options:
   --catalog <dir>             Catalog directory (default: external/catalog)
@@ -143,12 +144,12 @@ Options:
   --depth <n>                 Branching depth: 1-5 (default: 2)
   --json-only                 Output JSON only, no summary
   --out <path>                Write JSON result to file
-  --seed <string>             Random seed for deterministic runs (optional)
-  --strict                    Exit non-zero on invariant violations (default: true)
-  --packet-out <path>         Write evidence packet (JSON + MD) to directory
-  --voi                       Print Value of Information (VOI) ranked list
-  --world                     Print World Model posterior state
-  --help, -h                  Show this help message
+  --seed <string>              Random seed for deterministic runs (optional)
+  --strict                     Exit non-zero on invariant violations (default: true)
+  --packet-out <path>          Write evidence packet (JSON + MD) to directory
+  --voi                        Print Value of Information (VOI) ranked list
+  --world                      Print World Model posterior state
+  --help, -h                   Show this help message
 
 Examples:
   zeo --example negotiation --depth 3
@@ -159,6 +160,7 @@ Examples:
   zeo --warehouse export --out ./backup.json
   zeo --analytics build-dataset --out ./analysis
   zeo --analytics run --dataset ./analysis/dataset.csv --out ./analysis --target outcome --features f1,f2
+  zeo eval --suite external/examples/eval/core-eval.json --output ./eval-results
 
 For warehouse/analytics help:
    zeo --warehouse
@@ -167,6 +169,9 @@ For warehouse/analytics help:
 For adapter runtime help:
    zeo adapters --help
    zeo ingest --help
+
+For eval help:
+   zeo eval --help
 `);
 }
 

@@ -1,11 +1,11 @@
 /**
  * Kill-switches and safe mode controls for Zeo
- * 
+ *
  * Provides runtime control over high-risk features.
  * All kill-switches are controllable via environment variables.
  */
 
-export type KillSwitch = 
+export type KillSwitch =
   | 'ai_assist'
   | 'freeze_markets'
   | 'max_uncertainty'
@@ -32,15 +32,31 @@ const state: KillSwitchState = {
 let initialized = false;
 
 /**
+ * Environment provider interface for platform-agnostic kill-switch initialization
+ * In Node.js, pass process.env; in browsers, pass an object with the same keys
+ */
+export interface KillSwitchEnvironment {
+  ZEO_SAFE_MODE?: string;
+  ZEO_DISABLE_AI_ASSIST?: string;
+  ZEO_FREEZE_MARKETS?: string;
+  ZEO_FORCE_MAX_UNCERTAINTY?: string;
+  ZEO_DISABLE_STRATEGIC_ASSUMPTIONS?: string;
+  ZEO_DISABLE_EXTERNAL_ADAPTERS?: string;
+  [key: string]: string | undefined;
+}
+
+/**
  * Initialize kill-switches from environment variables
  * Must be called once at startup
+ *
+ * @param env Environment variables (e.g., process.env in Node.js)
  */
-export function initKillSwitches(): void {
+export function initKillSwitches(env: KillSwitchEnvironment = {}): void {
   if (initialized) return;
-  
+
   // Check master safe mode first
-  const safeMode = process.env.ZEO_SAFE_MODE === 'true';
-  
+  const safeMode = env.ZEO_SAFE_MODE === 'true';
+
   if (safeMode) {
     // Disable all features
     state.ai_assist = false;
@@ -50,14 +66,26 @@ export function initKillSwitches(): void {
     state.external_adapters = false;
   } else {
     // Check individual switches
-    state.ai_assist = process.env.ZEO_DISABLE_AI_ASSIST !== 'true';
-    state.freeze_markets = process.env.ZEO_FREEZE_MARKETS !== 'true';
-    state.max_uncertainty = process.env.ZEO_FORCE_MAX_UNCERTAINTY !== 'true';
-    state.strategic_assumptions = process.env.ZEO_DISABLE_STRATEGIC_ASSUMPTIONS !== 'true';
-    state.external_adapters = process.env.ZEO_DISABLE_EXTERNAL_ADAPTERS !== 'true';
+    state.ai_assist = env.ZEO_DISABLE_AI_ASSIST !== 'true';
+    state.freeze_markets = env.ZEO_FREEZE_MARKETS !== 'true';
+    state.max_uncertainty = env.ZEO_FORCE_MAX_UNCERTAINTY !== 'true';
+    state.strategic_assumptions = env.ZEO_DISABLE_STRATEGIC_ASSUMPTIONS !== 'true';
+    state.external_adapters = env.ZEO_DISABLE_EXTERNAL_ADAPTERS !== 'true';
   }
-  
+
   initialized = true;
+}
+
+/**
+ * Initialize kill-switches from Node.js process.env
+ * Use this in Node.js environments
+ */
+export function initKillSwitchesFromProcess(): void {
+  // In Node.js environments, use global process
+  const env = typeof process !== 'undefined' && process.env
+    ? process.env as KillSwitchEnvironment
+    : {};
+  initKillSwitches(env);
 }
 
 /**
