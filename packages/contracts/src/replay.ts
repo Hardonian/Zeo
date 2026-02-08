@@ -5,7 +5,7 @@
  * Provides types for replay datasets, cases, outcomes, and predictions.
  */
 
-import type { UUID, DecisionSpec, EvidenceEvent, ProvenancePointer } from "./types.js";
+import type { DecisionSpec, EvidenceEvent, ProvenancePointer } from "./types.js";
 
 /**
  * A batch of observations collected at a specific time (for replay datasets).

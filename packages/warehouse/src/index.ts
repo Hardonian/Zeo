@@ -18,3 +18,18 @@ export {
   createRegimeEvent,
   createRegimeState,
 } from './regime-storage.js';
+
+// Enhanced indexing (v0.5.3)
+export type { DeterministicIndex, IndexMigration } from './indexes.js';
+export {
+  createEmptyIndex,
+  indexRecord,
+  unindexRecord,
+  queryUsingIndex,
+  serializeIndex,
+  deserializeIndex,
+  migrateIndex,
+  tokenize,
+} from './indexes.js';
+export type { EnhancedWarehouseConfig } from './indexed-adapter.js';
+export { EnhancedIndexedWarehouseAdapter } from './indexed-adapter.js';

@@ -1,4 +1,4 @@
-import type { ProvenancePointer, ObservationBatch } from './types.js';
+import type { ProvenancePointer } from './types.js';
 
 export type WarehouseKind =
   | 'decision'

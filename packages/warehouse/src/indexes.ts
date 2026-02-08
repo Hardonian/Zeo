@@ -43,7 +43,7 @@ export interface IndexMigration {
 const INDEX_VERSION = 2;
 
 // Tokenization for text search
-function tokenize(text: string): string[] {
+export function tokenize(text: string): string[] {
   // Normalize: lowercase, remove punctuation, split on whitespace
   const normalized = text
     .toLowerCase()

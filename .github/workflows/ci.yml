@@ -41,3 +41,10 @@ jobs:
         run: |
           test -f /tmp/zeo-replay/replay_results.json
           test -f /tmp/zeo-replay/calibration_report.md
+      - name: Build Eval Package
+        run: pnpm -C packages/eval build
+      - name: Run Eval Suite
+        run: pnpm eval --suite external/examples/eval/core-eval.json --output ./eval-results
+      - name: Verify Eval Results
+        run: |
+          test -f ./eval-results/eval-results.json
