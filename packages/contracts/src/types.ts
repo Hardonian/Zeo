@@ -142,7 +142,11 @@ export type UiPanelCapabilities = {
   needsMic?: boolean;
   needsOcr?: boolean;
   needsStt?: boolean;
+  needsStorage?: boolean;
+  needsClipboard?: boolean;
 };
+
+export type UiPanelCapability = keyof UiPanelCapabilities;
 
 export type UiPanelPermissions = {
   requireUserConfirm?: boolean;
@@ -173,7 +177,9 @@ export type UiBridgeRequestType =
   | "ingest_signals_batch"
   | "export_packet"
   | "toast"
-  | "error";
+  | "error"
+  | "check_permission"
+  | "request_permission";
 
 export type UiBridgeMessage = {
   direction: UiBridgeDirection;
