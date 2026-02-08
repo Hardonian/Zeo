@@ -138,7 +138,7 @@ export function parseArgs(argv: string[]): CliArgs {
 
 function printHelp(): void {
   console.log(`
-Zeo CLI - Epistemic Decision Engine v0.3.3
+Zeo CLI - Epistemic Decision Engine v${CLI_VERSION}
 
 Usage: zeo [options]
 
