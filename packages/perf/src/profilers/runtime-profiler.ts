@@ -325,7 +325,8 @@ export class Profiler {
     const recommendations = this.generateRecommendations(
       completedMeasurements,
       memoryGrowth,
-      hotPathHits
+      hotPathHits,
+      session.measurements
     );
     
     return {
@@ -348,7 +349,8 @@ export class Profiler {
   private generateRecommendations(
     measurements: Measurement[],
     memoryGrowth: number,
-    hotPathHits: Map<string, number>
+    hotPathHits: Map<string, number>,
+    allMeasurements?: Measurement[]
   ): string[] {
     const recommendations: string[] = [];
     
