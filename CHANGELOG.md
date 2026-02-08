@@ -109,7 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - All bridge messages validated before processing
 - Rate limiting prevents panel spam
 
-## v0.1.2 — External Signals Scaffold (2026-02-07)
+## [0.1.2] — External Signals Scaffold (2026-02-07)
 
 ### Added
 - **External Signals Layer** (`external/`): Production-grade external data integration surface
@@ -134,7 +134,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Disagreement detection (widens uncertainty bands when sources disagree)
   - Stable hashing (canonical JSON → SHA-256)
 
-## v0.1.1 — Engine Improvements (2026-02-07)
+## [0.1.1] — Engine Improvements (2026-02-07)
 
 - Normalized repo layout from ZIP scaffold (proper directory structure with docs/, plan/, agents/, .github/).
 - Fixed TypeScript `exactOptionalPropertyTypes` compatibility in contract types.
@@ -153,10 +153,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added 42 tests across all packages (up from 6).
 - Updated ARCHITECTURE.md, EPISTEMIC_MODEL.md, and README.
 
-## v0.1.0 — Scaffold (2026-02-07)
+## [0.1.0] — Scaffold (2026-02-07)
 
 - Established monorepo layout (apps + packages + docs + plan).
 - Added epistemic model and architecture docs.
 - Added core types and a minimal branching engine demo.
 - Added CLI demo to exercise the engine deterministically.
 - Added CI, issue templates, and contribution guidelines.
+
+[1.0.0]: https://github.com/scott/zeo/releases/tag/v1.0.0
+[0.2.7]: https://github.com/scott/zeo/releases/tag/v0.2.7
+[0.1.2]: https://github.com/scott/zeo/releases/tag/v0.1.2
+[0.1.1]: https://github.com/scott/zeo/releases/tag/v0.1.1
+[0.1.0]: https://github.com/scott/zeo/releases/tag/v0.1.0
