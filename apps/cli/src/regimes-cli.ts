@@ -126,12 +126,12 @@ async function runDetectCommand(
   }
 
   // Convert observations to numeric points for regime detection
-  const numericPoints: NumericPoint[] = observations.map((obs, i) => ({
-    t: obs.t ?? new Date(Date.now() - (observations.length - i) * 86400000).toISOString(),
-    v: typeof obs.valueBand === "number" ? obs.valueBand : (obs.valueBand.low + obs.valueBand.high) / 2,
+  const numericPoints = observations.map((obs) => ({
+    t: obs.t,
+    v: (obs.valueBand.low + obs.valueBand.high) / 2,
   }));
 
-  const eventTimes = observations.map(obs => obs.t).filter((t): t is string => !!t);
+  const eventTimes = observations.map(obs => obs.t);
 
   const config: DetectorConfig = {
     minWindowSize: 5,

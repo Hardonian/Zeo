@@ -4,6 +4,7 @@ import type {
   PosteriorState,
   VoiReport,
 } from "@zeo/contracts";
+import type { RegimeState } from "@zeo/regimes";
 import { SeededRandom, inferPosterior } from "./world-model.js";
 
 /**
@@ -226,5 +227,139 @@ export function computeVoi(
     candidates: candidateResults,
     seed,
     computationTimestamp: new Date().toISOString(),
+  };
+}
+
+export interface RegimeAwareVoiOptions {
+  numSimulations?: number;
+  variableWeights?: Record<string, number>;
+  currentRegime?: RegimeState | null;
+}
+
+export interface RegimeAwareVoiCandidate {
+  candidateId: string;
+  expectedGain: number;
+  costAdjustedScore: number;
+  targetVariables: string[];
+  flipRelevanceEstimate: "low" | "medium" | "high";
+  regimeDisambiguationPotential: number;
+  wouldNarrowConfidenceBand: boolean;
+}
+
+export interface RegimeAwareVoiReport {
+  baselineUncertainty: number;
+  candidates: ReturnType<typeof computeVoi>["candidates"];
+  seed: string;
+  computationTimestamp: string;
+  currentRegime?: RegimeState | null;
+  regimeAwareCandidates: RegimeAwareVoiCandidate[];
+}
+
+export function regimeAwareScoreMultiplier(regime: RegimeState | null | undefined): number {
+  if (!regime) return 1.0;
+
+  switch (regime.currentLabel) {
+    case "transition":
+      return 2.0;
+    case "volatile":
+      return 1.5;
+    case "stable":
+    default:
+      return 1.0;
+  }
+}
+
+export function estimateRegimeDisambiguationPotential(
+  candidate: EvidenceCandidate,
+  posterior: PosteriorState,
+  regime: RegimeState | null | undefined
+): number {
+  if (!regime) return 0;
+
+  let potential = 0;
+
+  if (regime.currentLabel === "transition") {
+    potential = 0.8;
+  } else if (regime.currentLabel === "volatile") {
+    potential = 0.5;
+  } else {
+    potential = 0.2;
+  }
+
+  if (candidate.reliabilityBand.high > 0.8) {
+    potential *= 1.3;
+  }
+
+  if (candidate.provenancePlan.wouldHavePointer) {
+    potential *= 1.1;
+  }
+
+  return Math.min(potential, 1.0);
+}
+
+export function wouldNarrowConfidenceBand(
+  candidate: EvidenceCandidate,
+  posterior: PosteriorState,
+  regime: RegimeState | null | undefined
+): boolean {
+  if (!regime) return false;
+
+  if (candidate.reliabilityBand.low > 0.6) {
+    return true;
+  }
+
+  if (regime.currentLabel === "stable" && candidate.reliabilityBand.high > 0.7) {
+    return true;
+  }
+
+  return false;
+}
+
+export function computeRegimeAwareVoi(
+  worldSpec: WorldModelSpec,
+  posterior: PosteriorState,
+  candidates: EvidenceCandidate[],
+  seed: string,
+  options: RegimeAwareVoiOptions = {}
+): RegimeAwareVoiReport {
+  const baseReport = computeVoi(worldSpec, posterior, candidates, seed, {
+    numSimulations: options.numSimulations,
+    variableWeights: options.variableWeights,
+  });
+
+  const regime = options.currentRegime ?? null;
+  const multiplier = regimeAwareScoreMultiplier(regime);
+
+  const regimeAwareCandidates: RegimeAwareVoiCandidate[] = baseReport.candidates.map((candidate, index) => {
+    const disambiguationPotential = estimateRegimeDisambiguationPotential(
+      candidates[index],
+      posterior,
+      regime
+    );
+    const wouldNarrow = wouldNarrowConfidenceBand(candidates[index], posterior, regime);
+
+    const adjustedScore = candidate.costAdjustedScore * multiplier +
+      (disambiguationPotential * 0.5);
+
+    return {
+      candidateId: candidate.candidateId,
+      expectedGain: candidate.expectedGain,
+      costAdjustedScore: adjustedScore,
+      targetVariables: candidate.targetVariables,
+      flipRelevanceEstimate: candidate.flipRelevanceEstimate,
+      regimeDisambiguationPotential: disambiguationPotential,
+      wouldNarrowConfidenceBand: wouldNarrow,
+    };
+  });
+
+  regimeAwareCandidates.sort((a, b) => b.costAdjustedScore - a.costAdjustedScore);
+
+  return {
+    baselineUncertainty: baseReport.baselineUncertainty,
+    candidates: baseReport.candidates,
+    seed: baseReport.seed,
+    computationTimestamp: baseReport.computationTimestamp,
+    currentRegime: regime ?? undefined,
+    regimeAwareCandidates,
   };
 }
