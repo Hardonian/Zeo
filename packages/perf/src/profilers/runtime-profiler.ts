@@ -379,7 +379,8 @@ export class Profiler {
     }
     
     // Check for unended measurements
-    const unended = measurements.filter(m => m.duration === undefined);
+    const measurementsToCheck = allMeasurements || measurements;
+    const unended = measurementsToCheck.filter(m => m.duration === undefined);
     if (unended.length > 0) {
       recommendations.push(
         `${unended.length} measurements not properly ended. Ensure all start() calls have matching end() calls.`
