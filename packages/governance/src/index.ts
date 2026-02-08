@@ -5,27 +5,7 @@
  * Implements risk-aware decision making with tiered requirements.
  */
 
-// =============================================================================
-// EXPORTS
-// =============================================================================
-
-export type { RiskTier, DecisionRiskProfile, AuditEntry, PolicyConfig } from "@zeo/contracts";
-export {
-  evaluateRiskTier,
-  evaluateEvidenceRisk,
-  createAuditEntry,
-  validatePolicyConfig,
-  applyGovernanceRules,
-  getDefaultRiskProfile,
-  GOVERNANCE_DEFAULTS,
-  RISK_TIER_CONFIG,
-  DOMAIN_RISK_MATRIX
-} from "./src/index.js";
-
-// =============================================================================
-// TYPES (re-exported for convenience)
-// =============================================================================
-
+import { nanoid } from "nanoid";
 import type {
   RiskTier,
   DecisionRiskProfile,
@@ -33,11 +13,14 @@ import type {
   PolicyConfig,
   DecisionSpec,
   EvidenceEvent,
-  BranchGraph,
-  BranchNode
+  BranchGraph
 } from "@zeo/contracts";
 
-export type { RiskTier, DecisionProfile, AuditEntry, PolicyConfig };
+// =============================================================================
+// TYPES
+// =============================================================================
+
+export type { RiskTier, DecisionRiskProfile, AuditEntry, PolicyConfig };
 
 // =============================================================================
 // CONSTANTS
@@ -63,10 +46,6 @@ export const GOVERNANCE_DEFAULTS = {
   strategicRequiresConfirm: true,
   /** Whether existential tier requires user confirmation */
   existentialRequiresConfirm: true,
-  /** Forbidden domains for strategic tier */
-  strategicForbiddenDomains: ["medical", "legal", "financial_regulated"],
-  /** Forbidden domains for existential tier */
-  existentialForbiddenDomains: ["medical", "legal", "financial_regulated", "safety_critical"]
 } as const;
 
 /**
@@ -94,13 +73,13 @@ export const RISK_TIER_CONFIG: Record<RiskTier, {
     evidenceThreshold: GOVERNANCE_DEFAULTS.strategicEvidenceMin,
     coolingOffMinutes: GOVERNANCE_DEFAULTS.strategicCoolingOffMinutes,
     requiresConfirm: GOVERNANCE_DEFAULTS.strategicRequiresConfirm,
-    forbiddenDomains: GOVERNANCE_DEFAULTS.strategicForbiddenDomains
+    forbiddenDomains: ["medical", "legal", "financial_regulated"]
   },
   existential: {
     evidenceThreshold: GOVERNANCE_DEFAULTS.existentialEvidenceMin,
     coolingOffMinutes: GOVERNANCE_DEFAULTS.existentialCoolingOffMinutes,
     requiresConfirm: GOVERNANCE_DEFAULTS.existentialRequiresConfirm,
-    forbiddenDomains: GOVERNANCE_DEFAULTS.existentialForbiddenDomains
+    forbiddenDomains: ["medical", "legal", "financial_regulated", "safety_critical"]
   }
 };
 
@@ -137,8 +116,6 @@ export const DOMAIN_RISK_MATRIX: Record<string, RiskTier> = {
 // CORE FUNCTIONS
 // =============================================================================
 
-import { nanoid } from "nanoid";
-
 /**
  * Evaluate the risk tier for a decision based on its characteristics
  */
@@ -153,8 +130,6 @@ export function evaluateRiskTier(
   // Adjust tier based on decision characteristics
   const agentCount = decisionSpec.agents?.length || 1;
   const actionCount = decisionSpec.actions?.length || 0;
-  const assumptionCount = decisionSpec.assumptions?.length || 0;
-  const constraintCount = decisionSpec.constraints?.length || 0;
   
   // Escalate tier based on complexity
   if (agentCount > 3 || actionCount > 5) {
