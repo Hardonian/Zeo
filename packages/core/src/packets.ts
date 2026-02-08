@@ -7,6 +7,7 @@ import type {
   LensEvaluation,
   ZeoError,
   ZeoErrorCode,
+  RegimeState,
 } from "@zeo/contracts";
 import { hashDecisionSpec, hashAssumptionSet } from "./hashing.js";
 import { canonicalizeDecisionSpec, canonicalizeObservationBatch, hashObservationBatch } from "./canonicalize.js";
@@ -36,6 +37,10 @@ export interface EvidencePacketJSON {
     batch: ObservationBatch;
     hash: string;
   };
+  regime?: {
+    currentState: RegimeState | null;
+    adjustmentsApplied: number;
+  };
   runMeta: RunMeta;
   results: {
     graph: BranchGraph;
@@ -63,6 +68,8 @@ export interface EvidencePacketOptions {
   observationBatch?: ObservationBatch;
   runMeta: RunMeta;
   errors?: ZeoError[];
+  currentRegime?: RegimeState;
+  regimeAdjustmentsCount?: number;
 }
 
 function formatDuration(startedAt: string, finishedAt: string): string {
@@ -132,6 +139,8 @@ export function buildEvidencePacket(options: EvidencePacketOptions): EvidencePac
     observationBatch,
     runMeta,
     errors,
+    currentRegime,
+    regimeAdjustmentsCount,
   } = options;
 
   const canonicalSpec = canonicalizeDecisionSpec(decisionSpec);
@@ -166,6 +175,10 @@ export function buildEvidencePacket(options: EvidencePacketOptions): EvidencePac
     observationBatch: observationBatch && observationHash ? {
       batch: observationBatch,
       hash: observationHash,
+    } : undefined,
+    regime: currentRegime ? {
+      currentState: currentRegime,
+      adjustmentsApplied: regimeAdjustmentsCount ?? 0,
     } : undefined,
     runMeta,
     results: {
@@ -224,6 +237,16 @@ export function buildEvidencePacketMarkdown(packet: EvidencePacketJSON): string 
     lines.push("");
   } else {
     lines.push("_No observations provided._");
+    lines.push("");
+  }
+
+  if (packet.regime) {
+    lines.push("## Regime Context");
+    lines.push("");
+    lines.push(`**Current Regime:** ${packet.regime.currentState?.currentLabel || "unknown"}`);
+    lines.push(`**Domain:** ${packet.regime.currentState?.domain || "not specified"}`);
+    lines.push(`**Adjustments Applied:** ${packet.regime.adjustmentsApplied}`);
+    lines.push(`**Updated At:** ${packet.regime.currentState?.updatedAt || "N/A"}`);
     lines.push("");
   }
 
