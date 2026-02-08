@@ -25,6 +25,10 @@ import {
   parseRegimesArgs,
   runRegimesCommand,
 } from "./regimes-cli.js";
+import {
+  parseAdaptersRuntimeArgs,
+  runAdaptersRuntimeCommand,
+} from "./adapters-runtime-cli.js";
 
 interface CliArgs extends ReplayCliArgs {
   example: "negotiation" | "ops";
@@ -129,6 +133,8 @@ Commands:
   --report-out <dir>          Write replay reports to directory
   --warehouse <cmd>           Warehouse management (export/import/list)
   --analytics <cmd>           Analytics pipeline (build-dataset/run)
+  adapters <cmd>              Adapter runtime (run/ingest/quarantine)
+  ingest                      Ingest from all enabled adapters
 
 Options:
   --catalog <dir>             Catalog directory (default: external/catalog)
@@ -154,8 +160,12 @@ Examples:
   zeo --analytics run --dataset ./analysis/dataset.csv --out ./analysis --target outcome --features f1,f2
 
 For warehouse/analytics help:
-  zeo --warehouse
-  zeo --analytics
+   zeo --warehouse
+   zeo --analytics
+
+For adapter runtime help:
+   zeo adapters --help
+   zeo ingest --help
 `);
 }
 
@@ -210,6 +220,22 @@ async function main(): Promise<void> {
   if (regimesIdx !== -1) {
     const regimesArgs = parseRegimesArgs(argv.slice(regimesIdx + 1));
     const exitCode = await runRegimesCommand(regimesArgs);
+    process.exit(exitCode);
+  }
+
+  // Check for adapters command
+  const adaptersIdx = argv.indexOf("adapters");
+  if (adaptersIdx !== -1) {
+    const adaptersArgs = parseAdaptersRuntimeArgs(argv.slice(adaptersIdx + 1));
+    const exitCode = await runAdaptersRuntimeCommand(adaptersArgs);
+    process.exit(exitCode);
+  }
+
+  // Check for ingest command
+  const ingestIdx = argv.indexOf("ingest");
+  if (ingestIdx !== -1 && ingestIdx === 0) {
+    const ingestArgs = parseAdaptersRuntimeArgs(argv);
+    const exitCode = await runAdaptersRuntimeCommand(ingestArgs);
     process.exit(exitCode);
   }
 

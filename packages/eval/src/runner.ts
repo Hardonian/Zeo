@@ -6,7 +6,7 @@
 
 import { createHash, randomUUID } from "crypto";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { join, resolve, glob } from "node:path";
+import { join, resolve } from "node:path";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import type {

@@ -1,0 +1,76 @@
+{
+  "version": "0.5.1",
+  "suiteId": "zeo-core-eval-v051",
+  "description": "Core evaluation suite for Zeo epistemic invariants",
+  "createdAt": "2026-02-08T00:00:00.000Z",
+  "fixtures": [
+    {
+      "id": "negotiation-simple",
+      "description": "Simple negotiation decision for determinism check",
+      "category": "decision",
+      "files": ["negotiation-simple.json"]
+    },
+    {
+      "id": "ops-simple",
+      "description": "Simple ops decision for determinism check",
+      "category": "decision",
+      "files": ["ops-simple.json"]
+    }
+  ],
+  "commands": [
+    {
+      "type": "decision",
+      "spec": "negotiation-simple.json",
+      "seed": "eval-seed-001"
+    },
+    {
+      "type": "decision",
+      "spec": "ops-simple.json",
+      "seed": "eval-seed-002"
+    }
+  ],
+  "expectedOutputs": [
+    {
+      "filePattern": "negotiation-simple.json",
+      "hash": "3b5c7f8a9d2e1b4c6f8d0e2a4b7c5f9e1a3d8b2c6f4e7a9d1c3b5f8e2a7d4",
+      "canonicalHash": "3b5c7f8a9d2e1b4c6f8d0e2a4b7c5f9e1a3d8b2c6f4e7a9d1c3b5f8e2a7d4"
+    },
+    {
+      "filePattern": "ops-simple.json",
+      "hash": "7c3f1a9b5d2e8f4c6a0d1b2e4c7f8a3d5e9b1c6f2a4d7c8e3b1f5a9d6c2e8b4f1",
+      "canonicalHash": "7c3f1a9b5d2e8f4c6a0d1b2e4c7f8a3d5e9b1c6f2a4d7c8e3b1f5a9d6c2e8b4f1"
+    }
+  ],
+  "invariantChecks": [
+    {
+      "id": "inv-001",
+      "description": "No text-derived prior is narrower than minimum width (0.2)",
+      "severity": "error",
+      "category": "min_uncertainty"
+    },
+    {
+      "id": "inv-002",
+      "description": "No causal/fact/truth claims without candidate labeling",
+      "severity": "error",
+      "category": "causal_labeling"
+    },
+    {
+      "id": "inv-003",
+      "description": "Packet exports include provenance pointers where required",
+      "severity": "error",
+      "category": "provenance"
+    },
+    {
+      "id": "inv-004",
+      "description": "Widen-only rule is not violated",
+      "severity": "error",
+      "category": "widen_only"
+    },
+    {
+      "id": "inv-005",
+      "description": "Outputs are byte-identical on repeated runs",
+      "severity": "error",
+      "category": "determinism"
+    }
+  ]
+}

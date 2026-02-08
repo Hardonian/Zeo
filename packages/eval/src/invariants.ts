@@ -90,13 +90,23 @@ export function checkCausalLabeling(text: string): InvariantResult {
 /**
  * Check packet for provenance requirements
  */
-export function checkProvenance(packet: EvidencePacket): InvariantResult {
+export function checkProvenance(packet: EvidencePacketJSON): InvariantResult {
   const issues: string[] = [];
 
-  // Check if facts have provenance (Invariant 1)
-  for (const claim of packet.results?.graph?.nodes || []) {
-    if (claim.status === "fact" && !claim.provenance) {
-      issues.push(`Fact ${claim.id} missing provenance`);
+  // Check if facts in assumptions have provenance (Invariant 1)
+  // Facts must have provenance pointers
+  for (const claim of packet.decision.spec.assumptions || []) {
+    if (claim.status === "fact" && (!claim.provenance || claim.provenance.length === 0)) {
+      issues.push(`Claim "${claim.text.slice(0, 50)}..." marked as fact without provenance`);
+    }
+  }
+
+  // Check results claims if available
+  for (const claim of packet.results?.explanation?.whatWouldChange || []) {
+    // Check if assumption exists for the ID referenced
+    const assumption = packet.decision.spec.assumptions.find(a => a.id === claim.assumptionId);
+    if (assumption && assumption.status === "fact" && (!assumption.provenance || assumption.provenance.length === 0)) {
+      issues.push(`Assumption ${claim.assumptionId} marked as fact without provenance`);
     }
   }
 
@@ -145,7 +155,7 @@ export function verifyHash(filePath: string, expectedHash: string): InvariantRes
 /**
  * Run all invariant checks on a decision spec
  */
-export function runInvariantChecks(spec: DecisionSpec, packet: EvidencePacket): InvariantResult[] {
+export function runInvariantChecks(spec: DecisionSpec, packet: EvidencePacketJSON): InvariantResult[] {
   return [
     checkMinUncertaintyWidth(spec),
     checkProvenance(packet),
