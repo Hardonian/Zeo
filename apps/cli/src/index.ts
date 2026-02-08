@@ -21,6 +21,10 @@ import {
   runWarehouseCommand,
   runAnalyticsCommand,
 } from "./warehouse-cli.js";
+import {
+  parseRegimesArgs,
+  runRegimesCommand,
+} from "./regimes-cli.js";
 
 interface CliArgs extends ReplayCliArgs {
   example: "negotiation" | "ops";

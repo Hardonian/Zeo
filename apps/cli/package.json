@@ -17,6 +17,7 @@
     "@zeo/replay": "workspace:*",
     "@zeo/warehouse": "workspace:*",
     "@zeo/analytics": "workspace:*",
+    "@zeo/regimes": "workspace:*",
     "nanoid": "^5.0.7"
   },
   "devDependencies": {
