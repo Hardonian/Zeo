@@ -42,7 +42,7 @@ export function addOverride(
     changeType: "override",
     valueFunctionId: override.valueFunctionId,
     previousState: undefined,
-    newState: { override },
+    newState: { override: fullOverride },
     actor,
     reason
   };
