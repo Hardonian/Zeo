@@ -8,8 +8,6 @@ import { join } from "path";
 import type {
   SignalObservation,
   ObservationBatch,
-  ReplayDataset,
-  Adapter,
 } from "@zeo/contracts";
 import type {
   AdapterRuntimeConfig,
@@ -20,12 +18,11 @@ import type {
 } from "./types.js";
 import { createFetchOrchestrator, DEFAULT_RETRY_POLICY, DEFAULT_CACHE_CONFIG } from "./fetch-orchestrator.js";
 import { createNormalizer, DEFAULT_NORMALIZATION_OPTIONS } from "./normalizer.js";
-import { createTrustScorer, TRUST_BANDS } from "./trust-scorer.js";
+import { createTrustScorer } from "./trust-scorer.js";
 import { createAnomalyDetector, DEFAULT_ANOMALY_RULES } from "./anomaly-detector.js";
 import { createQuarantineStore, createFilesystemQuarantineStore, QUARANTINE_REASONS } from "./quarantine-store.js";
 import { createIntegrityEnforcer, INTEGRITY_RULES } from "./integrity-enforcer.js";
 import { createObservationBatchBuilder, buildReplayDataset } from "./batch-builder.js";
-import { QuarantineError } from "./errors.js";
 
 export const DEFAULT_RUNTIME_CONFIG: AdapterRuntimeConfig = {
   cache: DEFAULT_CACHE_CONFIG,
@@ -51,6 +48,17 @@ export const DEFAULT_RUNTIME_CONFIG: AdapterRuntimeConfig = {
     consistencyWeight: 0.2,
   },
 };
+
+// Adapter interface from @zeo/adapters
+interface Adapter {
+  info: {
+    id: string;
+    name: string;
+    domain: string;
+  };
+  fetch(params: Record<string, unknown>): Promise<{ items: unknown[]; checksum: string }>;
+  normalize(raw: unknown[]): SignalObservation[];
+}
 
 interface AdapterRuntime {
   runAdapter(
@@ -82,7 +90,7 @@ export function createAdapterRuntime(
   options?: { quarantineDir?: string }
 ): AdapterRuntime {
   // Initialize components
-  const orchestrator = createFetchOrchestrator(
+  const _orchestrator = createFetchOrchestrator(
     config.cache,
     config.rateLimit,
     config.retry
@@ -145,12 +153,13 @@ export function createAdapterRuntime(
       } catch (error) {
         // Some failed integrity - filter out invalid ones
         const validation = integrityEnforcer.validate(normalized);
-        const validIds = new Set(
-          normalized
-            .filter((_, i) => !validation.violations.some(v => v.observationIds.includes(normalized[i].observationId)))
-            .map(o => o.observationId)
-        );
-        passedIntegrity = normalized.filter(o => validIds.has(o.observationId));
+        const invalidIds = new Set<string>();
+        for (const v of validation.violations) {
+          for (const id of v.observationIds) {
+            invalidIds.add(id);
+          }
+        }
+        passedIntegrity = normalized.filter(o => !invalidIds.has(o.observationId));
         integrityViolations = validation.violations.map(v => v.message);
       }
       
@@ -167,30 +176,36 @@ export function createAdapterRuntime(
           v.affectedObservations.includes(obs.observationId)
         );
         
-        const maxSeverity = relatedViolations.length > 0
-          ? relatedViolations.reduce((max, v) => {
-              const severities = { low: 0, medium: 1, high: 2, critical: 3 };
+        const maxSeverity: string | null = relatedViolations.length > 0
+          ? relatedViolations.reduce((max: string, v) => {
+              const severities: Record<string, number> = { low: 0, medium: 1, high: 2, critical: 3 };
               return severities[v.severity] > severities[max] ? v.severity : max;
-            }, "low" as const)
+            }, "low")
           : null;
         
         // Determine if should quarantine
-        const shouldQuarantine =
-          config.quarantine.enabled &&
-          (maxSeverity === "critical" ||
-            maxSeverity === "high" ||
-            (maxSeverity === "medium" && config.quarantine.autoQuarantineSeverity === "medium") ||
-            trustScore?.band === "quarantined");
+        let shouldQuarantine = false;
+        if (config.quarantine.enabled) {
+          if (maxSeverity === "critical" || maxSeverity === "high") {
+            shouldQuarantine = true;
+          } else if (maxSeverity === "medium" && config.quarantine.autoQuarantineSeverity === "medium") {
+            shouldQuarantine = true;
+          } else if (trustScore?.band === "quarantined") {
+            shouldQuarantine = true;
+          }
+        }
         
         if (shouldQuarantine) {
           const quarantineReason = relatedViolations.length > 0
             ? QUARANTINE_REASONS.ANOMALY_DETECTED
             : QUARANTINE_REASONS.LOW_TRUST_SCORE;
           
+          const severity: QuarantineEntry["severity"] = (maxSeverity as QuarantineEntry["severity"]) ?? "medium";
+          
           const entry = await quarantineStore.add({
             observation: obs,
             reason: quarantineReason,
-            severity: maxSeverity ?? "medium",
+            severity,
             expiresAt: new Date(
               Date.now() + config.quarantine.retentionHours * 60 * 60 * 1000
             ).toISOString(),
@@ -231,7 +246,7 @@ export function createAdapterRuntime(
         quarantined,
         metrics: {
           fetched: normalized.length,
-          normalized: normalized.data.length,
+          normalized: normalized.length,
           passedIntegrity: passedIntegrity.length,
           passedAnomaly: approved.length,
           quarantined: quarantined.length,
