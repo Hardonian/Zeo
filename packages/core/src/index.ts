@@ -28,11 +28,14 @@ export {
 } from "./decision-coupling.js";
 
 // Re-exports from v0.4.0+ packages for convenient access
+
+// Counterfactuals - "what flips" analysis
 export type {
   CounterfactualQuery,
   CounterfactualResult,
   DecisionContext,
   DistanceMetric,
+  ActionCandidate,
 } from "@zeo/counterfactuals";
 export {
   createCounterfactualQuery,
@@ -40,49 +43,72 @@ export {
   solveCounterfactual,
   computeFlipDistanceVOI,
   formatCounterfactual,
+  batchSolveCounterfactuals,
+  findFlipThresholds,
+  computeDistance,
 } from "@zeo/counterfactuals";
 
+// Constraints - action feasibility checking
 export type {
   Constraint,
   ConstraintGraph,
   PropagationResult,
   ConstraintNode,
   ConstraintEdge,
+  HardConstraint,
+  SoftConstraint,
+  TemporalConstraint,
+  BudgetConstraint,
+  ConstraintContext,
 } from "@zeo/constraints";
 export {
   createConstraintGraph,
-  addNode,
-  addEdge,
+  addNode as addConstraintNode,
+  addEdge as addConstraintEdge,
   addConstraint,
   propagateConstraints,
   createHardConstraint,
   createSoftConstraint,
   createTemporalConstraint,
   createBudgetConstraint,
+  createIrreversibilityConstraint,
+  createLegalConstraint,
+  createEthicalConstraint,
+  createActionNode,
+  createDependencyEdge,
+  createConsumptionEdge,
+  createExclusionEdge,
   filterInfeasibleActions,
+  applySoftPenalties,
 } from "@zeo/constraints";
 
+// Lenses - perspective formalization
 export type {
   Lens,
-  LensRegistry,
   LensComparison,
   LensAppliedResult,
   LensSensitivityAnalysis,
 } from "@zeo/lenses";
 export {
   lensRegistry,
+  LensRegistry,
   applyLensWeights,
   compareAcrossLenses,
   analyzeLensSensitivity,
   createLens,
+  getLensPriors,
 } from "@zeo/lenses";
 
+// Worlds - parallel worlds for robustness analysis
 export type {
   AssumptionVariant,
   WorldDefinition,
   WorldsEnsemble,
+  WorldState,
+  WorldDecisionResult,
   ActionRobustness,
   RobustnessAnalysis,
+  WorldsConfig,
 } from "@zeo/worlds";
 export {
   createEnsemble,
@@ -91,48 +117,66 @@ export {
   computeRobustness,
   getRobustActions,
   getFragileActions,
+  getEnsembleSummary,
   generateDefaultWorlds,
+  exportEnsemble,
+  importEnsemble,
+  DEFAULT_WORLDS_CONFIG,
 } from "@zeo/worlds";
 
+// Tournaments - strategy self-competition
 export type {
   Tournament,
   Strategy,
   Scenario,
   Match,
+  MatchResult,
   TournamentResults,
   Standing,
+  TournamentConfig,
 } from "@zeo/tournaments";
 export {
   createTournament,
   registerStrategy,
   addScenario,
+  startTournament,
   runMatch,
   completeTournament,
+  getTournamentSummary,
   createBaselineStrategies,
+  exportTournament,
+  importTournament,
 } from "@zeo/tournaments";
 
+// Causal Skeletons - DAG proposals for causal analysis
 export type {
   CausalSkeleton,
   CausalNode,
   CausalEdge,
   SkeletonCollection,
   SkeletonComparison,
+  SkeletonRecommendation,
   IdentificationRequirement,
+  BackdoorPath,
 } from "@zeo/causal-skeletons";
 export {
   createCollection,
   createSkeleton,
-  addNode,
-  addEdge,
+  addNode as addSkeletonNode,
+  addEdge as addSkeletonEdge,
   compareSkeletons,
   generateProposalSkeleton,
+  getSkeletonSummary,
   exportSkeleton,
   importSkeleton,
+  DEFAULT_SKELETON_CONFIG,
 } from "@zeo/causal-skeletons";
 
+// Hypothesis Market - internal market for hypotheses
 export type {
   MarketState,
   MarketHypothesis,
+  MarketPosition,
   PerformanceSnapshot,
   RebalanceConfig,
 } from "@zeo/hypothesis-market";
@@ -143,14 +187,38 @@ export {
   rebalanceCredence,
   getTopHypotheses,
   getMarketSummary,
+  exportMarket,
+  importMarket,
+  DEFAULT_REBALANCE_CONFIG,
 } from "@zeo/hypothesis-market";
 
+// Hypothesis Registry
+export type {
+  HypothesisRegistry,
+  Hypothesis,
+  HypothesisStatus,
+  HypothesisFilters,
+} from "@zeo/hypothesis-registry";
+export {
+  createRegistry,
+  addHypothesis as addToRegistry,
+  updateHypothesisStatus,
+  getHypothesisById,
+  queryHypotheses,
+  getRegistryStats,
+} from "@zeo/hypothesis-registry";
+
+// Robustness - statistical robustness checks
 export type {
   RobustnessResult,
   RobustnessCategory,
   RiskLevel,
   StabilityConfig,
   ConfoundingConfig,
+  LeakageConfig,
+  MulticollinearityConfig,
+  SampleAdequacyConfig,
+  NumericDataPoint,
 } from "@zeo/robustness";
 export {
   assessStability,
@@ -158,72 +226,99 @@ export {
   detectLeakage,
   assessMulticollinearity,
   assessSampleAdequacy,
+  assessHypothesisRobustness,
   runAllRobustnessChecks,
 } from "@zeo/robustness";
 
+// Telemetry - intelligence telemetry and drift detection
 export type {
   TelemetryEvent,
-  TelemetryStore,
   IntervalChangeEvent,
   VoiChurnEvent,
+  UserOverrideEvent,
   TelemetryAggregate,
+  DriftAlert,
 } from "@zeo/telemetry";
 export {
   getTelemetryStore,
   createIntervalChangeEvent,
   createVoiChurnEvent,
   createUserOverrideEvent,
+  createUserAcceptanceEvent,
   computeHealthScore,
 } from "@zeo/telemetry";
 
+// Regimes - regime detection and analysis
 export type {
-  RegimeEvent,
-  RegimeState,
-  RegimeDomain,
-  RegimeKind,
+  DetectionResult,
+  RegimePrediction,
+  EarlyWarning,
+  TransitionMatrix,
+  RegimeHistoryPoint,
+  NumericPoint,
+  DetectorConfig,
 } from "@zeo/regimes";
-export { detectRegimes, widenPosteriorBand } from "@zeo/regimes";
+export {
+  detectRegimes,
+  createRegimeState,
+  createRegimeEvent,
+  estimateTransitionMatrix,
+  predictRegime,
+  computeVolatilityTrend,
+  computeMeanTrend,
+  detectEarlyWarnings,
+  computeRegimeStability,
+} from "@zeo/regimes";
 
+// Measurement - scale-aware computation
 export type {
   MeasurementScale,
   MeasurementValue,
   ScaleType,
+  ScaleDefinition,
 } from "@zeo/measurement";
 export {
   scaleRegistry,
   assertCompatibleScales,
   assertOperationAllowed,
-  computeMean,
+  computeMean as computeMeasurementMean,
   createMeasurementValue,
 } from "@zeo/measurement";
 
-export type {
-  WarehouseAdapter,
-  WarehouseEnvelope,
-  WarehouseRecord,
-} from "@zeo/warehouse";
+// Warehouse - local storage adapters
+export type { WarehouseAdapter } from "@zeo/warehouse";
 export {
   FilesystemWarehouseAdapter,
   IndexedDBWarehouseAdapter,
 } from "@zeo/warehouse";
 
+// Replay - calibration and backtesting
 export type {
-  ReplayDataset,
-  ReplayCase,
-  OutcomeRecord,
-  OutcomeMetric,
+  ReplayResult,
+  CalibrationReport,
+  CoverageMetrics,
+  ProperScores,
 } from "@zeo/replay";
 export { runReplay, generateCalibrationReport } from "@zeo/replay";
 
-export type { AuditEvent, AuditLog } from "@zeo/audit";
-export { createAuditLog, recordAuditEvent } from "@zeo/audit";
+// Audit - audit trail and compliance
+export type { AuditConfig, VerificationResult, AppendResult } from "@zeo/audit";
+export {
+  createAuditLog,
+  createDecisionAuditEntry,
+  createEvidenceAuditEntry,
+  createPolicyAuditEntry,
+} from "@zeo/audit";
 
-export type { ClusterResult, Cluster } from "@zeo/semantic-clustering";
+// Semantic Clustering - evidence organization
+export type { ClusterResult, Cluster, ClusterConfig } from "@zeo/semantic-clustering";
 export { clusterItems } from "@zeo/semantic-clustering";
 
-export type { DatasetSchema, DatasetRow } from "@zeo/dataset-builder";
-export { buildDataset, datasetToCsv } from "@zeo/dataset-builder";
+// Dataset Builder - feature extraction
+export type { Dataset, DatasetRow, DatasetOptions } from "@zeo/dataset-builder";
+export { buildDataset, datasetToCsv, getDatasetStats } from "@zeo/dataset-builder";
 
+// Analysis Planner - AI-driven analysis planning
 export type {
   AnalysisPlan,
   AnalysisStep,
@@ -231,29 +326,18 @@ export type {
 } from "@zeo/analysis-planner";
 export { generateAnalysisPlan } from "@zeo/analysis-planner";
 
+// Feature Discovery - AI-guided feature proposal
 export type {
   FeatureCandidate,
-  FeatureDiscoveryResult,
-  FeatureDiscoveryConfig,
+  DiscoveryConfig,
+  Pattern,
 } from "@zeo/feature-discovery";
-export { proposeFeatures } from "@zeo/feature-discovery";
+export { FeatureDiscovery, createFeatureDiscovery } from "@zeo/feature-discovery";
 
-export type {
-  HypothesisRegistry,
-  Hypothesis,
-  HypothesisTest,
-  HypothesisStatus,
-} from "@zeo/hypothesis-registry";
-export {
-  createRegistry,
-  addHypothesis,
-  recordTest,
-  getHypothesisHistory,
-} from "@zeo/hypothesis-registry";
-
+// Decision Synthesizer - decision implications
 export type {
   DecisionImplication,
   SynthesisResult,
-  SynthesizerConfig,
+  SynthesizerOptions,
 } from "@zeo/decision-synthesizer";
-export { synthesizeDecisionImplications } from "@zeo/decision-synthesizer";
+export { synthesizeImplications } from "@zeo/decision-synthesizer";
