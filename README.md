@@ -423,3 +423,11 @@ Access the replay viewer at `/replay` in the web application:
 - `external/examples/replay/sample_dataset.json` - Example dataset
 - `packages/replay/` - Replay runner implementation
 
+
+## License
+
+MIT License - see `LICENSE` file.
+
+## Security
+
+For vulnerability reporting, see `SECURITY.md`. Do not open public issues for security concerns.
