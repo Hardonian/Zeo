@@ -1,5 +1,19 @@
 import { test, expect, describe } from "vitest";
-import { detectRegimes, createRegimeState, createRegimeEvent, type NumericPoint } from "./index.js";
+import {
+  detectRegimes,
+  createRegimeState,
+  createRegimeEvent,
+  type NumericPoint,
+  estimateTransitionMatrix,
+  predictRegime,
+  detectEarlyWarnings,
+  computeVolatilityTrend,
+  computeMeanTrend,
+  computeRegimeStability,
+  type RegimeHistoryPoint,
+  type RegimePrediction,
+  type TransitionMatrix
+} from "./index.js";
 
 describe("regimes detector", () => {
   describe("mean shift detection", () => {
@@ -418,6 +432,214 @@ describe("regimes detector", () => {
       const result2 = detectRegimes("market", points, [], ["test"]);
 
       expect(result1.events.length).toBe(result2.events.length);
+    });
+  });
+
+  describe("regime prediction (v0.3.7)", () => {
+    test("estimates transition matrix from history", () => {
+      const history: RegimeHistoryPoint[] = [
+        { timestamp: "2024-01-01T00:00:00Z", label: "stable", parameters: {} },
+        { timestamp: "2024-01-01T01:00:00Z", label: "stable", parameters: {} },
+        { timestamp: "2024-01-01T02:00:00Z", label: "volatile", parameters: {} },
+        { timestamp: "2024-01-01T03:00:00Z", label: "stable", parameters: {} },
+      ];
+
+      const matrix = estimateTransitionMatrix(history);
+
+      expect(matrix.states).toContain("stable");
+      expect(matrix.states).toContain("volatile");
+      expect(matrix.matrix.length).toBe(matrix.states.length);
+      expect(matrix.matrix[0].length).toBe(matrix.states.length);
+    });
+
+    test("predicts regime based on transition probabilities", () => {
+      const points: NumericPoint[] = [];
+      for (let i = 0; i < 100; i++) {
+        points.push({ t: new Date(i * 60000).toISOString(), v: 100 + (i % 11 - 5) * 10 });
+      }
+
+      const history: RegimeHistoryPoint[] = [
+        { timestamp: "2024-01-01T00:00:00Z", label: "normal", parameters: {} },
+        { timestamp: "2024-01-01T01:00:00Z", label: "normal", parameters: {} },
+        { timestamp: "2024-01-01T02:00:00Z", label: "normal", parameters: {} },
+        { timestamp: "2024-01-01T03:00:00Z", label: "normal", parameters: {} },
+      ];
+
+      const prediction = predictRegime("market", points, history, 24);
+
+      expect(prediction.predictedRegime).toBeDefined();
+      expect(prediction.confidence.low).toBeGreaterThanOrEqual(0);
+      expect(prediction.confidence.high).toBeLessThanOrEqual(1);
+      expect(prediction.transitionProbability).toBeGreaterThanOrEqual(0);
+      expect(prediction.transitionProbability).toBeLessThanOrEqual(1);
+      expect(prediction.timeHorizonHours).toBe(24);
+      expect(prediction.earlyWarnings).toBeDefined();
+      expect(prediction.predictedAt).toBeDefined();
+    });
+
+    test("detects early warnings for volatility acceleration", () => {
+      const points: NumericPoint[] = [];
+      for (let i = 0; i < 30; i++) {
+        points.push({ t: new Date(i * 60000).toISOString(), v: 100 });
+      }
+      for (let i = 30; i < 60; i++) {
+        points.push({ t: new Date(i * 60000).toISOString(), v: 100 + (i % 31 - 15) * 30 });
+      }
+
+      const warnings = detectEarlyWarnings(points);
+
+      expect(warnings.length).toBeGreaterThan(0);
+    });
+
+    test("detects early warnings for mean drift", () => {
+      const points: NumericPoint[] = [];
+      for (let i = 0; i < 30; i++) {
+        points.push({ t: new Date(i * 60000).toISOString(), v: 100 });
+      }
+      for (let i = 30; i < 60; i++) {
+        points.push({ t: new Date(i * 60000).toISOString(), v: 100 + (i - 30) * 4 });
+      }
+
+      const warnings = detectEarlyWarnings(points);
+
+      expect(warnings.length).toBeGreaterThan(0);
+    });
+
+    test("detects early warnings for mean drift", () => {
+      const points: NumericPoint[] = [];
+      for (let i = 0; i < 50; i++) {
+        points.push({ t: new Date(i * 60000).toISOString(), v: 100 });
+      }
+      for (let i = 50; i < 100; i++) {
+        points.push({ t: new Date(i * 60000).toISOString(), v: 100 + (i - 50) * 0.5 });
+      }
+
+      const warnings = detectEarlyWarnings(points);
+
+      const driftWarning = warnings.find(w => w.indicator === "mean_drift");
+      expect(driftWarning).toBeDefined();
+    });
+
+    test("computes volatility trend correctly", () => {
+      const stablePoints: NumericPoint[] = [];
+      for (let i = 0; i < 50; i++) {
+        stablePoints.push({ t: new Date(i * 60000).toISOString(), v: 100 });
+      }
+
+      const volatilePoints: NumericPoint[] = [];
+      for (let i = 0; i < 50; i++) {
+        volatilePoints.push({ t: new Date(i * 60000).toISOString(), v: 100 + (i % 21 - 10) * 20 });
+      }
+
+      const stableTrend = computeVolatilityTrend(stablePoints);
+      const volatileTrend = computeVolatilityTrend(volatilePoints);
+
+      expect(Math.abs(stableTrend)).toBeLessThan(Math.abs(volatileTrend));
+    });
+
+    test("computes mean trend correctly", () => {
+      const risingPoints: NumericPoint[] = [];
+      for (let i = 0; i < 50; i++) {
+        risingPoints.push({ t: new Date(i * 60000).toISOString(), v: 100 + i * 0.5 });
+      }
+
+      const trend = computeMeanTrend(risingPoints);
+
+      expect(trend).toBeGreaterThan(0);
+    });
+
+    test("computes regime stability correctly", () => {
+      const stableStates = [
+        { domain: "market" as const, currentLabel: "stable", updatedAt: "", parameters: {} },
+        { domain: "market" as const, currentLabel: "stable", updatedAt: "", parameters: {} },
+        { domain: "market" as const, currentLabel: "stable", updatedAt: "", parameters: {} },
+      ];
+
+      const unstableStates = [
+        { domain: "market" as const, currentLabel: "stable", updatedAt: "", parameters: {} },
+        { domain: "market" as const, currentLabel: "volatile", updatedAt: "", parameters: {} },
+        { domain: "market" as const, currentLabel: "stable", updatedAt: "", parameters: {} },
+        { domain: "market" as const, currentLabel: "volatile", updatedAt: "", parameters: {} },
+        { domain: "market" as const, currentLabel: "stable", updatedAt: "", parameters: {} },
+      ];
+
+      const stableResult = computeRegimeStability(stableStates);
+      const unstableResult = computeRegimeStability(unstableStates);
+
+      expect(stableResult.score).toBeGreaterThan(unstableResult.score);
+      expect(stableResult.label).toBe("stable");
+      expect(unstableResult.label).toBe("unstable");
+    });
+
+    test("transition matrix sums to 1 for each row", () => {
+      const history: RegimeHistoryPoint[] = [];
+      for (let i = 0; i < 50; i++) {
+        const label = i < 20 ? "stable" : (i < 35 ? "volatile" : "stable");
+        history.push({ timestamp: new Date(i * 60000).toISOString(), label, parameters: {} });
+      }
+
+      const matrix = estimateTransitionMatrix(history);
+
+      for (const row of matrix.matrix) {
+        const rowSum = row.reduce((a, b) => a + b, 0);
+        expect(rowSum).toBeGreaterThanOrEqual(0.99);
+        expect(rowSum).toBeLessThanOrEqual(1.01);
+      }
+    });
+
+    test("prediction confidence reflects data quality", () => {
+      const smallPoints: NumericPoint[] = [
+        { t: new Date(0).toISOString(), v: 100 },
+        { t: new Date(60000).toISOString(), v: 101 },
+        { t: new Date(120000).toISOString(), v: 99 },
+      ];
+
+      const largePoints: NumericPoint[] = [];
+      for (let i = 0; i < 100; i++) {
+        largePoints.push({ t: new Date(i * 60000).toISOString(), v: 100 });
+      }
+
+      const history: RegimeHistoryPoint[] = [
+        { timestamp: "2024-01-01T00:00:00Z", label: "stable", parameters: {} },
+      ];
+
+      const smallPrediction = predictRegime("market", smallPoints, history);
+      const largePrediction = predictRegime("market", largePoints, history);
+
+      expect(largePrediction.confidence.high).toBeGreaterThanOrEqual(smallPrediction.confidence.high);
+    });
+
+    test("early warnings include severity levels", () => {
+      const points: NumericPoint[] = [];
+      for (let i = 0; i < 30; i++) {
+        points.push({ t: new Date(i * 60000).toISOString(), v: 100 });
+      }
+      for (let i = 30; i < 60; i++) {
+        points.push({ t: new Date(i * 60000).toISOString(), v: 100 + (i % 41 - 20) * 50 });
+      }
+
+      const warnings = detectEarlyWarnings(points);
+
+      for (const warning of warnings) {
+        expect(["low", "medium", "high"]).toContain(warning.severity);
+      }
+    });
+
+    test("predictRegime returns valid prediction structure", () => {
+      const points: NumericPoint[] = [];
+      for (let i = 0; i < 100; i++) {
+        points.push({ t: new Date(i * 60000).toISOString(), v: 100 });
+      }
+
+      const prediction = predictRegime("market", points, []);
+
+      expect(prediction.predictedAt).toBeDefined();
+      expect(typeof prediction.predictedRegime).toBe("string");
+      expect(typeof prediction.confidence.low).toBe("number");
+      expect(typeof prediction.confidence.high).toBe("number");
+      expect(typeof prediction.transitionProbability).toBe("number");
+      expect(typeof prediction.timeHorizonHours).toBe("number");
+      expect(Array.isArray(prediction.earlyWarnings)).toBe(true);
     });
   });
 });

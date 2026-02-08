@@ -14,10 +14,12 @@ export interface TemporalMetadata {
   observedAt: Date;
   validUntil?: Date;
   decayModel: DecayModel;
-  decayParameters?: Record<string, number>;
+  decayParameters?: DecayParameters;
   sourceTimestamp?: Date;
   ingestedAt: Date;
 }
+
+export type DecayParameters = Record<string, number | DomainFormula | StepThreshold[] | undefined>;
 
 export interface StepThreshold {
   ageMs: number;

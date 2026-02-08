@@ -269,6 +269,35 @@ export interface DetectionResult {
   states: RegimeState[];
 }
 
+export interface RegimePrediction {
+  predictedRegime: string;
+  confidence: { low: number; high: number };
+  transitionProbability: number;
+  timeHorizonHours: number;
+  earlyWarnings: EarlyWarning[];
+  predictedAt: string;
+}
+
+export interface EarlyWarning {
+  indicator: string;
+  currentValue: number;
+  threshold: number;
+  severity: "low" | "medium" | "high";
+  description: string;
+}
+
+export interface TransitionMatrix {
+  states: string[];
+  matrix: number[][];
+  estimatedFrom: string;
+}
+
+export interface RegimeHistoryPoint {
+  timestamp: string;
+  label: string;
+  parameters: Record<string, number | { low: number; high: number }>;
+}
+
 function safeGetTimestamp(points: NumericPoint[], index: number, offset: number): string {
   const idx = Math.max(0, index + offset);
   return points[idx]?.t ?? points[points.length - 1]?.t ?? new Date().toISOString();
@@ -452,4 +481,250 @@ export function createRegimeEvent(
     },
     notes,
   };
+}
+
+export function estimateTransitionMatrix(
+  history: RegimeHistoryPoint[]
+): TransitionMatrix {
+  const stateLabels = [...new Set(history.map(h => h.label))];
+  const stateIndex = new Map(stateLabels.map((label, i) => [label, i]));
+
+  const transitions = new Map<string, number>();
+  const stateCounts = new Map<string, number>();
+
+  for (let i = 1; i < history.length; i++) {
+    const fromState = history[i - 1].label;
+    const toState = history[i].label;
+    const key = `${fromState}->${toState}`;
+    transitions.set(key, (transitions.get(key) ?? 0) + 1);
+    stateCounts.set(fromState, (stateCounts.get(fromState) ?? 0) + 1);
+  }
+
+  const matrix: number[][] = stateLabels.map((fromState, i) => {
+    const fromCount = stateCounts.get(fromState) ?? 1;
+    return stateLabels.map((toState, j) => {
+      const key = `${fromState}->${toState}`;
+      const count = transitions.get(key) ?? 0;
+      return count / fromCount;
+    });
+  });
+
+  return {
+    states: stateLabels,
+    matrix,
+    estimatedFrom: history[0]?.timestamp ?? new Date().toISOString(),
+  };
+}
+
+function predictNextRegime(
+  currentLabel: string,
+  transitionMatrix: TransitionMatrix
+): { nextState: string; probability: number } | null {
+  const stateIdx = transitionMatrix.states.indexOf(currentLabel);
+  if (stateIdx === -1) return null;
+
+  const probabilities = transitionMatrix.matrix[stateIdx];
+  if (!probabilities) return null;
+
+  let maxProb = 0;
+  let nextState = transitionMatrix.states[0];
+
+  for (let j = 0; j < probabilities.length; j++) {
+    if (probabilities[j] > maxProb) {
+      maxProb = probabilities[j];
+      nextState = transitionMatrix.states[j];
+    }
+  }
+
+  return { nextState, probability: maxProb };
+}
+
+export function computeVolatilityTrend(
+  numericSeries: NumericPoint[],
+  shortWindow: number = 10,
+  longWindow: number = 30
+): number {
+  if (numericSeries.length < longWindow) return 0;
+
+  const shortStats = computeRollingStats(
+    numericSeries.slice(-shortWindow - 1, -1),
+    shortWindow
+  );
+  const longStats = computeRollingStats(
+    numericSeries.slice(-longWindow - 1, -1),
+    longWindow
+  );
+
+  const shortVol = shortStats[shortStats.length - 1]?.std ?? 0;
+  const longVol = longStats[longStats.length - 1]?.std ?? 1;
+
+  return (shortVol - longVol) / (longVol || 1);
+}
+
+export function computeMeanTrend(
+  numericSeries: NumericPoint[],
+  shortWindow: number = 10,
+  longWindow: number = 30
+): number {
+  if (numericSeries.length < longWindow) return 0;
+
+  const shortMean = computeMean(
+    numericSeries.slice(-shortWindow).map(p => p.v)
+  );
+  const longMean = computeMean(
+    numericSeries.slice(-longWindow).map(p => p.v)
+  );
+
+  return (shortMean - longMean) / (Math.abs(longMean) || 1);
+}
+
+export function detectEarlyWarnings(
+  numericSeries: NumericPoint[],
+  config?: DetectorConfig
+): EarlyWarning[] {
+  const fullConfig = { ...DEFAULT_CONFIG, ...config } as Required<DetectorConfig>;
+  const warnings: EarlyWarning[] = [];
+
+  if (numericSeries.length < fullConfig.minWindowSize * 2) {
+    return warnings;
+  }
+
+  const volatilityTrend = computeVolatilityTrend(numericSeries);
+  if (volatilityTrend > 0.5) {
+    warnings.push({
+      indicator: "volatility_accelerating",
+      currentValue: volatilityTrend,
+      threshold: 0.5,
+      severity: volatilityTrend > 1.0 ? "high" : "medium",
+      description: "Short-term volatility is significantly higher than long-term average",
+    });
+  }
+
+  const meanTrend = computeMeanTrend(numericSeries);
+  if (Math.abs(meanTrend) > 0.1) {
+    warnings.push({
+      indicator: "mean_drift",
+      currentValue: meanTrend,
+      threshold: 0.1,
+      severity: Math.abs(meanTrend) > 0.2 ? "high" : "medium",
+      description: meanTrend > 0
+        ? "Values are trending upward significantly"
+        : "Values are trending downward significantly",
+    });
+  }
+
+  const recentValues = numericSeries.slice(-fullConfig.minWindowSize).map(p => p.v);
+  const recentMean = computeMean(recentValues);
+  const recentStd = computeStd(recentValues);
+
+  const allValues = numericSeries.map(p => p.v);
+  const overallMean = computeMean(allValues);
+  const overallStd = computeStd(allValues);
+
+  const zScore = (recentMean - overallMean) / (overallStd || 1);
+  if (Math.abs(zScore) > 1.5) {
+    warnings.push({
+      indicator: "local_anomaly",
+      currentValue: zScore,
+      threshold: 1.5,
+      severity: Math.abs(zScore) > 2.0 ? "high" : "medium",
+      description: `Recent average is ${Math.abs(zScore).toFixed(1)} standard deviations from long-term average`,
+    });
+  }
+
+  const cusum = computeCusum(numericSeries.slice(-fullConfig.maxWindowSize), overallMean, overallStd || 1);
+  const cusumChange = cusum[cusum.length - 1] - cusum[cusum.length - 2];
+  if (Math.abs(cusumChange) > 0.5 * (overallStd || 1)) {
+    warnings.push({
+      indicator: "cusum_accumulation",
+      currentValue: cusumChange,
+      threshold: 0.5 * (overallStd || 1),
+      severity: Math.abs(cusumChange) > (overallStd || 1) ? "high" : "medium",
+      description: "CUSUM statistic accumulating deviation from baseline",
+    });
+  }
+
+  return warnings;
+}
+
+export function predictRegime(
+  domain: RegimeDomain,
+  numericSeries: NumericPoint[],
+  history: RegimeHistoryPoint[],
+  timeHorizonHours: number = 24,
+  config?: DetectorConfig
+): RegimePrediction {
+  const currentState = history.length > 0 ? history[history.length - 1] : null;
+  const currentLabel = currentState?.label ?? "unknown";
+
+  const transitionMatrix = estimateTransitionMatrix(history);
+  const prediction = predictNextRegime(currentLabel, transitionMatrix);
+
+  const earlyWarnings = detectEarlyWarnings(numericSeries, config);
+
+  const volatilityTrend = computeVolatilityTrend(numericSeries);
+  let predictedRegime = prediction?.nextState ?? currentLabel;
+  let transitionProbability = prediction?.probability ?? 0.5;
+
+  if (volatilityTrend > 0.7) {
+    predictedRegime = "high_vol";
+    transitionProbability = 0.6;
+  } else if (volatilityTrend < -0.5) {
+    predictedRegime = "stable";
+    transitionProbability = 0.7;
+  }
+
+  const warningSeverity = earlyWarnings.reduce(
+    (max, w) => {
+      const severityOrder = { low: 0, medium: 1, high: 2 };
+      return severityOrder[w.severity] > severityOrder[max] ? w.severity : max;
+    },
+    "low" as "low" | "medium" | "high"
+  );
+
+  if (warningSeverity === "high") {
+    transitionProbability = Math.min(0.9, transitionProbability + 0.1);
+  }
+
+  const confidenceBand = computeConfidence(
+    numericSeries.length,
+    Math.min(1, transitionProbability),
+    { ...DEFAULT_CONFIG, ...config } as Required<DetectorConfig>
+  );
+
+  return {
+    predictedRegime,
+    confidence: confidenceBand,
+    transitionProbability,
+    timeHorizonHours,
+    earlyWarnings,
+    predictedAt: new Date().toISOString(),
+  };
+}
+
+export function computeRegimeStability(
+  states: RegimeState[]
+): { score: number; label: "stable" | "fluctuating" | "unstable" } {
+  if (states.length < 2) {
+    return { score: 1.0, label: "stable" };
+  }
+
+  const transitions = states.slice(1).filter(
+    (s, i) => s.currentLabel !== states[i].currentLabel
+  ).length;
+
+  const transitionRate = transitions / (states.length - 1);
+
+  const score = Math.max(0, 1 - transitionRate * 2);
+
+  let label: "stable" | "fluctuating" | "unstable";
+  if (transitionRate < 0.1) {
+    label = "stable";
+  } else if (transitionRate < 0.3) {
+    label = "fluctuating";
+  } else {
+    label = "unstable";
+  }
+
+  return { score, label };
 }

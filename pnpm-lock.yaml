@@ -536,6 +536,19 @@ importers:
         specifier: ^2.1.1
         version: 2.1.9(@types/node@25.2.1)(jsdom@28.0.0)
 
+  packages/strategy:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      typescript:
+        specifier: ^5.3.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.0.0
+        version: 2.1.9(@types/node@25.2.1)(jsdom@28.0.0)
+
   packages/telemetry:
     dependencies:
       '@zeo/contracts':
@@ -547,6 +560,19 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^2.1.9
+        version: 2.1.9(@types/node@25.2.1)(jsdom@28.0.0)
+
+  packages/time:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      typescript:
+        specifier: ^5.3.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.0.0
         version: 2.1.9(@types/node@25.2.1)(jsdom@28.0.0)
 
   packages/timeseries:

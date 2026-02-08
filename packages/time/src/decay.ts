@@ -10,7 +10,8 @@ import type {
   DecayResult, 
   TemporalMetadata,
   EvidenceTemporalStatus,
-  StepThreshold
+  StepThreshold,
+  DecayParameters
 } from "./types.js";
 
 export function applyDecay(
@@ -48,14 +49,14 @@ export function applyDecay(
 export function computeDecayFactor(
   ageMs: number,
   model: DecayModel,
-  parameters?: Record<string, number>
+  parameters?: DecayParameters
 ): number {
   switch (model) {
     case "none":
       return 1.0;
       
     case "exponential": {
-      const halfLifeMs = parameters?.halfLifeMs ?? 86400000;
+      const halfLifeMs = (parameters?.halfLifeMs as number | undefined) ?? 86400000;
       if (halfLifeMs <= 0) return 1.0;
       return Math.exp(-ageMs / halfLifeMs);
     }
@@ -88,7 +89,13 @@ export function computeDecayFactor(
     case "domain_specific": {
       if (parameters && 'domainFormula' in parameters && typeof parameters.domainFormula === 'function') {
         const domainFn = parameters.domainFormula as (ageMs: number, params: Record<string, number>) => number;
-        return domainFn(ageMs, parameters);
+        const numericParams: Record<string, number> = {};
+        for (const [key, value] of Object.entries(parameters)) {
+          if (typeof value === 'number') {
+            numericParams[key] = value;
+          }
+        }
+        return domainFn(ageMs, numericParams);
       }
       return 1.0;
     }
