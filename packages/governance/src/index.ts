@@ -13,7 +13,10 @@ import type {
   PolicyConfig,
   DecisionSpec,
   EvidenceEvent,
-  BranchGraph
+  EvidenceEventType,
+  BranchGraph,
+  BranchEdge,
+  BranchNode
 } from "@zeo/contracts";
 
 // =============================================================================
@@ -117,6 +120,24 @@ export const DOMAIN_RISK_MATRIX: Record<string, RiskTier> = {
 // =============================================================================
 
 /**
+ * Extract domain from decision spec (based on title/context keywords)
+ */
+function extractDomain(decisionSpec: DecisionSpec): string {
+  const titleLower = decisionSpec.title?.toLowerCase() || "";
+  const contextLower = decisionSpec.context?.toLowerCase() || "";
+  const fullText = `${titleLower} ${contextLower}`;
+  
+  // Check for domain keywords
+  for (const [keyword, tier] of Object.entries(DOMAIN_RISK_MATRIX)) {
+    if (fullText.includes(keyword)) {
+      return keyword;
+    }
+  }
+  
+  return "general";
+}
+
+/**
  * Evaluate the risk tier for a decision based on its characteristics
  */
 export function evaluateRiskTier(
@@ -124,7 +145,7 @@ export function evaluateRiskTier(
   evidenceCount: number = 0
 ): DecisionRiskProfile {
   // Determine domain-based risk
-  const domain = decisionSpec.domain?.toLowerCase() || "general";
+  const domain = extractDomain(decisionSpec);
   let inferredTier = DOMAIN_RISK_MATRIX[domain] || "informational";
   
   // Adjust tier based on decision characteristics
@@ -187,9 +208,12 @@ export function evaluateEvidenceRisk(
   }
   
   // Check for evidence variety
-  const sourceTypes = new Set(evidenceEvents.map(e => e.type));
-  if (!sourceTypes.has("document") && !sourceTypes.has("signal")) {
-    gaps.push("Missing document or signal evidence");
+  const sourceTypes = new Set<EvidenceEventType>(evidenceEvents.map(e => e.type));
+  const hasDocument = sourceTypes.has("document");
+  const hasText = sourceTypes.has("text");
+  
+  if (!hasDocument && !hasText) {
+    gaps.push("Missing document or text evidence");
   }
   
   // Check for recent evidence
@@ -343,7 +367,7 @@ export function applyGovernanceRules(params: {
       policyApproved = false;
     } else {
       // Check domain allowlist/denylist
-      const domain = decisionSpec.domain?.toLowerCase() || "";
+      const domain = extractDomain(decisionSpec);
       
       if (policyConfig.domainDenylist.length > 0 && 
           policyConfig.domainDenylist.includes(domain)) {
@@ -451,16 +475,20 @@ function calculateMaxDepth(branchGraph: BranchGraph): number {
   return maxDepth;
 }
 
-function calculateNodeDepth(nodeId: string, branchGraph: BranchGraph, visited: Set<string> = new Set()): number {
+function calculateNodeDepth(
+  nodeId: string, 
+  branchGraph: BranchGraph, 
+  visited: Set<string> = new Set()
+): number {
   if (visited.has(nodeId)) {
     return 0;
   }
   
   visited.add(nodeId);
   
-  // Find incoming edges
+  // Find incoming edges (using 'from' as per BranchEdge type)
   const incomingEdges = branchGraph.edges?.filter(
-    edge => edge.target === nodeId
+    (edge: BranchEdge) => edge.to === nodeId
   ) || [];
   
   if (incomingEdges.length === 0) {
@@ -468,7 +496,10 @@ function calculateNodeDepth(nodeId: string, branchGraph: BranchGraph, visited: S
   }
   
   const maxIncomingDepth = Math.max(
-    ...incomingEdges.map(edge => calculateNodeDepth(edge.source, branchGraph, new Set(visited)))
+    ...incomingEdges.map((edge: BranchEdge) => 
+      calculateNodeDepth(edge.from, branchGraph, new Set(visited))
+    ),
+    0
   );
   
   return maxIncomingDepth + 1;
