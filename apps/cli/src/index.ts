@@ -205,6 +205,14 @@ async function main(): Promise<void> {
     process.exit(exitCode);
   }
 
+  // Check for regimes command
+  const regimesIdx = argv.indexOf("--regimes");
+  if (regimesIdx !== -1) {
+    const regimesArgs = parseRegimesArgs(argv.slice(regimesIdx + 1));
+    const exitCode = await runRegimesCommand(regimesArgs);
+    process.exit(exitCode);
+  }
+
   const args = parseArgs(argv);
 
   if (args.replay) {
