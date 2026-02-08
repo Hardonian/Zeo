@@ -295,25 +295,32 @@ export {
 } from "@zeo/warehouse";
 
 // Replay - calibration and backtesting
+export type {
+  CalibrationReport,
+  ReportSummary,
+  CoverageDetails,
+  BucketAnalysis,
+  CaseBreakdown,
+  CumulativeCalibrationDetails,
+  Recommendation,
+  ReportFormat,
+  BatchReplayOptions,
+  BatchReplayResult,
+  CumulativeCalibration,
+  CaseReplaySummary,
+  ReplayRunIndexEntry,
+} from "@zeo/replay";
 export {
-  runReplay,
   generateCalibrationReport,
-  computeCoverage,
-  computeBrierScore,
-  computeIntervalScore,
+  renderReport,
+  renderJsonReport,
+  renderMarkdownReport,
   applyCalibrationWiden,
-  // Batch runner exports
-  runBatchReplay,
-  createBatchConfig,
-  // Prediction exports
-  extractPredictions,
-  scorePrediction,
-  // Report generator exports
-  generateMarkdownReport,
-  generateJSONReport,
-  // Hashing exports
-  computeDatasetHash,
-  computeCaseHash,
+  configFromRecommendation,
+  applyCalibrationToPredictions,
+  widenBand,
+  wouldCalibrationChange,
+  createReplayRunIndex,
 } from "@zeo/replay";
 
 // Audit - audit trail and compliance
@@ -341,13 +348,18 @@ export {
 export type {
   AnalysisPlan,
   AnalysisStep,
-  AnalysisPlannerConfig,
+  AnalysisRisk,
+  DatasetSchema,
+  DatasetMetadata,
+  SchemaField,
+  FieldStatistics,
+  PlanningOptions,
+  AnalysisStepKind,
 } from "@zeo/analysis-planner";
 export { generateAnalysisPlan } from "@zeo/analysis-planner";
 
 // Feature Discovery - AI-guided feature proposal
 export type {
-  FeatureCandidate,
   DiscoveryConfig,
   Pattern,
 } from "@zeo/feature-discovery";
