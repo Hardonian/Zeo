@@ -1,6 +1,50 @@
 # Changelog
 
-## v0.2.7 — Hardening Pass (2026-02-07)
+All notable changes to Zeo are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.0] — Release Engineering + OSS Distribution (2026-02-08)
+
+### Added
+- **Quickstart Commands**
+  - `pnpm quickstart:web` — One command to run web app with all dependencies
+  - `pnpm quickstart:cli` — One command to build and run CLI with examples
+  - `pnpm quickstart:demo` — Offline replay demo using sample dataset
+  - `pnpm quickstart:all` — Run full verification and quickstart suite
+
+- **Release Infrastructure**
+  - Comprehensive release checklist (`docs/RELEASE_CHECKLIST.md`)
+  - Semantic versioning rules (`docs/VERSIONING.md`)
+  - Version-locked toolchain via `volta` (Node 20.11.0, pnpm 9.15.5)
+  - Deterministic build verification scripts
+
+- **Enhanced Verification Gates**
+  - `pnpm doctor` — Environment and structure verification
+  - `pnpm verify:fast` — Typecheck + lint + unit tests
+  - `pnpm verify:full` — Complete CI simulation including audit
+  - Secret scanning in verification pipeline
+  - Reproducible build verification
+
+- **Offline Demo Support**
+  - Sample replay dataset works without external dependencies
+  - Self-contained CLI examples (negotiation, ops)
+  - No vendor API keys required for basic operation
+
+### Changed
+- Root `package.json` now includes `volta` configuration for automatic toolchain management
+- All packages synchronized to version 1.0.0 for initial release
+- `pnpm doctor` enhanced with secret scanning and reproducibility checks
+- CLI and Web apps now expose version flags (`--version`)
+
+### Security
+- Secret scanning integrated into `pnpm doctor`
+- `.env.example` template standardized
+- No secrets committed to repository (verified)
+- All dependencies audited and documented
+
+## [0.2.7] — Hardening Pass (2026-02-07)
 
 ### Added
 - **Deterministic Execution**
