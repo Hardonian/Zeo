@@ -425,6 +425,9 @@ export function runMatch(
   matchId: MatchId,
   mockResult?: Partial<MatchResult>
 ): Tournament {
+  // Invariant 7: Check if markets are active before running match
+  requireMarketsActive();
+
   const match = tournament.matches.get(matchId);
   if (!match) {
     throw new Error(`Match ${matchId} not found`);
@@ -631,6 +634,18 @@ export function completeTournament(tournament: Tournament): { tournament: Tourna
 function generateResults(tournament: Tournament): TournamentResults {
   const standings = Array.from(tournament.standings.values());
   standings.sort((a, b) => a.rank - b.rank);
+
+  // Invariant 10: Check for dominance violations
+  const maxWinRateCap = tournament.config.config.maxWinRateCap ?? 0.6;
+  const dominanceViolations: string[] = [];
+  for (const standing of standings) {
+    if (standing.winRate > maxWinRateCap) {
+      dominanceViolations.push(
+        `Strategy "${standing.strategyName}" has win rate ${(standing.winRate * 100).toFixed(1)}% ` +
+        `exceeding cap of ${(maxWinRateCap * 100).toFixed(0)}%`
+      );
+    }
+  }
 
   const champion = standings[0]?.strategyId || null;
   const runnerUp = standings[1]?.strategyId || null;
