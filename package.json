@@ -28,7 +28,7 @@
     "eval": "pnpm -C apps/cli eval",
     "quickstart:web": "pnpm install && pnpm -r build && pnpm -C apps/web dev",
     "quickstart:cli": "pnpm install && pnpm -r build && pnpm -C apps/cli start -- --example negotiation",
-    "quickstart:demo": "pnpm install && pnpm -r build && pnpm -C apps/cli start -- --replay external/examples/replay/sample_dataset.json --report-out ./reports",
+    "quickstart:demo": "pnpm install && pnpm -r build && pnpm -C apps/cli start -- --replay ../../external/examples/replay/sample_dataset.json --report-out ./reports",
     "quickstart:all": "pnpm verify:full && echo '=== Quickstart: CLI ===' && pnpm quickstart:cli && echo '=== Quickstart: Demo ===' && pnpm quickstart:demo"
   },
   "devDependencies": {

@@ -51,7 +51,7 @@ export function computeProvenanceQuality(provenance, sourceWeights = {}) {
  * Apply an observation to a variable's interval band.
  * Conservative: observations can only narrow or widen, never fully determine.
  */
-function applyObservationToBand(priorBand, observation, observationModel, qualityScore, rng) {
+function applyObservationToBand(priorBand, observation, observationModel, qualityScore) {
     const width = priorBand.high - priorBand.low;
     // Effect scales with quality
     const effectiveStrength = observationModel.strength * qualityScore;
