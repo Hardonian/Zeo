@@ -3,10 +3,15 @@
   "compilerOptions": {
     "lib": ["ES2022", "DOM"],
     "outDir": "dist",
+    "baseUrl": ".",
+    "rootDir": "src",
     "strictNullChecks": false,
     "exactOptionalPropertyTypes": false
   },
   "include": [
     "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
