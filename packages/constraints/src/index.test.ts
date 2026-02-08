@@ -443,7 +443,7 @@ describe("Constraint Propagation", () => {
         timestamp: "2024-01-01T00:00:00Z",
       });
 
-      expect(result.softPenalties.get("action-1")).toBe(0.3);
+      expect(result.softPenalties.get("action-1")).toBeCloseTo(0.3, 5);
     });
   });
 
