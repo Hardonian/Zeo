@@ -12,8 +12,51 @@ import {
   type PolicyConfig
 } from "./index.js";
 
+// Import types from contracts for reference in helpers
+type DecisionSpec = {
+  id: string;
+  title: string;
+  context: string;
+  createdAt: string;
+  horizon: "hours" | "days" | "weeks" | "months";
+  agents: Array<{ id: string; name: string; role: "self" | "counterparty" | "third_party" | "system" }>;
+  actions: Array<{ id: string; label: string; actorId: string; kind: string }>;
+  constraints: Array<unknown>;
+  assumptions: Array<unknown>;
+};
+
+type EvidenceEvent = {
+  id: string;
+  type: "document" | "audio" | "image" | "biometric" | "text";
+  sourceId: string;
+  capturedAt: string;
+  checksum: string;
+  observations: string[];
+  claims: Array<unknown>;
+  constraints: Array<unknown>;
+};
+
+type BranchGraph = {
+  id: string;
+  decisionId: string;
+  createdAt: string;
+  nodes: Array<{
+    id: string;
+    label: string;
+    kind: "state" | "event" | "outcome";
+    notes: string[];
+    dependencies: Array<unknown>;
+  }>;
+  edges: Array<{
+    id: string;
+    from: string;
+    to: string;
+    notes: string[];
+  }>;
+};
+
 // Helper to create minimal valid DecisionSpec
-function createDecisionSpec(overrides: Partial<import("@zeo/contracts").DecisionSpec> = {}): import("@zeo/contracts").DecisionSpec {
+function createDecisionSpec(overrides: Partial<DecisionSpec> = {}): DecisionSpec {
   return {
     id: "test-" + Math.random().toString(36).slice(2),
     title: "Test Decision",
@@ -29,7 +72,7 @@ function createDecisionSpec(overrides: Partial<import("@zeo/contracts").Decision
 }
 
 // Helper to create minimal valid EvidenceEvent
-function createEvidenceEvent(overrides: Partial<import("@zeo/contracts").EvidenceEvent> = {}): import("@zeo/contracts").EvidenceEvent {
+function createEvidenceEvent(overrides: Partial<EvidenceEvent> = {}): EvidenceEvent {
   return {
     id: "evidence-" + Math.random().toString(36).slice(2),
     type: "text",
@@ -44,7 +87,7 @@ function createEvidenceEvent(overrides: Partial<import("@zeo/contracts").Evidenc
 }
 
 // Helper to create minimal valid BranchGraph
-function createBranchGraph(overrides: Partial<import("@zeo/contracts").BranchGraph> = {}): import("@zeo/contracts").BranchGraph {
+function createBranchGraph(overrides: Partial<BranchGraph> = {}): BranchGraph {
   return {
     id: "graph-" + Math.random().toString(36).slice(2),
     decisionId: "test-decision",
@@ -89,7 +132,7 @@ describe("governance", () => {
       const spec = createDecisionSpec({ 
         title: "Simple Analysis", 
         context: "Basic analysis",
-        actions: Array(6).fill({ id: "a", label: "Action", actorId: "agent1", kind: "communicate" } as any)
+        actions: Array(6).fill({ id: "a", label: "Action", actorId: "agent1", kind: "communicate" })
       });
       const result = evaluateRiskTier(spec, 0);
       
@@ -129,8 +172,7 @@ describe("governance", () => {
     });
 
     test("evidence count affects required minimum", () => {
-      const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
-      
+      const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });      
       const result = evaluateRiskTier(spec, 10);
       
       expect(result.requiredEvidenceMin).toBe(10); // Takes max of evidence count and threshold
@@ -182,7 +224,7 @@ describe("governance", () => {
 
     test("checks for document or text evidence variety", () => {
       const evidence = [
-        createEvidenceEvent({ type: "signal" as any })
+        createEvidenceEvent({ type: "audio" })
       ];
       
       const result = evaluateEvidenceRisk(evidence, 1);
@@ -241,7 +283,7 @@ describe("governance", () => {
 
     test("returns medium risk for single gap", () => {
       const evidence = [
-        createEvidenceEvent({ type: "signal" as any })
+        createEvidenceEvent({ type: "audio" })
       ];
       
       const result = evaluateEvidenceRisk(evidence, 5);
@@ -572,9 +614,9 @@ describe("governance", () => {
       const branchGraph = createBranchGraph({
         nodes: [
           { id: "root", label: "Root", kind: "state", notes: [], dependencies: [] },
-          { id: "child1", label: "Child 1", kind: "branch", notes: [], dependencies: [] },
-          { id: "child2", label: "Child 2", kind: "branch", notes: [], dependencies: [] },
-          { id: "grandchild", label: "Grandchild", kind: "branch", notes: [], dependencies: [] }
+          { id: "child1", label: "Child 1", kind: "event", notes: [], dependencies: [] },
+          { id: "child2", label: "Child 2", kind: "event", notes: [], dependencies: [] },
+          { id: "grandchild", label: "Grandchild", kind: "outcome", notes: [], dependencies: [] }
         ],
         edges: [
           { id: "e1", from: "root", to: "child1", notes: [] },
@@ -618,10 +660,10 @@ describe("governance", () => {
       
       const result = applyGovernanceRules({
         decisionSpec: spec,
- []
+        evidenceEvents: []
       });
       
-        evidenceEvents:      expect(result.approved).toBe(false); // No evidence
+      expect(result.approved).toBe(false); // No evidence
       expect(result.riskProfile).toBeDefined();
     });
 
