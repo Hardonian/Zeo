@@ -117,7 +117,7 @@ function estimateFlipDelta(
   variableId: string,
   distanceMetric: DistanceMetric,
   variableRange?: { min: number; max: number }
-): { low: number; high: number } | null {
+): { low: number; high: number; direction: number } | null {
   const topContribution = topAction.valueBreakdown.get(variableId) ?? 0;
   const competitorContribution = competitor.valueBreakdown.get(variableId) ?? 0;
 
@@ -143,13 +143,30 @@ function estimateFlipDelta(
     return null;
   }
 
+  // Direction: if competitor has higher contribution, we need to decrease this variable
+  // (assuming lower values favor the competitor)
+  const direction = contributionDiff > 0 ? -1 : 1;
+
   // How much does the variable need to change to flip?
-  const delta = scoreGap / Math.abs(contributionDiff);
+  const rawDelta = scoreGap / Math.abs(contributionDiff);
+
+  // Check if achievable within range
+  if (variableRange) {
+    const maxPossibleDelta = direction > 0
+      ? variableRange.max - topContribution
+      : topContribution - variableRange.min;
+    
+    if (rawDelta > maxPossibleDelta) {
+      // Cannot flip by changing this variable within its range
+      return null;
+    }
+  }
 
   // Add uncertainty band
   return {
-    low: delta * 0.8,
-    high: delta * 1.2,
+    low: rawDelta * 0.8,
+    high: rawDelta * 1.2,
+    direction,
   };
 }
 
@@ -184,13 +201,8 @@ function searchSingleVariableCounterfactual(
 
   if (!flipEstimate) return null;
 
-  // Determine direction of change needed
-  const topContribution = topAction.valueBreakdown.get(variableId) ?? 0;
-  const competitorContribution = competitor.valueBreakdown.get(variableId) ?? 0;
-
-  // If competitor has higher contribution, we need to decrease this variable
-  // (assuming lower values for this variable favor the competitor)
-  const direction = competitorContribution > topContribution ? -1 : 1;
+  // Direction comes from the estimate
+  const direction = flipEstimate.direction;
 
   // Calculate the actual target value
   let targetValue: number;
@@ -198,11 +210,6 @@ function searchSingleVariableCounterfactual(
     targetValue = currentValue + flipEstimate.low;
   } else {
     targetValue = currentValue - flipEstimate.low;
-  }
-
-  // Check if target is within valid range
-  if (targetValue < variableRange.min || targetValue > variableRange.max) {
-    return null;
   }
 
   // Compute distance
