@@ -9,12 +9,8 @@
  * @version 0.5.0
  */
 
-import type { DecisionSpec, BranchGraph, BranchNode, BranchEdge } from '@zeo/contracts';
-import type { PosteriorState, LatentVariable } from '@zeo/models';
+import type { DecisionSpec, BranchGraph, Claim, ProbabilityInterval } from '@zeo/contracts';
 
-/**
- * World ID type
- */
 type WorldId = string;
 
 /**
@@ -24,7 +20,7 @@ export interface AssumptionVariant {
   assumptionId: string;
   name: string;
   baseValue: number;
-  variantRange: { low: number; high: number };
+  variantRange: ProbabilityInterval;
   epistemicStatus: 'fact' | 'belief' | 'assumption' | 'unknown';
   rationale: string;
 }
@@ -37,7 +33,7 @@ export interface WorldDefinition {
   name: string;
   description: string;
   assumptionVariants: AssumptionVariant[];
-  priorProbability: { low: number; high: number }; // How likely this world is
+  priorProbability: ProbabilityInterval;
   createdAt: string;
   metadata: {
     source: 'expert_elicitation' | 'sensitivity_analysis' | 'monte_carlo_sample' | 'user_defined';
@@ -47,12 +43,22 @@ export interface WorldDefinition {
 }
 
 /**
- * World state with computed posterior
+ * Decision result within a specific world
+ */
+export interface WorldDecisionResult {
+  worldId: WorldId;
+  recommendedAction: string;
+  actionScore: number;
+  uncertaintyRange: ProbabilityInterval;
+  keyAssumptions: string[];
+  sensitivityScore: number;
+}
+
+/**
+ * World state with computed result
  */
 export interface WorldState {
   definition: WorldDefinition;
-  posterior: PosteriorState | null;
-  branchGraph: BranchGraph | null;
   decisionResult: WorldDecisionResult | null;
   epistemicWarnings: string[];
   computationStatus: 'pending' | 'computing' | 'completed' | 'failed';
@@ -61,19 +67,7 @@ export interface WorldState {
 }
 
 /**
- * Decision result within a specific world
- */
-export interface WorldDecisionResult {
-  worldId: WorldId;
-  recommendedAction: string;
-  actionScore: number;
-  uncertaintyRange: { low: number; high: number };
-  keyAssumptions: string[];
-  sensitivityScore: number; // How sensitive to this world's assumptions
-}
-
-/**
- * Parallel worlds ensemble - collection of worlds for comparison
+ * Worlds ensemble - collection of worlds for comparison
  */
 export interface WorldsEnsemble {
   ensembleId: string;
@@ -90,8 +84,8 @@ export interface WorldsEnsemble {
  * Robustness analysis across worlds
  */
 export interface RobustnessAnalysis {
-  actionRobustness: Map<string, ActionRobustness>; // actionId -> robustness
-  worldAgreementMatrix: Map<string, Map<string, number>>; // worldId -> worldId -> agreement score
+  actionRobustness: Map<string, ActionRobustness>;
+  worldAgreementMatrix: Map<string, Map<string, number>>;
   divergentAssumptions: string[];
   consensusActions: string[];
   fragileActions: string[];
@@ -104,14 +98,14 @@ export interface RobustnessAnalysis {
 export interface ActionRobustness {
   actionId: string;
   actionName: string;
-  rankAcrossWorlds: Map<WorldId, number>; // worldId -> rank
+  rankAcrossWorlds: Map<WorldId, number>;
   averageRank: number;
   rankVariance: number;
-  isRobust: boolean; // True if top-ranked in majority of worlds
-  isFragile: boolean; // True if highly variable ranking
+  isRobust: boolean;
+  isFragile: boolean;
   worstCaseRank: number;
   bestCaseRank: number;
-  scoreRange: { low: number; high: number };
+  scoreRange: ProbabilityInterval;
 }
 
 /**
@@ -135,15 +129,12 @@ export interface WorldsConfig {
   maxWorlds: number;
   minWorldsForRobustness: number;
   defaultWorldCount: number;
-  convergenceThreshold: number; // When to stop adding worlds
-  enableAutomaticWorlds: boolean; // Auto-generate from sensitivity analysis
-  robustnessThreshold: number; // Fraction of worlds needed for "robust" designation
-  comparisonDepth: number; // How deep to compare branch graphs
+  convergenceThreshold: number;
+  enableAutomaticWorlds: boolean;
+  robustnessThreshold: number;
+  comparisonDepth: number;
 }
 
-/**
- * Default worlds configuration
- */
 export const DEFAULT_WORLDS_CONFIG: WorldsConfig = {
   maxWorlds: 10,
   minWorldsForRobustness: 3,
@@ -154,9 +145,10 @@ export const DEFAULT_WORLDS_CONFIG: WorldsConfig = {
   comparisonDepth: 2,
 };
 
-/**
- * Create a new parallel worlds ensemble
- */
+function generateEventId(): string {
+  return `evt_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+}
+
 export function createEnsemble(
   ensembleId: string,
   baseDecision: DecisionSpec,
@@ -184,9 +176,6 @@ export function createEnsemble(
   };
 }
 
-/**
- * Add a world to the ensemble
- */
 export function addWorld(
   ensemble: WorldsEnsemble,
   definition: WorldDefinition,
@@ -202,8 +191,6 @@ export function addWorld(
 
   const worldState: WorldState = {
     definition,
-    posterior: null,
-    branchGraph: null,
     decisionResult: null,
     epistemicWarnings: [
       'This world represents one possible assumption set among many',
@@ -242,9 +229,6 @@ export function addWorld(
   };
 }
 
-/**
- * Generate default worlds from decision assumptions
- */
 export function generateDefaultWorlds(
   decision: DecisionSpec,
   count: number = DEFAULT_WORLDS_CONFIG.defaultWorldCount
@@ -252,19 +236,21 @@ export function generateDefaultWorlds(
   const worlds: WorldDefinition[] = [];
   const now = new Date().toISOString();
 
-  // World 1: Optimistic baseline
   worlds.push({
     worldId: `world_optimistic`,
     name: 'Optimistic Baseline',
     description: 'Assumes favorable conditions and cooperative counterparts',
-    assumptionVariants: decision.assumptions?.map(a => ({
-      assumptionId: a.id || 'unknown',
-      name: a.name || 'Unknown Assumption',
-      baseValue: a.probabilityRange?.high || 0.7,
-      variantRange: { low: 0.6, high: 0.9 },
-      epistemicStatus: 'belief',
-      rationale: 'Upper bound of original assumption range',
-    })) || [],
+    assumptionVariants: decision.assumptions?.map(a => {
+      const prob = a.probability || { low: 0.3, high: 0.7 };
+      return {
+        assumptionId: a.id || 'unknown',
+        name: `Assumption from: ${a.text.substring(0, 50)}...`,
+        baseValue: prob.high,
+        variantRange: { low: prob.low + 0.1, high: Math.min(1, prob.high + 0.1) },
+        epistemicStatus: 'belief',
+        rationale: 'Upper range of original assumption',
+      };
+    }) || [],
     priorProbability: { low: 0.15, high: 0.35 },
     createdAt: now,
     metadata: {
@@ -273,19 +259,21 @@ export function generateDefaultWorlds(
     },
   });
 
-  // World 2: Pessimistic baseline
   worlds.push({
     worldId: `world_pessimistic`,
     name: 'Pessimistic Baseline',
     description: 'Assumes challenging conditions and adversarial behavior',
-    assumptionVariants: decision.assumptions?.map(a => ({
-      assumptionId: a.id || 'unknown',
-      name: a.name || 'Unknown Assumption',
-      baseValue: a.probabilityRange?.low || 0.3,
-      variantRange: { low: 0.1, high: 0.4 },
-      epistemicStatus: 'belief',
-      rationale: 'Lower bound of original assumption range',
-    })) || [],
+    assumptionVariants: decision.assumptions?.map(a => {
+      const prob = a.probability || { low: 0.3, high: 0.7 };
+      return {
+        assumptionId: a.id || 'unknown',
+        name: `Assumption from: ${a.text.substring(0, 50)}...`,
+        baseValue: prob.low,
+        variantRange: { low: Math.max(0, prob.low - 0.1), high: prob.high - 0.1 },
+        epistemicStatus: 'belief',
+        rationale: 'Lower range of original assumption',
+      };
+    }) || [],
     priorProbability: { low: 0.15, high: 0.35 },
     createdAt: now,
     metadata: {
@@ -294,22 +282,21 @@ export function generateDefaultWorlds(
     },
   });
 
-  // World 3: Status quo
   worlds.push({
     worldId: `world_status_quo`,
     name: 'Status Quo',
     description: 'Assumes current trends continue without major changes',
-    assumptionVariants: decision.assumptions?.map(a => ({
-      assumptionId: a.id || 'unknown',
-      name: a.name || 'Unknown Assumption',
-      baseValue: (a.probabilityRange?.low || 0.3 + (a.probabilityRange?.high || 0.7)) / 2,
-      variantRange: {
-        low: a.probabilityRange?.low || 0.3,
-        high: a.probabilityRange?.high || 0.7,
-      },
-      epistemicStatus: 'belief',
-      rationale: 'Midpoint of original assumption range',
-    })) || [],
+    assumptionVariants: decision.assumptions?.map(a => {
+      const prob = a.probability || { low: 0.3, high: 0.7 };
+      return {
+        assumptionId: a.id || 'unknown',
+        name: `Assumption from: ${a.text.substring(0, 50)}...`,
+        baseValue: (prob.low + prob.high) / 2,
+        variantRange: prob,
+        epistemicStatus: 'belief',
+        rationale: 'Midpoint of original assumption range',
+      };
+    }) || [],
     priorProbability: { low: 0.3, high: 0.5 },
     createdAt: now,
     metadata: {
@@ -318,27 +305,26 @@ export function generateDefaultWorlds(
     },
   });
 
-  // Additional worlds based on key assumption variations
   if (count > 3) {
     const keyAssumptions = decision.assumptions?.slice(0, count - 3) || [];
     for (let i = 0; i < keyAssumptions.length && worlds.length < count; i++) {
       const assumption = keyAssumptions[i];
+      const prob = assumption.probability || { low: 0.3, high: 0.7 };
       worlds.push({
         worldId: `world_${assumption.id || i}_flipped`,
-        name: `${assumption.name || 'Assumption'} Flipped`,
-        description: `Assumes ${assumption.name || 'key assumption'} has opposite effect`,
-        assumptionVariants: decision.assumptions?.map(a => ({
-          assumptionId: a.id || 'unknown',
-          name: a.name || 'Unknown Assumption',
-          baseValue: a.id === assumption.id
-            ? 1 - ((a.probabilityRange?.low || 0.3 + (a.probabilityRange?.high || 0.7)) / 2)
-            : (a.probabilityRange?.low || 0.3 + (a.probabilityRange?.high || 0.7)) / 2,
-          variantRange: a.id === assumption.id
-            ? { low: 0.1, high: 0.3 }
-            : { low: 0.4, high: 0.6 },
-          epistemicStatus: 'assumption',
-          rationale: a.id === assumption.id ? 'Flipped assumption for sensitivity testing' : 'Neutral values',
-        })) || [],
+        name: `Assumption Flipped: ${assumption.text.substring(0, 30)}...`,
+        description: `Assumes key assumption has opposite effect`,
+        assumptionVariants: decision.assumptions?.map(a => {
+          const aProb = a.probability || { low: 0.3, high: 0.7 };
+          return {
+            assumptionId: a.id || 'unknown',
+            name: `Assumption from: ${a.text.substring(0, 50)}...`,
+            baseValue: a.id === assumption.id ? 1 - (aProb.low + aProb.high) / 2 : (aProb.low + aProb.high) / 2,
+            variantRange: a.id === assumption.id ? { low: 0.1, high: 0.3 } : { low: 0.4, high: 0.6 },
+            epistemicStatus: 'assumption',
+            rationale: a.id === assumption.id ? 'Flipped assumption for sensitivity testing' : 'Neutral values',
+          };
+        }) || [],
         priorProbability: { low: 0.05, high: 0.2 },
         createdAt: now,
         metadata: {
@@ -352,10 +338,6 @@ export function generateDefaultWorlds(
   return worlds.slice(0, count);
 }
 
-/**
- * Compute world state (placeholder for actual computation)
- * In practice, this would call the core decision engine
- */
 export function computeWorld(
   ensemble: WorldsEnsemble,
   worldId: WorldId,
@@ -366,7 +348,6 @@ export function computeWorld(
     throw new Error(`World ${worldId} not found in ensemble`);
   }
 
-  // Mark as computing
   const computingWorld: WorldState = {
     ...world,
     computationStatus: 'computing',
@@ -375,7 +356,6 @@ export function computeWorld(
   const newWorlds = new Map(ensemble.worlds);
   newWorlds.set(worldId, computingWorld);
 
-  // Simulate computation completion
   const now = new Date().toISOString();
   const result: WorldDecisionResult = {
     worldId,
@@ -403,7 +383,7 @@ export function computeWorld(
     details: {
       recommendedAction: result.recommendedAction,
       actionScore: result.actionScore,
-      computationTime: 0, // Would be measured in real implementation
+      computationTime: 0,
     },
     priorState: { status: 'computing' },
     newState: { status: 'completed', result },
@@ -419,9 +399,6 @@ export function computeWorld(
   };
 }
 
-/**
- * Compute robustness analysis across all worlds
- */
 export function computeRobustness(
   ensemble: WorldsEnsemble,
   config: WorldsConfig = DEFAULT_WORLDS_CONFIG
@@ -433,7 +410,6 @@ export function computeRobustness(
     throw new Error(`Need at least ${config.minWorldsForRobustness} computed worlds for robustness analysis`);
   }
 
-  // Collect all action IDs across all worlds
   const allActions = new Set<string>();
   completedWorlds.forEach(w => {
     if (w.decisionResult?.recommendedAction) {
@@ -441,7 +417,6 @@ export function computeRobustness(
     }
   });
 
-  // Compute action robustness
   const actionRobustness = new Map<string, ActionRobustness>();
   for (const actionId of allActions) {
     const rankAcrossWorlds = new Map<WorldId, number>();
@@ -451,7 +426,7 @@ export function computeRobustness(
     for (const world of completedWorlds) {
       const isRecommended = world.decisionResult?.recommendedAction === actionId;
       const score = world.decisionResult?.actionScore || 0;
-      const rank = isRecommended ? 1 : Math.floor((1 - score) * 10) + 2; // Approximate ranking
+      const rank = isRecommended ? 1 : Math.floor((1 - score) * 10) + 2;
 
       rankAcrossWorlds.set(world.definition.worldId, rank);
       totalScore += score;
@@ -464,7 +439,10 @@ export function computeRobustness(
     const worstCaseRank = Math.max(...ranks);
     const bestCaseRank = Math.min(...ranks);
     const isRobust = ranks.filter(r => r === 1).length / ranks.length >= config.robustnessThreshold;
-    const isFragile = rankVariance > 4; // High variance indicates fragility
+    const isFragile = rankVariance > 4;
+
+    const actionWorlds = completedWorlds.filter(w => w.decisionResult?.recommendedAction === actionId);
+    const scores = actionWorlds.map(w => w.decisionResult?.actionScore || 0);
 
     actionRobustness.set(actionId, {
       actionId,
@@ -477,15 +455,12 @@ export function computeRobustness(
       worstCaseRank,
       bestCaseRank,
       scoreRange: {
-        low: completedWorlds.filter(w => w.decisionResult?.recommendedAction === actionId)
-          .reduce((min, w) => Math.min(min, w.decisionResult?.actionScore || 0), 1),
-        high: completedWorlds.filter(w => w.decisionResult?.recommendedAction === actionId)
-          .reduce((max, w) => Math.max(max, w.decisionResult?.actionScore || 0), 0),
+        low: scores.length > 0 ? Math.min(...scores) : 0,
+        high: scores.length > 0 ? Math.max(...scores) : 0,
       },
     });
   }
 
-  // Compute world agreement matrix
   const worldAgreementMatrix = new Map<string, Map<string, number>>();
   for (const worldA of completedWorlds) {
     const agreementMap = new Map<string, number>();
@@ -502,11 +477,9 @@ export function computeRobustness(
     worldAgreementMatrix.set(worldA.definition.worldId, agreementMap);
   }
 
-  // Find consensus and fragile actions
   const robustActions = Array.from(actionRobustness.values()).filter(a => a.isRobust);
   const fragileActions = Array.from(actionRobustness.values()).filter(a => a.isFragile);
 
-  // Find divergent assumptions
   const assumptionCounts = new Map<string, number>();
   for (const world of completedWorlds) {
     for (const assumption of world.definition.assumptionVariants) {
@@ -550,9 +523,6 @@ export function computeRobustness(
   };
 }
 
-/**
- * Get robust actions (actions that perform well across worlds)
- */
 export function getRobustActions(ensemble: WorldsEnsemble): ActionRobustness[] {
   if (!ensemble.robustnessAnalysis) {
     return [];
@@ -563,9 +533,6 @@ export function getRobustActions(ensemble: WorldsEnsemble): ActionRobustness[] {
     .sort((a, b) => a.averageRank - b.averageRank);
 }
 
-/**
- * Get fragile actions (actions sensitive to assumptions)
- */
 export function getFragileActions(ensemble: WorldsEnsemble): ActionRobustness[] {
   if (!ensemble.robustnessAnalysis) {
     return [];
@@ -576,9 +543,6 @@ export function getFragileActions(ensemble: WorldsEnsemble): ActionRobustness[] 
     .sort((a, b) => b.rankVariance - a.rankVariance);
 }
 
-/**
- * Get ensemble summary
- */
 export function getEnsembleSummary(ensemble: WorldsEnsemble): {
   worldCount: number;
   computedWorldCount: number;
@@ -588,7 +552,7 @@ export function getEnsembleSummary(ensemble: WorldsEnsemble): {
   phase: string;
   topRobustAction: string | null;
 } {
-  const computedWorlds = Array.from(ensemble.worlds.values())
+  const completedWorlds = Array.from(ensemble.worlds.values())
     .filter(w => w.computationStatus === 'completed');
 
   const robustActions = ensemble.robustnessAnalysis
@@ -609,7 +573,7 @@ export function getEnsembleSummary(ensemble: WorldsEnsemble): {
 
   return {
     worldCount: ensemble.worlds.size,
-    computedWorldCount: computedWorlds.length,
+    computedWorldCount: completedWorlds.length,
     robustActionCount: robustActions.length,
     fragileActionCount: fragileActions.length,
     consensusRate: allActions > 0 ? robustActions.length / allActions : 0,
@@ -618,9 +582,6 @@ export function getEnsembleSummary(ensemble: WorldsEnsemble): {
   };
 }
 
-/**
- * Export ensemble to JSON for persistence
- */
 export function exportEnsemble(ensemble: WorldsEnsemble): Record<string, unknown> {
   return {
     ensembleId: ensemble.ensembleId,
@@ -635,9 +596,6 @@ export function exportEnsemble(ensemble: WorldsEnsemble): Record<string, unknown
   };
 }
 
-/**
- * Import ensemble from JSON
- */
 export function importEnsemble(data: Record<string, unknown>): WorldsEnsemble {
   return {
     ensembleId: data.ensembleId as string,
@@ -651,12 +609,4 @@ export function importEnsemble(data: Record<string, unknown>): WorldsEnsemble {
   };
 }
 
-// Helper functions
-
-function generateEventId(): string {
-  return `evt_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-}
-
-// Re-export types from dependencies for convenience
-export type { DecisionSpec, BranchGraph, BranchNode, BranchEdge } from '@zeo/contracts';
-export type { PosteriorState, LatentVariable } from '@zeo/models';
+export type { DecisionSpec, BranchGraph, Claim, ProbabilityInterval } from '@zeo/contracts';
