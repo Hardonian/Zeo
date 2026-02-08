@@ -86,7 +86,7 @@ export function generateExplanationAtLevel(
     3: 'analytical',
     4: 'epistemic'
   };
-  return generateExplanation(result, levelMap[level]);
+  return generateExplanation(result as unknown as Record<string, unknown>, levelMap[level]);
 }
 
 /**

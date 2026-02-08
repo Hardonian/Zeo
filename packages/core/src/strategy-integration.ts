@@ -1,13 +1,30 @@
 /**
  * Strategy Integration
- * 
+ *
  * Wires @zeo/strategy into the branching engine.
  * Generates strategic branches with opponent response models.
  */
 
 import type { DecisionSpec, BranchGraph, Action } from "@zeo/contracts";
-import type { StrategicWorld, AgentModel, StrategicOption } from "@zeo/strategy";
-import { generateStrategicBranches, evaluateMaximin, checkDominance } from "@zeo/strategy";
+import type {
+  StrategicWorldModel,
+  StrategicAssumption,
+  StrategicAction,
+  StrategyEvaluationCriteria,
+  RobustStrategyEvaluation,
+  StrategyValidationResult
+} from "@zeo/strategy";
+import {
+  createStrategicWorldModel,
+  addAgent,
+  validateStrategicAssumptions,
+  widenUncertaintyForStrategicContext,
+  evaluateRobustStrategies,
+  computeWorstCaseScore,
+  computeMinimaxRegret,
+  computeDominanceUnderDeception,
+  selectBestRobustStrategy
+} from "@zeo/strategy";
 
 export interface StrategicDecisionConfig {
   enableStrategicBranches: boolean;
@@ -17,34 +34,44 @@ export interface StrategicDecisionConfig {
 }
 
 /**
- * Create strategic branches for decision.
- * Expands action branches to include opponent responses.
+ * Create strategic world model for decision.
+ * Models the multi-agent strategic environment.
  */
-export function createStrategicBranches(
+export function createStrategicWorld(
   spec: DecisionSpec,
-  strategicWorld: StrategicWorld,
-  config: StrategicDecisionConfig
-): BranchGraph {
-  if (!config.enableStrategicBranches) {
-    throw new Error("Strategic branches disabled in config");
-  }
-
-  // Combine all actions into strategic options
-  const strategicOptions: StrategicOption[] = spec.actions.map(action => ({
-    id: action.id,
-    description: action.description || action.id,
-    self: {
-      payoff: { low: 0, high: 1 }, // Will be computed during evaluation
-      confidence: 0.5,
-    },
-  }));
-
-  // Generate strategic branches with opponent responses
-  return generateStrategicBranches(
-    strategicOptions[0], // Start with first action
-    strategicWorld,
-    config.maxDepth
+  assumptions: StrategicAssumption[] = []
+): StrategicWorldModel {
+  let world = createStrategicWorldModel(
+    `world-${spec.id}`,
+    assumptions,
+    true, // incompleteInformation
+    true  // signalingUncertainty
   );
+
+  // Apply strategic widening based on volatility
+  world = widenUncertaintyForStrategicContext(world, 1.5);
+
+  return world;
+}
+
+/**
+ * Add opponent agent to strategic world.
+ */
+export function addOpponentAgent(
+  world: StrategicWorldModel,
+  agentId: string,
+  beliefBand: { low: number; high: number },
+  deceptionLikelihoodBand: { low: number; high: number },
+  informationAsymmetryLevel: "none" | "low" | "medium" | "high" = "medium"
+): StrategicWorldModel {
+  const agent: StrategicAssumption = {
+    agentId,
+    beliefBand,
+    deceptionLikelihoodBand,
+    informationAsymmetryLevel,
+  };
+
+  return addAgent(world, agent);
 }
 
 /**
@@ -53,61 +80,112 @@ export function createStrategicBranches(
  */
 export function evaluateStrategicActions(
   actions: Action[],
-  strategicWorld: StrategicWorld,
+  world: StrategicWorldModel,
   mode: StrategicDecisionConfig['evaluationMode'] = 'maximin'
-): Array<{ actionId: string; robustness: number; isDominated: boolean }> {
-  const strategicOptions: StrategicOption[] = actions.map(action => ({
+): Array<{ actionId: string; robustness: number; isDominated: boolean; worstCaseScore: number }> {
+  // Convert actions to strategic actions
+  const strategicActions: StrategicAction[] = actions.map(action => ({
     id: action.id,
-    description: action.description || action.id,
-    self: {
-      payoff: { low: 0, high: 1 },
-      confidence: 0.5,
+    name: action.label, // Action uses 'label', not 'description'
+    outcomesByScenario: {
+      'baseline': 0.5,
+      'worst_case': 0.2,
+      'best_case': 0.8,
     },
   }));
 
-  // Check for dominated actions first
-  const dominanceResult = checkDominance(strategicOptions, strategicWorld);
-  const dominatedIds = new Set(
-    dominanceResult.dominated?.map(d => d.dominatedOptionId) || []
-  );
+  // Map mode to criteria
+  const criteriaMap: Record<string, StrategyEvaluationCriteria> = {
+    'maximin': 'worst_case',
+    'minimax_regret': 'minimax_regret',
+    'dominance': 'dominance_under_deception',
+    'expected_utility': 'worst_case', // fallback
+  };
 
-  // Evaluate with selected mode
-  let evaluationResult;
-  switch (mode) {
-    case 'maximin':
-      evaluationResult = evaluateMaximin(strategicOptions, strategicWorld);
-      break;
-    default:
-      evaluationResult = evaluateMaximin(strategicOptions, strategicWorld);
+  const criteria = criteriaMap[mode] || 'worst_case';
+
+  // Evaluate robust strategies
+  const evaluations: RobustStrategyEvaluation[] = [];
+  for (const action of strategicActions) {
+    const evalResult = evaluateRobustStrategies([action], world, criteria);
+    evaluations.push(...evalResult);
   }
 
-  return actions.map(action => ({
-    actionId: action.id,
-    robustness: evaluationResult.robustnessScore || 0.5,
-    isDominated: dominatedIds.has(action.id),
-  }));
+  // Check dominance under deception for each action
+  return actions.map(action => {
+    const actionEval = evaluations.find(e => e.actionId === action.id);
+    const dominanceResult = computeDominanceUnderDeception(
+      strategicActions.find(a => a.id === action.id)!,
+      strategicActions.filter(a => a.id !== action.id),
+      world
+    );
+
+    return {
+      actionId: action.id,
+      robustness: actionEval?.overallScore ?? 0.5,
+      isDominated: dominanceResult.dominanceType === 'dominated',
+      worstCaseScore: actionEval?.rankings['worst_case'] ?? 0,
+    };
+  });
 }
 
 /**
- * Create default strategic world from decision spec.
+ * Validate strategic assumptions for a decision.
  */
-export function createDefaultStrategicWorld(spec: DecisionSpec): StrategicWorld {
+export function validateStrategicAssumptionsForDecision(
+  world: StrategicWorldModel
+): StrategyValidationResult {
+  return validateStrategicAssumptions(world);
+}
+
+/**
+ * Select best strategy using robust criteria.
+ */
+export function selectBestStrategy(
+  actions: Action[],
+  world: StrategicWorldModel,
+  criteria: StrategyEvaluationCriteria = 'worst_case'
+): { actionId: string; score: number; notes: string[] } | null {
+  const strategicActions: StrategicAction[] = actions.map(action => ({
+    id: action.id,
+    name: action.label,
+    outcomesByScenario: {
+      'baseline': 0.5,
+      'worst_case': 0.2,
+      'best_case': 0.8,
+    },
+  }));
+
+  const evaluations = evaluateRobustStrategies(strategicActions, world, criteria);
+  const best = selectBestRobustStrategy(evaluations);
+
+  if (!best) return null;
+
   return {
-    self: {
-      agentId: 'self',
-      resources: { min: 0, max: 100 },
-      constraints: spec.constraints.map(c => c.id),
-    },
-    others: new Map(),
-    informationStructure: {
-      commonKnowledge: spec.constraints.map(c => c.id),
-      privateInfo: new Map(),
-    },
-    interactionType: 'sequential',
-    priorInteractions: [],
-    uncertaintyMultiplier: 1.5, // Strategic uncertainty increases total uncertainty
+    actionId: best.actionId,
+    score: best.overallScore,
+    notes: best.robustnessNotes,
   };
 }
 
-export { generateStrategicBranches, evaluateMaximin, checkDominance } from "@zeo/strategy";
-export type { StrategicWorld, AgentModel } from "@zeo/strategy";
+// Re-export actual strategy types and functions
+export {
+  createStrategicWorldModel,
+  addAgent,
+  validateStrategicAssumptions,
+  widenUncertaintyForStrategicContext,
+  evaluateRobustStrategies,
+  computeWorstCaseScore,
+  computeMinimaxRegret,
+  computeDominanceUnderDeception,
+  selectBestRobustStrategy,
+};
+
+export type {
+  StrategicWorldModel,
+  StrategicAssumption,
+  StrategicAction,
+  StrategyEvaluationCriteria,
+  RobustStrategyEvaluation,
+  StrategyValidationResult,
+};
