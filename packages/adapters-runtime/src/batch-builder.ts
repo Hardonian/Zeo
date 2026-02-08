@@ -3,9 +3,16 @@
  */
 
 import { createHash } from "crypto";
-import type { SignalObservation, ObservationBatch, ReplayDataset } from "@zeo/contracts";
+import type { SignalObservation, ObservationBatch, ReplayDataset, Action, Agent, Constraint, Claim, OutcomeMetric } from "@zeo/contracts";
 import type { ObservationBatchBuilder } from "./types.js";
 import { canonicalize, computeDeterministicHash } from "./normalizer.js";
+
+// Unknown type extension for DecisionSpec
+type Unknown = {
+  id: string;
+  text: string;
+  bounded: boolean;
+};
 
 export function createObservationBatchBuilder(
   catalogHash: string,
@@ -99,17 +106,17 @@ export function buildReplayDataset(
     return {
       caseId: `case_${index}_${batch.batchId}`,
       label: `Observation batch ${batch.batchId}`,
-      decisionSpec: {
+        decisionSpec: {
         id: `decision_${batch.batchId}`,
         title: `Auto-generated from batch ${batch.batchId}`,
         createdAt: batch.createdAt,
         horizon: "days" as const,
         context: "Replay dataset from observation batch",
-        actions: [],
-        agents: [],
-        constraints: [],
-        assumptions: [],
-        unknowns: [],
+        actions: [] as Action[],
+        agents: [] as Agent[],
+        constraints: [] as Constraint[],
+        assumptions: [] as Claim[],
+        unknowns: [] as Unknown[],
       },
       observationBatches: [
         {
@@ -130,7 +137,7 @@ export function buildReplayDataset(
       },
       outcome: {
         status: "unresolved" as const,
-        metrics: [],
+        metrics: [] as OutcomeMetric[],
       },
     };
   });
