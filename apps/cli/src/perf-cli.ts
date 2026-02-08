@@ -46,7 +46,7 @@ export interface PerfCliArgs {
   experimental: boolean;
   // Profile options
   example: "negotiation" | "ops";
-  depth: number;
+  depth: 2 | 3;
   seed?: string;
   // Output options
   out?: string;
@@ -115,7 +115,7 @@ export function parsePerfArgs(argv: string[]): PerfCliArgs {
       i++;
     } else if (arg === "--depth" && next) {
       const d = parseInt(next, 10);
-      if (d >= 1 && d <= 5) result.depth = d;
+      if (d === 2 || d === 3) result.depth = d as 2 | 3;
       i++;
     } else if (arg === "--seed" && next) {
       result.seed = next;
@@ -307,17 +307,19 @@ function printScanResults(result: ScanResult): void {
   // Summary by severity
   console.log("Findings by severity:");
   for (const [severity, count] of Object.entries(result.summary.findingsBySeverity)) {
-    if ((count as number) > 0) {
+    const countNum = count as number;
+    if (countNum > 0) {
       const icon = severity === "critical" ? "🔴" : severity === "high" ? "🟠" : severity === "medium" ? "🟡" : "⚪";
-      console.log(`  ${icon} ${severity}: ${count}`);
+      console.log(`  ${icon} ${severity}: ${countNum}`);
     }
   }
 
   // Summary by category
   console.log("\nFindings by category:");
   for (const [category, count] of Object.entries(result.summary.findingsByCategory)) {
-    if ((count as number) > 0) {
-      console.log(`  ${category}: ${count}`);
+    const countNum = count as number;
+    if (countNum > 0) {
+      console.log(`  ${category}: ${countNum}`);
     }
   }
 
@@ -361,7 +363,8 @@ async function runProfileCommand(args: PerfCliArgs): Promise<number> {
 
   // Create profiler
   const profiler = getGlobalProfiler({ trackMemory: true });
-  const sessionId = profiler.startSession(`profile-${args.example}-d${args.depth}`);
+  const session = profiler.startSession(`profile-${args.example}-d${args.depth}`);
+  const sessionId = session.id;
 
   // Profile the decision run
   await profiler.profile(

@@ -68,6 +68,9 @@ importers:
       '@zeo/models':
         specifier: workspace:*
         version: link:../../packages/models
+      '@zeo/perf':
+        specifier: workspace:*
+        version: link:../../packages/perf
       '@zeo/regimes':
         specifier: workspace:*
         version: link:../../packages/regimes
