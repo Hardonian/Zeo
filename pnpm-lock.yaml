@@ -291,21 +291,57 @@ importers:
 
   packages/core:
     dependencies:
+      '@zeo/analysis-planner':
+        specifier: workspace:*
+        version: link:../analysis-planner
+      '@zeo/audit':
+        specifier: workspace:*
+        version: link:../audit
       '@zeo/calibration':
         specifier: workspace:*
         version: link:../calibration
       '@zeo/causal':
         specifier: workspace:*
         version: link:../causal
+      '@zeo/causal-skeletons':
+        specifier: workspace:*
+        version: link:../causal-skeletons
+      '@zeo/constraints':
+        specifier: workspace:*
+        version: link:../constraints
       '@zeo/contracts':
         specifier: workspace:*
         version: link:../contracts
+      '@zeo/counterfactuals':
+        specifier: workspace:*
+        version: link:../counterfactuals
+      '@zeo/dataset-builder':
+        specifier: workspace:*
+        version: link:../dataset-builder
+      '@zeo/decision-synthesizer':
+        specifier: workspace:*
+        version: link:../decision-synthesizer
       '@zeo/explain':
         specifier: workspace:*
         version: link:../explain
+      '@zeo/feature-discovery':
+        specifier: workspace:*
+        version: link:../feature-discovery
       '@zeo/game':
         specifier: workspace:*
         version: link:../game
+      '@zeo/hypothesis-market':
+        specifier: workspace:*
+        version: link:../hypothesis-market
+      '@zeo/hypothesis-registry':
+        specifier: workspace:*
+        version: link:../hypothesis-registry
+      '@zeo/lenses':
+        specifier: workspace:*
+        version: link:../lenses
+      '@zeo/measurement':
+        specifier: workspace:*
+        version: link:../measurement
       '@zeo/memory':
         specifier: workspace:*
         version: link:../memory
@@ -315,24 +351,48 @@ importers:
       '@zeo/models':
         specifier: workspace:*
         version: link:../models
+      '@zeo/regimes':
+        specifier: workspace:*
+        version: link:../regimes
+      '@zeo/replay':
+        specifier: workspace:*
+        version: link:../replay
+      '@zeo/robustness':
+        specifier: workspace:*
+        version: link:../robustness
       '@zeo/rsl':
         specifier: workspace:*
         version: link:../rsl
+      '@zeo/semantic-clustering':
+        specifier: workspace:*
+        version: link:../semantic-clustering
       '@zeo/strategy':
         specifier: workspace:*
         version: link:../strategy
+      '@zeo/telemetry':
+        specifier: workspace:*
+        version: link:../telemetry
       '@zeo/time':
         specifier: workspace:*
         version: link:../time
       '@zeo/timeseries':
         specifier: workspace:*
         version: link:../timeseries
+      '@zeo/tournaments':
+        specifier: workspace:*
+        version: link:../tournaments
       '@zeo/trust':
         specifier: workspace:*
         version: link:../trust
       '@zeo/values':
         specifier: workspace:*
         version: link:../values
+      '@zeo/warehouse':
+        specifier: workspace:*
+        version: link:../warehouse
+      '@zeo/worlds':
+        specifier: workspace:*
+        version: link:../worlds
       nanoid:
         specifier: ^5.0.7
         version: 5.1.6
