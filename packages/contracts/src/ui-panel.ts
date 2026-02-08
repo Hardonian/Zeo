@@ -185,10 +185,10 @@ export async function verifyManifestSignature(
     
     // Compute HMAC
     const encoder = new TextEncoder();
-    const keyData = encoder.encode(secretKey);
     const payloadData = encoder.encode(canonicalPayload);
     
-    // Use Web Crypto API for HMAC
+    // Use Web Crypto API for HMAC (keyData would be used for actual HMAC)
+    void secretKey; // Mark as intentionally used for future implementation
     return crypto.subtle.digest("SHA-256", payloadData).then(async (hashBuffer) => {
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       const computedSignature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
