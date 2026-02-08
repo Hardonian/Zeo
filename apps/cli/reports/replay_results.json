@@ -1,0 +1,309 @@
+{
+  "datasetId": "sample_negotiation_backtest_v1",
+  "runAt": "2026-02-08T17:46:57.011Z",
+  "summary": {
+    "totalCases": 2,
+    "overallCoverage": 0,
+    "recommendedWidenFactor": 2.8,
+    "byDomain": {
+      "default": {
+        "coverage": 0,
+        "widenFactor": 2.8
+      }
+    }
+  },
+  "caseResults": [
+    {
+      "caseId": "negotiation_case_001",
+      "runMeta": {
+        "seed": "c2a06dc8c3d800913946c1375e81b97e",
+        "engineVersion": "0.3.1",
+        "decisionHash": "ff874653094f83ae059b8e4bab7f944a462f716fc4f8a55dd03cfda4c31e1c21",
+        "observationsHash": "1a1b3591d2c97c7e5da5e29ef89782e1742750ab618f6833d22c7942b7b9a6b3",
+        "startedAt": "2026-02-08T17:46:57.000Z",
+        "completedAt": "2026-02-08T17:46:57.010Z"
+      },
+      "checkpoints": [
+        {
+          "at": "2026-01-15T09:00:00.000Z",
+          "posteriorSummary": {
+            "variableCount": 2,
+            "observationCount": 0,
+            "modelStrength": 0.17500000000000004
+          },
+          "predictions": {
+            "at": "2026-01-15T09:00:00.000Z",
+            "predictions": [
+              {
+                "target": {
+                  "kind": "action_outcome",
+                  "id": "action_counter"
+                },
+                "band": {
+                  "low": 0,
+                  "high": 1
+                },
+                "provenanceRefs": [
+                  "default:unmapped"
+                ],
+                "basis": {
+                  "decisionHash": "ff874653094f83ae059b8e4bab7f944a462f716fc4f8a55dd03cfda4c31e1c21",
+                  "observationHash": "1a1b3591d2c97c7e5da5e29ef89782e1742750ab618f6833d22c7942b7b9a6b3",
+                  "seed": "c2a06dc8c3d800913946c1375e81b97e",
+                  "engineVersion": "0.3.1"
+                }
+              },
+              {
+                "target": {
+                  "kind": "branch_event",
+                  "id": "branch_agreement"
+                },
+                "band": {
+                  "low": 0,
+                  "high": 1
+                },
+                "provenanceRefs": [
+                  "default:unmapped"
+                ],
+                "basis": {
+                  "decisionHash": "ff874653094f83ae059b8e4bab7f944a462f716fc4f8a55dd03cfda4c31e1c21",
+                  "observationHash": "1a1b3591d2c97c7e5da5e29ef89782e1742750ab618f6833d22c7942b7b9a6b3",
+                  "seed": "c2a06dc8c3d800913946c1375e81b97e",
+                  "engineVersion": "0.3.1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-01-15T09:00:00.000Z",
+          "posteriorSummary": {
+            "variableCount": 2,
+            "observationCount": 1,
+            "modelStrength": 0.2575
+          },
+          "predictions": {
+            "at": "2026-01-15T09:00:00.000Z",
+            "predictions": [
+              {
+                "target": {
+                  "kind": "action_outcome",
+                  "id": "action_counter"
+                },
+                "band": {
+                  "low": 0,
+                  "high": 1
+                },
+                "provenanceRefs": [
+                  "default:unmapped"
+                ],
+                "basis": {
+                  "decisionHash": "ff874653094f83ae059b8e4bab7f944a462f716fc4f8a55dd03cfda4c31e1c21",
+                  "observationHash": "e2579ed843ed62b78e769da947d5ec4c123fd99f108f549f7bf64252a2a4ff59",
+                  "seed": "c2a06dc8c3d800913946c1375e81b97e",
+                  "engineVersion": "0.3.1"
+                }
+              },
+              {
+                "target": {
+                  "kind": "branch_event",
+                  "id": "branch_agreement"
+                },
+                "band": {
+                  "low": 0,
+                  "high": 1
+                },
+                "provenanceRefs": [
+                  "default:unmapped"
+                ],
+                "basis": {
+                  "decisionHash": "ff874653094f83ae059b8e4bab7f944a462f716fc4f8a55dd03cfda4c31e1c21",
+                  "observationHash": "e2579ed843ed62b78e769da947d5ec4c123fd99f108f549f7bf64252a2a4ff59",
+                  "seed": "c2a06dc8c3d800913946c1375e81b97e",
+                  "engineVersion": "0.3.1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-01-18T14:00:00.000Z",
+          "posteriorSummary": {
+            "variableCount": 2,
+            "observationCount": 2,
+            "modelStrength": 0.33999999999999997
+          },
+          "predictions": {
+            "at": "2026-01-18T14:00:00.000Z",
+            "predictions": [
+              {
+                "target": {
+                  "kind": "action_outcome",
+                  "id": "action_counter"
+                },
+                "band": {
+                  "low": 0,
+                  "high": 1
+                },
+                "provenanceRefs": [
+                  "default:unmapped"
+                ],
+                "basis": {
+                  "decisionHash": "ff874653094f83ae059b8e4bab7f944a462f716fc4f8a55dd03cfda4c31e1c21",
+                  "observationHash": "1a1b3591d2c97c7e5da5e29ef89782e1742750ab618f6833d22c7942b7b9a6b3",
+                  "seed": "c2a06dc8c3d800913946c1375e81b97e",
+                  "engineVersion": "0.3.1"
+                }
+              },
+              {
+                "target": {
+                  "kind": "branch_event",
+                  "id": "branch_agreement"
+                },
+                "band": {
+                  "low": 0,
+                  "high": 1
+                },
+                "provenanceRefs": [
+                  "default:unmapped"
+                ],
+                "basis": {
+                  "decisionHash": "ff874653094f83ae059b8e4bab7f944a462f716fc4f8a55dd03cfda4c31e1c21",
+                  "observationHash": "1a1b3591d2c97c7e5da5e29ef89782e1742750ab618f6833d22c7942b7b9a6b3",
+                  "seed": "c2a06dc8c3d800913946c1375e81b97e",
+                  "engineVersion": "0.3.1"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "scoring": {
+        "coverage": {
+          "byMetricId": {
+            "metric_final_price": 0,
+            "metric_agreement_reached": 0
+          },
+          "byDomain": {
+            "default": 0
+          },
+          "overall": 0
+        },
+        "properScores": {
+          "byMetricId": {},
+          "overall": 0
+        },
+        "buckets": [],
+        "recommendedAdjustment": {
+          "widenFactorByDomain": {
+            "default": 2.8
+          },
+          "widenFactorOverall": 2.8,
+          "rationale": "Coverage: 0.0%. Intervals too narrow."
+        }
+      },
+      "artifacts": []
+    },
+    {
+      "caseId": "negotiation_case_002",
+      "runMeta": {
+        "seed": "6279a55a6efb64d01658610b0f682cfd",
+        "engineVersion": "0.3.1",
+        "decisionHash": "32b0c1b39522eb03e98cd57f49bf314db4c4932b524f7124dfe81bab8e302c60",
+        "observationsHash": "5926e28baafa0f1dae698d6e60d2bf50e856c5e51e05bdfce88a4b1c07d83816",
+        "startedAt": "2026-02-08T17:46:57.010Z",
+        "completedAt": "2026-02-08T17:46:57.010Z"
+      },
+      "checkpoints": [
+        {
+          "at": "2026-01-20T10:00:00.000Z",
+          "posteriorSummary": {
+            "variableCount": 1,
+            "observationCount": 0,
+            "modelStrength": 0.375
+          },
+          "predictions": {
+            "at": "2026-01-20T10:00:00.000Z",
+            "predictions": [
+              {
+                "target": {
+                  "kind": "action_outcome",
+                  "id": "action_urgent"
+                },
+                "band": {
+                  "low": 0,
+                  "high": 1
+                },
+                "provenanceRefs": [
+                  "default:unmapped"
+                ],
+                "basis": {
+                  "decisionHash": "32b0c1b39522eb03e98cd57f49bf314db4c4932b524f7124dfe81bab8e302c60",
+                  "observationHash": "5926e28baafa0f1dae698d6e60d2bf50e856c5e51e05bdfce88a4b1c07d83816",
+                  "seed": "6279a55a6efb64d01658610b0f682cfd",
+                  "engineVersion": "0.3.1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-01-20T10:00:00.000Z",
+          "posteriorSummary": {
+            "variableCount": 1,
+            "observationCount": 1,
+            "modelStrength": 0.43749999999999994
+          },
+          "predictions": {
+            "at": "2026-01-20T10:00:00.000Z",
+            "predictions": [
+              {
+                "target": {
+                  "kind": "action_outcome",
+                  "id": "action_urgent"
+                },
+                "band": {
+                  "low": 0,
+                  "high": 1
+                },
+                "provenanceRefs": [
+                  "default:unmapped"
+                ],
+                "basis": {
+                  "decisionHash": "32b0c1b39522eb03e98cd57f49bf314db4c4932b524f7124dfe81bab8e302c60",
+                  "observationHash": "5926e28baafa0f1dae698d6e60d2bf50e856c5e51e05bdfce88a4b1c07d83816",
+                  "seed": "6279a55a6efb64d01658610b0f682cfd",
+                  "engineVersion": "0.3.1"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "scoring": {
+        "coverage": {
+          "byMetricId": {
+            "metric_premium_paid": 0
+          },
+          "byDomain": {
+            "default": 0
+          },
+          "overall": 0
+        },
+        "properScores": {
+          "byMetricId": {},
+          "overall": 0
+        },
+        "buckets": [],
+        "recommendedAdjustment": {
+          "widenFactorByDomain": {
+            "default": 2.8
+          },
+          "widenFactorOverall": 2.8,
+          "rationale": "Coverage: 0.0%. Intervals too narrow."
+        }
+      },
+      "artifacts": []
+    }
+  ]
+}

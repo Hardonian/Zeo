@@ -52,7 +52,8 @@
       "@zeo/game": ["packages/game/src"],
       "@zeo/hypothesis-registry": ["packages/hypothesis-registry/src"],
       "@zeo/adapters-runtime": ["packages/adapters-runtime/src"],
-      "@zeo/audit": ["packages/audit/src"]
+      "@zeo/audit": ["packages/audit/src"],
+      "@zeo/perf": ["packages/perf/src"]
     }
   }
 }
