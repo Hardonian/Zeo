@@ -9,16 +9,11 @@ import {
   GOVERNANCE_DEFAULTS,
   RISK_TIER_CONFIG,
   DOMAIN_RISK_MATRIX,
-  type DecisionSpec,
-  type EvidenceEvent,
-  type PolicyConfig,
-  type BranchGraph,
-  type BranchNode,
-  type BranchEdge
+  type PolicyConfig
 } from "./index.js";
 
 // Helper to create minimal valid DecisionSpec
-function createDecisionSpec(overrides: Partial<DecisionSpec> = {}): DecisionSpec {
+function createDecisionSpec(overrides: Partial<import("@zeo/contracts").DecisionSpec> = {}): import("@zeo/contracts").DecisionSpec {
   return {
     id: "test-" + Math.random().toString(36).slice(2),
     title: "Test Decision",
@@ -34,7 +29,7 @@ function createDecisionSpec(overrides: Partial<DecisionSpec> = {}): DecisionSpec
 }
 
 // Helper to create minimal valid EvidenceEvent
-function createEvidenceEvent(overrides: Partial<EvidenceEvent> = {}): EvidenceEvent {
+function createEvidenceEvent(overrides: Partial<import("@zeo/contracts").EvidenceEvent> = {}): import("@zeo/contracts").EvidenceEvent {
   return {
     id: "evidence-" + Math.random().toString(36).slice(2),
     type: "text",
@@ -49,7 +44,7 @@ function createEvidenceEvent(overrides: Partial<EvidenceEvent> = {}): EvidenceEv
 }
 
 // Helper to create minimal valid BranchGraph
-function createBranchGraph(overrides: Partial<BranchGraph> = {}): BranchGraph {
+function createBranchGraph(overrides: Partial<import("@zeo/contracts").BranchGraph> = {}): import("@zeo/contracts").BranchGraph {
   return {
     id: "graph-" + Math.random().toString(36).slice(2),
     decisionId: "test-decision",
