@@ -1,7 +1,7 @@
 {
-  "name": "@zeo/regimes",
+  "name": "@zeo/telemetry",
   "version": "0.1.0",
-  "description": "Deterministic regime detection and change-point analysis",
+  "description": "Intelligence telemetry and meta-telemetry - observe epistemic behavior",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,16 +14,13 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run",
-    "lint": "eslint src/**/*.ts"
+    "test": "vitest run"
   },
   "dependencies": {
-    "@zeo/contracts": "file:../contracts/dist",
-    "nanoid": "^5.0.0"
+    "@zeo/contracts": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "typescript": "^5.6.3",
-    "vitest": "^2.1.0"
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.9"
   }
 }

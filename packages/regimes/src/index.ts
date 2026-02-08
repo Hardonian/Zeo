@@ -1,4 +1,5 @@
 import type { RegimeEvent, RegimeState, RegimeDomain, RegimeKind } from "@zeo/contracts";
+export type { RegimeEvent, RegimeState, RegimeDomain, RegimeKind };
 import { nanoid } from "nanoid";
 
 export interface NumericPoint {

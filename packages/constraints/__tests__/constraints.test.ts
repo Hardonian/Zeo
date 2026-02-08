@@ -247,7 +247,9 @@ describe("Constraint Propagation Engine", () => {
 
       const result = propagateConstraints(graph, baseContext);
       expect(result.infeasibleActions).toContain("dep");
-      expect(result.dominatedActions.some(d => d.actionId === "dep")).toBe(true);
+      // action1 depends on dep, so when dep is infeasible, action1 is dominated
+      expect(result.dominatedActions.some(d => d.actionId === "action1")).toBe(true);
+      expect(result.dominatedActions.some(d => d.dominatedBy === "dep")).toBe(true);
     });
   });
 
