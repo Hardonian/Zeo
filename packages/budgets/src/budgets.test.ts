@@ -16,7 +16,7 @@ import {
   POWER_MODE,
   MINIMAL_MODE,
 } from './index.js';
-import type { ComputeBudget } from './types.js';
+import type { ComputeBudget, ResourceType } from './types.js';
 
 describe('Budget Presets', () => {
   it('should provide safe defaults with conservative limits', () => {
@@ -156,7 +156,7 @@ describe('Budget Tracking', () => {
     recordUsage('test-context', 'cases', 45);
     
     // Check if we can add 10 more (would exceed limit of 50)
-    const result = checkBudgetWithExpected('test-context', { cases: 10 });
+    const result = checkBudgetWithExpected('test-context', { cases: 10 } as Record<ResourceType, number>);
     
     expect(result.allowed).toBe(false);
     

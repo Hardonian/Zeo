@@ -19,6 +19,8 @@
     "@zeo/nl": "workspace:*",
     "@zeo/regimes": "workspace:*",
     "@zeo/trust": "workspace:*",
+    "@zeo/budgets": "workspace:*",
+    "@zeo/jobs": "workspace:*",
     "idb": "^8.0.0",
     "next": "^14.2.0",
     "react": "^18.2.0",

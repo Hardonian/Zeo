@@ -145,13 +145,6 @@ export async function runEvalCommand(args: EvalCliArgs): Promise<number> {
     console.log(`  Byte-identical: ${result.determinismSummary.byteIdentical}`);
     console.log(`  Diverged: ${result.determinismSummary.diverged}`);
 
-    if (result.errors?.length) {
-      console.log(`\nErrors:`);
-      for (const err of result.errors) {
-        console.log(`  - ${err}`);
-      }
-    }
-
     console.log(`\nResults written to: ${outputDir}/eval-results.json`);
 
     return result.overallSuccess ? 0 : 1;

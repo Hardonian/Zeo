@@ -12,7 +12,6 @@ import {
   runAdapter,
   ingestData,
   createQuarantineStore,
-  DEFAULT_RUNTIME_CONFIG,
 } from "@zeo/adapters-runtime";
 import { createRealityAdapterRegistry } from "@zeo/adapters";
 
@@ -152,15 +151,16 @@ async function runAdapterCommand(args: AdaptersRuntimeCliArgs): Promise<number> 
   if (!adapter) {
     console.error(`Error: Adapter not found: ${args.adapterId}`);
     console.log("Available adapters:");
-    for (const [id, info] of registry.list()) {
-      console.log(`  - ${id}: ${info.name}`);
+    const adapters = registry.list();
+    for (const info of adapters) {
+      console.log(`  - ${info.id}: ${info.name}`);
     }
     return 1;
   }
 
   // Create runtime
   const runtime = createAdapterRuntime(
-    DEFAULT_RUNTIME_CONFIG,
+    undefined,
     args.quarantineDir ? { quarantineDir: args.quarantineDir } : undefined
   );
 
@@ -230,7 +230,7 @@ async function runIngestCommand(args: AdaptersRuntimeCliArgs): Promise<number> {
 
   // Create runtime
   const runtime = createAdapterRuntime(
-    DEFAULT_RUNTIME_CONFIG,
+    undefined,
     args.quarantineDir ? { quarantineDir: args.quarantineDir } : undefined
   );
 

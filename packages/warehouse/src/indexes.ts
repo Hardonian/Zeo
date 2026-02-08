@@ -202,11 +202,13 @@ export function indexRecord(
   index.byKind.get(envelope.kind)!.add(id);
   
   // Add to byTime (index by date only for efficient date queries)
-  const dateKey = envelope.createdAt.split('T')[0]; // YYYY-MM-DD
-  if (!index.byTime.has(dateKey)) {
+  const dateKey = envelope.createdAt.split('T')[0] || envelope.createdAt; // YYYY-MM-DD
+  if (dateKey && !index.byTime.has(dateKey)) {
     index.byTime.set(dateKey, new Set());
   }
-  index.byTime.get(dateKey)!.add(id);
+  if (dateKey) {
+    index.byTime.get(dateKey)!.add(id);
+  }
   
   // Add to byDecisionId
   const decisionId = extractDecisionId(envelope);
@@ -324,14 +326,19 @@ export function queryUsingIndex(
       const textIds = new Set<string>();
       
       // Start with first token
-      const firstTokenIds = index.tokenIndex.get(searchTokens[0]);
-      if (firstTokenIds) {
-        for (const id of firstTokenIds) textIds.add(id);
+      const firstToken = searchTokens[0];
+      if (firstToken) {
+        const firstTokenIds = index.tokenIndex.get(firstToken);
+        if (firstTokenIds) {
+          for (const id of firstTokenIds) textIds.add(id);
+        }
       }
       
       // Intersect with remaining tokens
       for (let i = 1; i < searchTokens.length; i++) {
-        const tokenIds = index.tokenIndex.get(searchTokens[i]);
+        const token = searchTokens[i];
+        if (!token) continue;
+        const tokenIds = index.tokenIndex.get(token);
         if (tokenIds) {
           for (const id of textIds) {
             if (!tokenIds.has(id)) textIds.delete(id);
@@ -354,13 +361,15 @@ export function queryUsingIndex(
   // Time range filter (requires scanning records for precise time)
   // But we can pre-filter by date
   if (query.timeRange) {
-    const startDate = query.timeRange.start.split('T')[0];
-    const endDate = query.timeRange.end.split('T')[0];
+    const startDate = query.timeRange.start.split('T')[0] || query.timeRange.start;
+    const endDate = query.timeRange.end.split('T')[0] || query.timeRange.end;
     
     const dateIds = new Set<string>();
-    for (const [date, ids] of index.byTime) {
-      if (date >= startDate && date <= endDate) {
-        for (const id of ids) dateIds.add(id);
+    if (startDate && endDate) {
+      for (const [date, ids] of index.byTime) {
+        if (date >= startDate && date <= endDate) {
+          for (const id of ids) dateIds.add(id);
+        }
       }
     }
     
