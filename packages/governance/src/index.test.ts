@@ -283,7 +283,7 @@ describe("governance", () => {
 
     test("returns medium risk for single gap", () => {
       const evidence = [
-        createEvidenceEvent({ type: "audio" })
+        createEvidenceEvent({ type: "text" })
       ];
       
       const result = evaluateEvidenceRisk(evidence, 5);

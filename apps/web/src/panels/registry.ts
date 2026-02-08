@@ -8,6 +8,14 @@ import signalsStripManifest from './builtin/signals-strip/manifest';
 import worldStateManifest from './builtin/world-state/manifest.json';
 import voiPanelManifest from './builtin/voi-panel/manifest.json';
 
+// Trust & v0.4.0 feature panels
+import trustConsentManagerManifest from './builtin/trust-consent-manager/manifest';
+import patternsDashboardManifest from './builtin/patterns-dashboard/manifest';
+import explanationToggleManifest from './builtin/explanation-toggle/manifest';
+import strategyLensManifest from './builtin/strategy-lens/manifest';
+import timeDecayInspectorManifest from './builtin/time-decay-inspector/manifest';
+import valueProfileViewerManifest from './builtin/value-profile-viewer/manifest';
+
 import stitchDecisionComposerManifest from './stitch/stitch_decision_branching_view/decision_composer_panel/manifest';
 import stitchBranchExplorerManifest from './stitch/stitch_decision_branching_view/branch_explorer_panel/manifest';
 import stitchEvidenceInboxManifest from './stitch/stitch_decision_branching_view/evidence_inbox_panel_1/manifest';
@@ -25,6 +33,13 @@ const BUILTIN_MANIFESTS: UiPanelManifest[] = [
   signalsStripManifest as UiPanelManifest,
   worldStateManifest as UiPanelManifest,
   voiPanelManifest as UiPanelManifest,
+  // Trust & v0.4.0 feature panels
+  trustConsentManagerManifest as UiPanelManifest,
+  patternsDashboardManifest as UiPanelManifest,
+  explanationToggleManifest as UiPanelManifest,
+  strategyLensManifest as UiPanelManifest,
+  timeDecayInspectorManifest as UiPanelManifest,
+  valueProfileViewerManifest as UiPanelManifest,
 ];
 
 const STITCH_MANIFESTS: UiPanelManifest[] = [
