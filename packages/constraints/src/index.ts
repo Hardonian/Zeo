@@ -313,6 +313,7 @@ export function propagateConstraints(
       ...context,
       actionId: node.id,
       actionType: node.actionType,
+      variables: { ...context.variables, ...node.variables },
     };
 
     // Check constraints attached to this action
@@ -443,16 +444,19 @@ export function propagateConstraints(
 
   // Second pass: check dependencies
   // An action is infeasible if any of its dependencies are infeasible
-  for (const actionId of infeasibleActions) {
-    const deps = findDependencies(graph, actionId);
-    for (const depId of deps) {
-      const depNode = graph.nodes.get(depId);
-      if (depNode && depNode.type === "action" && !depNode.infeasible) {
-        dominatedActions.push({
-          actionId: depId,
-          dominatedBy: actionId,
-          reason: `Dependency ${actionId} is infeasible`,
-        });
+  // Find all actions that depend on infeasible actions
+  for (const infeasibleId of infeasibleActions) {
+    for (const edge of graph.edges.values()) {
+      if (edge.type === "dependency" && edge.from === infeasibleId) {
+        const dependentActionId = edge.to;
+        const dependentNode = graph.nodes.get(dependentActionId);
+        if (dependentNode && dependentNode.type === "action" && !infeasibleActions.includes(dependentActionId)) {
+          dominatedActions.push({
+            actionId: dependentActionId,
+            dominatedBy: infeasibleId,
+            reason: `Dependency ${infeasibleId} is infeasible`,
+          });
+        }
       }
     }
   }
