@@ -3,6 +3,7 @@
  */
 
 import { test, expect, describe } from "vitest";
+import type { ProvenancePointer } from "@zeo/contracts";
 import {
   assessStability,
   assessConfoundingRisk,
@@ -505,7 +506,7 @@ describe("Integration Tests", () => {
       controlsUsed: ["control-1"],
       negativeControlsRun: true,
       disclaimers: ["Test hypothesis"],
-      provenance: [] as any[],
+      provenance: [] as ProvenancePointer[],
     };
 
     const robustnessResults = assessHypothesisRobustness(hypothesis, data);

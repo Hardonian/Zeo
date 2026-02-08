@@ -48,14 +48,19 @@ export function enforceTrustBoundary(
   operation: OperationType,
   context: TrustContext
 ): void {
-  const consentKey = operationToConsentKey(operation);
+  const consentMapping = operationToConsentMapping(operation);
   
   try {
-    enforceConsentAtEntry(context.consentScope, operation, consentKey, true);
+    enforceConsentAtEntry(
+      context.consentScope, 
+      operation, 
+      consentMapping.category,
+      consentMapping.requiredValue
+    );
   } catch (error) {
     throw new TrustBoundaryError(
       `Trust boundary violation: ${operation} is not permitted. ` +
-      `Consent required for: ${consentKey}`
+      `Consent required for: ${consentMapping.category}`
     );
   }
 }
