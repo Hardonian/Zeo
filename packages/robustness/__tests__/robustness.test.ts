@@ -82,7 +82,7 @@ describe("Robustness Checks", () => {
       );
 
       expect(result.category).toBe("confounding");
-      expect(result.riskLevel).toBeGreaterThanOrEqual("medium");
+      expect(["medium", "high", "critical"]).toContain(result.riskLevel);
     });
 
     it("should handle mismatched array lengths", () => {
@@ -156,7 +156,7 @@ describe("Robustness Checks", () => {
       const result = assessMulticollinearity(featureValues, ["f1", "f2"]);
 
       expect(result.category).toBe("multicollinearity");
-      expect(result.riskLevel).toBeGreaterThanOrEqual("medium");
+      expect(["medium", "high", "critical"]).toContain(result.riskLevel);
     });
 
     it("should handle single feature", () => {
@@ -248,7 +248,7 @@ describe("Robustness Checks", () => {
 
       const result = runAllRobustnessChecks(data);
 
-      expect(result.overallRisk).toBeGreaterThanOrEqual("high");
+      expect(["high", "critical"]).toContain(result.overallRisk);
     });
   });
 });
