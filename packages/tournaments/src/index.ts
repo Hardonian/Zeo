@@ -10,7 +10,7 @@
  */
 
 import type { DecisionSpec, Action, ProbabilityInterval, UUID } from '@zeo/contracts';
-import { requireMarketsActive } from '@zeo/contracts';
+import { requireMarketsActive, isFeatureEnabled, enforceWidenOnly } from '@zeo/contracts';
 
 type TournamentId = string;
 type StrategyId = string;
@@ -114,6 +114,8 @@ export interface TournamentConfig {
     maxMatches: number;
     parallelMatches: number;
     timeLimitMs: number;
+    /** Maximum win rate for any strategy to prevent dominance (Invariant 10) */
+    maxWinRateCap?: number;
   };
 }
 
@@ -217,6 +219,7 @@ export function createTournament(
       maxMatches: 100,
       parallelMatches: 4,
       timeLimitMs: 300000,
+      maxWinRateCap: 0.6, // Invariant 10: No Permanent Dominance Without Diversity
       ...config,
     },
   };
