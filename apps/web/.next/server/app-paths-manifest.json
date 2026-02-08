@@ -1,8 +1,10 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/intake/page": "app/intake/page.js",
-  "/demo/page": "app/demo/page.js",
+  "/api/regimes/route": "app/api/regimes/route.js",
   "/inbox/page": "app/inbox/page.js",
+  "/demo/page": "app/demo/page.js",
   "/page": "app/page.js",
+  "/intake/page": "app/intake/page.js",
+  "/regimes/page": "app/regimes/page.js",
   "/replay/page": "app/replay/page.js"
 }

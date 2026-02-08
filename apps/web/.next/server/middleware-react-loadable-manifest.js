@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST='{"panels\\\\PanelHost.tsx -> ./renderers/IframePanel":{"id":7696,"files":["static/chunks/696.331df19da62dbec9.js"]},"panels\\\\PanelHost.tsx -> ./renderers/ReactPanel":{"id":123,"files":["static/chunks/123.5fdc328338d6aa30.js"]}}';
