@@ -314,9 +314,15 @@ export function observationsToWorldEvidence(
 
   for (const event of evidenceEvents) {
     // Find matching mapping rule
-    const rule = mappingRules.find(r =>
-      event.type.match(r.evidenceType.replace("*", ".*"))
-    );
+    const rule = mappingRules.find(r => {
+      // Convert evidenceType wildcard pattern to a safe regular expression:
+      // - Escape all regex metacharacters.
+      // - Then convert escaped '*' characters into '.*' wildcards.
+      const escapedPattern = r.evidenceType.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regexPattern = escapedPattern.replace(/\\\*/g, ".*");
+      const regex = new RegExp(`^${regexPattern}$`);
+      return regex.test(event.type);
+    });
 
     if (!rule) continue;
 
