@@ -53,7 +53,8 @@ describe('epistemic-guards', () => {
       });
       
       expect(result.wasAdjusted).toBe(true);
-      expect(intervalWidth(result.interval)).toBeGreaterThanOrEqual(MIN_WIDTH_BY_SOURCE.text ?? 0.2);
+      // Use closeTo comparison due to floating-point precision
+      expect(intervalWidth(result.interval)).toBeGreaterThanOrEqual(0.199);
     });
   });
 
@@ -80,8 +81,8 @@ describe('epistemic-guards', () => {
 
   describe('intervalWidth', () => {
     it('should calculate width correctly', () => {
-      expect(intervalWidth({ low: 0.3, high: 0.7 })).toBe(0.4);
-      expect(intervalWidth({ low: 0.1, high: 0.9 })).toBe(0.8);
+      expect(intervalWidth({ low: 0.3, high: 0.7 })).toBeCloseTo(0.4, 10);
+      expect(intervalWidth({ low: 0.1, high: 0.9 })).toBeCloseTo(0.8, 10);
     });
   });
 

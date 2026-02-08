@@ -49,16 +49,45 @@ export interface KillSwitchEnvironment {
 }
 
 /**
+ * Reset kill-switch state to defaults (for testing)
+ * @internal
+ */
+export function _resetKillSwitches(): void {
+  state.ai_assist = true;
+  state.freeze_markets = true;
+  state.max_uncertainty = true;
+  state.strategic_assumptions = true;
+  state.external_adapters = true;
+  initialized = false;
+}
+
+/**
+ * Get environment variables from global process if available
+ */
+function getProcessEnv(): KillSwitchEnvironment {
+  try {
+    if (typeof process !== 'undefined' && process.env) {
+      return process.env as KillSwitchEnvironment;
+    }
+  } catch {
+    // process not available (browser environment)
+  }
+  return {};
+}
+
+/**
  * Initialize kill-switches from environment variables
  * Must be called once at startup
  *
- * @param env Environment variables (e.g., process.env in Node.js)
+ * @param env Environment variables (e.g., process.env in Node.js).
+ *            If not provided, will attempt to read from global process.env
  */
-export function initKillSwitches(env: KillSwitchEnvironment = {}): void {
-  if (initialized) return;
+export function initKillSwitches(env?: KillSwitchEnvironment): void {
+  // Use provided env, or try to read from process.env, or use empty object
+  const environment = env ?? getProcessEnv();
 
   // Check master safe mode first
-  const safeMode = env.ZEO_SAFE_MODE === 'true';
+  const safeMode = environment.ZEO_SAFE_MODE === 'true';
 
   if (safeMode) {
     // Disable all features
@@ -69,11 +98,11 @@ export function initKillSwitches(env: KillSwitchEnvironment = {}): void {
     state.external_adapters = false;
   } else {
     // Check individual switches
-    state.ai_assist = env.ZEO_DISABLE_AI_ASSIST !== 'true';
-    state.freeze_markets = env.ZEO_FREEZE_MARKETS !== 'true';
-    state.max_uncertainty = env.ZEO_FORCE_MAX_UNCERTAINTY !== 'true';
-    state.strategic_assumptions = env.ZEO_DISABLE_STRATEGIC_ASSUMPTIONS !== 'true';
-    state.external_adapters = env.ZEO_DISABLE_EXTERNAL_ADAPTERS !== 'true';
+    state.ai_assist = environment.ZEO_DISABLE_AI_ASSIST !== 'true';
+    state.freeze_markets = environment.ZEO_FREEZE_MARKETS !== 'true';
+    state.max_uncertainty = environment.ZEO_FORCE_MAX_UNCERTAINTY !== 'true';
+    state.strategic_assumptions = environment.ZEO_DISABLE_STRATEGIC_ASSUMPTIONS !== 'true';
+    state.external_adapters = environment.ZEO_DISABLE_EXTERNAL_ADAPTERS !== 'true';
   }
 
   initialized = true;

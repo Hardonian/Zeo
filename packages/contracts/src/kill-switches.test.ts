@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
   initKillSwitches,
   isFeatureEnabled,
@@ -7,17 +7,30 @@ import {
   getKillSwitchStatus,
   requireAiAssist,
   requireMarketsActive,
+  _resetKillSwitches,
   type KillSwitch,
 } from './kill-switches.js';
 
 describe('kill-switches', () => {
-  const originalEnv = process.env;
+  const originalEnv = { ...process.env };
 
   beforeEach(() => {
-    // Reset environment
+    // Reset kill-switch state completely
+    _resetKillSwitches();
+    // Reset environment to clean state
     process.env = { ...originalEnv };
-    // Reset state by re-initializing
-    initKillSwitches();
+    // Clear specific env vars that tests will set
+    delete process.env.ZEO_SAFE_MODE;
+    delete process.env.ZEO_DISABLE_AI_ASSIST;
+    delete process.env.ZEO_FREEZE_MARKETS;
+    delete process.env.ZEO_FORCE_MAX_UNCERTAINTY;
+    delete process.env.ZEO_DISABLE_STRATEGIC_ASSUMPTIONS;
+    delete process.env.ZEO_DISABLE_EXTERNAL_ADAPTERS;
+  });
+
+  afterEach(() => {
+    // Restore original environment
+    process.env = originalEnv;
   });
 
   describe('isFeatureEnabled', () => {
