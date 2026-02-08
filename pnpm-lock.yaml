@@ -245,6 +245,31 @@ importers:
         specifier: ^25.2.1
         version: 25.2.1
 
+  packages/causal-skeletons:
+    dependencies:
+      '@zeo/audit':
+        specifier: workspace:*
+        version: link:../audit
+      '@zeo/causal':
+        specifier: workspace:*
+        version: link:../causal
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@zeo/counterfactuals':
+        specifier: workspace:*
+        version: link:../counterfactuals
+      '@zeo/feature-discovery':
+        specifier: workspace:*
+        version: link:../feature-discovery
+      '@zeo/models':
+        specifier: workspace:*
+        version: link:../models
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.1
+
   packages/constraints:
     dependencies:
       '@zeo/contracts':
@@ -424,6 +449,28 @@ importers:
       vitest:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@20.19.32)(jsdom@28.0.0)
+
+  packages/hypothesis-market:
+    dependencies:
+      '@zeo/audit':
+        specifier: workspace:*
+        version: link:../audit
+      '@zeo/calibration':
+        specifier: workspace:*
+        version: link:../calibration
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@zeo/hypothesis-registry':
+        specifier: workspace:*
+        version: link:../hypothesis-registry
+      '@zeo/replay':
+        specifier: workspace:*
+        version: link:../replay
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.1
 
   packages/hypothesis-registry:
     dependencies:
@@ -660,6 +707,34 @@ importers:
         specifier: ^25.2.1
         version: 25.2.1
 
+  packages/tournaments:
+    dependencies:
+      '@zeo/audit':
+        specifier: workspace:*
+        version: link:../audit
+      '@zeo/calibration':
+        specifier: workspace:*
+        version: link:../calibration
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@zeo/core':
+        specifier: workspace:*
+        version: link:../core
+      '@zeo/lenses':
+        specifier: workspace:*
+        version: link:../lenses
+      '@zeo/replay':
+        specifier: workspace:*
+        version: link:../replay
+      '@zeo/values':
+        specifier: workspace:*
+        version: link:../values
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.1
+
   packages/trust:
     dependencies:
       '@zeo/core':
@@ -701,6 +776,28 @@ importers:
       vitest:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@20.19.32)(jsdom@28.0.0)
+
+  packages/worlds:
+    dependencies:
+      '@zeo/audit':
+        specifier: workspace:*
+        version: link:../audit
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@zeo/models':
+        specifier: workspace:*
+        version: link:../models
+      '@zeo/rsl':
+        specifier: workspace:*
+        version: link:../rsl
+      '@zeo/values':
+        specifier: workspace:*
+        version: link:../values
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.1
 
 packages:
 
