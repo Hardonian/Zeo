@@ -44,3 +44,51 @@ export {
   runEvalSuite,
   runDeterminismCheck,
 } from "./runner.js";
+
+// Re-export slice evaluation types
+export type {
+  Slice,
+  SliceDimension,
+  SliceKey,
+  SliceMetrics,
+  SliceGatingRule,
+  SliceEvaluationReport,
+  SliceComputationInput,
+  SliceCsvRow,
+  PredictionOutcomePair,
+  GatingThresholdPreset,
+} from "./slice-types.js";
+
+// Re-export slice evaluation utilities
+export {
+  createSliceKey,
+  parseSliceKey,
+  extractSlices,
+  computeBrierScore,
+  computeCoverage,
+  computeMAE,
+  computeMSE,
+  computeRMSE,
+  computeUncertaintyStats,
+  determineConfidenceLevel,
+  computeSliceMetrics,
+  groupBySlice,
+  computeDatasetHash,
+  createDefaultGatingRules,
+  evaluateGatingRules,
+  computeCrossSliceAnalysis,
+  generateRecommendations,
+  computeSliceEvaluation,
+  sliceMetricsToCsvRow,
+  exportSlicesToCsv,
+  getGatingThresholds,
+} from "./slice-computation.js";
+
+// Re-export slice runner
+export {
+  runSliceEvaluation,
+  printSliceSummary,
+  checkSliceGates,
+  DEFAULT_SLICE_DIMENSIONS,
+  type SliceEvalOptions,
+} from "./slice-runner.js";
