@@ -68,7 +68,7 @@ export function isUiBridgeMessage(x: unknown): x is UiBridgeMessage {
   );
 }
 
-const ELEVATED_CAPABILITIES: (keyof UiPanelCapabilities)[] = [
+const ELEVATED_CAPABILITIES: Array<keyof UiPanelCapabilities> = [
   "needsNetwork",
   "needsFiles",
   "needsCamera",
@@ -161,10 +161,10 @@ export interface AuditLogEntry {
  * Validates HMAC-SHA256 signature for a signed manifest.
  * Returns true if signature is valid, false otherwise.
  */
-export function verifyManifestSignature(
+export async function verifyManifestSignature(
   manifest: SignedUiPanelManifest,
   secretKey: string
-): boolean {
+): Promise<boolean> {
   try {
     // Create canonical payload (excluding signature itself)
     const payload = {
@@ -314,14 +314,19 @@ export function createPermissionResponse(
   granted: boolean,
   grantId?: string
 ): { type: "check_permission"; payload: PermissionGrant } {
+  const payload: PermissionGrant = {
+    capability,
+    granted,
+    grantId: grantId ?? crypto.randomUUID(),
+  };
+  
+  if (granted) {
+    payload.grantedAt = new Date().toISOString();
+  }
+  
   return {
     type: "check_permission",
-    payload: {
-      capability,
-      granted,
-      grantId: grantId ?? crypto.randomUUID(),
-      grantedAt: granted ? new Date().toISOString() : undefined,
-    },
+    payload,
   };
 }
 
