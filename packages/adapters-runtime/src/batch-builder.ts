@@ -4,7 +4,7 @@
 
 import { createHash } from "crypto";
 import type { SignalObservation, ObservationBatch, ReplayDataset } from "@zeo/contracts";
-import type { ObservationBatchBuilder, NormalizedOutput } from "./types.js";
+import type { ObservationBatchBuilder } from "./types.js";
 import { canonicalize, computeDeterministicHash } from "./normalizer.js";
 
 export function createObservationBatchBuilder(
@@ -102,10 +102,9 @@ export function buildReplayDataset(
       decisionSpec: {
         id: `decision_${batch.batchId}`,
         title: `Auto-generated from batch ${batch.batchId}`,
-        context: {
-          description: "Replay dataset from observation batch",
-          domain: "auto",
-        },
+        createdAt: batch.createdAt,
+        horizon: "days" as const,
+        context: "Replay dataset from observation batch",
         actions: [],
         agents: [],
         constraints: [],
@@ -130,7 +129,7 @@ export function buildReplayDataset(
         resolveBy: batchEnd,
       },
       outcome: {
-        status: "unresolved",
+        status: "unresolved" as const,
         metrics: [],
       },
     };

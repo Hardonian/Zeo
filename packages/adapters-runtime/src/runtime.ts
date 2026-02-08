@@ -90,7 +90,7 @@ export function createAdapterRuntime(
   options?: { quarantineDir?: string }
 ): AdapterRuntime {
   // Initialize components
-  const _orchestrator = createFetchOrchestrator(
+  const orchestrator = createFetchOrchestrator(
     config.cache,
     config.rateLimit,
     config.retry

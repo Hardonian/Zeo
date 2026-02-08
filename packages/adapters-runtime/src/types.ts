@@ -5,9 +5,6 @@
 import type {
   SignalObservation,
   ObservationBatch,
-  ProvenancePointer,
-  SourceDescriptor,
-  SignalCatalogEntry,
   ReplayDataset,
 } from "@zeo/contracts";
 

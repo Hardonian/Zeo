@@ -106,12 +106,12 @@ export function createNormalizer(
       
       // Canonicalize each observation
       if (options.canonicalizeKeys) {
-        data = data.map(canonicalize);
+        data = data.map(canonicalize<SignalObservation>);
       }
       
       // Stable sort
       if (options.stableSort) {
-        data = stableSort(data, options.sortBy);
+        data = stableSort<SignalObservation>(data, options.sortBy);
       }
       
       // Compute checksums

@@ -2,7 +2,6 @@
  * Data integrity enforcer - invariants for safe data ingestion
  */
 
-import { createHash } from "crypto";
 import type { SignalObservation, ObservationBatch } from "@zeo/contracts";
 import type { DataIntegrityRule, IntegrityValidationResult } from "./types.js";
 import { IntegrityError } from "./errors.js";

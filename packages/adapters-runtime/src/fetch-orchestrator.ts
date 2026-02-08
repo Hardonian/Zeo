@@ -12,7 +12,7 @@ import type {
   RetryPolicy,
   FetchMetrics,
 } from "./types.js";
-import { RateLimitError, CacheError } from "./errors.js";
+import { RateLimitError } from "./errors.js";
 
 export const DEFAULT_RETRY_POLICY: RetryPolicy = {
   maxRetries: 3,
