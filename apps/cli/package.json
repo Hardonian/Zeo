@@ -21,6 +21,9 @@
     "@zeo/eval": "workspace:*",
     "@zeo/budgets": "workspace:*",
     "@zeo/jobs": "workspace:*",
+    "@zeo/adapters": "workspace:*",
+    "@zeo/adapters-runtime": "workspace:*",
+    "@zeo/dataset-builder": "workspace:*",
     "nanoid": "^5.0.7"
   },
   "devDependencies": {

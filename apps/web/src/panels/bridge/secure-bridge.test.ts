@@ -167,7 +167,7 @@ describe('Secure Bridge', () => {
         const response = handler(message, 'https://example.com');
         
         if (i >= 5 && response.type === 'error') {
-          expect(response.payload.code).toBe('RATE_LIMIT_EXCEEDED');
+          const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('RATE_LIMIT_EXCEEDED');
         }
       }
     });
@@ -185,7 +185,7 @@ describe('Secure Bridge', () => {
       const response = handler(message, 'https://example.com');
       
       if (response.type === 'error') {
-        expect(response.payload.code).toBe('PERMISSION_DENIED');
+        const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('PERMISSION_DENIED');
       }
     });
 
@@ -251,7 +251,8 @@ describe('Secure Bridge', () => {
       const response = handler(message, 'https://example.com');
       
       if (response.type === 'request_permission') {
-        expect(response.payload.state).toBe('prompt');
+        const permPayload = response.payload as { state: string };
+        expect(permPayload.state).toBe('prompt');
       }
     });
 
@@ -266,7 +267,7 @@ describe('Secure Bridge', () => {
       const response = handler(message, 'https://example.com');
       
       if (response.type === 'error') {
-        expect(response.payload.code).toBe('CAPABILITY_NOT_DECLARED');
+        const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('CAPABILITY_NOT_DECLARED');
       }
     });
   });
@@ -350,7 +351,7 @@ describe('Secure Bridge', () => {
       const response = handler(message, 'https://example.com');
       
       if (response.type === 'error') {
-        expect(response.payload.code).toBe('VALIDATION_ERROR');
+        const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('VALIDATION_ERROR');
       }
     });
 
@@ -365,7 +366,7 @@ describe('Secure Bridge', () => {
       const response = handler(message, 'https://example.com');
       
       if (response.type === 'error') {
-        expect(response.payload.code).toBe('VALIDATION_ERROR');
+        const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('VALIDATION_ERROR');
       }
     });
 
@@ -380,7 +381,7 @@ describe('Secure Bridge', () => {
       const response = handler(message, 'https://example.com');
       
       if (response.type === 'error') {
-        expect(response.payload.code).toBe('VALIDATION_ERROR');
+        const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('VALIDATION_ERROR');
       }
     });
   });
@@ -636,7 +637,7 @@ describe('Security Invariants', () => {
     const response = handler(message, 'https://example.com');
     
     if (response.type === 'error') {
-      expect(response.payload.code).toBe('PERMISSION_DENIED');
+      const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('PERMISSION_DENIED');
     }
   });
 
@@ -654,7 +655,7 @@ describe('Security Invariants', () => {
     const response = handler(message, 'https://any-origin.com');
     
     if (response.type === 'error') {
-      expect(response.payload.code).toBe('ORIGIN_MISMATCH');
+      const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('ORIGIN_MISMATCH');
     }
   });
 
