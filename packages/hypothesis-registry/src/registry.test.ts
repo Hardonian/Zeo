@@ -140,9 +140,9 @@ describe("HypothesisRegistry", () => {
 
   describe("findRelated", () => {
     it("should find hypotheses with similar tags", () => {
-      const h1 = registry.register({ statement: "H1", tags: ["a", "b", "c"] });
-      registry.register({ statement: "H2", tags: ["b", "c", "d"] });
-      registry.register({ statement: "H3", tags: ["x", "y", "z"] });
+      const h1 = registry.register({ statement: "H1", status: "pending", confidence: 0.5, evidence: [], tags: ["a", "b", "c"] });
+      registry.register({ statement: "H2", status: "pending", confidence: 0.5, evidence: [], tags: ["b", "c", "d"] });
+      registry.register({ statement: "H3", status: "pending", confidence: 0.5, evidence: [], tags: ["x", "y", "z"] });
 
       const related = registry.findRelated(h1.id, 0.3);
       expect(related.length).toBeGreaterThan(0);
@@ -151,8 +151,8 @@ describe("HypothesisRegistry", () => {
 
   describe("merge", () => {
     it("should merge multiple hypotheses into one", () => {
-      const h1 = registry.register({ statement: "H1", confidence: 0.6 });
-      const h2 = registry.register({ statement: "H2", confidence: 0.8 });
+      const h1 = registry.register({ statement: "H1", status: "pending", confidence: 0.6, evidence: [], tags: [] });
+      const h2 = registry.register({ statement: "H2", status: "pending", confidence: 0.8, evidence: [], tags: [] });
 
       const merged = registry.merge([h1.id, h2.id]);
 
@@ -163,7 +163,7 @@ describe("HypothesisRegistry", () => {
     });
 
     it("should return undefined for less than 2 hypotheses", () => {
-      const h1 = registry.register({ statement: "H1" });
+      const h1 = registry.register({ statement: "H1", status: "pending", confidence: 0.5, evidence: [], tags: [] });
       const merged = registry.merge([h1.id]);
 
       expect(merged).toBeUndefined();
