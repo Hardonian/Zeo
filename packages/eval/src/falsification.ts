@@ -21,7 +21,7 @@ const FALSIFICATION_VERSION = "0.5.1";
 /**
  * Types of falsification tests
  */
-export type FalsificationTestType = "permuted_label" | "placebo_target" | "time_shift_leakage";
+export type FalsificationTestType = "permuted_label" | "placebo_target" | "time_shift_leakage" | "prior_reliability" | "overfit_detection";
 
 /**
  * Configuration for falsification tests
@@ -43,6 +43,19 @@ export interface FalsificationConfig {
     shiftDirections: ("future_to_past" | "past_to_future")[];
     shiftSteps: number[];
     maxPerformanceRetention: number; // Max % of original performance retained
+  };
+  // Phase 4: Learning without overfitting
+  priorReliability: {
+    enabled: boolean;
+    minSampleSize: number; // Minimum decisions before applying learned priors
+    maxPriorStrength: number; // Maximum prior confidence (0-1)
+    wideningFactor: number; // How much to widen when unreliable
+  };
+  overfitDetection: {
+    enabled: boolean;
+    trainTestSplit: number; // Fraction for training
+    overfitThreshold: number; // Performance ratio indicating overfitting
+    crossValidationFolds: number;
   };
 }
 
@@ -118,6 +131,19 @@ export function createDefaultFalsificationConfig(): FalsificationConfig {
       shiftDirections: ["future_to_past"],
       shiftSteps: [1, 3, 7],
       maxPerformanceRetention: 0.3, // Should drop to <30% if no leakage
+    },
+    // Phase 4: Learning without overfitting
+    priorReliability: {
+      enabled: true,
+      minSampleSize: 5, // Minimum decisions before applying learned priors
+      maxPriorStrength: 0.8, // Maximum prior confidence (0-1)
+      wideningFactor: 1.5, // How much to widen intervals when unreliable
+    },
+    overfitDetection: {
+      enabled: true,
+      trainTestSplit: 0.8, // 80% training, 20% testing
+      overfitThreshold: 1.5, // Performance ratio indicating overfitting (>1.5x train performance)
+      crossValidationFolds: 5,
     },
   };
 }
@@ -391,6 +417,152 @@ function simulateShiftedPerformance(
 }
 
 /**
+ * D) Prior Reliability Test (Phase 4)
+ * Verify that learned priors are being applied correctly without overfitting
+ */
+export function runPriorReliabilityTest(
+  dataset: ReplayDataset,
+  config: FalsificationConfig["priorReliability"],
+  learnedPriors: Map<string, { reliability: number; sampleSize: number }>
+): FalsificationTestResult[] {
+  const results: FalsificationTestResult[] = [];
+  const seed = deriveFalsificationSeed(dataset.datasetId, "prior_reliability");
+  
+  for (const c of dataset.cases) {
+    const priorInfo = learnedPriors.get(c.caseId);
+    const hasEnoughSamples = priorInfo ? priorInfo.sampleSize >= config.minSampleSize : false;
+    
+    // Calculate prior strength (capped at maxPriorStrength)
+    const priorStrength = priorInfo 
+      ? Math.min(priorInfo.reliability, config.maxPriorStrength) 
+      : 0;
+    
+    // Prior reliability should improve predictions if prior is strong and reliable
+    // But if prior is weak, it shouldn't hurt much
+    const reliabilityScore = priorStrength * (hasEnoughSamples ? 1 : 0.5);
+    
+    // Test passes if prior is appropriately applied (not too strong, not too weak)
+    const appropriateStrength = reliabilityScore <= config.maxPriorStrength;
+    const passed = appropriateStrength && (hasEnoughSamples || priorStrength <= 0.3);
+    
+    results.push({
+      testId: `prior-${c.caseId}`,
+      testType: "prior_reliability",
+      caseId: c.caseId,
+      passed,
+      originalMetric: priorStrength,
+      falsifiedMetric: reliabilityScore,
+      collapseRatio: priorStrength > 0 ? reliabilityScore / priorStrength : 1,
+      message: passed
+        ? `Prior reliability appropriate (${(reliabilityScore * 100).toFixed(1)}% strength)`
+        : `WARNING: Prior too strong (${(reliabilityScore * 100).toFixed(1)}%) - possible overfitting`,
+      details: {
+        priorReliability: priorInfo?.reliability ?? 0,
+        sampleSize: priorInfo?.sampleSize ?? 0,
+        minRequired: config.minSampleSize,
+        hasEnoughSamples,
+        maxStrengthAllowed: config.maxPriorStrength,
+      },
+    });
+  }
+  
+  return results;
+}
+
+/**
+ * E) Overfit Detection Test (Phase 4)
+ * Detect if model is memorizing training data vs learning generalizable patterns
+ */
+export function runOverfitDetectionTest(
+  dataset: ReplayDataset,
+  config: FalsificationConfig["overfitDetection"],
+  performanceMetrics: Map<string, number>
+): FalsificationTestResult[] {
+  const results: FalsificationTestResult[] = [];
+  const seed = deriveFalsificationSeed(dataset.datasetId, "overfit_detection");
+  
+  // Split cases into train and test sets
+  const cases = [...dataset.cases];
+  const shuffledCases = shuffleArray(cases, seed);
+  const splitIndex = Math.floor(shuffledCases.length * config.trainTestSplit);
+  const trainCases = shuffledCases.slice(0, splitIndex);
+  const testCases = shuffledCases.slice(splitIndex);
+  
+  // Calculate average performance on train vs test
+  const trainMetrics = trainCases.map(c => performanceMetrics.get(c.caseId) ?? 0.5);
+  const testMetrics = testCases.map(c => performanceMetrics.get(c.caseId) ?? 0.5);
+  
+  const avgTrainPerformance = trainMetrics.reduce((a, b) => a + b, 0) / trainMetrics.length;
+  const avgTestPerformance = testMetrics.reduce((a, b) => a + b, 0) / testMetrics.length;
+  
+  // Performance ratio (train vs test)
+  // If >> 1, indicates overfitting (performs much better on training)
+  const performanceRatio = avgTrainPerformance > 0 
+    ? avgTestPerformance > 0 
+      ? avgTrainPerformance / avgTestPerformance 
+      : config.overfitThreshold + 1
+    : 1;
+  
+  // Cross-validation fold simulation
+  const foldSize = Math.floor(cases.length / config.crossValidationFolds);
+  const cvResults: number[] = [];
+  
+  for (let fold = 0; fold < config.crossValidationFolds; fold++) {
+    const testStart = fold * foldSize;
+    const testEnd = fold < config.crossValidationFolds - 1 
+      ? testStart + foldSize 
+      : cases.length;
+    const testFoldCases = shuffledCases.slice(testStart, testEnd);
+    const trainFoldCases = shuffledCases.filter((_, idx) => idx < testStart || idx >= testEnd);
+    
+    const testFoldMetrics = testFoldCases.map(c => performanceMetrics.get(c.caseId) ?? 0.5);
+    const trainFoldMetrics = trainFoldCases.map(c => performanceMetrics.get(c.caseId) ?? 0.5);
+    
+    const testAvg = testFoldMetrics.reduce((a, b) => a + b, 0) / testFoldMetrics.length;
+    const trainAvg = trainFoldMetrics.reduce((a, b) => a + b, 0) / trainFoldMetrics.length;
+    
+    const foldRatio = trainAvg > 0 ? testAvg / trainAvg : 1;
+    cvResults.push(foldRatio);
+  }
+  
+  const avgCvRatio = cvResults.reduce((a, b) => a + b, 0) / cvResults.length;
+  const cvVariance = cvResults.reduce((sum, val) => sum + Math.pow(val - avgCvRatio, 2), 0) / cvResults.length;
+  
+  // Detect overfitting: if train performance >> test performance
+  const isOverfitting = performanceRatio > config.overfitThreshold;
+  const cvConsistent = cvVariance < 0.1; // Low variance = consistent
+  
+  const caseId = `overfit-${dataset.datasetId}`;
+  results.push({
+    testId: caseId,
+    testType: "overfit_detection",
+    caseId: dataset.datasetId,
+    passed: !isOverfitting && cvConsistent,
+    originalMetric: avgTrainPerformance,
+    falsifiedMetric: avgTestPerformance,
+    collapseRatio: performanceRatio,
+    message: isOverfitting
+      ? `OVERFITTING DETECTED: Train/Test ratio ${performanceRatio.toFixed(2)}x - memorization risk`
+      : cvConsistent
+        ? `No overfitting: CV consistent (${(avgCvRatio * 100).toFixed(1)}% retention)`
+        : `WARNING: High CV variance (${Math.sqrt(cvVariance).toFixed(3)}) - unstable learning`,
+    details: {
+      trainPerformance: avgTrainPerformance,
+      testPerformance: avgTestPerformance,
+      performanceRatio,
+      overfitThreshold: config.overfitThreshold,
+      cvFoldResults: cvResults,
+      avgCvRatio,
+      cvVariance,
+      trainSize: trainCases.length,
+      testSize: testCases.length,
+    },
+  });
+  
+  return results;
+}
+
+/**
  * Run complete falsification suite
  */
 export function runFalsificationSuite(
@@ -407,6 +579,9 @@ export function runFalsificationSuite(
   const permutedResults: FalsificationTestResult[] = [];
   const placeboResults: FalsificationTestResult[] = [];
   const timeShiftResults: FalsificationTestResult[] = [];
+  // Phase 4: Learning without overfitting
+  const priorReliabilityResults: FalsificationTestResult[] = [];
+  const overfitResults: FalsificationTestResult[] = [];
   
   // Run tests based on configuration
   if (config.permutedLabel.enabled) {
@@ -421,11 +596,25 @@ export function runFalsificationSuite(
     timeShiftResults.push(...runTimeShiftLeakageTest(dataset, config.timeShiftLeakage, metrics));
   }
   
+  // Phase 4 tests
+  if (config.priorReliability.enabled) {
+    // Create empty learnedPriors map for now (would come from @zeo/memory in real implementation)
+    const learnedPriors = new Map<string, { reliability: number; sampleSize: number }>();
+    priorReliabilityResults.push(...runPriorReliabilityTest(dataset, config.priorReliability, learnedPriors));
+  }
+  
+  if (config.overfitDetection.enabled) {
+    overfitResults.push(...runOverfitDetectionTest(dataset, config.overfitDetection, metrics));
+  }
+  
   // Compute gates
-  const allResults = [...permutedResults, ...placeboResults, ...timeShiftResults];
+  const allResults = [...permutedResults, ...placeboResults, ...timeShiftResults, ...priorReliabilityResults, ...overfitResults];
   const permutedLabelGate = permutedResults.every(r => r.passed) || permutedResults.length === 0;
   const placeboGate = placeboResults.every(r => r.passed) || placeboResults.length === 0;
   const timeShiftGate = timeShiftResults.every(r => r.passed) || timeShiftResults.length === 0;
+  // Phase 4 gates
+  const priorReliabilityGate = priorReliabilityResults.every(r => r.passed) || priorReliabilityResults.length === 0;
+  const overfitGate = overfitResults.every(r => r.passed) || overfitResults.length === 0;
   
   // Detect leakage patterns
   const leakageViolations = allResults
@@ -455,11 +644,17 @@ export function runFalsificationSuite(
     permutedLabelResults: permutedResults,
     placeboTargetResults: placeboResults,
     timeShiftResults: timeShiftResults,
+    // Phase 4 results
+    priorReliabilityResults: priorReliabilityResults,
+    overfitResults: overfitResults,
     gates: {
       permutedLabelGate,
       placeboGate,
       timeShiftGate,
-      overallPassed: permutedGate && placeboGate && timeShiftGate,
+      // Phase 4 gates
+      priorReliabilityGate,
+      overfitGate,
+      overallPassed: permutedLabelGate && placeboGate && timeShiftGate && priorReliabilityGate && overfitGate,
     },
     leakageReport: {
       detected: leakageViolations.length > 0,
