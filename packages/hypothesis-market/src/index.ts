@@ -1,15 +1,16 @@
 /**
  * Hypothesis Market Engine
- * 
+ *
  * Internal market for hypotheses where credence reallocates based on outcomes.
  * No hypothesis ever becomes "true" - only gains or loses influence.
- * 
+ *
  * @module @zeo/hypothesis-market
  * @version 0.5.0
  */
 
 import type { Hypothesis, HypothesisStatus } from '@zeo/hypothesis-registry';
 import type { OutcomeRecord } from '@zeo/contracts';
+import { requireMarketsActive } from '@zeo/contracts';
 
 type HypothesisId = string;
 
