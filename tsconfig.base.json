@@ -158,6 +158,12 @@
       ],
       "@zeo/feature-discovery": [
         "packages/feature-discovery/src"
+      ],
+      "@zeo/mcp-server": [
+        "packages/mcp-server/src"
+      ],
+      "@zeo/mcp-interop": [
+        "packages/mcp-interop/src"
       ]
     }
   }

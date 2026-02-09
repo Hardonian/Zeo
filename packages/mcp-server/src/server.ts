@@ -112,9 +112,9 @@ export function createMcpServer(config: McpConfig): McpServer {
         if (sizeError) {
             return JSON.stringify({
                 jsonrpc: "2.0",
-                id: null,
+                id: 0,
                 error: sizeError,
-            } satisfies JsonRpcResponse);
+            } as JsonRpcResponse);
         }
 
         let request: JsonRpcRequest;
@@ -123,9 +123,9 @@ export function createMcpServer(config: McpConfig): McpServer {
         } catch {
             return JSON.stringify({
                 jsonrpc: "2.0",
-                id: null,
+                id: 0,
                 error: { code: -32700, message: "Parse error" },
-            } satisfies JsonRpcResponse);
+            } as JsonRpcResponse);
         }
 
         // Notifications (no id) — ack silently
