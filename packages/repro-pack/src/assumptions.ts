@@ -5,7 +5,7 @@
  * including source, sensitivity, and uncertainty.
  */
 
-import type { Assumption, AssumptionSource, Uncertainty, RunEvent } from "./types.js";
+import type { Assumption, AssumptionSource, Uncertainty, RunEvent, Inference, AssumptionSensitivity } from "./types.js";
 
 let _nextEventId = 0;
 function nextEventId(): string {
@@ -13,11 +13,12 @@ function nextEventId(): string {
 }
 
 /**
- * Mutable tracker for assumptions collected during a run.
+ * Mutable tracker for assumptions and inferences collected during a run.
  */
 export class AssumptionTracker {
     private readonly assumptions: Map<string, Assumption> = new Map();
     private readonly uncertainties: Map<string, Uncertainty> = new Map();
+    private readonly inferences: Map<string, Inference> = new Map();
     private readonly events: RunEvent[] = [];
 
     /**
@@ -50,7 +51,7 @@ export class AssumptionTracker {
         value: unknown,
         units: string,
         rationale: string,
-        sensitivity: number = 0.5,
+        sensitivity: AssumptionSensitivity = "med",
     ): Assumption {
         const assumption: Assumption = {
             key,
@@ -60,7 +61,9 @@ export class AssumptionTracker {
             source: "default",
             rationale,
             sensitivity,
-            provenance: "system default",
+            provenance: {
+                path: "system default",
+            },
         };
         this.recordAssumption(assumption);
         return assumption;
@@ -75,7 +78,7 @@ export class AssumptionTracker {
         value: unknown,
         units: string,
         rationale: string,
-        sensitivity: number = 0.3,
+        sensitivity: AssumptionSensitivity = "low",
     ): Assumption {
         const assumption: Assumption = {
             key,
@@ -85,10 +88,32 @@ export class AssumptionTracker {
             source: "system",
             rationale,
             sensitivity,
-            provenance: "system-derived",
+            provenance: {
+                path: "system-derived",
+            },
         };
         this.recordAssumption(assumption);
         return assumption;
+    }
+
+    /**
+     * Record an inference computation.
+     */
+    recordInference(inference: Inference): void {
+        this.inferences.set(inference.key, inference);
+
+        const event: RunEvent = {
+            id: nextEventId(),
+            timestamp: new Date().toISOString(),
+            type: "INFERENCE_COMPUTED",
+            data: {
+                key: inference.key,
+                value: inference.value,
+                method: inference.method,
+                uncertainty: inference.uncertainty,
+            },
+        };
+        this.events.push(event);
     }
 
     /**
@@ -96,13 +121,25 @@ export class AssumptionTracker {
      */
     setUncertainty(key: string, uncertainty: Uncertainty): void {
         this.uncertainties.set(key, uncertainty);
+
+        const event: RunEvent = {
+            id: nextEventId(),
+            timestamp: new Date().toISOString(),
+            type: "UNCERTAINTY_RECORDED",
+            data: {
+                key,
+                kind: uncertainty.kind,
+                params: uncertainty.params,
+            },
+        };
+        this.events.push(event);
     }
 
     /**
      * Mark an assumption's uncertainty as unknown.
      */
     markUnknownUncertainty(key: string, note?: string): void {
-        this.uncertainties.set(key, {
+        this.setUncertainty(key, {
             kind: "unknown",
             params: {},
             note: note ?? "Uncertainty not quantifiable for this parameter",
@@ -114,6 +151,13 @@ export class AssumptionTracker {
      */
     getAssumptions(): Assumption[] {
         return Array.from(this.assumptions.values());
+    }
+
+    /**
+     * Get all recorded inferences.
+     */
+    getInferences(): Inference[] {
+        return Array.from(this.inferences.values());
     }
 
     /**

@@ -107,6 +107,43 @@ export type LensEvaluation = {
   dominatedActions: UUID[]; // Action IDs
 };
 
+export type AssumptionSource = "user" | "default" | "system";
+export type AssumptionSensitivity = "low" | "med" | "high";
+
+export interface AssumptionProvenance {
+  path?: string;
+  derivedFrom?: string[];
+}
+
+export type Assumption = {
+  key: string;
+  label: string;
+  value: unknown;
+  units: string;
+  source: AssumptionSource;
+  rationale: string;
+  sensitivity: AssumptionSensitivity;
+  provenance: AssumptionProvenance;
+};
+
+export type UncertaintyKind = "interval" | "stddev" | "distribution" | "unknown";
+
+export type Uncertainty = {
+  kind: UncertaintyKind;
+  params?: Record<string, unknown>;
+  method?: string;
+  note?: string;
+};
+
+export type Inference = {
+  key: string;
+  value: unknown;
+  units: string;
+  method: string;
+  inputs?: string[];
+  uncertainty?: Uncertainty;
+}
+
 export type DecisionResult = {
   graph: BranchGraph;
   evaluations: LensEvaluation[];
@@ -115,6 +152,11 @@ export type DecisionResult = {
     why: string[];
     whatWouldChange: { assumptionId: UUID; flipCondition: string }[];
   };
+  assumptions?: Assumption[];
+  inferences?: Inference[];
+  uncertaintyMap?: Record<string, Uncertainty>;
+  provenance?: Record<string, any>;
+  hygieneWarnings?: any[];
 };
 
 /**

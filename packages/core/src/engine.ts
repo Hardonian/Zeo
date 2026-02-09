@@ -230,7 +230,14 @@ export type RunDecisionOpts = {
 export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): DecisionResult {
   if (opts?.tracker) {
     opts.tracker.recordSystemAssumption("max_depth", "Branch Depth Limit", opts.depth ?? defaultHeuristics.maxDepth, "levels", "Computational complexity constraint");
-    opts.tracker.recordSystemAssumption("pruning_enabled", "Pruning Strategy", opts.pruning ? "custom" : "standard", "mode", "Graph size management");
+    opts.tracker.recordSystemAssumption("max_branches_per_action", "Branch Fan-out Limit", defaultHeuristics.maxBranchesPerAction, "branches", "Heuristic exploration limit");
+
+    const pruningVars = opts?.pruning ? "custom" : "standard";
+    opts.tracker.recordSystemAssumption("pruning_strategy", "Pruning Strategy", pruningVars, "mode", "Graph size management");
+
+    const pConfig = { ...defaultPruningConfig, ...opts?.pruning };
+    opts.tracker.recordSystemAssumption("pruning_max_nodes", "Max Graph Nodes", pConfig.maxNodes, "nodes", "Performance constraint");
+    opts.tracker.recordSystemAssumption("pruning_max_edges", "Max Graph Edges", pConfig.maxEdges, "edges", "Performance constraint");
   }
 
   const rawGraph = generateBranchGraph(spec, { ...defaultHeuristics, maxDepth: opts?.depth ?? 2 });
@@ -268,6 +275,18 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
     flipConditions = generateFlipConditions(spec, evaluations);
   }
 
+  if (opts?.tracker) {
+    for (const evalResult of evaluations) {
+      opts.tracker.recordInference({
+        key: `eval_${evalResult.lens}`,
+        value: evalResult.robustActions,
+        units: "action_ids",
+        method: opts?.useQuantEngine ? "quantitative_analysis" : "heuristic_analysis",
+        uncertainty: { kind: "unknown", params: {}, note: "Heuristic confidence not quantified" }
+      });
+    }
+  }
+
   const nextBestEvidence = [
     {
       prompt: "Ask or verify the counterparty's timeline constraints (decision deadline, internal approvals).",
@@ -282,6 +301,16 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
       rationale: "Objective ordering determines which concessions are high-leverage and which are wasted.",
     },
   ];
+
+  if (opts?.tracker) {
+    opts.tracker.recordInference({
+      key: "next_best_evidence",
+      value: nextBestEvidence.map(e => e.prompt),
+      units: "prompts",
+      method: "heuristic_template",
+      uncertainty: { kind: "unknown", params: {}, note: "Static heuristics" }
+    });
+  }
 
   return {
     graph,

@@ -9,6 +9,13 @@
 
 export type AssumptionSource = "user" | "default" | "system";
 
+export type AssumptionSensitivity = "low" | "med" | "high";
+
+export interface AssumptionProvenance {
+    path?: string;
+    derivedFrom?: string[];
+}
+
 export interface Assumption {
     key: string;
     label: string;
@@ -16,17 +23,26 @@ export interface Assumption {
     units: string;
     source: AssumptionSource;
     rationale: string;
-    sensitivity: number; // 0–1, higher = more sensitive
-    provenance: string;  // traceable origin description
+    sensitivity: AssumptionSensitivity;
+    provenance: AssumptionProvenance;
 }
 
 export type UncertaintyKind = "interval" | "stddev" | "distribution" | "unknown";
 
 export interface Uncertainty {
     kind: UncertaintyKind;
-    params: Record<string, number>;
+    params?: Record<string, unknown>;
     method?: string;
     note?: string;
+}
+
+export interface Inference {
+    key: string;
+    value: unknown;
+    units: string;
+    method: string;
+    inputs?: string[];
+    uncertainty?: Uncertainty;
 }
 
 // ─── Typed Cost / Time / Risk ───────────────────────────────────────────────
@@ -90,10 +106,15 @@ export type PlanResult = FeasiblePlan | InfeasiblePlanExplanation;
 export type RunEventType =
     | "RUN_STARTED"
     | "ASSUMPTION_APPLIED"
+    | "INFERENCE_COMPUTED"
+    | "UNCERTAINTY_RECORDED"
     | "CONSTRAINT_EVALUATED"
     | "PLAN_SELECTED"
     | "PLAN_INFEASIBLE"
     | "ARTIFACT_PRODUCED"
+    | "WHY_NOT_COMPUTED"
+    | "FLIP_LEVERS_SUMMARIZED"
+    | "SENSITIVITY_RANKED"
     | "RUN_COMPLETED"
     | "RUN_FAILED";
 
