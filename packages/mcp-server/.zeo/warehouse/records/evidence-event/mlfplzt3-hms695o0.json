@@ -1,0 +1,51 @@
+{
+  "id": "mlfplzt3-hms695o0",
+  "kind": "evidence-event",
+  "createdAt": "2026-02-09T21:54:08.391Z",
+  "updatedAt": "2026-02-09T21:54:08.391Z",
+  "tenant": "local",
+  "hashes": {
+    "contentHash": "e6da4cc2cfcc28194366c9d17bd981b1d4c5a91dbf6b01f77da90c812761166d",
+    "provenanceHash": "7346f74e7a0b89a1a742c1170832caaa947811d2f85114e05d529b1e4e7140ae"
+  },
+  "content": {
+    "eventId": "mlfplzt3-h9l8uec9",
+    "eventType": "import",
+    "observedAt": "2026-02-09T21:54:08.391Z",
+    "recordedAt": "2026-02-09T21:54:08.391Z",
+    "sources": [
+      {
+        "kind": "text",
+        "sourceId": "mcp:notes",
+        "offset": 0,
+        "length": 21,
+        "capturedAt": "2026-02-09T21:54:08.391Z",
+        "checksum": "e6da4cc2cfcc28194366c9d17bd981b1d4c5a91dbf6b01f77da90c812761166d"
+      }
+    ],
+    "content": {
+      "type": "text",
+      "text": "# Search Test 1\n\nFirst note for search",
+      "structured": {
+        "title": "Search Test 1",
+        "body": "First note for search",
+        "source": "mcp:notes",
+        "attachmentRefs": []
+      }
+    },
+    "checksums": {
+      "contentSha256": "e6da4cc2cfcc28194366c9d17bd981b1d4c5a91dbf6b01f77da90c812761166d",
+      "provenanceHash": "7346f74e7a0b89a1a742c1170832caaa947811d2f85114e05d529b1e4e7140ae"
+    },
+    "tags": [
+      "mcp:notes",
+      "search-test"
+    ],
+    "associatedDecisionIds": [],
+    "associatedSignalIds": []
+  },
+  "tags": [
+    "mcp:notes",
+    "search-test"
+  ]
+}

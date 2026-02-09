@@ -1,0 +1,120 @@
+{
+  "mlfplzrs-qgnggxpy": {
+    "id": "mlfplzrs-qgnggxpy",
+    "kind": "evidence-event",
+    "createdAt": "2026-02-09T21:54:08.343Z",
+    "updatedAt": "2026-02-09T21:54:08.346Z",
+    "contentHash": "1061cc1371489aa04c5cebb18a76781c9eb1f809e81a666b1ad428cbbd5bb856",
+    "tenant": "local",
+    "tags": [
+      "mcp:notes",
+      "test",
+      "mcp"
+    ]
+  },
+  "mlfplzry-w6hjjfy9": {
+    "id": "mlfplzry-w6hjjfy9",
+    "kind": "evidence-event",
+    "createdAt": "2026-02-09T21:54:08.350Z",
+    "updatedAt": "2026-02-09T21:54:08.350Z",
+    "contentHash": "c2b5fd0d6b9fb4062504738cca6c32e163057ad53e637048c3adddeb7898793d",
+    "tenant": "local",
+    "tags": [
+      "mcp:notes",
+      "determinism"
+    ]
+  },
+  "mlfplzs9-ev6emz2j": {
+    "id": "mlfplzs9-ev6emz2j",
+    "kind": "evidence-event",
+    "createdAt": "2026-02-09T21:54:08.360Z",
+    "updatedAt": "2026-02-09T21:54:08.361Z",
+    "contentHash": "c2b5fd0d6b9fb4062504738cca6c32e163057ad53e637048c3adddeb7898793d",
+    "tenant": "local",
+    "tags": [
+      "mcp:notes",
+      "determinism"
+    ]
+  },
+  "mlfplzsm-0wniidjb": {
+    "id": "mlfplzsm-0wniidjb",
+    "kind": "evidence-event",
+    "createdAt": "2026-02-09T21:54:08.373Z",
+    "updatedAt": "2026-02-09T21:54:08.374Z",
+    "contentHash": "c2cb567378a0c76b20e084d882004c88f2dfe6414d16820b5077c58ef8d1944d",
+    "tenant": "local",
+    "tags": [
+      "mcp:evidence",
+      "sensor",
+      "temperature"
+    ]
+  },
+  "mlfplzt3-hms695o0": {
+    "id": "mlfplzt3-hms695o0",
+    "kind": "evidence-event",
+    "createdAt": "2026-02-09T21:54:08.391Z",
+    "updatedAt": "2026-02-09T21:54:08.391Z",
+    "contentHash": "e6da4cc2cfcc28194366c9d17bd981b1d4c5a91dbf6b01f77da90c812761166d",
+    "tenant": "local",
+    "tags": [
+      "mcp:notes",
+      "search-test"
+    ]
+  },
+  "mlfplzta-x14t57id": {
+    "id": "mlfplzta-x14t57id",
+    "kind": "evidence-event",
+    "createdAt": "2026-02-09T21:54:08.398Z",
+    "updatedAt": "2026-02-09T21:54:08.398Z",
+    "contentHash": "c1c62a56a65def8271e46d7e228bb3fd212ec552d9d4361538ceb4912932bfba",
+    "tenant": "local",
+    "tags": [
+      "mcp:notes",
+      "search-test"
+    ]
+  },
+  "mlfplzu5-w3id1f7a": {
+    "id": "mlfplzu5-w3id1f7a",
+    "kind": "evidence-event",
+    "createdAt": "2026-02-09T21:54:08.429Z",
+    "updatedAt": "2026-02-09T21:54:08.430Z",
+    "contentHash": "8aef463cfd27e85d99a864eb51ca31242611117603bbe262e2b5b84f091155f8",
+    "tenant": "local",
+    "tags": [
+      "mcp:notes"
+    ]
+  },
+  "mlfplzu9-xh8i9z2s": {
+    "id": "mlfplzu9-xh8i9z2s",
+    "kind": "evidence-event",
+    "createdAt": "2026-02-09T21:54:08.433Z",
+    "updatedAt": "2026-02-09T21:54:08.433Z",
+    "contentHash": "903adef53c28002e90ccc433e28a6178dc4932a86b9d61170c6b6cc5977476e1",
+    "tenant": "local",
+    "tags": [
+      "mcp:notes"
+    ]
+  },
+  "mlfplzul-0t5c3sl8": {
+    "id": "mlfplzul-0t5c3sl8",
+    "kind": "evidence-event",
+    "createdAt": "2026-02-09T21:54:08.445Z",
+    "updatedAt": "2026-02-09T21:54:08.445Z",
+    "contentHash": "0b9a36f1a94a6e4bbfb37d2acaff3ee19485b9d94e2d66e0bc3aa04ee669f82d",
+    "tenant": "local",
+    "tags": [
+      "mcp:notes"
+    ]
+  },
+  "mlfplzuy-2gub25rb": {
+    "id": "mlfplzuy-2gub25rb",
+    "kind": "evidence-event",
+    "createdAt": "2026-02-09T21:54:08.457Z",
+    "updatedAt": "2026-02-09T21:54:08.458Z",
+    "contentHash": "b53137b8e0762fa495c81d81f09d6a1acddc0ca5ceb57b460afb4c842d1de797",
+    "tenant": "local",
+    "tags": [
+      "mcp:notes"
+    ]
+  }
+}

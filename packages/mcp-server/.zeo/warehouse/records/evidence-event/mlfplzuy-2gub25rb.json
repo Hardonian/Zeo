@@ -1,0 +1,49 @@
+{
+  "id": "mlfplzuy-2gub25rb",
+  "kind": "evidence-event",
+  "createdAt": "2026-02-09T21:54:08.457Z",
+  "updatedAt": "2026-02-09T21:54:08.458Z",
+  "tenant": "local",
+  "hashes": {
+    "contentHash": "b53137b8e0762fa495c81d81f09d6a1acddc0ca5ceb57b460afb4c842d1de797",
+    "provenanceHash": "44fa3555983b68b32291b98ca63cf3b6f87d09830288b0eb1dab63e201660a91"
+  },
+  "content": {
+    "eventId": "mlfplzux-jj2bgyl2",
+    "eventType": "import",
+    "observedAt": "2026-02-09T21:54:08.457Z",
+    "recordedAt": "2026-02-09T21:54:08.457Z",
+    "sources": [
+      {
+        "kind": "text",
+        "sourceId": "mcp:notes",
+        "offset": 0,
+        "length": 6,
+        "capturedAt": "2026-02-09T21:54:08.457Z",
+        "checksum": "b53137b8e0762fa495c81d81f09d6a1acddc0ca5ceb57b460afb4c842d1de797"
+      }
+    ],
+    "content": {
+      "type": "text",
+      "text": "# Ordering Test 2\n\nBody 2",
+      "structured": {
+        "title": "Ordering Test 2",
+        "body": "Body 2",
+        "source": "mcp:notes",
+        "attachmentRefs": []
+      }
+    },
+    "checksums": {
+      "contentSha256": "b53137b8e0762fa495c81d81f09d6a1acddc0ca5ceb57b460afb4c842d1de797",
+      "provenanceHash": "44fa3555983b68b32291b98ca63cf3b6f87d09830288b0eb1dab63e201660a91"
+    },
+    "tags": [
+      "mcp:notes"
+    ],
+    "associatedDecisionIds": [],
+    "associatedSignalIds": []
+  },
+  "tags": [
+    "mcp:notes"
+  ]
+}

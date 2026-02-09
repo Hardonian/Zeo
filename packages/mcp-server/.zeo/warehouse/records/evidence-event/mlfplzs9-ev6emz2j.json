@@ -1,0 +1,51 @@
+{
+  "id": "mlfplzs9-ev6emz2j",
+  "kind": "evidence-event",
+  "createdAt": "2026-02-09T21:54:08.360Z",
+  "updatedAt": "2026-02-09T21:54:08.361Z",
+  "tenant": "local",
+  "hashes": {
+    "contentHash": "c2b5fd0d6b9fb4062504738cca6c32e163057ad53e637048c3adddeb7898793d",
+    "provenanceHash": "77e26ba52e4ca3d1ae23d464b07b3f89f45da272d336142d7a32fdf399f70ab0"
+  },
+  "content": {
+    "eventId": "mlfplzs8-k6nlvjnm",
+    "eventType": "import",
+    "observedAt": "2024-01-01T00:00:00Z",
+    "recordedAt": "2026-02-09T21:54:08.360Z",
+    "sources": [
+      {
+        "kind": "text",
+        "sourceId": "test",
+        "offset": 0,
+        "length": 17,
+        "capturedAt": "2024-01-01T00:00:00Z",
+        "checksum": "c2b5fd0d6b9fb4062504738cca6c32e163057ad53e637048c3adddeb7898793d"
+      }
+    ],
+    "content": {
+      "type": "text",
+      "text": "# Determinism Test\n\nSame body content",
+      "structured": {
+        "title": "Determinism Test",
+        "body": "Same body content",
+        "source": "test",
+        "attachmentRefs": []
+      }
+    },
+    "checksums": {
+      "contentSha256": "c2b5fd0d6b9fb4062504738cca6c32e163057ad53e637048c3adddeb7898793d",
+      "provenanceHash": "77e26ba52e4ca3d1ae23d464b07b3f89f45da272d336142d7a32fdf399f70ab0"
+    },
+    "tags": [
+      "mcp:notes",
+      "determinism"
+    ],
+    "associatedDecisionIds": [],
+    "associatedSignalIds": []
+  },
+  "tags": [
+    "mcp:notes",
+    "determinism"
+  ]
+}
