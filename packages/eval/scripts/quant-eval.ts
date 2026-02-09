@@ -123,7 +123,7 @@ function runQuantEval() {
     results.push({ case: "worst_case", width: width5 });
 
     console.log("\nEvaluation Complete.");
-    console.table(results);
+    console.log(JSON.stringify(results, null, 2));
 }
 
 runQuantEval();

@@ -1,0 +1,48 @@
+
+> @zeo/eval@0.5.1 eval:quant C:\Users\scott\Documents\GitHub\Zeo\Zeo\packages\eval
+> tsx scripts/quant-eval.ts
+
+Running Quant Stack Evaluation...
+
+Test Case 1: Stable Baseline
+Baseline Width: 0.071
+
+Test Case 2: Unstable Time Series
+Unstable TS Width: 0.084
+Factor: 1.19x
+
+Test Case 3: High Redundancy
+High Redundancy Width: 0.087
+Factor: 1.23x
+
+Test Case 4: High Sensitivity
+High Sensitivity Width: 0.094
+Factor: 1.32x
+
+Test Case 5: Worst Case
+Worst Case Width: 0.149
+Factor: 2.09x
+
+Evaluation Complete.
+[
+  {
+    "case": "baseline",
+    "width": 0.07099999999999995
+  },
+  {
+    "case": "unstable_ts",
+    "width": 0.08433333333333329
+  },
+  {
+    "case": "redundancy",
+    "width": 0.08744444444444444
+  },
+  {
+    "case": "sensitivity",
+    "width": 0.09383333333333335
+  },
+  {
+    "case": "worst_case",
+    "width": 0.1485555555555556
+  }
+]
