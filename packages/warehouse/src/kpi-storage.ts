@@ -161,7 +161,7 @@ export class KpiWarehouseStorage {
       limit: filters.limit || 1000,
     });
 
-    let envelopes = result.items.map(r => this.recordToEnvelope(r) as KpiRecordEnvelope<KpiMeasurement>);
+    const envelopes = result.items.map(r => this.recordToEnvelope(r) as KpiRecordEnvelope<KpiMeasurement>);
     
     return this.applyFiltersAndSort(envelopes, filters);
   }
