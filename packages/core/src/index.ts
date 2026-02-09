@@ -373,3 +373,24 @@ export type {
   SynthesisOptions,
 } from "@zeo/decision-synthesizer";
 export { synthesizeImplications } from "@zeo/decision-synthesizer";
+
+// KPI Integration - decision metrics tracking
+export type {
+  KpiComputationContext,
+  DecisionCoverageMetrics,
+  RobustnessMetrics,
+  CalibrationMetrics,
+  KpiIntegrationConfig,
+} from "./kpi-integration.js";
+export {
+  KpiIntegration,
+  createKpiIntegration,
+  computeDecisionCoverage,
+  computeRobustnessMetrics,
+  computeCalibrationMetrics,
+  createDecisionCoverageMeasurement,
+  createRobustnessMeasurement,
+  createCalibrationMeasurement,
+  storeDecisionKpis,
+  DEFAULT_KPI_CONFIG,
+} from "./kpi-integration.js";

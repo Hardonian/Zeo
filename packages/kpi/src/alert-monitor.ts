@@ -105,7 +105,7 @@ interface ThresholdEvaluation {
 /**
  * Alert state tracking for cooldown and deduplication
  */
-interface AlertState {
+export interface AlertState {
   ruleId: string;
   kpiId: string;
   lastTriggeredAt: string;
@@ -772,6 +772,3 @@ export function createAlertMonitorService(
 ): AlertMonitorService {
   return new AlertMonitorService(storage, config);
 }
-
-// Re-export types
-export type { AlertMonitorConfig, AlertHandler, AlertEvent, AlertState };

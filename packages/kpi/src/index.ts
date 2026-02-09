@@ -62,5 +62,18 @@ export {
   KpiEpistemicError,
 } from "./epistemic-guards.js";
 
+// Alert Monitor
+export {
+  AlertMonitorService,
+  createAlertMonitorService,
+} from "./alert-monitor.js";
+export type {
+  AlertMonitorConfig,
+  AlertHandler,
+  AlertEvent,
+  AlertState,
+  AlertEventType,
+} from "./alert-monitor.js";
+
 // Standard KPIs constant
 export { StandardKpis } from "./types.js";
