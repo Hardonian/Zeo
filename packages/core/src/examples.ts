@@ -62,6 +62,7 @@ export function makeNegotiationExample(): DecisionSpec {
       { id: nanoid(), name: "Budget constraint", value: "Must remain within internal pricing band", status: "assumption" },
     ],
     assumptions,
+    objectives: [],
   };
 }
 
@@ -107,5 +108,6 @@ export function makeOpsExample(): DecisionSpec {
       { id: nanoid(), name: "Peak traffic window", value: "Next 2 hours", status: "fact", provenance: [{ kind: "text", sourceId: "ops-note", offset: 0, length: 18, capturedAt: nowISO(), checksum: "sha256:example" }] },
     ],
     assumptions,
+    objectives: [],
   };
 }

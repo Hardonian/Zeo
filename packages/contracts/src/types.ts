@@ -69,6 +69,7 @@ export type DecisionSpec = {
   actions: Action[];
   constraints: Constraint[];
   assumptions: Claim[]; // status should be "assumption" or "belief"
+  objectives: { id: UUID; metric: string; target?: number; weight: number; }[];
 };
 
 export type BranchNode = {
@@ -224,23 +225,23 @@ export interface PermissionResponse {
 }
 
 export interface BridgeErrorPayload {
-  code: 
-    | "INVALID_INTERVAL"
-    | "MISSING_PROVENANCE"
-    | "WEIGHT_OUT_OF_BOUNDS"
-    | "UNMAPPED_SIGNAL"
-    | "UNSAFE_PANEL"
-    | "NON_DETERMINISTIC_INPUT"
-    | "INTERNAL_ASSERTION"
-    | "DECISION_ERROR"
-    | "UNKNOWN_MESSAGE_TYPE"
-    | "VALIDATION_ERROR"
-    | "RATE_LIMIT_EXCEEDED"
-    | "PERMISSION_DENIED"
-    | "ORIGIN_MISMATCH"
-    | "SIGNATURE_INVALID"
-    | "CAPABILITY_NOT_DECLARED"
-    | "CSP_VIOLATION";
+  code:
+  | "INVALID_INTERVAL"
+  | "MISSING_PROVENANCE"
+  | "WEIGHT_OUT_OF_BOUNDS"
+  | "UNMAPPED_SIGNAL"
+  | "UNSAFE_PANEL"
+  | "NON_DETERMINISTIC_INPUT"
+  | "INTERNAL_ASSERTION"
+  | "DECISION_ERROR"
+  | "UNKNOWN_MESSAGE_TYPE"
+  | "VALIDATION_ERROR"
+  | "RATE_LIMIT_EXCEEDED"
+  | "PERMISSION_DENIED"
+  | "ORIGIN_MISMATCH"
+  | "SIGNATURE_INVALID"
+  | "CAPABILITY_NOT_DECLARED"
+  | "CSP_VIOLATION";
   message: string;
   details?: Record<string, unknown>;
 }

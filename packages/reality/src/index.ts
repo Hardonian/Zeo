@@ -19,13 +19,13 @@ export type {
   AccessControlList,
   SecurityContext,
   TenantContext,
-  
+
   // Redaction
   RedactionRule,
   RedactionPolicy,
   RedactedEvidenceEvent,
   RedactionPreview,
-  
+
   // Share Bundle
   ShareBundle,
   ShareBundleMetadata,
@@ -122,3 +122,22 @@ export {
 } from "./share.js";
 
 
+
+// =============================================================================
+// REALITY MODE - EVIDENCE PLANNER
+// =============================================================================
+
+export type {
+  CostBand,
+  TimeBand,
+  RiskBand,
+  EvidenceAction,
+  VoiResult,
+  EvidencePlan,
+  PlannerConfig,
+} from "./planner-types.js";
+
+export {
+  recommendEvidence,
+  createEvidencePlan,
+} from "./evidence-planner.js";

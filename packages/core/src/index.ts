@@ -27,6 +27,9 @@ export {
   type ActionScore,
 } from "./decision-coupling.js";
 
+// Runner - orchestrated execution
+export { ZeoRunner, type ZeoRunnerConfig } from "./runner.js";
+
 // Re-exports from v0.4.0+ packages for convenient access
 
 // Counterfactuals - "what flips" analysis

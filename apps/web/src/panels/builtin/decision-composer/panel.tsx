@@ -48,6 +48,7 @@ export default function DecisionComposer({ manifest }: DecisionComposerProps) {
       ],
       constraints: [],
       assumptions: [],
+      objectives: [],
     };
     setDecision(spec);
     setResult(null);

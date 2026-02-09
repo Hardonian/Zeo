@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import type { 
-  UiBridgeMessage, 
+import type {
+  UiBridgeMessage,
   UiPanelCapability,
   DecisionSpec,
 } from '@zeo/contracts';
@@ -14,7 +14,7 @@ import {
   getAuditLog,
   clearAuditLog,
 } from './secure-bridge';
-import type { 
+import type {
   SignedUiPanelManifest,
   ManifestSignature,
   ManifestIntegrity,
@@ -45,6 +45,7 @@ const createMockDecisionSpec = (): DecisionSpec => ({
   actions: [{ id: 'action-1', label: 'Test Action', actorId: 'agent-1', kind: 'communicate' }],
   constraints: [],
   assumptions: [],
+  objectives: [],
 });
 
 const createMockManifest = (overrides?: Partial<SignedUiPanelManifest>): SignedUiPanelManifest => ({
@@ -144,7 +145,7 @@ describe('Secure Bridge', () => {
         payload: {},
       };
       const response = handler(message, 'https://example.com');
-      
+
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string };
         expect(errorPayload.code).toBe('RATE_LIMIT_EXCEEDED');
@@ -160,12 +161,12 @@ describe('Secure Bridge', () => {
           type: 'run_decision',
           payload: createMockDecisionSpec(),
         };
-        
+
         // Grant permission first
         grantPermission(context, 'needsNetwork');
-        
+
         const response = handler(message, 'https://example.com');
-        
+
         if (i >= 5 && response.type === 'error') {
           const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('RATE_LIMIT_EXCEEDED');
         }
@@ -183,7 +184,7 @@ describe('Secure Bridge', () => {
       };
 
       const response = handler(message, 'https://example.com');
-      
+
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('PERMISSION_DENIED');
       }
@@ -209,7 +210,7 @@ describe('Secure Bridge', () => {
       expect(perm.granted).toBe(false);
 
       grantPermission(context, 'needsNetwork');
-      
+
       const grantedPerm = checkPermission(context, 'needsNetwork');
       expect(grantedPerm.granted).toBe(true);
       expect(grantedPerm.grantId).toBeDefined();
@@ -249,7 +250,7 @@ describe('Secure Bridge', () => {
       };
 
       const response = handler(message, 'https://example.com');
-      
+
       if (response.type === 'request_permission') {
         const permPayload = response.payload as { state: string };
         expect(permPayload.state).toBe('prompt');
@@ -265,7 +266,7 @@ describe('Secure Bridge', () => {
       };
 
       const response = handler(message, 'https://example.com');
-      
+
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('CAPABILITY_NOT_DECLARED');
       }
@@ -275,12 +276,12 @@ describe('Secure Bridge', () => {
   describe('Audit Logging', () => {
     it('should log permission grants', () => {
       clearAuditLog(context);
-      
+
       grantPermission(context, 'needsNetwork');
-      
+
       const auditLog = getAuditLog(context);
       const grantEvent = auditLog.find(e => e.eventType === 'permission_grant');
-      
+
       expect(grantEvent).toBeDefined();
       expect(grantEvent?.capability).toBe('needsNetwork');
       expect(grantEvent?.success).toBe(true);
@@ -288,7 +289,7 @@ describe('Secure Bridge', () => {
 
     it('should log bridge errors', () => {
       clearAuditLog(context);
-      
+
       // Trigger rate limit
       for (let i = 0; i < 110; i++) {
         const message: UiBridgeMessage = {
@@ -299,41 +300,41 @@ describe('Secure Bridge', () => {
         };
         handler(message, 'https://example.com');
       }
-      
+
       const auditLog = getAuditLog(context);
       const errorEvent = auditLog.find(e => e.eventType === 'bridge_error');
-      
+
       expect(errorEvent).toBeDefined();
     });
 
     it('should log origin mismatches', () => {
       clearAuditLog(context);
-      
+
       const message: UiBridgeMessage = {
         direction: 'panel->host',
         requestId: 'req-1',
         type: 'ping',
         payload: {},
       };
-      
+
       handler(message, 'https://evil.com');
-      
+
       const auditLog = getAuditLog(context);
       const originEvent = auditLog.find(e => e.eventType === 'origin_mismatch');
-      
+
       expect(originEvent).toBeDefined();
       expect(originEvent?.details?.origin).toBe('https://evil.com');
     });
 
     it('should maintain audit log size limit', () => {
       clearAuditLog(context);
-      
+
       // Generate more than 1000 events
       for (let i = 0; i < 1100; i++) {
         grantPermission(context, 'needsNetwork');
         revokePermission(context, 'needsNetwork');
       }
-      
+
       const auditLog = getAuditLog(context);
       expect(auditLog.length).toBeLessThanOrEqual(1000);
     });
@@ -349,7 +350,7 @@ describe('Secure Bridge', () => {
       };
 
       const response = handler(message, 'https://example.com');
-      
+
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('VALIDATION_ERROR');
       }
@@ -364,7 +365,7 @@ describe('Secure Bridge', () => {
       };
 
       const response = handler(message, 'https://example.com');
-      
+
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('VALIDATION_ERROR');
       }
@@ -379,7 +380,7 @@ describe('Secure Bridge', () => {
       };
 
       const response = handler(message, 'https://example.com');
-      
+
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('VALIDATION_ERROR');
       }
@@ -401,7 +402,7 @@ describe('Secure Bridge', () => {
       }
 
       const response = handler(message, 'https://example.com');
-      
+
       if (response.type === 'error') {
         // Error message should not contain sensitive info
         const errorPayload = response.payload as { message: string };
@@ -636,7 +637,7 @@ describe('Security Invariants', () => {
     };
 
     const response = handler(message, 'https://example.com');
-    
+
     if (response.type === 'error') {
       const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('PERMISSION_DENIED');
     }
@@ -654,7 +655,7 @@ describe('Security Invariants', () => {
     };
 
     const response = handler(message, 'https://any-origin.com');
-    
+
     if (response.type === 'error') {
       const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('ORIGIN_MISMATCH');
     }
@@ -690,14 +691,14 @@ describe('Security Invariants', () => {
 
   it('invariant: audit log captures all security-relevant events', () => {
     const context = createSecureBridgeContext('test-panel', createMockManifest());
-    
+
     // Clear log
     clearAuditLog(context);
     expect(getAuditLog(context).length).toBe(0);
 
     // Grant permission
     grantPermission(context, 'needsNetwork');
-    
+
     const auditLog = getAuditLog(context);
     expect(auditLog.length).toBeGreaterThan(0);
     expect(auditLog[0].eventType).toBe('permission_grant');

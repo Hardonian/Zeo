@@ -2,7 +2,7 @@
  * Tests for @zeo/trust package
  */
 
-import { describe, it, beforeEach } from "node:test";
+import { describe, it, beforeEach } from "vitest";
 import assert from "node:assert";
 
 import {
@@ -40,11 +40,11 @@ describe("Trust Contract", () => {
 
     it("should have 'never' commitments", () => {
       const contract = createDefaultTrustContract();
-      
+
       assert.ok(contract.commitments.never.length > 0);
       assert.ok(
-        contract.commitments.never.some(c => 
-          c.toLowerCase().includes("sell") || 
+        contract.commitments.never.some(c =>
+          c.toLowerCase().includes("sell") ||
           c.toLowerCase().includes("advertising")
         )
       );
@@ -52,7 +52,7 @@ describe("Trust Contract", () => {
 
     it("should have 'requires' commitments", () => {
       const contract = createDefaultTrustContract();
-      
+
       assert.ok(contract.commitments.requires.length > 0);
     });
   });
@@ -278,7 +278,7 @@ describe("Consent Management", () => {
     it("should create audit entry", () => {
       const initial = createDefaultConsentScope();
       clearAuditLog();
-      
+
       updateConsentScope(
         initial,
         { metadataUsage: true },
@@ -295,7 +295,7 @@ describe("Consent Management", () => {
     it("should record in history", () => {
       const initial = createDefaultConsentScope();
       clearConsentHistory();
-      
+
       updateConsentScope(
         initial,
         { aiAssistanceLevel: "suggest" },

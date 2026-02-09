@@ -1,164 +1,199 @@
 'use client';
 
-import React from 'react';
-import type { UiPanelManifest } from '@zeo/contracts';
+import React, { useMemo } from 'react';
+import type { UiPanelManifest, DecisionSpec } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
+import { recommendEvidence, type PlannerConfig } from '@zeo/reality';
+import type { EvidenceAction, VoiResult } from '@zeo/reality';
+import { nanoid } from 'nanoid';
 
 interface VoiPanelProps {
   manifest: UiPanelManifest;
   context: any;
 }
 
-// Demo VOI data for v0.3.0
-const demoVoiReport = {
-  baselineUncertainty: 0.75,
-  candidates: [
-    {
-      candidateId: 'check_vix',
-      label: 'Check VIX Index',
-      kind: 'market_check',
-      expectedGain: 0.18,
-      costAdjustedScore: 0.036,
-      targetVariables: ['market_stress'],
-      flipRelevanceEstimate: 'high',
-      cost: { timeMinutes: 5, cognitiveLoad: 'low' },
-    },
-    {
-      candidateId: 'review_history',
-      label: 'Review Deal History',
-      kind: 'document',
-      expectedGain: 0.15,
-      costAdjustedScore: 0.025,
-      targetVariables: ['counterparty_trust'],
-      flipRelevanceEstimate: 'medium',
-      cost: { timeMinutes: 30, cognitiveLoad: 'low' },
-    },
-    {
-      candidateId: 'ask_timeline',
-      label: 'Ask About Timeline',
-      kind: 'question',
-      expectedGain: 0.12,
-      costAdjustedScore: 0.012,
-      targetVariables: ['timeline_pressure', 'counterparty_trust'],
-      flipRelevanceEstimate: 'medium',
-      cost: { timeMinutes: 15, cognitiveLoad: 'medium' },
-    },
-  ],
-  seed: 'demo-seed-123',
-  computationTimestamp: new Date().toISOString(),
+const DEFAULT_CANDIDATES: EvidenceAction[] = [
+  {
+    id: 'act-1',
+    variableId: 'market_volatility',
+    method: 'market_data',
+    description: 'Check VIX Index and recent market shifts',
+    cost: 'low',
+    time: 'immediate',
+    risk: 'low',
+    expectedUncertaintyReduction: { low: 0.1, high: 0.3 },
+    tags: ['market', 'external'],
+  },
+  {
+    id: 'act-2',
+    variableId: 'counterparty_health',
+    method: 'financial_report',
+    description: 'Review counterparty financial statements',
+    cost: 'medium',
+    time: 'hours',
+    risk: 'low',
+    expectedUncertaintyReduction: { low: 0.2, high: 0.5 },
+    tags: ['due_diligence'],
+  },
+  {
+    id: 'act-3',
+    variableId: 'tech_feasibility',
+    method: 'prototype',
+    description: 'Build a quick prototype to test core assumption',
+    cost: 'high',
+    time: 'days',
+    risk: 'medium',
+    expectedUncertaintyReduction: { low: 0.5, high: 0.9 },
+    tags: ['technical', 'internal'],
+  },
+  {
+    id: 'act-4',
+    variableId: 'user_demand',
+    method: 'survey',
+    description: 'Run a user survey',
+    cost: 'medium',
+    time: 'weeks',
+    risk: 'low',
+    expectedUncertaintyReduction: { low: 0.2, high: 0.4 },
+    tags: ['product', 'market'],
+  },
+];
+
+const PLANNER_CONFIG: PlannerConfig = {
+  maxCost: 'high',
+  maxTime: 'weeks',
+  minEvoi: 0.05,
 };
 
-const getRelevanceColor = (relevance: string) => {
-  switch (relevance) {
-    case 'high':
+const getRelevanceColor = (recommendation: VoiResult['recommendation']) => {
+  switch (recommendation) {
+    case 'do_now':
       return 'bg-green-100 text-green-800';
-    case 'medium':
+    case 'plan_later':
       return 'bg-yellow-100 text-yellow-800';
-    case 'low':
+    case 'defer':
       return 'bg-gray-100 text-gray-800';
+    case 'ignore':
+      return 'bg-red-50 text-red-800';
     default:
       return 'bg-gray-100 text-gray-800';
-  }
-};
-
-const getLoadIcon = (load: string) => {
-  switch (load) {
-    case 'low':
-      return '●○○';
-    case 'medium':
-      return '●●○';
-    case 'high':
-      return '●●●';
-    default:
-      return '●○○';
   }
 };
 
 export default function VoiPanel({ manifest }: VoiPanelProps) {
   const { decision } = useDecisionStore();
 
+  const recommendations = useMemo(() => {
+    if (!decision) return [];
+    try {
+      // Create a safe copy of the decision spec to avoid mutation issues
+      // and ensure strict typing compliance if needed
+      const spec: DecisionSpec = {
+        ...decision,
+        // Ensure optional fields are handled if they come from store as undefined but logic expects them
+        objectives: decision.objectives || []
+      };
+
+      return recommendEvidence(spec, DEFAULT_CANDIDATES, PLANNER_CONFIG);
+    } catch (e) {
+      console.error("Planner failed:", e);
+      return [];
+    }
+  }, [decision]);
+
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 space-y-4 h-full flex flex-col">
       <div>
         <h2 className="text-lg font-semibold text-gray-900">{manifest.title}</h2>
         <p className="text-sm text-gray-500">{manifest.description}</p>
       </div>
 
       {!decision ? (
-        <div className="text-sm text-gray-400">
+        <div className="flex-1 flex items-center justify-center text-sm text-gray-400 border-2 border-dashed border-gray-200 rounded-lg">
           Create a decision to see VOI-ranked evidence.
         </div>
       ) : (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between text-xs text-gray-500">
-            <span>Baseline Uncertainty: {demoVoiReport.baselineUncertainty.toFixed(2)}</span>
-            <span>Seed: {demoVoiReport.seed.slice(0, 8)}...</span>
+        <div className="space-y-4 flex-1 overflow-y-auto">
+          <div className="flex items-center justify-between text-xs text-gray-500 bg-gray-50 p-2 rounded">
+            <span>Planner Config: Max {PLANNER_CONFIG.maxCost} cost / {PLANNER_CONFIG.maxTime}</span>
+            <span>{recommendations.length} Items</span>
           </div>
 
           <div className="space-y-3">
-            {demoVoiReport.candidates.map((candidate, index) => (
-              <div
-                key={candidate.candidateId}
-                className="p-3 bg-white border border-gray-200 rounded-md shadow-sm"
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-blue-500 rounded-full">
-                      {index + 1}
-                    </span>
-                    <span className="text-sm font-medium text-gray-900">
-                      {candidate.label}
-                    </span>
-                  </div>
-                  <span
-                    className={`px-2 py-0.5 text-xs rounded-full ${getRelevanceColor(
-                      candidate.flipRelevanceEstimate
-                    )}`}
-                  >
-                    {candidate.flipRelevanceEstimate}
-                  </span>
-                </div>
+            {recommendations.map((result, index) => {
+              const candidate = DEFAULT_CANDIDATES.find(c => c.id === result.actionId);
+              if (!candidate) return null;
 
-                <div className="ml-7 space-y-2">
-                  <div className="flex items-center gap-4 text-xs text-gray-600">
-                    <span className="flex items-center gap-1">
-                      <span className="text-gray-400">Gain:</span>
-                      <span className="font-medium text-green-600">
-                        {candidate.expectedGain.toFixed(3)}
+              return (
+                <div
+                  key={result.actionId}
+                  className="p-3 bg-white border border-gray-200 rounded-md shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className={`flex items-center justify-center w-6 h-6 text-xs font-bold text-white rounded-full ${result.recommendation === 'do_now' ? 'bg-blue-600' : 'bg-gray-400'
+                        }`}>
+                        {index + 1}
                       </span>
+                      <div>
+                        <span className="text-sm font-medium text-gray-900 block">
+                          {candidate.description}
+                        </span>
+                        <div className="text-xs text-gray-400 flex gap-2">
+                          <span className="capitalize">{candidate.method}</span>
+                          <span>•</span>
+                          <span className="font-mono">{candidate.variableId}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span
+                      className={`px-2 py-0.5 text-xs font-semibold rounded-full capitalize ${getRelevanceColor(
+                        result.recommendation
+                      )}`}
+                    >
+                      {result.recommendation.replace('_', ' ')}
                     </span>
-                    <span className="flex items-center gap-1">
-                      <span className="text-gray-400">Score:</span>
-                      <span className="font-medium">
-                        {candidate.costAdjustedScore.toFixed(4)}
+                  </div>
+
+                  <div className="ml-8 space-y-2">
+                    <div className="flex items-center gap-4 text-xs text-gray-600 bg-gray-50 p-2 rounded">
+                      <span className="flex flex-col">
+                        <span className="text-gray-400 text-[10px] uppercase">EVOI</span>
+                        <span className="font-medium text-green-700 text-sm">
+                          {result.evoi.toFixed(4)}
+                        </span>
                       </span>
-                    </span>
-                  </div>
+                      <span className="w-px h-6 bg-gray-200"></span>
+                      <span className="flex flex-col">
+                        <span className="text-gray-400 text-[10px] uppercase">Cost</span>
+                        <span className="font-medium capitalize">
+                          {candidate.cost}
+                        </span>
+                      </span>
+                      <span className="w-px h-6 bg-gray-200"></span>
+                      <span className="flex flex-col">
+                        <span className="text-gray-400 text-[10px] uppercase">Time</span>
+                        <span className="font-medium capitalize">
+                          {candidate.time}
+                        </span>
+                      </span>
+                    </div>
 
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <span className="px-1.5 py-0.5 bg-gray-100 rounded">
-                      {candidate.kind}
-                    </span>
-                    <span>→ {candidate.targetVariables.join(', ')}</span>
-                  </div>
-
-                  <div className="flex items-center gap-3 text-xs text-gray-500 pt-1 border-t border-gray-100">
-                    <span className="flex items-center gap-1">
-                      <span>⏱</span>
-                      {candidate.cost.timeMinutes}m
-                    </span>
-                    <span className="flex items-center gap-1" title="Cognitive load">
-                      <span>🧠</span>
-                      {getLoadIcon(candidate.cost.cognitiveLoad)}
-                    </span>
+                    {result.reasoning.length > 0 && (
+                      <div className="text-xs text-gray-500 italic mt-2">
+                        {result.reasoning[0]}
+                      </div>
+                    )}
                   </div>
                 </div>
+              )
+            })}
+
+            {recommendations.length === 0 && (
+              <div className="text-center py-8 text-gray-400">
+                No evidence actions recommended for this decision context.
               </div>
-            ))}
-          </div>
-
-          <div className="pt-2 text-xs text-gray-400 italic">
-            Ranked by expected information gain per unit cost
+            )}
           </div>
         </div>
       )}
