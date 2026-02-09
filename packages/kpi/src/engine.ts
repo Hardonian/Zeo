@@ -7,14 +7,14 @@
  * @module @zeo/kpi/engine
  */
 
-import type { 
-  UUID, 
+import type {
+  UUID,
   ProbabilityInterval,
-  ProvenancePointer 
+  ProvenancePointer
 } from "@zeo/contracts";
-import type { 
-  KpiContract, 
-  KpiMeasurement, 
+import type {
+  KpiContract,
+  KpiMeasurement,
   KpiValue,
   KpiComputationResult,
   KpiTrend,
@@ -85,7 +85,7 @@ export function computeScalarKpi(
   seed?: string
 ): { value: number; intermediate: Array<{ name: string; value: number; description: string }> } {
   const intermediate: Array<{ name: string; value: number; description: string }> = [];
-  
+
   switch (formula.type) {
     case "direct": {
       const values = data.map(d => Number((d as Record<string, unknown>)[formula.source]));
@@ -95,7 +95,7 @@ export function computeScalarKpi(
       intermediate.push({ name: "average", value: avg, description: `Mean of ${formula.source}` });
       return { value: avg, intermediate };
     }
-    
+
     case "ratio": {
       const numerators = data.map(d => Number((d as Record<string, unknown>)[formula.numerator]));
       const denominators = data.map(d => Number((d as Record<string, unknown>)[formula.denominator]));
@@ -106,12 +106,12 @@ export function computeScalarKpi(
       intermediate.push({ name: "denominator_sum", value: sumDenom, description: `Sum of ${formula.denominator}` });
       return { value: ratio, intermediate };
     }
-    
+
     case "aggregate": {
       const values = data.map(d => Number((d as Record<string, unknown>)[formula.field]));
       const valid = values.filter(v => !isNaN(v)).sort((a, b) => a - b);
       let result = 0;
-      
+
       switch (formula.operation) {
         case "mean":
           result = valid.length > 0 ? valid.reduce((a, b) => a + b, 0) / valid.length : 0;
@@ -131,12 +131,12 @@ export function computeScalarKpi(
           result = valid.length;
           break;
       }
-      
+
       intermediate.push({ name: "valid_count", value: valid.length, description: "Count of valid values" });
       intermediate.push({ name: formula.operation, value: result, description: `${formula.operation} of ${formula.field}` });
       return { value: result, intermediate };
     }
-    
+
     case "composite": {
       // For composite, we'd need to look up component KPIs
       // For now, return weighted average of placeholder values
@@ -145,11 +145,11 @@ export function computeScalarKpi(
       intermediate.push({ name: "component_count", value: formula.components.length, description: "Number of components" });
       return { value: totalWeight > 0 ? 0.5 : 0, intermediate }; // Placeholder
     }
-    
+
     case "custom":
       intermediate.push({ name: "custom_formula", value: 0, description: formula.description });
       return { value: 0, intermediate }; // Custom formulas require implementation
-    
+
     default:
       intermediate.push({ name: "unknown_formula", value: 0, description: "Unrecognized formula type" });
       return { value: 0, intermediate };
@@ -173,7 +173,7 @@ export function createKpiMeasurement(
 ): KpiComputationResult {
   const inputHash = computeInputHash(kpi, data, options.seed);
   const issues: Array<{ severity: "error" | "warning" | "info"; code: string; message: string }> = [];
-  
+
   // Check minimum sample size
   if (kpi.epistemic.minSampleSize && data.length < kpi.epistemic.minSampleSize) {
     issues.push({
@@ -182,10 +182,32 @@ export function createKpiMeasurement(
       message: `Sample size ${data.length} below minimum ${kpi.epistemic.minSampleSize}`
     });
   }
-  
+
+  // Check provenance requirements
+  if (kpi.epistemic.provenanceRequirements) {
+    if (!options.provenance || options.provenance.length === 0) {
+      issues.push({
+        severity: "error",
+        code: "KPI_EPISTEMIC_VIOLATION",
+        message: "Provenance required but not provided"
+      });
+    } else if (kpi.epistemic.provenanceRequirements.requireChecksum) {
+      for (const p of options.provenance) {
+        if (!p.checksum) {
+          issues.push({
+            severity: "error",
+            code: "KPI_EPISTEMIC_VIOLATION",
+            message: "Provenance missing required checksum"
+          });
+          break;
+        }
+      }
+    }
+  }
+
   // Compute value
   const { value, intermediate } = computeScalarKpi(kpi.formula, data, options.seed);
-  
+
   // Build KPI value based on target type
   let kpiValue: KpiValue;
   if (kpi.target?.type === "threshold") {
@@ -202,10 +224,10 @@ export function createKpiMeasurement(
       unit: undefined
     };
   }
-  
+
   // Compute output hash
   const outputHash = hashContent(canonicalize({ value, inputHash }));
-  
+
   const measurement: KpiMeasurement = {
     id: `kpi-${kpi.id}-${Date.now()}`,
     kpiId: kpi.id,
@@ -230,7 +252,7 @@ export function createKpiMeasurement(
     computedAt: new Date().toISOString(),
     inputHash
   };
-  
+
   return {
     measurement,
     intermediateValues: intermediate,
@@ -267,28 +289,28 @@ export function computeKpiTrend(
       warnings: ["Insufficient data for trend analysis (minimum 2 points required)"]
     };
   }
-  
+
   // Sort by timestamp
-  const sorted = [...measurements].sort((a, b) => 
+  const sorted = [...measurements].sort((a, b) =>
     new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   );
-  
+
   // Simple linear regression for trend
   const n = sorted.length;
   const x = sorted.map((_, i) => i);
   const y = sorted.map(m => m.value);
-  
+
   const sumX = x.reduce((a, b) => a + b, 0);
   const sumY = y.reduce((a, b) => a + b, 0);
   const sumXY = x.reduce((sum, xi, i) => sum + xi * y[i], 0);
   const sumX2 = x.reduce((sum, xi) => sum + xi * xi, 0);
-  
+
   const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-  
+
   // Determine direction
   let direction: "improving" | "degrading" | "stable" | "uncertain";
   const threshold = 0.001;
-  
+
   if (Math.abs(slope) < threshold) {
     direction = "stable";
   } else if (slope > 0) {
@@ -296,16 +318,16 @@ export function computeKpiTrend(
   } else {
     direction = "degrading";
   }
-  
+
   // Confidence based on sample size
-  const confidence: import("@zeo/contracts").ConfidenceBand = 
+  const confidence: import("@zeo/contracts").ConfidenceBand =
     n >= 30 ? "high" : n >= 10 ? "medium" : "low";
-  
+
   const warnings: string[] = [];
   if (n < 10) {
     warnings.push("Small sample size limits trend confidence");
   }
-  
+
   return {
     kpiId,
     measurements: sorted.map(m => ({
@@ -347,13 +369,13 @@ export function registerKpi(
 ): KpiRegistry {
   const newKpis = new Map(registry.kpis);
   newKpis.set(kpi.id, kpi);
-  
+
   const newCategories = new Map(registry.categories);
   const existing = newCategories.get(kpi.category) || [];
   if (!existing.includes(kpi.id)) {
     newCategories.set(kpi.category, [...existing, kpi.id]);
   }
-  
+
   return {
     kpis: newKpis,
     categories: newCategories,
@@ -385,7 +407,10 @@ export function createDecisionCoverageKpi(): KpiContract {
     formula: { type: "ratio", numerator: "complete_decisions", denominator: "total_decisions" },
     target: { type: "maximize", ideal: { kind: "scalar", value: 1.0 } },
     temporal: { computeFrequency: "daily", isTimeSeries: true, relevanceHalfLifeHours: 168 },
-    epistemic: { defaultStatus: "belief", requiresProvenance: true, defaultConfidence: "medium", minSampleSize: 10 },
+    epistemic: { defaultStatus: "belief", provenanceRequirements: { requireChecksum: true }, defaultConfidence: "medium", minSampleSize: 10 },
+    ownerScope: "system",
+    horizon: "tactical",
+    goodhartWarnings: ["May encourage superficial assumption filling without true uncertainty"],
     version: "0.1.0",
     createdAt: new Date().toISOString(),
     tags: ["coverage", "quality", "provenance"]
@@ -401,7 +426,10 @@ export function createCalibrationScoreKpi(): KpiContract {
     formula: { type: "aggregate", operation: "mean", field: "calibration_error" },
     target: { type: "maximize", ideal: { kind: "scalar", value: 1.0 } },
     temporal: { computeFrequency: "weekly", isTimeSeries: true, relevanceHalfLifeHours: 720 },
-    epistemic: { defaultStatus: "belief", requiresProvenance: true, defaultConfidence: "medium", minSampleSize: 30 },
+    epistemic: { defaultStatus: "belief", provenanceRequirements: { requireChecksum: true }, defaultConfidence: "medium", minSampleSize: 30 },
+    ownerScope: "system",
+    horizon: "strategic",
+    goodhartWarnings: ["May encourage wide, uninformative bounds to ensure coverage"],
     version: "0.1.0",
     createdAt: new Date().toISOString(),
     tags: ["calibration", "accuracy", "forecasts"]
@@ -417,7 +445,10 @@ export function createRobustnessScoreKpi(): KpiContract {
     formula: { type: "ratio", numerator: "robust_decisions", denominator: "total_decisions" },
     target: { type: "maximize", ideal: { kind: "scalar", value: 1.0 } },
     temporal: { computeFrequency: "daily", isTimeSeries: true, relevanceHalfLifeHours: 168 },
-    epistemic: { defaultStatus: "belief", requiresProvenance: false, defaultConfidence: "medium", minSampleSize: 10 },
+    epistemic: { defaultStatus: "belief", provenanceRequirements: { requireChecksum: true }, defaultConfidence: "medium", minSampleSize: 10 },
+    ownerScope: "system",
+    horizon: "tactical",
+    goodhartWarnings: ["May encourage conservative decisions to avoid fragility"],
     version: "0.1.0",
     createdAt: new Date().toISOString(),
     tags: ["robustness", "quality", "sensitivity"]

@@ -13,7 +13,8 @@ import type {
   EpistemicStatus,
   ConfidenceBand,
   ProbabilityInterval,
-  ProvenancePointer
+  ProvenancePointer,
+  ProvenanceRequirements
 } from "@zeo/contracts";
 
 /**
