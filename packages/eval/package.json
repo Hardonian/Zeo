@@ -27,14 +27,16 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "eval:quant": "tsx scripts/quant-eval.ts"
+    "eval:quant": "tsx scripts/quant-eval.ts",
+    "eval:planner": "tsx scripts/planner-eval.ts"
   },
   "dependencies": {
     "@zeo/contracts": "workspace:*",
     "@zeo/replay": "workspace:*",
     "@zeo/tournaments": "workspace:*",
     "@zeo/calibration": "workspace:*",
-    "@zeo/reality": "workspace:*"
+    "@zeo/reality": "workspace:*",
+    "@zeo/counterfactuals": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.6.3",

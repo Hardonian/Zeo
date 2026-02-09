@@ -201,8 +201,8 @@ export function computeShrinkageUncertainty(
     const clampedWidth = Math.min(baseWidth, config.maxQuantUncertainty);
 
     return {
-        low: -clampedWidth,
-        high: clampedWidth,
+        low: Math.max(0, center - clampedWidth),
+        high: Math.min(1, center + clampedWidth),
         confidence: 0.9,
     };
 }
@@ -234,8 +234,8 @@ export function computeRedundancyUncertainty(
     const clampedWidth = Math.min(baseWidth, config.maxQuantUncertainty);
 
     return {
-        low: -clampedWidth,
-        high: clampedWidth,
+        low: Math.max(0, center - clampedWidth),
+        high: Math.min(1, center + clampedWidth),
         confidence: 0.9,
     };
 }
@@ -373,10 +373,35 @@ export function computeExtendedUncertaintyLedger(
     }
 
     // Compute quant-adjusted aggregate
-    const quantAdjustedAggregate = aggregateUncertainty(
-        allCategories as Partial<Record<UncertaintyCategory, UncertaintyBand>>,
-        baseLedger.metadata.computationMethod
-    );
+    // Compute quant-adjusted aggregate (strictly additive widening)
+    const baseBand = baseLedger.total;
+    let totalHalfWidth = (baseBand.high - baseBand.low) / 2;
+
+    if (changepointUncertainty) {
+        totalHalfWidth += (changepointUncertainty.high - changepointUncertainty.low) / 2;
+    }
+    if (shrinkageUncertainty) {
+        totalHalfWidth += (shrinkageUncertainty.high - shrinkageUncertainty.low) / 2;
+    }
+    if (redundancyUncertainty) {
+        totalHalfWidth += (redundancyUncertainty.high - redundancyUncertainty.low) / 2;
+    }
+    if (sensitivityUncertainty) {
+        totalHalfWidth += (sensitivityUncertainty.high - sensitivityUncertainty.low) / 2;
+    }
+
+    // Ensure within [0, 1]
+    // Reuse 'center' from above
+    const quantAdjustedAggregate: UncertaintyBand = {
+        low: Math.max(0, center - totalHalfWidth),
+        high: Math.min(1, center + totalHalfWidth),
+        confidence: Math.min(baseBand.confidence,
+            (changepointUncertainty?.confidence ?? 1),
+            (shrinkageUncertainty?.confidence ?? 1),
+            (redundancyUncertainty?.confidence ?? 1),
+            (sensitivityUncertainty?.confidence ?? 1)
+        )
+    };
 
     const extendedLedger: ExtendedUncertaintyLedger = {
         ...baseLedger,

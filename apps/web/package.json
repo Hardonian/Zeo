@@ -21,6 +21,7 @@
     "@zeo/trust": "workspace:*",
     "@zeo/budgets": "workspace:*",
     "@zeo/jobs": "workspace:*",
+    "@zeo/counterfactuals": "workspace:*",
     "@zeo/reality": "workspace:*",
     "@zeo/radar": "workspace:*",
     "@zeo/telemetry": "workspace:*",

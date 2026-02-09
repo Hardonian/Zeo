@@ -102,6 +102,12 @@ importers:
       '@zeo/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@zeo/counterfactuals':
+        specifier: workspace:*
+        version: link:../../packages/counterfactuals
+      '@zeo/eval':
+        specifier: workspace:*
+        version: link:../../packages/eval
       '@zeo/governance':
         specifier: workspace:*
         version: link:../../packages/governance
@@ -547,6 +553,9 @@ importers:
       '@zeo/contracts':
         specifier: workspace:*
         version: link:../contracts
+      '@zeo/counterfactuals':
+        specifier: workspace:*
+        version: link:../counterfactuals
       '@zeo/reality':
         specifier: workspace:*
         version: link:../reality
@@ -854,6 +863,9 @@ importers:
       '@zeo/core':
         specifier: workspace:*
         version: link:../core
+      '@zeo/counterfactuals':
+        specifier: workspace:*
+        version: link:../counterfactuals
       '@zeo/trust':
         specifier: workspace:*
         version: link:../trust

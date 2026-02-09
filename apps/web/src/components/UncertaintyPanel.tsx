@@ -93,10 +93,10 @@ export const UncertaintyPanel: React.FC<UncertaintyPanelProps> = ({ ledger }) =>
 
             <div className="space-y-1 mb-4 border-t border-gray-700 pt-2">
                 <h4 className="text-sm font-medium text-gray-400 mb-1">Quant Adjustments</h4>
-                <UncertaintyRow label="Change-Point Instability" band={(ledger.categories as any)["changepoint_instability"]} />
-                <UncertaintyRow label="Shrinkage Adjustment" band={(ledger.categories as any)["shrinkage_adjustment"]} />
-                <UncertaintyRow label="Redundancy Penalty" band={(ledger.categories as any)["redundancy_penalty"]} />
-                <UncertaintyRow label="Sensitivity Risk" band={(ledger.categories as any)["sensitivity_risk"]} />
+                <UncertaintyRow label="Change-Point Instability" band={ledger.categories["changepoint_instability"]} />
+                <UncertaintyRow label="Shrinkage Adjustment" band={ledger.categories["shrinkage_adjustment"]} />
+                <UncertaintyRow label="Redundancy Penalty" band={ledger.categories["redundancy_penalty"]} />
+                <UncertaintyRow label="Sensitivity Risk" band={ledger.categories["sensitivity_risk"]} />
             </div>
 
             <div className="mt-4 pt-3 border-t border-gray-600">

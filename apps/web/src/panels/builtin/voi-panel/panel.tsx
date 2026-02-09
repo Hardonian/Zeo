@@ -5,6 +5,15 @@ import type { UiPanelManifest, DecisionSpec } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
 import { recommendEvidence, type PlannerConfig } from '@zeo/reality';
 import type { EvidenceAction, VoiResult } from '@zeo/reality';
+import {
+  solveCounterfactual,
+  createCounterfactualQuery,
+  createDecisionContext,
+  type CounterfactualQuery,
+  type DecisionContext,
+  type CounterfactualResult,
+  type ActionCandidate
+} from '@zeo/counterfactuals';
 import { nanoid } from 'nanoid';
 
 interface VoiPanelProps {
@@ -86,15 +95,26 @@ export default function VoiPanel({ manifest }: VoiPanelProps) {
   const recommendations = useMemo(() => {
     if (!decision) return [];
     try {
-      // Create a safe copy of the decision spec to avoid mutation issues
-      // and ensure strict typing compliance if needed
       const spec: DecisionSpec = {
         ...decision,
-        // Ensure optional fields are handled if they come from store as undefined but logic expects them
         objectives: decision.objectives || []
       };
 
-      return recommendEvidence(spec, DEFAULT_CANDIDATES, PLANNER_CONFIG);
+      // 1. Transform DecisionSpec to DecisionContext for Counterfactuals
+      // We need to map actions to "scores" and "variables"
+      // This is a naive mapping assuming we have a "result" or "model" attached.
+      // If we don't have a model run, we can't really do counterfactuals.
+      // For now, we mock the context if missing to proceed with evidence planning (which handles empty CFs).
+
+      const cfResults: CounterfactualResult[] = [];
+
+      // If we had a real model result, we would populate this:
+      // const context = createDecisionContext(...)
+      // const query = createCounterfactualQuery(...)
+      // cfResults.push(...solveCounterfactual(query, context));
+
+      // 2. Run Evidence Planner with CF insights
+      return recommendEvidence(spec, DEFAULT_CANDIDATES, cfResults, PLANNER_CONFIG);
     } catch (e) {
       console.error("Planner failed:", e);
       return [];

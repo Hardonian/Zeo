@@ -1,0 +1,16 @@
+{
+    "id": "counterfactual-lab",
+    "title": "Counterfactual Lab",
+    "description": "Explore sensitivity and flip conditions",
+    "route": "/demo/counterfactuals",
+    "slot": "main",
+    "kind": "react",
+    "entry": "./panel.tsx",
+    "version": "0.1.0",
+    "capabilities": {},
+    "dataDeps": [
+        "decision",
+        "result"
+    ],
+    "permissions": {}
+}

@@ -1,0 +1,15 @@
+{
+    "id": "evidence-plan-builder",
+    "title": "Evidence Plan Builder",
+    "description": "Construct and execute multi-step evidence plans",
+    "route": "/demo/plan-builder",
+    "slot": "main",
+    "kind": "react",
+    "entry": "./panel.tsx",
+    "version": "0.1.0",
+    "capabilities": {},
+    "dataDeps": [
+        "decision"
+    ],
+    "permissions": {}
+}

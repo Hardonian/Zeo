@@ -22,7 +22,7 @@ const UNCERTAINTY_LEDGER_VERSION = "0.5.1";
 /**
  * Categories of uncertainty tracked in the ledger
  */
-export type UncertaintyCategory = 
+export type UncertaintyCategory =
   | "measurement_uncertainty"
   | "model_uncertainty"
   | "regime_uncertainty"
@@ -46,13 +46,13 @@ export interface UncertaintyLedger {
   createdAt: string;
   predictionId?: string;
   decisionId?: string;
-  
+
   // Individual uncertainty components
-  categories: Partial<Record<UncertaintyCategory, UncertaintyBand>>;
-  
+  categories: Partial<Record<string, UncertaintyBand>>;
+
   // Aggregated uncertainty
   total: UncertaintyBand;
-  
+
   // Metadata for audit
   metadata: {
     computationMethod: "additive" | "quadrature" | "max";
@@ -166,14 +166,14 @@ export function computeMeasurementUncertainty(
 
   // Base uncertainty from prediction structure
   const baseWidth = config.baseWidth;
-  
+
   // Provenance reduction (strong provenance = lower uncertainty)
   const provenanceQuality = getProvenanceQuality(prediction);
   const provenanceReduction = (1 - provenanceQuality) * config.provenancePenalty;
-  
+
   // Freshness penalty (older evidence = higher uncertainty)
-  const freshnessPenalty = prediction.band.high - prediction.band.low < 0.2 
-    ? config.freshnessWeight * rng() 
+  const freshnessPenalty = prediction.band.high - prediction.band.low < 0.2
+    ? config.freshnessWeight * rng()
     : 0;
 
   // Compute band width
@@ -207,11 +207,11 @@ export function computeModelUncertainty(
 
   // Base model uncertainty
   const baseWidth = config.baseWidth;
-  
+
   // Training data quality effect
   const trainingQuality = getTrainingDataQuality(prediction);
   const trainingReduction = (1 - trainingQuality) * config.trainingDataWeight;
-  
+
   // Complexity penalty (more complex = higher uncertainty)
   const complexityFactor = getModelComplexity(prediction);
   const complexityPenalty = complexityFactor * config.complexityPenalty;
@@ -244,11 +244,11 @@ export function computeRegimeUncertainty(
   const rng = seededRng(seed);
 
   const baseWidth = config.baseWidth;
-  
+
   // Recent transition penalty
   const hasRecentTransition = detectRecentRegimeTransition(prediction);
-  const transitionPenalty = hasRecentTransition 
-    ? config.transitionPenalty 
+  const transitionPenalty = hasRecentTransition
+    ? config.transitionPenalty
     : 0;
 
   const width = Math.min(
@@ -279,7 +279,7 @@ export function computeAdversarialUncertainty(
   const rng = seededRng(seed);
 
   const baseWidth = config.baseWidth;
-  
+
   // Strategic complexity
   const strategicComplexity = getStrategicComplexity(prediction);
   const strategicPenalty = strategicComplexity * config.strategicWeight;
@@ -312,7 +312,7 @@ export function computeAiProposalUncertainty(
   const rng = seededRng(seed);
 
   const baseWidth = config.baseWidth;
-  
+
   // Validation reduces AI uncertainty
   const validationStatus = getAiValidationStatus(prediction);
   const validationReduction = validationStatus * config.validationWeight;
@@ -335,11 +335,11 @@ export function computeAiProposalUncertainty(
  * Aggregate uncertainty bands from multiple categories
  */
 export function aggregateUncertainty(
-  categories: Partial<Record<UncertaintyCategory, UncertaintyBand>>,
+  categories: Partial<Record<string, UncertaintyBand>>,
   method: "additive" | "quadrature" | "max"
 ): UncertaintyBand {
   const bands = Object.values(categories).filter((b): b is UncertaintyBand => b !== null);
-  
+
   if (bands.length === 0) {
     return { low: 0, high: 0.5, confidence: 0.5 };
   }
@@ -355,14 +355,14 @@ export function aggregateUncertainty(
       combinedLow = bands.reduce((sum, b) => sum + b.low, 0) / bands.length;
       combinedHigh = bands.reduce((sum, b) => sum + b.high, 0) / bands.length;
       break;
-    
+
     case "quadrature":
       const lowVariance = bands.reduce((sum, b) => sum + Math.pow(avgCenter - b.low, 2), 0) / bands.length;
       const highVariance = bands.reduce((sum, b) => sum + Math.pow(b.high - avgCenter, 2), 0) / bands.length;
       combinedLow = avgCenter - Math.sqrt(lowVariance);
       combinedHigh = avgCenter + Math.sqrt(highVariance);
       break;
-    
+
     case "max":
       combinedLow = Math.max(...bands.map(b => b.low));
       combinedHigh = Math.min(...bands.map(b => b.high));
@@ -392,32 +392,32 @@ export function computeUncertaintyLedger(
 ): UncertaintyLedger {
   const categories: Partial<Record<UncertaintyCategory, UncertaintyBand>> = {};
   const maxCap = config.aggregation.maxUncertaintyCap;
-  
+
   // Compute each category
   categories.measurement_uncertainty = computeMeasurementUncertainty(
     prediction,
     config.measurement,
     maxCap
   ) ?? undefined;
-  
+
   categories.model_uncertainty = computeModelUncertainty(
     prediction,
     config.model,
     maxCap
   ) ?? undefined;
-  
+
   categories.regime_uncertainty = computeRegimeUncertainty(
     prediction,
     config.regime,
     maxCap
   ) ?? undefined;
-  
+
   categories.adversarial_uncertainty = computeAdversarialUncertainty(
     prediction,
     config.adversarial,
     maxCap
   ) ?? undefined;
-  
+
   categories.ai_proposal_uncertainty = computeAiProposalUncertainty(
     prediction,
     config.aiProposal,
@@ -486,11 +486,11 @@ export function checkUncertaintyConsistency(
   for (const cat of Object.keys(current.categories) as UncertaintyCategory[]) {
     const prevCat = previous.categories[cat];
     const currCat = current.categories[cat];
-    
+
     if (prevCat && currCat) {
       const prevWidth = prevCat.high - prevCat.low;
       const currWidth = currCat.high - currCat.low;
-      
+
       if (currWidth < prevWidth && currCat.confidence < prevCat.confidence) {
         violations.push(
           `${cat}: narrowed from ${prevWidth.toFixed(3)} to ${currWidth.toFixed(3)} ` +
@@ -569,7 +569,7 @@ function seededRng(seed: string): () => number {
   for (let i = 0; i < seed.length; i++) {
     state = (state * 31 + seed.charCodeAt(i)) >>> 0;
   }
-  
+
   return () => {
     state = (state * 1664525 + 1013904223) >>> 0;
     return state / 4294967296;

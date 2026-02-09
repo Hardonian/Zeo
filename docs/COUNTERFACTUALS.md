@@ -24,10 +24,10 @@ This helps identify:
 ## Usage
 
 ```typescript
-import {
-  createCounterfactualQuery,
-  createDecisionContext,
-  solveCounterfactual,
+import { 
+  createCounterfactualQuery, 
+  createDecisionContext, 
+  solveCounterfactual, 
   computeFlipDistanceVOI,
   formatCounterfactual,
 } from "@zeo/counterfactuals";
@@ -44,9 +44,9 @@ const context = createDecisionContext(
 
 // Create query
 const query = createCounterfactualQuery(
-  "decision-1",
-  "action-a",
-  ["var1", "var2"],
+  "decision-1", 
+  "action-a", 
+  ["var1", "var2"], 
   { distanceMetric: "absolute", maxDelta: 1.0 }
 );
 
@@ -64,6 +64,18 @@ const voiRanking = computeFlipDistanceVOI(results);
 // Variables sorted by how close they are to flipping the decision
 ```
 
+## Evidence Planner Integration
+
+The Counterfactual Engine feeds directly into the `@zeo/reality` Evidence Planner to prioritize data collection:
+
+```typescript
+import { recommendEvidence } from '@zeo/reality';
+
+// Planner uses sensitivity from counterfactuals to compute VOI
+// Sensitivity ~ 1 / (1 + flipDistance)
+const recommendations = recommendEvidence(spec, candidates, results, config);
+```
+
 ## Output Format
 
 ```typescript
@@ -74,12 +86,13 @@ interface CounterfactualResult {
     low: number;
     high: number;
   };
-  flipDistance: number;          // Distance metric value
+  flipDistance: number;          // Distance metric value (0 = immediate flip)
   newTopAction: string;          // What becomes top after change
   confidenceBand: {              // Uncertainty in estimate
     low: number;
     high: number;
   };
+  found: boolean;                // Whether a valid flip was found
 }
 ```
 
