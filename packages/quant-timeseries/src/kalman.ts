@@ -401,7 +401,7 @@ export function forecast(
 
     const forecasts: Array<{ timestamp: string; value: number; low: number; high: number }> = [];
 
-    let currentState = lastState.smoothedState ?? lastState.filteredState;
+    const currentState = lastState.smoothedState ?? lastState.filteredState;
     let currentVar = lastState.smoothedVariance ?? lastState.stateVariance;
     const Q = result.estimatedNoise.processNoise;
     const R = result.estimatedNoise.observationNoise;

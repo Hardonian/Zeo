@@ -60,7 +60,6 @@ export function hierarchicalShrinkage(
 
     // Initialize hyperparameters
     let tau2 = Math.max(0.01, variance(values) - withinVariance); // Between-item variance
-    let gamma2 = config.grandPriorVariance ?? tau2 * 2; // Between-group variance
 
     // EM algorithm to estimate tau2 (between-item variance)
     let converged = false;
