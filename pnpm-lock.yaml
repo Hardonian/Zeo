@@ -727,6 +727,50 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(@types/node@25.2.2)(jsdom@28.0.0)
 
+  packages/mcp-interop:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.2
+      vitest:
+        specifier: ^2.1.1
+        version: 2.1.9(@types/node@25.2.2)(jsdom@28.0.0)
+
+  packages/mcp-server:
+    dependencies:
+      '@zeo/audit':
+        specifier: workspace:*
+        version: link:../audit
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@zeo/core':
+        specifier: workspace:*
+        version: link:../core
+      '@zeo/kpi':
+        specifier: workspace:*
+        version: link:../kpi
+      '@zeo/mcp-interop':
+        specifier: workspace:*
+        version: link:../mcp-interop
+      '@zeo/warehouse':
+        specifier: workspace:*
+        version: link:../warehouse
+      nanoid:
+        specifier: ^5.0.7
+        version: 5.1.6
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.2
+      vitest:
+        specifier: ^2.1.1
+        version: 2.1.9(@types/node@25.2.2)(jsdom@28.0.0)
+
   packages/measurement:
     dependencies:
       '@zeo/contracts':
