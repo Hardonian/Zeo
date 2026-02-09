@@ -7,6 +7,7 @@
  */
 
 import { createHash } from "node:crypto";
+import AdmZip from "adm-zip";
 import type {
     BuildReproPackParams,
     ReproPackManifest,
@@ -20,6 +21,21 @@ import { sanitizeValue } from "./sanitizer.js";
  */
 export function sha256(content: string): string {
     return createHash("sha256").update(content, "utf8").digest("hex");
+}
+
+/**
+ * Read zip buffer and return file contents map.
+ */
+export function readReproPackZip(buffer: Buffer): ReproPackContents {
+    const zip = new AdmZip(buffer);
+    const entries = zip.getEntries();
+    const contents: Record<string, string> = {};
+    for (const entry of entries) {
+        if (!entry.isDirectory) {
+            contents[entry.entryName] = zip.readAsText(entry);
+        }
+    }
+    return contents as ReproPackContents;
 }
 
 /**
