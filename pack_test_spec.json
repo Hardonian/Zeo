@@ -1,0 +1,23 @@
+{
+    "id": "test-decision-001",
+    "title": "Test Decision",
+    "context": "Testing repro pack",
+    "horizon": "short",
+    "assumptions": [
+        {
+            "id": "ass1",
+            "text": "Prices are stable",
+            "status": "assumption",
+            "confidence": "medium"
+        }
+    ],
+    "constraints": [],
+    "actions": [
+        {
+            "id": "act1",
+            "label": "Buy",
+            "actorId": "me",
+            "kind": "communicate"
+        }
+    ]
+}
