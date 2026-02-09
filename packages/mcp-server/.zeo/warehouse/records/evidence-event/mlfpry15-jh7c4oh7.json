@@ -1,0 +1,49 @@
+{
+  "id": "mlfpry15-jh7c4oh7",
+  "kind": "evidence-event",
+  "createdAt": "2026-02-09T21:58:46.025Z",
+  "updatedAt": "2026-02-09T21:58:46.025Z",
+  "tenant": "local",
+  "hashes": {
+    "contentHash": "8aef463cfd27e85d99a864eb51ca31242611117603bbe262e2b5b84f091155f8",
+    "provenanceHash": "de886b25f30c663d8c4598382fd0a3f79265a08866fdf687cce9e2e0bf36bb28"
+  },
+  "content": {
+    "eventId": "mlfpry15-tlo7ftss",
+    "eventType": "import",
+    "observedAt": "2026-02-09T21:58:46.025Z",
+    "recordedAt": "2026-02-09T21:58:46.025Z",
+    "sources": [
+      {
+        "kind": "text",
+        "sourceId": "mcp:notes",
+        "offset": 0,
+        "length": 22,
+        "capturedAt": "2026-02-09T21:58:46.025Z",
+        "checksum": "8aef463cfd27e85d99a864eb51ca31242611117603bbe262e2b5b84f091155f8"
+      }
+    ],
+    "content": {
+      "type": "text",
+      "text": "# Audit Test\n\nThis should be audited",
+      "structured": {
+        "title": "Audit Test",
+        "body": "This should be audited",
+        "source": "mcp:notes",
+        "attachmentRefs": []
+      }
+    },
+    "checksums": {
+      "contentSha256": "8aef463cfd27e85d99a864eb51ca31242611117603bbe262e2b5b84f091155f8",
+      "provenanceHash": "de886b25f30c663d8c4598382fd0a3f79265a08866fdf687cce9e2e0bf36bb28"
+    },
+    "tags": [
+      "mcp:notes"
+    ],
+    "associatedDecisionIds": [],
+    "associatedSignalIds": []
+  },
+  "tags": [
+    "mcp:notes"
+  ]
+}

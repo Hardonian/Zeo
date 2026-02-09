@@ -1,0 +1,50 @@
+{
+  "id": "mlfprxzm-vle7w5wd",
+  "kind": "evidence-event",
+  "createdAt": "2026-02-09T21:58:45.970Z",
+  "updatedAt": "2026-02-09T21:58:45.970Z",
+  "tenant": "local",
+  "hashes": {
+    "contentHash": "c2cb567378a0c76b20e084d882004c88f2dfe6414d16820b5077c58ef8d1944d",
+    "provenanceHash": "37649e8a0c7217b306a43d438489d15cf128c18b3daf3b6ce907feb4854da120"
+  },
+  "content": {
+    "eventId": "mlfprxzm-jjbk78jp",
+    "eventType": "observation",
+    "observedAt": "2024-06-01T12:00:00Z",
+    "recordedAt": "2026-02-09T21:58:45.970Z",
+    "sources": [
+      {
+        "kind": "text",
+        "sourceId": "sensor-001",
+        "offset": 0,
+        "length": 72,
+        "capturedAt": "2024-06-01T12:00:00Z",
+        "checksum": "c2cb567378a0c76b20e084d882004c88f2dfe6414d16820b5077c58ef8d1944d"
+      }
+    ],
+    "content": {
+      "type": "structured",
+      "structured": {
+        "temperature": 22.5,
+        "confidence": 0.8
+      }
+    },
+    "checksums": {
+      "contentSha256": "c2cb567378a0c76b20e084d882004c88f2dfe6414d16820b5077c58ef8d1944d",
+      "provenanceHash": "37649e8a0c7217b306a43d438489d15cf128c18b3daf3b6ce907feb4854da120"
+    },
+    "tags": [
+      "mcp:evidence",
+      "sensor",
+      "temperature"
+    ],
+    "associatedDecisionIds": [],
+    "associatedSignalIds": []
+  },
+  "tags": [
+    "mcp:evidence",
+    "sensor",
+    "temperature"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": "mlfpry1k-b3iqx03y",
+  "kind": "evidence-event",
+  "createdAt": "2026-02-09T21:58:46.040Z",
+  "updatedAt": "2026-02-09T21:58:46.040Z",
+  "tenant": "local",
+  "hashes": {
+    "contentHash": "0b9a36f1a94a6e4bbfb37d2acaff3ee19485b9d94e2d66e0bc3aa04ee669f82d",
+    "provenanceHash": "bcc71d532fb799924f52c37ef95d769c933f575ecb592485bbd89a824656a031"
+  },
+  "content": {
+    "eventId": "mlfpry1k-a6jb1oal",
+    "eventType": "import",
+    "observedAt": "2026-02-09T21:58:46.040Z",
+    "recordedAt": "2026-02-09T21:58:46.040Z",
+    "sources": [
+      {
+        "kind": "text",
+        "sourceId": "mcp:notes",
+        "offset": 0,
+        "length": 6,
+        "capturedAt": "2026-02-09T21:58:46.040Z",
+        "checksum": "0b9a36f1a94a6e4bbfb37d2acaff3ee19485b9d94e2d66e0bc3aa04ee669f82d"
+      }
+    ],
+    "content": {
+      "type": "text",
+      "text": "# Ordering Test 1\n\nBody 1",
+      "structured": {
+        "title": "Ordering Test 1",
+        "body": "Body 1",
+        "source": "mcp:notes",
+        "attachmentRefs": []
+      }
+    },
+    "checksums": {
+      "contentSha256": "0b9a36f1a94a6e4bbfb37d2acaff3ee19485b9d94e2d66e0bc3aa04ee669f82d",
+      "provenanceHash": "bcc71d532fb799924f52c37ef95d769c933f575ecb592485bbd89a824656a031"
+    },
+    "tags": [
+      "mcp:notes"
+    ],
+    "associatedDecisionIds": [],
+    "associatedSignalIds": []
+  },
+  "tags": [
+    "mcp:notes"
+  ]
+}

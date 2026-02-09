@@ -1,0 +1,53 @@
+{
+  "id": "mlfprxyu-79xjx0k5",
+  "kind": "evidence-event",
+  "createdAt": "2026-02-09T21:58:45.941Z",
+  "updatedAt": "2026-02-09T21:58:45.943Z",
+  "tenant": "local",
+  "hashes": {
+    "contentHash": "1061cc1371489aa04c5cebb18a76781c9eb1f809e81a666b1ad428cbbd5bb856",
+    "provenanceHash": "46c1125ccfdbbaa91643ad847b248e91a79f2ddae9ed150a2fafce77af92950e"
+  },
+  "content": {
+    "eventId": "mlfprxyt-g4qod9ww",
+    "eventType": "import",
+    "observedAt": "2026-02-09T21:58:45.941Z",
+    "recordedAt": "2026-02-09T21:58:45.941Z",
+    "sources": [
+      {
+        "kind": "text",
+        "sourceId": "test-app",
+        "offset": 0,
+        "length": 24,
+        "capturedAt": "2026-02-09T21:58:45.941Z",
+        "checksum": "1061cc1371489aa04c5cebb18a76781c9eb1f809e81a666b1ad428cbbd5bb856"
+      }
+    ],
+    "content": {
+      "type": "text",
+      "text": "# Test Note\n\nThis is a test note body",
+      "structured": {
+        "title": "Test Note",
+        "body": "This is a test note body",
+        "source": "test-app",
+        "attachmentRefs": []
+      }
+    },
+    "checksums": {
+      "contentSha256": "1061cc1371489aa04c5cebb18a76781c9eb1f809e81a666b1ad428cbbd5bb856",
+      "provenanceHash": "46c1125ccfdbbaa91643ad847b248e91a79f2ddae9ed150a2fafce77af92950e"
+    },
+    "tags": [
+      "mcp:notes",
+      "test",
+      "mcp"
+    ],
+    "associatedDecisionIds": [],
+    "associatedSignalIds": []
+  },
+  "tags": [
+    "mcp:notes",
+    "test",
+    "mcp"
+  ]
+}
