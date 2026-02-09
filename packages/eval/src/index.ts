@@ -97,10 +97,10 @@ export {
 
 // Re-export uncertainty ledger (Phase 3)
 export {
-  UncertaintyLedger,
-  UncertaintyBand,
-  UncertaintyCategory,
-  UncertaintyLedgerConfig,
+  type UncertaintyLedger,
+  type UncertaintyBand,
+  type UncertaintyCategory,
+  type UncertaintyLedgerConfig,
   createDefaultLedgerConfig,
   computeMeasurementUncertainty,
   computeModelUncertainty,
