@@ -68,7 +68,7 @@ export function createAuditBridge(config: McpConfig) {
         // Also write to the Zeo audit ledger
         if (config.audit.enabled) {
             auditLog.append(
-                "mcp-server",
+                "system",
                 `mcp:${toolName}`,
                 requestHash,
                 responseHash,

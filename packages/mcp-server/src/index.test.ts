@@ -17,9 +17,9 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { createMcpServer } from "../server";
-import { createDefaultConfig } from "../config";
-import type { McpConfig, JsonRpcRequest } from "../types";
+import { createMcpServer } from "./server";
+import { createDefaultConfig } from "./config";
+import type { McpConfig, JsonRpcRequest } from "./types";
 
 function makeRequest(
     method: string,
@@ -294,7 +294,7 @@ describe("MCP Server", () => {
                     { id: "act-1", label: "Accept", actorId: "agent-1", kind: "commit" },
                     { id: "act-2", label: "Negotiate", actorId: "agent-1", kind: "communicate" },
                 ],
-                constraints: [],
+                constraints: [] as Array<{ id: string; name: string; value: string; status: string }>,
                 assumptions: [
                     {
                         id: "claim-1",
@@ -342,8 +342,8 @@ describe("MCP Server", () => {
                 actions: [
                     { id: "act-1", label: "Go", actorId: "a1", kind: "commit" },
                 ],
-                constraints: [],
-                assumptions: [],
+                constraints: [] as Array<{ id: string; name: string; value: string; status: string }>,
+                assumptions: [] as Array<{ id: string; text: string; status: string; confidence: string; tags: string[] }>,
                 objectives: [
                     { id: "obj-1", metric: "success", weight: 1.0 },
                 ],
