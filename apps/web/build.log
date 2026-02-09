@@ -2,33 +2,3 @@
 > @zeo/web@1.0.0 build C:\Users\scott\Documents\GitHub\Zeo\Zeo\apps\web
 > next build
 
-ΓÜá Warning: Next.js inferred your workspace root, but it may not be correct.
- We detected multiple lockfiles and selected the directory of C:\Users\scott\pnpm-lock.yaml as the root directory.
- To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
-   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
- Detected additional lockfiles: 
-   * C:\Users\scott\Documents\GitHub\Zeo\Zeo\pnpm-lock.yaml
-   * C:\Users\scott\Documents\GitHub\Zeo\pnpm-lock.yaml
-
-Γû▓ Next.js 16.1.6 (Turbopack)
-- Experiments (use with caution):
-  ┬╖ serverActions
-
-  Creating an optimized production build ...
-Γ£ô Compiled successfully in 2.5s
-  Running TypeScript ...
-Failed to compile.
-
-./src/panels/builtin/radar/panel.tsx:100:58
-Type error: Property 'map' does not exist on type 'string'.
-
-   98 |                                     <span>ΓÜá∩╕Å</span>
-   99 |                                     <div>
-> 100 |                                         {item.skepticism.map((s, i) => <div key={i}>{s}</div>)}
-      |                                                          ^
-  101 |                                     </div>
-  102 |                                 </div>
-  103 |                             )}
-Next.js build worker exited with code: 1 and signal: null
-ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @zeo/web@1.0.0 build: `next build`
-Exit status 1
