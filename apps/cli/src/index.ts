@@ -31,6 +31,7 @@ import {
   runAdaptersRuntimeCommand,
 } from "./adapters-runtime-cli.js";
 import { parseEvalArgs, runEvalCommand, type EvalCliArgs } from "./eval-cli.js";
+import { parsePackArgs, runPackCommand } from "./pack-cli.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -269,6 +270,14 @@ async function main(): Promise<void> {
     process.exit(exitCode);
   }
 
+  // Check for pack command
+  const packIdx = argv.indexOf("pack");
+  if (packIdx !== -1) {
+    const packArgs = parsePackArgs(argv.slice(packIdx + 1));
+    const exitCode = await runPackCommand(packArgs);
+    process.exit(exitCode);
+  }
+
   const args = parseArgs(argv);
 
   if (args.replay) {
@@ -496,7 +505,7 @@ function printWorldState(posterior: PosteriorState): void {
   console.log(`Seed: ${posterior.seed.slice(0, 16)}...`);
   console.log(`Model Strength: ${(posterior.modelStrength * 100).toFixed(0)}%`);
   console.log("");
-  
+
   for (const variable of posterior.variables) {
     const width = variable.posteriorBand.high - variable.posteriorBand.low;
     console.log(`${variable.variableId}:`);
@@ -515,7 +524,7 @@ function printVoiReport(report: VoiReport): void {
   console.log("");
   console.log("Ranked Evidence:");
   console.log("-".repeat(80));
-  
+
   for (let i = 0; i < report.candidates.length; i++) {
     const c = report.candidates[i];
     console.log(`${i + 1}. ${c.candidateId}`);
@@ -548,7 +557,7 @@ async function runSignalsCommand(inputPath: string, catalogDir: string | undefin
   }
 }
 
-const isMainModule = process.argv[1] && 
+const isMainModule = process.argv[1] &&
   import.meta.url.replace(/\\/g, '/').endsWith(process.argv[1].replace(/\\/g, '/'));
 
 if (isMainModule) {
