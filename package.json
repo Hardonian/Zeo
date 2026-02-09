@@ -28,7 +28,7 @@
     "eval": "pnpm -C apps/cli eval",
     "mcp:server": "node packages/mcp-server/dist/index.js",
     "mcp:server:http": "node packages/mcp-server/dist/index.js --http",
-    "mcp:doctor": "node -e \"import('./packages/mcp-server/dist/index.js').then(m => m.loadConfig().then(c => { const v = (await import('./packages/mcp-server/dist/config.js')).validateConfig(c); console.log(JSON.stringify({config:c,issues:v},null,2)); }))\" 2>/dev/null || node packages/mcp-server/dist/doctor.js",
+    "mcp:doctor": "node packages/mcp-server/dist/doctor.js",
     "quickstart:web": "pnpm install && pnpm -r build && pnpm -C apps/web dev",
     "quickstart:cli": "pnpm install && pnpm -r build && pnpm -C apps/cli start -- --example negotiation",
     "quickstart:demo": "pnpm install && pnpm -r build && pnpm -C apps/cli start -- --replay ../../external/examples/replay/sample_dataset.json --report-out ./reports",
