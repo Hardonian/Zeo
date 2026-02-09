@@ -1,1 +1,0 @@
-(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,59963,(o,t,e)=>{t.exports=o.r(71116)},50141,o=>{"use strict";o.i(25670),o.i(68691),o.i(59963);o.i(87608);let t=Error("Cannot find module '@/stores/inboxStore'");throw t.code="MODULE_NOT_FOUND",t}]);

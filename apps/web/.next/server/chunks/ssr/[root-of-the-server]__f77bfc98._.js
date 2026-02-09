@@ -1,3 +1,0 @@
-module.exports=[18622,(a,b,c)=>{b.exports=a.x("next/dist/compiled/next-server/app-page-turbo.runtime.prod.js",()=>require("next/dist/compiled/next-server/app-page-turbo.runtime.prod.js"))},13832,(a,b,c)=>{"use strict";b.exports=a.r(18622)},60230,(a,b,c)=>{"use strict";b.exports=a.r(13832).vendored["react-ssr"].ReactJsxRuntime},43457,(a,b,c)=>{"use strict";b.exports=a.r(13832).vendored["react-ssr"].React},43019,a=>{"use strict";a.i(60230),a.i(43457);let b=Error("Cannot find module '@/panels/slots'");throw b.code="MODULE_NOT_FOUND",b}];
-
-//# sourceMappingURL=%5Broot-of-the-server%5D__f77bfc98._.js.map
