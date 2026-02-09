@@ -164,6 +164,9 @@
       ],
       "@zeo/mcp-interop": [
         "packages/mcp-interop/src"
+      ],
+      "@zeo/repro-pack": [
+        "packages/repro-pack/src"
       ]
     }
   }
