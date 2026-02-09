@@ -14,6 +14,7 @@ import { pruneGraph, defaultPruningConfig } from "./pruning";
 import type { PruningConfig } from "./pruning";
 import { generateFlipConditions } from "./flip-conditions";
 import { QuantEngine } from "./quant-engine";
+import type { AssumptionTracker } from "@zeo/repro-pack";
 
 /**
  * Zeo core engine: branching + evaluation.
@@ -223,9 +224,15 @@ export type RunDecisionOpts = {
   depth?: 2 | 3;
   pruning?: Partial<PruningConfig>;
   useQuantEngine?: boolean;
+  tracker?: AssumptionTracker;
 };
 
 export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): DecisionResult {
+  if (opts?.tracker) {
+    opts.tracker.recordSystemAssumption("max_depth", "Branch Depth Limit", opts.depth ?? defaultHeuristics.maxDepth, "levels", "Computational complexity constraint");
+    opts.tracker.recordSystemAssumption("pruning_enabled", "Pruning Strategy", opts.pruning ? "custom" : "standard", "mode", "Graph size management");
+  }
+
   const rawGraph = generateBranchGraph(spec, { ...defaultHeuristics, maxDepth: opts?.depth ?? 2 });
   const pruningConfig: PruningConfig = { ...defaultPruningConfig, ...opts?.pruning };
   const graph = pruneGraph(rawGraph, pruningConfig);
@@ -243,7 +250,7 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
       evaluateGameTheory(spec),
       evaluateEvolutionary(spec),
     ];
-    
+
     const quantFlip = quantEngine.generateFlipConditions(spec, evaluations);
     flipConditions = quantFlip.map(fc => ({
       assumptionId: fc.assumptionId,
@@ -283,7 +290,7 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
     explanation: {
       why: [
         "Zeo generated a conservative branch map emphasizing plausible counterparty responses.",
-        opts?.useQuantEngine 
+        opts?.useQuantEngine
           ? "Robustness analysis uses game-theoretic dominance under interval payoffs."
           : "Recommendations prioritize robustness: actions that retain value across uncertain assumptions.",
         "Uncertainty is represented as probability ranges and explicit dependencies.",
