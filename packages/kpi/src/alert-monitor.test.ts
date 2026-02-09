@@ -8,7 +8,7 @@ import {
   createAlertMonitorService,
   type AlertMonitorConfig,
   type AlertEvent 
-} from "./alert-monitor.js";
+} from "./alert-monitor";
 import type { KpiWarehouseStorage } from "@zeo/warehouse";
 import type { KpiMeasurement, KpiAlertRule, KpiAlert } from "@zeo/contracts";
 
@@ -266,3 +266,4 @@ describe("AlertMonitorService", () => {
     });
   });
 });
+

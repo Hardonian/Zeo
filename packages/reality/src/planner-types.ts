@@ -77,3 +77,4 @@ export interface PlannerConfig {
     maxTime: TimeBand;
     minEvoi: number; // Minimum expected value of information to recommend action
 }
+

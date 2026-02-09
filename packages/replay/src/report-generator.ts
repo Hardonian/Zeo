@@ -4,7 +4,7 @@
  * Generates JSON and Markdown calibration reports from batch replay results.
  */
 
-import type { BatchReplayResult, CaseReplaySummary } from "./batch-runner.js";
+import type { BatchReplayResult, CaseReplaySummary } from "./batch-runner";
 import type { CalibrationScore, CoverageMetrics } from "@zeo/contracts";
 
 export type ReportFormat = "json" | "markdown" | "both";
@@ -401,3 +401,4 @@ export function renderReport(
 
   return result;
 }
+

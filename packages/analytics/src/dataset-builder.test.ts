@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { datasetToCsv } from './dataset-builder.js';
+import { datasetToCsv } from './dataset-builder';
 
 describe('dataset-builder', () => {
   describe('datasetToCsv', () => {
@@ -38,3 +38,4 @@ describe('dataset-builder', () => {
     });
   });
 });
+

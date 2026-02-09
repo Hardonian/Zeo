@@ -8,7 +8,7 @@ import type {
   StrategicAssumption,
   StrategicWorldModel,
   StrategyValidationResult
-} from "./types.js";
+} from "./types";
 
 /**
  * Creates a new strategic world model with default uncertainty settings.
@@ -164,3 +164,4 @@ export function applyStrategicWidening(
     agents: widenedAgents
   };
 }
+

@@ -1,4 +1,4 @@
-import type { Hypothesis, HypothesisStatus, HypothesisRegistry as IRegistry, RegistryQuery } from "./types.js";
+import type { Hypothesis, HypothesisStatus, HypothesisRegistry as IRegistry, RegistryQuery } from "./types";
 import { v4 as uuidv4 } from "uuid";
 
 export interface RegistryConfig {
@@ -251,3 +251,4 @@ export class HypothesisRegistry implements IRegistry {
 export function createRegistry(config?: Partial<RegistryConfig>): HypothesisRegistry {
   return new HypothesisRegistry(config);
 }
+

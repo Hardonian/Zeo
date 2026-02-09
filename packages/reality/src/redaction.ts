@@ -18,8 +18,8 @@ import type {
   RedactionRule, 
   RedactedEvidenceEvent,
   RedactionPreview 
-} from "./types.js";
-import { hashObject, hashData, canonicalizeJson } from "./crypto.js";
+} from "./types";
+import { hashObject, hashData, canonicalizeJson } from "./crypto";
 
 /**
  * Redact a decision spec according to policy
@@ -376,3 +376,4 @@ function matchesRedactionRule(path: string, rule: RedactionRule): boolean {
       return false;
   }
 }
+

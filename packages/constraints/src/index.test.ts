@@ -25,7 +25,7 @@ import {
   type ConstraintGraph,
   type ActionNode,
   type ConstraintContext,
-} from "./index.js";
+} from "./index";
 
 describe("Constraint Graph", () => {
   describe("createConstraintGraph", () => {
@@ -877,3 +877,4 @@ describe("Integration Tests", () => {
     }
   });
 });
+

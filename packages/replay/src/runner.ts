@@ -19,12 +19,12 @@ import {
   hashDecisionSpec,
   hashObservations,
   deriveSeedFromHashes,
-} from "./hashing.js";
+} from "./hashing";
 import {
   buildPredictionBundle,
   observationsUpTo,
   summarizePosterior,
-} from "./predictions.js";
+} from "./predictions";
 
 // Engine version for reproducibility
 const ENGINE_VERSION = "0.3.1";
@@ -362,3 +362,4 @@ function createEmptyCalibrationScore(): CalibrationScore {
     },
   };
 }
+

@@ -8,7 +8,7 @@
  * @module @zeo/kpi/epistemic-guards
  */
 
-import type { KpiMeasurement, KpiContract } from "./types.js";
+import type { KpiMeasurement, KpiContract } from "./types";
 
 /**
  * Error thrown when epistemic discipline is violated
@@ -162,3 +162,4 @@ export function formatKpiWithEpistemicNotice(
   
   return lines.join("\n");
 }
+

@@ -1,4 +1,4 @@
-import type { ForecastRecord, ScoreResult } from "./types.js";
+import type { ForecastRecord, ScoreResult } from "./types";
 import type { DecisionRecord } from "@zeo/memory";
 import type { ProbabilityInterval } from "@zeo/contracts";
 /**

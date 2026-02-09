@@ -10,7 +10,7 @@ import type {
   StrategicAction,
   StrategicScenario,
   StrategyEvaluationCriteria
-} from "./types.js";
+} from "./types";
 
 /**
  * Evaluates strategies across multiple robustness criteria.
@@ -262,3 +262,4 @@ export function validateDeceptionCoverage(
 
   return warnings;
 }
+

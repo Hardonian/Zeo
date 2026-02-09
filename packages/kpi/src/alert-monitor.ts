@@ -772,3 +772,4 @@ export function createAlertMonitorService(
 ): AlertMonitorService {
   return new AlertMonitorService(storage, config);
 }
+

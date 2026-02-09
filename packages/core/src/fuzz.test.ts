@@ -2,14 +2,14 @@ import { describe, it, expect } from 'vitest';
 import {
   canonicalizeDecisionSpec,
   canonicalizeObservationBatch,
-} from './canonicalize.js';
+} from './canonicalize';
 import {
   hashDecisionSpec,
-} from './hashing.js';
+} from './hashing';
 import {
   createRng,
-} from './rng.js';
-import { makeNegotiationExample } from './examples.js';
+} from './rng';
+import { makeNegotiationExample } from './examples';
 import type { ProbabilityInterval, ValueBand } from '@zeo/contracts';
 
 function randomFloat(min: number, max: number): number {
@@ -373,3 +373,4 @@ describe('Fuzz Tests - Edge Cases', () => {
     });
   });
 });
+

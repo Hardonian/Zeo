@@ -22,7 +22,7 @@ import type {
   ConsentScope,
   ConsentValidationResult,
   TrustAuditEntry,
-} from './types.js';
+} from './types';
 
 import {
   createDefaultConsentScope,
@@ -32,7 +32,7 @@ import {
   updateConsentScope,
   getConsentAuditLog,
   enforceConsentAtEntry,
-} from './consent.js';
+} from './consent';
 
 /**
  * Panel operation types that require consent
@@ -371,3 +371,4 @@ export type {
   ConsentValidationResult,
   TrustAuditEntry,
 };
+

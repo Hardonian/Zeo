@@ -185,3 +185,4 @@ export type DecisionStats = {
   byHorizon: Record<string, number>;
   averageResolutionTime: number | undefined; // in days
 };
+

@@ -16,7 +16,7 @@ import {
   type DecisionContext,
   type ActionCandidate,
   type DistanceMetric,
-} from "./index.js";
+} from "./index";
 
 describe("Distance Metrics", () => {
   describe("computeDistance - absolute", () => {
@@ -797,3 +797,4 @@ describe("Integration Tests", () => {
     });
   });
 });
+

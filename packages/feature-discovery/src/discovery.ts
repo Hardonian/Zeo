@@ -7,7 +7,7 @@ import type {
   Pattern,
   PriorityLevel,
   ImpactLevel,
-} from "./types.js";
+} from "./types";
 
 export type { FeatureProposal, DiscoveryContext, DiscoveryResult, DiscoveryConfig, Pattern };
 
@@ -247,3 +247,4 @@ export class FeatureDiscovery {
 export function createFeatureDiscovery(config?: Partial<DiscoveryConfig>): FeatureDiscovery {
   return new FeatureDiscovery(config);
 }
+

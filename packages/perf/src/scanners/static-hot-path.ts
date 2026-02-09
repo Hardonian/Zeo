@@ -464,3 +464,4 @@ export function scanHotPaths(
 
 // Export patterns for customization
 export { PATTERNS, EXPERIMENTAL_PATTERNS };
+

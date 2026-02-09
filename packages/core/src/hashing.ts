@@ -66,3 +66,4 @@ export function hashAssumptionSet(assumptions: Claim[]): string {
 export function cacheKey(spec: DecisionSpec): string {
   return `${hashDecisionSpec(spec)}:${hashAssumptionSet(spec.assumptions)}`;
 }
+

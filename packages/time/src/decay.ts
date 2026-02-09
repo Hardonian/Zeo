@@ -12,7 +12,7 @@ import type {
   EvidenceTemporalStatus,
   StepThreshold,
   DecayParameters
-} from "./types.js";
+} from "./types";
 
 export function applyDecay(
   weight: number,
@@ -207,3 +207,4 @@ export const DEFAULT_DECAY_CONFIGS: Record<string, DecayConfig> = {
     model: "none"
   }
 };
+

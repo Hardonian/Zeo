@@ -1,5 +1,5 @@
 import type { UUID, ProbabilityInterval, Action } from "@zeo/contracts";
-import type { DecisionRecord, OutcomeRecord } from "./types.js";
+import type { DecisionRecord, OutcomeRecord } from "./types";
 
 /**
  * A counterfactual scenario - what if a different action was taken?
@@ -396,3 +396,4 @@ export class CounterfactualEngine {
     };
   }
 }
+

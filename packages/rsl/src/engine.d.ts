@@ -1,5 +1,5 @@
-import type { StateEstimate, RSLStateVariable, SignalObservation, RegimeDetection } from "./types.js";
-import { KalmanFilter, ParticleFilter } from "./filters.js";
+import type { StateEstimate, RSLStateVariable, SignalObservation, RegimeDetection } from "./types";
+import { KalmanFilter, ParticleFilter } from "./filters";
 /**
  * RSL Engine - Reality Signal Layer for state estimation.
  * Combines Kalman/Particle filters with change point detection.

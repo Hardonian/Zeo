@@ -11,14 +11,14 @@ import {
   isPatternType,
   isSeverity,
   isDecisionOutcome,
-} from "./types.js";
+} from "./types";
 import {
   detectAssumptionErrors,
   detectConfidenceMiscalibration,
   detectReversals,
   detectIgnoredClarifiers,
   detectAllPatterns,
-} from "./patterns.js";
+} from "./patterns";
 import {
   aggregatePatterns,
   generateEpistemicWarnings,
@@ -28,7 +28,7 @@ import {
   analyzeDecisions,
   hasEnoughObservations,
   filterDismissedInsights,
-} from "./learner.js";
+} from "./learner";
 
 // Test data factory
 function createDecisionRecord(overrides: Partial<DecisionRecord> = {}): DecisionRecord {
@@ -509,3 +509,4 @@ describe("DEFAULT_CONFIG", () => {
     expect(DEFAULT_CONFIG.lookbackDays).toBeGreaterThan(0);
   });
 });
+

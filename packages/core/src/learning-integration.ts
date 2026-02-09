@@ -1,5 +1,5 @@
 import type { DecisionSpec, DecisionResult, ProbabilityInterval } from "@zeo/contracts";
-import { runDecision } from "./engine.js";
+import { runDecision } from "./engine";
 import type { DecisionMemoryManager, PriorUpdateEngine } from "@zeo/memory";
 import type { IntervalCalibrationEngine } from "@zeo/calibration";
 import type { TemporalContext } from "@zeo/memory";
@@ -232,3 +232,4 @@ export class LearningDecisionRunner {
     return "high";
   }
 }
+

@@ -1,34 +1,34 @@
-export * from "./engine.js";
-export * from "./quant-engine.js";
-export * from "./examples.js";
-export * from "./canonicalize.js";
-export * from "./rng.js";
-export * from "./pruning.js";
-export * from "./flip-conditions.js";
-export * from "./evidence.js";
-export * from "./packets.js";
-export * from "./regime-integration.js";
-export type { RunMeta } from "./packets.js";
+export * from "./engine";
+export * from "./quant-engine";
+export * from "./examples";
+export * from "./canonicalize";
+export * from "./rng";
+export * from "./pruning";
+export * from "./flip-conditions";
+export * from "./evidence";
+export * from "./packets";
+export * from "./regime-integration";
+export type { RunMeta } from "./packets";
 export {
   hashDecisionSpec,
   hashAssumptionSet,
   cacheKey,
-} from "./hashing.js";
+} from "./hashing";
 export type {
   LearningDecisionRunner,
   LearningAwareDecisionOptions,
   LearningAwareDecisionResult,
-} from "./learning-integration.js";
+} from "./learning-integration";
 export {
   evaluateActionsWithPosterior,
   computeVariableSensitivity,
   computeFlipConditions,
   generateEvidenceCandidatesFromFlips,
   type ActionScore,
-} from "./decision-coupling.js";
+} from "./decision-coupling";
 
 // Runner - orchestrated execution
-export { ZeoRunner, type ZeoRunnerConfig } from "./runner.js";
+export { ZeoRunner, type ZeoRunnerConfig } from "./runner";
 
 // Re-exports from v0.4.0+ packages for convenient access
 
@@ -384,7 +384,7 @@ export type {
   RobustnessMetrics,
   CalibrationMetrics,
   KpiIntegrationConfig,
-} from "./kpi-integration.js";
+} from "./kpi-integration";
 export {
   KpiIntegration,
   createKpiIntegration,
@@ -396,4 +396,4 @@ export {
   createCalibrationMeasurement,
   storeDecisionKpis,
   DEFAULT_KPI_CONFIG,
-} from "./kpi-integration.js";
+} from "./kpi-integration";

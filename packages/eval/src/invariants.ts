@@ -8,7 +8,7 @@ import { createHash } from "crypto";
 import { readFileSync, existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import type { DecisionSpec, EvidencePacketJSON } from "@zeo/contracts";
-import type { InvariantResult } from "./types.js";
+import type { InvariantResult } from "./types";
 
 /**
  * Minimum uncertainty width for text-derived priors (Invariant 9)
@@ -167,3 +167,4 @@ export function runInvariantChecks(spec: DecisionSpec, packet: EvidencePacketJSO
 export function runTextInvariantChecks(text: string): InvariantResult[] {
   return [checkCausalLabeling(text)];
 }
+

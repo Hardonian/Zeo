@@ -10,17 +10,17 @@
 
 import type { DecisionSpec, DecisionResult } from "@zeo/contracts";
 import type { KpiWarehouseStorage } from "@zeo/warehouse";
-import { runDecision, type RunDecisionOpts } from "./engine.js";
+import { runDecision, type RunDecisionOpts } from "./engine";
 import {
     enforceTrustBoundary,
     type TrustContext,
     type OperationType
-} from "./trust-integration.js";
+} from "./trust-integration";
 import {
     KpiIntegration,
     type KpiIntegrationConfig,
     createKpiIntegration
-} from "./kpi-integration.js";
+} from "./kpi-integration";
 
 /**
  * Configuration for the Zeo Runner
@@ -113,3 +113,4 @@ export class ZeoRunner {
         return this.kpiIntegration;
     }
 }
+

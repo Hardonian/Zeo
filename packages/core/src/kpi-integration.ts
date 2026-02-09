@@ -569,3 +569,4 @@ export function createKpiIntegration(
 ): KpiIntegration {
   return new KpiIntegration(config);
 }
+

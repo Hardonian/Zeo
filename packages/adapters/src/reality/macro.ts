@@ -11,7 +11,7 @@ import {
   computeQualityScore,
   createProvenancePointer,
   checksum,
-} from "./framework.js";
+} from "./framework";
 
 const MACRO_ADAPTER_INFO: AdapterInfo = {
   id: "macro-fred",
@@ -222,3 +222,4 @@ export function createMacroAdapter(): Adapter {
 }
 
 export { MACRO_SIGNAL_MAP };
+

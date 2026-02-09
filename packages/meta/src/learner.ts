@@ -10,9 +10,9 @@ import type {
   MetaInsight,
   MetaLearnerConfig,
   MetaLearningResult,
-} from "./types.js";
-import { DEFAULT_CONFIG } from "./types.js";
-import { detectAllPatterns } from "./patterns.js";
+} from "./types";
+import { DEFAULT_CONFIG } from "./types";
+import { detectAllPatterns } from "./patterns";
 
 /**
  * Aggregate all detected patterns into a comprehensive view
@@ -298,3 +298,4 @@ export function hasEnoughObservations(
 export function filterDismissedInsights(insights: MetaInsight[]): MetaInsight[] {
   return insights.filter((i) => !i.dismissed);
 }
+

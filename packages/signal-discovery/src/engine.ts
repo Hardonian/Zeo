@@ -9,7 +9,7 @@ import type {
     DiscoveryNode,
     DiscoveryEdge,
     SignalRelationshipType
-} from "./types.js";
+} from "./types";
 import { createHash } from "crypto";
 
 /**
@@ -206,3 +206,4 @@ export function runSignalDiscovery(
         configHash: createHash("sha256").update(JSON.stringify(config)).digest("hex")
     };
 }
+

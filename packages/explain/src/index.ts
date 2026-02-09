@@ -5,17 +5,17 @@ export type {
   AutoSelectionRules,
   ExplanationSelectionContext,
   ExplanationRecord,
-} from "./types.js";
+} from "./types";
 
 export {
   ExplanationGeneratorImpl,
   generateExplanation,
   ensureConsistency,
-} from "./generator.js";
+} from "./generator";
 
 export {
   ExplanationSelector,
   autoSelectExplanationLevel,
   shouldEscalateLevel,
   createDefaultRules,
-} from "./selector.js";
+} from "./selector";

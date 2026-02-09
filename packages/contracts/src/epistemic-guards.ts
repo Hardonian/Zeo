@@ -5,7 +5,7 @@
  * This prevents false confidence from calibration feedback.
  */
 
-import type { ProbabilityInterval } from './types.js';
+import type { ProbabilityInterval } from './types';
 
 export interface WidenOptions {
   /** Allow explicit narrowing with justification */
@@ -159,3 +159,4 @@ export function widenInterval(
     high: Math.min(1, center + newHalfWidth),
   };
 }
+

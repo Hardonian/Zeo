@@ -6,7 +6,7 @@ import {
   assertNoFactWithoutProvenance,
   assertObservationValid,
   assertBranchGraphValid,
-} from './errors.js';
+} from './errors';
 
 describe('ZeoError', () => {
   it('creates error with code and message', () => {
@@ -234,3 +234,4 @@ describe('assertBranchGraphValid', () => {
     }, limits)).toThrow(ZeoError);
   });
 });
+

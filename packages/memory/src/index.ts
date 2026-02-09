@@ -10,23 +10,23 @@ export type {
   OutcomeMapping,
   DecisionQuery,
   DecisionStats,
-} from "./types.js";
+} from "./types";
 
 // Storage
-export type { DecisionStorageAdapter } from "./storage.js";
-export { InMemoryStorageAdapter } from "./storage.js";
+export type { DecisionStorageAdapter } from "./storage";
+export { InMemoryStorageAdapter } from "./storage";
 
 // Manager
-export type { CreateDecisionOptions, RecordOutcomeOptions } from "./manager.js";
-export { DecisionMemoryManager } from "./manager.js";
+export type { CreateDecisionOptions, RecordOutcomeOptions } from "./manager";
+export { DecisionMemoryManager } from "./manager";
 
 // Resolution Engine
 export type { 
   BranchMatch, 
   ResolutionResult, 
   MatchingOptions 
-} from "./resolution.js";
-export { ResolutionEngine } from "./resolution.js";
+} from "./resolution";
+export { ResolutionEngine } from "./resolution";
 
 // Prior Update Engine
 export type {
@@ -36,8 +36,8 @@ export type {
   HierarchicalPriors,
   PriorLookupOptions,
   AppliedPrior,
-} from "./priors.js";
-export { PriorUpdateEngine } from "./priors.js";
+} from "./priors";
+export { PriorUpdateEngine } from "./priors";
 
 // Pattern Detection
 export type {
@@ -45,16 +45,17 @@ export type {
   PatternConfidence,
   CrossDecisionPattern,
   PatternDetectionOptions,
-} from "./patterns.js";
-export { PatternDetectionEngine } from "./patterns.js";
+} from "./patterns";
+export { PatternDetectionEngine } from "./patterns";
 
 // Counterfactual & Regret Analysis
 export type {
   CounterfactualScenario,
   RegretAnalysis,
-} from "./counterfactual.js";
-export { CounterfactualEngine } from "./counterfactual.js";
+} from "./counterfactual";
+export { CounterfactualEngine } from "./counterfactual";
 
 // Inbox Storage
-export type { InboxStorage } from "./inbox.js";
-export { createInboxStorage, createLocalStorageAdapter, createMemoryAdapter } from "./inbox.js";
+export type { InboxStorage } from "./inbox";
+export { createInboxStorage, createLocalStorageAdapter, createMemoryAdapter } from "./inbox";
+

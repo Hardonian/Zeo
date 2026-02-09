@@ -254,3 +254,4 @@ export interface IngestResult {
     timeRange: { start: string; end: string };
   };
 }
+

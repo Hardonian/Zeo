@@ -23,7 +23,7 @@ import type {
   SliceEvaluationReport,
   SliceGatingRule,
   SliceCsvRow,
-} from "./slice-types.js";
+} from "./slice-types";
 
 // Engine version for slice evaluation
 const SLICE_EVAL_VERSION = "0.5.1";
@@ -860,3 +860,4 @@ export function exportSlicesToCsv(report: SliceEvaluationReport): string {
 
   return [headers, ...csvRows].join("\n") + "\n";
 }
+

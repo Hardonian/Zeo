@@ -46,3 +46,4 @@ export interface Pattern {
   matcher: (context: DiscoveryContext) => boolean;
   proposalGenerator: (context: DiscoveryContext) => Partial<FeatureProposal>;
 }
+

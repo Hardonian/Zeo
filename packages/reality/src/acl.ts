@@ -13,8 +13,8 @@ import type {
   RolePermissions,
   SecurityContext,
   TenantContext 
-} from "./types.js";
-import { DEFAULT_ROLE_PERMISSIONS } from "./types.js";
+} from "./types";
+import { DEFAULT_ROLE_PERMISSIONS } from "./types";
 
 /**
  * Create a new ACL for a resource
@@ -350,3 +350,4 @@ export function validateACL(acl: AccessControlList): string[] {
 
   return errors;
 }
+

@@ -10,8 +10,8 @@ import {
   runTimeConsistencyChecks,
   validateTemporalAlignment,
   createTemporalContext
-} from "./index.js";
-import type { TemporalMetadata } from "./types.js";
+} from "./index";
+import type { TemporalMetadata } from "./types";
 
 describe("Time Semantics & Memory Decay", () => {
   describe("Decay Functions", () => {
@@ -302,3 +302,4 @@ describe("Time Semantics & Memory Decay", () => {
     });
   });
 });
+

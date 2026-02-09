@@ -1,6 +1,6 @@
 
 import type { DecisionSpec } from "@zeo/contracts";
-import type { EvidenceAction, VoiResult, PlannerConfig, EvidencePlan } from "./planner-types.js";
+import type { EvidenceAction, VoiResult, PlannerConfig, EvidencePlan } from "./planner-types";
 import { createHash } from "crypto";
 import type { UUID } from "@zeo/contracts";
 
@@ -154,3 +154,4 @@ export function createEvidencePlan(
         createdAt: new Date().toISOString()
     };
 }
+

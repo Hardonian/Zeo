@@ -7,6 +7,7 @@
  * Never assert opponent intent as fact - only model as belief with likelihood bands.
  */
 
-export * from "./types.js";
-export * from "./strategic-world.js";
-export * from "./evaluation.js";
+export * from "./types";
+export * from "./strategic-world";
+export * from "./evaluation";
+

@@ -13,7 +13,7 @@ import {
   assessHypothesisRobustness,
   runAllRobustnessChecks,
   type NumericDataPoint,
-} from "./index.js";
+} from "./index";
 
 // Test data factories
 function createStableData(n: number = 100, value: number = 100): NumericDataPoint[] {
@@ -521,3 +521,4 @@ describe("Integration Tests", () => {
     });
   });
 });
+

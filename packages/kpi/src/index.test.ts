@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { KpiContract, KpiMeasurement } from "./types.js";
+import type { KpiContract, KpiMeasurement } from "./types";
 import {
   computeInputHash,
   computeScalarKpi,
@@ -11,13 +11,13 @@ import {
   createDecisionCoverageKpi,
   createCalibrationScoreKpi,
   createRobustnessScoreKpi,
-} from "./engine.js";
+} from "./engine";
 import {
   isKpiMeasurementValid,
   assertKpiMeasurementValid,
   formatKpiWithEpistemicNotice,
   KpiEpistemicError,
-} from "./epistemic-guards.js";
+} from "./epistemic-guards";
 
 describe("KPI Engine", () => {
   describe("Determinism", () => {
@@ -500,3 +500,4 @@ describe("Epistemic Invariants", () => {
     expect(validation.valid).toBe(true);
   });
 });
+

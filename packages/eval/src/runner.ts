@@ -15,9 +15,9 @@ import type {
   EvalSuiteResult,
   EvalCommand,
   InvariantResult,
-} from "./types.js";
-import { validateEvalSuite } from "./schema.js";
-import { runInvariantChecks } from "./invariants.js";
+} from "./types";
+import { validateEvalSuite } from "./schema";
+import { runInvariantChecks } from "./invariants";
 
 /**
  * Run an evaluation command
@@ -262,3 +262,4 @@ export async function runDeterminismCheck(
       (secondResult.canonicalHash || ""),
   };
 }
+

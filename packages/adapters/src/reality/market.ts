@@ -10,7 +10,7 @@ import {
   computeQualityScore,
   createProvenancePointer,
   checksum,
-} from "./framework.js";
+} from "./framework";
 
 const MARKET_ADAPTER_INFO: AdapterInfo = {
   id: "market-yahoo",
@@ -353,3 +353,4 @@ export function createMarketAdapter(): Adapter {
 }
 
 export { DEFAULT_MARKET_PAIRS };
+

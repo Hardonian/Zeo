@@ -14,7 +14,7 @@ import type {
     WatchlistItem,
     SignalPriority,
     RadarFeedEvent
-} from "./types.js";
+} from "./types";
 import { createHash } from "crypto";
 import { nanoid } from "nanoid";
 
@@ -153,3 +153,4 @@ export function runStrategicRadar(
         configHash: createHash("sha256").update(JSON.stringify(config)).digest("hex")
     };
 }
+

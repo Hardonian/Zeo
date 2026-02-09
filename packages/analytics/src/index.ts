@@ -4,7 +4,7 @@ export {
   type Dataset,
   type DatasetSchema,
   type FeatureRow,
-} from './dataset-builder.js';
+} from './dataset-builder';
 
 export {
   runCorrelation,
@@ -16,4 +16,5 @@ export {
   type RegressionCoefficient,
   type RegressionModel,
   type DatasetConfig,
-} from './python-bridge.js';
+} from './python-bridge';
+

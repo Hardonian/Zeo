@@ -1,4 +1,4 @@
-import type { BeliefUpdate, InferenceRequest, InferenceResponse, PosteriorSummary, WorldState, ObservationLikelihood, ProbabilityDistribution } from "./types.js";
+import type { BeliefUpdate, InferenceRequest, InferenceResponse, PosteriorSummary, WorldState, ObservationLikelihood, ProbabilityDistribution } from "./types";
 /**
  * Bridge to Python Bayesian inference engine.
  * Spawns Python process, sends JSON request, receives JSON response.

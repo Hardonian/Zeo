@@ -4,4 +4,5 @@ export {
   type ClusterableItem,
   type ClusteringResult,
   type ClusteringOptions
-} from "./clustering.js";
+} from "./clustering";
+

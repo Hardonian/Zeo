@@ -101,3 +101,4 @@ export type MeasurementScale =
   | "currency_eur"
   | "percent"
   | "probability";
+

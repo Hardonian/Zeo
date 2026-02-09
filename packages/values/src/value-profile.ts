@@ -9,7 +9,7 @@ import type {
   ValueFunction, 
   ValueOverride,
   ValueProfileChange 
-} from "./types.js";
+} from "./types";
 
 export function createValueProfile(defaultValueFunctionId: string): ValueProfile {
   const now = new Date();
@@ -207,3 +207,4 @@ export function auditProfileIntegrity(profile: ValueProfile): {
 function generateProfileId(): string {
   return `vp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
+

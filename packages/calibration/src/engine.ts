@@ -1,4 +1,4 @@
-import type { ForecastRecord, CalibrationBucket, ScoreResult, CalibrationReport } from "./types.js";
+import type { ForecastRecord, CalibrationBucket, ScoreResult, CalibrationReport } from "./types";
 
 /**
  * Calibration Engine for tracking and improving forecast accuracy.

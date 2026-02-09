@@ -73,3 +73,4 @@ export interface EvidenceTemporalStatus {
   isExpired: boolean;
   stalenessReason?: string;
 }
+

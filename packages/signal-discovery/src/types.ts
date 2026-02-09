@@ -148,3 +148,4 @@ export interface DiscoveryConfig {
     /** Control for multiple testing */
     fdrControl: "bh" | "bonferroni" | "none";
 }
+

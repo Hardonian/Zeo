@@ -4,7 +4,7 @@ import {
   type DatasetSchema,
   type DatasetMetadata,
   type AnalysisPlan
-} from "./planner.js";
+} from "./planner";
 
 describe("Analysis Planner", () => {
   const mockSchema: DatasetSchema = {
@@ -227,3 +227,4 @@ describe("Analysis Planner", () => {
     }
   });
 });
+

@@ -1,6 +1,6 @@
 import type { UUID, DecisionSpec, BranchGraph } from "@zeo/contracts";
-import type { DecisionRecord, OutcomeRecord, DecisionQuery, ResolutionStatus, OutcomeConfidence, TemporalContext } from "./types.js";
-import type { DecisionStorageAdapter } from "./storage.js";
+import type { DecisionRecord, OutcomeRecord, DecisionQuery, ResolutionStatus, OutcomeConfidence, TemporalContext } from "./types";
+import type { DecisionStorageAdapter } from "./storage";
 export type CreateDecisionOptions = {
     userId: string;
     domain: string;

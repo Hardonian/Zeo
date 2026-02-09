@@ -144,3 +144,4 @@ export interface JobFilter {
   /** Pagination cursor */
   cursor?: string;
 }
+

@@ -24,7 +24,7 @@ export {
   type HotPathFinding,
   type ScanOptions,
   type ScanResult,
-} from "./scanners/static-hot-path.js";
+} from "./scanners/static-hot-path";
 
 // Runtime profiler exports
 export {
@@ -47,7 +47,8 @@ export {
   type MemorySnapshot,
   type ProfileReport,
   type ProfilerOptions,
-} from "./profilers/runtime-profiler.js";
+} from "./profilers/runtime-profiler";
 
 // Package version
 export const VERSION = "0.1.0";
+

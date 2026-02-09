@@ -5,7 +5,7 @@ import type {
   OutcomeMapping, 
   PartialResolution,
   ResolutionStatus 
-} from "./types.js";
+} from "./types";
 
 /**
  * Match result for outcome-to-branch mapping.
@@ -395,3 +395,4 @@ export class ResolutionEngine {
     return lower;
   }
 }
+

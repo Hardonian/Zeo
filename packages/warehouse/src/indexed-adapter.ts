@@ -12,7 +12,7 @@ import type {
   ConflictStrategy,
   ExportOptions,
 } from '@zeo/contracts';
-import type { WarehouseAdapter } from './interfaces.js';
+import type { WarehouseAdapter } from './interfaces';
 import {
   DeterministicIndex,
   createEmptyIndex,
@@ -21,7 +21,7 @@ import {
   queryUsingIndex,
   serializeIndex,
   deserializeIndex,
-} from './indexes.js';
+} from './indexes';
 
 interface IndexStorage {
   loadIndex(): Promise<DeterministicIndex | null>;
@@ -286,3 +286,4 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
     await this.rebuildIndex();
   }
 }
+

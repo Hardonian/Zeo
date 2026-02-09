@@ -21,7 +21,7 @@ export {
   isPatternType,
   isSeverity,
   isDecisionOutcome,
-} from "./types.js";
+} from "./types";
 
 // Pattern detection
 export {
@@ -30,7 +30,7 @@ export {
   detectReversals,
   detectIgnoredClarifiers,
   detectAllPatterns,
-} from "./patterns.js";
+} from "./patterns";
 
 // Meta-learning
 export {
@@ -42,7 +42,7 @@ export {
   analyzeDecisions,
   hasEnoughObservations,
   filterDismissedInsights,
-} from "./learner.js";
+} from "./learner";
 
 /**
  * Key design principles:
@@ -71,3 +71,4 @@ export {
  * const insights = createMetaInsights(result.patterns, DEFAULT_CONFIG);
  * ```
  */
+

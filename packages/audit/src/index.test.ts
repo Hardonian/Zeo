@@ -1,5 +1,5 @@
 import { test, expect, describe } from "vitest";
-import { createAuditLog, createDecisionAuditEntry, createEvidenceAuditEntry } from "./index.js";
+import { createAuditLog, createDecisionAuditEntry, createEvidenceAuditEntry } from "./index";
 
 describe("audit ledger", () => {
   describe("append operations", () => {
@@ -175,3 +175,4 @@ describe("audit ledger", () => {
     });
   });
 });
+

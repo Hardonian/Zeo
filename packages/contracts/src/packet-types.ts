@@ -5,8 +5,8 @@ import type {
     LensEvaluation,
     RegimeState,
     ObservationBatch,
-} from "./types.js";
-import type { ZeoErrorCode } from "./errors.js";
+} from "./types";
+import type { ZeoErrorCode } from "./errors";
 
 export interface RunMeta {
     seed: string;
@@ -54,3 +54,4 @@ export interface EvidencePacketJSON {
     errors?: Array<{ code: ZeoErrorCode; message: string; details?: unknown }>;
     exportedAt: string;
 }
+

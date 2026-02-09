@@ -116,3 +116,4 @@ export function isSeverity(value: unknown): value is Severity {
 export function isDecisionOutcome(value: unknown): value is DecisionOutcome {
   return typeof value === "string" && ["success", "failure", "partial"].includes(value);
 }
+

@@ -113,3 +113,4 @@ export function canonicalizeSignalObservation(observation: SignalObservation): S
     biasAdjustmentsApplied: [...observation.biasAdjustmentsApplied].sort(),
   };
 }
+

@@ -153,3 +153,4 @@ export function wouldCalibrationChange(
   const widenFactor = config.widenFactorByDomain[domain] ?? config.widenFactorDefault;
   return widenFactor > 1.0;
 }
+

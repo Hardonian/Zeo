@@ -13,7 +13,7 @@ import {
   type RegimeHistoryPoint,
   type RegimePrediction,
   type TransitionMatrix
-} from "./index.js";
+} from "./index";
 
 describe("regimes detector", () => {
   describe("mean shift detection", () => {
@@ -646,3 +646,4 @@ describe("regimes detector", () => {
     });
   });
 });
+

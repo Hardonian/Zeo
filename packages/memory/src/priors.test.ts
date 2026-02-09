@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { PriorUpdateEngine } from "../src/priors.js";
-import type { DecisionRecord, OutcomeRecord } from "../src/types.js";
+import { PriorUpdateEngine } from "../src/priors";
+import type { DecisionRecord, OutcomeRecord } from "../src/types";
 
 describe("PriorUpdateEngine", () => {
   let engine: PriorUpdateEngine;
@@ -363,3 +363,4 @@ describe("PriorUpdateEngine", () => {
     });
   });
 });
+

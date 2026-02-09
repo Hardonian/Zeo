@@ -15,8 +15,8 @@ import {
   SAFE_DEFAULTS,
   POWER_MODE,
   MINIMAL_MODE,
-} from './index.js';
-import type { ComputeBudget, ResourceType } from './types.js';
+} from './index';
+import type { ComputeBudget, ResourceType } from './types';
 
 describe('Budget Presets', () => {
   it('should provide safe defaults with conservative limits', () => {
@@ -238,3 +238,4 @@ describe('Determinism', () => {
     expect(results[1]).toBe(results[2]);
   });
 });
+

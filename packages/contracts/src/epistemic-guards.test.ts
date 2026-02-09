@@ -6,8 +6,8 @@ import {
   intervalCenter,
   widenInterval,
   MIN_WIDTH_BY_SOURCE,
-} from './epistemic-guards.js';
-import type { ProbabilityInterval } from './types.js';
+} from './epistemic-guards';
+import type { ProbabilityInterval } from './types';
 
 describe('epistemic-guards', () => {
   describe('enforceWidenOnly', () => {
@@ -113,3 +113,4 @@ describe('epistemic-guards', () => {
     });
   });
 });
+

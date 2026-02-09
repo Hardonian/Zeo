@@ -4,8 +4,8 @@
 
 import { describe, it, expect, beforeEach } from "vitest";
 import type { SignalObservation } from "@zeo/contracts";
-import { createQuarantineStore, QUARANTINE_REASONS } from "../quarantine-store.js";
-import { createAnomalyDetector } from "../anomaly-detector.js";
+import { createQuarantineStore, QUARANTINE_REASONS } from "../quarantine-store";
+import { createAnomalyDetector } from "../anomaly-detector";
 
 describe("Quarantine Store", () => {
   const store = createQuarantineStore({ retentionHours: 24 });
@@ -326,3 +326,4 @@ describe("Anomaly Detection", () => {
     });
   });
 });
+

@@ -4,7 +4,7 @@
 
 import { createHash } from "crypto";
 import type { SignalObservation, ObservationBatch } from "@zeo/contracts";
-import type { NormalizationOptions, NormalizedOutput } from "./types.js";
+import type { NormalizationOptions, NormalizedOutput } from "./types";
 
 export const DEFAULT_NORMALIZATION_OPTIONS: NormalizationOptions = {
   canonicalizeKeys: true,
@@ -163,3 +163,4 @@ export function createNormalizer(
     },
   };
 }
+

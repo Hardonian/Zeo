@@ -108,3 +108,4 @@ export interface ConsentValidationResult {
   /** Required actions to resolve violations */
   requiredActions: string[];
 }
+

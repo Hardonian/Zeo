@@ -12,8 +12,8 @@
 
 import { createHash, randomUUID } from "crypto";
 import type { ReplayDataset, ReplayCase, OutcomeMetric, Prediction } from "@zeo/contracts";
-import type { SliceMetrics } from "./slice-types.js";
-import { computeBrierScore, computeCoverage, computeMAE, computeMSE, computeRMSE } from "./slice-computation.js";
+import type { SliceMetrics } from "./slice-types";
+import { computeBrierScore, computeCoverage, computeMAE, computeMSE, computeRMSE } from "./slice-computation";
 
 // Suite version for reproducibility
 const FALSIFICATION_VERSION = "0.5.1";
@@ -786,3 +786,4 @@ export function exportFalsificationReportMd(report: FalsificationReport): string
   
   return lines.join("\n");
 }
+

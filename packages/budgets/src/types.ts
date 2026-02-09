@@ -112,3 +112,4 @@ export interface BudgetEvent {
   timestamp: string;
   context?: string;
 }
+

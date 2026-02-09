@@ -1,6 +1,6 @@
 import type { RegimeEvent, RegimeState } from "@zeo/contracts";
 import type { WarehouseKind, WarehouseQuery, WarehouseEnvelope } from "@zeo/contracts";
-import type { WarehouseAdapter } from "./interfaces.js";
+import type { WarehouseAdapter } from "./interfaces";
 import { nanoid } from "nanoid";
 
 const REGIME_EVENT_KIND: WarehouseKind = "regime-event";
@@ -150,3 +150,4 @@ export function createRegimeState(
     updatedAt: new Date().toISOString(),
   };
 }
+

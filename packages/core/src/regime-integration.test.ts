@@ -5,7 +5,7 @@ import {
   widenPosteriors,
   createRegimeAdjustmentRecord,
   regimeAdjustmentFromBand,
-} from "./regime-integration.js";
+} from "./regime-integration";
 import type { RegimeState } from "@zeo/contracts";
 import type { PosteriorSummary } from "@zeo/models";
 
@@ -213,3 +213,4 @@ describe("regime-aware band widening", () => {
     });
   });
 });
+

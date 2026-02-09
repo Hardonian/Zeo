@@ -624,3 +624,4 @@ function getAiValidationStatus(prediction: Prediction): number {
   // Simplified: assume partial validation
   return 0.4;
 }
+

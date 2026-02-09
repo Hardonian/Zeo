@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { generateFlipConditions } from "./flip-conditions.js";
-import { runDecision } from "./engine.js";
-import { makeNegotiationExample, makeOpsExample } from "./examples.js";
+import { generateFlipConditions } from "./flip-conditions";
+import { runDecision } from "./engine";
+import { makeNegotiationExample, makeOpsExample } from "./examples";
 
 describe("flip-conditions", () => {
   it("generates flip conditions mapping to assumption IDs", () => {
@@ -62,3 +62,4 @@ describe("flip-conditions", () => {
     expect(conditions.length).toBeGreaterThan(0);
   });
 });
+

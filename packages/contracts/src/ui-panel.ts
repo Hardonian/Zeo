@@ -2,7 +2,7 @@ import type {
   UiPanelManifest,
   UiBridgeMessage,
   UiPanelCapabilities,
-} from "./types.js";
+} from "./types";
 
 export function assertUiPanelManifest(x: unknown): asserts x is UiPanelManifest {
   if (!isUiPanelManifest(x)) {
@@ -374,3 +374,4 @@ export function sanitizeErrorMessage(message: string): string {
     .replace(/key-[a-z0-9]+/gi, "[REDACTED_KEY]")
     .replace(/token-[a-z0-9]+/gi, "[REDACTED_TOKEN]");
 }
+

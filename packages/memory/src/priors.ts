@@ -1,5 +1,5 @@
 import type { UUID, ProbabilityInterval } from "@zeo/contracts";
-import type { DecisionRecord, OutcomeRecord } from "./types.js";
+import type { DecisionRecord, OutcomeRecord } from "./types";
 
 /**
  * Level in the hierarchical prior hierarchy.
@@ -593,3 +593,4 @@ export class PriorUpdateEngine {
     this.updates = [];
   }
 }
+

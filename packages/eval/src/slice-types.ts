@@ -258,3 +258,4 @@ export function getGatingThresholds(preset: GatingThresholdPreset): Required<Sli
       };
   }
 }
+

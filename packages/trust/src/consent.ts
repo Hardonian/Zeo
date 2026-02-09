@@ -10,7 +10,7 @@ import type {
   ConsentChange,
   TrustAuditEntry,
   ConsentValidationResult,
-} from "./types.js";
+} from "./types";
 
 /**
  * In-memory audit log for consent changes and access events.
@@ -329,3 +329,4 @@ export function getConsentSummary(scope: ConsentScope): string {
     "=======================",
   ].join("\n");
 }
+

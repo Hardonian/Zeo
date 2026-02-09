@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { canonicalizeForHash, computeContentHash, generateStableId } from '../src/hashing.js';
+import { canonicalizeForHash, computeContentHash, generateStableId } from '../src/hashing';
 
 describe('hashing', () => {
   describe('canonicalizeForHash', () => {
@@ -63,3 +63,4 @@ describe('hashing', () => {
     });
   });
 });
+

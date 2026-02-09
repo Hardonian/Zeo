@@ -1,5 +1,6 @@
-export * from "./framework.js";
-export * from "./macro.js";
-export * from "./market.js";
-export * from "./news.js";
-export * from "./registry.js";
+export * from "./framework";
+export * from "./macro";
+export * from "./market";
+export * from "./news";
+export * from "./registry";
+

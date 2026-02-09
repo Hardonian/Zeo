@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { HypothesisRegistry, createRegistry } from "./registry.js";
+import { HypothesisRegistry, createRegistry } from "./registry";
 
 describe("HypothesisRegistry", () => {
   let registry: HypothesisRegistry;
@@ -180,7 +180,7 @@ describe("HypothesisRegistry", () => {
     });
 
     it("should import hypotheses", () => {
-      const hypotheses: import("./types.js").Hypothesis[] = [
+      const hypotheses: import("./types").Hypothesis[] = [
         { id: "1", statement: "H1", status: "pending", confidence: 0.5, evidence: [], tags: [], createdAt: new Date(), updatedAt: new Date() },
       ];
 
@@ -189,3 +189,4 @@ describe("HypothesisRegistry", () => {
     });
   });
 });
+

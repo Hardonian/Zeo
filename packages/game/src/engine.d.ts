@@ -1,4 +1,4 @@
-import type { StrategicGame, PayoffCell, DominanceResult, EquilibriumResult, RepeatedGame } from "./types.js";
+import type { StrategicGame, PayoffCell, DominanceResult, EquilibriumResult, RepeatedGame } from "./types";
 /**
  * Game Theory Engine with interval utilities and robust equilibrium concepts.
  */

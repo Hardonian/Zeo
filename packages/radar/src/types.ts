@@ -112,3 +112,4 @@ export interface RadarConfig {
     /** Max items to return */
     maxItems: number;
 }
+

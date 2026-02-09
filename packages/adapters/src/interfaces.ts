@@ -54,3 +54,4 @@ export interface NewsSignalAdapter {
     Array<{ id: string; title: string; publishedAt: string; source: string; url: string; summary?: string }>
   >;
 }
+

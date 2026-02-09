@@ -15,14 +15,14 @@ import type {
   IngestResult,
   SourceMetadata,
   QuarantineEntry,
-} from "./types.js";
-import { createFetchOrchestrator, DEFAULT_RETRY_POLICY, DEFAULT_CACHE_CONFIG } from "./fetch-orchestrator.js";
-import { createNormalizer, DEFAULT_NORMALIZATION_OPTIONS } from "./normalizer.js";
-import { createTrustScorer } from "./trust-scorer.js";
-import { createAnomalyDetector, DEFAULT_ANOMALY_RULES } from "./anomaly-detector.js";
-import { createQuarantineStore, createFilesystemQuarantineStore, QUARANTINE_REASONS } from "./quarantine-store.js";
-import { createIntegrityEnforcer, INTEGRITY_RULES } from "./integrity-enforcer.js";
-import { createObservationBatchBuilder, buildReplayDataset } from "./batch-builder.js";
+} from "./types";
+import { createFetchOrchestrator, DEFAULT_RETRY_POLICY, DEFAULT_CACHE_CONFIG } from "./fetch-orchestrator";
+import { createNormalizer, DEFAULT_NORMALIZATION_OPTIONS } from "./normalizer";
+import { createTrustScorer } from "./trust-scorer";
+import { createAnomalyDetector, DEFAULT_ANOMALY_RULES } from "./anomaly-detector";
+import { createQuarantineStore, createFilesystemQuarantineStore, QUARANTINE_REASONS } from "./quarantine-store";
+import { createIntegrityEnforcer, INTEGRITY_RULES } from "./integrity-enforcer";
+import { createObservationBatchBuilder, buildReplayDataset } from "./batch-builder";
 
 export const DEFAULT_RUNTIME_CONFIG: AdapterRuntimeConfig = {
   cache: DEFAULT_CACHE_CONFIG,
@@ -353,3 +353,4 @@ export async function ingestData(
     outDir: options.outDir,
   });
 }
+

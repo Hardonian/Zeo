@@ -1,4 +1,4 @@
-import type { ForecastRecord, CalibrationBucket, ScoreResult, CalibrationReport } from "./types.js";
+import type { ForecastRecord, CalibrationBucket, ScoreResult, CalibrationReport } from "./types";
 import type { DecisionRecord } from "@zeo/memory";
 import type { ProbabilityInterval } from "@zeo/contracts";
 
@@ -458,3 +458,4 @@ export class IntervalCalibrationEngine {
     this.intervalForecasts = [];
   }
 }
+

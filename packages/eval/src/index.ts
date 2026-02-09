@@ -15,7 +15,7 @@ export type {
   InvariantResult,
   EvalResult,
   EvalSuiteResult,
-} from "./types.js";
+} from "./types";
 
 // Re-export schema values (avoiding duplicate MIN_TEXT_UNCERTAINTY_WIDTH)
 export {
@@ -25,7 +25,7 @@ export {
   validateExpectedOutput,
   MIN_TEXT_UNCERTAINTY_WIDTH,
   MAX_DOMINANCE_CAP,
-} from "./schema.js";
+} from "./schema";
 
 // Re-export invariants
 export {
@@ -36,14 +36,14 @@ export {
   verifyHash,
   runInvariantChecks,
   runTextInvariantChecks,
-} from "./invariants.js";
+} from "./invariants";
 
 // Re-export runner
 export {
   runCommand,
   runEvalSuite,
   runDeterminismCheck,
-} from "./runner.js";
+} from "./runner";
 
 // Re-export slice evaluation types
 export type {
@@ -57,7 +57,7 @@ export type {
   SliceCsvRow,
   PredictionOutcomePair,
   GatingThresholdPreset,
-} from "./slice-types.js";
+} from "./slice-types";
 
 // Re-export slice evaluation utilities
 export {
@@ -81,10 +81,10 @@ export {
   computeSliceEvaluation,
   sliceMetricsToCsvRow,
   exportSlicesToCsv,
-} from "./slice-computation.js";
+} from "./slice-computation";
 
 // Re-export gating thresholds from slice-types
-export { getGatingThresholds } from "./slice-types.js";
+export { getGatingThresholds } from "./slice-types";
 
 // Re-export slice runner
 export {
@@ -93,7 +93,7 @@ export {
   checkSliceGates,
   DEFAULT_SLICE_DIMENSIONS,
   type SliceEvalOptions,
-} from "./slice-runner.js";
+} from "./slice-runner";
 
 // Re-export uncertainty ledger (Phase 3)
 export {
@@ -112,7 +112,7 @@ export {
   checkUncertaintyConsistency,
   exportLedgerToJson,
   createLedgerSummary,
-} from "./uncertainty-ledger.js";
+} from "./uncertainty-ledger";
 
 // Re-export falsification suite (Phase 2)
 export {
@@ -124,7 +124,7 @@ export {
   runFalsificationSuite,
   exportFalsificationReport,
   exportFalsificationReportMd,
-} from "./falsification.js";
+} from "./falsification";
 
 // Re-export regret metrics (Phase 4)
 export {
@@ -144,7 +144,7 @@ export {
   computeRegretMetrics,
   exportRegretMetrics,
   createRegretSummary,
-} from "./regret.js";
+} from "./regret";
 
 // Re-export scorecards (Phase 5)
 export {
@@ -167,7 +167,7 @@ export {
   computeScorecardReport,
   exportScorecardReport,
   createScorecardSummary,
-} from "./scorecards.js";
+} from "./scorecards";
 
 // Re-export pooling (Phase 6)
 export {
@@ -190,4 +190,5 @@ export {
   computePoolingReport,
   exportPoolingReport,
   createPoolingSummary,
-} from "./pooling.js";
+} from "./pooling";
+

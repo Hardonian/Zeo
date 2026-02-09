@@ -4,7 +4,7 @@ import {
   computeVariableSensitivity,
   computeFlipConditions,
   generateEvidenceCandidatesFromFlips,
-} from "./decision-coupling.js";
+} from "./decision-coupling";
 import type { DecisionSpec, PosteriorState } from "@zeo/contracts";
 
 describe("decision-coupling", () => {
@@ -221,3 +221,4 @@ describe("decision-coupling", () => {
     });
   });
 });
+

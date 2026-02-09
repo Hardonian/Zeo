@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { makeNegotiationExample, makeOpsExample } from "./examples.js";
-import { runDecision } from "./engine.js";
+import { makeNegotiationExample, makeOpsExample } from "./examples";
+import { runDecision } from "./engine";
 
 describe("zeo core", () => {
   it("generates a branch graph for negotiation", () => {
@@ -24,3 +24,4 @@ describe("zeo core", () => {
     expect(res.nextBestEvidence.length).toBeGreaterThanOrEqual(3);
   });
 });
+

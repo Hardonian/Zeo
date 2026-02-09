@@ -1,5 +1,5 @@
 import type { WarehouseEnvelope, WarehouseQuery, WarehouseQueryResult, WarehouseKind, ImportBundle, ConflictStrategy, ExportOptions } from '@zeo/contracts';
-import type { WarehouseAdapter, BlobStorage } from './interfaces.js';
+import type { WarehouseAdapter, BlobStorage } from './interfaces';
 export declare class FilesystemWarehouseAdapter implements WarehouseAdapter {
     private basePath;
     constructor(cwd?: string);

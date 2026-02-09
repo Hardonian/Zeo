@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { ProbabilityInterval } from "./types.js";
+import type { ProbabilityInterval } from "./types";
 
 describe("contracts types", () => {
   it("ProbabilityInterval has low/high", () => {
@@ -7,3 +7,4 @@ describe("contracts types", () => {
     expect(x.low).toBeLessThanOrEqual(x.high);
   });
 });
+

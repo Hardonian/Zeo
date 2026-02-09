@@ -5,7 +5,7 @@ import type {
   DominanceResult,
   EquilibriumResult,
   RepeatedGame,
-} from "./types.js";
+} from "./types";
 import { nanoid } from "nanoid";
 
 /**

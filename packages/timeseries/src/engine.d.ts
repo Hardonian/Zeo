@@ -1,4 +1,4 @@
-import type { TimeSeries, TimeSeriesAnalysis, ForecastResult, ModelFit, ChangePoint, VolatilityRegime } from "./types.js";
+import type { TimeSeries, TimeSeriesAnalysis, ForecastResult, ModelFit, ChangePoint, VolatilityRegime } from "./types";
 /**
  * Time Series Engine for volatility-aware probability intervals.
  */

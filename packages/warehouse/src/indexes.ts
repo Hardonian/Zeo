@@ -12,8 +12,8 @@ import type {
   ConflictStrategy,
   ExportOptions,
 } from '@zeo/contracts';
-import type { WarehouseAdapter } from './interfaces.js';
-import { computeContentHash } from './hashing.js';
+import type { WarehouseAdapter } from './interfaces';
+import { computeContentHash } from './hashing';
 
 // Index structures
 export interface DeterministicIndex {
@@ -434,3 +434,4 @@ export function deserializeIndex(serialized: string): DeterministicIndex {
   
   return migrateIndex(index);
 }
+

@@ -6,7 +6,7 @@ import {
   type ReplayDataset,
   type ReplayCase,
   type OutcomeRecord,
-} from "./replay.js";
+} from "./replay";
 
 describe("Replay Runtime Guards", () => {
   describe("assertReplayDataset", () => {
@@ -279,3 +279,4 @@ describe("Replay Runtime Guards", () => {
     });
   });
 });
+

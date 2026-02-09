@@ -3,15 +3,15 @@ import {
   canonicalizeDecisionSpec,
   canonicalizeObservationBatch,
   hashObservationBatch,
-} from './canonicalize.js';
+} from './canonicalize';
 import {
   hashDecisionSpec,
-} from './hashing.js';
+} from './hashing';
 import {
   createRng,
   computeDeterministicSeed,
-} from './rng.js';
-import { makeNegotiationExample } from './examples.js';
+} from './rng';
+import { makeNegotiationExample } from './examples';
 import type { DecisionSpec, ObservationBatch, ProbabilityInterval, ValueBand } from '@zeo/contracts';
 
 describe('Determinism', () => {
@@ -304,3 +304,4 @@ describe('Randomized Order Tests', () => {
     expect(hashes.size).toBe(1);
   });
 });
+

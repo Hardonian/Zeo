@@ -7,8 +7,8 @@ import type {
   ConflictStrategy,
   ExportOptions,
 } from '@zeo/contracts';
-import type { WarehouseAdapter, BlobStorage } from './interfaces.js';
-import { computeContentHash, generateStableId } from './hashing.js';
+import type { WarehouseAdapter, BlobStorage } from './interfaces';
+import { computeContentHash, generateStableId } from './hashing';
 
 const DB_NAME = 'zeo_warehouse';
 const DB_VERSION = 1;
@@ -398,3 +398,4 @@ export class IndexedDBBlobStorage implements BlobStorage {
     });
   }
 }
+

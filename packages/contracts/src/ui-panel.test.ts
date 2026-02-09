@@ -6,7 +6,7 @@ import {
   assertUiBridgeMessage,
   denyDangerousPanel,
   hasElevatedCapabilities,
-} from "./ui-panel.js";
+} from "./ui-panel";
 
 describe("UiPanelManifest validation", () => {
   const validManifest = {
@@ -155,3 +155,4 @@ describe("hasElevatedCapabilities", () => {
     expect(hasElevatedCapabilities({})).toBe(false);
   });
 });
+

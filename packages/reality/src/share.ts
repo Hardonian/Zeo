@@ -23,7 +23,7 @@ import type {
   BundleImportResult,
   BundleValidationResult,
   RedactedEvidenceEvent,
-} from "./types.js";
+} from "./types";
 import {
   generateBundleId,
   hashObject,
@@ -37,18 +37,18 @@ import {
   signData,
   verifySignature,
   generateSigningKey,
-} from "./crypto.js";
+} from "./crypto";
 import {
   redactDecisionSpec,
   redactEvidenceEvents,
   generateRedactionPreview,
   validateRedactedContent,
-} from "./redaction.js";
+} from "./redaction";
 import {
   createACL,
   validateTenantIsolation,
   getPermissions,
-} from "./acl.js";
+} from "./acl";
 
 /**
  * Create a share bundle
@@ -481,7 +481,7 @@ export function createExportOptions(
   resourceType: "packet" | "dataset" | "decision"
 ): BundleExportOptions {
   // Import policy from types
-  const { DEFAULT_REDACTION_POLICIES } = require("./types.js");
+  const { DEFAULT_REDACTION_POLICIES } = require("./types");
   
   return {
     redactionPolicy: DEFAULT_REDACTION_POLICIES[policyId],
@@ -497,3 +497,4 @@ export function createExportOptions(
 
 // Re-export preview generation
 export { generateRedactionPreview };
+

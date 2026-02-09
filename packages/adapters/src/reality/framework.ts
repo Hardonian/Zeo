@@ -202,3 +202,4 @@ export function checksum(data: unknown): string {
 export function verifyChecksum(data: unknown, expectedChecksum: string): boolean {
   return checksum(data) === expectedChecksum;
 }
+

@@ -60,3 +60,4 @@ export function canonicalizeValueBand(band: { low: number; high: number }): { lo
     high: Math.round(band.high * 1000) / 1000,
   };
 }
+

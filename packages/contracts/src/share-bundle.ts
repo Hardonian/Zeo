@@ -8,7 +8,7 @@
  * - Access control (owner/editor/viewer)
  */
 
-import type { UUID } from "./types.js";
+import type { UUID } from "./types";
 
 // =============================================================================
 // SHARE BUNDLE TYPES
@@ -219,3 +219,4 @@ export interface ImportShareBundleResult {
 // =============================================================================
 
 export const SHARE_BUNDLE_VERSION = "0.7.0";
+

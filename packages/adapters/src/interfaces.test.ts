@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { AdapterHealth } from "./interfaces.js";
+import type { AdapterHealth } from "./interfaces";
 
 describe("adapters", () => {
   it("AdapterHealth shape", () => {
@@ -7,3 +7,4 @@ describe("adapters", () => {
     expect(h.ok).toBe(true);
   });
 });
+

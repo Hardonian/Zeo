@@ -9,7 +9,7 @@ import {
   requireMarketsActive,
   _resetKillSwitches,
   type KillSwitch,
-} from './kill-switches.js';
+} from './kill-switches';
 
 describe('kill-switches', () => {
   const originalEnv = { ...process.env };
@@ -125,3 +125,4 @@ describe('kill-switches', () => {
     });
   });
 });
+

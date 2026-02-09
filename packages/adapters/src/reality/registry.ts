@@ -2,10 +2,10 @@ import {
   createAdapterRegistry,
   type Adapter,
   type AdapterInfo,
-} from "./framework.js";
-import { createMacroAdapter, MACRO_SIGNAL_MAP } from "./macro.js";
-import { createMarketAdapter, DEFAULT_MARKET_PAIRS } from "./market.js";
-import { createNewsAdapter, TOPIC_TAGS } from "./news.js";
+} from "./framework";
+import { createMacroAdapter, MACRO_SIGNAL_MAP } from "./macro";
+import { createMarketAdapter, DEFAULT_MARKET_PAIRS } from "./market";
+import { createNewsAdapter, TOPIC_TAGS } from "./news";
 
 export function createRealityAdapterRegistry() {
   const registry = createAdapterRegistry();
@@ -133,3 +133,4 @@ export function getDefaultSourceDescriptors(): Array<{
     },
   ];
 }
+

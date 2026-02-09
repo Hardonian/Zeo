@@ -33,3 +33,4 @@ export interface HypothesisRegistry {
   delete(id: string): boolean;
   query(query: RegistryQuery): Hypothesis[];
 }
+

@@ -2,7 +2,7 @@ import { test, expect, describe } from "vitest";
 import {
   clusterItems,
   type ClusterableItem
-} from "./clustering.js";
+} from "./clustering";
 
 describe("Semantic Clustering", () => {
   const mockItems: ClusterableItem[] = [
@@ -71,3 +71,4 @@ describe("Semantic Clustering", () => {
     }
   });
 });
+

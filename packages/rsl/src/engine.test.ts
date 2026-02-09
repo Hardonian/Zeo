@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { KalmanFilter, ParticleFilter } from "./filters.js";
-import { RSLEngine } from "./engine.js";
-import type { FilterConfig, SignalObservation } from "./types.js";
+import { KalmanFilter, ParticleFilter } from "./filters";
+import { RSLEngine } from "./engine";
+import type { FilterConfig, SignalObservation } from "./types";
 
 describe("rsl", () => {
   describe("KalmanFilter", () => {

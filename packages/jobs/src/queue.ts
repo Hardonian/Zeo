@@ -13,7 +13,7 @@ import type {
   JobHandler,
   JobQueueStats,
   JobFilter,
-} from './types.js';
+} from './types';
 
 const DEFAULT_CONFIG: JobQueueConfig = {
   concurrency: 1,  // Deterministic: one job at a time
@@ -453,3 +453,4 @@ export function resetJobQueue(): void {
   }
   globalQueue = null;
 }
+

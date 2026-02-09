@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { IntervalCalibrationEngine } from "../src/interval-engine.js";
+import { IntervalCalibrationEngine } from "../src/interval-engine";
 import type { DecisionRecord } from "@zeo/memory";
 
 describe("IntervalCalibrationEngine", () => {
@@ -374,3 +374,4 @@ describe("IntervalCalibrationEngine", () => {
     });
   });
 });
+

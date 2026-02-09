@@ -8,7 +8,7 @@ import {
   WorldIdRequiredError,
   type WorldsEnsemble,
   type DecisionSpec,
-} from './index.js';
+} from './index';
 
 const createTestDecisionSpec = (): DecisionSpec => ({
   id: 'test-decision',
@@ -99,3 +99,4 @@ describe('worlds invariant tests', () => {
     });
   });
 });
+

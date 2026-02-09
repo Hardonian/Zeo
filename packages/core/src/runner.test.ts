@@ -1,7 +1,7 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { ZeoRunner } from "./runner.js";
-import { createTrustContext } from "./trust-integration.js";
+import { ZeoRunner } from "./runner";
+import { createTrustContext } from "./trust-integration";
 import { createDefaultConsentScope } from "@zeo/trust";
 import type { DecisionSpec, DecisionResult } from "@zeo/contracts";
 import type { KpiWarehouseStorage, KpiMeasurement } from "@zeo/warehouse";
@@ -86,3 +86,4 @@ describe("ZeoRunner", () => {
         await expect(runner.run(mockSpec)).resolves.not.toThrow();
     });
 });
+

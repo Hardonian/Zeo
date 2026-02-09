@@ -10,8 +10,8 @@ import type {
   MetaLearnerConfig,
   PatternType,
   Severity,
-} from "./types.js";
-import { DEFAULT_CONFIG } from "./types.js";
+} from "./types";
+import { DEFAULT_CONFIG } from "./types";
 
 /**
  * Detect recurring assumption errors from decision records
@@ -271,3 +271,4 @@ export function detectAllPatterns(
     (a, b) => b.frequency - a.frequency
   );
 }
+

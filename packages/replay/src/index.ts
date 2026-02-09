@@ -6,9 +6,10 @@
  * calibration/coverage reports.
  */
 
-export * from "./runner.js";
-export * from "./hashing.js";
-export * from "./predictions.js";
-export * from "./calibration-feedback.js";
-export * from "./batch-runner.js";
-export * from "./report-generator.js";
+export * from "./runner";
+export * from "./hashing";
+export * from "./predictions";
+export * from "./calibration-feedback";
+export * from "./batch-runner";
+export * from "./report-generator";
+

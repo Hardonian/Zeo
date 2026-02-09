@@ -8,8 +8,8 @@ import {
   computeCacheKey,
   DEFAULT_RETRY_POLICY,
   DEFAULT_CACHE_CONFIG,
-} from "../fetch-orchestrator.js";
-import { RateLimitError } from "../errors.js";
+} from "../fetch-orchestrator";
+import { RateLimitError } from "../errors";
 
 describe("Fetch Orchestrator", () => {
   describe("computeCacheKey", () => {
@@ -180,3 +180,4 @@ describe("Cache Config", () => {
     expect(DEFAULT_CACHE_CONFIG.keyWindowMs).toBe(60000); // 1 minute
   });
 });
+

@@ -123,3 +123,4 @@ export function summarizePosterior(
     modelStrength: (baseStrength + convergenceStrength) / 2,
   };
 }
+

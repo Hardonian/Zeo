@@ -5,7 +5,7 @@
  * validation and introspection capabilities.
  */
 
-import type { TrustContract } from "./types.js";
+import type { TrustContract } from "./types";
 
 /**
  * Current version of the trust contract.
@@ -199,3 +199,4 @@ export function mergeTrustContract(
     updatedAt: new Date(),
   };
 }
+

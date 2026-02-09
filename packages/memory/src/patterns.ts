@@ -1,5 +1,5 @@
 import type { UUID } from "@zeo/contracts";
-import type { DecisionRecord, OutcomeRecord } from "./types.js";
+import type { DecisionRecord, OutcomeRecord } from "./types";
 
 /**
  * Type of pattern detected across decisions.
@@ -471,3 +471,4 @@ export class PatternDetectionEngine {
     return report;
   }
 }
+

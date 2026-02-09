@@ -11,10 +11,10 @@ import type {
   BudgetCheckResult,
   BudgetTracker,
   BudgetEvent,
-} from './types.js';
+} from './types';
 
-export { SAFE_DEFAULTS, POWER_MODE, MINIMAL_MODE, UNLIMITED, getPreset, clonePreset, createBudget, recommendBudget } from './presets.js';
-export type { ComputeBudget, BudgetLimit, ResourceType, ResourceUsage, BudgetCheckResult, BudgetTracker, BudgetEvent } from './types.js';
+export { SAFE_DEFAULTS, POWER_MODE, MINIMAL_MODE, UNLIMITED, getPreset, clonePreset, createBudget, recommendBudget } from './presets';
+export type { ComputeBudget, BudgetLimit, ResourceType, ResourceUsage, BudgetCheckResult, BudgetTracker, BudgetEvent } from './types';
 
 // Active trackers
 const trackers = new Map<string, BudgetTracker>();
@@ -287,3 +287,4 @@ export function createBudgetGuard(contextId: string) {
     dispose: () => disposeTracker(contextId),
   };
 }
+

@@ -7,8 +7,8 @@ import type {
   ConflictStrategy,
   ExportOptions,
 } from '@zeo/contracts';
-import type { WarehouseAdapter, BlobStorage } from './interfaces.js';
-import { computeContentHash, generateStableId } from './hashing.js';
+import type { WarehouseAdapter, BlobStorage } from './interfaces';
+import { computeContentHash, generateStableId } from './hashing';
 import { promises as fs } from 'fs';
 import { join, dirname } from 'path';
 
@@ -341,3 +341,4 @@ export class FilesystemBlobStorage implements BlobStorage {
     return results;
   }
 }
+

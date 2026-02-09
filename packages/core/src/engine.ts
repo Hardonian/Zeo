@@ -10,10 +10,10 @@ import type {
   LensEvaluation,
   ProbabilityInterval,
 } from "@zeo/contracts";
-import { pruneGraph, defaultPruningConfig } from "./pruning.js";
-import type { PruningConfig } from "./pruning.js";
-import { generateFlipConditions } from "./flip-conditions.js";
-import { QuantEngine } from "./quant-engine.js";
+import { pruneGraph, defaultPruningConfig } from "./pruning";
+import type { PruningConfig } from "./pruning";
+import { generateFlipConditions } from "./flip-conditions";
+import { QuantEngine } from "./quant-engine";
 
 /**
  * Zeo core engine: branching + evaluation.
@@ -295,3 +295,4 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
     },
   };
 }
+

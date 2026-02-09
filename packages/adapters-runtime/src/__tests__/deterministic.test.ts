@@ -9,7 +9,7 @@ import {
   canonicalize,
   stableSort,
   computeDeterministicHash,
-} from "../normalizer.js";
+} from "../normalizer";
 
 describe("Deterministic Normalization", () => {
   const sampleObservations: SignalObservation[] = [
@@ -166,3 +166,4 @@ describe("Deterministic Normalization", () => {
     });
   });
 });
+

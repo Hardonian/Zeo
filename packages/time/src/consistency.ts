@@ -9,7 +9,7 @@ import type {
   TimeConsistencyReport,
   TemporalContext,
   TemporalMetadata 
-} from "./types.js";
+} from "./types";
 
 export interface EvidenceItem {
   id: string;
@@ -176,3 +176,4 @@ export function createTemporalContext(
     referenceTime: now
   };
 }
+

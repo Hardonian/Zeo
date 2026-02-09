@@ -20,7 +20,7 @@ import type {
   KpiTrend,
   KpiRegistry,
   KpiFormula
-} from "./types.js";
+} from "./types";
 
 /**
  * Hash function for determinism
@@ -389,7 +389,7 @@ export function registerKpi(
  */
 export function getKpisByCategory(
   registry: KpiRegistry,
-  category: import("./types.js").KpiCategory
+  category: import("./types").KpiCategory
 ): KpiContract[] {
   const ids = registry.categories.get(category) || [];
   return ids.map(id => registry.kpis.get(id)).filter((k): k is KpiContract => k !== undefined);
@@ -454,3 +454,4 @@ export function createRobustnessScoreKpi(): KpiContract {
     tags: ["robustness", "quality", "sensitivity"]
   };
 }
+

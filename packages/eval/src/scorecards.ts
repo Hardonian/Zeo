@@ -733,3 +733,4 @@ export function createScorecardSummary(report: ScorecardReport): {
     keyFindings: findings,
   };
 }
+

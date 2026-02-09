@@ -7,7 +7,7 @@ import {
   serializeIndex,
   deserializeIndex,
   tokenize,
-} from './indexes.js';
+} from './indexes';
 import type { WarehouseEnvelope } from '@zeo/contracts';
 
 describe('Deterministic Indexes', () => {
@@ -258,3 +258,4 @@ describe('Index Migration', () => {
     expect(restored.tokenIndex).toBeDefined();
   });
 });
+

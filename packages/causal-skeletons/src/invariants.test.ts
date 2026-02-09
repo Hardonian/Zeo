@@ -8,7 +8,7 @@ import {
   NoCausalClaimsError,
   type CausalSkeleton,
   type SkeletonCollection,
-} from './index.js';
+} from './index';
 
 describe('causal-skeletons invariant tests', () => {
   describe('Invariant 4: No Causal Claims (Only Candidate Skeletons)', () => {
@@ -110,7 +110,7 @@ describe('causal-skeletons invariant tests', () => {
           strengthEstimate: { low: 0.1, high: 0.8 },
           evidenceBasis: [],
           // Missing identificationRequirement - violates invariant
-          identificationRequirement: undefined as unknown as import('./index.js').IdentificationRequirement,
+          identificationRequirement: undefined as unknown as import('./index').IdentificationRequirement,
           epistemicWarnings: [],
         }]]),
         createdAt: new Date().toISOString(),
@@ -153,3 +153,4 @@ describe('causal-skeletons invariant tests', () => {
     });
   });
 });
+

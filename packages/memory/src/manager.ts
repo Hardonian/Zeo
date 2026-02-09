@@ -8,8 +8,8 @@ import type {
   ResolutionStatus,
   OutcomeConfidence,
   TemporalContext
-} from "./types.js";
-import type { DecisionStorageAdapter } from "./storage.js";
+} from "./types";
+import type { DecisionStorageAdapter } from "./storage";
 
 export type CreateDecisionOptions = {
   userId: string;
@@ -192,3 +192,4 @@ export class DecisionMemoryManager {
     return this.storage.healthCheck();
   }
 }
+

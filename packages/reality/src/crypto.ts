@@ -193,3 +193,4 @@ function timingSafeEqual(a: Buffer, b: Buffer): boolean {
 export function hashProvenancePointer(pointer: unknown): string {
   return hashObject(pointer);
 }
+

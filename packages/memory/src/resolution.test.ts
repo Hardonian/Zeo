@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { nanoid } from "nanoid";
 import type { DecisionSpec, BranchGraph, BranchNode } from "@zeo/contracts";
-import { ResolutionEngine } from "../src/resolution.js";
-import type { OutcomeRecord, DecisionRecord } from "../src/types.js";
+import { ResolutionEngine } from "../src/resolution";
+import type { OutcomeRecord, DecisionRecord } from "../src/types";
 
 describe("ResolutionEngine", () => {
   const engine = new ResolutionEngine();
@@ -235,3 +235,4 @@ describe("ResolutionEngine", () => {
     });
   });
 });
+

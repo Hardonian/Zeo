@@ -5,7 +5,7 @@ import type {
   ExplanationRecord,
   ExplanationContent,
   AutoSelectionRules,
-} from "./types.js";
+} from "./types";
 
 export class ExplanationSelector {
   private defaultRules: AutoSelectionRules = {

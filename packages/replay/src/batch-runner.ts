@@ -13,8 +13,8 @@ import type {
   CoverageMetrics,
   RecommendedUncertaintyAdjustment,
 } from "@zeo/contracts";
-import { replayCase } from "./runner.js";
-import { hashDataset } from "./hashing.js";
+import { replayCase } from "./runner";
+import { hashDataset } from "./hashing";
 
 const BATCH_ENGINE_VERSION = "0.3.4";
 
@@ -345,3 +345,4 @@ export function createReplayRunIndex(
     error,
   };
 }
+

@@ -138,3 +138,4 @@ export class TrustBoundaryError extends Error {
 
 export { createDefaultConsentScope, isOperationPermitted } from "@zeo/trust";
 export type { ConsentScope, TrustContract } from "@zeo/trust";
+

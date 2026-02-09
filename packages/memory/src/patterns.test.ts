@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { PatternDetectionEngine } from "../src/patterns.js";
-import type { DecisionRecord, OutcomeRecord } from "../src/types.js";
+import { PatternDetectionEngine } from "../src/patterns";
+import type { DecisionRecord, OutcomeRecord } from "../src/types";
 
 describe("PatternDetectionEngine", () => {
   const engine = new PatternDetectionEngine();
@@ -65,7 +65,7 @@ describe("PatternDetectionEngine", () => {
     branchId: "node1",
     recordedAt: new Date().toISOString(),
     resolvedAt: new Date().toISOString(),
-    status: status as import("./types.js").ResolutionStatus,
+    status: status as import("./types").ResolutionStatus,
     confidence: {
       level: "high",
       rationale: "Test",
@@ -232,3 +232,4 @@ describe("PatternDetectionEngine", () => {
     });
   });
 });
+

@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { nanoid } from "nanoid";
 import type { DecisionSpec, BranchGraph } from "@zeo/contracts";
-import { InMemoryStorageAdapter } from "../src/storage.js";
-import { DecisionMemoryManager } from "../src/manager.js";
-import type { ResolutionStatus, DecisionRecord } from "../src/types.js";
+import { InMemoryStorageAdapter } from "../src/storage";
+import { DecisionMemoryManager } from "../src/manager";
+import type { ResolutionStatus, DecisionRecord } from "../src/types";
 
 describe("DecisionMemoryManager", () => {
   let storage: InMemoryStorageAdapter;
@@ -283,3 +283,4 @@ describe("InMemoryStorageAdapter", () => {
     expect(emptyStats.averageResolutionTime).toBeUndefined();
   });
 });
+

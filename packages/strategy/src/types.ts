@@ -72,3 +72,4 @@ export interface StrategicScenario {
   probability: number;
   adversarial: boolean;
 }
+

@@ -5,7 +5,7 @@ import {
   downgradeTobelief,
   ProvenanceRequiredError,
   InvalidProvenanceError,
-} from "./evidence.js";
+} from "./evidence";
 import type { Claim, Constraint, FactCandidate, ProvenancePointer } from "@zeo/contracts";
 import { nanoid } from "nanoid";
 
@@ -152,3 +152,4 @@ describe("downgradeToBelief", () => {
     expect(claim.text).toBe(candidate.text);
   });
 });
+

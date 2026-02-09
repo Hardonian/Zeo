@@ -48,7 +48,7 @@ import {
   importBundle,
   exportBundleToJson,
   parseBundleFromJson,
-} from "./index.js";
+} from "./index";
 
 describe("Reality Mode", () => {
   // =============================================================================
@@ -675,3 +675,4 @@ describe("Reality Mode", () => {
     });
   });
 });
+

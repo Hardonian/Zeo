@@ -5,7 +5,7 @@ import type {
   VoiReport,
 } from "@zeo/contracts";
 import type { RegimeState } from "@zeo/regimes";
-import { SeededRandom, inferPosterior } from "./world-model.js";
+import { SeededRandom, inferPosterior } from "./world-model";
 
 /**
  * Compute uncertainty proxy for a band interval.
@@ -363,3 +363,4 @@ export function computeRegimeAwareVoi(
     regimeAwareCandidates,
   };
 }
+

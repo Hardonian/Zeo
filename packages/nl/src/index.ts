@@ -471,3 +471,4 @@ export function createDefaultScalePack(): ScalePack {
     createdAt: new Date().toISOString(),
   };
 }
+

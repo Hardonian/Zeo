@@ -7,7 +7,7 @@ import { mkdir, writeFile, readFile, readdir, unlink } from "fs/promises";
 import { existsSync } from "fs";
 import { join } from "path";
 import type { SignalObservation } from "@zeo/contracts";
-import type { QuarantineEntry, QuarantineStore } from "./types.js";
+import type { QuarantineEntry, QuarantineStore } from "./types";
 
 export const QUARANTINE_REASONS = {
   ANOMALY_DETECTED: "Anomaly detected",
@@ -264,3 +264,4 @@ export function createFilesystemQuarantineStore(
     },
   };
 }
+

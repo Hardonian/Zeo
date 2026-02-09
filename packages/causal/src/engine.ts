@@ -1,4 +1,4 @@
-import type { CausalDAG, DAGNode, DAGEdge, CausalClaim, PredictiveClaim, CausalInferenceResult } from "./types.js";
+import type { CausalDAG, DAGNode, DAGEdge, CausalClaim, PredictiveClaim, CausalInferenceResult } from "./types";
 import { nanoid } from "nanoid";
 
 /**

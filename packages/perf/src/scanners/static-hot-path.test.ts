@@ -5,7 +5,7 @@ import {
   PATTERNS,
   type HotPathFinding,
   type ScanOptions,
-} from "../scanners/static-hot-path.js";
+} from "../scanners/static-hot-path";
 
 describe("StaticHotPathScanner", () => {
   let scanner: StaticHotPathScanner;
@@ -434,3 +434,4 @@ describe("PATTERNS constant", () => {
     });
   });
 });
+

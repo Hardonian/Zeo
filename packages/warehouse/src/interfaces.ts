@@ -27,3 +27,4 @@ export interface BlobStorage {
   deleteBlob(id: string): Promise<boolean>;
   listBlobs(): Promise<Array<{ id: string; size: number; createdAt: string }>>;
 }
+

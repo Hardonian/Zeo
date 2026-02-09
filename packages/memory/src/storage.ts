@@ -5,7 +5,7 @@ import type {
   DecisionQuery, 
   DecisionStats,
   ResolutionStatus 
-} from "./types.js";
+} from "./types";
 import type { UUID, DecisionSpec, BranchGraph } from "@zeo/contracts";
 
 /**
@@ -204,3 +204,4 @@ export class InMemoryStorageAdapter implements DecisionStorageAdapter {
     return frozen as T;
   }
 }
+

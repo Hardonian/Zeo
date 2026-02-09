@@ -3,7 +3,7 @@
  * Safe defaults and power mode configurations
  */
 
-import type { ComputeBudget, BudgetLimit } from './types.js';
+import type { ComputeBudget, BudgetLimit } from './types';
 
 // Safe defaults - conservative limits for typical edge usage
 export const SAFE_DEFAULTS: ComputeBudget = {
@@ -160,3 +160,4 @@ export function recommendBudget(
   
   return SAFE_DEFAULTS;
 }
+

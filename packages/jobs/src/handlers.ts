@@ -3,7 +3,7 @@
  * Example implementations for common job types
  */
 
-import type { JobHandler, Job } from './types.js';
+import type { JobHandler, Job } from './types';
 
 /**
  * Handler for replay analysis jobs
@@ -136,3 +136,4 @@ export function registerBuiltinHandlers(queue: { registerHandler: <T, R>(h: JobH
   queue.registerHandler(analyticsHandler);
   queue.registerHandler(tournamentHandler);
 }
+

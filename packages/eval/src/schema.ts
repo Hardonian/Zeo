@@ -2,7 +2,7 @@
  * EvalSuite schema definition and validation
  */
 
-import type { EvalSuite, InvariantCheck, ExpectedOutput } from "./types.js";
+import type { EvalSuite, InvariantCheck, ExpectedOutput } from "./types";
 
 /**
  * Minimum uncertainty width for text-derived priors (Invariant 9)
@@ -152,3 +152,4 @@ export function validateExpectedOutput(value: unknown): asserts value is Expecte
     throw new Error("ExpectedOutput.canonicalHash must be a string");
   }
 }
+

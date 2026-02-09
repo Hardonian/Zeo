@@ -10,7 +10,7 @@ import {
   computeQualityScore,
   createProvenancePointer,
   checksum,
-} from "./framework.js";
+} from "./framework";
 
 const NEWS_ADAPTER_INFO: AdapterInfo = {
   id: "news-gnews",
@@ -221,3 +221,4 @@ export function createNewsAdapter(): Adapter {
 }
 
 export { NEWS_ADAPTER_INFO, TOPIC_TAGS };
+

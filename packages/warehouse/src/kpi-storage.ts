@@ -17,8 +17,8 @@ import type {
   WarehouseEnvelope,
   WarehouseKind,
 } from "@zeo/contracts";
-import type { WarehouseAdapter } from "./interfaces.js";
-import { computeContentHash, canonicalizeForHash } from "./hashing.js";
+import type { WarehouseAdapter } from "./interfaces";
+import { computeContentHash, canonicalizeForHash } from "./hashing";
 
 /**
  * KPI record envelope for warehouse storage
@@ -624,3 +624,4 @@ export function createDefaultKpiDashboard(owner: string): KpiDashboard {
     tags: ["system", "default"],
   };
 }
+

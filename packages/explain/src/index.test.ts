@@ -7,12 +7,12 @@ import {
   autoSelectExplanationLevel,
   shouldEscalateLevel,
   createDefaultRules,
-} from "./index.js";
+} from "./index";
 import type {
   ExplanationLevel,
   ExplanationSelectionContext,
   ExplanationContent,
-} from "./types.js";
+} from "./types";
 
 describe("ExplanationGeneratorImpl", () => {
   let generator: ExplanationGeneratorImpl;

@@ -38,7 +38,7 @@ export type {
   KpiRegistry,
   KpiComputationResult,
   KpiErrorCode,
-} from "./types.js";
+} from "./types";
 
 // Engine
 export {
@@ -52,7 +52,7 @@ export {
   createDecisionCoverageKpi,
   createCalibrationScoreKpi,
   createRobustnessScoreKpi,
-} from "./engine.js";
+} from "./engine";
 
 // Epistemic guards
 export {
@@ -60,20 +60,21 @@ export {
   isKpiMeasurementValid,
   formatKpiWithEpistemicNotice,
   KpiEpistemicError,
-} from "./epistemic-guards.js";
+} from "./epistemic-guards";
 
 // Alert Monitor
 export {
   AlertMonitorService,
   createAlertMonitorService,
-} from "./alert-monitor.js";
+} from "./alert-monitor";
 export type {
   AlertMonitorConfig,
   AlertHandler,
   AlertEvent,
   AlertState,
   AlertEventType,
-} from "./alert-monitor.js";
+} from "./alert-monitor";
 
 // Standard KPIs constant
-export { StandardKpis } from "./types.js";
+export { StandardKpis } from "./types";
+

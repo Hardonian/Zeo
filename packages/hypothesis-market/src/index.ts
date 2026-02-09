@@ -506,3 +506,4 @@ function calculateDrawdown(hypothesis: MarketHypothesis, currentCredence: number
 
 // Re-export types from hypothesis-registry for convenience
 export type { Hypothesis, HypothesisStatus } from '@zeo/hypothesis-registry';
+

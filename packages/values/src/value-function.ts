@@ -11,7 +11,7 @@ import type {
   ValueValidationResult,
   ValueValidationError,
   MeasurementScale 
-} from "./types.js";
+} from "./types";
 
 const VALID_COMPONENTS: ValueComponent[] = [
   "utility",
@@ -225,3 +225,4 @@ export function compareValueFunctions(
 function generateValueFunctionId(): string {
   return `vf_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
+

@@ -2,7 +2,7 @@ import { test, expect, describe } from "vitest";
 import {
   synthesizeImplications,
   type DecisionContext
-} from "./synthesizer.js";
+} from "./synthesizer";
 
 describe("Decision Synthesizer", () => {
   const mockContext: DecisionContext = {
@@ -70,3 +70,4 @@ describe("Decision Synthesizer", () => {
     expect(result.summary).toContain("implications");
   });
 });
+

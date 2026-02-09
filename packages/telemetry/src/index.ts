@@ -633,3 +633,4 @@ export function computeHealthScore(aggregate: TelemetryAggregate): number {
 
   return Math.max(0, Math.min(1, score));
 }
+

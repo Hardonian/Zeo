@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { JobQueue, resetJobQueue, getJobQueue } from './queue.js';
-import type { JobHandler } from './types.js';
+import { JobQueue, resetJobQueue, getJobQueue } from './queue';
+import type { JobHandler } from './types';
 
 // Helper to process all pending jobs synchronously
 async function processAllJobs(queue: JobQueue): Promise<void> {
@@ -242,3 +242,4 @@ describe('Job Determinism', () => {
     expect(results[1]).toEqual(results[2]);
   });
 });
+

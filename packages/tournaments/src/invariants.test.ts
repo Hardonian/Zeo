@@ -11,7 +11,7 @@ import {
   type Strategy,
   type Scenario,
   type DecisionSpec,
-} from './index.js';
+} from './index';
 
 const createTestDecisionSpec = (): DecisionSpec => ({
   id: 'test-decision',
@@ -185,3 +185,4 @@ describe('tournaments invariant tests', () => {
     });
   });
 });
+

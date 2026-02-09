@@ -3,7 +3,7 @@ import {
   bandUncertainty,
   aggregateUncertainty,
   computeVoi,
-} from "./voi.js";
+} from "./voi";
 import type {
   WorldModelSpec,
   PosteriorState,
@@ -228,3 +228,4 @@ describe("voi", () => {
     });
   });
 });
+

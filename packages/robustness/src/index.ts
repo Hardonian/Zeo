@@ -574,4 +574,5 @@ export {
   formatHypothesisForReview,
   createHypothesisGenerationReport,
   generateHypothesesFromPattern,
-} from "./hypothesis-generator.js";
+} from "./hypothesis-generator";
+

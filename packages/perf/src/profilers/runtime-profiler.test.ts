@@ -6,7 +6,7 @@ import {
   startQuickProfile,
   endQuickProfile,
   type ProfilerOptions,
-} from "./runtime-profiler.js";
+} from "./runtime-profiler";
 
 describe("Profiler", () => {
   let profiler: Profiler;
@@ -382,3 +382,4 @@ describe("Profiler", () => {
     });
   });
 });
+

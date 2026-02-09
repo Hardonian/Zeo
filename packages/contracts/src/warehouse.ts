@@ -1,4 +1,4 @@
-import type { ProvenancePointer } from './types.js';
+import type { ProvenancePointer } from './types';
 
 export type WarehouseKind =
   | 'decision'
@@ -118,3 +118,4 @@ export interface ExportOptions {
   tags?: string[];
   includeDeleted?: boolean;
 }
+
