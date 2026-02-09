@@ -1,0 +1,79 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$comment": "Zeo MCP Server Configuration — tracked file, no secrets. Use env vars for sensitive values.",
+    "server": {
+        "name": "zeo-mcp",
+        "version": "1.4.0"
+    },
+    "transport": {
+        "stdio": true,
+        "http": {
+            "enabled": false,
+            "port": 3100,
+            "host": "127.0.0.1"
+        }
+    },
+    "tools": {
+        "allowlist": {
+            "notes.ingest": {
+                "name": "notes.ingest",
+                "scope": "write",
+                "enabled": true,
+                "requireConfirmation": true
+            },
+            "evidence.add": {
+                "name": "evidence.add",
+                "scope": "write",
+                "enabled": true,
+                "requireConfirmation": true
+            },
+            "kpi.list": {
+                "name": "kpi.list",
+                "scope": "read",
+                "enabled": true,
+                "requireConfirmation": false
+            },
+            "kpi.get": {
+                "name": "kpi.get",
+                "scope": "read",
+                "enabled": true,
+                "requireConfirmation": false
+            },
+            "run.execute": {
+                "name": "run.execute",
+                "scope": "write",
+                "enabled": true,
+                "requireConfirmation": true
+            },
+            "packet.export": {
+                "name": "packet.export",
+                "scope": "write",
+                "enabled": true,
+                "requireConfirmation": true
+            },
+            "search.query": {
+                "name": "search.query",
+                "scope": "read",
+                "enabled": true,
+                "requireConfirmation": false
+            },
+            "audit.tail": {
+                "name": "audit.tail",
+                "scope": "read",
+                "enabled": true,
+                "requireConfirmation": false
+            }
+        }
+    },
+    "warehouse": {
+        "basePath": "."
+    },
+    "audit": {
+        "enabled": true,
+        "storageType": "memory"
+    },
+    "security": {
+        "redactSecrets": true,
+        "maxRequestSizeBytes": 10485760
+    }
+}

@@ -1,0 +1,279 @@
+/**
+ * @zeo/mcp-server — MCP Server Core
+ *
+ * Implements the MCP protocol over JSON-RPC 2.0.
+ * Supports stdio transport (default) and optional HTTP transport.
+ *
+ * Protocol methods:
+ *   - initialize       → server info + capabilities
+ *   - tools/list        → list available tools
+ *   - tools/call        → call a tool
+ *   - notifications/initialized → client ready (no-op ack)
+ */
+
+import type { WarehouseAdapter } from "@zeo/warehouse";
+import { FilesystemWarehouseAdapter } from "@zeo/warehouse";
+import type {
+    McpConfig,
+    JsonRpcRequest,
+    JsonRpcResponse,
+    McpToolDefinition,
+    McpToolCallParams,
+    McpToolResult,
+} from "./types";
+import { createAuditBridge, type AuditBridge } from "./audit-bridge";
+import { validateToolPermission, validateRequestSize, redactSecrets } from "./security";
+
+// Tool implementations
+import { notesIngestDefinition, notesIngest } from "./tools/notes-ingest";
+import { evidenceAddDefinition, evidenceAdd } from "./tools/evidence-add";
+import { kpiListDefinition, kpiList } from "./tools/kpi-list";
+import { kpiGetDefinition, kpiGet } from "./tools/kpi-get";
+import { runExecuteDefinition, runExecute } from "./tools/run-execute";
+import { packetExportDefinition, packetExport } from "./tools/packet-export";
+import { searchQueryDefinition, searchQuery } from "./tools/search-query";
+import { auditTailDefinition, auditTail } from "./tools/audit-tail";
+
+/**
+ * Registry of all tool definitions and their handlers.
+ */
+const TOOL_REGISTRY: Array<{
+    definition: McpToolDefinition;
+    handler: (
+        params: Record<string, unknown>,
+        warehouse: WarehouseAdapter,
+        auditBridge: AuditBridge,
+        basePath: string
+    ) => Promise<McpToolResult> | McpToolResult;
+}> = [
+        {
+            definition: notesIngestDefinition,
+            handler: (params, warehouse) => notesIngest(params, warehouse),
+        },
+        {
+            definition: evidenceAddDefinition,
+            handler: (params, warehouse) => evidenceAdd(params, warehouse),
+        },
+        {
+            definition: kpiListDefinition,
+            handler: (params, warehouse) => kpiList(params, warehouse),
+        },
+        {
+            definition: kpiGetDefinition,
+            handler: (params, warehouse) => kpiGet(params, warehouse),
+        },
+        {
+            definition: runExecuteDefinition,
+            handler: (params) => runExecute(params),
+        },
+        {
+            definition: packetExportDefinition,
+            handler: (params, warehouse, _audit, basePath) =>
+                packetExport(params, warehouse, basePath),
+        },
+        {
+            definition: searchQueryDefinition,
+            handler: (params, warehouse) => searchQuery(params, warehouse),
+        },
+        {
+            definition: auditTailDefinition,
+            handler: (params, _warehouse, auditBridge) => auditTail(params, auditBridge),
+        },
+    ];
+
+export interface McpServer {
+    handleRequest(raw: string): Promise<string | null>;
+    getToolDefinitions(): McpToolDefinition[];
+    getAuditBridge(): AuditBridge;
+}
+
+export function createMcpServer(config: McpConfig): McpServer {
+    const warehouse: WarehouseAdapter = new FilesystemWarehouseAdapter(
+        config.warehouse.basePath
+    );
+    const auditBridge = createAuditBridge(config);
+
+    // Filter tools based on allowlist
+    const enabledTools = TOOL_REGISTRY.filter(
+        t => config.tools.allowlist[t.definition.name]?.enabled !== false
+    );
+
+    function getToolDefinitions(): McpToolDefinition[] {
+        return enabledTools.map(t => t.definition);
+    }
+
+    function getAuditBridge(): AuditBridge {
+        return auditBridge;
+    }
+
+    async function handleRequest(raw: string): Promise<string | null> {
+        // Validate request size
+        const sizeError = validateRequestSize(config, Buffer.byteLength(raw, "utf-8"));
+        if (sizeError) {
+            return JSON.stringify({
+                jsonrpc: "2.0",
+                id: null,
+                error: sizeError,
+            } satisfies JsonRpcResponse);
+        }
+
+        let request: JsonRpcRequest;
+        try {
+            request = JSON.parse(raw);
+        } catch {
+            return JSON.stringify({
+                jsonrpc: "2.0",
+                id: null,
+                error: { code: -32700, message: "Parse error" },
+            } satisfies JsonRpcResponse);
+        }
+
+        // Notifications (no id) — ack silently
+        if (request.id === undefined || request.id === null) {
+            return null;
+        }
+
+        const response = await dispatch(request);
+        return JSON.stringify(response);
+    }
+
+    async function dispatch(request: JsonRpcRequest): Promise<JsonRpcResponse> {
+        switch (request.method) {
+            case "initialize":
+                return {
+                    jsonrpc: "2.0",
+                    id: request.id,
+                    result: {
+                        protocolVersion: "2024-11-05",
+                        serverInfo: {
+                            name: config.server.name,
+                            version: config.server.version,
+                        },
+                        capabilities: {
+                            tools: {},
+                        },
+                    },
+                };
+
+            case "notifications/initialized":
+                return {
+                    jsonrpc: "2.0",
+                    id: request.id,
+                    result: {},
+                };
+
+            case "tools/list":
+                return {
+                    jsonrpc: "2.0",
+                    id: request.id,
+                    result: {
+                        tools: getToolDefinitions(),
+                    },
+                };
+
+            case "tools/call":
+                return handleToolCall(request);
+
+            default:
+                return {
+                    jsonrpc: "2.0",
+                    id: request.id,
+                    error: {
+                        code: -32601,
+                        message: `Method not found: ${request.method}`,
+                    },
+                };
+        }
+    }
+
+    async function handleToolCall(
+        request: JsonRpcRequest
+    ): Promise<JsonRpcResponse> {
+        const params = request.params as McpToolCallParams | undefined;
+        if (!params?.name) {
+            return {
+                jsonrpc: "2.0",
+                id: request.id,
+                error: { code: -32602, message: "Missing tool name in params" },
+            };
+        }
+
+        // Security check
+        const permError = validateToolPermission(config, params);
+        if (permError) {
+            return {
+                jsonrpc: "2.0",
+                id: request.id,
+                error: permError,
+            };
+        }
+
+        const tool = enabledTools.find(
+            t => t.definition.name === params.name
+        );
+        if (!tool) {
+            return {
+                jsonrpc: "2.0",
+                id: request.id,
+                error: {
+                    code: -32602,
+                    message: `Unknown tool: ${params.name}`,
+                },
+            };
+        }
+
+        const startMs = Date.now();
+        try {
+            const toolArgs = (params.arguments ?? {}) as Record<string, unknown>;
+
+            const result = await tool.handler(
+                toolArgs,
+                warehouse,
+                auditBridge,
+                config.warehouse.basePath
+            );
+
+            const durationMs = Date.now() - startMs;
+
+            // Audit log (redact secrets in logged args)
+            auditBridge.record(
+                params.name,
+                config.security.redactSecrets ? redactSecrets(toolArgs) : toolArgs,
+                result.isError ? { error: true } : { success: true },
+                !result.isError,
+                durationMs
+            );
+
+            return {
+                jsonrpc: "2.0",
+                id: request.id,
+                result,
+            };
+        } catch (err) {
+            const durationMs = Date.now() - startMs;
+            const errorMessage =
+                err instanceof Error ? err.message : String(err);
+
+            auditBridge.record(
+                params.name,
+                config.security.redactSecrets
+                    ? redactSecrets(params.arguments)
+                    : params.arguments,
+                { error: errorMessage },
+                false,
+                durationMs
+            );
+
+            return {
+                jsonrpc: "2.0",
+                id: request.id,
+                error: {
+                    code: -32603,
+                    message: `Tool execution failed: ${errorMessage}`,
+                },
+            };
+        }
+    }
+
+    return { handleRequest, getToolDefinitions, getAuditBridge };
+}
