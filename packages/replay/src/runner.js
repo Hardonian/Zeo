@@ -66,7 +66,7 @@ export async function replayCase(replayCase, options) {
 /**
  * Create a checkpoint at a specific point in time.
  */
-async function createCheckpoint(at, decisionSpec, batchesUpTo, decisionHash, observationsHash, seed, engineVersion, trackedMetrics, _options) {
+async function createCheckpoint(at, decisionSpec, batchesUpTo, decisionHash, observationsHash, seed, engineVersion, trackedMetrics) {
     // Mock posterior state - in real implementation this would call @zeo/models
     // For now, create synthetic posterior based on observation count
     let observationCount = 0;

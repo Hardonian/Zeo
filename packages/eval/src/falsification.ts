@@ -93,10 +93,16 @@ export interface FalsificationReport {
   permutedLabelResults: FalsificationTestResult[];
   placeboTargetResults: FalsificationTestResult[];
   timeShiftResults: FalsificationTestResult[];
+  // Phase 4: Learning without overfitting
+  priorReliabilityResults: FalsificationTestResult[];
+  overfitResults: FalsificationTestResult[];
   gates: {
     permutedLabelGate: boolean;
     placeboGate: boolean;
     timeShiftGate: boolean;
+    // Phase 4 gates
+    priorReliabilityGate: boolean;
+    overfitGate: boolean;
     overallPassed: boolean;
   };
   leakageReport?: {

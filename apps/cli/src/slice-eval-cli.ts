@@ -267,7 +267,7 @@ export async function runSliceEvalCommand(args: SliceEvalCliArgs): Promise<numbe
                 id: m.mapping.targetId,
               },
               band: { low: 0.3, high: 0.7 },
-              provenanceRefs: [],
+              provenanceRefs: [] as string[],
               basis: {
                 decisionHash: "mock",
                 observationHash: "mock",

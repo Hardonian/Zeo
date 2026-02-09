@@ -145,3 +145,49 @@ export {
   exportRegretMetrics,
   createRegretSummary,
 } from "./regret.js";
+
+// Re-export scorecards (Phase 5)
+export {
+  type ScorecardType,
+  type PredictionBin,
+  type CalibrationPoint,
+  type ReliabilityDiagram,
+  type SharpnessDiagram,
+  type PredictionHistogram,
+  type ConfusionMatrix,
+  type MultiClassMetrics,
+  type ScorecardReport,
+  type ScorecardConfig,
+  createDefaultScorecardConfig,
+  deriveScorecardSeed,
+  computeReliabilityDiagram,
+  computeSharpnessDiagram,
+  computePredictionHistogram,
+  computeConfusionMatrix,
+  computeScorecardReport,
+  exportScorecardReport,
+  createScorecardSummary,
+} from "./scorecards.js";
+
+// Re-export pooling (Phase 6)
+export {
+  type PoolingType,
+  type PriorParams,
+  type PooledEstimate,
+  type SliceEstimate,
+  type HierarchicalPoolResult,
+  type EmpiricalBayesResult,
+  type ConjugateUpdateResult,
+  type PartialPoolResult,
+  type PoolingReport,
+  type PoolingConfig,
+  createDefaultPoolingConfig,
+  derivePoolingSeed,
+  computeHierarchicalPooling,
+  computeEmpiricalBayes,
+  computeConjugateUpdate,
+  computePartialPooling,
+  computePoolingReport,
+  exportPoolingReport,
+  createPoolingSummary,
+} from "./pooling.js";
