@@ -20,29 +20,9 @@ import {
   type RunData,
   type DiffEntry,
 } from "@zeo/repro-pack";
-// ... (imports)
-
-// ... (inside function)
-if (result.match) {
-  console.log("✅ Replay successful: Outputs match exactly.");
-  return 0;
-} else {
-  console.error("❌ Replay failed: Mismatch detected.");
-  if (result.errors.length > 0) {
-    console.error("Errors:");
-    result.errors.forEach((e: string) => console.error(`  - ${e}`));
-  }
-  if (result.diffs.length > 0) {
-    console.error("Differences (JSON Pointers):");
-    result.diffs.forEach((d: DiffEntry) => {
-      console.error(`  ${d.path}`);
-      console.error(`    Expect: ${JSON.stringify(d.expected)}`);
-      console.error(`    Actual: ${JSON.stringify(d.actual)}`);
-    });
-  }
-  return 1;
-}
 import { runDecision } from "@zeo/core";
+
+
 
 export interface ReplayCliArgs {
   replay: string | undefined;
@@ -176,11 +156,11 @@ export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
       console.error("❌ Replay failed: Mismatch detected.");
       if (result.errors.length > 0) {
         console.error("Errors:");
-        result.errors.forEach((e) => console.error(`  - ${e}`));
+        result.errors.forEach((e: string) => console.error(`  - ${e}`));
       }
       if (result.diffs.length > 0) {
         console.error("Differences (JSON Pointers):");
-        result.diffs.forEach((d) => {
+        result.diffs.forEach((d: DiffEntry) => {
           console.error(`  ${d.path}`);
           console.error(`    Expect: ${JSON.stringify(d.expected)}`);
           console.error(`    Actual: ${JSON.stringify(d.actual)}`);
