@@ -10,7 +10,8 @@ const nextConfig = {
     '@zeo/governance',
     '@zeo/signal-discovery',
     '@zeo/kpi',
-    '@zeo/warehouse'
+    '@zeo/warehouse',
+    '@zeo/repro-pack'
   ],
   experimental: {
     serverActions: {
