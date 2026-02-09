@@ -156,7 +156,8 @@ export interface SensitivityInput {
  */
 export function computeChangepointUncertainty(
     input: ChangePointInput | undefined,
-    config: QuantUncertaintyConfig
+    config: QuantUncertaintyConfig,
+    center: number = 0.5
 ): UncertaintyBand | null {
     if (!input || !config.enableChangepointAdjustment) {
         return null;
@@ -185,7 +186,8 @@ export function computeChangepointUncertainty(
  */
 export function computeShrinkageUncertainty(
     input: ShrinkageInput | undefined,
-    config: QuantUncertaintyConfig
+    config: QuantUncertaintyConfig,
+    center: number = 0.5
 ): UncertaintyBand | null {
     if (!input || !config.enableShrinkageAdjustment) {
         return null;
@@ -211,7 +213,8 @@ export function computeShrinkageUncertainty(
  */
 export function computeRedundancyUncertainty(
     input: RedundancyInput | undefined,
-    config: QuantUncertaintyConfig
+    config: QuantUncertaintyConfig,
+    center: number = 0.5
 ): UncertaintyBand | null {
     if (!input || !config.enableRedundancyPenalty) {
         return null;
@@ -242,7 +245,8 @@ export function computeRedundancyUncertainty(
  */
 export function computeSensitivityUncertainty(
     input: SensitivityInput | undefined,
-    config: QuantUncertaintyConfig
+    config: QuantUncertaintyConfig,
+    center: number = 0.5
 ): UncertaintyBand | null {
     if (!input || !config.enableSensitivityRisk) {
         return null;
@@ -271,8 +275,8 @@ export function computeSensitivityUncertainty(
     const clampedWidth = Math.min(baseWidth, config.maxQuantUncertainty);
 
     return {
-        low: -clampedWidth,
-        high: clampedWidth,
+        low: Math.max(0, center - clampedWidth),
+        high: Math.min(1, center + clampedWidth),
         confidence: 0.9,
     };
 }
@@ -296,11 +300,14 @@ export function computeExtendedUncertaintyLedger(
     // First, compute base uncertainty ledger
     const baseLedger = computeUncertaintyLedger(prediction);
 
+    // Compute center from prediction band
+    const center = (prediction.band.low + prediction.band.high) / 2;
+
     // Compute quant components
-    const changepointUncertainty = computeChangepointUncertainty(quantInputs?.changepoint, config);
-    const shrinkageUncertainty = computeShrinkageUncertainty(quantInputs?.shrinkage, config);
-    const redundancyUncertainty = computeRedundancyUncertainty(quantInputs?.redundancy, config);
-    const sensitivityUncertainty = computeSensitivityUncertainty(quantInputs?.sensitivity, config);
+    const changepointUncertainty = computeChangepointUncertainty(quantInputs?.changepoint, config, center);
+    const shrinkageUncertainty = computeShrinkageUncertainty(quantInputs?.shrinkage, config, center);
+    const redundancyUncertainty = computeRedundancyUncertainty(quantInputs?.redundancy, config, center);
+    const sensitivityUncertainty = computeSensitivityUncertainty(quantInputs?.sensitivity, config, center);
 
     // Build quant components summary
     const quantComponents: ExtendedUncertaintyLedger["quantComponents"] = {};
