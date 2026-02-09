@@ -9,6 +9,8 @@ import worldStateManifest from './builtin/world-state/manifest.json';
 import voiPanelManifest from './builtin/voi-panel/manifest.json';
 import kpiDashboardManifest from './builtin/kpi-dashboard/manifest.json';
 import kpiAlertMonitorManifest from './builtin/kpi-alert-monitor/manifest.json';
+import radarManifest from './builtin/radar/manifest';
+import signalsDashboardManifest from './builtin/signals/manifest';
 
 // Trust & v0.4.0 feature panels
 import trustConsentManagerManifest from './builtin/trust-consent-manager/manifest';
@@ -38,6 +40,8 @@ const BUILTIN_MANIFESTS: UiPanelManifest[] = [
   // KPI & Analytics panels (v0.6.0)
   kpiDashboardManifest as UiPanelManifest,
   kpiAlertMonitorManifest as UiPanelManifest,
+  radarManifest as UiPanelManifest,
+  signalsDashboardManifest as UiPanelManifest,
   // Trust & v0.4.0 feature panels
   trustConsentManagerManifest as UiPanelManifest,
   patternsDashboardManifest as UiPanelManifest,
