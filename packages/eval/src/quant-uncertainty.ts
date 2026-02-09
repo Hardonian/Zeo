@@ -174,8 +174,8 @@ export function computeChangepointUncertainty(
     const clampedWidth = Math.min(baseWidth, config.maxQuantUncertainty);
 
     return {
-        low: -clampedWidth,
-        high: clampedWidth,
+        low: Math.max(0, center - clampedWidth),
+        high: Math.min(1, center + clampedWidth),
         confidence: 0.9,
     };
 }
