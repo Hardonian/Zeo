@@ -12,12 +12,12 @@
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run"
   },
   "dependencies": {
-    "@zeo/contracts": "file:../contracts/dist",
+    "@zeo/contracts": "workspace:*",
     "nanoid": "^5.0.0"
   },
   "devDependencies": {

@@ -150,7 +150,10 @@ export type UiPanelCapabilities = {
     needsMic?: boolean;
     needsOcr?: boolean;
     needsStt?: boolean;
+    needsStorage?: boolean;
+    needsClipboard?: boolean;
 };
+export type UiPanelCapability = keyof UiPanelCapabilities;
 export type UiPanelPermissions = {
     requireUserConfirm?: boolean;
 };
@@ -168,7 +171,7 @@ export type UiPanelManifest = {
     permissions: UiPanelPermissions;
 };
 export type UiBridgeDirection = "panel->host" | "host->panel";
-export type UiBridgeRequestType = "ping" | "get_state" | "set_decision" | "run_decision" | "ingest_evidence_note" | "ingest_signals_batch" | "export_packet" | "toast" | "error";
+export type UiBridgeRequestType = "ping" | "get_state" | "set_decision" | "run_decision" | "ingest_evidence_note" | "ingest_signals_batch" | "export_packet" | "toast" | "error" | "check_permission" | "request_permission";
 export type UiBridgeMessage = {
     direction: UiBridgeDirection;
     requestId: string;
@@ -190,6 +193,38 @@ export type UiStateSnapshot = {
         lastRslState: unknown | null;
     };
 };
+export type PermissionState = "prompt" | "granted" | "denied" | "unset";
+export interface PermissionRequest {
+    capability: UiPanelCapability;
+    rationale?: string;
+}
+export interface PermissionResponse {
+    capability: UiPanelCapability;
+    state: PermissionState;
+    grantId?: string;
+    grantedAt?: string;
+    expiresAt?: string;
+}
+export interface BridgeErrorPayload {
+    code: "INVALID_INTERVAL" | "MISSING_PROVENANCE" | "WEIGHT_OUT_OF_BOUNDS" | "UNMAPPED_SIGNAL" | "UNSAFE_PANEL" | "NON_DETERMINISTIC_INPUT" | "INTERNAL_ASSERTION" | "DECISION_ERROR" | "UNKNOWN_MESSAGE_TYPE" | "VALIDATION_ERROR" | "RATE_LIMIT_EXCEEDED" | "PERMISSION_DENIED" | "ORIGIN_MISMATCH" | "SIGNATURE_INVALID" | "CAPABILITY_NOT_DECLARED" | "CSP_VIOLATION";
+    message: string;
+    details?: Record<string, unknown>;
+}
+export interface RateLimitConfig {
+    windowMs: number;
+    maxRequests: number;
+    perCapability?: boolean;
+}
+export interface AuditEvent {
+    eventId: string;
+    timestamp: string;
+    panelId: string;
+    eventType: "permission_request" | "permission_grant" | "permission_denial" | "capability_use" | "bridge_error" | "signature_failure" | "origin_mismatch";
+    capability?: UiPanelCapability;
+    origin?: string;
+    success: boolean;
+    details?: Record<string, unknown>;
+}
 export type SourceKind = "market" | "news" | "macro" | "geopolitics" | "ops" | "custom";
 export type TrustTier = "primary" | "secondary" | "commentary";
 export type UpdateFrequency = "realtime" | "hourly" | "daily" | "weekly" | "monthly" | "event";

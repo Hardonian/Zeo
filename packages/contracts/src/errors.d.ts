@@ -7,10 +7,10 @@ export interface ZeoErrorDetails {
 }
 export declare class ZeoError extends Error {
     readonly code: ZeoErrorCode;
-    readonly details?: ZeoErrorDetails;
-    readonly cause?: Error;
+    readonly details?: ZeoErrorDetails | undefined;
+    readonly cause?: Error | undefined;
     __name: string;
-    constructor(code: ZeoErrorCode, message: string, details?: ZeoErrorDetails, cause?: Error);
+    constructor(code: ZeoErrorCode, message: string, details?: ZeoErrorDetails | undefined, cause?: Error | undefined);
     get name(): string;
     toJSON(): object;
     static from(error: unknown): ZeoError;
