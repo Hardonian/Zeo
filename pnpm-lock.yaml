@@ -950,10 +950,6 @@ importers:
         version: 25.2.2
 
   packages/trust:
-    dependencies:
-      '@zeo/core':
-        specifier: workspace:*
-        version: link:../core
     devDependencies:
       typescript:
         specifier: ^5.3.0

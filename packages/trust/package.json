@@ -15,9 +15,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/**/*.ts"
   },
-  "dependencies": {
-    "@zeo/core": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "typescript": "^5.3.0"
   },
