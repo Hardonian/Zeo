@@ -74,6 +74,8 @@ export function parseArgs(argv: string[]): CliArgs {
     replay: undefined,
     case: undefined,
     reportOut: undefined,
+    pack: undefined,
+    verify: false,
   };
 
   // Parse replay-specific args first
@@ -81,6 +83,8 @@ export function parseArgs(argv: string[]): CliArgs {
   result.replay = replayArgs.replay;
   result.case = replayArgs.case;
   result.reportOut = replayArgs.reportOut;
+  result.pack = replayArgs.pack;
+  result.verify = replayArgs.verify;
 
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];

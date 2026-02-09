@@ -6,18 +6,51 @@
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { resolve, join } from "node:path";
-import type { ReplayDataset, ReplayResult } from "@zeo/contracts";
+import type { ReplayDataset, ReplayResult, DecisionSpec } from "@zeo/contracts";
 import { assertReplayDataset } from "@zeo/contracts";
 import { replayCase } from "@zeo/replay";
 import { createTracker, checkBudget, recordUsage, createBudgetGuard, SAFE_DEFAULTS } from "@zeo/budgets";
 import { getJobQueue } from "@zeo/jobs";
 import type { BudgetCheckResult } from "@zeo/budgets";
+import {
+  readReproPackZip,
+  replayFromPack,
+  createAssumptionTracker,
+  EXIT_CODES,
+  type RunData,
+  type DiffEntry,
+} from "@zeo/repro-pack";
+// ... (imports)
+
+// ... (inside function)
+if (result.match) {
+  console.log("✅ Replay successful: Outputs match exactly.");
+  return 0;
+} else {
+  console.error("❌ Replay failed: Mismatch detected.");
+  if (result.errors.length > 0) {
+    console.error("Errors:");
+    result.errors.forEach((e: string) => console.error(`  - ${e}`));
+  }
+  if (result.diffs.length > 0) {
+    console.error("Differences (JSON Pointers):");
+    result.diffs.forEach((d: DiffEntry) => {
+      console.error(`  ${d.path}`);
+      console.error(`    Expect: ${JSON.stringify(d.expected)}`);
+      console.error(`    Actual: ${JSON.stringify(d.actual)}`);
+    });
+  }
+  return 1;
+}
+import { runDecision } from "@zeo/core";
 
 export interface ReplayCliArgs {
   replay: string | undefined;
   case: string | undefined;
   reportOut: string | undefined;
   strict: boolean;
+  pack: string | undefined;
+  verify: boolean;
 }
 
 export function parseReplayArgs(argv: string[]): ReplayCliArgs {
@@ -26,6 +59,8 @@ export function parseReplayArgs(argv: string[]): ReplayCliArgs {
     case: undefined,
     reportOut: undefined,
     strict: true,
+    pack: undefined,
+    verify: false,
   };
 
   for (let i = 0; i < argv.length; i++) {
@@ -35,12 +70,17 @@ export function parseReplayArgs(argv: string[]): ReplayCliArgs {
     if ((arg === "--replay" || arg === "-r") && next) {
       result.replay = next;
       i++;
+    } else if ((arg === "--pack" || arg === "-p") && next) {
+      result.pack = next;
+      i++;
     } else if (arg === "--case" && next) {
       result.case = next;
       i++;
     } else if (arg === "--report-out" && next) {
       result.reportOut = next;
       i++;
+    } else if (arg === "--verify") {
+      result.verify = true;
     } else if (arg === "--strict") {
       const val = next;
       if (val && (val === "false" || val === "0")) {
@@ -56,8 +96,103 @@ export function parseReplayArgs(argv: string[]): ReplayCliArgs {
 }
 
 export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
+  // ─── Repro Pack Replay ────────────────────────────────────────────────────
+  if (args.pack) {
+    console.log(`\nReplaying pack: ${args.pack}`);
+    console.log("Reading zip...");
+
+    let files: Record<string, string>;
+    try {
+      // Read as buffer for AdmZip
+      const buffer = readFileSync(resolve(args.pack));
+      files = readReproPackZip(buffer);
+    } catch (err) {
+      console.error(`Error reading pack: ${(err as Error).message}`);
+      return 1;
+    }
+
+    const pipeline = async (
+      inputs: Record<string, unknown>,
+      _assumptions: unknown[],
+      _seed?: string
+    ): Promise<RunData> => {
+      // Reconstitute the run execution
+      // We expect inputs to contain the spec as per pack-cli.ts convention
+      const spec = inputs["spec"] as DecisionSpec;
+      if (!spec) {
+        throw new Error("Invalid pack inputs: missing 'spec' field");
+      }
+
+      console.log(`Running decision: ${spec.title || "Untitled"}`);
+      const tracker = createAssumptionTracker();
+
+      // Execute with tracker
+      const result = runDecision(spec, { tracker });
+
+      // Build RunData (must match pack-cli.ts logic)
+      // Note: explicit spec assumptions are re-recorded if missing
+      for (const a of spec.assumptions || []) {
+        if (!tracker.getAssumption(a.id)) {
+          tracker.recordAssumption({
+            key: a.id,
+            label: "User Assumption from Spec",
+            value: true,
+            units: "boolean",
+            source: "user",
+            rationale: "Explicit in spec",
+            sensitivity: 0.5,
+            provenance: "spec definition",
+          });
+        }
+      }
+
+      return {
+        inputs,
+        assumptions: tracker.getAssumptions(),
+        uncertaintyMap: tracker.getUncertaintyMap(),
+        artifacts: {
+          flipDistance: result.explanation.whatWouldChange,
+          voiRankings: result.nextBestEvidence,
+          evidencePlan: { note: "Not generated in this simplified run" },
+        },
+        outputs: {
+          graphNodes: result.graph.nodes.length,
+          graphEdges: result.graph.edges.length,
+          evaluations: result.evaluations,
+          explanation: result.explanation,
+        },
+        events: tracker.getEvents(),
+        seed: _seed,
+      };
+    };
+
+    console.log("Verifying replay...");
+    const result = await replayFromPack(files, pipeline, { verify: args.verify });
+
+    if (result.match) {
+      console.log("✅ Replay successful: Outputs match exactly.");
+      return 0;
+    } else {
+      console.error("❌ Replay failed: Mismatch detected.");
+      if (result.errors.length > 0) {
+        console.error("Errors:");
+        result.errors.forEach((e) => console.error(`  - ${e}`));
+      }
+      if (result.diffs.length > 0) {
+        console.error("Differences (JSON Pointers):");
+        result.diffs.forEach((d) => {
+          console.error(`  ${d.path}`);
+          console.error(`    Expect: ${JSON.stringify(d.expected)}`);
+          console.error(`    Actual: ${JSON.stringify(d.actual)}`);
+        });
+      }
+      return 1;
+    }
+  }
+
+  // ─── Legacy Dataset Replay ────────────────────────────────────────────────
   if (!args.replay) {
-    console.error("Error: --replay <path> is required");
+    console.error("Error: --replay <path> or --pack <path> is required");
     return 1;
   }
 
@@ -181,14 +316,14 @@ export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
 
   // Print budget summary
   const finalBudgetCheck = checkBudget(budgetContext);
-  
+
   console.log("\n" + "=".repeat(60));
   console.log("REPLAY SUMMARY");
   console.log("=".repeat(60));
   console.log(`Total cases: ${results.length}`);
   console.log(`Overall coverage: ${(aggregateCoverage * 100).toFixed(1)}%`);
   console.log(`Recommended widen factor: ${aggregateWidenFactor.toFixed(2)}x`);
-  
+
   // Budget usage summary
   if (finalBudgetCheck.usage.length > 0) {
     console.log("\nBudget Usage:");

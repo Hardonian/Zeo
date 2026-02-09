@@ -30,6 +30,7 @@ export type {
 export {
     buildReproPackContents,
     buildReproPackZip,
+    readReproPackZip,
     sha256,
     type ReproPackContents,
 } from "./pack-builder.js";
