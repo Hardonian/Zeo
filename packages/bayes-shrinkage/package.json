@@ -1,0 +1,27 @@
+{
+    "name": "@zeo/bayes-shrinkage",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "description": "Bayesian shrinkage estimators for signal/KPI stabilization with James-Stein and hierarchical methods",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        }
+    },
+    "scripts": {
+        "build": "tsc -p tsconfig.build.json",
+        "typecheck": "tsc -p tsconfig.json --noEmit",
+        "test": "vitest run",
+        "lint": "eslint src"
+    },
+    "dependencies": {
+        "@zeo/contracts": "workspace:*"
+    },
+    "devDependencies": {
+        "@types/node": "^25.2.1"
+    }
+}
