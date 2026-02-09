@@ -281,7 +281,7 @@ export function computeSensitivityUncertainty(
  * Compute extended uncertainty ledger with quant integrations
  */
 export function computeExtendedUncertaintyLedger(
-    prediction: PredictionLike,
+    prediction: Prediction,
     quantInputs?: {
         changepoint?: ChangePointInput;
         shrinkage?: ShrinkageInput;

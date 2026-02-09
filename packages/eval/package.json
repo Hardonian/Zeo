@@ -26,7 +26,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "eval:quant": "tsx scripts/quant-eval.ts"
   },
   "dependencies": {
     "@zeo/contracts": "workspace:*",

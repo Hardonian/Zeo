@@ -26,6 +26,7 @@
     "@zeo/telemetry": "workspace:*",
     "@zeo/governance": "workspace:*",
     "@zeo/signal-discovery": "workspace:*",
+    "@zeo/eval": "workspace:*",
     "idb": "^8.0.0",
     "next": "^14.2.0",
     "react": "^18.2.0",
