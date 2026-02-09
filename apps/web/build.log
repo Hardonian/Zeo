@@ -1,0 +1,49 @@
+
+> @zeo/web@1.0.0 build C:\Users\scott\Documents\GitHub\Zeo\Zeo\apps\web
+> next build
+
+ΓÜá Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\scott\pnpm-lock.yaml as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\scott\Documents\GitHub\Zeo\Zeo\pnpm-lock.yaml
+   * C:\Users\scott\Documents\GitHub\Zeo\pnpm-lock.yaml
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Experiments (use with caution):
+  ┬╖ serverActions
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 1 errors:
+./Documents/GitHub/Zeo/Zeo/packages/contracts/src/index.ts:10:1
+Module not found: Can't resolve './packet-types.js'
+   8 | export * from "./share-bundle.js";
+   9 | export * from "./kpi.js";
+> 10 | export * from "./packet-types.js";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/Zeo/packages/contracts/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/Zeo/packages/contracts/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (./Documents/GitHub/Zeo/Zeo/packages/contracts/src/index.ts:10:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
