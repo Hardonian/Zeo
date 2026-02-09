@@ -1,0 +1,13 @@
+{
+  "id": "kpi-dashboard",
+  "title": "KPI Dashboard",
+  "description": "Decision quality and performance metrics with real-time monitoring",
+  "route": "/demo",
+  "slot": "rightInspector",
+  "kind": "react",
+  "entry": "./panel.tsx",
+  "version": "0.6.0",
+  "capabilities": {},
+  "dataDeps": ["decision", "result", "calibration"],
+  "permissions": {}
+}

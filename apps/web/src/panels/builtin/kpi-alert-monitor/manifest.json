@@ -1,0 +1,13 @@
+{
+  "id": "kpi-alert-monitor",
+  "title": "KPI Alert Monitor",
+  "description": "Active monitoring of KPI thresholds and alert management",
+  "route": "/demo",
+  "slot": "footer",
+  "kind": "react",
+  "entry": "./panel.tsx",
+  "version": "0.6.0",
+  "capabilities": {},
+  "dataDeps": ["decision", "signals", "calibration"],
+  "permissions": {}
+}

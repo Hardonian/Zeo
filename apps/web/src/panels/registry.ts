@@ -7,6 +7,8 @@ import evidenceInboxManifest from './builtin/evidence-inbox/manifest';
 import signalsStripManifest from './builtin/signals-strip/manifest';
 import worldStateManifest from './builtin/world-state/manifest.json';
 import voiPanelManifest from './builtin/voi-panel/manifest.json';
+import kpiDashboardManifest from './builtin/kpi-dashboard/manifest.json';
+import kpiAlertMonitorManifest from './builtin/kpi-alert-monitor/manifest.json';
 
 // Trust & v0.4.0 feature panels
 import trustConsentManagerManifest from './builtin/trust-consent-manager/manifest';
@@ -33,6 +35,9 @@ const BUILTIN_MANIFESTS: UiPanelManifest[] = [
   signalsStripManifest as UiPanelManifest,
   worldStateManifest as UiPanelManifest,
   voiPanelManifest as UiPanelManifest,
+  // KPI & Analytics panels (v0.6.0)
+  kpiDashboardManifest as UiPanelManifest,
+  kpiAlertMonitorManifest as UiPanelManifest,
   // Trust & v0.4.0 feature panels
   trustConsentManagerManifest as UiPanelManifest,
   patternsDashboardManifest as UiPanelManifest,

@@ -33,3 +33,15 @@ export {
 } from './indexes.js';
 export type { EnhancedWarehouseConfig } from './indexed-adapter.js';
 export { EnhancedIndexedWarehouseAdapter } from './indexed-adapter.js';
+
+// KPI Storage (v0.6.0)
+export type {
+  KpiRecordEnvelope,
+  KpiQueryFilters,
+  KpiStorageStats,
+} from './kpi-storage.js';
+export {
+  KpiWarehouseStorage,
+  createKpiWarehouseStorage,
+  createDefaultKpiDashboard,
+} from './kpi-storage.js';

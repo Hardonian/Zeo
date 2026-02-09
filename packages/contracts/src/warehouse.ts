@@ -10,7 +10,11 @@ export type WarehouseKind =
   | 'outcome-record'
   | 'calibration-report'
   | 'regime-event'
-  | 'regime-state';
+  | 'regime-state'
+  | 'kpi-measurement'
+  | 'kpi-dashboard'
+  | 'kpi-alert'
+  | 'kpi-trend';
 
 export interface WarehouseEvidenceEvent {
   eventId: string;
