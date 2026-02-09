@@ -14,7 +14,7 @@ import {
   type SliceDimension,
   getGatingThresholds,
 } from "@zeo/eval";
-import type { ReplayDataset, ReplayResult } from "@zeo/contracts";
+import type { ReplayDataset, ReplayResult, CalibrationBucket } from "@zeo/contracts";
 
 /**
  * Slice eval CLI arguments
@@ -281,7 +281,7 @@ export async function runSliceEvalCommand(args: SliceEvalCliArgs): Promise<numbe
       scoring: {
         coverage: { byMetricId: {}, byDomain: {}, overall: 0.8 },
         properScores: { byMetricId: {}, overall: 0.15 },
-        buckets: [],
+        buckets: [] as CalibrationBucket[],
         recommendedAdjustment: {
           widenFactorByDomain: {},
           widenFactorOverall: 1.0,
