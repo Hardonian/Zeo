@@ -5,6 +5,9 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@zeo/*": [
+        "../../packages/*/src"
       ]
     },
     "target": "ES2017",
