@@ -192,3 +192,20 @@ export {
   createPoolingSummary,
 } from "./pooling";
 
+// Re-export quant uncertainty integration (Phase 5 Quant Stack)
+export {
+  type ExtendedUncertaintyCategory,
+  type ExtendedUncertaintyLedger,
+  type QuantUncertaintyConfig,
+  type ChangePointInput,
+  type ShrinkageInput,
+  type RedundancyInput,
+  type SensitivityInput,
+  createDefaultQuantConfig,
+  computeChangepointUncertainty,
+  computeShrinkageUncertainty,
+  computeRedundancyUncertainty,
+  computeSensitivityUncertainty,
+  computeExtendedUncertaintyLedger,
+  createExtendedLedgerSummary,
+} from "./quant-uncertainty";
