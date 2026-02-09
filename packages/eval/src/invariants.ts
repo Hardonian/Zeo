@@ -7,8 +7,7 @@
 import { createHash } from "crypto";
 import { readFileSync, existsSync } from "node:fs";
 import { join, resolve } from "node:path";
-import type { DecisionSpec } from "@zeo/contracts";
-import type { EvidencePacketJSON } from "@zeo/core";
+import type { DecisionSpec, EvidencePacketJSON } from "@zeo/contracts";
 import type { InvariantResult } from "./types.js";
 
 /**

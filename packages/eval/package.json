@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@zeo/contracts": "workspace:*",
-    "@zeo/core": "workspace:*",
     "@zeo/replay": "workspace:*",
     "@zeo/tournaments": "workspace:*",
     "@zeo/calibration": "workspace:*"
