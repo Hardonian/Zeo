@@ -284,7 +284,7 @@ async function main(): Promise<void> {
 
   const args = parseArgs(argv);
 
-  if (args.replay) {
+  if (args.replay || args.pack) {
     const exitCode = await runReplayCommand(args);
     process.exit(exitCode);
   }
