@@ -97,7 +97,7 @@ export default function RadarPanel({ manifest }: RadarPanelProps) {
                                 <div className="mt-2 text-[10px] text-amber-700 bg-amber-50 p-1.5 rounded flex items-start gap-1">
                                     <span>⚠️</span>
                                     <div>
-                                        {item.skepticism.map((s, i) => <div key={i}>{s}</div>)}
+                                        {item.skepticism}
                                     </div>
                                 </div>
                             )}
