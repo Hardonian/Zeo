@@ -10,7 +10,23 @@
  * on specific observations or time periods.
  */
 
-import { computeMean, computeStd, computeMedian, computeQuantile } from "./index";
+// Local helper functions (avoid circular dependency with index.ts)
+
+function computeStd(values: number[]): number {
+    if (values.length < 2) return 0;
+    const mean = values.reduce((a, b) => a + b, 0) / values.length;
+    const sumSq = values.reduce((sum, v) => sum + (v - mean) ** 2, 0);
+    return Math.sqrt(sumSq / (values.length - 1));
+}
+
+function computeMedian(values: number[]): number {
+    if (values.length === 0) return 0;
+    const sorted = [...values].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+    return sorted.length % 2 === 0
+        ? (sorted[mid - 1] + sorted[mid]) / 2
+        : sorted[mid];
+}
 
 /**
  * Result from LOO sensitivity analysis

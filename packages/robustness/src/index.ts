@@ -576,3 +576,12 @@ export {
   generateHypothesesFromPattern,
 } from "./hypothesis-generator";
 
+// Re-export sensitivity analysis (Phase 4 Quant Stack)
+export {
+  type LOOResult,
+  type WindowSensitivityResult,
+  type RobustRegressionResult,
+  computeLOOSensitivity,
+  computeWindowSensitivity,
+  robustRegression,
+} from "./sensitivity";
