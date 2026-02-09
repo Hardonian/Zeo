@@ -1,0 +1,11 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/regimes/route": "/api/regimes",
+  "/demo/page": "/demo",
+  "/inbox/page": "/inbox",
+  "/intake/page": "/intake",
+  "/page": "/",
+  "/regimes/page": "/regimes",
+  "/replay/page": "/replay"
+}
