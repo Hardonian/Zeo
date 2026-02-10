@@ -12,7 +12,8 @@ export type ZeoErrorCode =
   | "FAKE_PRECISION"
   | "QUAL_OBSERVATION_INVALID"
   | "QUAL_SCALE_INVALID"
-  | "ASSUMPTION_INVALID";
+  | "ASSUMPTION_INVALID"
+  | "BUDGET_REACHED";
 
 export interface ZeoErrorDetails {
   field?: string;

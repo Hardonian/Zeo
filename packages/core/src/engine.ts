@@ -16,6 +16,8 @@ import { generateFlipConditions } from "./flip-conditions";
 import { QuantEngine } from "./quant-engine";
 import type { AssumptionTracker } from "@zeo/repro-pack";
 import { hygiene } from "./hygiene";
+import { BudgetManager, BudgetReachedError } from "./budget";
+import type { Budget } from "@zeo/contracts";
 
 /**
  * Zeo core engine: branching + evaluation.
@@ -226,106 +228,31 @@ export type RunDecisionOpts = {
   pruning?: Partial<PruningConfig>;
   useQuantEngine?: boolean;
   tracker?: AssumptionTracker;
+  budget?: Budget;
 };
 
 export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): DecisionResult {
-  const hygieneWarnings = hygiene.check(spec);
-  if (opts?.tracker) {
-    opts.tracker.recordSystemAssumption("max_depth", "Branch Depth Limit", opts.depth ?? defaultHeuristics.maxDepth, "levels", "Computational complexity constraint");
-    opts.tracker.recordSystemAssumption("max_branches_per_action", "Branch Fan-out Limit", defaultHeuristics.maxBranchesPerAction, "branches", "Heuristic exploration limit");
+  const budgetManager = new BudgetManager(opts?.budget);
 
-    const pruningVars = opts?.pruning ? "custom" : "standard";
-    opts.tracker.recordSystemAssumption("pruning_strategy", "Pruning Strategy", pruningVars, "mode", "Graph size management");
+  // Initial minimal graph for partial results
+  let graph: BranchGraph = {
+    id: nanoid(),
+    decisionId: spec.id,
+    createdAt: nowISO(),
+    nodes: [createNode(spec.title, "state", [spec.context], [])],
+    edges: [],
+  };
 
-    const pConfig = { ...defaultPruningConfig, ...opts?.pruning };
-    opts.tracker.recordSystemAssumption("pruning_max_nodes", "Max Graph Nodes", pConfig.maxNodes, "nodes", "Performance constraint");
-    opts.tracker.recordSystemAssumption("pruning_max_edges", "Max Graph Edges", pConfig.maxEdges, "edges", "Performance constraint");
-  }
+  let evaluations: LensEvaluation[] = [];
+  let nextBestEvidence: { prompt: string; rationale: string }[] = [];
+  let flipConditions: Array<{ assumptionId: string; flipThreshold: string; reasoning: string }> = [];
 
-  const rawGraph = generateBranchGraph(spec, { ...defaultHeuristics, maxDepth: opts?.depth ?? 2 });
-  const pruningConfig: PruningConfig = { ...defaultPruningConfig, ...opts?.pruning };
-  const graph = pruneGraph(rawGraph, pruningConfig);
-
-  let evaluations: LensEvaluation[];
-  let flipConditions: Array<{ assumptionId: string; flipThreshold: string; reasoning: string }>;
-
-  if (opts?.useQuantEngine) {
-    // Use quant engine for analytical evaluations
-    const quantEngine = new QuantEngine();
-    const robustnessEval = quantEngine.evaluateRobustnessWithGameTheory(spec);
-    evaluations = [
-      robustnessEval,
-      evaluateExpectedUtility(spec),
-      evaluateGameTheory(spec),
-      evaluateEvolutionary(spec),
-    ];
-
-    const quantFlip = quantEngine.generateFlipConditions(spec, evaluations);
-    flipConditions = quantFlip.map(fc => ({
-      assumptionId: fc.assumptionId,
-      flipThreshold: `${(fc.requiredBeliefShift * 100).toFixed(0)}% belief shift`,
-      reasoning: fc.flipCondition,
-    }));
-  } else {
-    // Use heuristic evaluations
-    evaluations = [
-      evaluateRobustness(spec, graph),
-      evaluateExpectedUtility(spec),
-      evaluateGameTheory(spec),
-      evaluateEvolutionary(spec),
-    ];
-    flipConditions = generateFlipConditions(spec, evaluations);
-  }
-
-  if (opts?.tracker) {
-    for (const evalResult of evaluations) {
-      opts.tracker.recordInference({
-        key: `eval_${evalResult.lens}`,
-        value: evalResult.robustActions,
-        units: "action_ids",
-        method: opts?.useQuantEngine ? "quantitative_analysis" : "heuristic_analysis",
-        uncertainty: { kind: "unknown", params: {}, note: "Heuristic confidence not quantified" }
-      });
-    }
-  }
-
-  const nextBestEvidence = [
-    {
-      prompt: "Ask or verify the counterparty's timeline constraints (decision deadline, internal approvals).",
-      rationale: "Timeline sensitivity often flips whether to press, verify, or concede on secondary terms.",
-    },
-    {
-      prompt: "Confirm the non-negotiable constraints (budget, exclusivity, termination terms) with provenance.",
-      rationale: "Hard constraints collapse many branches early and prevent wasted negotiation cycles.",
-    },
-    {
-      prompt: "Probe the counterparty's primary objective (speed vs price vs risk) via a targeted question.",
-      rationale: "Objective ordering determines which concessions are high-leverage and which are wasted.",
-    },
-  ];
-
-  if (opts?.tracker) {
-    opts.tracker.recordInference({
-      key: "next_best_evidence",
-      value: nextBestEvidence.map(e => e.prompt),
-      units: "prompts",
-      method: "heuristic_template",
-      uncertainty: { kind: "unknown", params: {}, note: "Static heuristics" }
-    });
-  }
-
-  return {
+  const getPartialResult = (): Partial<DecisionResult> => ({
     graph,
     evaluations,
     nextBestEvidence,
     explanation: {
-      why: [
-        "Zeo generated a conservative branch map emphasizing plausible counterparty responses.",
-        opts?.useQuantEngine
-          ? "Robustness analysis uses game-theoretic dominance under interval payoffs."
-          : "Recommendations prioritize robustness: actions that retain value across uncertain assumptions.",
-        "Uncertainty is represented as probability ranges and explicit dependencies.",
-      ],
+      why: ["Budget reached before completion."],
       whatWouldChange: flipConditions.map(fc => ({
         assumptionId: fc.assumptionId,
         flipCondition: `${fc.flipThreshold}. ${fc.reasoning}`,
@@ -334,7 +261,160 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
     assumptions: opts?.tracker?.getAssumptions(),
     inferences: opts?.tracker?.getInferences(),
     uncertaintyMap: opts?.tracker?.getUncertaintyMap(),
-    hygieneWarnings,
-  };
+  });
+
+  try {
+    budgetManager.check(getPartialResult);
+
+    const hygieneWarnings = hygiene.check(spec);
+    budgetManager.incrementSteps(); // Hygiene check cost
+
+    if (opts?.tracker) {
+      opts.tracker.recordSystemAssumption("max_depth", "Branch Depth Limit", opts.depth ?? defaultHeuristics.maxDepth, "levels", "Computational complexity constraint");
+      opts.tracker.recordSystemAssumption("max_branches_per_action", "Branch Fan-out Limit", defaultHeuristics.maxBranchesPerAction, "branches", "Heuristic exploration limit");
+
+      const pruningVars = opts?.pruning ? "custom" : "standard";
+      opts.tracker.recordSystemAssumption("pruning_strategy", "Pruning Strategy", pruningVars, "mode", "Graph size management");
+
+      const pConfig = { ...defaultPruningConfig, ...opts?.pruning };
+      opts.tracker.recordSystemAssumption("pruning_max_nodes", "Max Graph Nodes", pConfig.maxNodes, "nodes", "Performance constraint");
+      opts.tracker.recordSystemAssumption("pruning_max_edges", "Max Graph Edges", pConfig.maxEdges, "edges", "Performance constraint");
+    }
+
+    // 2. Generate Branch Graph
+    budgetManager.check(getPartialResult);
+    const rawGraph = generateBranchGraph(spec, { ...defaultHeuristics, maxDepth: opts?.depth ?? 2 });
+
+    // We update our local graph reference
+    graph = rawGraph;
+    budgetManager.incrementSteps(rawGraph.nodes.length); // Rough cost proxy
+
+    // 3. Prune
+    budgetManager.check(getPartialResult);
+    const pruningConfig: PruningConfig = { ...defaultPruningConfig, ...opts?.pruning };
+    graph = pruneGraph(rawGraph, pruningConfig);
+    budgetManager.incrementSteps(); // Pruning cost
+
+    // 4. Evaluations
+    if (opts?.useQuantEngine) {
+      budgetManager.check(getPartialResult);
+      // Use quant engine for analytical evaluations
+      const quantEngine = new QuantEngine();
+      // Quant engine ops are expensive, we should ideally pass budget manager down,
+      // but for now we wrap the blocks.
+
+      const robustnessEval = quantEngine.evaluateRobustnessWithGameTheory(spec);
+      evaluations.push(robustnessEval);
+      budgetManager.incrementSteps(5);
+
+      budgetManager.check(getPartialResult);
+      evaluations.push(evaluateExpectedUtility(spec));
+
+      budgetManager.check(getPartialResult);
+      evaluations.push(evaluateGameTheory(spec));
+
+      budgetManager.check(getPartialResult);
+      evaluations.push(evaluateEvolutionary(spec));
+
+      budgetManager.check(getPartialResult);
+      const quantFlip = quantEngine.generateFlipConditions(spec, evaluations);
+      flipConditions = quantFlip.map(fc => ({
+        assumptionId: fc.assumptionId,
+        flipThreshold: `${(fc.requiredBeliefShift * 100).toFixed(0)}% belief shift`,
+        reasoning: fc.flipCondition,
+      }));
+      budgetManager.incrementSteps(5);
+    } else {
+      budgetManager.check(getPartialResult);
+      // Use heuristic evaluations
+      evaluations.push(evaluateRobustness(spec, graph));
+      budgetManager.incrementSteps();
+
+      budgetManager.check(getPartialResult);
+      evaluations.push(evaluateExpectedUtility(spec));
+
+      budgetManager.check(getPartialResult);
+      evaluations.push(evaluateGameTheory(spec));
+
+      budgetManager.check(getPartialResult);
+      evaluations.push(evaluateEvolutionary(spec));
+
+      budgetManager.check(getPartialResult);
+      flipConditions = generateFlipConditions(spec, evaluations);
+      budgetManager.incrementSteps();
+    }
+
+    if (opts?.tracker) {
+      for (const evalResult of evaluations) {
+        opts.tracker.recordInference({
+          key: `eval_${evalResult.lens}`,
+          value: evalResult.robustActions,
+          units: "action_ids",
+          method: opts?.useQuantEngine ? "quantitative_analysis" : "heuristic_analysis",
+          uncertainty: { kind: "unknown", params: {}, note: "Heuristic confidence not quantified" }
+        });
+      }
+    }
+
+    budgetManager.check(getPartialResult);
+    nextBestEvidence = [
+      {
+        prompt: "Ask or verify the counterparty's timeline constraints (decision deadline, internal approvals).",
+        rationale: "Timeline sensitivity often flips whether to press, verify, or concede on secondary terms.",
+      },
+      {
+        prompt: "Confirm the non-negotiable constraints (budget, exclusivity, termination terms) with provenance.",
+        rationale: "Hard constraints collapse many branches early and prevent wasted negotiation cycles.",
+      },
+      {
+        prompt: "Probe the counterparty's primary objective (speed vs price vs risk) via a targeted question.",
+        rationale: "Objective ordering determines which concessions are high-leverage and which are wasted.",
+      },
+    ];
+
+    if (opts?.tracker) {
+      opts.tracker.recordInference({
+        key: "next_best_evidence",
+        value: nextBestEvidence.map(e => e.prompt),
+        units: "prompts",
+        method: "heuristic_template",
+        uncertainty: { kind: "unknown", params: {}, note: "Static heuristics" }
+      });
+    }
+
+    budgetManager.check(getPartialResult);
+
+    return {
+      graph,
+      evaluations,
+      nextBestEvidence,
+      explanation: {
+        why: [
+          "Zeo generated a conservative branch map emphasizing plausible counterparty responses.",
+          opts?.useQuantEngine
+            ? "Robustness analysis uses game-theoretic dominance under interval payoffs."
+            : "Recommendations prioritize robustness: actions that retain value across uncertain assumptions.",
+          "Uncertainty is represented as probability ranges and explicit dependencies.",
+        ],
+        whatWouldChange: flipConditions.map(fc => ({
+          assumptionId: fc.assumptionId,
+          flipCondition: `${fc.flipThreshold}. ${fc.reasoning}`,
+        })),
+      },
+      assumptions: opts?.tracker?.getAssumptions(),
+      inferences: opts?.tracker?.getInferences(),
+      uncertaintyMap: opts?.tracker?.getUncertaintyMap(),
+      hygieneWarnings,
+      // Budget info
+      status: "completed",
+      budget: opts?.budget,
+      usage: budgetManager.getUsage(),
+    };
+  } catch (error) {
+    if (error instanceof BudgetReachedError) {
+      return error.partialResult as DecisionResult;
+    }
+    throw error;
+  }
 }
 

@@ -154,6 +154,26 @@ export type Inference = {
   uncertainty?: Uncertainty;
 }
 
+export interface Budget {
+  maxWallMs?: number;
+  maxSteps?: number;
+  maxEvidenceItems?: number;
+  maxPlanAlternatives?: number;
+  maxComputeUnits?: number;
+  maxTokens?: number;
+}
+
+export interface BudgetUsage {
+  wallMs: number;
+  stepsUsed: number;
+  evidenceItemsUsed: number;
+  alternativesConsidered: number;
+  computeUnitsUsed: number;
+  tokensUsed?: number;
+}
+
+export type RunStatus = "completed" | "budget_reached" | "failed";
+
 export type DecisionResult = {
   graph: BranchGraph;
   evaluations: LensEvaluation[];
@@ -167,6 +187,10 @@ export type DecisionResult = {
   uncertaintyMap?: Record<string, Uncertainty>;
   provenance?: Record<string, any>;
   hygieneWarnings?: any[];
+  status?: RunStatus;
+  budget?: Budget;
+  usage?: BudgetUsage;
+  remediationHint?: string;
 };
 
 /**
