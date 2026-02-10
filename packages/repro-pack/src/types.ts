@@ -116,7 +116,8 @@ export type RunEventType =
     | "FLIP_LEVERS_SUMMARIZED"
     | "SENSITIVITY_RANKED"
     | "RUN_COMPLETED"
-    | "RUN_FAILED";
+    | "RUN_FAILED"
+    | "BUDGET_REACHED";
 
 export interface RunEvent {
     id: string;
@@ -159,4 +160,6 @@ export interface RunData {
     outputs: Record<string, unknown>;
     events: RunEvent[];
     seed?: string;
+    budget?: Record<string, unknown>;
+    usage?: Record<string, unknown>;
 }
