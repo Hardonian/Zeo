@@ -7,7 +7,11 @@ import {
   verify as cryptoVerify,
 } from "node:crypto";
 import { encodeCanonicalJson } from "./canonical-json.js";
-import { computeTranscriptHash as computeHashImpl } from "./hashing.js";
+// import { computeTranscriptHash as computeHashImpl } from "./hashing.js";
+
+function computeHashImpl(input: any): string {
+  return createHash("sha256").update(encodeCanonicalJson(input)).digest("hex");
+}
 import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 
