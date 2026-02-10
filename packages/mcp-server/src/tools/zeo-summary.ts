@@ -24,8 +24,8 @@ export async function zeoSummary(
     // Fetch run data from warehouse
     // Need to find event with kind=decision-result and matching associatedDecisionId or runId tag?
     // Assuming we can get by ID if runId is the envelope ID or we search.
-    // For simplicity, assume runId is envelope ID.
-    const record = await warehouse.get(runId);
+    // For simplicity,    // Assume runId is envelope ID of a run-result.
+    const record = await warehouse.get("run-result", runId);
 
     if (!record) {
         return {

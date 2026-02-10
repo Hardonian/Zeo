@@ -1,7 +1,7 @@
 
 import type { McpToolDefinition, McpToolResult } from "../types";
 import type { WarehouseAdapter } from "@zeo/warehouse";
-import { generateStableId } from "@zeo/warehouse";
+import { generateStableId, computeContentHash } from "@zeo/warehouse";
 
 export const zeoIngestDefinition: McpToolDefinition = {
     name: "zeo.ingestScenario",
@@ -37,18 +37,26 @@ export async function zeoIngest(
     const id = generateStableId();
     const now = new Date().toISOString();
 
+    const content = {
+        spec,
+        provenance,
+        importedAt: now,
+    };
+
+    // Compute integrity metrics
+    const contentHash = await computeContentHash(content);
+
     // Store raw import for later processing
     const envelope = await warehouse.put({
         id,
-        kind: "mcp-import",
+        kind: "decision-draft",
         createdAt: now,
         updatedAt: now,
         tenant: "local",
-        content: {
-            spec,
-            provenance,
-            importedAt: now,
+        hashes: {
+            contentHash,
         },
+        content,
         tags: ["mcp:ingest", ...tags],
     });
 

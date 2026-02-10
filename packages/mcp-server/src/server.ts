@@ -212,7 +212,7 @@ export function createMcpServer(config: McpConfig): McpServer {
     async function handleToolCall(
         request: JsonRpcRequest
     ): Promise<JsonRpcResponse> {
-        const params = request.params as McpToolCallParams | undefined;
+        const params = request.params as unknown as McpToolCallParams | undefined;
         if (!params?.name) {
             return {
                 jsonrpc: "2.0",

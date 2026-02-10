@@ -5,7 +5,7 @@ import {
     DecisionResult,
     ConnectorCapability
 } from "@zeo/contracts";
-import { renderMarkdownReport } from "@zeo/replay";
+import { renderDecisionSummary } from "../../reporting";
 
 export class MarkdownExportConnector implements Connector {
     id = "builtin.markdown-export";
@@ -13,7 +13,7 @@ export class MarkdownExportConnector implements Connector {
     capabilities: ConnectorCapability[] = ["exportSummary"];
 
     async healthCheck() {
-        return { status: "ok", latencyMs: 0 };
+        return { status: "ok" as const, latencyMs: 0 };
     }
 
     async export(artifact: { kind: "summary" | "repro_pack"; data: DecisionResult | Blob; filename?: string }) {
@@ -25,10 +25,8 @@ export class MarkdownExportConnector implements Connector {
         // In a real app we might need type guards
         const result = artifact.data as DecisionResult;
 
-        // Use existing renderer
-        // Note: renderMarkdownReport might expect specific shape, passing result directly
-        // requires mapping if types differ. Assuming compat for now.
-        const markdown = renderMarkdownReport(result);
+        // Use decision summary renderer
+        const markdown = renderDecisionSummary(result);
 
         return {
             location: "memory",
