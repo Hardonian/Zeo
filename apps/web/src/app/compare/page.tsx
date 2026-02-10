@@ -231,6 +231,8 @@ export default function ComparePage() {
                 </div>
               </div>
             </ComparisonRow>
+
+            <ComparisonRow label="Branches">
               <div className="grid grid-cols-2 gap-4">
                 <ComparisonCell
                   value={`${run1.result.graph.nodes.length} nodes, ${run1.result.graph.edges.length} edges`}
