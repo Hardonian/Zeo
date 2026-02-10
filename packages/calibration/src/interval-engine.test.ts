@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { IntervalCalibrationEngine } from "../src/interval-engine";
+import { IntervalCalibrationEngine } from "../src/interval-engine.js";
 import type { DecisionRecord } from "@zeo/memory";
 
 describe("IntervalCalibrationEngine", () => {
@@ -77,7 +77,7 @@ describe("IntervalCalibrationEngine", () => {
       expect(buckets.length).toBeGreaterThan(0);
       
       // Coverage should be close to expected
-      const bucket = buckets.find(b => b.expectedCoverage >= 0.7 && b.expectedCoverage <= 0.9);
+      const bucket = buckets.find((b: { expectedCoverage: number }) => b.expectedCoverage >= 0.7 && b.expectedCoverage <= 0.9);
       expect(bucket).toBeDefined();
       expect(bucket!.coverageRate).toBeGreaterThan(0.7);
       expect(bucket!.coverageRate).toBeLessThan(0.9);
@@ -97,7 +97,7 @@ describe("IntervalCalibrationEngine", () => {
       }
 
       const buckets = engine.testIntervalCoverage();
-      const bucket = buckets.find(b => b.expectedCoverage >= 0.4 && b.expectedCoverage <= 0.6);
+      const bucket = buckets.find((b: { expectedCoverage: number }) => b.expectedCoverage >= 0.4 && b.expectedCoverage <= 0.6);
       
       if (bucket) {
         // Coverage rate should be less than expected

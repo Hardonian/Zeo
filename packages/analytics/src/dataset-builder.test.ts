@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { datasetToCsv } from './dataset-builder';
+import { datasetToCsv } from './dataset-builder.js';
 
 describe('dataset-builder', () => {
   describe('datasetToCsv', () => {
