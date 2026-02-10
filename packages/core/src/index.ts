@@ -10,16 +10,17 @@ export * from "./packets.js";
 export * from "./regime-integration.js";
 export * from "./scenarios.js";
 export {
-  executeDecision,
-  finalizeDecisionTranscript,
-  verifyDecisionTranscript,
-  normalizeTranscriptForReplay,
-  computeStableHash,
-  computeTranscriptHash as computeDecisionTranscriptHash,
   type ExecuteDecisionInput,
   type ExecuteDecisionOutput,
+  computeStableHash,
   type ReplayNormalizedTranscript,
+  normalizeTranscriptForReplay,
+  finalizeDecisionTranscript,
+  executeDecision,
+  verifyDecisionTranscript,
+  computeTranscriptHash as computeDecisionTranscriptHash,
 } from "./transcript.js";
+export * from "./graph.js";
 export type { RunMeta } from "./packets.js";
 export {
   hashDecisionSpec,
@@ -38,6 +39,13 @@ export {
   generateEvidenceCandidatesFromFlips,
   type ActionScore,
 } from "./decision-coupling.js";
+
+// Capabilities / Permissions
+export * from "./capabilities.js";
+export * from "./limits.js";
+export * from "./canonical-json.js";
+export * from "./agent-manifest.js";
+export * from "./migrations.js";
 
 // Runner - orchestrated execution
 export { ZeoRunner, type ZeoRunnerConfig } from "./runner.js";

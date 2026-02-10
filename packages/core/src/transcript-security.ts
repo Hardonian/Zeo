@@ -6,6 +6,8 @@ import {
   sign as cryptoSign,
   verify as cryptoVerify,
 } from "node:crypto";
+import { encodeCanonicalJson } from "./canonical-json.js";
+import { computeTranscriptHash } from "./hashing.js";
 import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 
@@ -117,12 +119,10 @@ export function canonicalizeTranscript(input: Record<string, unknown>): Canonica
 }
 
 export function canonicalTranscriptBytes(input: Record<string, unknown>): Uint8Array {
-  return Buffer.from(JSON.stringify(canonicalizeTranscript(input)), "utf8");
+  return encodeCanonicalJson(input);
 }
 
-export function computeTranscriptHash(input: Record<string, unknown>): string {
-  return createHash("sha256").update(canonicalTranscriptBytes(input)).digest("hex");
-}
+export { computeTranscriptHash };
 
 function signingPayload(transcriptHash: string, envelopeVersion: string, signingContext: string): Buffer {
   return Buffer.from(`${signingContext}\n${envelopeVersion}\n${transcriptHash}`, "utf8");

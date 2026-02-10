@@ -243,6 +243,11 @@ async function main(): Promise<void> {
     process.exit(await runPerfCommand(parsePerfArgs(argv)));
   }
 
+  if (argv[0] === "audit") {
+    const { runAuditCommand } = await import("./audit-cli.js");
+    process.exit(await runAuditCommand(argv));
+  }
+
   const delegatedFlags = [
     ["--warehouse", "./warehouse-cli.js", "parseWarehouseArgs", "runWarehouseCommand"],
     ["--analytics", "./warehouse-cli.js", "parseAnalyticsArgs", "runAnalyticsCommand"],
@@ -287,9 +292,14 @@ async function main(): Promise<void> {
     process.exit(await mod.runAgentsCommand(mod.parseAgentsArgs(argv.slice(1))));
   }
 
-  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "graph", "view", "review"].includes(argv[0] ?? "")) {
+  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "view", "review"].includes(argv[0] ?? "")) {
     const mod = await import("./workflow-cli.js");
     process.exit(await mod.runWorkflowCommand(mod.parseWorkflowArgs(argv)));
+  }
+
+  if (argv[0] === "graph") {
+    const mod = await import("./graph-cli.js");
+    process.exit(await mod.runGraphCommand(argv));
   }
 
 

@@ -2,12 +2,16 @@ import { createHash } from "node:crypto";
 import type { DecisionResult, DecisionSpec, FinalizedDecisionTranscript, LensEvaluation, DecisionTranscript, TranscriptAgentRecord, EvidenceEvent } from "@zeo/contracts";
 import { runDecision, type RunDecisionOpts } from "./engine.js";
 import { VERSION_INFO } from "./version.js";
+import { encodeCanonicalJson } from "./canonical-json.js";
+import { computeTranscriptHash } from "./hashing.js";
 
 export type ExecuteDecisionInput = {
   spec: DecisionSpec;
   opts?: RunDecisionOpts;
   evidence?: EvidenceEvent[];
   parentTranscriptHash?: string;
+  dependsOn?: string[];
+  informs?: string[];
   logicalTimestamp?: number;
   agents?: TranscriptAgentRecord[];
 };
@@ -29,12 +33,10 @@ function stableStringify(value: unknown): string {
 }
 
 export function computeStableHash(value: unknown): string {
-  return createHash("sha256").update(stableStringify(value)).digest("hex");
+  return computeTranscriptHash(value);
 }
 
-export function computeTranscriptHash(transcript: DecisionTranscript): string {
-  return computeStableHash(transcript);
-}
+export { computeTranscriptHash };
 
 export type ReplayNormalizedTranscript = {
   outcome: DecisionTranscript["outcome"];
@@ -125,6 +127,8 @@ function buildTranscript(input: ExecuteDecisionInput, result: DecisionResult): D
     timestamp,
     logical_clock: [timestamp, result.graph.nodes.length, result.graph.edges.length],
     parent_transcript_hash: input.parentTranscriptHash,
+    depends_on: input.dependsOn,
+    informs: input.informs,
     inputs: {
       initial_context: input.spec.context,
       decision_spec: input.spec,
