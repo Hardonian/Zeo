@@ -1,5 +1,5 @@
 
-import type { UUID, ProbabilityInterval } from "@zeo/contracts";
+import type { UUID, ProbabilityInterval, Uncertainty } from "@zeo/contracts";
 
 /**
  * Reality Mode - Active Learning Evidence Planner Types
@@ -48,6 +48,9 @@ export interface VoiResult {
 
     // Why it might be wrong
     risks: string[];
+
+    // Quantified uncertainty of the estimate
+    uncertainty?: Uncertainty;
 }
 
 /**
@@ -77,4 +80,3 @@ export interface PlannerConfig {
     maxTime: TimeBand;
     minEvoi: number; // Minimum expected value of information to recommend action
 }
-

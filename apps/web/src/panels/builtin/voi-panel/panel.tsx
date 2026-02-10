@@ -185,6 +185,26 @@ export default function VoiPanel({ manifest }: VoiPanelProps) {
                       </span>
                       <span className="w-px h-6 bg-gray-200"></span>
                       <span className="flex flex-col">
+                        <span className="text-gray-400 text-[10px] uppercase">Uncertainty</span>
+                        <span className="font-medium">
+                          {(() => {
+                            const u = result.uncertainty || { kind: 'unknown' };
+                            switch (u.kind) {
+                              case 'interval':
+                                return `[${u.params?.low ?? '?'}, ${u.params?.high ?? '?'}]`;
+                              case 'stddev':
+                                return `±${u.params?.stddev ?? '?'}`;
+                              case 'distribution':
+                                return `${u.method || 'dist'}`;
+                              case 'unknown':
+                              default:
+                                return <span className="text-gray-400 italic">unknown</span>;
+                            }
+                          })()}
+                        </span>
+                      </span>
+                      <span className="w-px h-6 bg-gray-200"></span>
+                      <span className="flex flex-col">
                         <span className="text-gray-400 text-[10px] uppercase">Cost</span>
                         <span className="font-medium capitalize">
                           {candidate.cost}
