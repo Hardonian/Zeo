@@ -329,6 +329,9 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
         flipCondition: `${fc.flipThreshold}. ${fc.reasoning}`,
       })),
     },
+    assumptions: opts?.tracker?.getAssumptions(),
+    inferences: opts?.tracker?.getInferences(),
+    uncertaintyMap: opts?.tracker?.getUncertaintyMap(),
   };
 }
 
