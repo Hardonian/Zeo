@@ -80,6 +80,7 @@ describe("Replay Runtime Guards", () => {
       actions: [],
       constraints: [],
       assumptions: [],
+      objectives: [],
     };
 
     const validHorizons = {
@@ -262,6 +263,7 @@ describe("Replay Runtime Guards", () => {
               actions: [],
               constraints: [],
               assumptions: [],
+              objectives: [],
             },
             observationBatches: [],
             horizons: {

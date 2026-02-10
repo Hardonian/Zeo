@@ -182,28 +182,28 @@ export async function verifyManifestSignature(
     };
 
     const canonicalPayload = JSON.stringify(payload, Object.keys(payload).sort());
-    
+
     // Compute HMAC
     const encoder = new TextEncoder();
     const payloadData = encoder.encode(canonicalPayload);
-    
+
     // Use Web Crypto API for HMAC (keyData would be used for actual HMAC)
     void secretKey; // Mark as intentionally used for future implementation
     return crypto.subtle.digest("SHA-256", payloadData).then(async (hashBuffer) => {
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       const computedSignature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-      
+
       // Simple timing-safe comparison
       const provided = manifest.signature.signature;
       if (computedSignature.length !== provided.length) {
         return false;
       }
-      
+
       let result = 0;
       for (let i = 0; i < computedSignature.length; i++) {
         result |= computedSignature.charCodeAt(i) ^ provided.charCodeAt(i);
       }
-      
+
       return result === 0;
     });
   } catch {
@@ -219,14 +219,9 @@ export function verifyManifestSignatureSync(
   _manifest: SignedUiPanelManifest,
   _secretKey: string
 ): boolean {
-  try {
-    // For Node.js environments, we need to use dynamic import
-    // This is a placeholder that returns false in browser
-    // The actual implementation would be in the server-side code
-    return false;
-  } catch {
-    return false;
-  }
+  void _manifest;
+  void _secretKey;
+  return false;
 }
 
 /**
@@ -240,11 +235,11 @@ export function isSecurityCompliant(manifest: UiPanelManifest): boolean {
 
   // Iframe panels require signature and integrity for v0.6.0
   const signed = manifest as SignedUiPanelManifest;
-  
+
   if (!signed.integrity?.entryHash) {
     return false;
   }
-  
+
   if (!signed.signature?.signature || !signed.signature?.keyId) {
     return false;
   }
@@ -319,11 +314,11 @@ export function createPermissionResponse(
     granted,
     grantId: grantId ?? crypto.randomUUID(),
   };
-  
+
   if (granted) {
     payload.grantedAt = new Date().toISOString();
   }
-  
+
   return {
     type: "check_permission",
     payload,
@@ -350,13 +345,13 @@ export function isAllowedOrigin(
       if (domain === originHost) {
         return true;
       }
-      
+
       // Wildcard subdomain: *.example.com matches sub.example.com
       if (domain.startsWith("*.")) {
         const baseDomain = domain.slice(2);
         return originHost === baseDomain || originHost.endsWith(domain.slice(1));
       }
-      
+
       return false;
     });
   } catch {

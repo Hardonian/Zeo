@@ -405,8 +405,8 @@ export * from "./connectors/manager";
 export * from "./reporting";
 export * from "./reporting";
 export * from "./policy";
-export * from "./scenario-packs";
-export * from "./version";
+export * from "./scenario-packs.js";
+export * from "./version.js";
 
 
 
