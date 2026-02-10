@@ -23,6 +23,7 @@ import type {
 } from "./types";
 import { createAuditBridge, type AuditBridge } from "./audit-bridge";
 import { validateToolPermission, validateRequestSize, redactSecrets } from "./security";
+import { mcpPolicyEngine } from "./policy";
 
 // Tool implementations
 import { notesIngestDefinition, notesIngest } from "./tools/notes-ingest";
@@ -228,6 +229,28 @@ export function createMcpServer(config: McpConfig): McpServer {
                 jsonrpc: "2.0",
                 id: request.id,
                 error: permError,
+            };
+        }
+
+        // Policy check (v0.7.0)
+        const toolArgs = (params.arguments ?? {}) as Record<string, unknown>;
+        const violations = mcpPolicyEngine.validate({
+            toolName: params.name,
+            arguments: toolArgs,
+            timestamp: new Date().toISOString(),
+            config
+        });
+
+        const blockViolation = violations.find((v: any) => v.severity === "block");
+        if (blockViolation) {
+            return {
+                jsonrpc: "2.0",
+                id: request.id,
+                error: {
+                    code: -32602,
+                    message: `Policy Block: ${blockViolation.message}`,
+                    data: { remediation: blockViolation.remediation }
+                },
             };
         }
 

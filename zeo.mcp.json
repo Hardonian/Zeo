@@ -62,6 +62,24 @@
                 "scope": "read",
                 "enabled": true,
                 "requireConfirmation": false
+            },
+            "zeo.health": {
+                "name": "zeo.health",
+                "scope": "read",
+                "enabled": true,
+                "requireConfirmation": false
+            },
+            "zeo.ingest": {
+                "name": "zeo.ingest",
+                "scope": "write",
+                "enabled": true,
+                "requireConfirmation": true
+            },
+            "zeo.summary": {
+                "name": "zeo.summary",
+                "scope": "read",
+                "enabled": true,
+                "requireConfirmation": false
             }
         }
     },

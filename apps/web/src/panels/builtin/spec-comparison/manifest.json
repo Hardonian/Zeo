@@ -1,0 +1,17 @@
+{
+    "id": "spec-comparison",
+    "title": "Visual Spec Comparison",
+    "description": "Side-by-side comparison of decision specifications (v2).",
+    "route": "/panels/builtin/spec-comparison",
+    "slot": "main",
+    "kind": "react",
+    "entry": "panel.tsx",
+    "version": "1.0.0",
+    "capabilities": {
+        "needsFiles": true
+    },
+    "dataDeps": [],
+    "permissions": {
+        "requireUserConfirm": false
+    }
+}
