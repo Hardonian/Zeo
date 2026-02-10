@@ -4,12 +4,13 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
     test: {
         // Use single process to avoid memory overhead
-        pool: 'forks',
+        pool: 'threads',
         poolOptions: {
-            forks: {
-                maxForks: 1,
-                minForks: 1,
-                isolate: false
+            threads: {
+                maxThreads: 1,
+                minThreads: 1,
+                isolate: false,
+                singleThread: true
             }
         },
         // Limit concurrency to reduce memory pressure

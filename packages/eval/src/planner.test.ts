@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { recommendEvidence, createEvidencePlan, type EvidenceAction, type PlannerConfig } from "@zeo/reality";
 import type { DecisionSpec } from "@zeo/contracts";
+import type { CounterfactualResult } from "@zeo/counterfactuals";
 import { nanoid } from "nanoid";
 
 describe("Evidence Planner Regression", () => {
