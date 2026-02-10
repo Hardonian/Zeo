@@ -93,6 +93,32 @@ Zeo avoids fake numbers. It uses:
 
 ---
 
+
+## Zeolite execution surface (CLI + MCP)
+
+Zeolite is the deterministic decision-analysis execution surface used by both CLI and MCP.
+
+- **CLI path**: `zeo zeolite <operation> --input payload.json`
+- **MCP path**: tools with the exact same operation names and JSON schemas
+
+Supported operations:
+- `load_context`
+- `submit_evidence`
+- `compute_flip_distance`
+- `rank_evidence_by_voi`
+- `generate_regret_bounded_plan`
+
+All operation responses are structured JSON and include:
+- assumptions
+- decision boundary
+- what would change the recommendation
+
+### Explicitly not provided
+
+- No causal claims
+- No free-text decision authority
+- No stochastic sampling in operation output paths
+
 ## Repo layout
 This repository is intentionally lightweight: it ships a open-source core engine plus composable adapter interfaces.
 
