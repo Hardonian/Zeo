@@ -27,7 +27,7 @@ describe("transcript security", () => {
     expect(computeTranscriptHash(t1)).toBe(computeTranscriptHash(t2));
   });
 
-  it.skip("signs/verifies envelope and rejects revoked key", () => {
+  it("signs/verifies envelope and rejects revoked key", () => {
     const root = mkdtempSync(join(tmpdir(), "zeo-core-sign-"));
     const privateKeyPath = join(root, "id.pem");
     const keyringDir = join(root, "keyring");
@@ -36,9 +36,34 @@ describe("transcript security", () => {
     const pub = exportPublicKeyFromPrivate(privateKeyPath);
     addPublicKeyToKeyring(keyringDir, pub);
     const envelope = signEnvelopeWithEd25519(createEnvelope(transcript), privateKeyPath);
-    expect(verifyEnvelope(envelope, keyringResolver(keyringDir)).ok).toBe(true);
+
+    // First check
+    const resolver = keyringResolver(keyringDir);
+    const v1 = verifyEnvelope(envelope, resolver);
+    expect(v1.ok).toBe(true);
+
     revokeKeyringEntry(keyringDir, fingerprint);
-    expect(verifyEnvelope(envelope, keyringResolver(keyringDir)).ok).toBe(false);
+
+    // Debug: read back explicitly
+    const entry = JSON.parse(readFileSync(join(keyringDir, `${fingerprint}.json`), "utf8"));
+
+    console.log("DEBUG: Entry ID:", entry.id);
+    console.log("DEBUG: KeyringDir:", keyringDir);
+    console.log("DEBUG: Fingerprint:", fingerprint);
+    console.log("DEBUG: Revoked on disk?", entry.revoked);
+
+    if (!entry.revoked) {
+      throw new Error(`Entry on disk not revoked: ${JSON.stringify(entry)}`);
+    }
+
+    // Second check
+    const resolver2 = keyringResolver(keyringDir);
+    const resolvedKey = resolver2(fingerprint);
+    console.log("DEBUG: Resolved key?", resolvedKey ? "YES" : "NO");
+
+    const v2 = verifyEnvelope(envelope, resolver2);
+    expect(v2.ok).toBe(false);
+
     rmSync(root, { recursive: true, force: true });
   });
 
