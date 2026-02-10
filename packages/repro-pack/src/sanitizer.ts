@@ -7,7 +7,7 @@
 
 const SECRET_PATTERNS: Array<{ name: string; regex: RegExp }> = [
     // API keys
-    { name: "generic_api_key", regex: /(?:api[_-]?key|apikey)\s*[:=]\s*["']?[A-Za-z0-9_\-]{16,}["']?/gi },
+    { name: "generic_api_key", regex: /(?:api[_-]?key|apikey)\s*[:=]\s*["']?[A-Za-z0-9_-]{16,}["']?/gi },
     // Bearer tokens
     { name: "bearer_token", regex: /Bearer\s+[A-Za-z0-9_\-.~+/]+=*/gi },
     // AWS access keys
