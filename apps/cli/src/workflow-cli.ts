@@ -4,9 +4,32 @@ import { join, resolve } from "node:path";
 import { createInterface } from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 
+const DEFAULT_TIMEZONE = "UTC";
+const DEFAULT_AS_OF_DATE = "1970-01-01";
+const DECAY_WINDOWS_DAYS = { fresh: 30, aging: 90, stale: 180 } as const;
+const LENSES = ["executive", "engineering", "legal", "personal"] as const;
+type LensType = typeof LENSES[number];
+type EdgeType = "depends_on" | "informs";
+
+type DecayStatus = "fresh" | "aging" | "stale" | "expired" | "unknown";
+
 export interface WorkflowArgs {
-  command: "start" | "add-note" | "run" | "next" | "share" | "copy" | "export" | "quests" | "done" | "streaks" | null;
-  subcommand?: "md" | "ics" | "bundle";
+  command:
+    | "start"
+    | "add-note"
+    | "run"
+    | "next"
+    | "share"
+    | "copy"
+    | "export"
+    | "quests"
+    | "done"
+    | "streaks"
+    | "graph"
+    | "view"
+    | "review"
+    | null;
+  subcommand?: "md" | "ics" | "bundle" | "show" | "impact" | "fragility" | "weekly";
   decision?: string;
   text?: string;
   title?: string;
@@ -16,6 +39,13 @@ export interface WorkflowArgs {
   due?: string;
   timezone?: string;
   taskId?: string;
+  transcript?: string;
+  lens?: LensType;
+  dependsOn: string[];
+  informs: string[];
+  assertedAt?: string;
+  expiresAt?: string;
+  asOf?: string;
 }
 
 interface EvidenceItem {
@@ -23,6 +53,8 @@ interface EvidenceItem {
   kind: "note";
   text: string;
   summary: string;
+  assertedAt?: string;
+  expiresAt?: string;
   provenance: { source: "user_note"; hash: string };
   cost: { timeMinutes: number; risk: "low" | "medium" | "high" };
 }
@@ -41,9 +73,12 @@ interface RunResult {
   boundarySummary: string;
   flipDistance: number;
   fragility: "Stable" | "Fragile" | "Knife-edge";
-  topEvidence: Array<{ id: string; summary: string; cost: EvidenceItem["cost"] }>;
+  topEvidence: Array<{ id: string; summary: string; cost: EvidenceItem["cost"]; decay: DecayStatus }>;
   plan: { nextSteps: string[]; stopConditions: string[] };
   signatureStatus: "unsigned" | "signed";
+  dependsOn: string[];
+  informs: string[];
+  decaySummary: Record<DecayStatus, number>;
 }
 
 interface DecisionWorkspace {
@@ -56,7 +91,17 @@ interface DecisionWorkspace {
   chain: { parentTranscriptHash?: string };
 }
 
-const DEFAULT_TIMEZONE = "UTC";
+interface GraphNode {
+  transcriptHash: string;
+  decisionId: string;
+  flipDistance: number;
+}
+
+interface GraphEdge {
+  from: string;
+  to: string;
+  type: EdgeType;
+}
 
 function hash(inputValue: unknown): string {
   return createHash("sha256").update(JSON.stringify(inputValue)).digest("hex");
@@ -90,31 +135,66 @@ function saveWorkspace(ws: DecisionWorkspace): void {
   writeFileSync(join(dir, "decision.json"), `${JSON.stringify(ws, null, 2)}\n`, "utf8");
 }
 
-function parseNoteToEvidence(text: string): Omit<EvidenceItem, "id"> {
+function parseNoteToEvidence(text: string, assertedAt?: string, expiresAt?: string): Omit<EvidenceItem, "id"> {
   const cleaned = text.trim().replace(/\s+/g, " ");
   const summary = cleaned.length > 120 ? `${cleaned.slice(0, 117)}...` : cleaned;
   return {
     kind: "note",
     text: cleaned,
     summary,
+    assertedAt,
+    expiresAt,
     provenance: { source: "user_note", hash: hash(cleaned) },
     cost: { timeMinutes: Math.max(5, Math.ceil(cleaned.length / 80) * 5), risk: cleaned.includes("urgent") ? "high" : "low" },
   };
 }
 
-function buildRunResult(ws: DecisionWorkspace, envelopePath?: string): RunResult {
+function isoDate(value?: string): string | null {
+  if (!value) return null;
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value.trim());
+  if (!match) throw new Error(`Invalid date (expected YYYY-MM-DD): ${value}`);
+  return value;
+}
+
+function daysBetween(startDate: string, endDate: string): number {
+  const start = Date.parse(`${startDate}T00:00:00.000Z`);
+  const end = Date.parse(`${endDate}T00:00:00.000Z`);
+  return Math.floor((end - start) / (24 * 60 * 60 * 1000));
+}
+
+function classifyDecay(evidence: EvidenceItem, asOfDate: string): DecayStatus {
+  if (evidence.expiresAt && daysBetween(evidence.expiresAt, asOfDate) >= 0) return "expired";
+  if (!evidence.assertedAt) return "unknown";
+  const ageDays = daysBetween(evidence.assertedAt, asOfDate);
+  if (ageDays <= DECAY_WINDOWS_DAYS.fresh) return "fresh";
+  if (ageDays <= DECAY_WINDOWS_DAYS.aging) return "aging";
+  if (ageDays <= DECAY_WINDOWS_DAYS.stale) return "stale";
+  return "expired";
+}
+
+function decaySummary(evidence: EvidenceItem[], asOfDate: string): Record<DecayStatus, number> {
+  const summary: Record<DecayStatus, number> = { fresh: 0, aging: 0, stale: 0, expired: 0, unknown: 0 };
+  for (const item of evidence) summary[classifyDecay(item, asOfDate)] += 1;
+  return summary;
+}
+
+function buildRunResult(ws: DecisionWorkspace, envelopePath: string | undefined, asOfDate: string, dependsOn: string[], informs: string[]): RunResult {
   const transcript = {
     decisionId: ws.decisionId,
-    evidence: ws.evidence.map((e) => ({ id: e.id, hash: e.provenance.hash, cost: e.cost })),
+    evidence: ws.evidence.map((e) => ({ id: e.id, hash: e.provenance.hash, cost: e.cost, assertedAt: e.assertedAt ?? null, expiresAt: e.expiresAt ?? null })),
     tasks: ws.tasks.map((t) => ({ id: t.id, completed: t.completed, dueDate: t.dueDate ?? null })),
+    dependsOn: [...dependsOn].sort(),
+    informs: [...informs].sort(),
+    asOfDate,
   };
   const transcriptHash = hash(transcript);
   const totalEvidence = ws.evidence.length;
   const unresolvedTasks = ws.tasks.filter((t) => !t.completed).length;
   const flipDistance = Math.max(1, totalEvidence - unresolvedTasks);
   const fragility = flipDistance >= 5 ? "Stable" : flipDistance >= 3 ? "Fragile" : "Knife-edge";
+  const decay = decaySummary(ws.evidence, asOfDate);
   const recommendedAction = unresolvedTasks === 0 ? "Act now with current plan." : "Collect the next evidence tasks before committing.";
-  const boundarySummary = `${totalEvidence} evidence item(s), ${unresolvedTasks} unresolved task(s).`;
+  const boundarySummary = `${totalEvidence} evidence item(s), ${unresolvedTasks} unresolved task(s), stale_or_expired=${decay.stale + decay.expired}.`;
 
   return {
     transcriptHash,
@@ -126,12 +206,15 @@ function buildRunResult(ws: DecisionWorkspace, envelopePath?: string): RunResult
       .slice()
       .sort((a, b) => a.cost.timeMinutes - b.cost.timeMinutes || a.id.localeCompare(b.id))
       .slice(0, 3)
-      .map((e) => ({ id: e.id, summary: e.summary, cost: e.cost })),
+      .map((e) => ({ id: e.id, summary: e.summary, cost: e.cost, decay: classifyDecay(e, asOfDate) })),
     plan: {
       nextSteps: ws.tasks.filter((t) => !t.completed).slice(0, 3).map((t) => t.label),
-      stopConditions: ["Flip distance reaches 5 or higher", "No unresolved high-risk evidence items"],
+      stopConditions: ["Flip distance reaches 5 or higher", "No unresolved high-risk evidence items", "Expired evidence is replaced or retired"],
     },
     signatureStatus: envelopePath && existsSync(resolve(envelopePath)) ? "signed" : "unsigned",
+    dependsOn: [...dependsOn].sort(),
+    informs: [...informs].sort(),
+    decaySummary: decay,
   };
 }
 
@@ -142,10 +225,13 @@ function formatResultCard(result: RunResult): string {
     `Decision boundary: ${result.boundarySummary}`,
     `Flip distance: ${result.flipDistance}`,
     `Fragility: ${result.fragility}`,
+    `Decay: fresh=${result.decaySummary.fresh} aging=${result.decaySummary.aging} stale=${result.decaySummary.stale} expired=${result.decaySummary.expired} unknown=${result.decaySummary.unknown}`,
     "Top evidence:",
-    ...result.topEvidence.map((e, idx) => `  ${idx + 1}. ${e.summary} (time=${e.cost.timeMinutes}m risk=${e.cost.risk})`),
+    ...result.topEvidence.map((e, idx) => `  ${idx + 1}. ${e.summary} (time=${e.cost.timeMinutes}m risk=${e.cost.risk} decay=${e.decay})`),
     "Regret-bounded plan:",
     ...result.plan.nextSteps.map((s) => `  - ${s}`),
+    `Depends on: ${result.dependsOn.join(", ") || "none"}`,
+    `Informs: ${result.informs.join(", ") || "none"}`,
     `Transcript hash: ${result.transcriptHash}`,
     `Signature: ${result.signatureStatus}`,
   ].join("\n");
@@ -177,12 +263,101 @@ function ensureNoSecrets(text: string): void {
   if (secretPattern.test(text)) throw new Error("Potential secret detected in output payload.");
 }
 
+function collectWorkspaces(): DecisionWorkspace[] {
+  if (!existsSync(decisionsRoot())) return [];
+  return readdirSync(decisionsRoot(), { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => loadWorkspace(entry.name));
+}
+
+function collectGraph(asOfDate: string): { nodes: GraphNode[]; edges: GraphEdge[] } {
+  const nodes = new Map<string, GraphNode>();
+  const edges: GraphEdge[] = [];
+  for (const ws of collectWorkspaces()) {
+    for (const run of ws.runs) {
+      nodes.set(run.transcriptHash, { transcriptHash: run.transcriptHash, decisionId: ws.decisionId, flipDistance: run.flipDistance });
+      for (const parent of run.dependsOn ?? []) edges.push({ from: parent, to: run.transcriptHash, type: "depends_on" });
+      for (const child of run.informs ?? []) edges.push({ from: run.transcriptHash, to: child, type: "informs" });
+    }
+  }
+  for (const node of [...nodes.keys()]) {
+    if (!nodes.has(node)) continue;
+  }
+  detectCycles([...nodes.keys()], edges);
+  return { nodes: [...nodes.values()].sort((a, b) => a.transcriptHash.localeCompare(b.transcriptHash)), edges: edges.sort((a, b) => a.from.localeCompare(b.from) || a.to.localeCompare(b.to) || a.type.localeCompare(b.type)) };
+}
+
+function detectCycles(nodeIds: string[], edges: GraphEdge[]): void {
+  const outgoing = new Map<string, string[]>();
+  for (const id of nodeIds) outgoing.set(id, []);
+  for (const edge of edges) {
+    const list = outgoing.get(edge.from) ?? [];
+    list.push(edge.to);
+    outgoing.set(edge.from, list);
+  }
+  const visiting = new Set<string>();
+  const visited = new Set<string>();
+  function walk(id: string): void {
+    if (visiting.has(id)) throw new Error(`Cycle detected in decision graph at transcript ${id}`);
+    if (visited.has(id)) return;
+    visiting.add(id);
+    for (const child of outgoing.get(id) ?? []) walk(child);
+    visiting.delete(id);
+    visited.add(id);
+  }
+  for (const id of [...nodeIds].sort()) walk(id);
+}
+
+function downstreamImpact(graph: { nodes: GraphNode[]; edges: GraphEdge[] }, transcriptHash: string): string[] {
+  const queue = [transcriptHash];
+  const visited = new Set<string>([transcriptHash]);
+  const impact: string[] = [];
+  while (queue.length > 0) {
+    const current = queue.shift() as string;
+    const children = graph.edges.filter((e) => e.from === current).map((e) => e.to).sort();
+    for (const child of children) {
+      if (visited.has(child)) continue;
+      visited.add(child);
+      impact.push(child);
+      queue.push(child);
+    }
+  }
+  return impact;
+}
+
+function deriveLens(lens: LensType, ws: DecisionWorkspace, run: RunResult): string {
+  if (lens === "executive") {
+    return `Decision: ${run.recommendedAction}\nWhy: ${run.boundarySummary}\nWhat would change it: ${run.plan.stopConditions.join("; ")}`;
+  }
+  if (lens === "engineering") {
+    return `Constraints: unresolved tasks=${ws.tasks.filter(t => !t.completed).length}\nBoundaries: flip_distance=${run.flipDistance}\nFailure modes: ${run.decaySummary.expired > 0 ? "expired evidence" : "boundary drift"}`;
+  }
+  if (lens === "legal") {
+    return `Assumptions: ${ws.evidence.map(e => e.id).join(", ")}\nSignatures: ${run.signatureStatus}\nAttestations: transcript hash ${run.transcriptHash}`;
+  }
+  return `Fastest mind-change signal: ${run.topEvidence[0]?.summary ?? "no evidence"}`;
+}
+
 export function parseWorkflowArgs(argv: string[]): WorkflowArgs {
-  const command = ["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks"].includes(argv[0] ?? "") ? argv[0] as WorkflowArgs["command"] : null;
-  const subcommand = argv[0] === "export" && ["md", "ics", "bundle"].includes(argv[1] ?? "") ? argv[1] as WorkflowArgs["subcommand"] : undefined;
+  const command = ["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "graph", "view", "review"].includes(argv[0] ?? "") ? argv[0] as WorkflowArgs["command"] : null;
+  const subcommand =
+    argv[0] === "export" && ["md", "ics", "bundle"].includes(argv[1] ?? "")
+      ? argv[1] as WorkflowArgs["subcommand"]
+      : argv[0] === "graph" && ["show", "impact", "fragility"].includes(argv[1] ?? "")
+        ? argv[1] as WorkflowArgs["subcommand"]
+        : argv[0] === "review" && argv[1] === "weekly"
+          ? "weekly"
+          : undefined;
   const value = (flag: string): string | undefined => {
     const idx = argv.indexOf(flag);
     return idx >= 0 ? argv[idx + 1] : undefined;
+  };
+  const list = (flag: string): string[] => {
+    const values: string[] = [];
+    for (let i = 0; i < argv.length; i += 1) {
+      if (argv[i] === flag && argv[i + 1]) values.push(argv[i + 1]);
+    }
+    return values;
   };
   return {
     command,
@@ -196,6 +371,13 @@ export function parseWorkflowArgs(argv: string[]): WorkflowArgs {
     due: value("--due"),
     timezone: value("--timezone"),
     taskId: argv[1] && command === "done" ? argv[1] : value("--task"),
+    transcript: argv[2] && command === "view" ? argv[2] : value("--transcript"),
+    lens: (argv[1] && command === "view" ? argv[1] : value("--lens")) as LensType | undefined,
+    dependsOn: list("--depends-on"),
+    informs: list("--informs"),
+    assertedAt: value("--asserted-at"),
+    expiresAt: value("--expires-at"),
+    asOf: value("--as-of"),
   };
 }
 
@@ -212,6 +394,66 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
     return 0;
   }
 
+  if (args.command === "graph") {
+    const graph = collectGraph(args.asOf ?? DEFAULT_AS_OF_DATE);
+    if (args.subcommand === "show") {
+      const transcriptHash = args.transcript ?? args.decision;
+      if (!transcriptHash) throw new Error("Usage: zeo graph show <transcript>");
+      const related = graph.edges.filter((e) => e.from === transcriptHash || e.to === transcriptHash);
+      writeJsonOrText(args, { transcript: transcriptHash, edges: related }, related.map((e) => `${e.from} -[${e.type}]-> ${e.to}`).join("\n") || "No graph edges.");
+      return 0;
+    }
+    if (args.subcommand === "impact") {
+      const transcriptHash = args.transcript ?? args.decision;
+      if (!transcriptHash) throw new Error("Usage: zeo graph impact <transcript>");
+      const impact = downstreamImpact(graph, transcriptHash);
+      writeJsonOrText(args, { transcript: transcriptHash, impact }, impact.join("\n") || "No downstream impact.");
+      return 0;
+    }
+    if (args.subcommand === "fragility") {
+      const ranked = graph.nodes.map((node) => ({
+        transcriptHash: node.transcriptHash,
+        downstreamCount: downstreamImpact(graph, node.transcriptHash).length,
+        flipDistance: node.flipDistance,
+        fragilityScore: downstreamImpact(graph, node.transcriptHash).length * Math.max(1, 10 - node.flipDistance),
+      })).sort((a, b) => b.fragilityScore - a.fragilityScore || a.transcriptHash.localeCompare(b.transcriptHash));
+      writeJsonOrText(args, { ranked }, ranked.map((item) => `${item.transcriptHash} score=${item.fragilityScore}`).join("\n"));
+      return 0;
+    }
+    throw new Error("Usage: zeo graph <show|impact|fragility>");
+  }
+
+  if (args.command === "view") {
+    const lens = args.lens;
+    if (!lens || !LENSES.includes(lens)) throw new Error("Usage: zeo view <executive|engineering|legal|personal> <transcript>");
+    const transcriptHash = args.transcript ?? args.decision;
+    if (!transcriptHash) throw new Error("Transcript hash required");
+    for (const ws of collectWorkspaces()) {
+      const run = ws.runs.find((r) => r.transcriptHash === transcriptHash);
+      if (run) {
+        const body = deriveLens(lens, ws, run);
+        writeJsonOrText(args, { lens, transcript: transcriptHash, body }, body);
+        return 0;
+      }
+    }
+    throw new Error(`Transcript not found: ${transcriptHash}`);
+  }
+
+  if (args.command === "review" && args.subcommand === "weekly") {
+    const workspaces = collectWorkspaces();
+    const robust: string[] = [];
+    const invalidatedEarly: string[] = [];
+    const retired: string[] = [];
+    for (const ws of workspaces) {
+      if (ws.runs.length > 1 && ws.runs[ws.runs.length - 1].flipDistance > ws.runs[0].flipDistance) robust.push(ws.decisionId);
+      if (ws.evidence.some((e) => e.expiresAt && ws.tasks.some((t) => t.sourceEvidenceId === e.id && t.completed))) invalidatedEarly.push(ws.decisionId);
+      if (ws.runs.length > 0 && ws.runs[ws.runs.length - 1].decaySummary.expired > 0) retired.push(ws.decisionId);
+    }
+    const report = { robust, invalidatedEarly, retired };
+    writeJsonOrText(args, report, `robust=${robust.join(",") || "none"}\ninvalidated_early=${invalidatedEarly.join(",") || "none"}\nretire=${retired.join(",") || "none"}`);
+    return 0;
+  }
+
   const decisionId = args.decision;
   if (!decisionId) throw new Error("--decision is required");
   const ws = loadWorkspace(decisionId);
@@ -219,7 +461,7 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
   if (args.command === "add-note") {
     const text = args.text || (process.stdin.isTTY ? await prompt("Paste note: ") : "");
     if (!text) throw new Error("note text required via --text");
-    const proposal = parseNoteToEvidence(text);
+    const proposal = parseNoteToEvidence(text, isoDate(args.assertedAt) ?? undefined, isoDate(args.expiresAt) ?? undefined);
     const evidence: EvidenceItem = { ...proposal, id: `ev_${proposal.provenance.hash.slice(0, 10)}` };
     ws.evidence = [...ws.evidence, evidence];
     ws.tasks = [...ws.tasks, ...createTasksFromEvidence(evidence)];
@@ -229,7 +471,8 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
   }
 
   if (args.command === "run") {
-    const result = buildRunResult(ws, args.envelope);
+    const asOf = isoDate(args.asOf) ?? DEFAULT_AS_OF_DATE;
+    const result = buildRunResult(ws, args.envelope, asOf, args.dependsOn, args.informs);
     ws.runs = [...ws.runs, result];
     ws.chain.parentTranscriptHash = ws.runs.length > 1 ? ws.runs[ws.runs.length - 2]?.transcriptHash : undefined;
     saveWorkspace(ws);
@@ -238,7 +481,12 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
   }
 
   if (args.command === "next") {
-    const checklist = ws.tasks.filter((t) => !t.completed).sort((a, b) => a.id.localeCompare(b.id)).map((t) => `- [ ] (${t.id}) ${t.label}`);
+    const asOf = isoDate(args.asOf) ?? DEFAULT_AS_OF_DATE;
+    const checklist = ws.tasks.filter((t) => !t.completed).sort((a, b) => a.id.localeCompare(b.id)).map((t) => {
+      const evidence = ws.evidence.find((e) => e.id === t.sourceEvidenceId);
+      const decay = evidence ? classifyDecay(evidence, asOf) : "unknown";
+      return `- [ ] (${t.id}) ${t.label} [decay=${decay}]`;
+    });
     writeJsonOrText(args, { tasks: checklist }, checklist.join("\n") || "No pending tasks.");
     return 0;
   }
@@ -260,7 +508,7 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
   }
 
   if (args.command === "share" || args.command === "copy") {
-    const latest = ws.runs[ws.runs.length - 1] ?? buildRunResult(ws, args.envelope);
+    const latest = ws.runs[ws.runs.length - 1] ?? buildRunResult(ws, args.envelope, isoDate(args.asOf) ?? DEFAULT_AS_OF_DATE, [], []);
     const share = `Zeo Decision: ${ws.title}\nAction: ${latest.recommendedAction}\nFragility: ${latest.fragility}\nHash: ${latest.transcriptHash}`;
     ensureNoSecrets(share);
     writeJsonOrText(args, { share }, share);
@@ -268,13 +516,13 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
   }
 
   if (args.command === "export") {
-    const latest = ws.runs[ws.runs.length - 1] ?? buildRunResult(ws, args.envelope);
+    const latest = ws.runs[ws.runs.length - 1] ?? buildRunResult(ws, args.envelope, isoDate(args.asOf) ?? DEFAULT_AS_OF_DATE, [], []);
     const outDir = args.output ? resolve(args.output) : resolve(process.cwd(), "exports");
     if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
 
     if (args.subcommand === "md") {
       const envelopeRef = args.envelope ? resolve(args.envelope) : "none";
-      const md = `---\ntranscript_hash: ${latest.transcriptHash}\nenvelope: ${envelopeRef}\ndecision_id: ${ws.decisionId}\n---\n\n# ${ws.title}\n\n${formatResultCard(latest)}\n`;
+      const md = `---\ntranscript_hash: ${latest.transcriptHash}\nenvelope: ${envelopeRef}\ndecision_id: ${ws.decisionId}\n---\n\n# ${ws.title}\n\n${formatResultCard(latest)}\n\n## Decay\n${ws.evidence.map((e) => `- ${e.summary}: ${classifyDecay(e, isoDate(args.asOf) ?? DEFAULT_AS_OF_DATE)}`).join("\n")}\n`;
       const file = join(outDir, `${latest.transcriptHash.slice(0, 16)}.md`);
       writeFileSync(file, md, "utf8");
       writeJsonOrText(args, { out: file }, file);
@@ -295,7 +543,7 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
           return [
             "BEGIN:VEVENT",
             `UID:${task.id}@zeo`,
-            `SUMMARY:${task.label}`,
+            `SUMMARY:Re-check ${task.label}`,
             ...(dt ? [`DTSTART;VALUE=DATE:${dt}`] : []),
             `X-WR-TIMEZONE:${timezone}`,
             "END:VEVENT",
@@ -329,13 +577,15 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
     let fragilityImproved = 0;
     let replaysVerified = 0;
     let signed = 0;
+    let earlyInvalidations = 0;
     for (const dir of dirs) {
       const local = loadWorkspace(dir.name);
       if (local.runs.length > 1 && local.runs[local.runs.length - 1].flipDistance > local.runs[0].flipDistance) fragilityImproved += 1;
       if (local.runs.length > 0) replaysVerified += 1;
       if (local.runs.some((r) => r.signatureStatus === "signed")) signed += 1;
+      if (local.evidence.some((e) => e.expiresAt) && local.tasks.some((t) => t.completed)) earlyInvalidations += 1;
     }
-    writeJsonOrText(args, { fragilityImproved, replaysVerified, signedTranscripts: signed }, `fragility_improved=${fragilityImproved}\nreplays_verified=${replaysVerified}\nsigned_transcripts=${signed}`);
+    writeJsonOrText(args, { fragilityImproved, replaysVerified, signedTranscripts: signed, earlyInvalidations }, `fragility_improved=${fragilityImproved}\nreplays_verified=${replaysVerified}\nsigned_transcripts=${signed}\nearly_invalidations=${earlyInvalidations}`);
     return 0;
   }
 

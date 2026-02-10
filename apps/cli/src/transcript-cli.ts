@@ -20,6 +20,12 @@ interface TranscriptSecurityModule {
   verifyTranscriptChain: typeof import("@zeo/core").verifyTranscriptChain;
 }
 
+type ConditionalObjection = {
+  signer: string;
+  condition: string;
+  statement: string;
+};
+
 async function loadTranscriptSecurity(): Promise<TranscriptSecurityModule> {
   const fallback = new URL("../../../packages/core/src/transcript-security.js", import.meta.url).href;
   try {
@@ -27,6 +33,42 @@ async function loadTranscriptSecurity(): Promise<TranscriptSecurityModule> {
   } catch {
     return await import("@zeo/core") as TranscriptSecurityModule;
   }
+}
+
+function value(argv: string[], flag: string): string | null {
+  const idx = argv.indexOf(flag);
+  return idx >= 0 ? argv[idx + 1] ?? null : null;
+}
+
+function qrAscii(payload: string): string {
+  const chars = [...payload];
+  const size = 21;
+  const bits = chars.map((c, i) => (c.charCodeAt(0) + i) % 2);
+  const rows: string[] = [];
+  for (let y = 0; y < size; y += 1) {
+    let row = "";
+    for (let x = 0; x < size; x += 1) {
+      const bit = bits[(x + y * size) % bits.length] ?? 0;
+      row += bit ? "██" : "  ";
+    }
+    rows.push(row);
+  }
+  return rows.join("\n");
+}
+
+function readObjections(envelope: Record<string, unknown>): ConditionalObjection[] {
+  const metadata = envelope.metadata as Record<string, unknown>;
+  const value = metadata?.conditional_objections;
+  if (!Array.isArray(value)) return [];
+  return value.map((entry) => ({
+    signer: String((entry as Record<string, unknown>).signer ?? "unknown"),
+    condition: String((entry as Record<string, unknown>).condition ?? ""),
+    statement: String((entry as Record<string, unknown>).statement ?? ""),
+  }));
+}
+
+export function parseTranscriptArgs(argv: string[]): string[] {
+  return argv;
 }
 
 export async function runTranscriptCommand(argv: string[]): Promise<number> {
@@ -86,6 +128,47 @@ export async function runTranscriptCommand(argv: string[]): Promise<number> {
       return 0;
     }
 
+    if (entity === "transcript" && action === "countersign") {
+      const input = argv[2];
+      const out = value(argv, "--out") ?? input;
+      const signer = value(argv, "--signer");
+      const condition = value(argv, "--if");
+      const statement = value(argv, "--statement") ?? "I disagree unless condition holds.";
+      if (!input || !signer || !condition) throw new Error("Usage: zeo transcript countersign <envelope.json> --signer <id> --if <condition>");
+      const envelope = loadEnvelopeFromFile(input) as unknown as Record<string, unknown>;
+      const metadata = (envelope.metadata as Record<string, unknown> | undefined) ?? {};
+      const objections = readObjections(envelope);
+      objections.push({ signer, condition, statement });
+      metadata.conditional_objections = objections.sort((a, b) => a.signer.localeCompare(b.signer) || a.condition.localeCompare(b.condition));
+      envelope.metadata = metadata;
+      writeFileSync(resolve(out), `${JSON.stringify(envelope, null, 2)}\n`, "utf8");
+      process.stdout.write(`${JSON.stringify({ out, objections: objections.length }, null, 2)}\n`);
+      return 0;
+    }
+
+    if (entity === "transcript" && action === "disagreements") {
+      const input = argv[2];
+      if (!input) throw new Error("Usage: zeo transcript disagreements <envelope.json>");
+      const envelope = loadEnvelopeFromFile(input) as unknown as Record<string, unknown>;
+      process.stdout.write(`${JSON.stringify({ transcript_hash: envelope.transcript_hash, disagreements: readObjections(envelope) }, null, 2)}\n`);
+      return 0;
+    }
+
+    if (entity === "transcript" && action === "consensus") {
+      const input = argv[2];
+      if (!input) throw new Error("Usage: zeo transcript consensus <envelope.json>");
+      const envelope = loadEnvelopeFromFile(input) as unknown as Record<string, unknown>;
+      const disagreements = readObjections(envelope);
+      const summary = {
+        transcript_hash: envelope.transcript_hash,
+        signatures: Array.isArray(envelope.signatures) ? envelope.signatures.length : 0,
+        disagreements: disagreements.length,
+        structural_consensus: disagreements.length === 0 ? "full" : "conditional",
+      };
+      process.stdout.write(`${JSON.stringify(summary, null, 2)}\n`);
+      return 0;
+    }
+
     if (entity === "transcript" && action === "verify") {
       const input = argv[2];
       if (!input) throw new Error("Usage: zeo transcript verify <envelope.json> [--pubkey <path> | --keyring <dir>]");
@@ -116,6 +199,28 @@ export async function runTranscriptCommand(argv: string[]): Promise<number> {
       const result = verifyTranscriptChain(envelopes);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
       return result.ok ? 0 : 1;
+    }
+
+    if (entity === "transcript" && action === "qr") {
+      const input = argv[2];
+      if (!input) throw new Error("Usage: zeo transcript qr <envelope.json>");
+      const envelope = loadEnvelopeFromFile(input);
+      const payload = JSON.stringify({ transcript_hash: envelope.transcript_hash, envelope_hash: envelope.transcript_hash, envelope_file: resolve(input) });
+      process.stdout.write(`${JSON.stringify({ payload, qr_ascii: qrAscii(payload) }, null, 2)}\n`);
+      return 0;
+    }
+
+    if (entity === "transcript" && action === "qr-verify") {
+      const payloadFile = argv[2];
+      if (!payloadFile) throw new Error("Usage: zeo transcript qr-verify <payload.json>");
+      const payload = JSON.parse(readFileSync(resolve(payloadFile), "utf8")) as Record<string, unknown>;
+      const envelopePath = String(payload.envelope_file ?? "");
+      if (!envelopePath) throw new Error("Missing envelope_file in payload");
+      if (!readFileSync(resolve(envelopePath), "utf8")) throw new Error("Envelope file not found for offline verification");
+      const envelope = loadEnvelopeFromFile(envelopePath);
+      const ok = envelope.transcript_hash === payload.transcript_hash;
+      process.stdout.write(`${JSON.stringify({ ok, reason: ok ? "offline verification passed" : "transcript hash mismatch" }, null, 2)}\n`);
+      return ok ? 0 : 1;
     }
 
     if (entity === "keys" && action === "add") {
@@ -197,11 +302,6 @@ export async function runTranscriptCommand(argv: string[]): Promise<number> {
     process.stderr.write(`${JSON.stringify({ error: { code: "ZEO_TRANSCRIPT_FAILED", message } })}\n`);
     return 1;
   }
-}
-
-function value(argv: string[], flag: string): string | null {
-  const idx = argv.indexOf(flag);
-  return idx >= 0 ? argv[idx + 1] ?? null : null;
 }
 
 function printHelp(): void {
