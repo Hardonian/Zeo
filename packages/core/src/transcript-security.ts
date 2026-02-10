@@ -7,7 +7,7 @@ import {
   verify as cryptoVerify,
 } from "node:crypto";
 import { encodeCanonicalJson } from "./canonical-json.js";
-import { computeTranscriptHash } from "./hashing.js";
+import { computeTranscriptHash as computeHashImpl } from "./hashing.js";
 import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 
@@ -122,7 +122,7 @@ export function canonicalTranscriptBytes(input: Record<string, unknown>): Uint8A
   return encodeCanonicalJson(input);
 }
 
-export { computeTranscriptHash };
+export const computeTranscriptHash = computeHashImpl;
 
 function signingPayload(transcriptHash: string, envelopeVersion: string, signingContext: string): Buffer {
   return Buffer.from(`${signingContext}\n${envelopeVersion}\n${transcriptHash}`, "utf8");
@@ -150,7 +150,7 @@ export function createEnvelope(transcript: Record<string, unknown>, metadata: Re
   return {
     envelope_version: "1",
     transcript,
-    transcript_hash: computeTranscriptHash(transcript),
+    transcript_hash: computeHashImpl(transcript),
     signatures: [],
     attestations: [],
     metadata,
@@ -186,7 +186,7 @@ export function verifyEnvelope(
 ): { ok: boolean; errors: string[]; signerFingerprints: string[] } {
   const errors: string[] = [];
   const signerFingerprints: string[] = [];
-  const expectedHash = computeTranscriptHash(envelope.transcript);
+  const expectedHash = computeHashImpl(envelope.transcript);
   if (expectedHash !== envelope.transcript_hash) {
     console.log("Hash mismatch:", { expected: expectedHash, actual: envelope.transcript_hash });
     errors.push("transcript_hash_mismatch");
