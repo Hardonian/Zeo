@@ -456,6 +456,9 @@ importers:
       '@zeo/replay':
         specifier: workspace:*
         version: link:../replay
+      '@zeo/repro-pack':
+        specifier: workspace:*
+        version: link:../repro-pack
       '@zeo/robustness':
         specifier: workspace:*
         version: link:../robustness
@@ -757,6 +760,9 @@ importers:
       '@zeo/mcp-interop':
         specifier: workspace:*
         version: link:../mcp-interop
+      '@zeo/replay':
+        specifier: workspace:*
+        version: link:../replay
       '@zeo/warehouse':
         specifier: workspace:*
         version: link:../warehouse
@@ -964,9 +970,6 @@ importers:
       '@zeo/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@zeo/core':
-        specifier: workspace:*
-        version: link:../core
       adm-zip:
         specifier: ^0.5.10
         version: 0.5.16

@@ -8,6 +8,8 @@ export type ExecuteDecisionInput = {
   opts?: RunDecisionOpts;
   evidence?: EvidenceEvent[];
   parentTranscriptHash?: string;
+  dependsOn?: string[];
+  informs?: string[];
   logicalTimestamp?: number;
   agents?: TranscriptAgentRecord[];
 };
@@ -125,6 +127,8 @@ function buildTranscript(input: ExecuteDecisionInput, result: DecisionResult): D
     timestamp,
     logical_clock: [timestamp, result.graph.nodes.length, result.graph.edges.length],
     parent_transcript_hash: input.parentTranscriptHash,
+    depends_on: input.dependsOn,
+    informs: input.informs,
     inputs: {
       initial_context: input.spec.context,
       decision_spec: input.spec,

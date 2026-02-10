@@ -3,6 +3,8 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, cpSync
 import { join, resolve } from "node:path";
 import { createInterface } from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
+import * as core from "@zeo/core";
+import * as contracts from "@zeo/contracts";
 
 const DEFAULT_TIMEZONE = "UTC";
 const DEFAULT_AS_OF_DATE = "1970-01-01";
@@ -15,20 +17,20 @@ type DecayStatus = "fresh" | "aging" | "stale" | "expired" | "unknown";
 
 export interface WorkflowArgs {
   command:
-    | "start"
-    | "add-note"
-    | "run"
-    | "next"
-    | "share"
-    | "copy"
-    | "export"
-    | "quests"
-    | "done"
-    | "streaks"
-    | "graph"
-    | "view"
-    | "review"
-    | null;
+  | "start"
+  | "add-note"
+  | "run"
+  | "next"
+  | "share"
+  | "copy"
+  | "export"
+  | "quests"
+  | "done"
+  | "streaks"
+  | "graph"
+  | "view"
+  | "review"
+  | null;
   subcommand?: "md" | "ics" | "bundle" | "show" | "impact" | "fragility" | "weekly";
   decision?: string;
   text?: string;
@@ -79,6 +81,32 @@ interface RunResult {
   dependsOn: string[];
   informs: string[];
   decaySummary: Record<DecayStatus, number>;
+  fullTranscript?: contracts.FinalizedDecisionTranscript;
+}
+
+function specFromWorkspace(ws: DecisionWorkspace): contracts.DecisionSpec {
+  return {
+    id: ws.decisionId,
+    title: ws.title,
+    context: ws.title,
+    createdAt: ws.createdAt ?? new Date().toISOString(),
+    horizon: "days",
+    agents: [{ id: "self", name: "Self", role: "self" }],
+    actions: [
+      { id: "act_commit", label: "Commit to Plan", actorId: "self", kind: "commit" },
+      { id: "act_defer", label: "Gather More Evidence", actorId: "self", kind: "delay" }
+    ],
+    constraints: [],
+    assumptions: ws.evidence.map((e) => ({
+      id: e.id,
+      text: e.text,
+      status: "fact",
+      confidence: "high",
+      provenance: [{ kind: "text", sourceId: "user_note", offset: 0, length: e.text.length, capturedAt: e.assertedAt || new Date().toISOString(), checksum: e.provenance.hash }],
+      tags: [] as string[]
+    })),
+    objectives: [{ id: "obj_robustness", metric: "robustness", weight: 1.0 }]
+  };
 }
 
 interface DecisionWorkspace {
@@ -178,46 +206,6 @@ function decaySummary(evidence: EvidenceItem[], asOfDate: string): Record<DecayS
   return summary;
 }
 
-function buildRunResult(ws: DecisionWorkspace, envelopePath: string | undefined, asOfDate: string, dependsOn: string[], informs: string[]): RunResult {
-  const transcript = {
-    decisionId: ws.decisionId,
-    evidence: ws.evidence.map((e) => ({ id: e.id, hash: e.provenance.hash, cost: e.cost, assertedAt: e.assertedAt ?? null, expiresAt: e.expiresAt ?? null })),
-    tasks: ws.tasks.map((t) => ({ id: t.id, completed: t.completed, dueDate: t.dueDate ?? null })),
-    dependsOn: [...dependsOn].sort(),
-    informs: [...informs].sort(),
-    asOfDate,
-  };
-  const transcriptHash = hash(transcript);
-  const totalEvidence = ws.evidence.length;
-  const unresolvedTasks = ws.tasks.filter((t) => !t.completed).length;
-  const flipDistance = Math.max(1, totalEvidence - unresolvedTasks);
-  const fragility = flipDistance >= 5 ? "Stable" : flipDistance >= 3 ? "Fragile" : "Knife-edge";
-  const decay = decaySummary(ws.evidence, asOfDate);
-  const recommendedAction = unresolvedTasks === 0 ? "Act now with current plan." : "Collect the next evidence tasks before committing.";
-  const boundarySummary = `${totalEvidence} evidence item(s), ${unresolvedTasks} unresolved task(s), stale_or_expired=${decay.stale + decay.expired}.`;
-
-  return {
-    transcriptHash,
-    recommendedAction,
-    boundarySummary,
-    flipDistance,
-    fragility,
-    topEvidence: ws.evidence
-      .slice()
-      .sort((a, b) => a.cost.timeMinutes - b.cost.timeMinutes || a.id.localeCompare(b.id))
-      .slice(0, 3)
-      .map((e) => ({ id: e.id, summary: e.summary, cost: e.cost, decay: classifyDecay(e, asOfDate) })),
-    plan: {
-      nextSteps: ws.tasks.filter((t) => !t.completed).slice(0, 3).map((t) => t.label),
-      stopConditions: ["Flip distance reaches 5 or higher", "No unresolved high-risk evidence items", "Expired evidence is replaced or retired"],
-    },
-    signatureStatus: envelopePath && existsSync(resolve(envelopePath)) ? "signed" : "unsigned",
-    dependsOn: [...dependsOn].sort(),
-    informs: [...informs].sort(),
-    decaySummary: decay,
-  };
-}
-
 function formatResultCard(result: RunResult): string {
   return [
     "=== Zeo Result Card ===",
@@ -235,6 +223,64 @@ function formatResultCard(result: RunResult): string {
     `Transcript hash: ${result.transcriptHash}`,
     `Signature: ${result.signatureStatus}`,
   ].join("\n");
+}
+
+
+async function runDecisionInWorkspace(
+  ws: DecisionWorkspace,
+  envelopePath: string | undefined,
+  asOfDate: string,
+  dependsOn: string[],
+  informs: string[]
+): Promise<RunResult> {
+  const spec = specFromWorkspace(ws);
+  const { result, transcript } = core.executeDecision({
+    spec,
+    opts: { depth: 2 }, // Default depth
+    evidence: [], // Evidence is already embedded in assumptions for this simplified view, or should be passed?
+    // The workspace "evidence" are actually "facts" in the spec assumptions.
+    // Real evidence events would be separate. For now, we map workspace evidence to assumptions.
+    dependsOn,
+    informs,
+    logicalTimestamp: Date.now()
+  });
+
+  const robustActions = result.evaluations.find(e => e.lens === "robustness")?.robustActions || [];
+  const recommendedAction = robustActions.length > 0
+    ? `Action(s) ${robustActions.join(", ")} are robust.`
+    : "No robust actions found. Gather more evidence.";
+
+  const flipDistances = transcript.analysis.flip_distances.map(f => parseFloat(f.distance));
+  const minFlipDistance = flipDistances.length > 0 ? Math.min(...flipDistances) : Infinity;
+
+  const fragility = minFlipDistance >= 5 ? "Stable" : minFlipDistance >= 3 ? "Fragile" : "Knife-edge";
+  const totalEvidence = ws.evidence.length;
+  // Tasks are distinct from evidence in workspace model
+  const unresolvedTasks = ws.tasks.filter((t) => !t.completed).length;
+  const decay = decaySummary(ws.evidence, asOfDate);
+  const boundarySummary = `Flip dist ${minFlipDistance.toFixed(2)}; ${unresolvedTasks} tasks; decay: ${decay.stale + decay.expired} issues.`;
+
+  return {
+    transcriptHash: transcript.transcript_hash,
+    recommendedAction,
+    boundarySummary,
+    flipDistance: minFlipDistance === Infinity ? 100 : minFlipDistance,
+    fragility,
+    topEvidence: ws.evidence
+      .slice()
+      .sort((a, b) => a.cost.timeMinutes - b.cost.timeMinutes || a.id.localeCompare(b.id))
+      .slice(0, 3)
+      .map((e) => ({ id: e.id, summary: e.summary, cost: e.cost, decay: classifyDecay(e, asOfDate) })),
+    plan: {
+      nextSteps: result.nextBestEvidence.slice(0, 3).map(item => item.prompt),
+      stopConditions: transcript.plan.stop_conditions,
+    },
+    signatureStatus: envelopePath && existsSync(resolve(envelopePath)) ? "signed" : "unsigned",
+    dependsOn: transcript.depends_on ?? [],
+    informs: transcript.informs ?? [],
+    decaySummary: decay,
+    fullTranscript: transcript
+  };
 }
 
 function createTasksFromEvidence(evidence: EvidenceItem): TaskItem[] {
@@ -472,7 +518,7 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
 
   if (args.command === "run") {
     const asOf = isoDate(args.asOf) ?? DEFAULT_AS_OF_DATE;
-    const result = buildRunResult(ws, args.envelope, asOf, args.dependsOn, args.informs);
+    const result = await runDecisionInWorkspace(ws, args.envelope, asOf, args.dependsOn, args.informs);
     ws.runs = [...ws.runs, result];
     ws.chain.parentTranscriptHash = ws.runs.length > 1 ? ws.runs[ws.runs.length - 2]?.transcriptHash : undefined;
     saveWorkspace(ws);
@@ -508,7 +554,7 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
   }
 
   if (args.command === "share" || args.command === "copy") {
-    const latest = ws.runs[ws.runs.length - 1] ?? buildRunResult(ws, args.envelope, isoDate(args.asOf) ?? DEFAULT_AS_OF_DATE, [], []);
+    const latest = ws.runs[ws.runs.length - 1] ?? await runDecisionInWorkspace(ws, args.envelope, isoDate(args.asOf) ?? DEFAULT_AS_OF_DATE, [], []);
     const share = `Zeo Decision: ${ws.title}\nAction: ${latest.recommendedAction}\nFragility: ${latest.fragility}\nHash: ${latest.transcriptHash}`;
     ensureNoSecrets(share);
     writeJsonOrText(args, { share }, share);
@@ -516,7 +562,7 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
   }
 
   if (args.command === "export") {
-    const latest = ws.runs[ws.runs.length - 1] ?? buildRunResult(ws, args.envelope, isoDate(args.asOf) ?? DEFAULT_AS_OF_DATE, [], []);
+    const latest = ws.runs[ws.runs.length - 1] ?? await runDecisionInWorkspace(ws, args.envelope, isoDate(args.asOf) ?? DEFAULT_AS_OF_DATE, [], []);
     const outDir = args.output ? resolve(args.output) : resolve(process.cwd(), "exports");
     if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
 

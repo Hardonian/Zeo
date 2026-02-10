@@ -227,6 +227,8 @@ export type DecisionTranscript = {
   timestamp: number;
   logical_clock: number[];
   parent_transcript_hash?: string;
+  depends_on?: string[];
+  informs?: string[];
   inputs: {
     initial_context: string;
     decision_spec: DecisionSpec;
