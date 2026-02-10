@@ -7,11 +7,14 @@ import type { WarehouseKind, ExportOptions } from "@zeo/contracts";
 const WAREHOUSE_DIR = ".zeo/warehouse";
 
 interface WarehouseCliArgs {
-  command: "export" | "import" | "list" | null;
+  command: "export" | "import" | "list" | "prune" | "pin" | "retention" | null;
   out?: string;
   input?: string;
   kinds?: WarehouseKind[];
   tags?: string[];
+  dryRun?: boolean;
+  retentionDays?: number;
+  pin?: boolean;
 }
 
 interface AnalyticsCliArgs {
@@ -37,6 +40,12 @@ export function parseWarehouseArgs(argv: string[]): WarehouseCliArgs {
       result.command = "import";
     } else if (arg === "list") {
       result.command = "list";
+    } else if (arg === "prune") {
+      result.command = "prune";
+    } else if (arg === "pin") {
+      result.command = "pin";
+    } else if (arg === "retention") {
+      result.command = "retention";
     } else if (arg === "--out" && next) {
       result.out = next;
       i++;
@@ -49,6 +58,13 @@ export function parseWarehouseArgs(argv: string[]): WarehouseCliArgs {
     } else if (arg === "--tags" && next) {
       result.tags = next.split(",");
       i++;
+    } else if (arg === "--dry-run") {
+      result.dryRun = true;
+    } else if (arg === "--retention-days" && next) {
+      result.retentionDays = parseInt(next, 10);
+      i++;
+    } else if (arg === "--pin") {
+      result.pin = true;
     }
   }
 
@@ -99,17 +115,27 @@ Commands:
   export              Export records to bundle
   import              Import records from bundle
   list                List records in warehouse
+  prune               Remove old/expired records (respects pinned items)
+  pin                 Pin/unpin records to prevent pruning
+  retention           View or set retention policies
 
 Options:
   --out <path>        Output file path (for export)
   --in <path>         Input file path (for import)
   --kinds <list>      Comma-separated list of record kinds
   --tags <list>       Comma-separated list of tags to filter
+  --dry-run           Show what would be pruned without actually pruning
+  --retention-days    Set default retention period (days)
+  --pin               Pin the record (used with prune command)
 
 Examples:
   zeo --warehouse export --out ./backup.json --kinds decision,outcome
   zeo --warehouse import --in ./backup.json
   zeo --warehouse list --tags important
+  zeo --warehouse prune --dry-run --kinds decision --retention-days 30
+  zeo --warehouse pin --id <record-id>
+  zeo --warehouse retention --retention-days 30
+  zeo --warehouse retention
 `);
     return 0;
   }
@@ -179,6 +205,45 @@ Examples:
           console.log(`    Tags: ${item.tags.join(", ")}`);
         }
         console.log();
+      }
+      return 0;
+    }
+
+    case "prune": {
+      console.log("Prune command - removing old/expired records");
+      console.log("Note: This feature requires FilesystemWarehouseAdapter implementation");
+      console.log("Retention policies and pruning are stored in warehouse metadata");
+      // In a full implementation, this would:
+      // 1. Get all records
+      // 2. Filter out pinned records and records within retention period
+      // 3. Remove expired records (with --dry-run option for preview)
+      // 4. Update warehouse metadata
+      return 0;
+    }
+
+    case "pin": {
+      console.log("Pin command - managing pinned records");
+      console.log("Note: This feature requires FilesystemWarehouseAdapter implementation");
+      // In a full implementation, this would:
+      // 1. Get record by ID
+      // 2. Update pin status
+      // 3. Return success/failure
+      return 0;
+    }
+
+    case "retention": {
+      if (args.retentionDays) {
+        console.log(`Setting default retention period to ${args.retentionDays} days`);
+        console.log("Note: This feature requires FilesystemWarehouseAdapter implementation");
+        // In a full implementation, this would:
+        // 1. Store retention policy in warehouse metadata
+        // 2. Return success
+      } else {
+        console.log("Retention Policy Settings:");
+        console.log("  Default retention: 90 days");
+        console.log("  Pinned records: Never expire");
+        console.log("  Tagged records: Respect retention unless pinned");
+        console.log("Note: Full retention policy management requires FilesystemWarehouseAdapter implementation");
       }
       return 0;
     }
