@@ -21,5 +21,11 @@ describe("zeolite core", () => {
     const plan = executeZeoliteOperation("generate_regret_bounded_plan", { contextId, horizon: 2, minEvoi: 0.2 });
     expect(plan.stopConditions).toHaveLength(3);
     expect(typeof plan.terminatedEarly).toBe("boolean");
+
+    const boundary = executeZeoliteOperation("explain_decision_boundary", { contextId, agentClaim: "commit_now" });
+    expect((boundary.zeoBoundary as { topAction: string }).topAction).toBe("verify_terms");
+
+    const referee = executeZeoliteOperation("referee_proposal", { contextId, proposal: { claim: "commit_now" } });
+    expect((referee.adjudication as { accepted: boolean }).accepted).toBe(false);
   });
 });
