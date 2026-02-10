@@ -36,6 +36,9 @@ Commands:
   quests                     Show evidence tasks as checkboxes
   done <taskId>              Mark checklist task as complete
   streaks                    Show epistemic streak metrics
+  graph <show|impact|fragility> Decision graph utilities
+  view <lens> <transcript>   Derived lens view from a transcript
+  review weekly              Weekly epistemic review
   signals <file>              Process external signal payloads (JSON)
   --signals <file>            Process external signal payloads (JSON)
   --replay <file>             Run replay dataset for calibration testing
@@ -284,7 +287,7 @@ async function main(): Promise<void> {
     process.exit(await mod.runAgentsCommand(mod.parseAgentsArgs(argv.slice(1))));
   }
 
-  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks"].includes(argv[0] ?? "")) {
+  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "graph", "view", "review"].includes(argv[0] ?? "")) {
     const mod = await import("./workflow-cli.js");
     process.exit(await mod.runWorkflowCommand(mod.parseWorkflowArgs(argv)));
   }

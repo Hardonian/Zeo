@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync
 import { basename, resolve } from "node:path";
 
 export interface AgentsArgs {
-  command: "list" | "add" | "remove" | "inspect" | null;
+  command: "list" | "add" | "remove" | "inspect" | "recommend" | null;
   value?: string;
   accept: boolean;
   json: boolean;
@@ -38,7 +38,7 @@ function readManifest(path: string): AgentManifest {
 }
 
 export function parseAgentsArgs(argv: string[]): AgentsArgs {
-  const command = ["list", "add", "remove", "inspect"].includes(argv[0] ?? "") ? argv[0] as AgentsArgs["command"] : null;
+  const command = ["list", "add", "remove", "inspect", "recommend"].includes(argv[0] ?? "") ? argv[0] as AgentsArgs["command"] : null;
   return { command, value: argv[1], accept: argv.includes("--accept"), json: argv.includes("--json") };
 }
 
@@ -49,10 +49,36 @@ function ensureRoot(): void {
 export async function runAgentsCommand(args: AgentsArgs): Promise<number> {
   ensureRoot();
   if (!args.command) {
-    console.log("Usage: zeo agents <list|add|remove|inspect>");
+    console.log("Usage: zeo agents <list|add|remove|inspect|recommend>");
     return 1;
   }
 
+
+  if (args.command === "recommend") {
+    const task = args.value ?? "generic";
+    const dirs = readdirSync(agentsRoot(), { withFileTypes: true }).filter((d) => d.isDirectory());
+    const recommendations = dirs.map((dir) => {
+      const manifest = readManifest(resolve(agentsRoot(), dir.name, "zeo.agent.json"));
+      const capabilityMatches = manifest.capabilities.filter((cap) => cap.includes(task)).length;
+      const trustPath = resolve(process.cwd(), ".zeo", "trust", "profiles.json");
+      let acceptanceRatio = 0;
+      if (existsSync(trustPath)) {
+        const raw = JSON.parse(readFileSync(trustPath, "utf8")) as Record<string, { accepted?: number; rejected?: number; byCapability?: Record<string, { accepted: number; rejected: number }> }>;
+        const entry = raw[manifest.id];
+        if (entry?.byCapability && entry.byCapability[task]) {
+          const cap = entry.byCapability[task];
+          acceptanceRatio = (cap.accepted ?? 0) / Math.max(1, (cap.accepted ?? 0) + (cap.rejected ?? 0));
+        } else if (entry) {
+          acceptanceRatio = (entry.accepted ?? 0) / Math.max(1, (entry.accepted ?? 0) + (entry.rejected ?? 0));
+        }
+      }
+      const score = capabilityMatches * 100 + Math.round(acceptanceRatio * 100);
+      return { agent: manifest.id, capabilityMatches, acceptanceRatio: Number(acceptanceRatio.toFixed(4)), score };
+    }).sort((a, b) => b.score - a.score || a.agent.localeCompare(b.agent));
+    if (args.json) process.stdout.write(`${JSON.stringify({ task, recommendations }, null, 2)}\n`);
+    else for (const rec of recommendations) console.log(`${rec.agent} score=${rec.score} acceptance=${rec.acceptanceRatio}`);
+    return 0;
+  }
   if (args.command === "list") {
     const dirs = readdirSync(agentsRoot(), { withFileTypes: true }).filter((d) => d.isDirectory());
     for (const dir of dirs) console.log(dir.name);
