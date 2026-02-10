@@ -23,6 +23,7 @@ export {
 export * from "./graph.js";
 export type { RunMeta } from "./packets.js";
 export {
+  computeTranscriptHash,
   hashDecisionSpec,
   hashAssumptionSet,
   cacheKey,
