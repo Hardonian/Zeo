@@ -1,0 +1,16 @@
+{
+    "id": "explanation-panel",
+    "title": "Strategy Rationale",
+    "description": "High-level 'Why' and 'Why Not' (Flip Conditions) for the recommended actions.",
+    "route": "/demo",
+    "slot": "rightInspector",
+    "kind": "react",
+    "entry": "./panel.tsx",
+    "version": "0.3.0",
+    "capabilities": {},
+    "dataDeps": [
+        "decision",
+        "result"
+    ],
+    "permissions": {}
+}

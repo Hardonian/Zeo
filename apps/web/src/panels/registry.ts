@@ -15,6 +15,7 @@ import radarManifest from './builtin/radar/manifest';
 import signalsDashboardManifest from './builtin/signals/manifest';
 import assumptionsPanelManifest from './builtin/assumptions-panel/manifest.json';
 import inferencesPanelManifest from './builtin/inferences-panel/manifest.json';
+import explanationPanelManifest from './builtin/explanation-panel/manifest.json';
 
 // Trust & v0.4.0 feature panels
 import trustConsentManagerManifest from './builtin/trust-consent-manager/manifest';
@@ -57,6 +58,7 @@ const BUILTIN_MANIFESTS: UiPanelManifest[] = [
   valueProfileViewerManifest as UiPanelManifest,
   assumptionsPanelManifest as UiPanelManifest,
   inferencesPanelManifest as UiPanelManifest,
+  explanationPanelManifest as UiPanelManifest,
 ];
 
 const STITCH_MANIFESTS: UiPanelManifest[] = [

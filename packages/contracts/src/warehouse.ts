@@ -14,7 +14,8 @@ export type WarehouseKind =
   | 'kpi-measurement'
   | 'kpi-dashboard'
   | 'kpi-alert'
-  | 'kpi-trend';
+  | 'kpi-trend'
+  | 'scenario';
 
 export interface WarehouseEvidenceEvent {
   eventId: string;
