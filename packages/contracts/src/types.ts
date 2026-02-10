@@ -679,6 +679,16 @@ export function isRawSourceItem(item: unknown): item is RawSourceItem {
 // WORLD MODEL TYPES (v0.3.0)
 // =============================================================================
 
+export type Scenario = {
+  id: UUID;
+  name: string;
+  description: string;
+  spec: DecisionSpec;
+  version: number;
+  tags?: string[];
+  createdAt: string;
+};
+
 /**
  * A latent variable representing an uncertain quantity in the world.
  */
