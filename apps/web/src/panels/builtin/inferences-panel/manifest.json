@@ -1,0 +1,16 @@
+{
+    "id": "inferences-panel",
+    "title": "Inferred Values",
+    "description": "Computed values, methods, and quantified uncertainty.",
+    "route": "/demo",
+    "slot": "rightInspector",
+    "kind": "react",
+    "entry": "./panel.tsx",
+    "version": "0.3.0",
+    "capabilities": {},
+    "dataDeps": [
+        "decision",
+        "result"
+    ],
+    "permissions": {}
+}
