@@ -10,7 +10,6 @@ export class ScenarioLibrary {
 
     constructor() {
         // In a real app, this would be backed by Warehouse (IndexedDB/FS)
-        // For v0.1 Reality Mode, we provide the interface and in-memory fallback
     }
 
     saveScenario(spec: DecisionSpec, name: string, description: string): Scenario {
@@ -39,14 +38,17 @@ export class ScenarioLibrary {
         return this.scenarios.delete(id);
     }
 
-    createTemplate(name: string, type: "investment" | "hiring" | "product"): DecisionSpec {
-        // Provides pre-baked templates for common decision types
+    createTemplate(name: string, type: "investment" | "hiring" | "crisis"): DecisionSpec {
         const baseSpec: DecisionSpec = {
             id: nanoid() as UUID,
-            question: `Evaluate ${name}`,
-            objectives: [],
-            assumptions: [],
+            title: `${name} Analysis`,
+            context: `Analyzing ${name} for strategic impact.`,
+            horizon: "weeks",
+            agents: [],
             actions: [],
+            constraints: [],
+            assumptions: [],
+            objectives: [],
             createdAt: new Date().toISOString(),
         };
 
@@ -55,25 +57,25 @@ export class ScenarioLibrary {
                 return {
                     ...baseSpec,
                     objectives: [
-                        { id: nanoid() as UUID, text: "Maximize ROI", weight: 0.8, type: "benefit" },
-                        { id: nanoid() as UUID, text: "Minimize Capital Risk", weight: 0.5, type: "cost" },
+                        { id: nanoid() as UUID, metric: "ROI", target: 0.15, weight: 0.8 },
+                        { id: nanoid() as UUID, metric: "Capital Risk", target: 0.2, weight: 0.5 },
                     ],
                 };
             case "hiring":
                 return {
                     ...baseSpec,
                     objectives: [
-                        { id: nanoid() as UUID, text: "Team Performance Gap", weight: 0.9, type: "benefit" },
-                        { id: nanoid() as UUID, text: "Personnel Budget", weight: 0.6, type: "cost" },
+                        { id: nanoid() as UUID, metric: "Team Performance Gap", weight: 0.9 },
+                        { id: nanoid() as UUID, metric: "Personnel Budget", weight: 0.6 },
                     ],
                 };
             case "crisis":
                 return {
                     ...baseSpec,
                     objectives: [
-                        { id: nanoid() as UUID, text: "Public Safety", weight: 1.0, type: "benefit" },
-                        { id: nanoid() as UUID, text: "Brand Continuity", weight: 0.7, type: "benefit" },
-                        { id: nanoid() as UUID, text: "Operational Loss", weight: 0.8, type: "cost" },
+                        { id: nanoid() as UUID, metric: "Public Safety", weight: 1.0 },
+                        { id: nanoid() as UUID, metric: "Brand Continuity", weight: 0.7 },
+                        { id: nanoid() as UUID, metric: "Operational Loss", weight: 0.8 },
                     ],
                 };
             default:

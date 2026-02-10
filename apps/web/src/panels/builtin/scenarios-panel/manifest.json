@@ -1,0 +1,15 @@
+{
+    "id": "scenarios-panel",
+    "title": "Scenario Library",
+    "description": "Save, load, and manage decision templates and snapshots.",
+    "route": "/demo",
+    "slot": "leftSidebar",
+    "kind": "react",
+    "entry": "./panel.tsx",
+    "version": "0.3.0",
+    "capabilities": {},
+    "dataDeps": [
+        "decision"
+    ],
+    "permissions": {}
+}
