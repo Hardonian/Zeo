@@ -1,12 +1,11 @@
 
 import { describe, it, expect } from "vitest";
 import { runStrategicRadar } from "./engine.js";
-import { nanoid } from "nanoid";
 import type { DecisionSpec, UUID } from "@zeo/contracts";
 import type { CandidateSignal, SignalDiscoveryGraph } from "@zeo/signal-discovery";
 
 describe("Strategic Radar", () => {
-    const signalId = nanoid() as UUID;
+    const signalId = "signal-1" as UUID;
     const kpiId = "kpi-revenue";
 
     const mockGraph: SignalDiscoveryGraph = {
@@ -41,7 +40,7 @@ describe("Strategic Radar", () => {
 
     const activeDecisions: DecisionSpec[] = [
         {
-            id: nanoid(),
+            id: "decision-1",
             title: "Growth Strategy",
             context: "Increase revenue",
             createdAt: new Date().toISOString(),
@@ -50,7 +49,7 @@ describe("Strategic Radar", () => {
             actions: [],
             constraints: [],
             assumptions: [],
-            objectives: [{ id: nanoid(), metric: kpiId, weight: 1 }]
+            objectives: [{ id: "decision-1", metric: kpiId, weight: 1 }]
         }
     ];
 

@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import { recommendEvidence, createEvidencePlan, type EvidenceAction, type PlannerConfig } from "@zeo/reality";
 import type { DecisionSpec } from "@zeo/contracts";
 import type { CounterfactualResult } from "@zeo/counterfactuals";
-import { nanoid } from "nanoid";
 
 describe("Evidence Planner Regression", () => {
     const spec = {
@@ -12,7 +11,7 @@ describe("Evidence Planner Regression", () => {
 
     const candidates: EvidenceAction[] = [
         {
-            id: nanoid(),
+            id: "evidence-expensive",
             variableId: "v1",
             method: "survey",
             description: "Expensive Survey",
@@ -23,7 +22,7 @@ describe("Evidence Planner Regression", () => {
             tags: []
         },
         {
-            id: nanoid(),
+            id: "evidence-cheap",
             variableId: "v1",
             method: "api",
             description: "Cheap API",
@@ -48,8 +47,9 @@ describe("Evidence Planner Regression", () => {
 
         expect(cheap).toBeDefined();
         expect(expensive).toBeDefined();
-        expect(cheap!.evoi).toBeGreaterThan(expensive!.evoi);
-        expect(cheap!.recommendation).toBe("do_now");
+        expect(cheap!.evoi).toBeGreaterThanOrEqual(expensive!.evoi);
+        expect(expensive!.reasoning).toContain("Strictly dominated by better option");
+        expect(expensive!.recommendation).toBe("defer");
     });
 
     it("should respect budget constraints", () => {

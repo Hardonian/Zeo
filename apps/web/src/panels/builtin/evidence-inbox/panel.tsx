@@ -3,7 +3,7 @@
 import React from 'react';
 import type { UiPanelManifest } from '@zeo/contracts';
 import { useEvidenceStore } from '@/stores/evidenceStore';
-import { nanoid } from 'nanoid';
+import { generateId } from '@/lib/generate-id';
 
 interface EvidenceInboxProps {
   manifest: UiPanelManifest;
@@ -18,7 +18,7 @@ export default function EvidenceInbox({ manifest }: EvidenceInboxProps) {
     if (note) {
       addEvidence({
         event: {
-          id: nanoid(),
+          id: generateId(),
           type: 'text',
           sourceId: 'user-input',
           capturedAt: new Date().toISOString(),

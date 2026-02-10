@@ -9,7 +9,17 @@ export * from "./evidence.js";
 export * from "./packets.js";
 export * from "./regime-integration.js";
 export * from "./scenarios.js";
-export * from "./transcript.js";
+export {
+  executeDecision,
+  finalizeDecisionTranscript,
+  verifyDecisionTranscript,
+  normalizeTranscriptForReplay,
+  computeStableHash,
+  computeTranscriptHash as computeDecisionTranscriptHash,
+  type ExecuteDecisionInput,
+  type ExecuteDecisionOutput,
+  type ReplayNormalizedTranscript,
+} from "./transcript.js";
 export type { RunMeta } from "./packets.js";
 export {
   hashDecisionSpec,
@@ -49,3 +59,4 @@ export {
 // and type incompatibility issues. Import directly from packages instead.
 
 export * from "./transcript-security.js";
+export { computeTranscriptHash as computeSecurityTranscriptHash } from "./transcript-security.js";

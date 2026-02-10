@@ -9,8 +9,8 @@ import {
   computeDeterministicSeed,
   type RunMeta,
 } from '@zeo/core';
-import { nanoid } from 'nanoid';
 import { createHash } from 'node:crypto';
+import { generateId } from '@/lib/generate-id';
 
 interface RateLimitEntry {
   count: number;
@@ -204,7 +204,7 @@ export function createBridgeHandler(context: BridgeContext) {
       case 'ingest_evidence_note': {
         const note = message.payload;
         context.evidence.push({
-          id: nanoid(),
+          id: generateId(),
           content: note,
           capturedAt: new Date().toISOString(),
         });

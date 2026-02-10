@@ -14,7 +14,6 @@ import {
   type CounterfactualResult,
   type ActionCandidate
 } from '@zeo/counterfactuals';
-import { nanoid } from 'nanoid';
 
 interface VoiPanelProps {
   manifest: UiPanelManifest;
