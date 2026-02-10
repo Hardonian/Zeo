@@ -15,6 +15,7 @@ export interface CliArgs {
   reportOut: string | undefined;
   pack: string | undefined;
   verify: boolean;
+  emitTranscript: boolean;
 }
 
 export function parseArgs(argv: string[]): CliArgs {
@@ -35,6 +36,7 @@ export function parseArgs(argv: string[]): CliArgs {
     reportOut: undefined,
     pack: undefined,
     verify: false,
+    emitTranscript: false,
   };
 
   for (let i = 0; i < argv.length; i++) {
@@ -88,6 +90,8 @@ export function parseArgs(argv: string[]): CliArgs {
       i++;
     } else if (arg === "--verify") {
       result.verify = true;
+    } else if (arg === "--emit-transcript") {
+      result.emitTranscript = true;
     }
   }
 

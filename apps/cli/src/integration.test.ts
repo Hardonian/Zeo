@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { parseAgentsArgs, runAgentsCommand } from "./agents-cli.js";
 import { dispatchMcpRequest, getMcpToolDefinitions, validateMcpToolDefinitions } from "./mcp-cli.js";
 import { executeZeoliteOperation } from "./zeolite-core.js";
+import { parseTranscriptArgs, runTranscriptCommand } from "./transcript-cli.js";
 
 async function withTempCwd<T>(fn: (cwd: string) => Promise<T> | T): Promise<T> {
   const prev = process.cwd();
@@ -102,5 +103,36 @@ describe("mcp schema + parity integration", () => {
     const result = JSON.parse(resultRaw ?? "{}") as { result?: { structuredContent?: unknown; isError?: boolean } };
     expect(result.result?.isError).toBe(false);
     expect(result.result?.structuredContent).toEqual(expected);
+  });
+});
+
+
+describe("transcript CLI and MCP parity", () => {
+  it("verifies and replays exported transcript", async () => {
+    await withTempCwd(async (cwd) => {
+      const loaded = executeZeoliteOperation("load_context", { example: "negotiation", depth: 2, seed: "tx" });
+      const contextId = String(loaded.contextId);
+      const exported = executeZeoliteOperation("export_transcript", { contextId }) as { transcript: unknown };
+      const transcriptPath = join(cwd, "transcript.json");
+      writeFileSync(transcriptPath, JSON.stringify(exported.transcript, null, 2));
+
+      expect(await runTranscriptCommand(parseTranscriptArgs(["verify", transcriptPath]))).toBe(0);
+      expect(await runTranscriptCommand(parseTranscriptArgs(["replay", transcriptPath]))).toBe(0);
+    });
+  });
+
+  it("exposes transcript tools via MCP list", async () => {
+    const toolsListRaw = await dispatchMcpRequest(JSON.stringify({
+      jsonrpc: "2.0",
+      id: 55,
+      method: "tools/list",
+      params: {},
+    }));
+
+    const parsed = JSON.parse(toolsListRaw ?? "{}") as { result?: { tools?: Array<{ name: string }> } };
+    const names = new Set((parsed.result?.tools ?? []).map((tool) => tool.name));
+    expect(names.has("export_transcript")).toBe(true);
+    expect(names.has("verify_transcript")).toBe(true);
+    expect(names.has("replay_transcript")).toBe(true);
   });
 });

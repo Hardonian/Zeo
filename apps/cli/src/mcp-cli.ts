@@ -31,6 +31,21 @@ const SCHEMA_VERSION = "zeo.mcp.v1";
 
 const TOOL_DEFS: McpToolDef[] = [
   {
+    name: "export_transcript",
+    description: "Export deterministic decision transcript for a context.",
+    inputSchema: { type: "object", properties: { contextId: { type: "string" } }, required: ["contextId"] },
+  },
+  {
+    name: "verify_transcript",
+    description: "Verify transcript hash and invariants.",
+    inputSchema: { type: "object", properties: { contextId: { type: "string" }, transcriptId: { type: "string" } }, required: ["contextId", "transcriptId"] },
+  },
+  {
+    name: "replay_transcript",
+    description: "Replay transcript and assert deterministic agreement.",
+    inputSchema: { type: "object", properties: { contextId: { type: "string" }, transcriptId: { type: "string" } }, required: ["contextId", "transcriptId"] },
+  },
+  {
     name: "submit_evidence",
     description: "Submit evidence to an active Zeolite context.",
     inputSchema: { type: "object", properties: { contextId: { type: "string" }, sourceId: { type: "string" }, claim: { type: "string" }, capturedAt: { type: "string" } }, required: ["contextId", "sourceId", "claim"] },
@@ -68,6 +83,9 @@ export function validateMcpToolDefinitions(definitions: McpToolDef[] = TOOL_DEFS
     "rank_evidence_by_voi",
     "generate_regret_bounded_plan",
     "explain_decision_boundary",
+    "export_transcript",
+    "verify_transcript",
+    "replay_transcript",
   ];
 
   const issues: string[] = [];
@@ -105,6 +123,9 @@ async function handleToolCall(name: string, args: Record<string, unknown>): Prom
     "rank_evidence_by_voi",
     "generate_regret_bounded_plan",
     "explain_decision_boundary",
+    "export_transcript",
+    "verify_transcript",
+    "replay_transcript",
   ]);
 
   if (!knownOperations.has(name as ZeoliteOperation)) {

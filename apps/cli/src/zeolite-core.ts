@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
-import type { DecisionSpec, EvidenceEvent } from "@zeo/contracts";
+import type { DecisionSpec, EvidenceEvent, FinalizedDecisionTranscript } from "@zeo/contracts";
+import { executeDecision, verifyDecisionTranscript } from "@zeo/core";
 
 export type ZeoliteOperation =
   | "load_context"
@@ -8,7 +9,10 @@ export type ZeoliteOperation =
   | "rank_evidence_by_voi"
   | "generate_regret_bounded_plan"
   | "explain_decision_boundary"
-  | "referee_proposal";
+  | "referee_proposal"
+  | "export_transcript"
+  | "verify_transcript"
+  | "replay_transcript";
 
 interface ZeoliteContext {
   id: string;
@@ -17,6 +21,7 @@ interface ZeoliteContext {
 }
 
 const contexts = new Map<string, ZeoliteContext>();
+const transcripts = new Map<string, FinalizedDecisionTranscript>();
 
 function stableId(input: string): string {
   return createHash("sha256").update(input).digest("hex").slice(0, 16);
@@ -100,6 +105,17 @@ function deriveVoiRankings(spec: DecisionSpec, minEvoi: number): Array<{ actionI
       ],
     };
   }).sort((a, b) => b.evoi - a.evoi);
+}
+
+
+function createTranscriptForContext(context: ZeoliteContext): FinalizedDecisionTranscript {
+  const { transcript } = executeDecision({
+    spec: context.spec,
+    evidence: context.evidence,
+    logicalTimestamp: 0,
+  });
+  transcripts.set(transcript.transcript_id, transcript);
+  return transcript;
 }
 
 function requireContext(contextId: string): ZeoliteContext {
@@ -215,6 +231,35 @@ export function executeZeoliteOperation(operation: ZeoliteOperation, params: Rec
         nearestFlips: flip.slice(0, 2),
       },
       ...envelope(context.spec, flip.slice(0, 2).map((cf) => `${cf.variableId} at ${cf.flipDistance.toFixed(3)} changes top action`)),
+    };
+  }
+
+  if (operation === "export_transcript") {
+    const transcript = createTranscriptForContext(context);
+    return { contextId, transcriptId: transcript.transcript_id, transcriptHash: transcript.transcript_hash, transcript };
+  }
+
+  if (operation === "verify_transcript") {
+    const transcriptId = String(params.transcriptId ?? "").trim();
+    const transcript = transcripts.get(transcriptId);
+    if (!transcript) throw new Error(`Unknown transcriptId: ${transcriptId}`);
+    const verification = verifyDecisionTranscript(transcript);
+    return { contextId, transcriptId, verification };
+  }
+
+  if (operation === "replay_transcript") {
+    const transcriptId = String(params.transcriptId ?? "").trim();
+    const transcript = transcripts.get(transcriptId);
+    if (!transcript) throw new Error(`Unknown transcriptId: ${transcriptId}`);
+    const replayed = executeDecision({ spec: transcript.inputs.decision_spec, logicalTimestamp: transcript.timestamp });
+    return {
+      contextId,
+      transcriptId,
+      replay: {
+        sameHash: replayed.transcript.transcript_hash === transcript.transcript_hash,
+        originalHash: transcript.transcript_hash,
+        replayHash: replayed.transcript.transcript_hash,
+      },
     };
   }
 
