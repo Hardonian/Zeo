@@ -5,7 +5,6 @@ import type { UiPanelManifest, DecisionSpec } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
 import { runStrategicRadar } from '@zeo/radar';
 import type { SignalDiscoveryGraph, CandidateSignal } from '@zeo/signal-discovery';
-import { nanoid } from 'nanoid';
 
 interface RadarPanelProps {
     manifest: UiPanelManifest;

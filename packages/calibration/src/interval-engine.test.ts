@@ -21,6 +21,7 @@ describe("IntervalCalibrationEngine", () => {
       actions: [],
       constraints: [],
       assumptions: [],
+      objectives: [],
     },
     branchGraph: {
       id: "graph1",

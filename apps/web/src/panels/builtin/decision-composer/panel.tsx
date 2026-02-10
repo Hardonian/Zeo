@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import type { UiPanelManifest } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
-import { nanoid } from 'nanoid';
+import { generateId } from '@zeo/id';
 
 interface DecisionComposerProps {
   manifest: UiPanelManifest;
@@ -17,30 +17,30 @@ export default function DecisionComposer({ manifest }: DecisionComposerProps) {
 
   const handleSave = () => {
     const spec = {
-      id: decision?.id || nanoid(),
+      id: decision?.id || generateId(),
       title,
       context,
       createdAt: new Date().toISOString(),
       horizon: 'weeks' as const,
       agents: [
-        { id: nanoid(), name: 'Self', role: 'self' as const },
-        { id: nanoid(), name: 'Counterparty', role: 'counterparty' as const },
+        { id: generateId(), name: 'Self', role: 'self' as const },
+        { id: generateId(), name: 'Counterparty', role: 'counterparty' as const },
       ],
       actions: [
         {
-          id: nanoid(),
+          id: generateId(),
           label: 'Propose',
           actorId: '',
           kind: 'communicate' as const,
         },
         {
-          id: nanoid(),
+          id: generateId(),
           label: 'Delay',
           actorId: '',
           kind: 'delay' as const,
         },
         {
-          id: nanoid(),
+          id: generateId(),
           label: 'Verify',
           actorId: '',
           kind: 'verify' as const,

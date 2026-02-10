@@ -167,6 +167,9 @@
       ],
       "@zeo/repro-pack": [
         "packages/repro-pack/src"
+      ],
+      "@zeo/id": [
+        "packages/id/src"
       ]
     }
   }

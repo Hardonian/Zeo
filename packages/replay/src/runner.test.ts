@@ -271,6 +271,7 @@ describe("Replay Runner", () => {
       assumptions: [
         { id: "ass1", text: "Test assumption", status: "assumption", confidence: "medium", tags: [] },
       ],
+      objectives: [{ id: "obj-1", metric: "success", weight: 1.0 }],
     },
     observationBatches: [
       {

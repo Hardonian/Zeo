@@ -212,6 +212,8 @@ This repository is intentionally lightweight: it ships a open-source core engine
 └─ .github/
 ```
 
+See `packages/core/README.md#api-naming-migration` for transcript hash API naming migration guidance (`computeDecisionTranscriptHash` vs `computeSecurityTranscriptHash`).
+
 ## Quant Engine
 
 Zeo now includes a **Quant Engine** that replaces heuristic branching with analytical rigor:

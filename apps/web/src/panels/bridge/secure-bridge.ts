@@ -24,8 +24,8 @@ import {
   sanitizeErrorMessage,
   type SignedUiPanelManifest,
 } from '@zeo/contracts';
-import { nanoid } from 'nanoid';
 import { createHash } from 'node:crypto';
+import { generateId } from '@zeo/id';
 
 // =============================================================================
 // RATE LIMITING CONFIGURATION
@@ -182,7 +182,7 @@ function logAuditEvent(
   capability?: UiPanelCapability
 ): void {
   const event: AuditEvent = {
-    eventId: nanoid(),
+    eventId: generateId(),
     timestamp: new Date().toISOString(),
     panelId: context.security.panelId,
     eventType,
@@ -249,7 +249,7 @@ export function grantPermission(
   const grant: PermissionGrant = {
     capability,
     granted: true,
-    grantId: nanoid(),
+    grantId: generateId(),
     grantedAt: new Date().toISOString(),
     expiresAt: durationMinutes 
       ? new Date(Date.now() + durationMinutes * 60000).toISOString()
@@ -567,7 +567,7 @@ export function createSecureBridgeHandler(context: SecureBridgeContext) {
       case 'ingest_evidence_note': {
         const note = message.payload as string;
         context.evidence.push({
-          id: nanoid(),
+          id: generateId(),
           content: note,
           capturedAt: new Date().toISOString(),
         });

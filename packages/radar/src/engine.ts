@@ -16,7 +16,6 @@ import type {
     RadarFeedEvent
 } from "./types.js";
 import { createHash } from "crypto";
-import { nanoid } from "nanoid";
 
 /**
  * Radar Engine
