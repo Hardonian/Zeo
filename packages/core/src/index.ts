@@ -31,5 +31,18 @@ export {
 // Runner - orchestrated execution
 export { ZeoRunner, type ZeoRunnerConfig } from "./runner.js";
 
+// Policy engine
+export { policyEngine, type PolicyViolation } from "./policy.js";
+
+// Reporting
+export { generateDecisionReport, type DecisionReport } from "./reporting.js";
+
+// Scenario packs
+export {
+  exportScenarioPack,
+  importScenarioPack,
+  type ImportedPackContent,
+} from "./scenario-packs.js";
+
 // Note: Re-exports from other packages removed due to cyclic dependencies
 // and type incompatibility issues. Import directly from packages instead.
