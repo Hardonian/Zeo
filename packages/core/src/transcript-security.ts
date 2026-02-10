@@ -187,7 +187,10 @@ export function verifyEnvelope(
   const errors: string[] = [];
   const signerFingerprints: string[] = [];
   const expectedHash = computeTranscriptHash(envelope.transcript);
-  if (expectedHash !== envelope.transcript_hash) errors.push("transcript_hash_mismatch");
+  if (expectedHash !== envelope.transcript_hash) {
+    console.log("Hash mismatch:", { expected: expectedHash, actual: envelope.transcript_hash });
+    errors.push("transcript_hash_mismatch");
+  }
 
   for (const sig of envelope.signatures) {
     signerFingerprints.push(sig.key_fingerprint);
@@ -197,12 +200,16 @@ export function verifyEnvelope(
     }
     const keyPem = resolvePublicKey(sig.key_fingerprint);
     if (!keyPem) {
+      console.log("Missing key:", sig.key_fingerprint);
       errors.push(`missing_public_key:${sig.key_fingerprint}`);
       continue;
     }
     const payload = signingPayload(envelope.transcript_hash, envelope.envelope_version, sig.signing_context);
     const ok = cryptoVerify(null, payload, createPublicKey(keyPem), Buffer.from(sig.signature_b64, "base64"));
-    if (!ok) errors.push(`invalid_signature:${sig.key_fingerprint}`);
+    if (!ok) {
+      console.log("Sig verification failed:", { fingerprint: sig.key_fingerprint, payload: payload.toString("hex") });
+      errors.push(`invalid_signature:${sig.key_fingerprint}`);
+    }
   }
   return { ok: errors.length === 0, errors, signerFingerprints };
 }
