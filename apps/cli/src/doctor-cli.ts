@@ -11,10 +11,23 @@
  */
 
 import { readFileSync, existsSync, mkdirSync, statSync, readdirSync } from "node:fs";
-import { resolve, join } from "node:path";
+import { resolve, join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
-import { VERSION_INFO } from "@zeo/core";
+
+// Try to import VERSION_INFO from @zeo/core, with fallback for dev
+let VERSION_INFO: { version: string; gitSha: string; timestamp: string };
+try {
+  const core = await import("@zeo/core") as any;
+  VERSION_INFO = core.VERSION_INFO || { version: "dev", gitSha: "unknown", timestamp: new Date().toISOString() };
+} catch {
+  // Fallback for development without full build
+  VERSION_INFO = {
+    version: "dev",
+    gitSha: "unknown",
+    timestamp: new Date().toISOString(),
+  };
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

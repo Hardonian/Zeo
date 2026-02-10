@@ -32,6 +32,7 @@ import {
 } from "./adapters-runtime-cli.js";
 import { parseEvalArgs, runEvalCommand, type EvalCliArgs } from "./eval-cli.js";
 import { parsePackArgs, runPackCommand } from "./pack-cli.js";
+import { parseDoctorArgs, runDoctorCommand } from "./doctor-cli.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -279,6 +280,14 @@ async function main(): Promise<void> {
   if (packIdx !== -1) {
     const packArgs = parsePackArgs(argv.slice(packIdx + 1));
     const exitCode = await runPackCommand(packArgs);
+    process.exit(exitCode);
+  }
+
+  // Check for doctor command
+  const doctorIdx = argv.indexOf("doctor");
+  if (doctorIdx !== -1) {
+    const doctorArgs = parseDoctorArgs(argv.slice(doctorIdx + 1));
+    const exitCode = await runDoctorCommand(doctorArgs);
     process.exit(exitCode);
   }
 
