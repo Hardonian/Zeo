@@ -35,15 +35,13 @@ describe('Determinism Invariants', () => {
         expect(result1.graph.nodes[i].label).toBe(result2.graph.nodes[i].label);
         expect(result2.graph.nodes[i].label).toBe(result3.graph.nodes[i].label);
         
-        // Compare types
-        expect(result1.graph.nodes[i].type).toBe(result2.graph.nodes[i].type);
-        expect(result2.graph.nodes[i].type).toBe(result3.graph.nodes[i].type);
+        // Compare kinds
+        expect(result1.graph.nodes[i].kind).toBe(result2.graph.nodes[i].kind);
+        expect(result2.graph.nodes[i].kind).toBe(result3.graph.nodes[i].kind);
         
-        // Compare probability bands (if present)
-        if (result1.graph.nodes[i].probability) {
-          expect(result1.graph.nodes[i].probability?.low).toBe(result2.graph.nodes[i].probability?.low);
-          expect(result2.graph.nodes[i].probability?.low).toBe(result3.graph.nodes[i].probability?.low);
-        }
+        // Compare dependencies count (ensures same structure)
+        expect(result1.graph.nodes[i].dependencies.length).toBe(result2.graph.nodes[i].dependencies.length);
+        expect(result2.graph.nodes[i].dependencies.length).toBe(result3.graph.nodes[i].dependencies.length);
       }
     });
 

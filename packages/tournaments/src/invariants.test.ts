@@ -23,6 +23,7 @@ const createTestDecisionSpec = (): DecisionSpec => ({
   actions: [],
   constraints: [],
   assumptions: [],
+  objectives: [{ id: 'obj-1', metric: 'success', weight: 1.0 }],
 });
 
 describe('tournaments invariant tests', () => {

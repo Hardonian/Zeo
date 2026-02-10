@@ -221,14 +221,15 @@ describe("Reality Mode", () => {
         { id: "constraint-1", name: "Budget", value: "$10000", status: "assumption" },
       ],
       assumptions: [
-        { 
-          id: "assumption-1", 
-          text: "Counterparty is time-constrained", 
-          status: "assumption", 
+        {
+          id: "assumption-1",
+          text: "Counterparty is time-constrained",
+          status: "assumption",
           confidence: "medium",
           tags: [],
         },
       ],
+      objectives: [{ id: "obj-1", metric: "success", weight: 1.0 }],
     };
 
     const mockEvidenceEvent: EvidenceEvent = {
@@ -343,6 +344,7 @@ describe("Reality Mode", () => {
       ],
       constraints: [],
       assumptions: [],
+      objectives: [{ id: "obj-1", metric: "success", weight: 1.0 }],
     };
 
     const mockEvidenceEvent: EvidenceEvent = {
@@ -621,6 +623,7 @@ describe("Reality Mode", () => {
         assumptions: [
           { id: "assumption-1", text: "Timeline is short", status: "assumption", confidence: "high", tags: [] },
         ],
+        objectives: [{ id: "obj-1", metric: "success", weight: 1.0 }],
       };
       
       // Step 1: Generate redaction preview

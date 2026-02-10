@@ -1,7 +1,7 @@
 
 import type { McpToolDefinition, McpToolResult } from "../types";
 import type { WarehouseAdapter } from "@zeo/warehouse";
-import { renderMarkdownReport } from "@zeo/core";
+import { renderMarkdownReport } from "@zeo/replay";
 
 export const zeoSummaryDefinition: McpToolDefinition = {
     name: "zeo.exportSummary",
