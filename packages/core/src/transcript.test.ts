@@ -53,14 +53,21 @@ describe("decision transcript", () => {
     expect(replayed.transcript.decision_result_hash).toBe(baseline.transcript.decision_result_hash);
   });
 
-  it.skip("validates required transcript invariants", () => {
+  it("validates required transcript invariants", () => {
+    idCounter = 0;
     const transcript = executeDecision({ spec: makeNegotiationExample(), logicalTimestamp: 0 }).transcript;
     expect(verifyDecisionTranscript(transcript)).toEqual({ valid: true, reasons: [] });
   });
 
-  it.skip("records agent adjudication without mutating decision", () => {
+  it("records agent adjudication without mutating decision", () => {
+    idCounter = 0;
     const spec = makeNegotiationExample();
+    const counterAfterSpec = idCounter;
+
+    idCounter = counterAfterSpec;
     const withoutAgent = executeDecision({ spec, logicalTimestamp: 0 });
+
+    idCounter = counterAfterSpec;
     const withAgent = executeDecision({
       spec,
       logicalTimestamp: 0,
