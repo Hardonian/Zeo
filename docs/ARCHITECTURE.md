@@ -72,6 +72,8 @@ The Quant Engine provides analytical rigor through dedicated packages:
 - **Purpose**: Separate prediction from causation through DAG-based analysis
 - **Key Types**: `CausalDAG`, `CausalClaim` (identified effects), `PredictiveClaim` (correlations)
 - **Identification**: Backdoor criterion, explicit marking of "unidentified" claims
+- **Determinism**: Stable IDs and rounded interval outputs for auditable repeated runs
+- **Boundary validation**: Non-empty DAG names, non-empty node sets, and ordered uncertainty intervals
 - **Python Backend**: DoWhy (optional), guarded behind identifiability checks
 
 ### @zeo/game - Strategic Analysis
