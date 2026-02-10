@@ -29,12 +29,21 @@ describe('Determinism Invariants', () => {
       expect(result1.graph.edges.length).toBe(result2.graph.edges.length);
       expect(result2.graph.edges.length).toBe(result3.graph.edges.length);
       
-      // Compare node structure
+      // Compare node structure (not IDs - those are unique nanoids)
       for (let i = 0; i < result1.graph.nodes.length; i++) {
-        expect(result1.graph.nodes[i].id).toBe(result2.graph.nodes[i].id);
-        expect(result2.graph.nodes[i].id).toBe(result3.graph.nodes[i].id);
+        // Compare labels (the actual content)
         expect(result1.graph.nodes[i].label).toBe(result2.graph.nodes[i].label);
         expect(result2.graph.nodes[i].label).toBe(result3.graph.nodes[i].label);
+        
+        // Compare types
+        expect(result1.graph.nodes[i].type).toBe(result2.graph.nodes[i].type);
+        expect(result2.graph.nodes[i].type).toBe(result3.graph.nodes[i].type);
+        
+        // Compare probability bands (if present)
+        if (result1.graph.nodes[i].probability) {
+          expect(result1.graph.nodes[i].probability?.low).toBe(result2.graph.nodes[i].probability?.low);
+          expect(result2.graph.nodes[i].probability?.low).toBe(result3.graph.nodes[i].probability?.low);
+        }
       }
     });
 
