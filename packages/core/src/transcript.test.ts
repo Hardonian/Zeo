@@ -1,20 +1,52 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { makeNegotiationExample } from "./examples.js";
 import { executeDecision, verifyDecisionTranscript } from "./transcript.js";
 
+// Mock @zeo/id for deterministic ID generation
+let idCounter = 0;
+vi.mock("@zeo/id", () => ({
+  generateId: (prefix = "id") => {
+    idCounter += 1;
+    return `${prefix}-${idCounter}`;
+  },
+}));
+
 describe("decision transcript", () => {
-  it.skip("produces stable hash for identical inputs", () => {
+  beforeEach(() => {
+    idCounter = 0;
+  });
+
+  it("produces stable hash for identical inputs", () => {
+    // We need consistent IDs for the spec creation too, 
+    // but the test cares about stability of execution given a spec.
+    // So we reset strictly before execution.
+    idCounter = 0; // Reset for spec
     const spec = makeNegotiationExample();
+
+    // Capture counter after spec creation
+    const counterAfterSpec = idCounter;
+
+    // Run 1
+    idCounter = counterAfterSpec;
     const first = executeDecision({ spec, logicalTimestamp: 0 });
+
+    // Run 2
+    idCounter = counterAfterSpec;
     const second = executeDecision({ spec, logicalTimestamp: 0 });
 
     expect(first.transcript.transcript_hash).toBe(second.transcript.transcript_hash);
     expect(first.transcript.transcript_id).toBe(second.transcript.transcript_id);
   });
 
-  it.skip("replay is deterministic", () => {
+  it("replay is deterministic", () => {
+    idCounter = 0;
     const spec = makeNegotiationExample();
+    const counterAfterSpec = idCounter;
+
+    idCounter = counterAfterSpec;
     const baseline = executeDecision({ spec, logicalTimestamp: 0 });
+
+    idCounter = counterAfterSpec;
     const replayed = executeDecision({ spec: baseline.transcript.inputs.decision_spec, logicalTimestamp: baseline.transcript.timestamp });
 
     expect(replayed.transcript.transcript_hash).toBe(baseline.transcript.transcript_hash);
