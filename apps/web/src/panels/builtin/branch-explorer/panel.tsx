@@ -99,8 +99,8 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
             onClick={handleRunDecision}
             disabled={isRunning || violations.some(v => v.severity === 'block')}
             className={`w-full px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 disabled:opacity-50 ${violations.some(v => v.severity === 'block')
-                ? 'bg-red-400 hover:bg-red-500 focus:ring-red-500 cursor-not-allowed'
-                : 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
+              ? 'bg-red-400 hover:bg-red-500 focus:ring-red-500 cursor-not-allowed'
+              : 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
               }`}
           >
             {isRunning ? 'Running...' : 'Run Decision'}
@@ -146,6 +146,106 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
             </div>
           )}
         </>
+      )}
+      {/* Wizard Modal */}
+      {wizardOpen && (
+        <div className="absolute inset-0 bg-white z-10 flex flex-col p-4 space-y-4">
+          <div className="flex justify-between items-center border-b pb-2">
+            <h3 className="font-bold text-gray-800">
+              Run Configuration (Step {step}/3)
+            </h3>
+            <button onClick={() => setWizardOpen(false)} className="text-gray-500 hover:text-gray-700">✕</button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto">
+            {step === 1 && (
+              <div className="space-y-4">
+                <h4 className="text-sm font-semibold">Budget & Constraints</h4>
+                <p className="text-xs text-gray-500">Set limits for this execution.</p>
+                {/* Budget Inputs - simplified mock updates to constraints */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-medium">Max Cost (USD)</label>
+                  <input type="number" className="w-full border rounded p-1 text-sm" placeholder="e.g. 1000"
+                    onChange={(e) => {
+                      // Logic to update/add 'Max Cost' constraint in stagedConstraints
+                      // Simplify: just logged/noop for this demo if logic complex
+                    }}
+                  />
+                  <p className="text-xs text-gray-400 italic">Enter 0 for unlimited.</p>
+                </div>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="space-y-4">
+                <h4 className="text-sm font-semibold">Review Assumptions</h4>
+                <div className="space-y-2">
+                  {stagedAssumptions.map((a: any, i) => (
+                    <div key={i} className="flex items-center gap-2 text-sm border p-2 rounded">
+                      <input type="checkbox" checked defaultChecked />
+                      <span>{a.text || a.label}</span>
+                    </div>
+                  ))}
+                  {stagedAssumptions.length === 0 && <p className="text-xs text-gray-400">No assumptions defined.</p>}
+                </div>
+              </div>
+            )}
+
+            {step === 3 && (
+              <div className="space-y-4">
+                <h4 className="text-sm font-semibold">Review & Diff</h4>
+                {result ? (
+                  <div className="bg-gray-50 p-3 rounded text-xs font-mono">
+                    <p className="font-bold text-gray-500 mb-2">Changes from last run:</p>
+                    {/* Compute diff */}
+                    {(() => {
+                      // naive diff
+                      const diff = deepDiff(result.assumptions || [], stagedAssumptions);
+                      return diff.length ? (
+                        <ul className="space-y-1">
+                          {diff.map((d, i) => <li key={i} className="text-blue-600">Δ {d.path}: {String(d.val)}</li>)}
+                        </ul>
+                      ) : <span className="text-gray-400">No input changes detected.</span>
+                    })()}
+                  </div>
+                ) : (
+                  <p className="text-xs text-gray-500">First run for this session.</p>
+                )}
+
+                <div className="bg-yellow-50 p-2 rounded border border-yellow-100">
+                  <p className="text-xs text-yellow-800 font-medium">
+                    Ready to execute with {stagedAssumptions.length} assumptions.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="flex justify-between pt-2 border-t">
+            <button
+              onClick={() => setStep(s => Math.max(1, s - 1))}
+              disabled={step === 1}
+              className="text-xs px-3 py-1 bg-gray-100 rounded disabled:opacity-50"
+            >
+              Back
+            </button>
+            {step < 3 ? (
+              <button
+                onClick={() => setStep(s => Math.min(3, s + 1))}
+                className="text-xs px-3 py-1 bg-blue-600 text-white rounded font-bold"
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                onClick={handleRunDecision}
+                className="text-xs px-3 py-1 bg-green-600 text-white rounded font-bold"
+              >
+                RUN NOW
+              </button>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

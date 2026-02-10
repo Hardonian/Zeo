@@ -26,6 +26,7 @@
     "audit": "pnpm audit --audit-level=moderate",
     "audit:fix": "pnpm audit --fix",
     "eval": "pnpm -C apps/cli eval",
+    "version:stamp": "node scripts/stamp-version.js",
     "mcp:server": "node packages/mcp-server/dist/index.js",
     "mcp:server:http": "node packages/mcp-server/dist/index.js --http",
     "mcp:doctor": "node packages/mcp-server/dist/doctor.js",

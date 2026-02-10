@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import type { UiPanelManifest, Scenario } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
-import { scenarios } from '@zeo/core';
+import { scenarios, exportScenarioPack, importScenarioPack } from '@zeo/core';
 
 interface ScenariosPanelProps {
     manifest: UiPanelManifest;
@@ -14,6 +14,7 @@ export default function ScenariosPanel({ manifest }: ScenariosPanelProps) {
     const [localScenarios, setLocalScenarios] = useState<Scenario[]>(scenarios.listScenarios());
     const [showSave, setShowSave] = useState(false);
     const [saveName, setSaveName] = useState('');
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleSave = () => {
         if (!decision || !saveName) return;
@@ -30,6 +31,60 @@ export default function ScenariosPanel({ manifest }: ScenariosPanelProps) {
     const handleLoadTemplate = (type: "investment" | "hiring" | "crisis") => {
         const spec = scenarios.createTemplate(`New ${type}`, type);
         setDecision(spec);
+    };
+
+    const handleExportPack = async () => {
+        if (localScenarios.length === 0) return;
+        try {
+            const packBytes = await exportScenarioPack(localScenarios, { packName: "My Scenarios" });
+            const blob = new Blob([packBytes], { type: "application/zip" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `scenarios-pack-${new Date().toISOString().slice(0, 10)}.zip`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error("Export failed", err);
+            alert("Failed to export pack");
+        }
+    };
+
+    const handleImportClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        try {
+            const buffer = await file.arrayBuffer();
+            const result = await importScenarioPack(new Uint8Array(buffer));
+
+            // Import logic: save each scenario
+            let count = 0;
+            for (const item of result.scenarios) {
+                // Check if exists? Overwrite? For now, append/save new
+                // Note: scenarios.saveScenario requires a decision spec and creates a new ID typically,
+                // but here we want to preserve the ID if possible or just import as new.
+                // The core scenarios module doesn't expose a raw 'insert' method easily visible here,
+                // so we might just save as new versions.
+                scenarios.saveScenario(item.spec, item.meta.name, `Imported from pack ${result.manifest.name}`);
+                count++;
+            }
+
+            setLocalScenarios(scenarios.listScenarios());
+            alert(`Imported ${count} scenarios from pack: ${result.manifest.name}`);
+        } catch (err) {
+            console.error("Import failed", err);
+            alert("Failed to import pack: " + (err instanceof Error ? err.message : String(err)));
+        }
+
+        // Reset input
+        if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
     return (
@@ -51,12 +106,34 @@ export default function ScenariosPanel({ manifest }: ScenariosPanelProps) {
             <section className="space-y-3 flex-1">
                 <div className="flex justify-between items-center">
                     <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Your Scenarios</h3>
-                    <button
-                        onClick={() => setShowSave(!showSave)}
-                        className="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded font-bold hover:bg-blue-700"
-                    >
-                        SAVE CURRENT
-                    </button>
+                    <div className="flex gap-2">
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                            accept=".zip"
+                            className="hidden"
+                        />
+                        <button
+                            onClick={handleImportClick}
+                            className="text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded font-bold hover:bg-gray-200 border border-gray-300"
+                        >
+                            IMPORT
+                        </button>
+                        <button
+                            onClick={handleExportPack}
+                            disabled={localScenarios.length === 0}
+                            className="text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded font-bold hover:bg-gray-200 border border-gray-300 disabled:opacity-50"
+                        >
+                            EXPORT PACK
+                        </button>
+                        <button
+                            onClick={() => setShowSave(!showSave)}
+                            className="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded font-bold hover:bg-blue-700"
+                        >
+                            SAVE CURRENT
+                        </button>
+                    </div>
                 </div>
 
                 {showSave && (
