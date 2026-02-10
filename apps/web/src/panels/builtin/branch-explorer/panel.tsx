@@ -262,15 +262,27 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
                   <div className="space-y-4">
                     <h4 className="text-sm font-semibold text-gray-700">Review Assumptions</h4>
                     <p className="text-xs text-gray-500">Uncheck to disable specific assumptions.</p>
-                    <div className="space-y-2 max-h-60 overflow-y-auto">
-                      {stagedAssumptions.map((a: any, i) => (
-                        <div key={i} className="flex items-center gap-2 text-sm border p-2 rounded bg-white">
-                          <input type="checkbox" checked readOnly className="rounded text-blue-600 focus:ring-blue-500" />
-                          <span className="truncate">{a.text || a.label || `Assumption ${i + 1}`}</span>
-                        </div>
-                      ))}
-                      {stagedAssumptions.length === 0 && <div className="text-xs text-gray-400 italic p-4 text-center bg-gray-50 rounded">No active assumptions.</div>}
+                        <div className="space-y-2 max-h-60 overflow-y-auto">
+                  {stagedAssumptions.map((a: any, i) => (
+                    <div key={i} className="flex items-center gap-2 text-sm border p-2 rounded bg-white">
+                      <input 
+                        type="checkbox" 
+                        checked={a.status !== 'dropped'} 
+                        onChange={(e) => {
+                            const next = [...stagedAssumptions];
+                            next[i] = { ...next[i], status: e.target.checked ? 'assumption' : 'dropped' };
+                            setStagedAssumptions(next);
+                        }}
+                        className="rounded text-blue-600 focus:ring-blue-500" 
+                      />
+                      <span className={`truncate ${a.status === 'dropped' ? 'text-gray-400 line-through' : ''}`}>
+                        {a.text || a.label || `Assumption ${i + 1}`}
+                      </span>
                     </div>
+                  ))}
+                  {stagedAssumptions.length === 0 && <div className="text-xs text-gray-400 italic p-4 text-center bg-gray-50 rounded">No active assumptions.</div>}
+                </div>
+        </div>
                   </div>
                 )}
 
@@ -326,9 +338,10 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
               </div>
             </div>
           )}
-        </>
-      )}
-    </div>
+    </>
+  )
+}
+    </div >
   );
 }
 
