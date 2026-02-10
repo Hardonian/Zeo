@@ -11,10 +11,10 @@ import type {
   BudgetCheckResult,
   BudgetTracker,
   BudgetEvent,
-} from './types';
+} from './types.js';
 
-export { SAFE_DEFAULTS, POWER_MODE, MINIMAL_MODE, UNLIMITED, getPreset, clonePreset, createBudget, recommendBudget } from './presets';
-export type { ComputeBudget, BudgetLimit, ResourceType, ResourceUsage, BudgetCheckResult, BudgetTracker, BudgetEvent } from './types';
+export { SAFE_DEFAULTS, POWER_MODE, MINIMAL_MODE, UNLIMITED, getPreset, clonePreset, createBudget, recommendBudget } from './presets.js';
+export type { ComputeBudget, BudgetLimit, ResourceType, ResourceUsage, BudgetCheckResult, BudgetTracker, BudgetEvent } from './types.js';
 
 // Active trackers
 const trackers = new Map<string, BudgetTracker>();
@@ -30,7 +30,7 @@ export function createTracker(budget: ComputeBudget, contextId: string): BudgetT
     startedAt: new Date().toISOString(),
     lastUpdated: new Date().toISOString(),
   };
-  
+
   trackers.set(contextId, tracker);
   return tracker;
 }
@@ -52,16 +52,16 @@ export function recordUsage(
 ): void {
   const tracker = trackers.get(contextId);
   if (!tracker) return;
-  
+
   const current = tracker.usage.get(resource) || 0;
   tracker.usage.set(resource, current + amount);
   tracker.lastUpdated = new Date().toISOString();
-  
+
   // Check if we hit warning or exceeded
   const limit = tracker.budget.limits.find(l => l.resource === resource);
   if (limit) {
     const percentUsed = (current + amount) / limit.max;
-    
+
     if (percentUsed >= 1.0) {
       emitEvent({
         type: 'exceeded',
@@ -98,16 +98,16 @@ export function checkBudget(contextId: string): BudgetCheckResult {
       suggestions: [],
     };
   }
-  
+
   const warnings: ResourceUsage[] = [];
   const exceeded: ResourceUsage[] = [];
   const usage: ResourceUsage[] = [];
   const suggestions: string[] = [];
-  
+
   for (const limit of tracker.budget.limits) {
     const used = tracker.usage.get(limit.resource) || 0;
     const percentUsed = limit.max > 0 ? used / limit.max : 0;
-    
+
     const resourceUsage: ResourceUsage = {
       resource: limit.resource,
       used,
@@ -116,21 +116,21 @@ export function checkBudget(contextId: string): BudgetCheckResult {
       isWarning: percentUsed >= limit.warnThreshold && percentUsed < 1,
       isExceeded: percentUsed >= 1,
     };
-    
+
     usage.push(resourceUsage);
-    
+
     if (resourceUsage.isWarning) {
       warnings.push(resourceUsage);
     }
-    
+
     if (resourceUsage.isExceeded) {
       exceeded.push(resourceUsage);
       suggestions.push(...getSuggestions(limit.resource, used, limit.max));
     }
   }
-  
+
   const allowed = !tracker.budget.hardStop || exceeded.length === 0;
-  
+
   return {
     allowed,
     warnings,
@@ -152,21 +152,21 @@ export function checkBudgetWithExpected(
   if (!tracker) {
     return { allowed: true, warnings: [], exceeded: [], usage: [], suggestions: [] };
   }
-  
+
   // Save current state
   const savedUsage = new Map(tracker.usage);
-  
+
   // Add expected usage
   for (const [resource, amount] of Object.entries(expectedUsage)) {
     recordUsage(contextId, resource as ResourceType, amount);
   }
-  
+
   // Check budget
   const result = checkBudget(contextId);
-  
+
   // Restore actual usage (remove the expected amounts we just added)
   tracker.usage = savedUsage;
-  
+
   return result;
 }
 
@@ -175,7 +175,7 @@ export function checkBudgetWithExpected(
  */
 function getSuggestions(resource: ResourceType, used: number, limit: number): string[] {
   const suggestions: string[] = [];
-  
+
   switch (resource) {
     case 'cases':
       suggestions.push('Reduce number of replay cases');
@@ -210,7 +210,7 @@ function getSuggestions(resource: ResourceType, used: number, limit: number): st
       suggestions.push('Enable early termination');
       break;
   }
-  
+
   return suggestions;
 }
 
@@ -223,7 +223,7 @@ export function resetTracker(contextId: string): void {
     tracker.usage.clear();
     tracker.startedAt = new Date().toISOString();
     tracker.lastUpdated = tracker.startedAt;
-    
+
     emitEvent({
       type: 'reset',
       resource: 'cases', // Generic resource for reset event
@@ -280,7 +280,7 @@ export function createBudgetGuard(contextId: string) {
     checkAndRecord: (resource: ResourceType, amount: number = 1): boolean => {
       const before = checkBudgetWithExpected(contextId, { [resource]: amount });
       if (!before.allowed) return false;
-      
+
       recordUsage(contextId, resource, amount);
       return true;
     },

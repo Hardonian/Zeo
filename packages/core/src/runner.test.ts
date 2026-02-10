@@ -3,18 +3,15 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ZeoRunner } from "./runner";
 import { createTrustContext } from "./trust-integration";
 import { createDefaultConsentScope } from "@zeo/trust";
-import type { DecisionSpec, DecisionResult } from "@zeo/contracts";
-import type { KpiWarehouseStorage, KpiMeasurement } from "@zeo/warehouse";
+import type { DecisionSpec, DecisionResult, KpiMeasurement } from "@zeo/contracts";
+import type { KpiWarehouseStorage } from "@zeo/warehouse";
 
 // Mock storage adapter
-const mockStorage: KpiWarehouseStorage = {
+const mockStorage: any = {
     storeMeasurement: vi.fn().mockResolvedValue(undefined),
-    getMeasurements: vi.fn().mockResolvedValue([]),
     getMeasurement: vi.fn(),
-    getKpisByCategory: vi.fn(),
-    getKpiTrend: vi.fn(),
-    getMeasurementsForDecision: vi.fn(),
-    getAggregateStats: vi.fn(),
+    queryMeasurements: vi.fn().mockResolvedValue([]),
+    getStats: vi.fn(),
 };
 
 describe("ZeoRunner", () => {
@@ -26,14 +23,13 @@ describe("ZeoRunner", () => {
         id: "test-decision",
         title: "Test Decision",
         context: "Context",
-        actions: [{ id: "a1", label: "Action 1", kind: "test", actorId: "user" }],
+        agents: [{ id: "user", name: "User", role: "self" }],
+        actions: [{ id: "a1", label: "Action 1", kind: "other", actorId: "user" }],
         assumptions: [],
         constraints: [],
-        timeHorizon: "immediate",
+        horizon: "days",
         objectives: [],
-        formatVersion: "1.0.0",
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
     };
 
     beforeEach(() => {

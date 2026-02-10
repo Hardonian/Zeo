@@ -25,6 +25,7 @@ describe("decision-coupling", () => {
     ],
     constraints: [],
     assumptions: [],
+    objectives: [],
   };
 
   const basePosterior: PosteriorState = {

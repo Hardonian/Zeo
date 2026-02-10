@@ -385,7 +385,7 @@ export type {
   RobustnessMetrics,
   CalibrationMetrics,
   KpiIntegrationConfig,
-} from "./kpi-integration";
+} from "./kpi-integration.js";
 export {
   KpiIntegration,
   createKpiIntegration,
@@ -399,7 +399,6 @@ export {
   DEFAULT_KPI_CONFIG,
 } from "./kpi-integration.js";
 
-export * from "./index-integration.js";
 export * from "./budget.js";
 export * from "./cache-layer.js";
 export * from "./connectors/manager.js";
