@@ -95,17 +95,20 @@ class UnitsSanityPolicy implements Policy {
 
         // Check assumptions for unit consistency (basic check)
         if (context.assumptions) {
-            context.assumptions.forEach(ass => {
-                if (typeof ass.value === 'number' && ass.value < 0 && (ass.units.includes('cost') || ass.units.includes('duration'))) {
-                    // Heuristic: usually cost/duration shouldn't be negative in assumptions unless specified
-                    // Keeping this as warn for now as negative costs (savings) might be valid in some contexts
+            context.assumptions.forEach((ass: any) => {
+                // Handle Assumption (repro-pack) or Claim (contracts)
+                const val = ass.value !== undefined ? ass.value : ass.probability;
+                const units = ass.units || ass.text || '';
+
+                if (typeof val === 'number' && val < 0 &&
+                    (units.toLowerCase().includes('cost') || units.toLowerCase().includes('duration') || units.toLowerCase().includes('$'))) {
                     violations.push({
                         code: "POLICY_VIOLATION",
                         policyId: this.id,
                         severity: "warn",
-                        message: `Potential negative value for ${ass.key} with unit ${ass.units}.`,
+                        message: `Potential negative value for ${ass.key || ass.text} with unit/context ${units}.`,
                         remediation: "Verify if negative value is intended (e.g. savings) or an error.",
-                        keys: [`assumptions.${ass.key}`]
+                        keys: [ass.id ? `assumptions.${ass.id}` : `assumptions.${ass.key}`]
                     });
                 }
             });

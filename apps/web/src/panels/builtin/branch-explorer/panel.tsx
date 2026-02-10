@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import type { UiPanelManifest, DecisionSpec } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
-import { runDecision, policyEngine, PolicyViolation } from '@zeo/core';
-import { deepDiff } from '@zeo/repro-pack';
+import { runDecision, policyEngine, PolicyViolation, exportScenarioPack } from '@zeo/core';
+import { deepDiff, support } from '@zeo/repro-pack';
 
 interface BranchExplorerProps {
   manifest: UiPanelManifest;
@@ -153,12 +153,37 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
           {result && (
             <div className="space-y-3 flex-1 overflow-y-auto">
               <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                <p className="text-sm font-medium text-green-800">Analysis Complete</p>
-                {lastRun && (
-                  <p className="text-xs text-green-600 mt-1">
-                    {new Date(lastRun).toLocaleString()}
-                  </p>
-                )}
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-sm font-medium text-green-800">Analysis Complete</p>
+                    {lastRun && (
+                      <p className="text-xs text-green-600 mt-1">
+                        {new Date(lastRun).toLocaleString()}
+                      </p>
+                    )}
+                  </div>
+                  <button
+                    onClick={async () => {
+                      if (!decision || !result) return;
+                      try {
+                        const pack = await exportScenarioPack([{ id: decision.id, name: decision.title, description: decision.context, spec: decision, version: 1, createdAt: new Date().toISOString() }]);
+                        const bundle = await support.buildBundle(pack, result, { activeSlot: 'main', panelStates: {} }, { appVersion: '0.6.0', userAgent: navigator.userAgent });
+                        const blob = new Blob([bundle as unknown as BlobPart], { type: 'application/octet-stream' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `support-bundle-${decision.id}.zeo`;
+                        a.click();
+                      } catch (e) {
+                        console.error("Support bundle export failed", e);
+                      }
+                    }}
+                    className="text-[10px] bg-white border border-green-300 text-green-700 px-2 py-1 rounded hover:bg-green-100"
+                    title="Export Support Bundle for debugging"
+                  >
+                    Export Support
+                  </button>
+                </div>
               </div>
 
               <div className="bg-white border border-gray-200 rounded-lg p-3">
