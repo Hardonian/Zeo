@@ -121,7 +121,7 @@ export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
             source: "user",
             rationale: "Explicit in spec",
             sensitivity: "med",
-            provenance: { path: "spec.assumptions" },
+            provenance: { path: "spec definition" },
           });
         }
       }

@@ -7,7 +7,7 @@
 
 import { describe, it, expect } from "vitest";
 import type { Prediction, OutcomeMetric, ReplayResult } from "@zeo/contracts";
-import type { Slice, SliceDimension, PredictionOutcomePair } from "../slice-types";
+import type { Slice, SliceDimension, PredictionOutcomePair } from "../slice-types.js";
 import {
   createSliceKey,
   parseSliceKey,
@@ -28,7 +28,7 @@ import {
   generateRecommendations,
   sliceMetricsToCsvRow,
   exportSlicesToCsv,
-} from "../slice-computation";
+} from "../slice-computation.js";
 
 describe("Slice Key Operations", () => {
   it("should create canonical slice keys", () => {
@@ -439,17 +439,17 @@ describe("Gating Rules", () => {
     const rules = createDefaultGatingRules();
     expect(rules.length).toBeGreaterThan(0);
 
-    const sampleSizeRule = rules.find((r) => r.id === "rule-sample-size");
+    const sampleSizeRule = rules.find((r: { id: string }) => r.id === "rule-sample-size");
     expect(sampleSizeRule).toBeDefined();
     expect(sampleSizeRule?.conditions.minSampleSize).toBe(10);
 
-    const coverageRule = rules.find((r) => r.id === "rule-coverage");
+    const coverageRule = rules.find((r: { id: string }) => r.id === "rule-coverage");
     expect(coverageRule).toBeDefined();
     expect(coverageRule?.conditions.minCoverage).toBe(0.7);
   });
 
   it("should pass rules when thresholds are met", () => {
-    const rules: import("../slice-types").SliceGatingRule[] = [
+    const rules: import("../slice-types.js").SliceGatingRule[] = [
       {
         id: "test-rule",
         name: "Test Rule",
@@ -460,9 +460,9 @@ describe("Gating Rules", () => {
       },
     ];
 
-    const slices: import("../slice-types").SliceMetrics[] = [
+    const slices: import("../slice-types.js").SliceMetrics[] = [
       {
-        slice: { dimension: "domain" as import("../slice-types").SliceDimension, value: "test" },
+        slice: { dimension: "domain" as import("../slice-types.js").SliceDimension, value: "test" },
         sampleSize: 20,
         coverage: { overall: 0.8, byMetricId: {} },
         properScores: { overall: 0.1, byMetricId: {} },
@@ -482,7 +482,7 @@ describe("Gating Rules", () => {
   });
 
   it("should fail rules when thresholds are not met", () => {
-    const rules: import("../slice-types").SliceGatingRule[] = [
+    const rules: import("../slice-types.js").SliceGatingRule[] = [
       {
         id: "test-rule",
         name: "Test Rule",
@@ -493,9 +493,9 @@ describe("Gating Rules", () => {
       },
     ];
 
-    const slices: import("../slice-types").SliceMetrics[] = [
+    const slices: import("../slice-types.js").SliceMetrics[] = [
       {
-        slice: { dimension: "domain" as import("../slice-types").SliceDimension, value: "test" },
+        slice: { dimension: "domain" as import("../slice-types.js").SliceDimension, value: "test" },
         sampleSize: 5,
         coverage: { overall: 0.8, byMetricId: {} },
         properScores: { overall: 0.1, byMetricId: {} },
@@ -516,8 +516,8 @@ describe("Gating Rules", () => {
 });
 
 describe("CSV Export", () => {
-  const sampleSlice: import("../slice-types").SliceMetrics = {
-    slice: { dimension: "domain" as import("../slice-types").SliceDimension, value: "negotiation" },
+  const sampleSlice: import("../slice-types.js").SliceMetrics = {
+    slice: { dimension: "domain" as import("../slice-types.js").SliceDimension, value: "negotiation" },
     sampleSize: 100,
     coverage: { overall: 0.85, byMetricId: {} },
     properScores: { overall: 0.12, byMetricId: {} },
@@ -540,7 +540,7 @@ describe("CSV Export", () => {
   });
 
   it("should export slices to CSV with header", () => {
-    const report: import("../slice-types").SliceEvaluationReport = {
+    const report: import("../slice-types.js").SliceEvaluationReport = {
       version: "0.5.1",
       createdAt: "2024-01-01",
       metadata: {
@@ -580,7 +580,7 @@ describe("CSV Export", () => {
   });
 
   it("should handle empty slices", () => {
-    const report: import("../slice-types").SliceEvaluationReport = {
+    const report: import("../slice-types.js").SliceEvaluationReport = {
       version: "0.5.1",
       createdAt: "2024-01-01",
       metadata: {

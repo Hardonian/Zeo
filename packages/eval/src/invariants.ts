@@ -103,7 +103,7 @@ export function checkProvenance(packet: EvidencePacketJSON): InvariantResult {
   // Check results claims if available
   for (const claim of packet.results?.explanation?.whatWouldChange || []) {
     // Check if assumption exists for the ID referenced
-    const assumption = packet.decision.spec.assumptions.find(a => a.id === claim.assumptionId);
+    const assumption = packet.decision.spec.assumptions.find((a: { id: string }) => a.id === claim.assumptionId);
     if (assumption && assumption.status === "fact" && (!assumption.provenance || assumption.provenance.length === 0)) {
       issues.push(`Assumption ${claim.assumptionId} marked as fact without provenance`);
     }

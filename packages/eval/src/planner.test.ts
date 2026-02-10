@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { recommendEvidence, createEvidencePlan, type EvidenceAction, type PlannerConfig } from "@zeo/reality";
 import type { DecisionSpec } from "@zeo/contracts";
+import type { CounterfactualResult } from "@zeo/counterfactuals";
 import { nanoid } from "nanoid";
 
 describe("Evidence Planner Regression", () => {
@@ -35,7 +36,8 @@ describe("Evidence Planner Regression", () => {
     ];
 
     it("should favor cheaper actions for same reduction (dominance check)", () => {
-        const results = recommendEvidence(spec, candidates, {
+        const counterfactuals: CounterfactualResult[] = [];
+        const results = recommendEvidence(spec, candidates, counterfactuals, {
             maxCost: "high",
             maxTime: "months",
             minEvoi: 0.001
@@ -51,7 +53,8 @@ describe("Evidence Planner Regression", () => {
     });
 
     it("should respect budget constraints", () => {
-        const results = recommendEvidence(spec, candidates, {
+        const counterfactuals: CounterfactualResult[] = [];
+        const results = recommendEvidence(spec, candidates, counterfactuals, {
             maxCost: "low",
             maxTime: "days",
             minEvoi: 0.001
