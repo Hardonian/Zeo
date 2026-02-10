@@ -48,109 +48,74 @@ export {
   computeFlipDistanceVOI,
   formatCounterfactual,
   batchSolveCounterfactuals,
-  findFlipThresholds,
-  computeDistance,
 } from "@zeo/counterfactuals";
 
-// Constraints - action feasibility checking
+// Constraints - hard/soft constraint propagation
 export type {
-  Constraint,
   ConstraintGraph,
-  PropagationResult,
   ConstraintNode,
   ConstraintEdge,
+  ConstraintEvaluationResult,
   HardConstraint,
   SoftConstraint,
   TemporalConstraint,
   BudgetConstraint,
-  ConstraintContext,
+  ActionNode,
+  DependencyEdge,
 } from "@zeo/constraints";
 export {
   createConstraintGraph,
-  addNode as addConstraintNode,
-  addEdge as addConstraintEdge,
+  addNode,
+  addEdge,
   addConstraint,
   propagateConstraints,
+  filterInfeasibleActions,
+  rankActionsWithConstraints,
+  isActionDominated,
   createHardConstraint,
-  createSoftConstraint,
-  createTemporalConstraint,
-  createBudgetConstraint,
-  createIrreversibilityConstraint,
-  createLegalConstraint,
-  createEthicalConstraint,
   createActionNode,
   createDependencyEdge,
-  createConsumptionEdge,
-  createExclusionEdge,
-  filterInfeasibleActions,
-  applySoftPenalties,
 } from "@zeo/constraints";
 
 // Lenses - perspective formalization
 export type {
   Lens,
+  LensEvaluation,
   LensComparison,
-  LensAppliedResult,
-  LensSensitivityAnalysis,
+  LensSensitivity,
 } from "@zeo/lenses";
 export {
   lensRegistry,
-  LensRegistry,
   applyLensWeights,
   compareAcrossLenses,
   analyzeLensSensitivity,
-  createLens,
-  getLensPriors,
+  isLensSensitive,
+  NEGOTIATION_LENS,
+  RISK_MIN_LENS,
+  GROWTH_LENS,
+  ETHICAL_LENS,
+  ADVERSARIAL_LENS,
 } from "@zeo/lenses";
 
-// Worlds - parallel worlds for robustness analysis
+// Worlds - parallel world analysis
 export type {
-  AssumptionVariant,
   WorldDefinition,
   WorldsEnsemble,
-  WorldState,
-  WorldDecisionResult,
-  ActionRobustness,
   RobustnessAnalysis,
-  WorldsConfig,
+  ActionRobustness,
+  WorldAgreement,
 } from "@zeo/worlds";
 export {
   createEnsemble,
   addWorld,
+  removeWorld,
+  generateDefaultWorlds,
   computeWorld,
   computeRobustness,
   getRobustActions,
   getFragileActions,
   getEnsembleSummary,
-  generateDefaultWorlds,
-  exportEnsemble,
-  importEnsemble,
-  DEFAULT_WORLDS_CONFIG,
 } from "@zeo/worlds";
-
-// Tournaments - strategy self-competition
-export type {
-  Tournament,
-  Strategy,
-  Scenario,
-  Match,
-  MatchResult,
-  TournamentResults,
-  Standing,
-  TournamentConfig,
-} from "@zeo/tournaments";
-export {
-  createTournament,
-  registerStrategy,
-  addScenario,
-  startTournament,
-  runMatch,
-  completeTournament,
-  getTournamentSummary,
-  createBaselineStrategies,
-  exportTournament,
-  importTournament,
-} from "@zeo/tournaments";
 
 // Causal Skeletons - DAG proposals for causal analysis
 export type {
@@ -175,24 +140,6 @@ export {
   importSkeleton,
   DEFAULT_SKELETON_CONFIG,
 } from "@zeo/causal-skeletons";
-
-// Hypothesis Market - internal market for hypotheses
-export type {
-  MarketState,
-  MarketHypothesis,
-  MarketPosition,
-  PerformanceSnapshot,
-  RebalanceConfig,
-} from "@zeo/hypothesis-market";
-export {
-  createMarket,
-  registerHypothesis,
-  recordOutcome,
-  rebalanceCredence,
-  getTopHypotheses,
-  getMarketSummary,
-  DEFAULT_REBALANCE_CONFIG,
-} from "@zeo/hypothesis-market";
 
 // Hypothesis Registry
 export type {
@@ -328,81 +275,77 @@ export {
 } from "@zeo/replay";
 
 // Audit - audit trail and compliance
-export type { AuditConfig, VerificationResult, AppendResult } from "@zeo/audit";
+export type {
+  AuditEvent,
+  AuditTrail,
+  AuditQuery,
+  AuditExport,
+  TamperProofRecord,
+} from "@zeo/audit";
 export {
-  createAuditLog,
-  createDecisionAuditEntry,
-  createEvidenceAuditEntry,
-  createPolicyAuditEntry,
+  AuditLedger,
+  createAuditEvent,
+  verifyLedger,
+  exportLedger,
 } from "@zeo/audit";
 
-// Semantic Clustering - evidence organization
-export type { Cluster, ClusterableItem, ClusteringResult, ClusteringOptions } from "@zeo/semantic-clustering";
-export { clusterItems } from "@zeo/semantic-clustering";
-
-// Dataset Builder - feature extraction
-export type { DatasetBuilderConfig, ReplayDataset } from "@zeo/dataset-builder";
+// Dataset Builder
+export type {
+  DatasetSchema,
+  DatasetRow,
+  FeatureColumn,
+  TargetColumn,
+} from "@zeo/dataset-builder";
 export {
-  createDatasetBuilder,
-  validateDataset,
-  filterDatasetByTime,
+  buildDataset,
+  datasetToCsv,
+  createDatasetSchema,
 } from "@zeo/dataset-builder";
 
-// Analysis Planner - AI-driven analysis planning
+// Analysis Planner
 export type {
   AnalysisPlan,
   AnalysisStep,
-  AnalysisRisk,
-  DatasetSchema,
-  DatasetMetadata,
-  SchemaField,
-  FieldStatistics,
-  PlanningOptions,
-  AnalysisStepKind,
+  StepType,
+  PlannerConfig,
 } from "@zeo/analysis-planner";
-export { generateAnalysisPlan } from "@zeo/analysis-planner";
-
-// Feature Discovery - AI-guided feature proposal
-export type {
-  DiscoveryConfig,
-  Pattern,
-} from "@zeo/feature-discovery";
-export { FeatureDiscovery, createFeatureDiscovery } from "@zeo/feature-discovery";
-
-// Decision Synthesizer - decision implications
-export type {
-  DecisionContext as SynthesizerContext,
-  DecisionImplication,
-  SynthesisResult,
-  SynthesisOptions,
-} from "@zeo/decision-synthesizer";
-export { synthesizeImplications } from "@zeo/decision-synthesizer";
-
-// KPI Integration - decision metrics tracking
-export type {
-  KpiComputationContext,
-  DecisionCoverageMetrics,
-  RobustnessMetrics,
-  CalibrationMetrics,
-  KpiIntegrationConfig,
-} from "./kpi-integration.js";
 export {
-  KpiIntegration,
-  createKpiIntegration,
-  computeDecisionCoverage,
-  computeRobustnessMetrics,
-  computeCalibrationMetrics,
-  createDecisionCoverageMeasurement,
-  createRobustnessMeasurement,
-  createCalibrationMeasurement,
-  storeDecisionKpis,
-  DEFAULT_KPI_CONFIG,
-} from "./kpi-integration.js";
+  generateAnalysisPlan,
+  validatePlan,
+  createPlannerConfig,
+} from "@zeo/analysis-planner";
 
-export * from "./budget.js";
-export * from "./cache-layer.js";
-export * from "./connectors/manager.js";
-export * from "./reporting.js";
-export * from "./policy.js";
-export * from "./scenario-packs.js";
-export * from "./version.js";
+// Feature Discovery
+export type {
+  FeatureProposal,
+  FeatureValidation,
+  FeatureProposalConfig,
+} from "@zeo/feature-discovery";
+export {
+  proposeFeatures,
+  validateProposal,
+  checkForLeakage,
+  checkPlausibility,
+} from "@zeo/feature-discovery";
+
+// Decision Synthesizer
+export type {
+  SynthesizedDecision,
+  SynthesisOptions,
+  SynthesisOutput,
+} from "@zeo/decision-synthesizer";
+export {
+  synthesizeDecision,
+  createSynthesisOptions,
+} from "@zeo/decision-synthesizer";
+
+// Policy engine (removed - caused cyclic dependency with repro-pack)
+// export { policyEngine, PolicyEngine } from "./policy.js";
+
+// Scenario packs (removed - caused cyclic dependency with repro-pack)
+// export { exportScenarioPack, importScenarioPack } from "./scenario-packs.js";
+// export type { ScenarioPackManifest, ImportedPackContent } from "./scenario-packs.js";
+
+// Reporting (removed - caused cyclic dependency with repro-pack)
+// export { generateDecisionReport } from "./reporting.js";
+// export type { DecisionReport, ReportSection, Citation } from "./reporting.js";
