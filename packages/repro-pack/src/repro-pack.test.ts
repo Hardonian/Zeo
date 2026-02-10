@@ -27,8 +27,8 @@ function makeFixtureRunData(): RunData {
                 units: "fraction",
                 source: "default",
                 rationale: "Standard corporate discount rate",
-                sensitivity: 0.8,
-                provenance: "system default",
+                sensitivity: "high",
+                provenance: { path: "system default" },
             },
             {
                 key: "market_growth",
@@ -37,8 +37,8 @@ function makeFixtureRunData(): RunData {
                 units: "fraction",
                 source: "user",
                 rationale: "User-specified growth expectation",
-                sensitivity: 0.6,
-                provenance: "user input",
+                sensitivity: "med",
+                provenance: { path: "user input" },
             },
         ],
         uncertaintyMap: {
@@ -310,8 +310,8 @@ describe("assumptions", () => {
             units: "%",
             source: "default",
             rationale: "Standard rate",
-            sensitivity: 0.5,
-            provenance: "system",
+            sensitivity: "med",
+            provenance: { path: "system" },
         };
         tracker.recordAssumption(a);
         expect(tracker.getAssumptions()).toHaveLength(1);
@@ -369,5 +369,42 @@ describe("assumptions", () => {
         const map = tracker.getUncertaintyMap();
         expect(map["y"]!.kind).toBe("unknown");
         expect(map["y"]!.note).toContain("Cannot be quantified");
+    });
+});
+import { DeterminismGate, DeterminismError } from "./determinism-gate.js";
+
+describe("Determinism Gate", () => {
+    it("produces identical RNG sequences for same seed", () => {
+        const gate1 = new DeterminismGate();
+        gate1.initialize({ seed: "seed-1", manifest: {}, packageHash: "h1" });
+        const seq1 = [gate1.getRng().nextFloat(), gate1.getRng().nextFloat()];
+
+        const gate2 = new DeterminismGate();
+        gate2.initialize({ seed: "seed-1", manifest: {}, packageHash: "h1" });
+        const seq2 = [gate2.getRng().nextFloat(), gate2.getRng().nextFloat()];
+
+        expect(seq1).toEqual(seq2);
+    });
+
+    it("freezes time to initialized value", () => {
+        const gate = new DeterminismGate();
+        const ts = 1700000000000;
+        gate.initialize({ seed: "s", timestamp: ts, manifest: {}, packageHash: "h" });
+        expect(gate.getClock().now()).toBe(ts);
+        expect(gate.getClock().toISOString()).toBe(new Date(ts).toISOString());
+    });
+
+    it("throws DETERMINISM_VIOLATION on version drift", () => {
+        const gate = new DeterminismGate();
+        gate.initialize({ seed: "s", manifest: { appVersion: "1.0.0" }, packageHash: "h" });
+
+        expect(() => {
+            gate.checkDrift({ appVersion: "1.1.0", gitSha: "unknown", createdAt: "", tenantId: "", actor: "", requestId: "", runId: "", schemaVersion: "1.0.0" }, "h");
+        }).toThrow(DeterminismError);
+    });
+
+    it("throws when accessing uninitialized state", () => {
+        const gate = new DeterminismGate();
+        expect(() => gate.getRng()).toThrow(/Initialize/);
     });
 });

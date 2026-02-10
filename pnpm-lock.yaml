@@ -973,6 +973,9 @@ importers:
       '@zeo/contracts':
         specifier: workspace:*
         version: link:../contracts
+      '@zeo/core':
+        specifier: workspace:*
+        version: link:../core
       adm-zip:
         specifier: ^0.5.10
         version: 0.5.16

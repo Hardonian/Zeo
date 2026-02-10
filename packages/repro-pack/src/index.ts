@@ -55,6 +55,14 @@ export {
     createAssumptionTracker,
 } from "./assumptions.js";
 
+// Determinism
+export {
+    DeterminismGate,
+    DeterminismError,
+    gate,
+    type Clock,
+} from "./determinism-gate.js";
+
 // Sanitizer
 export {
     sanitizeString,

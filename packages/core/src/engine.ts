@@ -15,6 +15,7 @@ import type { PruningConfig } from "./pruning";
 import { generateFlipConditions } from "./flip-conditions";
 import { QuantEngine } from "./quant-engine";
 import type { AssumptionTracker } from "@zeo/repro-pack";
+import { hygiene } from "./hygiene";
 
 /**
  * Zeo core engine: branching + evaluation.
@@ -228,6 +229,7 @@ export type RunDecisionOpts = {
 };
 
 export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): DecisionResult {
+  const hygieneWarnings = hygiene.check(spec);
   if (opts?.tracker) {
     opts.tracker.recordSystemAssumption("max_depth", "Branch Depth Limit", opts.depth ?? defaultHeuristics.maxDepth, "levels", "Computational complexity constraint");
     opts.tracker.recordSystemAssumption("max_branches_per_action", "Branch Fan-out Limit", defaultHeuristics.maxBranchesPerAction, "branches", "Heuristic exploration limit");
@@ -332,6 +334,7 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
     assumptions: opts?.tracker?.getAssumptions(),
     inferences: opts?.tracker?.getInferences(),
     uncertaintyMap: opts?.tracker?.getUncertaintyMap(),
+    hygieneWarnings,
   };
 }
 
