@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import type { UiPanelManifest } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
-import { generateId } from '@/lib/generate-id';
+import { generateId } from '@zeo/id';
 
 interface DecisionComposerProps {
   manifest: UiPanelManifest;

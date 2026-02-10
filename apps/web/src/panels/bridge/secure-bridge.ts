@@ -25,7 +25,7 @@ import {
   type SignedUiPanelManifest,
 } from '@zeo/contracts';
 import { createHash } from 'node:crypto';
-import { generateId } from '@/lib/generate-id';
+import { generateId } from '@zeo/id';
 
 // =============================================================================
 // RATE LIMITING CONFIGURATION

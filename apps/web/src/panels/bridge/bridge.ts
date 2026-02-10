@@ -10,7 +10,7 @@ import {
   type RunMeta,
 } from '@zeo/core';
 import { createHash } from 'node:crypto';
-import { generateId } from '@/lib/generate-id';
+import { generateId } from '@zeo/id';
 
 interface RateLimitEntry {
   count: number;

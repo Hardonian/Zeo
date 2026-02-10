@@ -3,7 +3,7 @@
 import React from 'react';
 import type { UiPanelManifest } from '@zeo/contracts';
 import { useEvidenceStore } from '@/stores/evidenceStore';
-import { generateId } from '@/lib/generate-id';
+import { generateId } from '@zeo/id';
 
 interface EvidenceInboxProps {
   manifest: UiPanelManifest;
