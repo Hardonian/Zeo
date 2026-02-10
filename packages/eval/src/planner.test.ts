@@ -36,7 +36,8 @@ describe("Evidence Planner Regression", () => {
     ];
 
     it("should favor cheaper actions for same reduction (dominance check)", () => {
-        const results = recommendEvidence(spec, candidates, {
+        const counterfactuals: CounterfactualResult[] = [];
+        const results = recommendEvidence(spec, candidates, counterfactuals, {
             maxCost: "high",
             maxTime: "months",
             minEvoi: 0.001
