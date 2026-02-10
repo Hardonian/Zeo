@@ -191,6 +191,10 @@ export type DecisionResult = {
   budget?: Budget;
   usage?: BudgetUsage;
   remediationHint?: string;
+  performance?: {
+    cacheHit: boolean;
+    stageTimings?: Record<string, number>;
+  };
 };
 
 /**

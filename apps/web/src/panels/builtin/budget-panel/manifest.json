@@ -1,0 +1,17 @@
+{
+    "id": "builtin.budget-panel",
+    "title": "Budgets",
+    "description": "View runtime budget consumption and limits.",
+    "route": "/budgets",
+    "slot": "rightSidebar",
+    "kind": "react",
+    "entry": "./panel",
+    "version": "0.1.0",
+    "capabilities": {
+        "needsNetwork": false
+    },
+    "dataDeps": [
+        "decision"
+    ],
+    "permissions": {}
+}

@@ -8,4 +8,5 @@ export * from "./epistemic-guards";
 export * from "./share-bundle";
 export * from "./kpi";
 export * from "./packet-types";
+export * from "./connector-types";
 

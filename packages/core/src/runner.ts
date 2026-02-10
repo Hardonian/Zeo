@@ -21,6 +21,8 @@ import {
     type KpiIntegrationConfig,
     createKpiIntegration
 } from "./kpi-integration";
+import { cacheKey } from "./hashing";
+import { globalCache } from "./cache-layer";
 
 /**
  * Configuration for the Zeo Runner
@@ -85,10 +87,49 @@ export class ZeoRunner {
             enforceTrustBoundary(operation, this.trustContext);
         }
 
-        // 2. Engine Execution
-        // We run this synchronously as the core engine is currently sync,
-        // but the runner method is async to support future async engine/storage.
-        const result = runDecision(spec, options);
+        // 2. Engine Execution (with Caching)
+        // Generate deterministic cache key
+        const cKey = globalCache.generateKey(
+            cacheKey(spec),
+            JSON.stringify({
+                depth: options?.depth,
+                pruning: options?.pruning,
+                useQuantEngine: options?.useQuantEngine
+            })
+        );
+
+        let result: DecisionResult;
+        const cached = globalCache.get(cKey);
+
+        if (cached) {
+            result = {
+                ...cached.result,
+                performance: {
+                    cacheHit: true,
+                    stageTimings: cached.result.performance?.stageTimings
+                },
+                // For cache hits, wall time is negligible, but we preserve computational cost metrics
+                usage: {
+                    ...cached.result.usage!,
+                    wallMs: 0
+                }
+            };
+        } else {
+            const start = Date.now();
+            result = runDecision(spec, options);
+            const duration = Date.now() - start;
+
+            // Enrich with performance metrics
+            result.performance = {
+                cacheHit: false,
+                stageTimings: { total: duration }
+            };
+
+            // Cache if successful and complete
+            if (result.status === "completed") {
+                globalCache.set(cKey, result);
+            }
+        }
 
         // 3. KPI Integration
         if (this.kpiIntegration.isInitialized) {
