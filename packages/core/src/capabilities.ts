@@ -1,5 +1,3 @@
-import { minimatch } from "minimatch";
-
 /**
  * Granular capabilities for untrusted code (agents/plugins).
  */
@@ -52,10 +50,15 @@ function implies(grant: Capability, required: Capability): boolean {
     // Exact match
     if (grant.resource === required.resource) return true;
 
-    // Glob matching for resources
-    // Note: We use minimatch for fs and mcp.
-    // For net, we might want simpler host matching, but globs work for "*.google.com" too.
-    return minimatch(required.resource, grant.resource);
+    // Glob matching for resources with support for '*' wildcards.
+    return wildcardMatch(required.resource, grant.resource);
+}
+
+function wildcardMatch(value: string, pattern: string): boolean {
+    const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+    const regexPattern = `^${escaped.replace(/\*/g, ".*")}$`;
+
+    return new RegExp(regexPattern).test(value);
 }
 
 /**

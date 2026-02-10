@@ -3,11 +3,7 @@
   "compilerOptions": {
     "outDir": "./dist",
     "strictNullChecks": false,
-    "exactOptionalPropertyTypes": false,
-    "baseUrl": ".",
-    "paths": {
-      "@zeo/contracts": ["../contracts/dist"]
-    }
+    "exactOptionalPropertyTypes": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

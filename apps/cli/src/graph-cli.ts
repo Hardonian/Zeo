@@ -92,7 +92,9 @@ export async function runGraphCommand(argv: string[]): Promise<number> {
             try {
                 const env = loadEnvelopeFromFile(resolve(cwd, targetHash));
                 hash = env.transcript_hash;
-            } catch (e) { }
+            } catch {
+                // If not a valid envelope file, treat input as a transcript hash.
+            }
         }
 
         const impacted = getBlastRadius(graph, hash);
