@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 import type {
   Action,
   BranchEdge,
@@ -89,11 +89,11 @@ function negotiationHeuristicBranches(action: Action): Array<{ label: string; p:
 }
 
 function createNode(label: string, kind: BranchNode["kind"], notes: string[], deps: Claim[] = []): BranchNode {
-  return { id: nanoid(), label, kind, notes, dependencies: deps };
+  return { id: generateId(), label, kind, notes, dependencies: deps };
 }
 
 function createEdge(from: string, to: string, actionId: string | undefined, p: ProbabilityInterval | undefined, notes: string[]): BranchEdge {
-  return { id: nanoid(), from, to, actionId, probability: p, notes };
+  return { id: generateId(), from, to, actionId, probability: p, notes };
 }
 
 export function generateBranchGraph(spec: DecisionSpec, heuristics: BranchHeuristics = defaultHeuristics): BranchGraph {
@@ -135,7 +135,7 @@ export function generateBranchGraph(spec: DecisionSpec, heuristics: BranchHeuris
   }
 
   return {
-    id: nanoid(),
+    id: generateId(),
     decisionId: spec.id,
     createdAt: nowISO(),
     nodes,
@@ -236,7 +236,7 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
 
   // Initial minimal graph for partial results
   let graph: BranchGraph = {
-    id: nanoid(),
+    id: generateId(),
     decisionId: spec.id,
     createdAt: nowISO(),
     nodes: [createNode(spec.title, "state", [spec.context], [])],

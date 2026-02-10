@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 import type { DecisionSpec, BranchGraph } from "@zeo/contracts";
 import { InMemoryStorageAdapter } from "../src/storage";
 import { DecisionMemoryManager } from "../src/manager";
@@ -15,24 +15,24 @@ describe("DecisionMemoryManager", () => {
   });
 
   const createMockSpec = (): DecisionSpec => ({
-    id: nanoid(),
+    id: generateId(),
     title: "Test Decision",
     context: "Test context",
     createdAt: new Date().toISOString(),
     horizon: "days",
-    agents: [{ id: nanoid(), name: "Test Agent", role: "self" }],
-    actions: [{ id: nanoid(), label: "Test Action", actorId: "agent1", kind: "communicate" }],
+    agents: [{ id: generateId(), name: "Test Agent", role: "self" }],
+    actions: [{ id: generateId(), label: "Test Action", actorId: "agent1", kind: "communicate" }],
     constraints: [],
     assumptions: [
-      { id: nanoid(), text: "Test assumption", status: "assumption", confidence: "medium", tags: ["test"] },
+      { id: generateId(), text: "Test assumption", status: "assumption", confidence: "medium", tags: ["test"] },
     ],
   });
 
   const createMockGraph = (decisionId: string): BranchGraph => ({
-    id: nanoid(),
+    id: generateId(),
     decisionId,
     createdAt: new Date().toISOString(),
-    nodes: [{ id: nanoid(), label: "Root", kind: "state", notes: [], dependencies: [] }],
+    nodes: [{ id: generateId(), label: "Root", kind: "state", notes: [], dependencies: [] }],
     edges: [],
   });
 

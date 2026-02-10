@@ -1,5 +1,5 @@
 import type { ScenarioDraft, DecisionDraftRecord, DecisionDraftStatus, DecisionDraftSource } from "@zeo/contracts";
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 
 export interface InboxStorage {
   createDraft(scenario: ScenarioDraft, source: DecisionDraftSource): Promise<DecisionDraftRecord>;
@@ -65,7 +65,7 @@ export function createLocalStorageAdapter(): InboxStorage {
     async createDraft(scenario: ScenarioDraft, source: DecisionDraftSource): Promise<DecisionDraftRecord> {
       const drafts = getFromStorage();
       const now = new Date().toISOString();
-      const draftId = nanoid();
+      const draftId = generateId();
       const checksum = scenario.summary + scenario.titleSuggestion;
       
       const record: DecisionDraftRecord = {
@@ -168,7 +168,7 @@ export function createLocalStorageAdapter(): InboxStorage {
         ...draft,
         status: "promoted",
         promotion: {
-          decisionId: nanoid(),
+          decisionId: generateId(),
           promotedAt: options.promotedAt,
           ...(options.targetPath ? { targetPath: options.targetPath } : {}),
         },
@@ -192,7 +192,7 @@ export function createMemoryAdapter(): InboxStorage {
 
   return {
     async createDraft(scenario: ScenarioDraft, source: DecisionDraftSource): Promise<DecisionDraftRecord> {
-      const draftId = nanoid();
+      const draftId = generateId();
       const now = new Date().toISOString();
       const checksum = scenario.summary + scenario.titleSuggestion;
       
@@ -290,7 +290,7 @@ export function createMemoryAdapter(): InboxStorage {
         ...draft,
         status: "promoted",
         promotion: {
-          decisionId: nanoid(),
+          decisionId: generateId(),
           promotedAt: options.promotedAt,
           ...(options.targetPath ? { targetPath: options.targetPath } : {}),
         },

@@ -5,7 +5,7 @@ import type { DecisionSpec } from "@zeo/contracts";
 
 describe("hashing", () => {
   it("produces stable hash for identical DecisionSpec", () => {
-    // makeNegotiationExample uses nanoid for IDs and Date.now for timestamps,
+    // makeNegotiationExample uses generated IDs and Date.now for timestamps,
     // so two calls produce different IDs/times. But hashing ignores those fields.
     // We need to test with a fixed spec.
     const spec1 = makeNegotiationExample();

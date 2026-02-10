@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 import { pruneGraph, defaultPruningConfig } from "./pruning.js";
 import { generateFlipConditions } from "./flip-conditions.js";
 import { QuantEngine } from "./quant-engine.js";
@@ -60,10 +60,10 @@ function negotiationHeuristicBranches(action) {
     return common;
 }
 function createNode(label, kind, notes, deps = []) {
-    return { id: nanoid(), label, kind, notes, dependencies: deps };
+    return { id: generateId(), label, kind, notes, dependencies: deps };
 }
 function createEdge(from, to, actionId, p, notes) {
-    return { id: nanoid(), from, to, actionId, probability: p, notes };
+    return { id: generateId(), from, to, actionId, probability: p, notes };
 }
 export function generateBranchGraph(spec, heuristics = defaultHeuristics) {
     requireProvenanceForFacts(spec.constraints.map(c => ({ id: c.id, text: `${c.name}: ${c.value}`, status: c.status, confidence: "high", provenance: c.provenance, tags: ["constraint"] })));
@@ -98,7 +98,7 @@ export function generateBranchGraph(spec, heuristics = defaultHeuristics) {
         }
     }
     return {
-        id: nanoid(),
+        id: generateId(),
         decisionId: spec.id,
         createdAt: nowISO(),
         nodes,

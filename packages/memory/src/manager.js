@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 /**
  * DecisionMemoryManager - Central coordinator for decision persistence.
  *
@@ -20,7 +20,7 @@ export class DecisionMemoryManager {
     async recordDecision(spec, branchGraph, selectedActionId, selectedBranchId, options) {
         const now = new Date().toISOString();
         const branchRecord = {
-            id: nanoid(),
+            id: generateId(),
             decisionId: spec.id,
             selectedActionId,
             selectedBranchId,
@@ -61,7 +61,7 @@ export class DecisionMemoryManager {
     async recordOutcome(decisionId, branchId, options) {
         const now = new Date().toISOString();
         const outcome = {
-            id: nanoid(),
+            id: generateId(),
             decisionId,
             branchId,
             recordedAt: now,

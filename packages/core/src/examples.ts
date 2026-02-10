@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 import type { Action, Agent, Claim, DecisionSpec } from "@zeo/contracts";
 
 /**
@@ -13,33 +13,33 @@ function nowISO(): string {
 }
 
 export function makeNegotiationExample(): DecisionSpec {
-  const self: Agent = { id: nanoid(), name: "You", role: "self" };
-  const other: Agent = { id: nanoid(), name: "Counterparty", role: "counterparty" };
+  const self: Agent = { id: generateId(), name: "You", role: "self" };
+  const other: Agent = { id: generateId(), name: "Counterparty", role: "counterparty" };
 
   const actions: Action[] = [
-    { id: nanoid(), label: "Propose revised terms (reduce exclusivity, add termination flexibility)", actorId: self.id, kind: "change_terms" },
-    { id: nanoid(), label: "Ask clarifying question about timeline and approvals", actorId: self.id, kind: "verify" },
-    { id: nanoid(), label: "Accept as-is to secure deal quickly", actorId: self.id, kind: "commit" },
-    { id: nanoid(), label: "Delay decision pending internal review", actorId: self.id, kind: "delay" },
+    { id: generateId(), label: "Propose revised terms (reduce exclusivity, add termination flexibility)", actorId: self.id, kind: "change_terms" },
+    { id: generateId(), label: "Ask clarifying question about timeline and approvals", actorId: self.id, kind: "verify" },
+    { id: generateId(), label: "Accept as-is to secure deal quickly", actorId: self.id, kind: "commit" },
+    { id: generateId(), label: "Delay decision pending internal review", actorId: self.id, kind: "delay" },
   ];
 
   const assumptions: Claim[] = [
     {
-      id: nanoid(),
+      id: generateId(),
       text: "Counterparty is more sensitive to timeline than to price.",
       status: "assumption",
       confidence: "medium",
       tags: ["counterparty", "timeline"],
     },
     {
-      id: nanoid(),
+      id: generateId(),
       text: "Exclusivity is a bargaining anchor rather than a strict requirement.",
       status: "assumption",
       confidence: "low",
       tags: ["terms", "exclusivity"],
     },
     {
-      id: nanoid(),
+      id: generateId(),
       text: "A brief delay will not materially reduce trust or momentum.",
       status: "belief",
       confidence: "medium",
@@ -49,7 +49,7 @@ export function makeNegotiationExample(): DecisionSpec {
   ];
 
   return {
-    id: nanoid(),
+    id: generateId(),
     title: "Negotiate exclusivity vs flexibility for a 12-month agreement",
     context:
       "You are negotiating a 12-month agreement. Counterparty requested exclusivity. You want flexibility and safe termination terms. Stakes: revenue and long-term optionality.",
@@ -58,8 +58,8 @@ export function makeNegotiationExample(): DecisionSpec {
     agents: [self, other],
     actions,
     constraints: [
-      { id: nanoid(), name: "Decision deadline", value: "Within 7 days", status: "belief" },
-      { id: nanoid(), name: "Budget constraint", value: "Must remain within internal pricing band", status: "assumption" },
+      { id: generateId(), name: "Decision deadline", value: "Within 7 days", status: "belief" },
+      { id: generateId(), name: "Budget constraint", value: "Must remain within internal pricing band", status: "assumption" },
     ],
     assumptions,
     objectives: [],
@@ -67,19 +67,19 @@ export function makeNegotiationExample(): DecisionSpec {
 }
 
 export function makeOpsExample(): DecisionSpec {
-  const self: Agent = { id: nanoid(), name: "Incident lead", role: "self" };
-  const system: Agent = { id: nanoid(), name: "Production system", role: "system" };
+  const self: Agent = { id: generateId(), name: "Incident lead", role: "self" };
+  const system: Agent = { id: generateId(), name: "Production system", role: "system" };
 
   const actions: Action[] = [
-    { id: nanoid(), label: "Roll back recent deployment", actorId: self.id, kind: "commit" },
-    { id: nanoid(), label: "Verify database saturation and connection pool", actorId: self.id, kind: "verify" },
-    { id: nanoid(), label: "Escalate to vendor / SRE", actorId: self.id, kind: "escalate" },
-    { id: nanoid(), label: "Delay and monitor for 10 minutes", actorId: self.id, kind: "delay" },
+    { id: generateId(), label: "Roll back recent deployment", actorId: self.id, kind: "commit" },
+    { id: generateId(), label: "Verify database saturation and connection pool", actorId: self.id, kind: "verify" },
+    { id: generateId(), label: "Escalate to vendor / SRE", actorId: self.id, kind: "escalate" },
+    { id: generateId(), label: "Delay and monitor for 10 minutes", actorId: self.id, kind: "delay" },
   ];
 
   const assumptions: Claim[] = [
     {
-      id: nanoid(),
+      id: generateId(),
       text: "The incident is correlated with the most recent deployment.",
       status: "belief",
       confidence: "medium",
@@ -87,7 +87,7 @@ export function makeOpsExample(): DecisionSpec {
       tags: ["ops", "change"],
     },
     {
-      id: nanoid(),
+      id: generateId(),
       text: "Rollback will restore service quickly with low side effects.",
       status: "assumption",
       confidence: "low",
@@ -96,7 +96,7 @@ export function makeOpsExample(): DecisionSpec {
   ];
 
   return {
-    id: nanoid(),
+    id: generateId(),
     title: "Stabilize production latency spike during peak traffic",
     context:
       "Latency spiked during peak traffic. Users are impacted. Evidence is incomplete and time is limited. Goal: reduce user impact and preserve auditability.",
@@ -105,7 +105,7 @@ export function makeOpsExample(): DecisionSpec {
     agents: [self, system],
     actions,
     constraints: [
-      { id: nanoid(), name: "Peak traffic window", value: "Next 2 hours", status: "fact", provenance: [{ kind: "text", sourceId: "ops-note", offset: 0, length: 18, capturedAt: nowISO(), checksum: "sha256:example" }] },
+      { id: generateId(), name: "Peak traffic window", value: "Next 2 hours", status: "fact", provenance: [{ kind: "text", sourceId: "ops-note", offset: 0, length: 18, capturedAt: nowISO(), checksum: "sha256:example" }] },
     ],
     assumptions,
     objectives: [],

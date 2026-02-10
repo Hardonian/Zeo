@@ -1,5 +1,5 @@
 import type { DecisionSpec, Scenario, UUID } from "@zeo/contracts";
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 
 /**
  * ScenarioLibrary: Manages saving, loading, and versioning of decision scenarios.
@@ -13,7 +13,7 @@ export class ScenarioLibrary {
     }
 
     saveScenario(spec: DecisionSpec, name: string, description: string): Scenario {
-        const id = nanoid() as UUID;
+        const id = generateId() as UUID;
         const scenario: Scenario = {
             id,
             name,
@@ -40,7 +40,7 @@ export class ScenarioLibrary {
 
     createTemplate(name: string, type: "investment" | "hiring" | "crisis"): DecisionSpec {
         const baseSpec: DecisionSpec = {
-            id: nanoid() as UUID,
+            id: generateId() as UUID,
             title: `${name} Analysis`,
             context: `Analyzing ${name} for strategic impact.`,
             horizon: "weeks",
@@ -57,25 +57,25 @@ export class ScenarioLibrary {
                 return {
                     ...baseSpec,
                     objectives: [
-                        { id: nanoid() as UUID, metric: "ROI", target: 0.15, weight: 0.8 },
-                        { id: nanoid() as UUID, metric: "Capital Risk", target: 0.2, weight: 0.5 },
+                        { id: generateId() as UUID, metric: "ROI", target: 0.15, weight: 0.8 },
+                        { id: generateId() as UUID, metric: "Capital Risk", target: 0.2, weight: 0.5 },
                     ],
                 };
             case "hiring":
                 return {
                     ...baseSpec,
                     objectives: [
-                        { id: nanoid() as UUID, metric: "Team Performance Gap", weight: 0.9 },
-                        { id: nanoid() as UUID, metric: "Personnel Budget", weight: 0.6 },
+                        { id: generateId() as UUID, metric: "Team Performance Gap", weight: 0.9 },
+                        { id: generateId() as UUID, metric: "Personnel Budget", weight: 0.6 },
                     ],
                 };
             case "crisis":
                 return {
                     ...baseSpec,
                     objectives: [
-                        { id: nanoid() as UUID, metric: "Public Safety", weight: 1.0 },
-                        { id: nanoid() as UUID, metric: "Brand Continuity", weight: 0.7 },
-                        { id: nanoid() as UUID, metric: "Operational Loss", weight: 0.8 },
+                        { id: generateId() as UUID, metric: "Public Safety", weight: 1.0 },
+                        { id: generateId() as UUID, metric: "Brand Continuity", weight: 0.7 },
+                        { id: generateId() as UUID, metric: "Operational Loss", weight: 0.8 },
                     ],
                 };
             default:

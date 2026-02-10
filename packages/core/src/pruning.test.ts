@@ -3,7 +3,7 @@ import { pruneGraph, defaultPruningConfig } from "./pruning.js";
 import { generateBranchGraph } from "./engine.js";
 import { makeNegotiationExample } from "./examples.js";
 import type { BranchGraph, BranchNode, BranchEdge } from "@zeo/contracts";
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 
 function makeLinearGraph(depth: number): BranchGraph {
   const nodes: BranchNode[] = [];
@@ -26,7 +26,7 @@ function makeLinearGraph(depth: number): BranchGraph {
     }
   }
   return {
-    id: nanoid(),
+    id: generateId(),
     decisionId: "test",
     createdAt: new Date().toISOString(),
     nodes,
