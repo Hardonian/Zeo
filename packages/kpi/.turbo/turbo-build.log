@@ -1,0 +1,4 @@
+
+> @zeo/kpi@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\kpi
+> tsc -p tsconfig.build.json
+

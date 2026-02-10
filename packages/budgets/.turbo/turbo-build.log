@@ -1,0 +1,4 @@
+
+> @zeo/budgets@0.5.3 build C:\Users\scott\Documents\GitHub\Zeo\packages\budgets
+> tsc -p tsconfig.build.json
+

@@ -245,6 +245,33 @@ async function runDecisionInWorkspace(
     logicalTimestamp: Date.now()
   });
 
+  // Signing integration
+  const defaultKeyPath = join(zeoRoot(), "keys", "id_ed25519.pem");
+  let envelopePathOut: string | undefined;
+
+  if (existsSync(defaultKeyPath)) {
+    // Create and sign envelope
+    const envelope = core.createEnvelope(transcript, { created_by: "zeo-cli" });
+    const signedEnvelope = core.signEnvelopeWithEd25519(
+      envelope,
+      defaultKeyPath,
+      "zeo.transcript.signature.v1"
+    );
+
+    // Save envelope
+    const envelopeDir = join(decisionsRoot(), ws.decisionId, "envelopes");
+    if (!existsSync(envelopeDir)) mkdirSync(envelopeDir, { recursive: true });
+
+    const envFileName = `${transcript.transcript_hash}.envelope.json`;
+    envelopePathOut = join(envelopeDir, envFileName);
+    writeFileSync(envelopePathOut, `${JSON.stringify(signedEnvelope, null, 2)}\n`, "utf8");
+    console.log(`Signed transcript with key: ${defaultKeyPath}`);
+    console.log(`Envelope saved to: ${envelopePathOut}`);
+  } else {
+    console.log("No signing key found. Transcript unsigned.");
+  }
+
+
   const robustActions = result.evaluations.find(e => e.lens === "robustness")?.robustActions || [];
   const recommendedAction = robustActions.length > 0
     ? `Action(s) ${robustActions.join(", ")} are robust.`
@@ -275,7 +302,7 @@ async function runDecisionInWorkspace(
       nextSteps: result.nextBestEvidence.slice(0, 3).map(item => item.prompt),
       stopConditions: transcript.plan.stop_conditions,
     },
-    signatureStatus: envelopePath && existsSync(resolve(envelopePath)) ? "signed" : "unsigned",
+    signatureStatus: (envelopePathOut || (envelopePath && existsSync(resolve(envelopePath)))) ? "signed" : "unsigned",
     dependsOn: transcript.depends_on ?? [],
     informs: transcript.informs ?? [],
     decaySummary: decay,

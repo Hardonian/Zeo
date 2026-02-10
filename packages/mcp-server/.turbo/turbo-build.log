@@ -1,0 +1,4 @@
+
+> @zeo/mcp-server@1.4.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\mcp-server
+> tsc -p tsconfig.build.json
+

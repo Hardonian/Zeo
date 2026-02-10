@@ -1,0 +1,4 @@
+
+> @zeo/reality@0.7.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\reality
+> tsc -p tsconfig.build.json
+

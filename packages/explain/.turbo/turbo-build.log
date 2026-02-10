@@ -1,0 +1,4 @@
+
+> @zeo/explain@0.3.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\explain
+> tsc -p tsconfig.build.json
+

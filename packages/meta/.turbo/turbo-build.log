@@ -1,0 +1,4 @@
+
+> @zeo/meta@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\meta
+> tsc -p tsconfig.build.json
+

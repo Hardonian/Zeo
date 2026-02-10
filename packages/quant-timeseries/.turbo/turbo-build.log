@@ -1,0 +1,4 @@
+
+> @zeo/quant-timeseries@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\quant-timeseries
+> tsc -p tsconfig.build.json
+

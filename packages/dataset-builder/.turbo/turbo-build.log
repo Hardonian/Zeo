@@ -1,0 +1,4 @@
+
+> @zeo/dataset-builder@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\dataset-builder
+> tsc -p tsconfig.build.json
+

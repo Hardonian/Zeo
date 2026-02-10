@@ -40,7 +40,6 @@
     "@zeo/meta": "workspace:*",
     "@zeo/models": "workspace:*",
     "@zeo/regimes": "workspace:*",
-    "@zeo/replay": "workspace:*",
     "@zeo/repro-pack": "workspace:*",
     "@zeo/robustness": "workspace:*",
     "@zeo/rsl": "workspace:*",

@@ -1,9 +1,33 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
-    "typecheck": { "dependsOn": ["^typecheck"], "outputs": [] },
-    "test": { "dependsOn": ["^test"], "outputs": ["coverage/**"] },
-    "lint": { "dependsOn": ["^lint"], "outputs": [] },
-    "build": { "dependsOn": ["^build"], "outputs": ["dist/**"] }
+  "tasks": {
+    "typecheck": {
+      "dependsOn": [
+        "^typecheck"
+      ],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": [
+        "^test"
+      ],
+      "outputs": [
+        "coverage/**"
+      ]
+    },
+    "lint": {
+      "dependsOn": [
+        "^lint"
+      ],
+      "outputs": []
+    },
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
+    }
   }
 }

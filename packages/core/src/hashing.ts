@@ -21,13 +21,39 @@ export function computeTranscriptHash(input: any): string {
   return createHash("sha256").update(encodeCanonicalJson(input)).digest("hex");
 }
 
+function normalizeDecisionSpec(spec: DecisionSpec): Record<string, unknown> {
+  const { id, createdAt, agents, actions, constraints, assumptions, ...rest } = spec;
+
+  return {
+    ...rest,
+    agents: agents.map(({ id, ...a }) => a),
+    actions: actions.map(({ id, actorId, ...a }) => a),
+    constraints: constraints.map(({ id, ...c }) => c),
+    assumptions: assumptions.map(({ id, ...a }) => a)
+  };
+}
+
 export function hashDecisionSpec(spec: DecisionSpec): string {
-  // Use canonical JSON encoding
-  return createHash("sha256").update(encodeCanonicalJson(spec)).digest("hex");
+  const normalized = normalizeDecisionSpec(spec);
+  return createHash("sha256").update(encodeCanonicalJson(normalized)).digest("hex");
 }
 
 export function hashAssumptionSet(assumptions: (Assumption | Claim)[]): string {
-  const sorted = sortAssumptions(assumptions);
+  // Strip IDs for stable hashing
+  const localized = assumptions.map((a) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, ...rest } = a as any;
+    return rest;
+  });
+
+  // Sort by canonical JSON string to ensure order independence without relying on IDs
+  // Since we stripped IDs, we must rely on content for sorting.
+  const sorted = localized.sort((a, b) => {
+    const jsonA = encodeCanonicalJson(a).toString("utf8");
+    const jsonB = encodeCanonicalJson(b).toString("utf8");
+    return jsonA.localeCompare(jsonB);
+  });
+
   return createHash("sha256").update(encodeCanonicalJson(sorted)).digest("hex");
 }
 

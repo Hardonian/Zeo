@@ -1,0 +1,4 @@
+
+> @zeo/core@0.3.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\core
+> tsc -p tsconfig.build.json
+

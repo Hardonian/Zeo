@@ -1,0 +1,4 @@
+
+> @zeo/memory@0.3.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\memory
+> tsc -p tsconfig.build.json
+

@@ -1,0 +1,4 @@
+
+> @zeo/replay@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\replay
+> tsc -p tsconfig.build.json
+

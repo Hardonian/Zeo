@@ -9,26 +9,40 @@ export interface SecretMatch {
 }
 
 const PATTERNS: Array<{ kind: string; regex: RegExp }> = [
-    { kind: "OpenAI API Key", regex: /sk-[a-zA-Z0-9]{48}/ },
-    { kind: "Anthropic API Key", regex: /sk-ant-[a-zA-Z0-9]{48}/ },
-    { kind: "GitHub Token", regex: /gh[pousr]-[a-zA-Z0-9]{36}/ },
-    { kind: "AWS Access Key", regex: /AKIA[0-9A-Z]{16}/ },
-    { kind: "Slack Token", regex: /xox[baprs]-[a-zA-Z0-9-]{10,}/ },
-    { kind: "Generic Private Key", regex: /-----BEGIN PRIVATE KEY-----/ },
-    { kind: "Generic API Key (assignment)", regex: /(?:api_key|access_token|secret_key)\s*[:=]\s*["']?([a-zA-Z0-9-_.]{16,})["']?/i },
-    { kind: "Bearer Token", regex: /Bearer\s+[a-zA-Z0-9-_.]+/i }
+    { kind: "OpenAI API Key (Legacy)", regex: /sk-[a-zA-Z0-9]{32,}/g },
+    { kind: "OpenAI Project Key", regex: /sk-proj-[a-zA-Z0-9-]{32,}/g },
+    { kind: "Anthropic API Key", regex: /sk-ant-api03-[a-zA-Z0-9-]{32,}/g },
+    { kind: "GitHub Token", regex: /gh[pousr]_[a-zA-Z0-9]{36,}/g },
+    { kind: "AWS Access Key", regex: /AKIA[0-9A-Z]{16}/g },
+    { kind: "AWS Secret Key", regex: /(?:AWS|aws)_?(?:SECRET|secret)_?(?:ACCESS|access)_?(?:KEY|key)(?:\s*[:=]\s*|\s+)["']?([A-Za-z0-9/+=]{40})["']?/g },
+    { kind: "Slack Token", regex: /xox[baprs]-[a-zA-Z0-9-]{10,}/g },
+    { kind: "Google API Key", regex: /AIza[0-9A-Za-z-_]{35}/g },
+    { kind: "Stripe Secret Key", regex: /sk_live_[0-9a-zA-Z]{24,}/g },
+    { kind: "Square Access Token", regex: /sq0atp-[0-9A-Za-z\-_]{22}/g },
+    { kind: "Generic Private Key", regex: /-----BEGIN [A-Z ]+ PRIVATE KEY-----/g },
+    // Use capture group 1 for the secret value in generic matches
+    { kind: "Generic API Key (assignment)", regex: /(?:api_key|access_token|secret_key)(?:\s*[:=]\s*|\s+)["']?([a-zA-Z0-9-_\.]{16,})["']?/gi },
+    { kind: "Bearer Token", regex: /Bearer\s+([a-zA-Z0-9-_\.]+)/gi }
 ];
 
 export function scanForSecrets(text: string): SecretMatch[] {
     const matches: SecretMatch[] = [];
 
     for (const { kind, regex } of PATTERNS) {
-        const found = text.match(regex);
-        if (found) {
+        // Reset lastIndex for stateful global regexes
+        regex.lastIndex = 0;
+
+        const iter = text.matchAll(regex);
+        for (const match of iter) {
+            // For generic patterns with capture groups, the secret is in group 1 if present.
+            // Otherwise use group 0.
+            // We prioritize group 1 if it exists and is not undefined.
+            const secretValue = match[1] !== undefined ? match[1] : match[0];
+
             matches.push({
                 kind,
-                match: found[0], // In a real implementations, try NOT to return the full secret, just a redacted version or location
-                index: found.index ?? -1
+                match: secretValue,
+                index: match.index ?? -1
             });
         }
     }

@@ -23,6 +23,7 @@ export {
 export * from "./graph.js";
 export type { RunMeta } from "./packets.js";
 export {
+  computeTranscriptHash,
   hashDecisionSpec,
   hashAssumptionSet,
   cacheKey,
@@ -67,4 +68,3 @@ export {
 // and type incompatibility issues. Import directly from packages instead.
 
 export * from "./transcript-security.js";
-export { computeTranscriptHash as computeSecurityTranscriptHash } from "./transcript-security.js";

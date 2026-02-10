@@ -1,0 +1,4 @@
+
+> @zeo/adapters@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\adapters
+> tsc -p tsconfig.build.json
+

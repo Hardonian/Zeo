@@ -1,0 +1,4 @@
+
+> @zeo/hypothesis-market@0.5.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\hypothesis-market
+> tsc -p tsconfig.build.json
+

@@ -1,0 +1,4 @@
+
+> @zeo/game@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\game
+> tsc -p tsconfig.build.json
+

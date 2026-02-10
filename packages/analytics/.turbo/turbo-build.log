@@ -1,0 +1,4 @@
+
+> @zeo/analytics@0.3.3 build C:\Users\scott\Documents\GitHub\Zeo\packages\analytics
+> tsc -p tsconfig.build.json
+

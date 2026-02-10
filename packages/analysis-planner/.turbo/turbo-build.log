@@ -1,0 +1,4 @@
+
+> @zeo/analysis-planner@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\analysis-planner
+> tsc -p tsconfig.build.json
+
