@@ -39,6 +39,13 @@ export {
   type ActionScore,
 } from "./decision-coupling.js";
 
+// Capabilities / Permissions
+export * from "./capabilities.js";
+export * from "./limits.js";
+export * from "./canonical-json.js";
+export * from "./agent-manifest.js";
+export * from "./migrations.js";
+
 // Runner - orchestrated execution
 export { ZeoRunner, type ZeoRunnerConfig } from "./runner.js";
 

@@ -18,6 +18,8 @@ interface TranscriptSecurityModule {
   signEnvelopeWithEd25519: typeof import("@zeo/core").signEnvelopeWithEd25519;
   verifyEnvelope: typeof import("@zeo/core").verifyEnvelope;
   verifyTranscriptChain: typeof import("@zeo/core").verifyTranscriptChain;
+  migrateTranscript: typeof import("@zeo/core").migrateTranscript;
+  migrateEnvelope: typeof import("@zeo/core").migrateEnvelope;
 }
 
 type ConditionalObjection = {
@@ -92,7 +94,30 @@ export async function runTranscriptCommand(argv: string[]): Promise<number> {
       signEnvelopeWithEd25519,
       verifyEnvelope,
       verifyTranscriptChain,
+      migrateTranscript,
+      migrateEnvelope,
     } = mod;
+
+    if (entity === "transcript" && action === "migrate") {
+      const input = argv[2];
+      const type = argv[3]; // "transcript" or "envelope"
+      const version = argv[4] ?? "1.0.0";
+
+      if (!input || !type) throw new Error("Usage: zeo transcript migrate <file.json> <type:transcript|envelope> [version]");
+
+      const content = JSON.parse(readFileSync(resolve(input), "utf8"));
+      let migrated;
+      if (type === "transcript") {
+        migrated = migrateTranscript(content, version);
+      } else if (type === "envelope") {
+        migrated = migrateEnvelope(content, version === "1.0.0" ? "1" : version);
+      } else {
+        throw new Error("Type must be transcript or envelope");
+      }
+
+      process.stdout.write(`${JSON.stringify(migrated, null, 2)}\n`);
+      return 0;
+    }
 
     if (entity === "keygen") {
       const keyPath = value(argv, "--out") ?? join(process.cwd(), ".zeo", "keys", "id_ed25519.pem");

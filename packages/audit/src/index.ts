@@ -1,6 +1,9 @@
 import type { AuditEntry } from "@zeo/contracts";
 import { nanoid } from "nanoid";
 
+export * from "./secrets.js";
+export * from "./scanner.js";
+
 export interface AuditConfig {
   storageType: "filesystem" | "memory";
   basePath?: string;
@@ -258,4 +261,3 @@ export function createPolicyAuditEntry(
     notes,
   };
 }
-

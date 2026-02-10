@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import type { DecisionResult, DecisionSpec, FinalizedDecisionTranscript, LensEvaluation, DecisionTranscript, TranscriptAgentRecord, EvidenceEvent } from "@zeo/contracts";
 import { runDecision, type RunDecisionOpts } from "./engine.js";
 import { VERSION_INFO } from "./version.js";
+import { encodeCanonicalJson } from "./canonical-json.js";
 
 export type ExecuteDecisionInput = {
   spec: DecisionSpec;
@@ -31,7 +32,7 @@ function stableStringify(value: unknown): string {
 }
 
 export function computeStableHash(value: unknown): string {
-  return createHash("sha256").update(stableStringify(value)).digest("hex");
+  return createHash("sha256").update(encodeCanonicalJson(value)).digest("hex");
 }
 
 export function computeTranscriptHash(transcript: DecisionTranscript): string {
