@@ -18,6 +18,7 @@ export {
   finalizeDecisionTranscript,
   executeDecision,
   verifyDecisionTranscript,
+  computeTranscriptHash as computeDecisionTranscriptHash,
 } from "./transcript.js";
 export * from "./graph.js";
 export type { RunMeta } from "./packets.js";

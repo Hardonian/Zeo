@@ -3,6 +3,7 @@ import type { DecisionResult, DecisionSpec, FinalizedDecisionTranscript, LensEva
 import { runDecision, type RunDecisionOpts } from "./engine.js";
 import { VERSION_INFO } from "./version.js";
 import { encodeCanonicalJson } from "./canonical-json.js";
+import { computeTranscriptHash } from "./hashing.js";
 
 export type ExecuteDecisionInput = {
   spec: DecisionSpec;
@@ -32,12 +33,10 @@ function stableStringify(value: unknown): string {
 }
 
 export function computeStableHash(value: unknown): string {
-  return createHash("sha256").update(encodeCanonicalJson(value)).digest("hex");
+  return computeTranscriptHash(value);
 }
 
-export function computeTranscriptHash(transcript: DecisionTranscript): string {
-  return computeStableHash(transcript);
-}
+export { computeTranscriptHash };
 
 export type ReplayNormalizedTranscript = {
   outcome: DecisionTranscript["outcome"];

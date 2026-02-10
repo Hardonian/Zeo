@@ -7,6 +7,7 @@ import {
   verify as cryptoVerify,
 } from "node:crypto";
 import { encodeCanonicalJson } from "./canonical-json.js";
+import { computeTranscriptHash } from "./hashing.js";
 import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 
@@ -121,9 +122,7 @@ export function canonicalTranscriptBytes(input: Record<string, unknown>): Uint8A
   return encodeCanonicalJson(input);
 }
 
-export function computeTranscriptHash(input: Record<string, unknown>): string {
-  return createHash("sha256").update(encodeCanonicalJson(input)).digest("hex");
-}
+export { computeTranscriptHash };
 
 function signingPayload(transcriptHash: string, envelopeVersion: string, signingContext: string): Buffer {
   return Buffer.from(`${signingContext}\n${envelopeVersion}\n${transcriptHash}`, "utf8");
