@@ -36,6 +36,20 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
     setViolations([]);
   };
 
+  const updateStagedConstraint = (nameKey: string, value: string) => {
+    setStagedConstraints(prev => {
+      const index = prev.findIndex(c => c.name.toLowerCase().includes(nameKey.toLowerCase()));
+      if (index !== -1) {
+        const next = [...prev];
+        next[index] = { ...next[index], value };
+        return next;
+      } else {
+        // Add new if not found
+        return [...prev, { id: crypto.randomUUID(), name: nameKey, value, status: 'assumption' }];
+      }
+    });
+  };
+
   const handleRunDecision = async () => {
     if (!decision) return;
 
@@ -203,11 +217,8 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
                       type="number"
                       className="w-full border border-gray-300 rounded p-1.5 text-sm"
                       placeholder="Enter amount..."
-                      onChange={(e) => {
-                        // Simplified constraint update logic (mock)
-                        // In real usage, this would find/replace specialized constraint objects
-                        console.log("Updated max cost:", e.target.value);
-                      }}
+                      defaultValue={extractBudgetConstraints({ constraints: stagedConstraints } as any).maxCost?.amount || ''}
+                      onChange={(e) => updateStagedConstraint('Max Cost', `${e.target.value} USD`)}
                     />
                     <span className="text-[10px] text-gray-400">Unit: USD (default)</span>
                   </div>
@@ -217,9 +228,8 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
                       type="number"
                       className="w-full border border-gray-300 rounded p-1.5 text-sm"
                       placeholder="Enter hours..."
-                      onChange={(e) => {
-                        console.log("Updated max duration:", e.target.value);
-                      }}
+                      defaultValue={extractBudgetConstraints({ constraints: stagedConstraints } as any).maxDuration?.amount || ''}
+                      onChange={(e) => updateStagedConstraint('Max Duration', `${e.target.value} hours`)}
                     />
                   </div>
                 </div>
@@ -245,27 +255,19 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
             {step === 3 && (
               <div className="space-y-4">
                 <h4 className="text-sm font-semibold text-gray-700">Review & Diff</h4>
-                {result ? (
-                  <div className="bg-blue-50 p-3 rounded text-xs font-mono border border-blue-100">
-                    <p className="font-bold text-blue-800 mb-2 uppercase tracking-wide">Changes from last run</p>
-                    {(() => {
-                      const diff = deepDiff(result.assumptions || [], stagedAssumptions);
-                      return diff.length ? (
-                        <ul className="space-y-1">
-                          {diff.map((d: any, i: number) => (
-                            <li key={i} className="text-blue-700">
-                              <span className="font-bold">Δ {d.path}:</span> {String(d.val)}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : <span className="text-blue-400 italic">No input changes detected.</span>
-                    })()}
+                <div className="space-y-2">
+                  <p className="text-xs text-gray-500">Comparing staged changes against baseline.</p>
+                  <div className="bg-blue-50 p-3 rounded text-[11px] font-mono border border-blue-100 overflow-x-auto">
+                    <p className="font-bold text-blue-800 mb-2 uppercase tracking-wide">Diff Summary</p>
+                    <pre className="text-blue-900">
+                      {JSON.stringify(deepDiff(decision, {
+                        ...decision,
+                        constraints: stagedConstraints,
+                        assumptions: stagedAssumptions
+                      }), null, 2)}
+                    </pre>
                   </div>
-                ) : (
-                  <div className="p-3 bg-gray-100 rounded text-center">
-                    <p className="text-xs text-gray-500">No previous run to compare against.</p>
-                  </div>
-                )}
+                </div>
 
                 <div className="bg-green-50 p-3 rounded border border-green-100 mt-2">
                   <p className="text-xs text-green-800 font-medium flex items-center gap-2">
@@ -301,8 +303,9 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
             )}
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 

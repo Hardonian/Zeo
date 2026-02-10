@@ -58,7 +58,7 @@ export function recordUsage(
   tracker.lastUpdated = new Date().toISOString();
 
   // Check if we hit warning or exceeded
-  const limit = tracker.budget.limits.find(l => l.resource === resource);
+  const limit = tracker.budget.limits.find((l: any) => l.resource === resource);
   if (limit) {
     const percentUsed = (current + amount) / limit.max;
 
