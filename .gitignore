@@ -13,3 +13,6 @@ yarn-error.log*
 .vscode
 .idea
 *.zip
+
+.zeo/config.local.json
+.zeo/agents/

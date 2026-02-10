@@ -41,6 +41,8 @@ Commands:
   doctor                      Environment diagnostics
   perf                        Performance commands
   mcp                         MCP commands (serve/ping/tools)
+  llm                         LLM commands (doctor)
+  agents                      Agent plugin commands
   zeolite <op>                Zeolite deterministic operations
 
 Options:
@@ -247,6 +249,16 @@ async function main(): Promise<void> {
   if (argv[0] === "doctor") {
     const mod = await import("./doctor-cli.js");
     process.exit(await mod.runDoctorCommand(mod.parseDoctorArgs(argv.slice(1))));
+  }
+
+  if (argv[0] === "llm") {
+    const mod = await import("./llm-cli.js");
+    process.exit(await mod.runLlmCommand(mod.parseLlmArgs(argv.slice(1))));
+  }
+
+  if (argv[0] === "agents") {
+    const mod = await import("./agents-cli.js");
+    process.exit(await mod.runAgentsCommand(mod.parseAgentsArgs(argv.slice(1))));
   }
 
   if (argv[0] === "zeolite") {

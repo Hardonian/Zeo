@@ -6,7 +6,9 @@ export type ZeoliteOperation =
   | "submit_evidence"
   | "compute_flip_distance"
   | "rank_evidence_by_voi"
-  | "generate_regret_bounded_plan";
+  | "generate_regret_bounded_plan"
+  | "explain_decision_boundary"
+  | "referee_proposal";
 
 interface ZeoliteContext {
   id: string;
@@ -66,7 +68,9 @@ function resolveSpec(example?: unknown): DecisionSpec {
 
 function envelope(spec: DecisionSpec, whatWouldChange: string[]): Record<string, unknown> {
   return {
+    schemaVersion: "zeo.v1",
     assumptions: spec.assumptions.map((a) => a.id),
+    limits: ["deterministic synthetic example", "not medical or legal advice", "llm proposals are untrusted inputs"],
     decisionBoundary: "Action ordering is stable while modeled assumption intervals remain unchanged.",
     whatWouldChange,
   };
@@ -98,6 +102,16 @@ function deriveVoiRankings(spec: DecisionSpec, minEvoi: number): Array<{ actionI
   }).sort((a, b) => b.evoi - a.evoi);
 }
 
+function requireContext(contextId: string): ZeoliteContext {
+  const context = contexts.get(contextId);
+  if (context) return context;
+  if (!contextId.trim()) throw new Error(`Unknown contextId: ${contextId}`);
+  const spec = makeNegotiationSpec();
+  const created = { id: contextId, spec, evidence: [] as EvidenceEvent[] };
+  contexts.set(contextId, created);
+  return created;
+}
+
 export function executeZeoliteOperation(operation: ZeoliteOperation, params: Record<string, unknown>): Record<string, unknown> {
   if (operation === "load_context") {
     const spec = resolveSpec(params.example);
@@ -119,8 +133,7 @@ export function executeZeoliteOperation(operation: ZeoliteOperation, params: Rec
   }
 
   const contextId = String(params.contextId ?? "");
-  const context = contexts.get(contextId);
-  if (!context) throw new Error(`Unknown contextId: ${contextId}`);
+  const context = requireContext(contextId);
 
   if (operation === "submit_evidence") {
     const sourceId = String(params.sourceId ?? "").trim();
@@ -167,26 +180,58 @@ export function executeZeoliteOperation(operation: ZeoliteOperation, params: Rec
     };
   }
 
-  const horizon = typeof params.horizon === "number" ? Math.max(1, Math.min(5, Math.floor(params.horizon))) : 3;
-  const minEvoi = typeof params.minEvoi === "number" ? params.minEvoi : 0.5;
-  const rankings = deriveVoiRankings(context.spec, minEvoi);
-  const selected = rankings.filter((r) => r.recommendation === "do_now").slice(0, horizon);
+  if (operation === "generate_regret_bounded_plan") {
+    const horizon = typeof params.horizon === "number" ? Math.max(1, Math.min(5, Math.floor(params.horizon))) : 3;
+    const minEvoi = typeof params.minEvoi === "number" ? params.minEvoi : 0.5;
+    const rankings = deriveVoiRankings(context.spec, minEvoi);
+    const selected = rankings.filter((r) => r.recommendation === "do_now").slice(0, horizon);
 
+    return {
+      contextId,
+      plan: {
+        id: stableId(`${contextId}:${horizon}:${minEvoi}`),
+        decisionId: context.spec.id,
+        actions: selected.map((s) => ({ id: s.actionId, rationale: s.rationale })),
+        boundedHorizon: horizon,
+      },
+      stopConditions: [
+        `Reached horizon (${horizon})`,
+        `No remaining evidence above minEvoi (${minEvoi})`,
+        "No non-dominated evidence actions remain",
+      ],
+      monotonicImprovement: selected.every((item, index) => index === 0 || item.evoi <= selected[index - 1].evoi),
+      terminatedEarly: selected.length < horizon,
+      ...envelope(context.spec, selected.map((s) => `${s.actionId} below threshold would change recommendation order`)),
+    };
+  }
+
+  if (operation === "explain_decision_boundary") {
+    const flip = deriveFlipDistances(context.spec);
+    return {
+      contextId,
+      agentClaim: params.agentClaim ?? null,
+      zeoBoundary: {
+        topAction: context.spec.actions[0]?.id ?? "unknown",
+        nearestFlips: flip.slice(0, 2),
+      },
+      ...envelope(context.spec, flip.slice(0, 2).map((cf) => `${cf.variableId} at ${cf.flipDistance.toFixed(3)} changes top action`)),
+    };
+  }
+
+  const proposal = (params.proposal ?? {}) as Record<string, unknown>;
+  const boundary = executeZeoliteOperation("explain_decision_boundary", { contextId, agentClaim: proposal.claim });
   return {
     contextId,
-    plan: {
-      id: stableId(`${contextId}:${horizon}:${minEvoi}`),
-      decisionId: context.spec.id,
-      actions: selected.map((s) => ({ id: s.actionId, rationale: s.rationale })),
-      boundedHorizon: horizon,
+    adjudication: {
+      accepted: proposal.claim === (boundary.zeoBoundary as Record<string, unknown>).topAction,
+      agentClaim: proposal.claim ?? null,
+      zeoBoundary: boundary.zeoBoundary,
+      diff: {
+        agentClaim: proposal.claim ?? null,
+        zeoBoundary: (boundary.zeoBoundary as Record<string, unknown>).topAction,
+        whatWouldChange: boundary.whatWouldChange,
+      },
     },
-    stopConditions: [
-      `Reached horizon (${horizon})`,
-      `No remaining evidence above minEvoi (${minEvoi})`,
-      "No non-dominated evidence actions remain",
-    ],
-    monotonicImprovement: selected.every((item, index) => index === 0 || item.evoi <= selected[index - 1].evoi),
-    terminatedEarly: selected.length < horizon,
-    ...envelope(context.spec, selected.map((s) => `${s.actionId} below threshold would change recommendation order`)),
+    ...envelope(context.spec, boundary.whatWouldChange as string[]),
   };
 }

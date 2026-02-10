@@ -102,16 +102,42 @@ Zeolite is the deterministic decision-analysis execution surface used by both CL
 - **MCP path**: tools with the exact same operation names and JSON schemas
 
 Supported operations:
-- `load_context`
 - `submit_evidence`
 - `compute_flip_distance`
 - `rank_evidence_by_voi`
 - `generate_regret_bounded_plan`
+- `explain_decision_boundary`
 
 All operation responses are structured JSON and include:
 - assumptions
 - decision boundary
 - what would change the recommendation
+
+
+## BYO LLM keys (provider-agnostic)
+
+Zeo accepts user-managed API keys and does not persist secrets in state files.
+
+Configuration precedence:
+1. CLI flags
+2. `.zeo/config.local.json`
+3. `.zeo/config.json`
+4. environment variables
+
+Use `zeo llm doctor` to validate reachability, model availability, and deterministic settings (`temperature=0`, fixed seed).
+
+## Agent plugins
+
+Agent manifests use `zeo.agent.json` and are proposal-only.
+Agents cannot mutate Zeo state directly and can only act through MCP tools.
+
+CLI:
+- `zeo agents list`
+- `zeo agents add <local-path>`
+- `zeo agents remove <id>`
+- `zeo agents inspect <id>`
+
+A reference agent is available at `agents/evidence-extractor`.
 
 ### Explicitly not provided
 

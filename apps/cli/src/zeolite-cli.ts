@@ -5,6 +5,7 @@ import { executeZeoliteOperation, type ZeoliteOperation } from "./zeolite-core.j
 export interface ZeoliteCliArgs {
   operation: ZeoliteOperation | null;
   inputPath: string | null;
+  referee: boolean;
 }
 
 const OPERATIONS: ZeoliteOperation[] = [
@@ -13,6 +14,8 @@ const OPERATIONS: ZeoliteOperation[] = [
   "compute_flip_distance",
   "rank_evidence_by_voi",
   "generate_regret_bounded_plan",
+  "explain_decision_boundary",
+  "referee_proposal",
 ];
 
 export function parseZeoliteArgs(argv: string[]): ZeoliteCliArgs {
@@ -22,7 +25,7 @@ export function parseZeoliteArgs(argv: string[]): ZeoliteCliArgs {
   const inputIdx = argv.indexOf("--input");
   const inputPath = inputIdx >= 0 && argv[inputIdx + 1] ? argv[inputIdx + 1] : null;
 
-  return { operation, inputPath };
+  return { operation, inputPath, referee: argv.includes("--referee") };
 }
 
 function readInput(path: string | null): Record<string, unknown> {
@@ -41,6 +44,7 @@ Zeo Zeolite Commands
 
 Usage:
   zeo zeolite <operation> [--input file.json]
+  zeo zeolite --referee --input proposal.json
 
 Operations:
   load_context
@@ -48,18 +52,22 @@ Operations:
   compute_flip_distance
   rank_evidence_by_voi
   generate_regret_bounded_plan
+  explain_decision_boundary
+  referee_proposal
 `);
 }
 
 export async function runZeoliteCommand(args: ZeoliteCliArgs): Promise<number> {
-  if (!args.operation) {
+  if (!args.operation && !args.referee) {
     printHelp();
     return 1;
   }
 
   try {
     const payload = readInput(args.inputPath);
-    const result = executeZeoliteOperation(args.operation, payload);
+    const op = args.referee ? "referee_proposal" : args.operation;
+    if (!op) throw new Error("Operation is required");
+    const result = executeZeoliteOperation(op, payload);
     process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     return 0;
   } catch (error) {

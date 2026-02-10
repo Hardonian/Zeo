@@ -1,0 +1,20 @@
+{
+  "id": "evidence-extractor",
+  "version": "1.0.0",
+  "capabilities": [
+    "extract_evidence_proposals"
+  ],
+  "requiredTools": [
+    "submit_evidence",
+    "explain_decision_boundary"
+  ],
+  "requiredEnvVars": [
+    "ZEO_LLM_PROVIDER",
+    "ZEO_LLM_MODEL",
+    "ZEO_LLM_API_KEY"
+  ],
+  "permissions": {
+    "fs": false,
+    "network": false
+  }
+}

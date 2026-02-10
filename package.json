@@ -2,7 +2,7 @@
   "name": "zeo",
   "private": true,
   "version": "1.0.0",
-  "description": "Zeo — Decision intelligence under uncertainty",
+  "description": "Zeo \u2014 Decision intelligence under uncertainty",
   "license": "MIT",
   "packageManager": "pnpm@9.15.5",
   "engines": {
@@ -35,7 +35,8 @@
     "quickstart:demo": "pnpm install && pnpm -r build && pnpm -C apps/cli start -- --replay ../../external/examples/replay/sample_dataset.json --report-out ./reports",
     "quickstart:all": "pnpm verify:full && echo '=== Quickstart: CLI ===' && pnpm quickstart:cli && echo '=== Quickstart: Demo ===' && pnpm quickstart:demo",
     "cli:perf": "node scripts/cli-perf.mjs",
-    "mcp:smoke": "node scripts/mcp-smoke.mjs"
+    "mcp:smoke": "node scripts/mcp-smoke.mjs",
+    "fixtures:coverage": "node scripts/fixture-coverage.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",

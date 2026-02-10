@@ -10,6 +10,12 @@ type JsonRpcRequest = {
   params?: Record<string, unknown>;
 };
 
+interface McpToolDef {
+  name: string;
+  description: string;
+  inputSchema: Record<string, unknown>;
+}
+
 export interface McpCliArgs {
   command: "serve" | "ping" | "tools" | null;
   http: boolean;
@@ -21,16 +27,13 @@ export function parseMcpArgs(argv: string[]): McpCliArgs {
   return { command, http: argv.includes("--http") };
 }
 
-const TOOL_DEFS = [
-  {
-    name: "load_context",
-    description: "Initialize deterministic Zeolite context.",
-    inputSchema: { type: "object", properties: { example: { type: "string" }, depth: { type: "number" }, seed: { type: "string" } } },
-  },
+const SCHEMA_VERSION = "zeo.mcp.v1";
+
+const TOOL_DEFS: McpToolDef[] = [
   {
     name: "submit_evidence",
     description: "Submit evidence to an active Zeolite context.",
-    inputSchema: { type: "object", properties: { contextId: { type: "string" }, sourceId: { type: "string" }, claim: { type: "string" }, capturedAt: { type: "string" } } },
+    inputSchema: { type: "object", properties: { contextId: { type: "string" }, sourceId: { type: "string" }, claim: { type: "string" }, capturedAt: { type: "string" } }, required: ["contextId", "sourceId", "claim"] },
   },
   {
     name: "compute_flip_distance",
@@ -47,7 +50,41 @@ const TOOL_DEFS = [
     description: "Generate bounded-horizon regret-aware evidence plan.",
     inputSchema: { type: "object", properties: { contextId: { type: "string" }, horizon: { type: "number" }, minEvoi: { type: "number" } }, required: ["contextId"] },
   },
+  {
+    name: "explain_decision_boundary",
+    description: "Return decision boundary and sensitivity deltas.",
+    inputSchema: { type: "object", properties: { contextId: { type: "string" }, agentClaim: {} }, required: ["contextId"] },
+  },
 ];
+
+export function getMcpToolDefinitions(): McpToolDef[] {
+  return TOOL_DEFS;
+}
+
+export function validateMcpToolDefinitions(definitions: McpToolDef[] = TOOL_DEFS): string[] {
+  const requiredNames = [
+    "submit_evidence",
+    "compute_flip_distance",
+    "rank_evidence_by_voi",
+    "generate_regret_bounded_plan",
+    "explain_decision_boundary",
+  ];
+
+  const issues: string[] = [];
+  const names = definitions.map((d) => d.name);
+  if (names.length !== requiredNames.length) issues.push(`expected ${requiredNames.length} tools, got ${names.length}`);
+  for (const name of requiredNames) {
+    if (!names.includes(name)) issues.push(`missing required deterministic tool '${name}'`);
+  }
+
+  for (const def of definitions) {
+    if (!def.name || !def.description) issues.push(`tool definition must include name/description (${def.name || "unknown"})`);
+    if (def.inputSchema.type !== "object") issues.push(`tool '${def.name}' inputSchema.type must be object`);
+    if (!Array.isArray(def.inputSchema.required)) issues.push(`tool '${def.name}' inputSchema.required must be an array`);
+  }
+
+  return issues;
+}
 
 function help(): void {
   console.log("\nZeo MCP Commands\n\nUsage:\n  zeo mcp serve\n  zeo mcp ping\n  zeo mcp tools\n");
@@ -63,35 +100,27 @@ function error(id: JsonRpcId, code: number, message: string): string {
 
 async function handleToolCall(name: string, args: Record<string, unknown>): Promise<Record<string, unknown>> {
   const knownOperations = new Set<ZeoliteOperation>([
-    "load_context",
     "submit_evidence",
     "compute_flip_distance",
     "rank_evidence_by_voi",
     "generate_regret_bounded_plan",
+    "explain_decision_boundary",
   ]);
 
-  if (knownOperations.has(name as ZeoliteOperation)) {
-    try {
-      const structuredContent = executeZeoliteOperation(name as ZeoliteOperation, args);
-      return {
-        content: [{ type: "text", text: JSON.stringify(structuredContent) }],
-        structuredContent,
-        isError: false,
-      };
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      return {
-        content: [{ type: "text", text: JSON.stringify({ error: message }) }],
-        structuredContent: { error: message },
-        isError: true,
-      };
-    }
+  if (!knownOperations.has(name as ZeoliteOperation)) {
+    return { schemaVersion: SCHEMA_VERSION, isError: true, error: { code: "UNKNOWN_TOOL", message: `Unknown tool: ${name}` } };
   }
 
-  return { content: [{ type: "text", text: `Unknown tool: ${name}` }], isError: true };
+  try {
+    const structuredContent = executeZeoliteOperation(name as ZeoliteOperation, args);
+    return { schemaVersion: SCHEMA_VERSION, isError: false, structuredContent };
+  } catch (caught) {
+    const message = caught instanceof Error ? caught.message : String(caught);
+    return { schemaVersion: SCHEMA_VERSION, isError: true, error: { code: "TOOL_EXECUTION_FAILED", message } };
+  }
 }
 
-async function dispatch(raw: string): Promise<string | null> {
+export async function dispatchMcpRequest(raw: string): Promise<string | null> {
   let req: JsonRpcRequest;
   try {
     req = JSON.parse(raw);
@@ -107,13 +136,16 @@ async function dispatch(raw: string): Promise<string | null> {
   if (method === "initialize") {
     return response(id, {
       protocolVersion: "2024-11-05",
-      serverInfo: { name: "zeo-mcp-cli", version: "1.0.0" },
+      serverInfo: { name: "zeo-mcp-cli", version: "1.1.0" },
       capabilities: { tools: {} },
+      schemaVersion: SCHEMA_VERSION,
+      assumptions: ["tools are deterministic", "agent output is advisory only"],
+      limits: ["requires preloaded contextId via CLI internal flow"],
     });
   }
 
   if (method === "tools/list") {
-    return response(id, { tools: TOOL_DEFS });
+    return response(id, { schemaVersion: SCHEMA_VERSION, tools: TOOL_DEFS });
   }
 
   if (method === "tools/call") {
@@ -133,12 +165,18 @@ async function runServeCommand(args: McpCliArgs): Promise<number> {
     return 2;
   }
 
+  const issues = validateMcpToolDefinitions();
+  if (issues.length > 0) {
+    process.stderr.write(`[zeo mcp] Invalid tool definitions: ${issues.join("; ")}\n`);
+    return 1;
+  }
+
   process.stderr.write("[zeo mcp] stdio transport ready\n");
   const rl = createInterface({ input: process.stdin });
   rl.on("line", (line) => {
     const trimmed = line.trim();
     if (!trimmed) return;
-    void dispatch(trimmed).then((out) => { if (out) process.stdout.write(`${out}\n`); });
+    void dispatchMcpRequest(trimmed).then((out) => { if (out) process.stdout.write(`${out}\n`); });
   });
 
   await new Promise<void>((resolve) => {
@@ -154,7 +192,12 @@ async function runServeCommand(args: McpCliArgs): Promise<number> {
 }
 
 async function runPingCommand(): Promise<number> {
-  console.log(`ok: initialize + tools/list (${TOOL_DEFS.length} tools)`);
+  const issues = validateMcpToolDefinitions();
+  if (issues.length > 0) {
+    console.error(`[MCP_SCHEMA_INVALID] ${issues.join("; ")}`);
+    return 1;
+  }
+  console.log(`ok: initialize + tools/list (${TOOL_DEFS.length} tools, schema ${SCHEMA_VERSION})`);
   return 0;
 }
 
