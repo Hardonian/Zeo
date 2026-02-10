@@ -12,7 +12,7 @@ import { TimeSeriesEngine } from "@zeo/timeseries";
 import { GameEngine } from "@zeo/game";
 import { CausalEngine } from "@zeo/causal";
 import { CalibrationEngine } from "@zeo/calibration";
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 
 /**
  * Quant Engine - Integrated analytical engine combining:
@@ -40,7 +40,7 @@ export class QuantEngine {
 
     // Initialize world state with epistemic discipline
     this.worldState = {
-      id: nanoid(),
+      id: generateId(),
       timestamp: new Date().toISOString(),
       variables: [],
       observations: [],
@@ -64,7 +64,7 @@ export class QuantEngine {
     // This would call the Python backend in production
     // For now, create a simple belief update
     const update: BeliefUpdate = {
-      id: nanoid(),
+      id: generateId(),
       timestamp: new Date().toISOString(),
       variableId: evidence.likelihood.variableId,
       updateType: "bayesian",

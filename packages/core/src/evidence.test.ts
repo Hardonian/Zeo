@@ -7,11 +7,11 @@ import {
   InvalidProvenanceError,
 } from "./evidence.js";
 import type { Claim, Constraint, FactCandidate, ProvenancePointer } from "@zeo/contracts";
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 
 function makeCandidate(overrides?: Partial<FactCandidate>): FactCandidate {
   return {
-    id: nanoid(),
+    id: generateId(),
     text: "Revenue is $5M ARR",
     sourceDescription: "Financial report Q4",
     capturedAt: new Date().toISOString(),
@@ -88,7 +88,7 @@ describe("enforceNoFactWithoutProvenance", () => {
   it("passes when all facts have provenance", () => {
     const claims: Claim[] = [
       {
-        id: nanoid(),
+        id: generateId(),
         text: "Valid fact",
         status: "fact",
         confidence: "high",
@@ -96,7 +96,7 @@ describe("enforceNoFactWithoutProvenance", () => {
         tags: [],
       },
       {
-        id: nanoid(),
+        id: generateId(),
         text: "Just a belief",
         status: "belief",
         confidence: "medium",
@@ -109,7 +109,7 @@ describe("enforceNoFactWithoutProvenance", () => {
   it("throws when a claim is fact without provenance", () => {
     const claims: Claim[] = [
       {
-        id: nanoid(),
+        id: generateId(),
         text: "Orphan fact",
         status: "fact",
         confidence: "high",
@@ -122,7 +122,7 @@ describe("enforceNoFactWithoutProvenance", () => {
   it("checks constraints too", () => {
     const constraints: Constraint[] = [
       {
-        id: nanoid(),
+        id: generateId(),
         name: "Budget",
         value: "$100k",
         status: "fact",
@@ -134,9 +134,9 @@ describe("enforceNoFactWithoutProvenance", () => {
 
   it("passes for assumptions and beliefs without provenance", () => {
     const claims: Claim[] = [
-      { id: nanoid(), text: "assumption", status: "assumption", confidence: "low", tags: [] },
-      { id: nanoid(), text: "belief", status: "belief", confidence: "medium", tags: [] },
-      { id: nanoid(), text: "unknown", status: "unknown", confidence: "low", tags: [] },
+      { id: generateId(), text: "assumption", status: "assumption", confidence: "low", tags: [] },
+      { id: generateId(), text: "belief", status: "belief", confidence: "medium", tags: [] },
+      { id: generateId(), text: "unknown", status: "unknown", confidence: "low", tags: [] },
     ];
     expect(() => enforceNoFactWithoutProvenance({ claims })).not.toThrow();
   });

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 import type { DecisionSpec, BranchGraph, BranchNode } from "@zeo/contracts";
 import { ResolutionEngine } from "../src/resolution";
 import type { OutcomeRecord, DecisionRecord } from "../src/types";
@@ -8,10 +8,10 @@ describe("ResolutionEngine", () => {
   const engine = new ResolutionEngine();
 
   const createMockDecision = (): DecisionRecord => {
-    const decisionId = nanoid();
-    const branchId1 = nanoid();
-    const branchId2 = nanoid();
-    const branchId3 = nanoid();
+    const decisionId = generateId();
+    const branchId1 = generateId();
+    const branchId2 = generateId();
+    const branchId3 = generateId();
     
     const spec: DecisionSpec = {
       id: decisionId,
@@ -19,14 +19,14 @@ describe("ResolutionEngine", () => {
       context: "Test context",
       createdAt: new Date().toISOString(),
       horizon: "days",
-      agents: [{ id: nanoid(), name: "Test Agent", role: "self" }],
-      actions: [{ id: nanoid(), label: "Test Action", actorId: "agent1", kind: "communicate" }],
+      agents: [{ id: generateId(), name: "Test Agent", role: "self" }],
+      actions: [{ id: generateId(), label: "Test Action", actorId: "agent1", kind: "communicate" }],
       constraints: [],
       assumptions: [],
     };
 
     const graph: BranchGraph = {
-      id: nanoid(),
+      id: generateId(),
       decisionId,
       createdAt: new Date().toISOString(),
       nodes: [
@@ -42,7 +42,7 @@ describe("ResolutionEngine", () => {
       spec,
       branchGraph: graph,
       branchRecord: {
-        id: nanoid(),
+        id: generateId(),
         decisionId,
         selectedActionId: spec.actions[0]!.id,
         selectedBranchId: branchId1,
@@ -71,7 +71,7 @@ describe("ResolutionEngine", () => {
   };
 
   const createOutcome = (description: string): OutcomeRecord => ({
-    id: nanoid(),
+    id: generateId(),
     decisionId: "test",
     branchId: "test",
     recordedAt: new Date().toISOString(),

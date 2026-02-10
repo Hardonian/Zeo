@@ -1,6 +1,6 @@
 import type { RegimeEvent, RegimeState, RegimeDomain, RegimeKind } from "@zeo/contracts";
 export type { RegimeEvent, RegimeState, RegimeDomain, RegimeKind };
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 
 export interface NumericPoint {
   t: string;
@@ -322,7 +322,7 @@ export function detectRegimes(
       const signalStrength = Math.abs(change.cusumValue) / (fullConfig.significanceThreshold * 100);
 
       events.push({
-        id: nanoid(),
+        id: generateId(),
         createdAt: now,
         domain,
         signalIds,
@@ -347,7 +347,7 @@ export function detectRegimes(
       const point = numericSeries[brk.index];
 
       events.push({
-        id: nanoid(),
+        id: generateId(),
         createdAt: now,
         domain,
         signalIds,
@@ -372,7 +372,7 @@ export function detectRegimes(
       const point = numericSeries[shift.index];
 
       events.push({
-        id: nanoid(),
+        id: generateId(),
         createdAt: now,
         domain,
         signalIds,
@@ -399,7 +399,7 @@ export function detectRegimes(
       const point = eventTimes[shift.index] ?? eventTimes[eventTimes.length - 1] ?? "";
 
       events.push({
-        id: nanoid(),
+        id: generateId(),
         createdAt: now,
         domain,
         signalIds,
@@ -467,7 +467,7 @@ export function createRegimeEvent(
   notes: string[]
 ): RegimeEvent {
   return {
-    id: nanoid(),
+    id: generateId(),
     createdAt: new Date().toISOString(),
     domain,
     signalIds,

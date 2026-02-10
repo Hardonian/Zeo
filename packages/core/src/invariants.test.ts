@@ -29,7 +29,7 @@ describe('Determinism Invariants', () => {
       expect(result1.graph.edges.length).toBe(result2.graph.edges.length);
       expect(result2.graph.edges.length).toBe(result3.graph.edges.length);
       
-      // Compare node structure (not IDs - those are unique nanoids)
+      // Compare node structure (not IDs - those are unique generated IDs)
       for (let i = 0; i < result1.graph.nodes.length; i++) {
         // Compare labels (the actual content)
         expect(result1.graph.nodes[i].label).toBe(result2.graph.nodes[i].label);

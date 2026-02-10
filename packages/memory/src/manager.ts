@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 import type { UUID, DecisionSpec, BranchGraph, Claim } from "@zeo/contracts";
 import type { 
   DecisionRecord, 
@@ -54,7 +54,7 @@ export class DecisionMemoryManager {
     const now = new Date().toISOString();
     
     const branchRecord: BranchRecord = {
-      id: nanoid(),
+      id: generateId(),
       decisionId: spec.id,
       selectedActionId,
       selectedBranchId,
@@ -103,7 +103,7 @@ export class DecisionMemoryManager {
     const now = new Date().toISOString();
     
     const outcome: OutcomeRecord = {
-      id: nanoid(),
+      id: generateId(),
       decisionId,
       branchId,
       recordedAt: now,

@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 const DRAFTS_STORAGE_KEY = "zeo_drafts";
 function getStorage() {
     try {
@@ -40,7 +40,7 @@ export function createLocalStorageAdapter() {
         async createDraft(scenario, source) {
             const drafts = getFromStorage();
             const now = new Date().toISOString();
-            const draftId = nanoid();
+            const draftId = generateId();
             const checksum = scenario.summary + scenario.titleSuggestion;
             const record = {
                 draftId,
@@ -115,7 +115,7 @@ export function createLocalStorageAdapter() {
                 ...draft,
                 status: "promoted",
                 promotion: {
-                    decisionId: nanoid(),
+                    decisionId: generateId(),
                     promotedAt: options.promotedAt,
                     ...(options.targetPath ? { targetPath: options.targetPath } : {}),
                 },
@@ -135,7 +135,7 @@ export function createMemoryAdapter() {
     const memoryStore = new Map();
     return {
         async createDraft(scenario, source) {
-            const draftId = nanoid();
+            const draftId = generateId();
             const now = new Date().toISOString();
             const checksum = scenario.summary + scenario.titleSuggestion;
             const record = {
@@ -205,7 +205,7 @@ export function createMemoryAdapter() {
                 ...draft,
                 status: "promoted",
                 promotion: {
-                    decisionId: nanoid(),
+                    decisionId: generateId(),
                     promotedAt: options.promotedAt,
                     ...(options.targetPath ? { targetPath: options.targetPath } : {}),
                 },

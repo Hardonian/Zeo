@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { generateId } from "@zeo/id";
 import type {
   Claim,
   Constraint,
