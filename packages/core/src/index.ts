@@ -52,16 +52,20 @@ export {
 
 // Constraints - hard/soft constraint propagation
 export type {
-  ConstraintGraph,
-  ConstraintNode,
-  ConstraintEdge,
-  ConstraintEvaluationResult,
+  Constraint,
   HardConstraint,
   SoftConstraint,
   TemporalConstraint,
   BudgetConstraint,
+  IrreversibilityConstraint,
+  LegalConstraint,
+  EthicalConstraint,
+  ConstraintContext,
+  ConstraintNode,
   ActionNode,
-  DependencyEdge,
+  ConstraintEdge,
+  ConstraintGraph,
+  PropagationResult,
 } from "@zeo/constraints";
 export {
   createConstraintGraph,
@@ -70,8 +74,6 @@ export {
   addConstraint,
   propagateConstraints,
   filterInfeasibleActions,
-  rankActionsWithConstraints,
-  isActionDominated,
   createHardConstraint,
   createActionNode,
   createDependencyEdge,
@@ -80,21 +82,16 @@ export {
 // Lenses - perspective formalization
 export type {
   Lens,
-  LensEvaluation,
+  LensAppliedResult,
   LensComparison,
-  LensSensitivity,
+  LensSensitivityAnalysis,
 } from "@zeo/lenses";
 export {
   lensRegistry,
   applyLensWeights,
   compareAcrossLenses,
   analyzeLensSensitivity,
-  isLensSensitive,
-  NEGOTIATION_LENS,
-  RISK_MIN_LENS,
-  GROWTH_LENS,
-  ETHICAL_LENS,
-  ADVERSARIAL_LENS,
+  createLens,
 } from "@zeo/lenses";
 
 // Worlds - parallel world analysis
@@ -103,12 +100,10 @@ export type {
   WorldsEnsemble,
   RobustnessAnalysis,
   ActionRobustness,
-  WorldAgreement,
 } from "@zeo/worlds";
 export {
   createEnsemble,
   addWorld,
-  removeWorld,
   generateDefaultWorlds,
   computeWorld,
   computeRobustness,
@@ -275,13 +270,6 @@ export {
 } from "@zeo/replay";
 
 // Audit - audit trail and compliance
-export type {
-  AuditEvent,
-  AuditTrail,
-  AuditQuery,
-  AuditExport,
-  TamperProofRecord,
-} from "@zeo/audit";
 export {
   AuditLedger,
   createAuditEvent,
