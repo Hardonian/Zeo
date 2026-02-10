@@ -115,13 +115,13 @@ describe("@zeo/mcp-interop", () => {
             expect(header.content).toContain("Test Decision");
             
             // Check graph summary
-            const graphCell = cells.find(c => 
+            const graphCell = cells.find((c: NotebookCell) =>
                 c.type === "markdown" && c.content.includes("Branch Graph")
             );
             expect(graphCell).toBeDefined();
             
             // Check next best evidence
-            const evidenceCell = cells.find(c =>
+            const evidenceCell = cells.find((c: NotebookCell) =>
                 c.type === "markdown" && c.content.includes("Next Best Evidence")
             );
             expect(evidenceCell).toBeDefined();
@@ -147,7 +147,7 @@ describe("@zeo/mcp-interop", () => {
             const cells = runToNotebookCells(spec as any, result as any);
             
             // Should not have Next Best Evidence section
-            const evidenceCell = cells.find(c =>
+            const evidenceCell = cells.find((c: NotebookCell) =>
                 c.content.includes("Next Best Evidence")
             );
             expect(evidenceCell).toBeUndefined();
