@@ -3,7 +3,7 @@ import {
   bandUncertainty,
   aggregateUncertainty,
   computeVoi,
-} from "./voi";
+} from "./voi.js";
 import type {
   WorldModelSpec,
   PosteriorState,

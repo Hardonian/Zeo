@@ -10,7 +10,7 @@ import type {
   StrategicAction,
   StrategicScenario,
   StrategyEvaluationCriteria
-} from "./types";
+} from "./types.js";
 
 /**
  * Evaluates strategies across multiple robustness criteria.

@@ -1,4 +1,4 @@
-import type { CausalDAG, DAGNode, DAGEdge, CausalClaim, PredictiveClaim, CausalInferenceResult } from "./types";
+import type { CausalDAG, DAGNode, DAGEdge, CausalClaim, PredictiveClaim, CausalInferenceResult } from "./types.js";
 /**
  * Causal Inference Engine using DoWhy methodology.
  * Separates prediction from causation through explicit identification.

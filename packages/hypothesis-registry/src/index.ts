@@ -2,12 +2,12 @@ export {
   HypothesisRegistry,
   createRegistry,
   type RegistryConfig
-} from "./registry";
+} from "./registry.js";
 
 export type {
   Hypothesis,
   HypothesisStatus,
   RegistryQuery,
   HypothesisRegistry as IRegistry
-} from "./types";
+} from "./types.js";
 

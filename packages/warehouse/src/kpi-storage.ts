@@ -17,8 +17,8 @@ import type {
   WarehouseEnvelope,
   WarehouseKind,
 } from "@zeo/contracts";
-import type { WarehouseAdapter } from "./interfaces";
-import { computeContentHash, canonicalizeForHash } from "./hashing";
+import type { WarehouseAdapter } from "./interfaces.js";
+import { computeContentHash, canonicalizeForHash } from "./hashing.js";
 
 /**
  * KPI record envelope for warehouse storage

@@ -6,7 +6,7 @@
  * Usage: node dist/doctor.js
  */
 
-import { loadConfig, validateConfig } from "./config";
+import { loadConfig, validateConfig } from "./config.js";
 
 async function doctor() {
     const config = await loadConfig();

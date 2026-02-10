@@ -29,7 +29,7 @@ export {
 } from "./decision-coupling.js";
 
 // Runner - orchestrated execution
-export { ZeoRunner, type ZeoRunnerConfig } from "./runner";
+export { ZeoRunner, type ZeoRunnerConfig } from "./runner.js";
 
 // Note: Re-exports from other packages removed due to cyclic dependencies
 // and type incompatibility issues. Import directly from packages instead.

@@ -4,7 +4,7 @@ import {
   inferPosterior,
   observationsToWorldEvidence,
   computeProvenanceQuality,
-} from "./world-model";
+} from "./world-model.js";
 import type {
   WorldModelSpec,
   SignalObservation,

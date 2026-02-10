@@ -11,8 +11,8 @@ import type {
   RateLimitConfig,
   RetryPolicy,
   FetchMetrics,
-} from "./types";
-import { RateLimitError } from "./errors";
+} from "./types.js";
+import { RateLimitError } from "./errors.js";
 
 export const DEFAULT_RETRY_POLICY: RetryPolicy = {
   maxRetries: 3,

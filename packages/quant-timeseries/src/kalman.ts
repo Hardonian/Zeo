@@ -16,9 +16,9 @@ import type {
     KalmanConfig,
     KalmanState,
     KalmanResult,
-} from "./types";
-import { createDefaultKalmanConfig } from "./types";
-import { computeHash, variance as computeVariance, mean as computeMean, autocorrelation } from "./math-utils";
+} from "./types.js";
+import { createDefaultKalmanConfig } from "./types.js";
+import { computeHash, variance as computeVariance, mean as computeMean, autocorrelation } from "./math-utils.js";
 
 /**
  * Estimate noise parameters from data if not provided

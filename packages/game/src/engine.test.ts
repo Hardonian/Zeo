@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { GameEngine } from "./engine";
+import { GameEngine } from "./engine.js";
 
 describe("game", () => {
   it("should create game engine", () => {

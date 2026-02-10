@@ -5,8 +5,8 @@
  * Replays historical signals/evidence, maps outcomes, and produces
  * calibration/coverage reports.
  */
-export * from "./runner";
-export * from "./hashing";
-export * from "./predictions";
-export * from "./calibration-feedback";
+export * from "./runner.js";
+export * from "./hashing.js";
+export * from "./predictions.js";
+export * from "./calibration-feedback.js";
 //# sourceMappingURL=index.d.ts.map

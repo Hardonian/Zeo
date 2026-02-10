@@ -18,8 +18,8 @@ import type {
   RedactionRule, 
   RedactedEvidenceEvent,
   RedactionPreview 
-} from "./types";
-import { hashObject, hashData, canonicalizeJson } from "./crypto";
+} from "./types.js";
+import { hashObject, hashData, canonicalizeJson } from "./crypto.js";
 
 /**
  * Redact a decision spec according to policy

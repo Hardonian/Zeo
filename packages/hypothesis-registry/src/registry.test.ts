@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { HypothesisRegistry, createRegistry } from "./registry";
+import { HypothesisRegistry, createRegistry } from "./registry.js";
 
 describe("HypothesisRegistry", () => {
   let registry: HypothesisRegistry;

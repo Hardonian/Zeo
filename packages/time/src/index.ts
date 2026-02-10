@@ -4,7 +4,7 @@
  * Prevents stale evidence and temporal misalignment.
  */
 
-export * from "./types";
-export * from "./decay";
-export * from "./consistency";
+export * from "./types.js";
+export * from "./decay.js";
+export * from "./consistency.js";
 

@@ -23,7 +23,7 @@ import type {
   SliceEvaluationReport,
   SliceGatingRule,
   SliceCsvRow,
-} from "./slice-types";
+} from "./slice-types.js";
 
 // Engine version for slice evaluation
 const SLICE_EVAL_VERSION = "0.5.1";

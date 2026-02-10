@@ -1,6 +1,6 @@
 
 import { describe, it, expect } from "vitest";
-import { runStrategicRadar } from "./engine";
+import { runStrategicRadar } from "./engine.js";
 import { nanoid } from "nanoid";
 import type { DecisionSpec, UUID } from "@zeo/contracts";
 import type { CandidateSignal, SignalDiscoveryGraph } from "@zeo/signal-discovery";

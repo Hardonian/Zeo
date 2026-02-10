@@ -19,12 +19,12 @@ import {
   hashDecisionSpec,
   hashObservations,
   deriveSeedFromHashes,
-} from "./hashing";
+} from "./hashing.js";
 import {
   buildPredictionBundle,
   observationsUpTo,
   summarizePosterior,
-} from "./predictions";
+} from "./predictions.js";
 
 // Engine version for reproducibility
 const ENGINE_VERSION = "0.3.1";

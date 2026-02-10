@@ -20,25 +20,25 @@ import type {
     McpToolDefinition,
     McpToolCallParams,
     McpToolResult,
-} from "./types";
-import { createAuditBridge, type AuditBridge } from "./audit-bridge";
-import { validateToolPermission, validateRequestSize, redactSecrets } from "./security";
-import { mcpPolicyEngine } from "./policy";
+} from "./types.js";
+import { createAuditBridge, type AuditBridge } from "./audit-bridge.js";
+import { validateToolPermission, validateRequestSize, redactSecrets } from "./security.js";
+import { mcpPolicyEngine } from "./policy.js";
 
 // Tool implementations
-import { notesIngestDefinition, notesIngest } from "./tools/notes-ingest";
-import { evidenceAddDefinition, evidenceAdd } from "./tools/evidence-add";
-import { kpiListDefinition, kpiList } from "./tools/kpi-list";
-import { kpiGetDefinition, kpiGet } from "./tools/kpi-get";
-import { runExecuteDefinition, runExecute } from "./tools/run-execute";
-import { packetExportDefinition, packetExport } from "./tools/packet-export";
-import { searchQueryDefinition, searchQuery } from "./tools/search-query";
-import { auditTailDefinition, auditTail } from "./tools/audit-tail";
+import { notesIngestDefinition, notesIngest } from "./tools/notes-ingest.js";
+import { evidenceAddDefinition, evidenceAdd } from "./tools/evidence-add.js";
+import { kpiListDefinition, kpiList } from "./tools/kpi-list.js";
+import { kpiGetDefinition, kpiGet } from "./tools/kpi-get.js";
+import { runExecuteDefinition, runExecute } from "./tools/run-execute.js";
+import { packetExportDefinition, packetExport } from "./tools/packet-export.js";
+import { searchQueryDefinition, searchQuery } from "./tools/search-query.js";
+import { auditTailDefinition, auditTail } from "./tools/audit-tail.js";
 
 // New Zeo Tools (v0.7.0)
-import { zeoHealthDefinition, zeoHealth } from "./tools/zeo-health";
-import { zeoIngestDefinition, zeoIngest } from "./tools/zeo-ingest";
-import { zeoSummaryDefinition, zeoSummary } from "./tools/zeo-summary";
+import { zeoHealthDefinition, zeoHealth } from "./tools/zeo-health.js";
+import { zeoIngestDefinition, zeoIngest } from "./tools/zeo-ingest.js";
+import { zeoSummaryDefinition, zeoSummary } from "./tools/zeo-summary.js";
 
 /**
  * Registry of all tool definitions and their handlers.

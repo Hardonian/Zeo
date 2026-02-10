@@ -48,7 +48,7 @@ import {
   importBundle,
   exportBundleToJson,
   parseBundleFromJson,
-} from "./index";
+} from "./index.js";
 
 describe("Reality Mode", () => {
   // =============================================================================

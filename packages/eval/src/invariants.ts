@@ -8,7 +8,7 @@ import { createHash } from "crypto";
 import { readFileSync, existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import type { DecisionSpec, EvidencePacketJSON } from "@zeo/contracts";
-import type { InvariantResult } from "./types";
+import type { InvariantResult } from "./types.js";
 
 /**
  * Minimum uncertainty width for text-derived priors (Invariant 9)

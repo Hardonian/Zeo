@@ -8,18 +8,18 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { ReplayResult, ReplayDataset } from "@zeo/contracts";
-import { computeDatasetHash } from "./slice-computation";
+import { computeDatasetHash } from "./slice-computation.js";
 import type {
   SliceComputationInput,
   SliceEvaluationReport,
   SliceDimension,
   SliceGatingRule,
-} from "./slice-types";
+} from "./slice-types.js";
 import {
   computeSliceEvaluation,
   exportSlicesToCsv,
   createDefaultGatingRules,
-} from "./slice-computation";
+} from "./slice-computation.js";
 
 /**
  * Options for slice evaluation

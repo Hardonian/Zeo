@@ -9,7 +9,7 @@ import type {
     DiscoveryNode,
     DiscoveryEdge,
     SignalRelationshipType
-} from "./types";
+} from "./types.js";
 import { createHash } from "crypto";
 
 /**

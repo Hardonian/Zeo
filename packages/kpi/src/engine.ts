@@ -20,7 +20,7 @@ import type {
   KpiTrend,
   KpiRegistry,
   KpiFormula
-} from "./types";
+} from "./types.js";
 
 /**
  * Hash function for determinism

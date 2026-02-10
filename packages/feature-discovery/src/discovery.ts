@@ -7,7 +7,7 @@ import type {
   Pattern,
   PriorityLevel,
   ImpactLevel,
-} from "./types";
+} from "./types.js";
 
 export type { FeatureProposal, DiscoveryContext, DiscoveryResult, DiscoveryConfig, Pattern };
 

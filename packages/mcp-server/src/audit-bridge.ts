@@ -10,8 +10,8 @@
 
 import { createAuditLog } from "@zeo/audit";
 import { canonicalizeForHash } from "@zeo/warehouse";
-import type { McpConfig, McpAuditEntry } from "./types";
-import { redactSecrets } from "./security";
+import type { McpConfig, McpAuditEntry } from "./types.js";
+import { redactSecrets } from "./security.js";
 
 /**
  * Simple deterministic hash for audit entries (mirrors @zeo/audit computeHash).

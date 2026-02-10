@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { pruneGraph, defaultPruningConfig } from "./pruning";
-import { generateBranchGraph } from "./engine";
-import { makeNegotiationExample } from "./examples";
+import { pruneGraph, defaultPruningConfig } from "./pruning.js";
+import { generateBranchGraph } from "./engine.js";
+import { makeNegotiationExample } from "./examples.js";
 import type { BranchGraph, BranchNode, BranchEdge } from "@zeo/contracts";
 import { nanoid } from "nanoid";
 

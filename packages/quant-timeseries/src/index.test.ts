@@ -10,8 +10,8 @@ import {
     computeHash,
     mean,
     variance,
-} from "./index";
-import type { TimePoint } from "./types";
+} from "./index.js";
+import type { TimePoint } from "./types.js";
 
 /**
  * Generate synthetic time series with known change-point

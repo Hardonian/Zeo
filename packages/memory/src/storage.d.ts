@@ -1,4 +1,4 @@
-import type { DecisionRecord, OutcomeRecord, DecisionQuery, DecisionStats } from "./types";
+import type { DecisionRecord, OutcomeRecord, DecisionQuery, DecisionStats } from "./types.js";
 import type { UUID } from "@zeo/contracts";
 /**
  * Storage adapter interface for decision records.

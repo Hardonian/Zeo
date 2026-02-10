@@ -8,7 +8,7 @@ import type {
   StrategicAssumption,
   StrategicWorldModel,
   StrategyValidationResult
-} from "./types";
+} from "./types.js";
 
 /**
  * Creates a new strategic world model with default uncertainty settings.

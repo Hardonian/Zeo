@@ -25,7 +25,7 @@ import {
   type ConstraintGraph,
   type ActionNode,
   type ConstraintContext,
-} from "./index";
+} from "./index.js";
 
 describe("Constraint Graph", () => {
   describe("createConstraintGraph", () => {

@@ -10,7 +10,7 @@
 
 import { promises as fs } from "fs";
 import { join } from "path";
-import type { McpConfig, ToolPermission } from "./types";
+import type { McpConfig, ToolPermission } from "./types.js";
 
 const CONFIG_FILENAME = "zeo.mcp.json";
 

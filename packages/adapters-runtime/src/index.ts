@@ -21,7 +21,7 @@ export type {
   ObservationBatchBuilder,
   AdapterRunResult,
   IngestResult,
-} from "./types";
+} from "./types.js";
 
 // Fetch orchestration
 export {
@@ -29,7 +29,7 @@ export {
   DEFAULT_RETRY_POLICY,
   DEFAULT_CACHE_CONFIG,
   computeCacheKey,
-} from "./fetch-orchestrator";
+} from "./fetch-orchestrator.js";
 
 // Deterministic normalization
 export {
@@ -37,7 +37,7 @@ export {
   canonicalize,
   stableSort,
   computeDeterministicHash,
-} from "./normalizer";
+} from "./normalizer.js";
 
 // Provenance and trust
 export {
@@ -45,7 +45,7 @@ export {
   computeTrustBand,
   createSourceMetadata,
   TRUST_BANDS,
-} from "./trust-scorer";
+} from "./trust-scorer.js";
 
 // Anomaly detection
 export {
@@ -54,14 +54,14 @@ export {
   detectSuddenJump,
   detectMissingnessSpike,
   detectTimestampInconsistency,
-} from "./anomaly-detector";
+} from "./anomaly-detector.js";
 
 // Quarantine mechanism
 export {
   createQuarantineStore,
   createFilesystemQuarantineStore,
   QUARANTINE_REASONS,
-} from "./quarantine-store";
+} from "./quarantine-store.js";
 
 // Data integrity invariants
 export {
@@ -71,20 +71,20 @@ export {
   validateChecksums,
   validateSchema,
   validateStableOrdering,
-} from "./integrity-enforcer";
+} from "./integrity-enforcer.js";
 
 // Batch builder
 export {
   createObservationBatchBuilder,
   buildReplayDataset,
-} from "./batch-builder";
+} from "./batch-builder.js";
 
 // Runtime
 export {
   createAdapterRuntime,
   runAdapter,
   ingestData,
-} from "./runtime";
+} from "./runtime.js";
 
 // Errors
 export {
@@ -93,5 +93,5 @@ export {
   IntegrityError,
   RateLimitError,
   CacheError,
-} from "./errors";
+} from "./errors.js";
 

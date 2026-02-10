@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { KpiContract, KpiMeasurement } from "./types";
+import type { KpiContract, KpiMeasurement } from "./types.js";
 import {
   computeInputHash,
   computeScalarKpi,
@@ -11,13 +11,13 @@ import {
   createDecisionCoverageKpi,
   createCalibrationScoreKpi,
   createRobustnessScoreKpi,
-} from "./engine";
+} from "./engine.js";
 import {
   isKpiMeasurementValid,
   assertKpiMeasurementValid,
   formatKpiWithEpistemicNotice,
   KpiEpistemicError,
-} from "./epistemic-guards";
+} from "./epistemic-guards.js";
 
 describe("KPI Engine", () => {
   describe("Determinism", () => {

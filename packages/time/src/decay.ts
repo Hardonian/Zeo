@@ -12,7 +12,7 @@ import type {
   EvidenceTemporalStatus,
   StepThreshold,
   DecayParameters
-} from "./types";
+} from "./types.js";
 
 export function applyDecay(
   weight: number,

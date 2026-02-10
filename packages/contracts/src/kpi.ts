@@ -5,7 +5,7 @@
  * measurements, dashboards, and alerts with epistemic discipline.
  */
 
-import type { ProvenancePointer, ProbabilityInterval, UUID, Claim } from "./types";
+import type { ProvenancePointer, ProbabilityInterval, UUID, Claim } from "./types.js";
 
 /**
  * KPI value types - scalar, interval, or distribution

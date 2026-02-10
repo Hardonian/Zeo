@@ -9,7 +9,7 @@ import type {
   ValueProfile, 
   ValueScoringContext,
   ValueValidationError 
-} from "./types";
+} from "./types.js";
 
 export interface GuardRule {
   id: string;

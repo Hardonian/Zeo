@@ -6,7 +6,7 @@ import {
   assertUiBridgeMessage,
   denyDangerousPanel,
   hasElevatedCapabilities,
-} from "./ui-panel";
+} from "./ui-panel.js";
 
 describe("UiPanelManifest validation", () => {
   const validManifest = {

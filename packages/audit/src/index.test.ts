@@ -1,5 +1,5 @@
 import { test, expect, describe } from "vitest";
-import { createAuditLog, createDecisionAuditEntry, createEvidenceAuditEntry } from "./index";
+import { createAuditLog, createDecisionAuditEntry, createEvidenceAuditEntry } from "./index.js";
 
 describe("audit ledger", () => {
   describe("append operations", () => {

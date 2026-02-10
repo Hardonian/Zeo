@@ -6,8 +6,8 @@
  * Write tools require user confirmation (or config approval).
  */
 
-import type { McpConfig, McpToolCallParams, JsonRpcError } from "./types";
-import { isToolAllowed } from "./config";
+import type { McpConfig, McpToolCallParams, JsonRpcError } from "./types.js";
+import { isToolAllowed } from "./config.js";
 
 const SECRET_PATTERNS = [
     /token/i,

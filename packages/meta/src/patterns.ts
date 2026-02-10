@@ -10,8 +10,8 @@ import type {
   MetaLearnerConfig,
   PatternType,
   Severity,
-} from "./types";
-import { DEFAULT_CONFIG } from "./types";
+} from "./types.js";
+import { DEFAULT_CONFIG } from "./types.js";
 
 /**
  * Detect recurring assumption errors from decision records

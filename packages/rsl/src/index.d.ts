@@ -1,5 +1,5 @@
-export * from "./types";
-export * from "./filters";
-export * from "./engine";
-export * from "./canonicalize";
+export * from "./types.js";
+export * from "./filters.js";
+export * from "./engine.js";
+export * from "./canonicalize.js";
 //# sourceMappingURL=index.d.ts.map

@@ -10,7 +10,7 @@ import type {
   ConsentChange,
   TrustAuditEntry,
   ConsentValidationResult,
-} from "./types";
+} from "./types.js";
 
 /**
  * In-memory audit log for consent changes and access events.

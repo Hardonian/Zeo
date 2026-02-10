@@ -9,5 +9,5 @@ export {
   type FieldStatistics,
   type PlanningOptions,
   type AnalysisStepKind
-} from "./planner";
+} from "./planner.js";
 

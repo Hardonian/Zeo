@@ -6,7 +6,7 @@ import {
   type ReplayDataset,
   type ReplayCase,
   type OutcomeRecord,
-} from "./replay";
+} from "./replay.js";
 
 describe("Replay Runtime Guards", () => {
   describe("assertReplayDataset", () => {

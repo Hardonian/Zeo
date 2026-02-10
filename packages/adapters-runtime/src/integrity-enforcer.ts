@@ -3,8 +3,8 @@
  */
 
 import type { SignalObservation, ObservationBatch } from "@zeo/contracts";
-import type { DataIntegrityRule, IntegrityValidationResult } from "./types";
-import { IntegrityError } from "./errors";
+import type { DataIntegrityRule, IntegrityValidationResult } from "./types.js";
+import { IntegrityError } from "./errors.js";
 
 /**
  * Validate no future timestamps

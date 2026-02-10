@@ -5,7 +5,7 @@
  * validation and introspection capabilities.
  */
 
-import type { TrustContract } from "./types";
+import type { TrustContract } from "./types.js";
 
 /**
  * Current version of the trust contract.

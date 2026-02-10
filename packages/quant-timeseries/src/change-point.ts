@@ -17,9 +17,9 @@ import type {
     ChangePointConfig,
     ChangePointCandidate,
     ChangePointResult,
-} from "./types";
-import { createDefaultChangePointConfig } from "./types";
-import { computeHash, normalPdf, normalCdf, gammaPdf } from "./math-utils";
+} from "./types.js";
+import { createDefaultChangePointConfig } from "./types.js";
+import { computeHash, normalPdf, normalCdf, gammaPdf } from "./math-utils.js";
 
 /**
  * Student-t probability density for robust prediction

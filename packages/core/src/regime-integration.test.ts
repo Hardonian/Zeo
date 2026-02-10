@@ -5,7 +5,7 @@ import {
   widenPosteriors,
   createRegimeAdjustmentRecord,
   regimeAdjustmentFromBand,
-} from "./regime-integration";
+} from "./regime-integration.js";
 import type { RegimeState } from "@zeo/contracts";
 import type { PosteriorSummary } from "@zeo/models";
 

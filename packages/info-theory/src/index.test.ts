@@ -14,7 +14,7 @@ import {
     analyzeRedundancy,
     computeHash,
     discretize,
-} from "./index";
+} from "./index.js";
 
 /**
  * Generate deterministic pseudo-random samples

@@ -8,8 +8,8 @@ import type {
   ResolutionStatus,
   OutcomeConfidence,
   TemporalContext
-} from "./types";
-import type { DecisionStorageAdapter } from "./storage";
+} from "./types.js";
+import type { DecisionStorageAdapter } from "./storage.js";
 
 export type CreateDecisionOptions = {
   userId: string;

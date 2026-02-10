@@ -22,19 +22,19 @@ export type {
     JamesSteinConfig,
     HierarchicalConfig,
     ShrinkageResult,
-} from "./types";
+} from "./types.js";
 
 // Re-export config factories
 export {
     createDefaultJamesSteinConfig,
     createDefaultHierarchicalConfig,
-} from "./types";
+} from "./types.js";
 
 // Re-export James-Stein shrinkage
-export { jamesSteinShrinkage } from "./james-stein";
+export { jamesSteinShrinkage } from "./james-stein.js";
 
 // Re-export hierarchical shrinkage
-export { hierarchicalShrinkage } from "./hierarchical";
+export { hierarchicalShrinkage } from "./hierarchical.js";
 
 // Re-export utilities
 export {
@@ -42,11 +42,11 @@ export {
     normalQuantile,
     normalPdf,
     normalCdf,
-} from "./utils";
+} from "./utils.js";
 
-import type { ObservedEstimate, ShrinkageResult } from "./types";
-import { jamesSteinShrinkage } from "./james-stein";
-import { hierarchicalShrinkage } from "./hierarchical";
+import type { ObservedEstimate, ShrinkageResult } from "./types.js";
+import { jamesSteinShrinkage } from "./james-stein.js";
+import { hierarchicalShrinkage } from "./hierarchical.js";
 
 /**
  * Automatically select and apply the appropriate shrinkage method

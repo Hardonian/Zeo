@@ -8,7 +8,7 @@
  * - Access control (owner/editor/viewer)
  */
 
-import type { UUID } from "./types";
+import type { UUID } from "./types.js";
 
 // =============================================================================
 // SHARE BUNDLE TYPES

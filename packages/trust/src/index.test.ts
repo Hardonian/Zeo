@@ -23,7 +23,7 @@ import {
   getConsentSummary,
   clearAuditLog,
   clearConsentHistory,
-} from "./index";
+} from "./index.js";
 
 describe("Trust Contract", () => {
   describe("createDefaultTrustContract", () => {

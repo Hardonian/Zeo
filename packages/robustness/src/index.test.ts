@@ -13,7 +13,7 @@ import {
   assessHypothesisRobustness,
   runAllRobustnessChecks,
   type NumericDataPoint,
-} from "./index";
+} from "./index.js";
 
 // Test data factories
 function createStableData(n: number = 100, value: number = 100): NumericDataPoint[] {

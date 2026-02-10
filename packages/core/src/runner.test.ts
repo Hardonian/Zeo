@@ -1,7 +1,7 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { ZeoRunner } from "./runner";
-import { createTrustContext } from "./trust-integration";
+import { ZeoRunner } from "./runner.js";
+import { createTrustContext } from "./trust-integration.js";
 import { createDefaultConsentScope } from "@zeo/trust";
 import type { DecisionSpec, DecisionResult, KpiMeasurement } from "@zeo/contracts";
 import type { KpiWarehouseStorage } from "@zeo/warehouse";

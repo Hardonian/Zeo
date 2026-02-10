@@ -11,14 +11,14 @@ import {
   isPatternType,
   isSeverity,
   isDecisionOutcome,
-} from "./types";
+} from "./types.js";
 import {
   detectAssumptionErrors,
   detectConfidenceMiscalibration,
   detectReversals,
   detectIgnoredClarifiers,
   detectAllPatterns,
-} from "./patterns";
+} from "./patterns.js";
 import {
   aggregatePatterns,
   generateEpistemicWarnings,
@@ -28,7 +28,7 @@ import {
   analyzeDecisions,
   hasEnoughObservations,
   filterDismissedInsights,
-} from "./learner";
+} from "./learner.js";
 
 // Test data factory
 function createDecisionRecord(overrides: Partial<DecisionRecord> = {}): DecisionRecord {

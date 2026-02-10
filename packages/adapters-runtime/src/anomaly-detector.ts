@@ -3,7 +3,7 @@
  */
 
 import type { SignalObservation } from "@zeo/contracts";
-import type { AnomalyRule, AnomalyViolation, AnomalyDetectionResult } from "./types";
+import type { AnomalyRule, AnomalyViolation, AnomalyDetectionResult } from "./types.js";
 
 /**
  * Detect sudden distribution jumps using Z-score

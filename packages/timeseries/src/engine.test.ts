@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { TimeSeriesEngine } from "./engine";
-import type { TimeSeries } from "./types";
+import { TimeSeriesEngine } from "./engine.js";
+import type { TimeSeries } from "./types.js";
 
 describe("timeseries", () => {
   const engine = new TimeSeriesEngine();

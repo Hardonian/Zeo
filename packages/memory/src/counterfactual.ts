@@ -1,5 +1,5 @@
 import type { UUID, ProbabilityInterval, Action } from "@zeo/contracts";
-import type { DecisionRecord, OutcomeRecord } from "./types";
+import type { DecisionRecord, OutcomeRecord } from "./types.js";
 
 /**
  * A counterfactual scenario - what if a different action was taken?

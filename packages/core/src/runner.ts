@@ -10,19 +10,19 @@
 
 import type { DecisionSpec, DecisionResult } from "@zeo/contracts";
 import type { KpiWarehouseStorage } from "@zeo/warehouse";
-import { runDecision, type RunDecisionOpts } from "./engine";
+import { runDecision, type RunDecisionOpts } from "./engine.js";
 import {
     enforceTrustBoundary,
     type TrustContext,
     type OperationType
-} from "./trust-integration";
+} from "./trust-integration.js";
 import {
     KpiIntegration,
     type KpiIntegrationConfig,
     createKpiIntegration
-} from "./kpi-integration";
-import { cacheKey } from "./hashing";
-import { globalCache } from "./cache-layer";
+} from "./kpi-integration.js";
+import { cacheKey } from "./hashing.js";
+import { globalCache } from "./cache-layer.js";
 
 /**
  * Configuration for the Zeo Runner

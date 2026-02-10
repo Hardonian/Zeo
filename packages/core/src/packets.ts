@@ -14,9 +14,9 @@ import type {
 } from "@zeo/contracts";
 
 export type { RunMeta, EvidencePacketJSON };
-import { hashDecisionSpec, hashAssumptionSet } from "./hashing";
-import { canonicalizeDecisionSpec, canonicalizeObservationBatch, hashObservationBatch } from "./canonicalize";
-import { computeDeterministicSeed } from "./rng";
+import { hashDecisionSpec, hashAssumptionSet } from "./hashing.js";
+import { canonicalizeDecisionSpec, canonicalizeObservationBatch, hashObservationBatch } from "./canonicalize.js";
+import { computeDeterministicSeed } from "./rng.js";
 
 const ENGINE_VERSION = "0.2.7";
 

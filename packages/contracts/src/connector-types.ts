@@ -1,5 +1,5 @@
 
-import type { DecisionSpec, DecisionResult, UUID } from "./types";
+import type { DecisionSpec, DecisionResult, UUID } from "./types.js";
 
 export type ConnectorCapability = "ingestScenario" | "exportSummary" | "exportPack" | "poll";
 

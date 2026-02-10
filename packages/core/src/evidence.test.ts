@@ -5,7 +5,7 @@ import {
   downgradeTobelief,
   ProvenanceRequiredError,
   InvalidProvenanceError,
-} from "./evidence";
+} from "./evidence.js";
 import type { Claim, Constraint, FactCandidate, ProvenancePointer } from "@zeo/contracts";
 import { nanoid } from "nanoid";
 

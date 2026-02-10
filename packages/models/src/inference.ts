@@ -6,7 +6,7 @@ import type {
   WorldState,
   ObservationLikelihood,
   ProbabilityDistribution,
-} from "./types";
+} from "./types.js";
 import { spawn } from "child_process";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";

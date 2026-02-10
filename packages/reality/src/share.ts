@@ -23,7 +23,7 @@ import type {
   BundleImportResult,
   BundleValidationResult,
   RedactedEvidenceEvent,
-} from "./types";
+} from "./types.js";
 import {
   generateBundleId,
   hashObject,
@@ -37,18 +37,18 @@ import {
   signData,
   verifySignature,
   generateSigningKey,
-} from "./crypto";
+} from "./crypto.js";
 import {
   redactDecisionSpec,
   redactEvidenceEvents,
   generateRedactionPreview,
   validateRedactedContent,
-} from "./redaction";
+} from "./redaction.js";
 import {
   createACL,
   validateTenantIsolation,
   getPermissions,
-} from "./acl";
+} from "./acl.js";
 
 /**
  * Create a share bundle

@@ -1,5 +1,5 @@
 import type { UUID, ProbabilityInterval, BranchNode } from "@zeo/contracts";
-import type { DecisionRecord, OutcomeRecord, OutcomeMapping, PartialResolution, ResolutionStatus } from "./types";
+import type { DecisionRecord, OutcomeRecord, OutcomeMapping, PartialResolution, ResolutionStatus } from "./types.js";
 /**
  * Match result for outcome-to-branch mapping.
  */

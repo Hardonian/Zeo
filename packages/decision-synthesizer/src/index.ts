@@ -4,5 +4,5 @@ export {
   type DecisionImplication,
   type SynthesisResult,
   type SynthesisOptions
-} from "./synthesizer";
+} from "./synthesizer.js";
 

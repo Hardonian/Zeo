@@ -10,7 +10,7 @@ import {
   RISK_TIER_CONFIG,
   DOMAIN_RISK_MATRIX,
   type PolicyConfig
-} from "./index";
+} from "./index.js";
 
 // Import types from contracts for reference in helpers
 import type { DecisionSpec, EvidenceEvent, BranchGraph, Action, Claim, BranchNode } from "@zeo/contracts";

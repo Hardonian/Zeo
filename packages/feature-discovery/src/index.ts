@@ -3,7 +3,7 @@ export {
   createFeatureDiscovery,
   type DiscoveryConfig,
   type Pattern
-} from "./discovery";
+} from "./discovery.js";
 
 export type {
   FeatureProposal,
@@ -11,5 +11,5 @@ export type {
   DiscoveryResult,
   PriorityLevel,
   ImpactLevel
-} from "./types";
+} from "./types.js";
 

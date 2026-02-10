@@ -14,7 +14,7 @@ import type {
     WatchlistItem,
     SignalPriority,
     RadarFeedEvent
-} from "./types";
+} from "./types.js";
 import { createHash } from "crypto";
 import { nanoid } from "nanoid";
 

@@ -19,9 +19,9 @@ import type {
     ShrunkEstimate,
     HierarchicalConfig,
     ShrinkageResult,
-} from "./types";
-import { createDefaultHierarchicalConfig } from "./types";
-import { computeHash, normalQuantile } from "./utils";
+} from "./types.js";
+import { createDefaultHierarchicalConfig } from "./types.js";
+import { computeHash, normalQuantile } from "./utils.js";
 
 /**
  * Compute hierarchical Bayes shrinkage with grouped structure

@@ -7,7 +7,7 @@ import {
   enforceNoFakePrecision,
   assertQuantifiedAssumption,
   ZeoError,
-} from "./errors";
+} from "./errors.js";
 
 describe("Qualitative Scale Validation", () => {
   describe("assertQualitativeScale", () => {

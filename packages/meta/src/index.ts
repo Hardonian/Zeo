@@ -21,7 +21,7 @@ export {
   isPatternType,
   isSeverity,
   isDecisionOutcome,
-} from "./types";
+} from "./types.js";
 
 // Pattern detection
 export {
@@ -30,7 +30,7 @@ export {
   detectReversals,
   detectIgnoredClarifiers,
   detectAllPatterns,
-} from "./patterns";
+} from "./patterns.js";
 
 // Meta-learning
 export {
@@ -42,7 +42,7 @@ export {
   analyzeDecisions,
   hasEnoughObservations,
   filterDismissedInsights,
-} from "./learner";
+} from "./learner.js";
 
 /**
  * Key design principles:

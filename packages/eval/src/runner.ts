@@ -15,9 +15,9 @@ import type {
   EvalSuiteResult,
   EvalCommand,
   InvariantResult,
-} from "./types";
-import { validateEvalSuite } from "./schema";
-import { runInvariantChecks } from "./invariants";
+} from "./types.js";
+import { validateEvalSuite } from "./schema.js";
+import { runInvariantChecks } from "./invariants.js";
 
 /**
  * Run an evaluation command

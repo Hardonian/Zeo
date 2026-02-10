@@ -5,7 +5,7 @@ import type {
   DecisionQuery, 
   DecisionStats,
   ResolutionStatus 
-} from "./types";
+} from "./types.js";
 import type { UUID, DecisionSpec, BranchGraph } from "@zeo/contracts";
 
 /**

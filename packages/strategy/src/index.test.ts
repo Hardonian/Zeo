@@ -11,12 +11,12 @@ import {
   computeDominanceUnderDeception,
   selectBestRobustStrategy,
   validateDeceptionCoverage
-} from "./index";
+} from "./index.js";
 import type {
   StrategicAction,
   StrategicScenario,
   StrategicAssumption
-} from "./types";
+} from "./types.js";
 
 describe("Strategic World Modeling & Decision Making", () => {
   describe("createStrategicWorldModel", () => {

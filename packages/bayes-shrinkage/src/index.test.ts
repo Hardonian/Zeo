@@ -7,8 +7,8 @@ import {
     shrinkabilityScore,
     computeHash,
     normalQuantile,
-} from "./index";
-import type { ObservedEstimate } from "./types";
+} from "./index.js";
+import type { ObservedEstimate } from "./types.js";
 
 describe("Utils", () => {
     it("should compute hash deterministically", () => {

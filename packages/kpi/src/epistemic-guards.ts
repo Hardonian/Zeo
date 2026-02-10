@@ -8,7 +8,7 @@
  * @module @zeo/kpi/epistemic-guards
  */
 
-import type { KpiMeasurement, KpiContract } from "./types";
+import type { KpiMeasurement, KpiContract } from "./types.js";
 
 /**
  * Error thrown when epistemic discipline is violated

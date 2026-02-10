@@ -3,7 +3,7 @@
  */
 
 import type { SignalObservation, ProvenancePointer } from "@zeo/contracts";
-import type { TrustScore, TrustBand, SourceMetadata } from "./types";
+import type { TrustScore, TrustBand, SourceMetadata } from "./types.js";
 
 export const TRUST_BANDS: Record<TrustBand, { minScore: number; maxScore: number; label: string }> = {
   primary: { minScore: 0.8, maxScore: 1.0, label: "Primary Source" },

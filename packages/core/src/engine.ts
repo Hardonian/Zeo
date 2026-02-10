@@ -10,13 +10,13 @@ import type {
   LensEvaluation,
   ProbabilityInterval,
 } from "@zeo/contracts";
-import { pruneGraph, defaultPruningConfig } from "./pruning";
-import type { PruningConfig } from "./pruning";
-import { generateFlipConditions } from "./flip-conditions";
-import { QuantEngine } from "./quant-engine";
+import { pruneGraph, defaultPruningConfig } from "./pruning.js";
+import type { PruningConfig } from "./pruning.js";
+import { generateFlipConditions } from "./flip-conditions.js";
+import { QuantEngine } from "./quant-engine.js";
 import type { AssumptionTracker } from "@zeo/repro-pack";
-import { hygiene } from "./hygiene";
-import { BudgetManager, BudgetReachedError } from "./budget";
+import { hygiene } from "./hygiene.js";
+import { BudgetManager, BudgetReachedError } from "./budget.js";
 import type { Budget } from "@zeo/contracts";
 
 /**

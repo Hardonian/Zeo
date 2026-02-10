@@ -1,4 +1,4 @@
-import type { FilterConfig, FilterResult } from "./types";
+import type { FilterConfig, FilterResult } from "./types.js";
 /**
  * Kalman Filter implementation for linear state-space models.
  * Suitable for tracking volatility_regime, liquidity_stress in stable periods.

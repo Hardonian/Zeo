@@ -2,7 +2,7 @@ import type {
   UiPanelManifest,
   UiBridgeMessage,
   UiPanelCapabilities,
-} from "./types";
+} from "./types.js";
 
 export function assertUiPanelManifest(x: unknown): asserts x is UiPanelManifest {
   if (!isUiPanelManifest(x)) {

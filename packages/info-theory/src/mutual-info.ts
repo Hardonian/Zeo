@@ -7,16 +7,16 @@
  * I(X; Y) = H(X) + H(Y) - H(X,Y) = H(X) - H(X|Y) = H(Y) - H(Y|X)
  */
 
-import type { MutualInfoConfig, MutualInfoResult, ConditionalMIResult } from "./types";
-import { createDefaultMIConfig } from "./types";
-import { shannonEntropy, jointEntropy } from "./entropy";
+import type { MutualInfoConfig, MutualInfoResult, ConditionalMIResult } from "./types.js";
+import { createDefaultMIConfig } from "./types.js";
+import { shannonEntropy, jointEntropy } from "./entropy.js";
 import {
     computeHash,
     discretize,
     estimateMarginalDistribution,
     estimateJointDistribution,
     estimateJoint3Distribution,
-} from "./utils";
+} from "./utils.js";
 
 /**
  * Compute mutual information between two continuous variables

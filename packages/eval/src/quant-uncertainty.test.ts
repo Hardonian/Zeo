@@ -6,7 +6,7 @@ import {
     ShrinkageInput,
     RedundancyInput,
     SensitivityInput
-} from "./quant-uncertainty";
+} from "./quant-uncertainty.js";
 import type { Prediction } from "@zeo/contracts";
 
 // Mock prediction helper

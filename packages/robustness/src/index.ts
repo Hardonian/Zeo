@@ -574,7 +574,7 @@ export {
   formatHypothesisForReview,
   createHypothesisGenerationReport,
   generateHypothesesFromPattern,
-} from "./hypothesis-generator";
+} from "./hypothesis-generator.js";
 
 // Re-export sensitivity analysis (Phase 4 Quant Stack)
 export {
@@ -584,4 +584,4 @@ export {
   computeLOOSensitivity,
   computeWindowSensitivity,
   robustRegression,
-} from "./sensitivity";
+} from "./sensitivity.js";

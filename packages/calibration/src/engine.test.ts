@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { CalibrationEngine } from "./engine";
+import { CalibrationEngine } from "./engine.js";
 
 describe("calibration", () => {
   it("should create calibration engine", () => {

@@ -1,7 +1,7 @@
 import type {
   ExplanationContent,
   ExplanationLevel,
-} from "./types";
+} from "./types.js";
 
 export class ExplanationGeneratorImpl {
   private levelOrder: ExplanationLevel[] = [

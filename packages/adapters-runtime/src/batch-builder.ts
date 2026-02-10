@@ -4,8 +4,8 @@
 
 import { createHash } from "crypto";
 import type { SignalObservation, ObservationBatch, ReplayDataset, Action, Agent, Constraint, Claim, OutcomeMetric } from "@zeo/contracts";
-import type { ObservationBatchBuilder } from "./types";
-import { canonicalize, computeDeterministicHash } from "./normalizer";
+import type { ObservationBatchBuilder } from "./types.js";
+import { canonicalize, computeDeterministicHash } from "./normalizer.js";
 
 // Unknown type extension for DecisionSpec
 type Unknown = {

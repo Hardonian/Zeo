@@ -10,10 +10,10 @@
  * - Automatic redundant feature detection
  */
 
-import type { FeatureRankingResult, MutualInfoConfig, RedundancyReport } from "./types";
-import { createDefaultMIConfig } from "./types";
-import { mutualInformation, normalizedMutualInformation } from "./mutual-info";
-import { computeHash, discretize } from "./utils";
+import type { FeatureRankingResult, MutualInfoConfig, RedundancyReport } from "./types.js";
+import { createDefaultMIConfig } from "./types.js";
+import { mutualInformation, normalizedMutualInformation } from "./mutual-info.js";
+import { computeHash, discretize } from "./utils.js";
 
 /**
  * Compute pairwise redundancy matrix for features

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { makeNegotiationExample, makeOpsExample } from "./examples";
-import { runDecision } from "./engine";
+import { makeNegotiationExample, makeOpsExample } from "./examples.js";
+import { runDecision } from "./engine.js";
 
 describe("zeo core", () => {
   it("generates a branch graph for negotiation", () => {

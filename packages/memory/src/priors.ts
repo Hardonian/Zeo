@@ -1,5 +1,5 @@
 import type { UUID, ProbabilityInterval } from "@zeo/contracts";
-import type { DecisionRecord, OutcomeRecord } from "./types";
+import type { DecisionRecord, OutcomeRecord } from "./types.js";
 
 /**
  * Level in the hierarchical prior hierarchy.

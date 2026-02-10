@@ -12,14 +12,14 @@
 
 import { createInterface } from "readline";
 import { createServer as createHttpServer } from "http";
-import { loadConfig, validateConfig } from "./config";
-import { createMcpServer } from "./server";
+import { loadConfig, validateConfig } from "./config.js";
+import { createMcpServer } from "./server.js";
 
-export { createMcpServer } from "./server";
-export { createDefaultConfig, loadConfig, validateConfig, isToolAllowed, requiresConfirmation } from "./config";
-export type { McpConfig, McpToolDefinition, McpToolResult, McpAuditEntry, ToolPermission, ToolScope } from "./types";
-export type { McpServer } from "./server";
-export type { AuditBridge } from "./audit-bridge";
+export { createMcpServer } from "./server.js";
+export { createDefaultConfig, loadConfig, validateConfig, isToolAllowed, requiresConfirmation } from "./config.js";
+export type { McpConfig, McpToolDefinition, McpToolResult, McpAuditEntry, ToolPermission, ToolScope } from "./types.js";
+export type { McpServer } from "./server.js";
+export type { AuditBridge } from "./audit-bridge.js";
 
 /**
  * Stdio transport — reads JSON-RPC messages line-by-line from stdin,

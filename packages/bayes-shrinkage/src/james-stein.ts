@@ -16,9 +16,9 @@ import type {
     ShrunkEstimate,
     JamesSteinConfig,
     ShrinkageResult,
-} from "./types";
-import { createDefaultJamesSteinConfig } from "./types";
-import { computeHash } from "./utils";
+} from "./types.js";
+import { createDefaultJamesSteinConfig } from "./types.js";
+import { computeHash } from "./utils.js";
 
 /**
  * Compute James-Stein shrinkage

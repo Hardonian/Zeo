@@ -5,7 +5,7 @@ import type {
   RSLStateVariable,
   SignalObservation,
   RegimeDetection,
-} from "./types";
+} from "./types.js";
 
 /**
  * Kalman Filter implementation for linear state-space models.

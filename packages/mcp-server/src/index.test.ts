@@ -17,9 +17,9 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { createMcpServer } from "./server";
-import { createDefaultConfig } from "./config";
-import type { McpConfig, JsonRpcRequest } from "./types";
+import { createMcpServer } from "./server.js";
+import { createDefaultConfig } from "./config.js";
+import type { McpConfig, JsonRpcRequest } from "./types.js";
 
 function makeRequest(
     method: string,

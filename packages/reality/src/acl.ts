@@ -13,8 +13,8 @@ import type {
   RolePermissions,
   SecurityContext,
   TenantContext 
-} from "./types";
-import { DEFAULT_ROLE_PERMISSIONS } from "./types";
+} from "./types.js";
+import { DEFAULT_ROLE_PERMISSIONS } from "./types.js";
 
 /**
  * Create a new ACL for a resource

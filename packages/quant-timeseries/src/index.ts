@@ -19,27 +19,27 @@ export type {
     KalmanState,
     KalmanResult,
     TimeSeriesHealthReport,
-} from "./types";
+} from "./types.js";
 
 // Re-export config factories
 export {
     createDefaultChangePointConfig,
     createDefaultKalmanConfig,
-} from "./types";
+} from "./types.js";
 
 // Re-export change-point detection
 export {
     detectChangePoints,
     detectChangePointsBOCPD,
     detectChangePointsPELT,
-} from "./change-point";
+} from "./change-point.js";
 
 // Re-export Kalman filtering
 export {
     runKalmanFilter,
     smoothTimeSeries,
     forecast,
-} from "./kalman";
+} from "./kalman.js";
 
 // Re-export math utilities (for advanced users)
 export {
@@ -52,14 +52,14 @@ export {
     autocorrelation,
     quantile,
     mad,
-} from "./math-utils";
+} from "./math-utils.js";
 
 /**
  * Combined analysis: run change-point detection and Kalman smoothing
  */
-import type { TimePoint, TimeSeriesHealthReport } from "./types";
-import { detectChangePoints } from "./change-point";
-import { runKalmanFilter } from "./kalman";
+import type { TimePoint, TimeSeriesHealthReport } from "./types.js";
+import { detectChangePoints } from "./change-point.js";
+import { runKalmanFilter } from "./kalman.js";
 
 export function analyzeTimeSeries(
     series: TimePoint[],

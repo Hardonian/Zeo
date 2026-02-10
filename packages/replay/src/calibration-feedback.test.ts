@@ -6,7 +6,7 @@ import {
   widenBand,
   wouldCalibrationChange,
   type CalibrationModeConfig,
-} from "./calibration-feedback";
+} from "./calibration-feedback.js";
 import type { Prediction, RecommendedUncertaintyAdjustment } from "@zeo/contracts";
 
 describe("Calibration Feedback", () => {

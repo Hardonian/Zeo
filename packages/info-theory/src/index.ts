@@ -20,12 +20,12 @@ export type {
     ConditionalMIResult,
     FeatureRankingResult,
     RedundancyReport,
-} from "./types";
+} from "./types.js";
 
 // Re-export config factories
 export {
     createDefaultMIConfig,
-} from "./types";
+} from "./types.js";
 
 // Re-export entropy functions
 export {
@@ -33,14 +33,14 @@ export {
     conditionalEntropy,
     jointEntropy,
     renyiEntropy,
-} from "./entropy";
+} from "./entropy.js";
 
 // Re-export mutual information functions
 export {
     mutualInformation,
     conditionalMutualInformation,
     normalizedMutualInformation,
-} from "./mutual-info";
+} from "./mutual-info.js";
 
 // Re-export redundancy control
 export {
@@ -48,7 +48,7 @@ export {
     detectRedundantFeatures,
     mrmrFeatureSelection,
     computeRedundancyReport,
-} from "./redundancy";
+} from "./redundancy.js";
 
 // Re-export utilities
 export {
@@ -56,10 +56,10 @@ export {
     discretize,
     estimateJointDistribution,
     estimateMarginalDistribution,
-} from "./utils";
+} from "./utils.js";
 
-import type { FeatureRankingResult, RedundancyReport } from "./types";
-import { mrmrFeatureSelection, computeRedundancyReport } from "./redundancy";
+import type { FeatureRankingResult, RedundancyReport } from "./types.js";
+import { mrmrFeatureSelection, computeRedundancyReport } from "./redundancy.js";
 
 /**
  * One-shot feature selection: select top-k features with minimal redundancy

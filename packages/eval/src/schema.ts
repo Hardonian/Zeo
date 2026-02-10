@@ -2,7 +2,7 @@
  * EvalSuite schema definition and validation
  */
 
-import type { EvalSuite, InvariantCheck, ExpectedOutput } from "./types";
+import type { EvalSuite, InvariantCheck, ExpectedOutput } from "./types.js";
 
 /**
  * Minimum uncertainty width for text-derived priors (Invariant 9)

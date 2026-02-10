@@ -4,7 +4,7 @@
  * Shannon entropy and related measures.
  */
 
-import { safeLog2 } from "./utils";
+import { safeLog2 } from "./utils.js";
 
 /**
  * Shannon entropy of a discrete distribution

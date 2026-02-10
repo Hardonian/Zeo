@@ -36,7 +36,7 @@ export type {
   BundleExportOptions,
   BundleImportResult,
   BundleValidationResult,
-} from "./types";
+} from "./types.js";
 
 // =============================================================================
 // CONSTANTS
@@ -45,7 +45,7 @@ export type {
 export {
   DEFAULT_ROLE_PERMISSIONS,
   DEFAULT_REDACTION_POLICIES,
-} from "./types";
+} from "./types.js";
 
 // =============================================================================
 // CRYPTO UTILITIES
@@ -66,7 +66,7 @@ export {
   generateSigningKey,
   signData,
   verifySignature,
-} from "./crypto";
+} from "./crypto.js";
 
 // =============================================================================
 // ACCESS CONTROL
@@ -91,7 +91,7 @@ export {
   listACLEntries,
   cleanExpiredEntries,
   validateACL,
-} from "./acl";
+} from "./acl.js";
 
 // =============================================================================
 // REDACTION
@@ -104,7 +104,7 @@ export {
   generateRedactionPreview,
   validateRedactedContent,
   shouldRedact,
-} from "./redaction";
+} from "./redaction.js";
 
 // =============================================================================
 // SHARE BUNDLE
@@ -119,7 +119,7 @@ export {
   exportBundleToJson,
   parseBundleFromJson,
   createExportOptions,
-} from "./share";
+} from "./share.js";
 
 
 
@@ -135,10 +135,10 @@ export type {
   VoiResult,
   EvidencePlan,
   PlannerConfig,
-} from "./planner-types";
+} from "./planner-types.js";
 
 export {
   recommendEvidence,
   createEvidencePlan,
-} from "./evidence-planner";
+} from "./evidence-planner.js";
 

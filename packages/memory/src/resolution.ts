@@ -5,7 +5,7 @@ import type {
   OutcomeMapping, 
   PartialResolution,
   ResolutionStatus 
-} from "./types";
+} from "./types.js";
 
 /**
  * Match result for outcome-to-branch mapping.

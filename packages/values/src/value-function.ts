@@ -11,7 +11,7 @@ import type {
   ValueValidationResult,
   ValueValidationError,
   MeasurementScale 
-} from "./types";
+} from "./types.js";
 
 const VALID_COMPONENTS: ValueComponent[] = [
   "utility",

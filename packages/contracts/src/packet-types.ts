@@ -5,8 +5,8 @@ import type {
     LensEvaluation,
     RegimeState,
     ObservationBatch,
-} from "./types";
-import type { ZeoErrorCode } from "./errors";
+} from "./types.js";
+import type { ZeoErrorCode } from "./errors.js";
 
 export interface RunMeta {
     seed: string;

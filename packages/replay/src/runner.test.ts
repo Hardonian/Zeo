@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { hashDecisionSpec, hashObservations, deriveSeedFromHashes } from "./hashing";
-import { replayCase } from "./runner";
-import { buildPredictionBundle, observationsUpTo, summarizePosterior } from "./predictions";
+import { hashDecisionSpec, hashObservations, deriveSeedFromHashes } from "./hashing.js";
+import { replayCase } from "./runner.js";
+import { buildPredictionBundle, observationsUpTo, summarizePosterior } from "./predictions.js";
 import type {
   ReplayCase,
   ReplayOptions,

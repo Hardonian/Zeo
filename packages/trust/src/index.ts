@@ -40,7 +40,7 @@ export type {
   ConsentChange,
   TrustAuditEntry,
   ConsentValidationResult,
-} from "./types";
+} from "./types.js";
 
 // Contract functions
 export {
@@ -50,7 +50,7 @@ export {
   isActivityProhibited,
   mergeTrustContract,
   type TrustContractValidationResult,
-} from "./contract";
+} from "./contract.js";
 
 // Consent functions
 export {
@@ -65,7 +65,7 @@ export {
   // Internal utilities for testing
   clearAuditLog,
   clearConsentHistory,
-} from "./consent";
+} from "./consent.js";
 
 // Integration module
 export {
@@ -77,5 +77,5 @@ export {
   type TrustIntegrationConfig,
   type PanelConsentResult,
   type TrustIntegration,
-} from "./integration";
+} from "./integration.js";
 

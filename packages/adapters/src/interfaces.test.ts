@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { AdapterHealth } from "./interfaces";
+import type { AdapterHealth } from "./interfaces.js";
 
 describe("adapters", () => {
   it("AdapterHealth shape", () => {

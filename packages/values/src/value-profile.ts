@@ -9,7 +9,7 @@ import type {
   ValueFunction, 
   ValueOverride,
   ValueProfileChange 
-} from "./types";
+} from "./types.js";
 
 export function createValueProfile(defaultValueFunctionId: string): ValueProfile {
   const now = new Date();

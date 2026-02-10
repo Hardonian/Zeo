@@ -10,9 +10,9 @@ import type {
   MetaInsight,
   MetaLearnerConfig,
   MetaLearningResult,
-} from "./types";
-import { DEFAULT_CONFIG } from "./types";
-import { detectAllPatterns } from "./patterns";
+} from "./types.js";
+import { DEFAULT_CONFIG } from "./types.js";
+import { detectAllPatterns } from "./patterns.js";
 
 /**
  * Aggregate all detected patterns into a comprehensive view

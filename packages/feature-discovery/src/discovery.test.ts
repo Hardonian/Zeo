@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { FeatureDiscovery, createFeatureDiscovery } from "./discovery";
+import { FeatureDiscovery, createFeatureDiscovery } from "./discovery.js";
 
 describe("FeatureDiscovery", () => {
   let discovery: FeatureDiscovery;

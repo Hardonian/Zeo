@@ -1,5 +1,5 @@
 import type { BranchGraph, Claim, DecisionResult, DecisionSpec, ProbabilityInterval } from "@zeo/contracts";
-import type { PruningConfig } from "./pruning";
+import type { PruningConfig } from "./pruning.js";
 export declare function interval(low: number, high: number): ProbabilityInterval;
 export declare function requireProvenanceForFacts(claims: Claim[]): void;
 type BranchHeuristics = {

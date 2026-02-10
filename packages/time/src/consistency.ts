@@ -9,7 +9,7 @@ import type {
   TimeConsistencyReport,
   TemporalContext,
   TemporalMetadata 
-} from "./types";
+} from "./types.js";
 
 export interface EvidenceItem {
   id: string;

@@ -1,6 +1,6 @@
-import type { RSLState, StateEstimate, RSLStateVariable, SignalObservation, RegimeDetection } from "./types";
-import { KalmanFilter, ParticleFilter } from "./filters";
-import type { FilterConfig, FilterResult } from "./types";
+import type { RSLState, StateEstimate, RSLStateVariable, SignalObservation, RegimeDetection } from "./types.js";
+import { KalmanFilter, ParticleFilter } from "./filters.js";
+import type { FilterConfig, FilterResult } from "./types.js";
 import { spawn } from "child_process";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";

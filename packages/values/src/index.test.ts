@@ -12,7 +12,7 @@ import {
   runGuards,
   HIDDEN_OPTIMIZATION_RULE,
   EXPLICIT_VALUE_FUNCTION_RULE
-} from "./index";
+} from "./index.js";
 
 describe("Value System Encoding", () => {
   describe("createValueFunction", () => {

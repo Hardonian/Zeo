@@ -2,7 +2,7 @@ import { test, expect, describe } from "vitest";
 import {
   synthesizeImplications,
   type DecisionContext
-} from "./synthesizer";
+} from "./synthesizer.js";
 
 describe("Decision Synthesizer", () => {
   const mockContext: DecisionContext = {
@@ -35,7 +35,7 @@ describe("Decision Synthesizer", () => {
   test("generates all three implication types", () => {
     const result = synthesizeImplications(mockContext);
     
-    const types = new Set(result.implications.map(i => i.type));
+    const types = new Set(result.implications.map((i: { type: string }) => i.type));
     expect(types.has("what_this_means")).toBe(true);
     expect(types.has("why_might_be_wrong")).toBe(true);
     expect(types.has("what_to_check_next")).toBe(true);
