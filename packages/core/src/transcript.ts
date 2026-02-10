@@ -5,8 +5,6 @@ import { VERSION_INFO } from "./version.js";
 import { encodeCanonicalJson } from "./canonical-json.js";
 import { computeTranscriptHash } from "./hashing.js";
 
-console.log("DEBUG: computeTranscriptHash imported:", computeTranscriptHash);
-
 export type ExecuteDecisionInput = {
   spec: DecisionSpec;
   opts?: RunDecisionOpts;
