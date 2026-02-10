@@ -34,6 +34,11 @@ import { packetExportDefinition, packetExport } from "./tools/packet-export";
 import { searchQueryDefinition, searchQuery } from "./tools/search-query";
 import { auditTailDefinition, auditTail } from "./tools/audit-tail";
 
+// New Zeo Tools (v0.7.0)
+import { zeoHealthDefinition, zeoHealth } from "./tools/zeo-health";
+import { zeoIngestDefinition, zeoIngest } from "./tools/zeo-ingest";
+import { zeoSummaryDefinition, zeoSummary } from "./tools/zeo-summary";
+
 /**
  * Registry of all tool definitions and their handlers.
  */
@@ -78,6 +83,24 @@ const TOOL_REGISTRY: Array<{
         {
             definition: auditTailDefinition,
             handler: (params, _warehouse, auditBridge) => auditTail(params, auditBridge),
+        },
+        // Zeo Specific Tools
+        {
+            definition: zeoHealthDefinition,
+            handler: () => zeoHealth(),
+        },
+        {
+            definition: zeoIngestDefinition,
+            handler: (params, warehouse) => zeoIngest(params, warehouse),
+        },
+        {
+            definition: zeoSummaryDefinition,
+            handler: (params, warehouse) => zeoSummary(params, warehouse),
+        },
+        {
+            definition: { ...packetExportDefinition, name: "zeo.exportReproPack", description: "Export a repro pack (evidence bundle) for external use. Alias for packet.export." },
+            handler: (params, warehouse, _audit, basePath) =>
+                packetExport(params, warehouse, basePath),
         },
     ];
 
