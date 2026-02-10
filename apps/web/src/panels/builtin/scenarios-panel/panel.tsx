@@ -37,7 +37,7 @@ export default function ScenariosPanel({ manifest }: ScenariosPanelProps) {
         if (localScenarios.length === 0) return;
         try {
             const packBytes = await exportScenarioPack(localScenarios, { packName: "My Scenarios" });
-            const blob = new Blob([packBytes], { type: "application/zip" });
+            const blob = new Blob([packBytes as unknown as BlobPart], { type: "application/zip" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
