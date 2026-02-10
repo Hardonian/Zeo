@@ -1,7 +1,12 @@
 import type { CausalDAG, DAGNode, DAGEdge, CausalClaim, PredictiveClaim, CausalInferenceResult } from "./types.js";
-import { randomUUID } from "node:crypto";
+import { createHash } from "node:crypto";
 
-const createId = () => randomUUID();
+const toStableUuid = (input: string): string => {
+  const hash = createHash("sha256").update(input).digest("hex").slice(0, 32);
+  return `${hash.slice(0, 8)}-${hash.slice(8, 12)}-${hash.slice(12, 16)}-${hash.slice(16, 20)}-${hash.slice(20, 32)}`;
+};
+
+const rounded = (value: number): number => Number(value.toFixed(6));
 
 /**
  * Causal Inference Engine using DoWhy methodology.
@@ -16,9 +21,17 @@ export class CausalEngine {
     nodes: Omit<DAGNode, "id">[],
     edges: Omit<DAGEdge, "id">[]
   ): CausalDAG {
+    if (!name.trim()) {
+      throw new Error("DAG name must be non-empty");
+    }
+
+    if (nodes.length === 0) {
+      throw new Error("DAG must include at least one node");
+    }
+
     const nodeIds = new Map<string, string>();
-    const dagNodes: DAGNode[] = nodes.map(n => {
-      const id = createId();
+    const dagNodes: DAGNode[] = nodes.map((n, index) => {
+      const id = toStableUuid(`dag:${name}:node:${n.name}:${index}`);
       nodeIds.set(n.name, id);
       return { ...n, id };
     });
@@ -34,7 +47,7 @@ export class CausalEngine {
     const backdoorPaths = this.identifyBackdoorPaths(dagNodes, dagEdges);
 
     return {
-      id: createId(),
+      id: toStableUuid(`dag:${name}`),
       name,
       nodes: dagNodes,
       edges: dagEdges,
@@ -148,8 +161,12 @@ export class CausalEngine {
     consequentId: string,
     association: { low: number; high: number }
   ): PredictiveClaim {
+    if (association.low > association.high) {
+      throw new Error("Association interval is invalid: low must be <= high");
+    }
+
     return {
-      id: createId(),
+      id: toStableUuid(`predictive:${dag.id}:${antecedentId}:${consequentId}:${rounded(association.low)}:${rounded(association.high)}`),
       type: "predictive",
       antecedent: antecedentId,
       consequent: consequentId,
@@ -182,7 +199,7 @@ export class CausalEngine {
 
       if (!canBlock) {
         return {
-          id: createId(),
+          id: toStableUuid(`causal:${dag.id}:${treatmentId}:${outcomeId}:unidentified`),
           type: "causal",
           treatment: treatmentId,
           outcome: outcomeId,
@@ -208,7 +225,7 @@ export class CausalEngine {
     }
 
     return {
-      id: createId(),
+      id: toStableUuid(`causal:${dag.id}:${treatmentId}:${outcomeId}:${rounded(estimate.low)}:${rounded(estimate.high)}:${Boolean(data)}`),
       type: "causal",
       treatment: treatmentId,
       outcome: outcomeId,
@@ -255,8 +272,8 @@ export class CausalEngine {
     );
 
     return {
-      low: ate - 1.96 * se,
-      high: ate + 1.96 * se,
+      low: rounded(ate - 1.96 * se),
+      high: rounded(ate + 1.96 * se),
     };
   }
 

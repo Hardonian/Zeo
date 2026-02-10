@@ -1,4 +1,5 @@
-import type { UUID, EpistemicStatus } from "@zeo/contracts";
+export type UUID = string;
+export type EpistemicStatus = "fact" | "belief" | "assumption" | "unknown";
 
 /**
  * DAG node representing a variable in the causal graph.
