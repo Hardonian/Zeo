@@ -337,7 +337,7 @@ describe("Anomaly Detection", () => {
       
       // The value band anomalies rule triggers for out of bounds
       const boundsViolation = result.violations.find(
-        v => v.ruleId === "out_of_bounds" && v.message.includes("bounds") // plural "bounds"
+        v => v.ruleId === "out_of_bounds" && v.message.includes("outside")
       );
       expect(boundsViolation).toBeDefined();
       expect(boundsViolation?.severity).toBe("critical");
