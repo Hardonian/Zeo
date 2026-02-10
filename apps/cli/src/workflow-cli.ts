@@ -3,6 +3,8 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, cpSync
 import { join, resolve } from "node:path";
 import { createInterface } from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
+import * as core from "@zeo/core";
+import * as contracts from "@zeo/contracts";
 
 const DEFAULT_TIMEZONE = "UTC";
 const DEFAULT_AS_OF_DATE = "1970-01-01";
@@ -15,20 +17,20 @@ type DecayStatus = "fresh" | "aging" | "stale" | "expired" | "unknown";
 
 export interface WorkflowArgs {
   command:
-    | "start"
-    | "add-note"
-    | "run"
-    | "next"
-    | "share"
-    | "copy"
-    | "export"
-    | "quests"
-    | "done"
-    | "streaks"
-    | "graph"
-    | "view"
-    | "review"
-    | null;
+  | "start"
+  | "add-note"
+  | "run"
+  | "next"
+  | "share"
+  | "copy"
+  | "export"
+  | "quests"
+  | "done"
+  | "streaks"
+  | "graph"
+  | "view"
+  | "review"
+  | null;
   subcommand?: "md" | "ics" | "bundle" | "show" | "impact" | "fragility" | "weekly";
   decision?: string;
   text?: string;
@@ -79,6 +81,32 @@ interface RunResult {
   dependsOn: string[];
   informs: string[];
   decaySummary: Record<DecayStatus, number>;
+  fullTranscript?: contracts.FinalizedDecisionTranscript;
+}
+
+function specFromWorkspace(ws: DecisionWorkspace): contracts.DecisionSpec {
+  return {
+    id: ws.decisionId,
+    title: ws.title,
+    context: ws.title,
+    createdAt: ws.createdAt ?? new Date().toISOString(),
+    horizon: "days",
+    agents: [{ id: "self", name: "Self", role: "self" }],
+    actions: [
+      { id: "act_commit", label: "Commit to Plan", actorId: "self", kind: "commit" },
+      { id: "act_defer", label: "Gather More Evidence", actorId: "self", kind: "delay" }
+    ],
+    constraints: [],
+    assumptions: ws.evidence.map((e) => ({
+      id: e.id,
+      text: e.text,
+      status: "fact",
+      confidence: "high",
+      provenance: [{ kind: "text", sourceId: "user_note", offset: 0, length: e.text.length, capturedAt: e.assertedAt || new Date().toISOString(), checksum: e.provenance.hash }],
+      tags: []
+    })),
+    objectives: [{ id: "obj_robustness", metric: "robustness", weight: 1.0 }]
+  };
 }
 
 interface DecisionWorkspace {
