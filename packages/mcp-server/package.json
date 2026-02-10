@@ -30,6 +30,7 @@
         "@zeo/kpi": "workspace:*",
         "@zeo/core": "workspace:*",
         "@zeo/mcp-interop": "workspace:*",
+        "@zeo/replay": "workspace:*",
         "nanoid": "^5.0.7"
     },
     "devDependencies": {
