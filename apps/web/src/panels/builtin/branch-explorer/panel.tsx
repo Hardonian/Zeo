@@ -53,14 +53,13 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
   const handleRunDecision = async () => {
     if (!decision) return;
 
-    // Apply staged changes (transiently for this run, effectively updating the decision spec)
+    // Apply staged changes (transiently for this run)
     const updatedSpec = {
       ...decision,
       constraints: stagedConstraints,
       assumptions: stagedAssumptions
     };
 
-    // Update store (optional, but good for persistence)
     setDecision(updatedSpec);
 
     // POLICY CHECK
@@ -74,7 +73,7 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
 
     const hasBlocking = policyViolations.some(v => v.severity === 'block');
     if (hasBlocking) {
-      setWizardOpen(false); // Close wizard to show errors in main view
+      setWizardOpen(false);
       return;
     }
 
@@ -83,7 +82,7 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
     setViolations([]);
 
     try {
-      const res = runDecision(updatedSpec); // runDecision matches spec type
+      const res = runDecision(updatedSpec);
 
       // POST-RUN POLICY CHECK
       const postViolations = policyEngine.validate({
@@ -167,7 +166,7 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
                       if (!decision || !result) return;
                       try {
                         const pack = await exportScenarioPack([{ id: decision.id, name: decision.title, description: decision.context, spec: decision, version: 1, createdAt: new Date().toISOString() }]);
-                        const bundle = await support.buildBundle(pack, result, { activeSlot: 'main', panelStates: {} }, { appVersion: '0.6.0', userAgent: navigator.userAgent });
+                        const bundle = await support.buildBundle(pack, result, { panelStates: {} } as any, { appVersion: '0.6.0', userAgent: navigator.userAgent });
                         const blob = new Blob([bundle as unknown as BlobPart], { type: 'application/octet-stream' });
                         const url = URL.createObjectURL(blob);
                         const a = document.createElement('a');
@@ -208,129 +207,128 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
               </div>
             </div>
           )}
+
+          {/* Wizard Modal */}
+          {wizardOpen && (
+            <div
+              className="absolute inset-0 bg-white z-20 flex flex-col p-4 space-y-4 shadow-xl"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="wizard-title"
+            >
+              <div className="flex justify-between items-center border-b pb-2">
+                <h3 id="wizard-title" className="font-bold text-gray-800">
+                  Run Configuration (Step {step}/3)
+                </h3>
+                <button
+                  onClick={() => setWizardOpen(false)}
+                  className="text-gray-500 hover:text-gray-700 text-lg"
+                  aria-label="Close Wizard"
+                >✕</button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto">
+                {step === 1 && (
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-semibold text-gray-700">Budget & Constraints</h4>
+                    <p className="text-xs text-gray-500">Set limits for this execution (overrides defaults).</p>
+                    <div className="space-y-3 bg-gray-50 p-3 rounded">
+                      <div className="space-y-1">
+                        <label className="block text-xs font-medium text-gray-700">Max Cost</label>
+                        <input
+                          type="number"
+                          className="w-full border border-gray-300 rounded p-1.5 text-sm"
+                          placeholder="Enter amount..."
+                          defaultValue={extractBudgetConstraints({ constraints: stagedConstraints } as any).maxCost?.amount || ''}
+                          onChange={(e) => updateStagedConstraint('Max Cost', `${e.target.value} USD`)}
+                        />
+                        <span className="text-[10px] text-gray-400">Unit: USD (default)</span>
+                      </div>
+                      <div className="space-y-1">
+                        <label className="block text-xs font-medium text-gray-700">Max Duration (Hours)</label>
+                        <input
+                          type="number"
+                          className="w-full border border-gray-300 rounded p-1.5 text-sm"
+                          placeholder="Enter hours..."
+                          defaultValue={extractBudgetConstraints({ constraints: stagedConstraints } as any).maxDuration?.amount || ''}
+                          onChange={(e) => updateStagedConstraint('Max Duration', `${e.target.value} hours`)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {step === 2 && (
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-semibold text-gray-700">Review Assumptions</h4>
+                    <p className="text-xs text-gray-500">Uncheck to disable specific assumptions.</p>
+                    <div className="space-y-2 max-h-60 overflow-y-auto">
+                      {stagedAssumptions.map((a: any, i) => (
+                        <div key={i} className="flex items-center gap-2 text-sm border p-2 rounded bg-white">
+                          <input type="checkbox" checked readOnly className="rounded text-blue-600 focus:ring-blue-500" />
+                          <span className="truncate">{a.text || a.label || `Assumption ${i + 1}`}</span>
+                        </div>
+                      ))}
+                      {stagedAssumptions.length === 0 && <div className="text-xs text-gray-400 italic p-4 text-center bg-gray-50 rounded">No active assumptions.</div>}
+                    </div>
+                  </div>
+                )}
+
+                {step === 3 && (
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-semibold text-gray-700">Review & Diff</h4>
+                    <div className="space-y-2">
+                      <p className="text-xs text-gray-500">Comparing staged changes against baseline.</p>
+                      <div className="bg-blue-50 p-3 rounded text-[11px] font-mono border border-blue-100 overflow-x-auto">
+                        <p className="font-bold text-blue-800 mb-2 uppercase tracking-wide">Diff Summary</p>
+                        <pre className="text-blue-900">
+                          {JSON.stringify(deepDiff(decision, {
+                            ...decision,
+                            constraints: stagedConstraints,
+                            assumptions: stagedAssumptions
+                          }), null, 2)}
+                        </pre>
+                      </div>
+                    </div>
+
+                    <div className="bg-green-50 p-3 rounded border border-green-100 mt-2">
+                      <p className="text-xs text-green-800 font-medium flex items-center gap-2">
+                        ✅ Ready to execute with {stagedAssumptions.length} assumptions
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-between pt-3 border-t">
+                <button
+                  onClick={() => setStep(s => Math.max(1, s - 1))}
+                  disabled={step === 1}
+                  className="text-xs px-4 py-2 bg-white border border-gray-300 rounded font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                >
+                  Back
+                </button>
+                {step < 3 ? (
+                  <button
+                    onClick={() => setStep(s => Math.min(3, s + 1))}
+                    className="text-xs px-4 py-2 bg-blue-600 text-white rounded font-bold hover:bg-blue-700 shadow-sm"
+                  >
+                    Next Step
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleRunDecision}
+                    className="text-xs px-4 py-2 bg-green-600 text-white rounded font-bold hover:bg-green-700 shadow-sm"
+                  >
+                    RUN NOW
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </>
       )}
-
-      {/* Wizard Modal */}
-      {wizardOpen && (
-        <div
-          className="absolute inset-0 bg-white z-20 flex flex-col p-4 space-y-4 shadow-xl"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="wizard-title"
-        >
-          <div className="flex justify-between items-center border-b pb-2">
-            <h3 id="wizard-title" className="font-bold text-gray-800">
-              Run Configuration (Step {step}/3)
-            </h3>
-            <button
-              onClick={() => setWizardOpen(false)}
-              className="text-gray-500 hover:text-gray-700 text-lg"
-              aria-label="Close Wizard"
-            >✕</button>
-          </div>
-
-          <div className="flex-1 overflow-y-auto">
-            {step === 1 && (
-              <div className="space-y-4">
-                <h4 className="text-sm font-semibold text-gray-700">Budget & Constraints</h4>
-                <p className="text-xs text-gray-500">Set limits for this execution (overrides defaults).</p>
-                <div className="space-y-3 bg-gray-50 p-3 rounded">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-medium text-gray-700">Max Cost</label>
-                    <input
-                      type="number"
-                      className="w-full border border-gray-300 rounded p-1.5 text-sm"
-                      placeholder="Enter amount..."
-                      defaultValue={extractBudgetConstraints({ constraints: stagedConstraints } as any).maxCost?.amount || ''}
-                      onChange={(e) => updateStagedConstraint('Max Cost', `${e.target.value} USD`)}
-                    />
-                    <span className="text-[10px] text-gray-400">Unit: USD (default)</span>
-                  </div>
-                  <div className="space-y-1">
-                    <label className="block text-xs font-medium text-gray-700">Max Duration (Hours)</label>
-                    <input
-                      type="number"
-                      className="w-full border border-gray-300 rounded p-1.5 text-sm"
-                      placeholder="Enter hours..."
-                      defaultValue={extractBudgetConstraints({ constraints: stagedConstraints } as any).maxDuration?.amount || ''}
-                      onChange={(e) => updateStagedConstraint('Max Duration', `${e.target.value} hours`)}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {step === 2 && (
-              <div className="space-y-4">
-                <h4 className="text-sm font-semibold text-gray-700">Review Assumptions</h4>
-                <p className="text-xs text-gray-500">Uncheck to disable specific assumptions.</p>
-                <div className="space-y-2 max-h-60 overflow-y-auto">
-                  {stagedAssumptions.map((a: any, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm border p-2 rounded bg-white">
-                      <input type="checkbox" checked readOnly className="rounded text-blue-600 focus:ring-blue-500" />
-                      <span className="truncate">{a.text || a.label || `Assumption ${i + 1}`}</span>
-                    </div>
-                  ))}
-                  {stagedAssumptions.length === 0 && <div className="text-xs text-gray-400 italic p-4 text-center bg-gray-50 rounded">No active assumptions.</div>}
-                </div>
-              </div>
-            )}
-
-            {step === 3 && (
-              <div className="space-y-4">
-                <h4 className="text-sm font-semibold text-gray-700">Review & Diff</h4>
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-500">Comparing staged changes against baseline.</p>
-                  <div className="bg-blue-50 p-3 rounded text-[11px] font-mono border border-blue-100 overflow-x-auto">
-                    <p className="font-bold text-blue-800 mb-2 uppercase tracking-wide">Diff Summary</p>
-                    <pre className="text-blue-900">
-                      {JSON.stringify(deepDiff(decision, {
-                        ...decision,
-                        constraints: stagedConstraints,
-                        assumptions: stagedAssumptions
-                      }), null, 2)}
-                    </pre>
-                  </div>
-                </div>
-
-                <div className="bg-green-50 p-3 rounded border border-green-100 mt-2">
-                  <p className="text-xs text-green-800 font-medium flex items-center gap-2">
-                    ✅ Ready to execute with {stagedAssumptions.length} assumptions
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="flex justify-between pt-3 border-t">
-            <button
-              onClick={() => setStep(s => Math.max(1, s - 1))}
-              disabled={step === 1}
-              className="text-xs px-4 py-2 bg-white border border-gray-300 rounded font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-            >
-              Back
-            </button>
-            {step < 3 ? (
-              <button
-                onClick={() => setStep(s => Math.min(3, s + 1))}
-                className="text-xs px-4 py-2 bg-blue-600 text-white rounded font-bold hover:bg-blue-700 shadow-sm"
-              >
-                Next Step
-              </button>
-            ) : (
-              <button
-                onClick={handleRunDecision}
-                className="text-xs px-4 py-2 bg-green-600 text-white rounded font-bold hover:bg-green-700 shadow-sm"
-              >
-                RUN NOW
-              </button>
-            )}
-          </div>
-        </div>
-      )
-      }
-    </div >
+    </div>
   );
 }
 
