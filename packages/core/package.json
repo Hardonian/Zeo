@@ -15,7 +15,8 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "typecheck:exports": "tsc -p tsconfig.exports.json --noEmit"
   },
   "dependencies": {
     "@zeo/contracts": "workspace:*",

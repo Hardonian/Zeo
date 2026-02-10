@@ -5,6 +5,11 @@ All notable changes to Zeo are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Deprecated
+- `@zeo/core` generic `computeTranscriptHash` export from the core barrel is retained for compatibility, but consumers should migrate to explicit names: `computeSecurityTranscriptHash` (canonical/envelope hashing) or `computeDecisionTranscriptHash` (decision transcript hashing).
+
 ## [1.0.0] — Release Engineering + OSS Distribution (2026-02-08)
 
 ### Added
