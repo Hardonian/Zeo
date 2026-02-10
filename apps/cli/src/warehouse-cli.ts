@@ -1,10 +1,24 @@
-import { writeFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
+import { writeFileSync, existsSync, mkdirSync, readFileSync, unlinkSync } from "node:fs";
 import { resolve, join } from "node:path";
 import { FilesystemWarehouseAdapter, FilesystemBlobStorage } from "@zeo/warehouse";
 import { buildDataset, datasetToCsv, runCorrelation, runRegression, generateReport } from "@zeo/analytics";
-import type { WarehouseKind, ExportOptions } from "@zeo/contracts";
+import type { WarehouseKind, ExportOptions, WarehouseEnvelope } from "@zeo/contracts";
 
 const WAREHOUSE_DIR = ".zeo/warehouse";
+const METADATA_DIR = ".zeo/metadata";
+const RETENTION_CONFIG_FILE = "retention.json";
+const PINNED_FILE = "pinned.json";
+
+interface RetentionConfig {
+  defaultRetentionDays: number;
+  perKindRetention: Record<string, number>;
+  lastUpdated: string;
+}
+
+interface PinnedRecords {
+  pinnedIds: string[];
+  lastUpdated: string;
+}
 
 interface WarehouseCliArgs {
   command: "export" | "import" | "list" | "prune" | "pin" | "retention" | null;

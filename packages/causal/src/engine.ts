@@ -169,14 +169,14 @@ export class CausalEngine {
   ): CausalClaim {
     // Check if backdoor criterion can be satisfied
     const paths = dag.backdoorPaths.filter(
-      p => p.path[0] === treatmentId && p.path[p.path.length - 1] === outcomeId
+      (p: { path: string[]; blocked: boolean; blockingSet: string[] }) => p.path[0] === treatmentId && p.path[p.path.length - 1] === outcomeId
     );
 
-    const unblockedPaths = paths.filter(p => !p.blocked);
+    const unblockedPaths = paths.filter((p: { path: string[]; blocked: boolean; blockingSet: string[] }) => !p.blocked);
 
     if (unblockedPaths.length > 0) {
       // Try to find a valid blocking set
-      const canBlock = unblockedPaths.every(p => p.blockingSet.length > 0);
+      const canBlock = unblockedPaths.every((p: { path: string[]; blocked: boolean; blockingSet: string[] }) => p.blockingSet.length > 0);
 
       if (!canBlock) {
         return {
@@ -269,8 +269,8 @@ export class CausalEngine {
    * Run complete causal analysis.
    */
   analyze(dag: CausalDAG, data?: Record<string, number[]>): CausalInferenceResult {
-    const treatment = dag.nodes.find(n => n.kind === "treatment");
-    const outcome = dag.nodes.find(n => n.kind === "outcome");
+    const treatment = dag.nodes.find((n: DAGNode) => n.kind === "treatment");
+    const outcome = dag.nodes.find((n: DAGNode) => n.kind === "outcome");
 
     const claims: Array<PredictiveClaim | CausalClaim> = [];
 
@@ -291,7 +291,7 @@ export class CausalEngine {
         placeboTests: [],
         sensitivityAnalysis: [],
       },
-      warnings: dag.backdoorPaths.some(p => !p.blocked)
+      warnings: dag.backdoorPaths.some((p: { path: string[]; blocked: boolean; blockingSet: string[] }) => !p.blocked)
         ? ["Unblocked backdoor paths detected - causal identification may be compromised"]
         : [],
     };
