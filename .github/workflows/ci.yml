@@ -22,6 +22,8 @@ jobs:
           cache: "pnpm"
       - name: Install
         run: pnpm i --frozen-lockfile=false
+      - name: Fixture Coverage Matrix
+        run: pnpm fixtures:coverage
       - name: Typecheck
         run: pnpm typecheck
       - name: Test

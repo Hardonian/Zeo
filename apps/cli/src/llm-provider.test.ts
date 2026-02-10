@@ -119,21 +119,46 @@ describe("provider response fixtures", () => {
       expect(grouped.get(provider)).toBeDefined();
       expect(grouped.get(provider)?.has("malformed")).toBe(true);
       expect(grouped.get(provider)?.has("nonjson")).toBe(true);
+      expect(grouped.get(provider)?.has("schemaarray")).toBe(true);
+    }
+  });
+
+
+  it("validates schema-path diagnostics for array where object is expected", () => {
+    const fixtureDir = resolve(process.cwd(), "src/fixtures/provider-contracts/negative");
+    const files = readdirSync(fixtureDir).filter((name) => name.endsWith("schemaarray.response.json"));
+    expect(files.length).toBe(4);
+
+    const schema = {
+      type: "object",
+      required: ["verdict"],
+      properties: { verdict: { type: "string" } },
+    };
+
+    for (const file of files) {
+      const fixture = JSON.parse(readFileSync(resolve(fixtureDir, file), "utf8")) as {
+        provider: "openai" | "anthropic" | "openrouter" | "ollama";
+        payload: Record<string, unknown>;
+        expectedSchemaError: string;
+      };
+
+      const parsed = __internal.parseProviderResponse(fixture.provider, fixture.payload);
+      expect(() => validateJsonSchema(parsed.json, schema)).toThrow(fixture.expectedSchemaError);
     }
   });
 
   it("fails with explicit diagnostics for malformed provider envelopes", () => {
     const fixtureDir = resolve(process.cwd(), "src/fixtures/provider-contracts/negative");
     const files = readdirSync(fixtureDir).filter((name) => name.endsWith(".response.json"));
-    expect(files.length).toBe(8);
 
     for (const file of files) {
       const fixture = JSON.parse(readFileSync(resolve(fixtureDir, file), "utf8")) as {
         provider: "openai" | "anthropic" | "openrouter" | "ollama";
         payload: Record<string, unknown>;
-        expectedError: string;
+        expectedError?: string;
       };
 
+      if (!fixture.expectedError) continue;
       expect(() => __internal.parseProviderResponse(fixture.provider, fixture.payload)).toThrow(fixture.expectedError);
     }
   });
