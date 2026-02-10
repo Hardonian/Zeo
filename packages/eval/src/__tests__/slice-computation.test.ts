@@ -482,7 +482,7 @@ describe("Gating Rules", () => {
   });
 
   it("should fail rules when thresholds are not met", () => {
-    const rules: import("../slice-types").SliceGatingRule[] = [
+    const rules: import("../slice-types.js").SliceGatingRule[] = [
       {
         id: "test-rule",
         name: "Test Rule",
@@ -493,9 +493,9 @@ describe("Gating Rules", () => {
       },
     ];
 
-    const slices: import("../slice-types").SliceMetrics[] = [
+    const slices: import("../slice-types.js").SliceMetrics[] = [
       {
-        slice: { dimension: "domain" as import("../slice-types").SliceDimension, value: "test" },
+        slice: { dimension: "domain" as import("../slice-types.js").SliceDimension, value: "test" },
         sampleSize: 5,
         coverage: { overall: 0.8, byMetricId: {} },
         properScores: { overall: 0.1, byMetricId: {} },
@@ -516,8 +516,8 @@ describe("Gating Rules", () => {
 });
 
 describe("CSV Export", () => {
-  const sampleSlice: import("../slice-types").SliceMetrics = {
-    slice: { dimension: "domain" as import("../slice-types").SliceDimension, value: "negotiation" },
+  const sampleSlice: import("../slice-types.js").SliceMetrics = {
+    slice: { dimension: "domain" as import("../slice-types.js").SliceDimension, value: "negotiation" },
     sampleSize: 100,
     coverage: { overall: 0.85, byMetricId: {} },
     properScores: { overall: 0.12, byMetricId: {} },
@@ -540,7 +540,7 @@ describe("CSV Export", () => {
   });
 
   it("should export slices to CSV with header", () => {
-    const report: import("../slice-types").SliceEvaluationReport = {
+    const report: import("../slice-types.js").SliceEvaluationReport = {
       version: "0.5.1",
       createdAt: "2024-01-01",
       metadata: {
@@ -580,7 +580,7 @@ describe("CSV Export", () => {
   });
 
   it("should handle empty slices", () => {
-    const report: import("../slice-types").SliceEvaluationReport = {
+    const report: import("../slice-types.js").SliceEvaluationReport = {
       version: "0.5.1",
       createdAt: "2024-01-01",
       metadata: {
