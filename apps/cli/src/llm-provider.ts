@@ -14,6 +14,9 @@ export interface LlmProvider {
   chat(messages: LlmMessage[], jsonSchema?: Record<string, unknown>, seed?: number, temperature?: number): Promise<{ json: unknown; usage: LlmUsage }>;
 }
 
+
+export const SUPPORTED_PROVIDER_FIXTURE_NAMES = ["openai", "anthropic", "openrouter", "ollama"] as const;
+
 interface RequestShape {
   url: string;
   headers: Record<string, string>;
@@ -139,9 +142,11 @@ function parseProviderResponse(provider: LlmProviderName, payload: Record<string
     const first = choices[0] as Record<string, unknown> | undefined;
     const message = (first?.message ?? {}) as Record<string, unknown>;
     const content = message.content;
-    const text = typeof content === "string" ? content : "";
+    if (typeof content !== "string" || content.trim().length === 0) {
+      throw new Error(`Malformed ${provider} response: missing choices[0].message.content`);
+    }
     return {
-      json: text ? tryParseJsonObject(text) : payload,
+      json: tryParseJsonObject(content),
       usage: {
         inputTokens: typeof (payload.usage as Record<string, unknown> | undefined)?.prompt_tokens === "number"
           ? (payload.usage as Record<string, number>).prompt_tokens
@@ -157,8 +162,11 @@ function parseProviderResponse(provider: LlmProviderName, payload: Record<string
     const content = Array.isArray(payload.content) ? payload.content : [];
     const first = content[0] as Record<string, unknown> | undefined;
     const text = typeof first?.text === "string" ? first.text : "";
+    if (!text.trim()) {
+      throw new Error("Malformed anthropic response: missing content[0].text");
+    }
     return {
-      json: text ? tryParseJsonObject(text) : payload,
+      json: tryParseJsonObject(text),
       usage: {
         inputTokens: typeof (payload.usage as Record<string, unknown> | undefined)?.input_tokens === "number"
           ? (payload.usage as Record<string, number>).input_tokens
@@ -172,15 +180,18 @@ function parseProviderResponse(provider: LlmProviderName, payload: Record<string
 
   const message = (payload.message ?? {}) as Record<string, unknown>;
   const content = message.content;
-  const parsed = typeof content === "string" ? tryParseJsonObject(content) : content;
+  if (typeof content !== "string" || content.trim().length === 0) {
+    throw new Error("Malformed ollama response: missing message.content");
+  }
   return {
-    json: parsed,
+    json: tryParseJsonObject(content),
     usage: {
       inputTokens: typeof (payload.prompt_eval_count) === "number" ? payload.prompt_eval_count as number : undefined,
       outputTokens: typeof (payload.eval_count) === "number" ? payload.eval_count as number : undefined,
     },
   };
 }
+
 
 function schemaType(value: unknown): string {
   if (Array.isArray(value)) return "array";

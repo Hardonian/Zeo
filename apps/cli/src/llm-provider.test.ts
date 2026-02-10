@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
-import { createProvider, validateJsonSchema, __internal } from "./llm-provider.js";
+import { createProvider, validateJsonSchema, __internal, SUPPORTED_PROVIDER_FIXTURE_NAMES } from "./llm-provider.js";
 import type { LlmConfig } from "./llm-cli.js";
 
 const baseConfig: LlmConfig = {
@@ -75,10 +75,19 @@ describe("llm provider schema validation", () => {
 });
 
 describe("provider response fixtures", () => {
+  it("enforces one fixture filename per supported provider", () => {
+    const fixtureDir = resolve(process.cwd(), "src/fixtures/provider-contracts");
+    const providerFromFilename = readdirSync(fixtureDir)
+      .filter((name) => name.endsWith(".response.json"))
+      .map((name) => name.split(".")[0])
+      .sort();
+
+    expect(providerFromFilename).toEqual([...SUPPORTED_PROVIDER_FIXTURE_NAMES].sort());
+  });
+
   it("parses recorded provider payload contracts", () => {
     const fixtureDir = resolve(process.cwd(), "src/fixtures/provider-contracts");
-    const files = readdirSync(fixtureDir).filter((name) => name.endsWith(".json"));
-    expect(files.length).toBeGreaterThanOrEqual(4);
+    const files = readdirSync(fixtureDir).filter((name) => name.endsWith(".response.json"));
 
     for (const file of files) {
       const fixture = JSON.parse(readFileSync(resolve(fixtureDir, file), "utf8")) as {
@@ -90,6 +99,22 @@ describe("provider response fixtures", () => {
       const parsed = __internal.parseProviderResponse(fixture.provider, fixture.payload);
       expect(parsed.json).toEqual(fixture.expected.json);
       expect(parsed.usage).toEqual(fixture.expected.usage);
+    }
+  });
+
+  it("fails with explicit diagnostics for malformed provider envelopes", () => {
+    const fixtureDir = resolve(process.cwd(), "src/fixtures/provider-contracts/negative");
+    const files = readdirSync(fixtureDir).filter((name) => name.endsWith(".response.json"));
+    expect(files.length).toBe(4);
+
+    for (const file of files) {
+      const fixture = JSON.parse(readFileSync(resolve(fixtureDir, file), "utf8")) as {
+        provider: "openai" | "anthropic" | "openrouter" | "ollama";
+        payload: Record<string, unknown>;
+        expectedError: string;
+      };
+
+      expect(() => __internal.parseProviderResponse(fixture.provider, fixture.payload)).toThrow(fixture.expectedError);
     }
   });
 });
