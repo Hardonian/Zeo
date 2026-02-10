@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import type { FinalizedDecisionTranscript } from "@zeo/contracts";
-import { executeDecision, verifyDecisionTranscript } from "@zeo/core";
+import { executeDecision, normalizeTranscriptForReplay, verifyDecisionTranscript } from "@zeo/core";
 
 export interface TranscriptCliArgs {
   command: "verify" | "replay" | "diff" | null;
@@ -60,10 +60,9 @@ export async function runTranscriptCommand(args: TranscriptCliArgs): Promise<num
       agents: transcript.agents,
     });
 
-    const sameOutcome = JSON.stringify(replayed.transcript.outcome) === JSON.stringify(transcript.outcome);
-    const sameCounterfactuals = JSON.stringify(replayed.transcript.counterfactuals) === JSON.stringify(transcript.counterfactuals);
-    const sameBoundaries = JSON.stringify(replayed.transcript.analysis.decision_boundaries) === JSON.stringify(transcript.analysis.decision_boundaries);
-    if (!sameOutcome || !sameCounterfactuals || !sameBoundaries) {
+    const replayedNormalized = normalizeTranscriptForReplay(replayed.transcript);
+    const sourceNormalized = normalizeTranscriptForReplay(transcript);
+    if (JSON.stringify(replayedNormalized) !== JSON.stringify(sourceNormalized)) {
       console.error("[REPLAY_DIVERGENCE] decision result diverged");
       return 1;
     }

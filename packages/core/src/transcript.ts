@@ -36,6 +36,27 @@ export function computeTranscriptHash(transcript: DecisionTranscript): string {
   return computeStableHash(transcript);
 }
 
+export type ReplayNormalizedTranscript = {
+  outcome: DecisionTranscript["outcome"];
+  counterfactuals: DecisionTranscript["counterfactuals"];
+  decision_boundaries: DecisionTranscript["analysis"]["decision_boundaries"];
+  flip_distances: DecisionTranscript["analysis"]["flip_distances"];
+  recommended_action_ids: string[];
+  decision_result_hash: string;
+};
+
+export function normalizeTranscriptForReplay(transcript: DecisionTranscript | FinalizedDecisionTranscript): ReplayNormalizedTranscript {
+  return {
+    outcome: transcript.outcome,
+    counterfactuals: transcript.counterfactuals,
+    decision_boundaries: transcript.analysis.decision_boundaries,
+    flip_distances: transcript.analysis.flip_distances,
+    recommended_action_ids: [...transcript.outcome.recommended_action_ids],
+    decision_result_hash: transcript.decision_result_hash,
+  };
+}
+
+
 function buildDecisionBoundaries(evaluations: LensEvaluation[]): Array<{ lens: LensEvaluation["lens"]; robust_actions: string[]; fragile_assumptions: string[] }> {
   return evaluations.map((evaluation) => ({
     lens: evaluation.lens,
@@ -178,8 +199,9 @@ export function verifyDecisionTranscript(transcript: FinalizedDecisionTranscript
 
   if (transcript_hash !== recomputed) reasons.push("transcript_hash_mismatch");
   if (transcript_id !== `tr_${transcript_hash.slice(0, 16)}`) reasons.push("transcript_id_mismatch");
-  if (unsigned.analysis.flip_distances.length === 0) reasons.push("missing_flip_distances");
-  if (unsigned.analysis.decision_boundaries.length === 0) reasons.push("missing_decision_boundaries");
+  const replayNormalized = normalizeTranscriptForReplay(unsigned);
+  if (replayNormalized.flip_distances.length === 0) reasons.push("missing_flip_distances");
+  if (replayNormalized.decision_boundaries.length === 0) reasons.push("missing_decision_boundaries");
 
   return { valid: reasons.length === 0, reasons };
 }
