@@ -1,4 +1,5 @@
-import { nanoid } from "nanoid";
+import { randomUUID } from "node:crypto";
+const createId = () => randomUUID();
 /**
  * Game Theory Engine with interval utilities and robust equilibrium concepts.
  */
@@ -25,10 +26,10 @@ export class GameEngine {
      */
     buildGame(name, rowActions, colActions, payoffs, isZeroSum = false) {
         return {
-            id: nanoid(),
+            id: createId(),
             name,
-            rowPlayer: { id: nanoid(), name: "Row Player" },
-            colPlayer: { id: nanoid(), name: "Column Player" },
+            rowPlayer: { id: createId(), name: "Row Player" },
+            colPlayer: { id: createId(), name: "Column Player" },
             rowActions,
             colActions,
             payoffs: this.createPayoffMatrix(rowActions, colActions, payoffs),

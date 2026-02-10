@@ -26,6 +26,16 @@ Zeo CLI - Epistemic Decision Engine v${getCliVersion()}
 Usage: zeo [options]
 
 Commands:
+  start                      Start guided decision workspace
+  add-note                   Add plain-language note as evidence proposal
+  run                        Run deterministic analysis and print result card
+  next                       Show next evidence tasks checklist
+  share                      Export compact share summary
+  copy                       Print clipboard-friendly share block
+  export <md|ics|bundle>     Offline export commands
+  quests                     Show evidence tasks as checkboxes
+  done <taskId>              Mark checklist task as complete
+  streaks                    Show epistemic streak metrics
   signals <file>              Process external signal payloads (JSON)
   --signals <file>            Process external signal payloads (JSON)
   --replay <file>             Run replay dataset for calibration testing
@@ -272,6 +282,11 @@ async function main(): Promise<void> {
   if (argv[0] === "agents") {
     const mod = await import("./agents-cli.js");
     process.exit(await mod.runAgentsCommand(mod.parseAgentsArgs(argv.slice(1))));
+  }
+
+  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks"].includes(argv[0] ?? "")) {
+    const mod = await import("./workflow-cli.js");
+    process.exit(await mod.runWorkflowCommand(mod.parseWorkflowArgs(argv)));
   }
 
 
