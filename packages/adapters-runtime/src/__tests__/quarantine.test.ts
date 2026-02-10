@@ -19,7 +19,7 @@ describe("Quarantine Store", () => {
     qualityScore: 0.9,
     provenance: [],
     sourceId: "source-test",
-    rawRef: { kind: "market", item: {} },
+    rawRef: { kind: "market", id: "test-1" },
   };
 
   beforeEach(async () => {
@@ -267,7 +267,7 @@ describe("Anomaly Detection", () => {
           qualityScore: 0.9,
           provenance: [],
           sourceId: "source-1",
-          rawRef: { kind: "market", item: {} },
+          rawRef: { kind: "market", id: "test-1" },
         },
       ];
 
@@ -294,7 +294,7 @@ describe("Anomaly Detection", () => {
           qualityScore: 0.9,
           provenance: [],
           sourceId: "source-1",
-          rawRef: { kind: "market", item: {} },
+          rawRef: { kind: "market", id: "test-1" },
         },
       ];
 
@@ -320,7 +320,7 @@ describe("Anomaly Detection", () => {
           qualityScore: 0.9,
           provenance: [],
           sourceId: "source-1",
-          rawRef: { kind: "market", item: {} },
+          rawRef: { kind: "market", id: "test-1" },
         },
       ];
 
