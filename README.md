@@ -94,6 +94,49 @@ Zeo avoids fake numbers. It uses:
 ---
 
 
+
+## Glossary (plain language)
+- **Decision**: A workspace for one choice you are trying to make.
+- **Evidence**: A note or source with provenance, cost, time, and risk metadata.
+- **Run**: A deterministic analysis pass that produces a result card and transcript hash.
+- **Transcript**: Append-only analysis record that can be replayed and verified.
+- **Envelope**: Signature/attestation metadata; does not change transcript hash.
+- **Chain**: Parent linkage across runs for audit history.
+- **Trust Profile**: Reliability stats derived from verify/replay history.
+
+## Zeo in 5 minutes
+```bash
+# 1) Start a decision workspace
+zeo start --title "Choose deployment window"
+
+# 2) Add evidence from plain language notes
+zeo add-note --decision dec_<id> --text "Vendor says rollback takes 30 minutes"
+
+# 3) Run deterministic analysis
+zeo run --decision dec_<id>
+
+# 4) See next evidence checklist
+zeo next --decision dec_<id>
+
+# 5) Share with proof-friendly export
+zeo export md --decision dec_<id> --out ./exports
+```
+
+### What would change my mind?
+Use `flip distance` in the result card.
+- Higher flip distance = recommendation is more robust.
+- Low flip distance (knife-edge) = one or two evidence changes can flip the recommendation.
+
+### Sharing with proof
+- `zeo transcript sign <transcript.json> --key <pem> --out <envelope.json>`
+- `zeo transcript verify <envelope.json> --keyring <dir>`
+- `zeo share --decision <id> --envelope <envelope.json>`
+
+### Bring your own agent
+- Connect through MCP tools only (`zeo mcp serve` / `zeo mcp tools`).
+- Add local agent: `zeo agents add <path> --accept`.
+- Inspect permissions and trust history: `zeo agents inspect <id>`.
+
 ## Zeolite execution surface (CLI + MCP)
 
 Zeolite is the deterministic decision-analysis execution surface used by both CLI and MCP.

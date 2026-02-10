@@ -4,6 +4,8 @@ import { basename, resolve } from "node:path";
 export interface AgentsArgs {
   command: "list" | "add" | "remove" | "inspect" | null;
   value?: string;
+  accept: boolean;
+  json: boolean;
 }
 
 interface AgentManifest {
@@ -37,7 +39,7 @@ function readManifest(path: string): AgentManifest {
 
 export function parseAgentsArgs(argv: string[]): AgentsArgs {
   const command = ["list", "add", "remove", "inspect"].includes(argv[0] ?? "") ? argv[0] as AgentsArgs["command"] : null;
-  return { command, value: argv[1] };
+  return { command, value: argv[1], accept: argv.includes("--accept"), json: argv.includes("--json") };
 }
 
 function ensureRoot(): void {
@@ -63,6 +65,18 @@ export async function runAgentsCommand(args: AgentsArgs): Promise<number> {
     const manifestPath = resolve(source, "zeo.agent.json");
     if (!existsSync(manifestPath)) throw new Error("Missing zeo.agent.json in agent source");
     const manifest = readManifest(manifestPath);
+    const permissions = { fs: manifest.permissions.fs, network: manifest.permissions.network };
+    if (!args.accept) {
+      const msg = {
+        action: "agent_add_requires_acceptance",
+        agent: manifest.id,
+        permissions,
+        next_step: "Re-run with --accept to install this agent.",
+      };
+      if (args.json) process.stdout.write(`${JSON.stringify(msg, null, 2)}\n`);
+      else console.log(`Agent ${manifest.id} requests permissions fs=${permissions.fs} network=${permissions.network}. Re-run with --accept.`);
+      return 1;
+    }
     if (manifest.permissions.fs || manifest.permissions.network) {
       throw new Error("Agent permissions exceed default sandbox. Set fs/network to false and use explicit runtime escalation.");
     }
@@ -84,7 +98,15 @@ export async function runAgentsCommand(args: AgentsArgs): Promise<number> {
   if (!args.value) throw new Error("inspect requires agent id");
   const manifestPath = resolve(agentsRoot(), basename(args.value), "zeo.agent.json");
   const manifest = readManifest(manifestPath);
-  console.log(JSON.stringify(manifest, null, 2));
+  const trustPath = resolve(process.cwd(), ".zeo", "trust", "profiles.json");
+  let trust = { accepted: 0, rejected: 0 };
+  if (existsSync(trustPath)) {
+    const raw = JSON.parse(readFileSync(trustPath, "utf8")) as Record<string, unknown>;
+    const entry = raw[manifest.id] as Record<string, unknown> | undefined;
+    if (entry) trust = { accepted: Number(entry.accepted ?? 0), rejected: Number(entry.rejected ?? 0) };
+  }
+  const inspection = { ...manifest, toolCalls: manifest.requiredTools, trust };
+  console.log(JSON.stringify(inspection, null, 2));
 
   const lockPath = resolve(agentsRoot(), basename(args.value), "zeo.agent.lock.json");
   writeFileSync(lockPath, `${JSON.stringify({

@@ -8,21 +8,57 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { resolve, join } from "node:path";
 import type { ReplayDataset, ReplayResult, DecisionSpec } from "@zeo/contracts";
 import { assertReplayDataset } from "@zeo/contracts";
-import { replayCase } from "@zeo/replay";
-import { createTracker, checkBudget, recordUsage, createBudgetGuard, SAFE_DEFAULTS } from "@zeo/budgets";
-import { getJobQueue } from "@zeo/jobs";
-import type { BudgetCheckResult } from "@zeo/budgets";
-import {
-  readReproPackZip,
-  replayFromPack,
-  createAssumptionTracker,
-  EXIT_CODES,
-  type RunData,
-  type DiffEntry,
-} from "@zeo/repro-pack";
-import { runDecision } from "@zeo/core";
 
+interface BudgetUsage {
+  resource: string;
+  used: number;
+  limit: number;
+  percentUsed: number;
+  isWarning: boolean;
+  isExceeded: boolean;
+}
 
+interface BudgetCheckResult {
+  allowed: boolean;
+  warnings: BudgetUsage[];
+  exceeded: BudgetUsage[];
+  usage: BudgetUsage[];
+  suggestions: string[];
+}
+
+interface DiffEntry {
+  path: string;
+  expected: unknown;
+  actual: unknown;
+}
+
+interface RunData {
+  inputs: Record<string, unknown>;
+  assumptions: unknown[];
+  uncertaintyMap: Record<string, unknown>;
+  artifacts: Record<string, unknown>;
+  outputs: Record<string, unknown>;
+  events: unknown[];
+  seed?: string;
+}
+
+async function importOrFallback<T>(specifier: string, fallbackRelativeToDist: string): Promise<T> {
+  try {
+    return await import(specifier) as T;
+  } catch {
+    const fallbackUrl = new URL(fallbackRelativeToDist, import.meta.url);
+    return await import(fallbackUrl.href) as T;
+  }
+}
+
+async function importPreferFallback<T>(fallbackRelativeToDist: string, specifier: string): Promise<T> {
+  try {
+    const fallbackUrl = new URL(fallbackRelativeToDist, import.meta.url);
+    return await import(fallbackUrl.href) as T;
+  } catch {
+    return await import(specifier) as T;
+  }
+}
 
 export interface ReplayCliArgs {
   replay: string | undefined;
@@ -76,6 +112,52 @@ export function parseReplayArgs(argv: string[]): ReplayCliArgs {
 }
 
 export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
+  let replayMod: { replayCase: (item: unknown, opts: unknown) => Promise<ReplayResult> };
+  let budgetsMod: {
+    createTracker: (defaults: unknown, ctx: string) => void;
+    checkBudget: (ctx: string) => BudgetCheckResult;
+    recordUsage: (ctx: string, resource: string, amount: number) => void;
+    createBudgetGuard: (ctx: string) => { checkAndRecord: (resource: string, amount: number) => boolean; record: (resource: string, amount: number) => void; };
+    SAFE_DEFAULTS: unknown;
+  };
+  let jobsMod: { getJobQueue: (opts: { autoStart: boolean }) => { stop: () => void } };
+  let reproMod: {
+    readReproPackZip: (buffer: Buffer) => Record<string, string>;
+    replayFromPack: (files: Record<string, string>, pipeline: (inputs: Record<string, unknown>, assumptions: unknown[], seed?: string) => Promise<RunData>, opts: { verify: boolean }) => Promise<{ match: boolean; errors: string[]; diffs: DiffEntry[] }>;
+    createAssumptionTracker: () => { getAssumption: (id: string) => unknown; recordAssumption: (assumption: unknown) => void; getAssumptions: () => unknown[]; getUncertaintyMap: () => Record<string, unknown>; getEvents: () => unknown[]; };
+    EXIT_CODES: { SUCCESS: number; FAIL: number };
+  };
+  let coreMod: { runDecision: (spec: DecisionSpec, opts: { tracker: unknown }) => { explanation: { whatWouldChange: unknown }; nextBestEvidence: unknown; graph: { nodes: unknown[]; edges: unknown[] }; evaluations: unknown; } };
+
+  try {
+    replayMod = await importPreferFallback<{ replayCase: (item: unknown, opts: unknown) => Promise<ReplayResult>; }>("../../../packages/replay/src/index.js", "@zeo/replay");
+    budgetsMod = await importOrFallback<{
+    createTracker: (defaults: unknown, ctx: string) => void;
+    checkBudget: (ctx: string) => BudgetCheckResult;
+    recordUsage: (ctx: string, resource: string, amount: number) => void;
+    createBudgetGuard: (ctx: string) => { checkAndRecord: (resource: string, amount: number) => boolean; record: (resource: string, amount: number) => void; };
+    SAFE_DEFAULTS: unknown;
+  }>("@zeo/budgets", "../../../packages/budgets/src/index.js");
+    jobsMod = await importOrFallback<{ getJobQueue: (opts: { autoStart: boolean }) => { stop: () => void; }; }>("@zeo/jobs", "../../../packages/jobs/src/index.js");
+    reproMod = await importPreferFallback<{
+    readReproPackZip: (buffer: Buffer) => Record<string, string>;
+    replayFromPack: (files: Record<string, string>, pipeline: (inputs: Record<string, unknown>, assumptions: unknown[], seed?: string) => Promise<RunData>, opts: { verify: boolean }) => Promise<{ match: boolean; errors: string[]; diffs: DiffEntry[] }>;
+    createAssumptionTracker: () => { getAssumption: (id: string) => unknown; recordAssumption: (assumption: unknown) => void; getAssumptions: () => unknown[]; getUncertaintyMap: () => Record<string, unknown>; getEvents: () => unknown[]; };
+    EXIT_CODES: { SUCCESS: number; FAIL: number };
+  }>("../../../packages/repro-pack/src/index.js", "@zeo/repro-pack");
+    coreMod = await importPreferFallback<{ runDecision: (spec: DecisionSpec, opts: { tracker: unknown }) => { explanation: { whatWouldChange: unknown }; nextBestEvidence: unknown; graph: { nodes: unknown[]; edges: unknown[] }; evaluations: unknown; }; }>("../../../packages/core/src/index.js", "@zeo/core");
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`Replay runtime unavailable: ${message}`);
+    console.error("Next steps: run 'pnpm -r build' to compile workspace packages required by replay.");
+    return 1;
+  }
+
+  const { replayCase } = replayMod;
+  const { createTracker, checkBudget, recordUsage, createBudgetGuard, SAFE_DEFAULTS } = budgetsMod;
+  const { getJobQueue } = jobsMod;
+  const { readReproPackZip, replayFromPack, createAssumptionTracker, EXIT_CODES } = reproMod;
+  const { runDecision } = coreMod;
   // ─── Repro Pack Replay ────────────────────────────────────────────────────
   if (args.pack) {
     console.log(`\nReplaying pack: ${args.pack}`);

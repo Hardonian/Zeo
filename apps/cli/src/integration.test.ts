@@ -32,7 +32,7 @@ describe("agents lifecycle integration", () => {
         permissions: { fs: false, network: false },
       }, null, 2));
 
-      expect(await runAgentsCommand(parseAgentsArgs(["add", "source-agent"]))).toBe(0);
+      expect(await runAgentsCommand(parseAgentsArgs(["add", "source-agent", "--accept"]))).toBe(0);
       expect(await runAgentsCommand(parseAgentsArgs(["list"]))).toBe(0);
       expect(await runAgentsCommand(parseAgentsArgs(["inspect", "test-agent"]))).toBe(0);
 

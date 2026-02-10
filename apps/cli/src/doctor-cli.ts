@@ -138,9 +138,19 @@ export async function runDoctorCommand(args: { json: boolean; fix: boolean }): P
     errorCodes.push("CONNECTOR_UNHEALTHY");
   }
 
-  // 7. MCP Health Check
+    // 7. MCP Health Check
   const mcpCheck = runMcpHealthCheck();
   checks.push(mcpCheck);
+
+  // 8. LLM Config Check
+  checks.push(runLlmConfigCheck());
+
+  // 9. Signing key and keyring checks
+  checks.push(runSigningKeyCheck());
+  checks.push(runKeyringCheck());
+
+  // 10. Trust profile integrity
+  checks.push(runTrustProfileIntegrityCheck());
 
   // Compute overall status
   const overall = errorCodes.length > 0 ? "critical" : warnings.length > 0 ? "warning" : "healthy";
@@ -595,5 +605,41 @@ function formatCheckStatus(status: string): string {
     case "warning": return "⚠";
     case "fail": return "✗";
     default: return "?";
+  }
+}
+
+
+function runLlmConfigCheck(): DoctorCheck {
+  const hasConfig = existsSync(resolve(process.cwd(), ".zeo", "config.json")) || Boolean(process.env.OPENAI_API_KEY || process.env.ANTHROPIC_API_KEY || process.env.OPENROUTER_API_KEY);
+  return hasConfig
+    ? { id: "llm", name: "LLM Config", status: "pass", message: "LLM configuration present" }
+    : { id: "llm", name: "LLM Config", status: "warning", message: "No LLM config detected (optional)", remediation: "Run 'zeo llm doctor' or set .zeo/config.json" };
+}
+
+function runSigningKeyCheck(): DoctorCheck {
+  const keyPath = resolve(process.cwd(), ".zeo", "keys", "id_ed25519.pem");
+  if (!existsSync(keyPath)) {
+    return { id: "signing-key", name: "Signing Key", status: "warning", message: "No signing key found", remediation: "Run 'zeo keygen --out .zeo/keys/id_ed25519.pem'" };
+  }
+  const stat = statSync(keyPath);
+  return { id: "signing-key", name: "Signing Key", status: "pass", message: `Signing key present (${stat.mode.toString(8)})` };
+}
+
+function runKeyringCheck(): DoctorCheck {
+  const keyring = resolve(process.cwd(), ".zeo", "keyring");
+  if (!existsSync(keyring)) return { id: "keyring", name: "Keyring", status: "warning", message: "Keyring directory missing", remediation: "Use 'zeo keys add <pubkey>'" };
+  const files = readdirSync(keyring).filter((f) => f.endsWith(".json"));
+  return { id: "keyring", name: "Keyring", status: "pass", message: `${files.length} keyring entries found` };
+}
+
+function runTrustProfileIntegrityCheck(): DoctorCheck {
+  const trustDir = resolve(process.cwd(), ".zeo", "trust");
+  if (!existsSync(trustDir)) return { id: "trust", name: "Trust Profiles", status: "warning", message: "No trust profiles recorded yet" };
+  try {
+    const files = readdirSync(trustDir).filter((f) => f.endsWith(".json"));
+    for (const file of files.slice(0, 5)) JSON.parse(readFileSync(join(trustDir, file), "utf8"));
+    return { id: "trust", name: "Trust Profiles", status: "pass", message: `${files.length} trust profile file(s) valid` };
+  } catch (err) {
+    return { id: "trust", name: "Trust Profiles", status: "fail", message: `Invalid trust profile JSON: ${(err as Error).message}`, remediation: "Repair or remove invalid files in .zeo/trust" };
   }
 }

@@ -1,4 +1,4 @@
-import { createRng, type DeterministicRng } from "@zeo/core";
+import { createRng, type DeterministicRng } from "./rng.js";
 import type { ReproPackManifest } from "./types.js";
 
 /**

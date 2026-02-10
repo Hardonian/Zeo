@@ -1,27 +1,57 @@
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import {
-  addPublicKeyToKeyring,
-  compactTrustProfiles,
-  createEnvelope,
-  deriveTrustTier,
-  envelopeFilesInDir,
-  exportPublicKeyFromPrivate,
-  generateEd25519Keypair,
-  inspectEnvelope,
-  keyringResolver,
-  listKeyringEntries,
-  loadEnvelopeFromFile,
-  recordTrustEvent,
-  revokeKeyringEntry,
-  signEnvelopeWithEd25519,
-  verifyEnvelope,
-  verifyTranscriptChain,
-} from "@zeo/core";
+
+interface TranscriptSecurityModule {
+  addPublicKeyToKeyring: typeof import("@zeo/core").addPublicKeyToKeyring;
+  compactTrustProfiles: typeof import("@zeo/core").compactTrustProfiles;
+  createEnvelope: typeof import("@zeo/core").createEnvelope;
+  deriveTrustTier: typeof import("@zeo/core").deriveTrustTier;
+  envelopeFilesInDir: typeof import("@zeo/core").envelopeFilesInDir;
+  exportPublicKeyFromPrivate: typeof import("@zeo/core").exportPublicKeyFromPrivate;
+  generateEd25519Keypair: typeof import("@zeo/core").generateEd25519Keypair;
+  inspectEnvelope: typeof import("@zeo/core").inspectEnvelope;
+  keyringResolver: typeof import("@zeo/core").keyringResolver;
+  listKeyringEntries: typeof import("@zeo/core").listKeyringEntries;
+  loadEnvelopeFromFile: typeof import("@zeo/core").loadEnvelopeFromFile;
+  recordTrustEvent: typeof import("@zeo/core").recordTrustEvent;
+  revokeKeyringEntry: typeof import("@zeo/core").revokeKeyringEntry;
+  signEnvelopeWithEd25519: typeof import("@zeo/core").signEnvelopeWithEd25519;
+  verifyEnvelope: typeof import("@zeo/core").verifyEnvelope;
+  verifyTranscriptChain: typeof import("@zeo/core").verifyTranscriptChain;
+}
+
+async function loadTranscriptSecurity(): Promise<TranscriptSecurityModule> {
+  const fallback = new URL("../../../packages/core/src/transcript-security.js", import.meta.url).href;
+  try {
+    return await import(fallback) as TranscriptSecurityModule;
+  } catch {
+    return await import("@zeo/core") as TranscriptSecurityModule;
+  }
+}
 
 export async function runTranscriptCommand(argv: string[]): Promise<number> {
   const [entity, action] = argv;
   try {
+    const mod = await loadTranscriptSecurity();
+    const {
+      addPublicKeyToKeyring,
+      compactTrustProfiles,
+      createEnvelope,
+      deriveTrustTier,
+      envelopeFilesInDir,
+      exportPublicKeyFromPrivate,
+      generateEd25519Keypair,
+      inspectEnvelope,
+      keyringResolver,
+      listKeyringEntries,
+      loadEnvelopeFromFile,
+      recordTrustEvent,
+      revokeKeyringEntry,
+      signEnvelopeWithEd25519,
+      verifyEnvelope,
+      verifyTranscriptChain,
+    } = mod;
+
     if (entity === "keygen") {
       const keyPath = value(argv, "--out") ?? join(process.cwd(), ".zeo", "keys", "id_ed25519.pem");
       const passphrase = value(argv, "--passphrase");
