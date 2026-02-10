@@ -51,7 +51,8 @@ describe('Determinism Invariants', () => {
     it('different depths produce potentially different results', () => {
       const spec = makeNegotiationExample();
       
-      const shallowResult = runDecision(spec, { depth: 1 });
+      // Use depth 2 (shallow) and depth 3 (deep) - depth 1 is not supported
+      const shallowResult = runDecision(spec, { depth: 2 });
       const deepResult = runDecision(spec, { depth: 3 });
       
       // Deeper runs should have more nodes
