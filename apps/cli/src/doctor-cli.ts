@@ -512,7 +512,7 @@ function computeStorageStats(): StorageStats {
   }
 
   let runsCount = 0;
-  let eventsCount = 0;
+  const eventsCount = 0;
   let oldestRun: string | null = null;
   let newestRun: string | null = null;
 
