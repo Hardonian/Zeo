@@ -7,7 +7,7 @@
 
 import { describe, it, expect } from "vitest";
 import type { Prediction, OutcomeMetric, ReplayResult } from "@zeo/contracts";
-import type { Slice, SliceDimension, PredictionOutcomePair } from "../slice-types";
+import type { Slice, SliceDimension, PredictionOutcomePair } from "../slice-types.js";
 import {
   createSliceKey,
   parseSliceKey,
@@ -28,7 +28,7 @@ import {
   generateRecommendations,
   sliceMetricsToCsvRow,
   exportSlicesToCsv,
-} from "../slice-computation";
+} from "../slice-computation.js";
 
 describe("Slice Key Operations", () => {
   it("should create canonical slice keys", () => {
