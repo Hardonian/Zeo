@@ -1,0 +1,16 @@
+{
+    "id": "assumptions-panel",
+    "title": "Assumptions Tracker",
+    "description": "Surfacing key assumptions, their sources, and sensitivity levels.",
+    "route": "/demo",
+    "slot": "rightInspector",
+    "kind": "react",
+    "entry": "./panel.tsx",
+    "version": "0.3.0",
+    "capabilities": {},
+    "dataDeps": [
+        "decision",
+        "result"
+    ],
+    "permissions": {}
+}
