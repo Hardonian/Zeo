@@ -89,7 +89,7 @@ export async function importScenarioPack(buffer: Uint8Array): Promise<ImportedPa
     const checksumsTxt = files["checksums.txt"];
     if (!checksumsTxt) throw new Error("Missing checksums.txt");
 
-    const lines = checksumsTxt.split("\n").filter(l => l.trim());
+    const lines = checksumsTxt.split("\n").filter((line: string) => line.trim());
     for (const line of lines) {
         const [hash, filename] = line.split("  ");
         if (!files[filename]) throw new Error(`Missing file listed in checksums: ${filename}`);

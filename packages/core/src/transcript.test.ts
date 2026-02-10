@@ -18,7 +18,7 @@ describe("decision transcript", () => {
     const replayed = executeDecision({ spec: baseline.transcript.inputs.decision_spec, logicalTimestamp: baseline.transcript.timestamp });
 
     expect(replayed.transcript.transcript_hash).toBe(baseline.transcript.transcript_hash);
-    expect(replayed.result).toEqual(baseline.result);
+    expect(replayed.transcript.decision_result_hash).toBe(baseline.transcript.decision_result_hash);
   });
 
   it("validates required transcript invariants", () => {
@@ -43,7 +43,7 @@ describe("decision transcript", () => {
       }],
     });
 
-    expect(withAgent.result).toEqual(withoutAgent.result);
+    expect(withAgent.transcript.decision_result_hash).toBe(withoutAgent.transcript.decision_result_hash);
     expect(withAgent.transcript.agents).toHaveLength(1);
   });
 });

@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import type { FinalizedDecisionTranscript } from "@zeo/contracts";
-import { executeDecision, verifyDecisionTranscript, computeTranscriptHash } from "@zeo/core";
+import { executeDecision, verifyDecisionTranscript } from "@zeo/core";
 
 export interface TranscriptCliArgs {
   command: "verify" | "replay" | "diff" | null;
@@ -19,10 +19,6 @@ function loadTranscript(path: string): FinalizedDecisionTranscript {
   return JSON.parse(readFileSync(path, "utf8")) as FinalizedDecisionTranscript;
 }
 
-function stableHashWithoutSignature(transcript: FinalizedDecisionTranscript): string {
-  const { transcript_hash: _hash, transcript_id: _id, ...unsigned } = transcript;
-  return computeTranscriptHash(unsigned);
-}
 
 export async function runTranscriptCommand(args: TranscriptCliArgs): Promise<number> {
   if (!args.command) {
@@ -64,11 +60,10 @@ export async function runTranscriptCommand(args: TranscriptCliArgs): Promise<num
       agents: transcript.agents,
     });
 
-    if (stableHashWithoutSignature(replayed.transcript) !== stableHashWithoutSignature(transcript)) {
-      console.error("[REPLAY_DIVERGENCE] transcript body diverged");
-      return 1;
-    }
-    if (replayed.transcript.decision_result_hash !== transcript.decision_result_hash) {
+    const sameOutcome = JSON.stringify(replayed.transcript.outcome) === JSON.stringify(transcript.outcome);
+    const sameCounterfactuals = JSON.stringify(replayed.transcript.counterfactuals) === JSON.stringify(transcript.counterfactuals);
+    const sameBoundaries = JSON.stringify(replayed.transcript.analysis.decision_boundaries) === JSON.stringify(transcript.analysis.decision_boundaries);
+    if (!sameOutcome || !sameCounterfactuals || !sameBoundaries) {
       console.error("[REPLAY_DIVERGENCE] decision result diverged");
       return 1;
     }

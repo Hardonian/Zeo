@@ -1,13 +1,9 @@
 import {
     Assumption,
-    Uncertainty,
     BudgetConstraints,
-    TypedCost,
-    TypedDuration,
-    PlanResult,
     RunData
 } from "@zeo/repro-pack";
-import { DecisionResult } from "@zeo/contracts";
+import { DecisionResult, Claim, Uncertainty } from "@zeo/contracts";
 
 export type PolicySeverity = "warn" | "block";
 
@@ -95,20 +91,24 @@ class UnitsSanityPolicy implements Policy {
 
         // Check assumptions for unit consistency (basic check)
         if (context.assumptions) {
-            context.assumptions.forEach((ass: any) => {
-                // Handle Assumption (repro-pack) or Claim (contracts)
-                const val = ass.value !== undefined ? ass.value : ass.probability;
-                const units = ass.units || ass.text || '';
+            context.assumptions.forEach((assumption) => {
+                const ass = assumption as Assumption | Claim;
+                const val = typeof (ass as Assumption).value === "number"
+                    ? (ass as Assumption).value
+                    : undefined;
+                const units = "units" in ass ? String(ass.units) : ass.text;
 
-                if (typeof val === 'number' && val < 0 &&
-                    (units.toLowerCase().includes('cost') || units.toLowerCase().includes('duration') || units.toLowerCase().includes('$'))) {
+                if (typeof val === "number" && val < 0 &&
+                    (units.toLowerCase().includes("cost") || units.toLowerCase().includes("duration") || units.toLowerCase().includes("$"))) {
+                    const key = "id" in ass ? ass.id : ("key" in ass ? ass.key : "unknown");
+                    const label = "text" in ass ? ass.text : ass.label;
                     violations.push({
                         code: "POLICY_VIOLATION",
                         policyId: this.id,
                         severity: "warn",
-                        message: `Potential negative value for ${ass.key || ass.text} with unit/context ${units}.`,
+                        message: `Potential negative value for ${label} with unit/context ${units}.`,
                         remediation: "Verify if negative value is intended (e.g. savings) or an error.",
-                        keys: [ass.id ? `assumptions.${ass.id}` : `assumptions.${ass.key}`]
+                        keys: [`assumptions.${key}`]
                     });
                 }
             });
@@ -129,13 +129,14 @@ class UncertaintyHonestyPolicy implements Policy {
         // If runData has uncertaintyMap, check for "unknown"
         if (context.runData?.uncertaintyMap) {
             Object.entries(context.runData.uncertaintyMap).forEach(([key, uncertainty]) => {
-                if (uncertainty.kind === "unknown") {
+                const uncertaintyValue = uncertainty as Uncertainty;
+                if (uncertaintyValue.kind === "unknown") {
                     // This is actually a valid state, but we must ensure it isn't being used to mask a value.
                     // The policy says: if uncertainty.kind="unknown", UI/report must display unknown, never "~0"
                     // Here we assume the engine just flags it if it looks suspicious, but mostly this is a pass-through
                     // to ensure the UI handles it. 
                     // However, let's complain if params are provided for unknown.
-                    if (uncertainty.params && Object.keys(uncertainty.params).length > 0) {
+                    if (uncertaintyValue.params && Object.keys(uncertaintyValue.params).length > 0) {
                         violations.push({
                             code: "POLICY_VIOLATION",
                             policyId: this.id,
@@ -187,7 +188,7 @@ class ConstraintFeasibilityPolicy implements Policy {
         const violations: PolicyViolation[] = [];
 
         // Check if we have an infeasible plan explanation in the runData events
-        const isInfeasible = context.runData?.events?.some(e => e.type === "PLAN_INFEASIBLE");
+        const isInfeasible = context.runData?.events?.some((event: { type?: string }) => event.type === "PLAN_INFEASIBLE");
 
         if (isInfeasible) {
             violations.push({

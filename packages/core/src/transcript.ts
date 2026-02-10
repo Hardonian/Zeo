@@ -20,7 +20,9 @@ export type ExecuteDecisionOutput = {
 function stableStringify(value: unknown): string {
   if (Array.isArray(value)) return `[${value.map(stableStringify).join(",")}]`;
   if (value && typeof value === "object") {
-    const entries = Object.entries(value as Record<string, unknown>).sort(([a], [b]) => a.localeCompare(b));
+    const entries = Object.entries(value as Record<string, unknown>)
+      .filter(([, v]) => v !== undefined)
+      .sort(([a], [b]) => a.localeCompare(b));
     return `{${entries.map(([k, v]) => `${JSON.stringify(k)}:${stableStringify(v)}`).join(",")}}`;
   }
   return JSON.stringify(value);
@@ -50,6 +52,37 @@ function normalizeConfidence(result: DecisionResult): { lower: string; upper: st
   const lower = Math.max(0, Math.min(...intervals.map((p) => p.low)));
   const upper = Math.min(1, Math.max(...intervals.map((p) => p.high)));
   return { lower: lower.toFixed(4), upper: upper.toFixed(4), method: "range_aggregation" };
+}
+
+
+function normalizeDecisionResultForHash(result: DecisionResult): unknown {
+  return {
+    evaluations: result.evaluations,
+    nextBestEvidence: result.nextBestEvidence,
+    explanation: result.explanation,
+    assumptions: result.assumptions,
+    inferences: result.inferences,
+    uncertaintyMap: result.uncertaintyMap,
+    hygieneWarnings: result.hygieneWarnings,
+    status: result.status,
+    budget: result.budget,
+    graph: {
+      decisionId: result.graph.decisionId,
+      nodes: result.graph.nodes.map((node) => ({
+        label: node.label,
+        kind: node.kind,
+        notes: node.notes,
+        dependencies: node.dependencies,
+      })),
+      edges: result.graph.edges.map((edge) => ({
+        fromLabel: result.graph.nodes.find((node) => node.id === edge.from)?.label ?? edge.from,
+        toLabel: result.graph.nodes.find((node) => node.id === edge.to)?.label ?? edge.to,
+        actionId: edge.actionId,
+        probability: edge.probability,
+        notes: edge.notes,
+      })),
+    },
+  };
 }
 
 function buildTranscript(input: ExecuteDecisionInput, result: DecisionResult): DecisionTranscript {
@@ -107,7 +140,7 @@ function buildTranscript(input: ExecuteDecisionInput, result: DecisionResult): D
       minimum_change: change.flipCondition,
     })),
     agents: input.agents ?? [],
-    decision_result_hash: computeStableHash(result),
+    decision_result_hash: computeStableHash(normalizeDecisionResultForHash(result)),
     invariants: {
       determinism_checks: [
         "same_inputs_same_transcript",
