@@ -432,9 +432,6 @@ importers:
       '@zeo/game':
         specifier: workspace:*
         version: link:../game
-      '@zeo/hypothesis-market':
-        specifier: workspace:*
-        version: link:../hypothesis-market
       '@zeo/hypothesis-registry':
         specifier: workspace:*
         version: link:../hypothesis-registry
@@ -459,9 +456,6 @@ importers:
       '@zeo/replay':
         specifier: workspace:*
         version: link:../replay
-      '@zeo/repro-pack':
-        specifier: workspace:*
-        version: link:../repro-pack
       '@zeo/robustness':
         specifier: workspace:*
         version: link:../robustness
@@ -483,9 +477,6 @@ importers:
       '@zeo/timeseries':
         specifier: workspace:*
         version: link:../timeseries
-      '@zeo/tournaments':
-        specifier: workspace:*
-        version: link:../tournaments
       '@zeo/trust':
         specifier: workspace:*
         version: link:../trust

@@ -3,7 +3,9 @@ import { spawn } from "child_process";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { writeFile, unlink } from "fs/promises";
-import { nanoid } from "nanoid";
+import { randomUUID } from "node:crypto";
+
+const createId = () => randomUUID();
 
 const PYTHON_SCRIPT_PATH = join(dirname(fileURLToPath(import.meta.url)), "..", "python", "engine.py");
 
@@ -18,7 +20,7 @@ export class TimeSeriesEngine {
     series: TimeSeries,
     modelType: "arima" | "garch" | "auto" = "auto"
   ): Promise<TimeSeriesAnalysis> {
-    const tempFile = `/tmp/zeo_ts_${nanoid()}.json`;
+    const tempFile = `/tmp/zeo_ts_${createId()}.json`;
     
     try {
       const request = {

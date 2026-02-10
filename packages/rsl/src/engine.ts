@@ -5,7 +5,9 @@ import { spawn } from "child_process";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { writeFile, unlink } from "fs/promises";
-import { nanoid } from "nanoid";
+import { randomUUID } from "node:crypto";
+
+const createId = () => randomUUID();
 
 const PYTHON_SCRIPT_PATH = join(dirname(fileURLToPath(import.meta.url)), "..", "python", "engine.py");
 
@@ -224,7 +226,7 @@ export class RSLEngine {
     regimes: Record<string, RegimeDetection>;
     error?: string;
   }> {
-    const tempFile = `/tmp/zeo_rsl_${nanoid()}.json`;
+    const tempFile = `/tmp/zeo_rsl_${createId()}.json`;
     
     try {
       await writeFile(tempFile, JSON.stringify(request));

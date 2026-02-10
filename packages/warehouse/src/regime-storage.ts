@@ -1,7 +1,9 @@
 import type { RegimeEvent, RegimeState } from "@zeo/contracts";
 import type { WarehouseKind, WarehouseQuery, WarehouseEnvelope } from "@zeo/contracts";
 import type { WarehouseAdapter } from "./interfaces.js";
-import { nanoid } from "nanoid";
+import { randomUUID } from "node:crypto";
+
+const createId = () => randomUUID();
 
 const REGIME_EVENT_KIND: WarehouseKind = "regime-event";
 const REGIME_STATE_KIND: WarehouseKind = "regime-state";
@@ -39,7 +41,7 @@ function wrapInEnvelope<T>(
   id?: string
 ): WarehouseEnvelope<T> {
   const now = new Date().toISOString();
-  const envelopeId = id ?? nanoid();
+  const envelopeId = id ?? createId();
   const hashes = {
     contentHash: computeContentHash(data),
   };
@@ -136,7 +138,7 @@ export function createRegimeEvent(
   params: Omit<RegimeEvent, "id" | "createdAt">
 ): RegimeEvent {
   return {
-    id: nanoid(),
+    id: createId(),
     createdAt: new Date().toISOString(),
     ...params,
   };
