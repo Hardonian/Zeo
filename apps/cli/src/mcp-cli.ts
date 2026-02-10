@@ -1,4 +1,5 @@
 import { createInterface } from "node:readline";
+import { executeZeoliteOperation, type ZeoliteOperation } from "./zeolite-core.js";
 
 type JsonRpcId = string | number | null;
 
@@ -22,19 +23,29 @@ export function parseMcpArgs(argv: string[]): McpCliArgs {
 
 const TOOL_DEFS = [
   {
-    name: "zeo.run",
-    description: "Run Zeo deterministic decision example",
-    inputSchema: { type: "object", properties: { example: { type: "string" }, depth: { type: "number" } } },
+    name: "load_context",
+    description: "Initialize deterministic Zeolite context.",
+    inputSchema: { type: "object", properties: { example: { type: "string" }, depth: { type: "number" }, seed: { type: "string" } } },
   },
   {
-    name: "zeo.listActions",
-    description: "List available actions for a Zeo example",
-    inputSchema: { type: "object", properties: { example: { type: "string" } } },
+    name: "submit_evidence",
+    description: "Submit evidence to an active Zeolite context.",
+    inputSchema: { type: "object", properties: { contextId: { type: "string" }, sourceId: { type: "string" }, claim: { type: "string" }, capturedAt: { type: "string" } } },
   },
   {
-    name: "zeo.listPacks",
-    description: "List built-in Zeo packs/examples",
-    inputSchema: { type: "object", properties: {} },
+    name: "compute_flip_distance",
+    description: "Compute deterministic flip-distance approximations.",
+    inputSchema: { type: "object", properties: { contextId: { type: "string" } }, required: ["contextId"] },
+  },
+  {
+    name: "rank_evidence_by_voi",
+    description: "Rank evidence actions by VOI.",
+    inputSchema: { type: "object", properties: { contextId: { type: "string" }, minEvoi: { type: "number" } }, required: ["contextId"] },
+  },
+  {
+    name: "generate_regret_bounded_plan",
+    description: "Generate bounded-horizon regret-aware evidence plan.",
+    inputSchema: { type: "object", properties: { contextId: { type: "string" }, horizon: { type: "number" }, minEvoi: { type: "number" } }, required: ["contextId"] },
   },
 ];
 
@@ -51,36 +62,28 @@ function error(id: JsonRpcId, code: number, message: string): string {
 }
 
 async function handleToolCall(name: string, args: Record<string, unknown>): Promise<Record<string, unknown>> {
-  if (name === "zeo.listPacks") {
-    return { content: [{ type: "text", text: "negotiation,ops" }], structuredContent: { packs: ["negotiation", "ops"] }, isError: false };
-  }
+  const knownOperations = new Set<ZeoliteOperation>([
+    "load_context",
+    "submit_evidence",
+    "compute_flip_distance",
+    "rank_evidence_by_voi",
+    "generate_regret_bounded_plan",
+  ]);
 
-  const example = args.example === "ops" ? "ops" : "negotiation";
-
-  if (name === "zeo.listActions" || name === "zeo.run") {
-    const { makeNegotiationExample, makeOpsExample, runDecision } = await import("@zeo/core");
-    const spec = example === "ops" ? makeOpsExample() : makeNegotiationExample();
-
-    if (name === "zeo.listActions") {
-    const actions = spec.actions.map(a => ({ id: a.id, label: a.label, kind: a.kind }));
-      return { content: [{ type: "text", text: `${actions.length} actions` }], structuredContent: { actions }, isError: false };
-    }
-
-    if (name === "zeo.run") {
-    const depthValue = typeof args.depth === "number" ? args.depth : 2;
-    const depth = depthValue === 3 ? 3 : 2;
-    const result = runDecision(spec, { depth });
+  if (knownOperations.has(name as ZeoliteOperation)) {
+    try {
+      const structuredContent = executeZeoliteOperation(name as ZeoliteOperation, args);
       return {
-        content: [{ type: "text", text: `completed ${result.graph.nodes.length} nodes` }],
-        structuredContent: {
-        summary: {
-          nodes: result.graph.nodes.length,
-          edges: result.graph.edges.length,
-          robustActions: result.evaluations.find(e => e.lens === "robustness")?.robustActions ?? [],
-        },
-        result,
-      },
+        content: [{ type: "text", text: JSON.stringify(structuredContent) }],
+        structuredContent,
         isError: false,
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      return {
+        content: [{ type: "text", text: JSON.stringify({ error: message }) }],
+        structuredContent: { error: message },
+        isError: true,
       };
     }
   }

@@ -41,6 +41,7 @@ Commands:
   doctor                      Environment diagnostics
   perf                        Performance commands
   mcp                         MCP commands (serve/ping/tools)
+  zeolite <op>                Zeolite deterministic operations
 
 Options:
   --catalog <dir>             Catalog directory (default: external/catalog)
@@ -246,6 +247,11 @@ async function main(): Promise<void> {
   if (argv[0] === "doctor") {
     const mod = await import("./doctor-cli.js");
     process.exit(await mod.runDoctorCommand(mod.parseDoctorArgs(argv.slice(1))));
+  }
+
+  if (argv[0] === "zeolite") {
+    const mod = await import("./zeolite-cli.js");
+    process.exit(await mod.runZeoliteCommand(mod.parseZeoliteArgs(argv.slice(1))));
   }
 
   const args = parseArgs(argv);
