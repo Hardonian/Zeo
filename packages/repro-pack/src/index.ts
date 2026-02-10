@@ -32,6 +32,7 @@ export {
     buildReproPackZip,
     readReproPackZip,
     sha256,
+    createZip, // Generic util
     type ReproPackContents,
 } from "./pack-builder.js";
 

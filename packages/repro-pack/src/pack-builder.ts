@@ -131,7 +131,7 @@ interface ZipEntry {
     offset: number;
 }
 
-function createZip(files: Record<string, string>): Uint8Array {
+export function createZip(files: Record<string, string>): Uint8Array {
     const entries: ZipEntry[] = [];
     const parts: Uint8Array[] = [];
     let offset = 0;
