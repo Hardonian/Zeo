@@ -53,7 +53,8 @@ describe("Evidence Planner Regression", () => {
     });
 
     it("should respect budget constraints", () => {
-        const results = recommendEvidence(spec, candidates, {
+        const counterfactuals: CounterfactualResult[] = [];
+        const results = recommendEvidence(spec, candidates, counterfactuals, {
             maxCost: "low",
             maxTime: "days",
             minEvoi: 0.001
