@@ -2,7 +2,7 @@
  * Job Queue Exports
  */
 
-export * from './types';
-export * from './queue';
-export * from './handlers';
+export * from './types.js';
+export * from './queue.js';
+export * from './handlers.js';
 
