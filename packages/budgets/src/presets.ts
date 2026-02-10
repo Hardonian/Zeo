@@ -3,7 +3,7 @@
  * Safe defaults and power mode configurations
  */
 
-import type { ComputeBudget, BudgetLimit } from './types';
+import type { ComputeBudget, BudgetLimit } from './types.js';
 
 // Safe defaults - conservative limits for typical edge usage
 export const SAFE_DEFAULTS: ComputeBudget = {
@@ -106,7 +106,7 @@ export function getPreset(id: string): ComputeBudget | undefined {
 export function clonePreset(id: string, customizations: Partial<ComputeBudget> = {}): ComputeBudget | null {
   const preset = getPreset(id);
   if (!preset) return null;
-  
+
   return {
     ...preset,
     id: customizations.id || `${preset.id}-custom`,
@@ -149,15 +149,15 @@ export function recommendBudget(
   if (isBatteryPowered && isBackgroundTask) {
     return MINIMAL_MODE;
   }
-  
+
   if (availableMemoryMB < 512) {
     return MINIMAL_MODE;
   }
-  
+
   if (availableMemoryMB > 4096 && !isBatteryPowered) {
     return POWER_MODE;
   }
-  
+
   return SAFE_DEFAULTS;
 }
 
