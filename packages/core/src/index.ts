@@ -9,7 +9,17 @@ export * from "./evidence.js";
 export * from "./packets.js";
 export * from "./regime-integration.js";
 export * from "./scenarios.js";
-export * from "./transcript.js";
+export {
+  type ExecuteDecisionInput,
+  type ExecuteDecisionOutput,
+  computeStableHash,
+  type ReplayNormalizedTranscript,
+  normalizeTranscriptForReplay,
+  finalizeDecisionTranscript,
+  executeDecision,
+  verifyDecisionTranscript,
+} from "./transcript.js";
+export * from "./graph.js";
 export type { RunMeta } from "./packets.js";
 export {
   hashDecisionSpec,
