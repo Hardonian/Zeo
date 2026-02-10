@@ -1,0 +1,4 @@
+
+> @zeo/robustness@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\robustness
+> tsc -p tsconfig.build.json
+

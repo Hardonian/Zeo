@@ -1,0 +1,4 @@
+
+> @zeo/counterfactuals@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\counterfactuals
+> tsc -p tsconfig.build.json
+

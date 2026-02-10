@@ -1,0 +1,4 @@
+
+> @zeo/eval@0.5.1 build C:\Users\scott\Documents\GitHub\Zeo\packages\eval
+> tsc -p tsconfig.build.json
+

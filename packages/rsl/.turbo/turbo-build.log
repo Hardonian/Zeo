@@ -1,0 +1,4 @@
+
+> @zeo/rsl@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\rsl
+> tsc -p tsconfig.build.json
+

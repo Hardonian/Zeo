@@ -1,0 +1,4 @@
+
+> @zeo/mcp-interop@1.4.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\mcp-interop
+> tsc -p tsconfig.build.json
+

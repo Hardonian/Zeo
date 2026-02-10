@@ -1,0 +1,4 @@
+
+> @zeo/calibration@0.3.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\calibration
+> tsc -p tsconfig.build.json
+

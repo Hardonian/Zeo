@@ -1,0 +1,4 @@
+
+> @zeo/causal-skeletons@0.5.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\causal-skeletons
+> tsc -p tsconfig.build.json
+

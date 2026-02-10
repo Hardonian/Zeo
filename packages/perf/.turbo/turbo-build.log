@@ -1,0 +1,4 @@
+
+> @zeo/perf@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\perf
+> tsc -p tsconfig.build.json
+

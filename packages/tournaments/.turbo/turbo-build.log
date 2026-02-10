@@ -1,0 +1,4 @@
+
+> @zeo/tournaments@0.5.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\tournaments
+> tsc -p tsconfig.build.json
+

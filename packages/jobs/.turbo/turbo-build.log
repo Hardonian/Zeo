@@ -1,0 +1,4 @@
+
+> @zeo/jobs@0.5.3 build C:\Users\scott\Documents\GitHub\Zeo\packages\jobs
+> tsc -p tsconfig.build.json
+

@@ -1,0 +1,4 @@
+
+> @zeo/adapters-runtime@0.5.2 build C:\Users\scott\Documents\GitHub\Zeo\packages\adapters-runtime
+> tsc -p tsconfig.build.json
+

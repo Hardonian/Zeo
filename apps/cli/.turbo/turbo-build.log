@@ -1,0 +1,4 @@
+
+> @zeo/cli@1.0.0 build C:\Users\scott\Documents\GitHub\Zeo\apps\cli
+> tsc -p tsconfig.json
+

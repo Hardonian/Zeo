@@ -1,0 +1,4 @@
+
+> @zeo/warehouse@0.3.3 build C:\Users\scott\Documents\GitHub\Zeo\packages\warehouse
+> tsc -p tsconfig.build.json
+

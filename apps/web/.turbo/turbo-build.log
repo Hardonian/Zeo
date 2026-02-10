@@ -1,0 +1,1394 @@
+
+> @zeo/web@1.0.0 build C:\Users\scott\Documents\GitHub\Zeo\apps\web
+> next build
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\scott\pnpm-lock.yaml as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\scott\Documents\GitHub\Zeo\pnpm-lock.yaml
+
+▲ Next.js 16.1.6 (Turbopack)
+- Experiments (use with caution):
+  · serverActions
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 46 errors:
+./Documents/GitHub/Zeo/packages/core/src/index.ts:48:1
+Module not found: Can't resolve './agent-manifest.js'
+[0m [90m 46 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./limits.js"[39m[33m;[39m
+ [90m 47 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./canonical-json.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 48 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./agent-manifest.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 49 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./migrations.js"[39m[33m;[39m
+ [90m 50 |[39m
+ [90m 51 |[39m [90m// Runner - orchestrated execution[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:47:1
+Module not found: Can't resolve './canonical-json.js'
+[0m [90m 45 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./capabilities.js"[39m[33m;[39m
+ [90m 46 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./limits.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 47 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./canonical-json.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 48 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./agent-manifest.js"[39m[33m;[39m
+ [90m 49 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./migrations.js"[39m[33m;[39m
+ [90m 50 |[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:45:1
+Module not found: Can't resolve './capabilities.js'
+[0m [90m 43 |[39m
+ [90m 44 |[39m [90m// Capabilities / Permissions[39m
+[31m[1m>[22m[39m[90m 45 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./capabilities.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 46 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./limits.js"[39m[33m;[39m
+ [90m 47 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./canonical-json.js"[39m[33m;[39m
+ [90m 48 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./agent-manifest.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/contracts/src/index.ts:11:1
+Module not found: Can't resolve './connector-types.js'
+[0m [90m  9 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./kpi.js"[39m[33m;[39m
+ [90m 10 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./packet-types.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 11 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./connector-types.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 12 |[39m
+ [90m 13 |[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/causal/src/index.ts:2:1
+Module not found: Can't resolve './engine.js'
+[0m [90m 1 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./types.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./engine.js"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/causal/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/causal/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/rsl/src/index.ts:3:1
+Module not found: Can't resolve './engine.js'
+[0m [90m 1 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./types.js"[39m[33m;[39m
+ [90m 2 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./filters.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 3 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./engine.js"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 4 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./canonicalize.js"[39m[33m;[39m
+ [90m 5 |[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/rsl/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/rsl/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/contracts/src/index.ts:7:1
+Module not found: Can't resolve './epistemic-guards.js'
+[0m [90m  5 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./warehouse.js"[39m[33m;[39m
+ [90m  6 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./kill-switches.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m  7 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./epistemic-guards.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m  8 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./share-bundle.js"[39m[33m;[39m
+ [90m  9 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./kpi.js"[39m[33m;[39m
+ [90m 10 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./packet-types.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/contracts/src/index.ts:3:1
+Module not found: Can't resolve './errors.js'
+[0m [90m 1 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./types.js"[39m[33m;[39m
+ [90m 2 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./ui-panel.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 3 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./errors.js"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 4 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./replay.js"[39m[33m;[39m
+ [90m 5 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./warehouse.js"[39m[33m;[39m
+ [90m 6 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./kill-switches.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:23:1
+Module not found: Can't resolve './graph.js'
+[0m [90m 21 |[39m   computeTranscriptHash [36mas[39m computeDecisionTranscriptHash[33m,[39m
+ [90m 22 |[39m } [36mfrom[39m [32m"./transcript.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 23 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./graph.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 24 |[39m [36mexport[39m type { [33mRunMeta[39m } [36mfrom[39m [32m"./packets.js"[39m[33m;[39m
+ [90m 25 |[39m [36mexport[39m {
+ [90m 26 |[39m   computeTranscriptHash[33m,[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/contracts/src/index.ts:6:1
+Module not found: Can't resolve './kill-switches.js'
+[0m [90m 4 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./replay.js"[39m[33m;[39m
+ [90m 5 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./warehouse.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 6 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./kill-switches.js"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 7 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./epistemic-guards.js"[39m[33m;[39m
+ [90m 8 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./share-bundle.js"[39m[33m;[39m
+ [90m 9 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./kpi.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/contracts/src/index.ts:9:1
+Module not found: Can't resolve './kpi.js'
+[0m [90m  7 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./epistemic-guards.js"[39m[33m;[39m
+ [90m  8 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./share-bundle.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m  9 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./kpi.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 10 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./packet-types.js"[39m[33m;[39m
+ [90m 11 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./connector-types.js"[39m[33m;[39m
+ [90m 12 |[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:46:1
+Module not found: Can't resolve './limits.js'
+[0m [90m 44 |[39m [90m// Capabilities / Permissions[39m
+ [90m 45 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./capabilities.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 46 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./limits.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 47 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./canonical-json.js"[39m[33m;[39m
+ [90m 48 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./agent-manifest.js"[39m[33m;[39m
+ [90m 49 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./migrations.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:49:1
+Module not found: Can't resolve './migrations.js'
+[0m [90m 47 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./canonical-json.js"[39m[33m;[39m
+ [90m 48 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./agent-manifest.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 49 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./migrations.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 50 |[39m
+ [90m 51 |[39m [90m// Runner - orchestrated execution[39m
+ [90m 52 |[39m [36mexport[39m { [33mZeoRunner[39m[33m,[39m type [33mZeoRunnerConfig[39m } [36mfrom[39m [32m"./runner.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/contracts/src/index.ts:10:1
+Module not found: Can't resolve './packet-types.js'
+[0m [90m  8 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./share-bundle.js"[39m[33m;[39m
+ [90m  9 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./kpi.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 10 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./packet-types.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 11 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./connector-types.js"[39m[33m;[39m
+ [90m 12 |[39m
+ [90m 13 |[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:55:1
+Module not found: Can't resolve './policy.js'
+[0m [90m 53 |[39m
+ [90m 54 |[39m [90m// Policy engine[39m
+[31m[1m>[22m[39m[90m 55 |[39m [36mexport[39m { policyEngine[33m,[39m type [33mPolicyViolation[39m } [36mfrom[39m [32m"./policy.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 56 |[39m
+ [90m 57 |[39m [90m// Reporting[39m
+ [90m 58 |[39m [36mexport[39m { generateDecisionReport[33m,[39m type [33mDecisionReport[39m } [36mfrom[39m [32m"./reporting.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:10:1
+Module not found: Can't resolve './regime-integration.js'
+[0m [90m  8 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./evidence.js"[39m[33m;[39m
+ [90m  9 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./packets.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 10 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./regime-integration.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 11 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./scenarios.js"[39m[33m;[39m
+ [90m 12 |[39m [36mexport[39m {
+ [90m 13 |[39m   type [33mExecuteDecisionInput[39m[33m,[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/contracts/src/index.ts:4:1
+Module not found: Can't resolve './replay.js'
+[0m [90m 2 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./ui-panel.js"[39m[33m;[39m
+ [90m 3 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./errors.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 4 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./replay.js"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 5 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./warehouse.js"[39m[33m;[39m
+ [90m 6 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./kill-switches.js"[39m[33m;[39m
+ [90m 7 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./epistemic-guards.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:58:1
+Module not found: Can't resolve './reporting.js'
+[0m [90m 56 |[39m
+ [90m 57 |[39m [90m// Reporting[39m
+[31m[1m>[22m[39m[90m 58 |[39m [36mexport[39m { generateDecisionReport[33m,[39m type [33mDecisionReport[39m } [36mfrom[39m [32m"./reporting.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 59 |[39m
+ [90m 60 |[39m [90m// Scenario packs[39m
+ [90m 61 |[39m [36mexport[39m {[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:52:1
+Module not found: Can't resolve './runner.js'
+[0m [90m 50 |[39m
+ [90m 51 |[39m [90m// Runner - orchestrated execution[39m
+[31m[1m>[22m[39m[90m 52 |[39m [36mexport[39m { [33mZeoRunner[39m[33m,[39m type [33mZeoRunnerConfig[39m } [36mfrom[39m [32m"./runner.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 53 |[39m
+ [90m 54 |[39m [90m// Policy engine[39m
+ [90m 55 |[39m [36mexport[39m { policyEngine[33m,[39m type [33mPolicyViolation[39m } [36mfrom[39m [32m"./policy.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:61:1
+Module not found: Can't resolve './scenario-packs.js'
+[0m [90m 59 |[39m
+ [90m 60 |[39m [90m// Scenario packs[39m
+[31m[1m>[22m[39m[90m 61 |[39m [36mexport[39m {
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 62 |[39m   exportScenarioPack[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 63 |[39m   importScenarioPack[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 64 |[39m   type [33mImportedPackContent[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 65 |[39m } [36mfrom[39m [32m"./scenario-packs.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 66 |[39m
+ [90m 67 |[39m [90m// Note: Re-exports from other packages removed due to cyclic dependencies[39m
+ [90m 68 |[39m [90m// and type incompatibility issues. Import directly from packages instead.[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:11:1
+Module not found: Can't resolve './scenarios.js'
+[0m [90m  9 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./packets.js"[39m[33m;[39m
+ [90m 10 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./regime-integration.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 11 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./scenarios.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 12 |[39m [36mexport[39m {
+ [90m 13 |[39m   type [33mExecuteDecisionInput[39m[33m,[39m
+ [90m 14 |[39m   type [33mExecuteDecisionOutput[39m[33m,[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/contracts/src/index.ts:8:1
+Module not found: Can't resolve './share-bundle.js'
+[0m [90m  6 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./kill-switches.js"[39m[33m;[39m
+ [90m  7 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./epistemic-guards.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m  8 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./share-bundle.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m  9 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./kpi.js"[39m[33m;[39m
+ [90m 10 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./packet-types.js"[39m[33m;[39m
+ [90m 11 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./connector-types.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:70:1
+Module not found: Can't resolve './transcript-security.js'
+[0m [90m 68 |[39m [90m// and type incompatibility issues. Import directly from packages instead.[39m
+ [90m 69 |[39m
+[31m[1m>[22m[39m[90m 70 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./transcript-security.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 71 |[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/index.ts:12:1
+Module not found: Can't resolve './transcript.js'
+[0m [90m 10 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./regime-integration.js"[39m[33m;[39m
+ [90m 11 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./scenarios.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 12 |[39m [36mexport[39m {
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 13 |[39m   type [33mExecuteDecisionInput[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 14 |[39m   type [33mExecuteDecisionOutput[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 15 |[39m   computeStableHash[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 16 |[39m   type [33mReplayNormalizedTranscript[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 17 |[39m   normalizeTranscriptForReplay[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 18 |[39m   finalizeDecisionTranscript[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 19 |[39m   executeDecision[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 20 |[39m   verifyDecisionTranscript[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 21 |[39m   computeTranscriptHash [36mas[39m computeDecisionTranscriptHash[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m 22 |[39m } [36mfrom[39m [32m"./transcript.js"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 23 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./graph.js"[39m[33m;[39m
+ [90m 24 |[39m [36mexport[39m type { [33mRunMeta[39m } [36mfrom[39m [32m"./packets.js"[39m[33m;[39m
+ [90m 25 |[39m [36mexport[39m {[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/causal/src/index.ts:1:1
+Module not found: Can't resolve './types.js'
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./types.js"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 2 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./engine.js"[39m[33m;[39m
+ [90m 3 |[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/causal/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/causal/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/contracts/src/index.ts:1:1
+Module not found: Can't resolve './types.js'
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./types.js"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 2 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./ui-panel.js"[39m[33m;[39m
+ [90m 3 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./errors.js"[39m[33m;[39m
+ [90m 4 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./replay.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/contracts/src/index.ts:2:1
+Module not found: Can't resolve './ui-panel.js'
+[0m [90m 1 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./types.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./ui-panel.js"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./errors.js"[39m[33m;[39m
+ [90m 4 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./replay.js"[39m[33m;[39m
+ [90m 5 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./warehouse.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/contracts/src/index.ts:5:1
+Module not found: Can't resolve './warehouse.js'
+[0m [90m 3 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./errors.js"[39m[33m;[39m
+ [90m 4 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./replay.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 5 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./warehouse.js"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 6 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./kill-switches.js"[39m[33m;[39m
+ [90m 7 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./epistemic-guards.js"[39m[33m;[39m
+ [90m 8 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./share-bundle.js"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/contracts/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/models/src/index.ts:3:1
+Module not found: Can't resolve './world-model.js'
+[0m [90m 1 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./types.js"[39m[33m;[39m
+ [90m 2 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./inference.js"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 3 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./world-model.js"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 4 |[39m [36mexport[39m [33m*[39m [36mfrom[39m [32m"./voi.js"[39m[33m;[39m
+ [90m 5 |[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/models/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/models/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/models/src/voi.js:1:1
+Module not found: Can't resolve './world-model.js'
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { [33mSeededRandom[39m[33m,[39m inferPosterior } [36mfrom[39m [32m"./world-model.js"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 2 |[39m [90m/**[39m
+ [90m 3 |[39m [90m * Compute uncertainty proxy for a band interval.[39m
+ [90m 4 |[39m [90m * Entropy proxy = width of the interval.[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/models/src/voi.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/models/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/models/src/voi.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/models/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/models/src/inference.js:1:1
+Module not found: Can't resolve 'child_process'
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { spawn } [36mfrom[39m [32m"child_process"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 2 |[39m [36mimport[39m { fileURLToPath } [36mfrom[39m [32m"url"[39m[33m;[39m
+ [90m 3 |[39m [36mimport[39m { dirname[33m,[39m join } [36mfrom[39m [32m"path"[39m[33m;[39m
+ [90m 4 |[39m [36mimport[39m { writeFile[33m,[39m unlink } [36mfrom[39m [32m"fs/promises"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/models/src/inference.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/models/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/models/src/inference.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/models/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/timeseries/src/engine.js:1:1
+Module not found: Can't resolve 'child_process'
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { spawn } [36mfrom[39m [32m"child_process"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 2 |[39m [36mimport[39m { fileURLToPath } [36mfrom[39m [32m"url"[39m[33m;[39m
+ [90m 3 |[39m [36mimport[39m { dirname[33m,[39m join } [36mfrom[39m [32m"path"[39m[33m;[39m
+ [90m 4 |[39m [36mimport[39m { writeFile[33m,[39m unlink } [36mfrom[39m [32m"fs/promises"[39m[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/timeseries/src/engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/timeseries/src/engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/models/src/inference.js:4:1
+Module not found: Can't resolve 'fs/promises'
+[0m [90m 2 |[39m [36mimport[39m { fileURLToPath } [36mfrom[39m [32m"url"[39m[33m;[39m
+ [90m 3 |[39m [36mimport[39m { dirname[33m,[39m join } [36mfrom[39m [32m"path"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 4 |[39m [36mimport[39m { writeFile[33m,[39m unlink } [36mfrom[39m [32m"fs/promises"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 5 |[39m [36mimport[39m { nanoid } [36mfrom[39m [32m"nanoid"[39m[33m;[39m
+ [90m 6 |[39m [36mconst[39m __filename [33m=[39m fileURLToPath([36mimport[39m[33m.[39mmeta[33m.[39murl)[33m;[39m
+ [90m 7 |[39m [36mconst[39m __dirname [33m=[39m dirname(__filename)[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/models/src/inference.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/models/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/models/src/inference.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/models/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/timeseries/src/engine.js:4:1
+Module not found: Can't resolve 'fs/promises'
+[0m [90m 2 |[39m [36mimport[39m { fileURLToPath } [36mfrom[39m [32m"url"[39m[33m;[39m
+ [90m 3 |[39m [36mimport[39m { dirname[33m,[39m join } [36mfrom[39m [32m"path"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 4 |[39m [36mimport[39m { writeFile[33m,[39m unlink } [36mfrom[39m [32m"fs/promises"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 5 |[39m [36mimport[39m { randomUUID } [36mfrom[39m [32m"node:crypto"[39m[33m;[39m
+ [90m 6 |[39m [36mconst[39m createId [33m=[39m () [33m=>[39m randomUUID()[33m;[39m
+ [90m 7 |[39m [36mconst[39m [33mPYTHON_SCRIPT_PATH[39m [33m=[39m join(dirname(fileURLToPath([36mimport[39m[33m.[39mmeta[33m.[39murl))[33m,[39m [32m".."[39m[33m,[39m [32m"python"[39m[33m,[39m [32m"engine.py"[39m)[33m;[39m[0m
+
+
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/timeseries/src/engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/timeseries/src/engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./Documents/GitHub/Zeo/packages/core/src/quant-engine.js:4:1
+Export CausalEngine doesn't exist in target module
+[0m [90m 2 |[39m [36mimport[39m { [33mTimeSeriesEngine[39m } [36mfrom[39m [32m"@zeo/timeseries"[39m[33m;[39m
+ [90m 3 |[39m [36mimport[39m { [33mGameEngine[39m } [36mfrom[39m [32m"@zeo/game"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 4 |[39m [36mimport[39m { [33mCausalEngine[39m } [36mfrom[39m [32m"@zeo/causal"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 5 |[39m [36mimport[39m { [33mCalibrationEngine[39m } [36mfrom[39m [32m"@zeo/calibration"[39m[33m;[39m
+ [90m 6 |[39m [36mimport[39m { generateId } [36mfrom[39m [32m"@zeo/id"[39m[33m;[39m
+ [90m 7 |[39m [90m/**[39m[0m
+
+The export CausalEngine was not found in module [project]/Documents/GitHub/Zeo/packages/causal/src/index.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+
+./Documents/GitHub/Zeo/packages/core/src/quant-engine.js:4:1
+Export CausalEngine doesn't exist in target module
+[0m [90m 2 |[39m [36mimport[39m { [33mTimeSeriesEngine[39m } [36mfrom[39m [32m"@zeo/timeseries"[39m[33m;[39m
+ [90m 3 |[39m [36mimport[39m { [33mGameEngine[39m } [36mfrom[39m [32m"@zeo/game"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 4 |[39m [36mimport[39m { [33mCausalEngine[39m } [36mfrom[39m [32m"@zeo/causal"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 5 |[39m [36mimport[39m { [33mCalibrationEngine[39m } [36mfrom[39m [32m"@zeo/calibration"[39m[33m;[39m
+ [90m 6 |[39m [36mimport[39m { generateId } [36mfrom[39m [32m"@zeo/id"[39m[33m;[39m
+ [90m 7 |[39m [90m/**[39m[0m
+
+The export CausalEngine was not found in module [project]/Documents/GitHub/Zeo/packages/causal/src/index.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+
+./Documents/GitHub/Zeo/packages/core/src/quant-engine.js:1:1
+Export RSLEngine doesn't exist in target module
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { [33mRSLEngine[39m } [36mfrom[39m [32m"@zeo/rsl"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 2 |[39m [36mimport[39m { [33mTimeSeriesEngine[39m } [36mfrom[39m [32m"@zeo/timeseries"[39m[33m;[39m
+ [90m 3 |[39m [36mimport[39m { [33mGameEngine[39m } [36mfrom[39m [32m"@zeo/game"[39m[33m;[39m
+ [90m 4 |[39m [36mimport[39m { [33mCausalEngine[39m } [36mfrom[39m [32m"@zeo/causal"[39m[33m;[39m[0m
+
+The export RSLEngine was not found in module [project]/Documents/GitHub/Zeo/packages/rsl/src/index.ts [app-client] (ecmascript).
+Did you mean to import KalmanFilter?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+
+./Documents/GitHub/Zeo/packages/core/src/quant-engine.js:1:1
+Export RSLEngine doesn't exist in target module
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { [33mRSLEngine[39m } [36mfrom[39m [32m"@zeo/rsl"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 2 |[39m [36mimport[39m { [33mTimeSeriesEngine[39m } [36mfrom[39m [32m"@zeo/timeseries"[39m[33m;[39m
+ [90m 3 |[39m [36mimport[39m { [33mGameEngine[39m } [36mfrom[39m [32m"@zeo/game"[39m[33m;[39m
+ [90m 4 |[39m [36mimport[39m { [33mCausalEngine[39m } [36mfrom[39m [32m"@zeo/causal"[39m[33m;[39m[0m
+
+The export RSLEngine was not found in module [project]/Documents/GitHub/Zeo/packages/rsl/src/index.ts [app-ssr] (ecmascript).
+Did you mean to import KalmanFilter?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/quant-engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/engine.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+
+./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js:1:1
+Export SeededRandom doesn't exist in target module
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { [33mSeededRandom[39m } [36mfrom[39m [32m"@zeo/models"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 2 |[39m [90m/**[39m
+ [90m 3 |[39m [90m * Compute action scores across sampled posterior worlds.[39m
+ [90m 4 |[39m [90m */[39m[0m
+
+The export SeededRandom was not found in module [project]/Documents/GitHub/Zeo/packages/models/src/index.ts [app-client] (ecmascript).
+Did you mean to import mean?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+
+./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js:1:1
+Export SeededRandom doesn't exist in target module
+[0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { [33mSeededRandom[39m } [36mfrom[39m [32m"@zeo/models"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 2 |[39m [90m/**[39m
+ [90m 3 |[39m [90m * Compute action scores across sampled posterior worlds.[39m
+ [90m 4 |[39m [90m */[39m[0m
+
+The export SeededRandom was not found in module [project]/Documents/GitHub/Zeo/packages/models/src/index.ts [app-ssr] (ecmascript).
+Did you mean to import mean?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js [Client Component Browser]
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js [Client Component SSR]
+    ./Documents/GitHub/Zeo/packages/core/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/compare/page.tsx [Server Component]
+
+
+./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts:2:1
+Export assertUiPanelManifest doesn't exist in target module
+[0m [90m 1 |[39m [36mimport[39m type { [33mUiPanelManifest[39m } [36mfrom[39m [32m'@zeo/contracts'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { assertUiPanelManifest[33m,[39m denyDangerousPanel } [36mfrom[39m [32m'@zeo/contracts'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [36mimport[39m decisionComposerManifest [36mfrom[39m [32m'./builtin/decision-composer/manifest'[39m[33m;[39m
+ [90m 5 |[39m [36mimport[39m branchExplorerManifest [36mfrom[39m [32m'./builtin/branch-explorer/manifest'[39m[33m;[39m[0m
+
+The export assertUiPanelManifest was not found in module [project]/Documents/GitHub/Zeo/packages/contracts/src/index.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+
+./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts:2:1
+Export assertUiPanelManifest doesn't exist in target module
+[0m [90m 1 |[39m [36mimport[39m type { [33mUiPanelManifest[39m } [36mfrom[39m [32m'@zeo/contracts'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { assertUiPanelManifest[33m,[39m denyDangerousPanel } [36mfrom[39m [32m'@zeo/contracts'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [36mimport[39m decisionComposerManifest [36mfrom[39m [32m'./builtin/decision-composer/manifest'[39m[33m;[39m
+ [90m 5 |[39m [36mimport[39m branchExplorerManifest [36mfrom[39m [32m'./builtin/branch-explorer/manifest'[39m[33m;[39m[0m
+
+The export assertUiPanelManifest was not found in module [project]/Documents/GitHub/Zeo/packages/contracts/src/index.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+
+./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts:2:1
+Export denyDangerousPanel doesn't exist in target module
+[0m [90m 1 |[39m [36mimport[39m type { [33mUiPanelManifest[39m } [36mfrom[39m [32m'@zeo/contracts'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { assertUiPanelManifest[33m,[39m denyDangerousPanel } [36mfrom[39m [32m'@zeo/contracts'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [36mimport[39m decisionComposerManifest [36mfrom[39m [32m'./builtin/decision-composer/manifest'[39m[33m;[39m
+ [90m 5 |[39m [36mimport[39m branchExplorerManifest [36mfrom[39m [32m'./builtin/branch-explorer/manifest'[39m[33m;[39m[0m
+
+The export denyDangerousPanel was not found in module [project]/Documents/GitHub/Zeo/packages/contracts/src/index.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+
+./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts:2:1
+Export denyDangerousPanel doesn't exist in target module
+[0m [90m 1 |[39m [36mimport[39m type { [33mUiPanelManifest[39m } [36mfrom[39m [32m'@zeo/contracts'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m { assertUiPanelManifest[33m,[39m denyDangerousPanel } [36mfrom[39m [32m'@zeo/contracts'[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [36mimport[39m decisionComposerManifest [36mfrom[39m [32m'./builtin/decision-composer/manifest'[39m[33m;[39m
+ [90m 5 |[39m [36mimport[39m branchExplorerManifest [36mfrom[39m [32m'./builtin/branch-explorer/manifest'[39m[33m;[39m[0m
+
+The export denyDangerousPanel was not found in module [project]/Documents/GitHub/Zeo/packages/contracts/src/index.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/demo/page.tsx [Server Component]
+
+
+./Documents/GitHub/Zeo/packages/nl/src/index.ts:1:1
+Export enforceNoFakePrecision doesn't exist in target module
+[0m[31m[1m>[22m[39m[90m  1 |[39m [36mimport[39m {
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  2 |[39m   [33mProvenancePointer[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  3 |[39m   [33mQualObservation[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  4 |[39m   [33mEvidenceCandidate[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  5 |[39m   [33mQualitativeScale[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  6 |[39m   [33mQualitativeScaleLevel[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  7 |[39m   [33mScalePack[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  8 |[39m   enforceNoFakePrecision[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  9 |[39m } [36mfrom[39m [32m"@zeo/contracts"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 10 |[39m
+ [90m 11 |[39m [36mexport[39m [36minterface[39m [33mScenarioDraft[39m {
+ [90m 12 |[39m   titleSuggestion[33m:[39m string[33m;[39m[0m
+
+The export enforceNoFakePrecision was not found in module [project]/Documents/GitHub/Zeo/packages/contracts/src/index.ts [app-client] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/nl/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/intake/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/intake/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/nl/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/intake/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/intake/page.tsx [Server Component]
+
+
+./Documents/GitHub/Zeo/packages/nl/src/index.ts:1:1
+Export enforceNoFakePrecision doesn't exist in target module
+[0m[31m[1m>[22m[39m[90m  1 |[39m [36mimport[39m {
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  2 |[39m   [33mProvenancePointer[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  3 |[39m   [33mQualObservation[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  4 |[39m   [33mEvidenceCandidate[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  5 |[39m   [33mQualitativeScale[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  6 |[39m   [33mQualitativeScaleLevel[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  7 |[39m   [33mScalePack[39m[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  8 |[39m   enforceNoFakePrecision[33m,[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+[31m[1m>[22m[39m[90m  9 |[39m } [36mfrom[39m [32m"@zeo/contracts"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 10 |[39m
+ [90m 11 |[39m [36mexport[39m [36minterface[39m [33mScenarioDraft[39m {
+ [90m 12 |[39m   titleSuggestion[33m:[39m string[33m;[39m[0m
+
+The export enforceNoFakePrecision was not found in module [project]/Documents/GitHub/Zeo/packages/contracts/src/index.ts [app-ssr] (ecmascript).
+The module has no exports at all.
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./Documents/GitHub/Zeo/packages/nl/src/index.ts [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/intake/page.tsx [Client Component Browser]
+    ./Documents/GitHub/Zeo/apps/web/src/app/intake/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Documents/GitHub/Zeo/packages/nl/src/index.ts [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/intake/page.tsx [Client Component SSR]
+    ./Documents/GitHub/Zeo/apps/web/src/app/intake/page.tsx [Server Component]
+
+
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:48:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:47:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:45:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/contracts/src/index.ts:11:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/causal/src/index.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/rsl/src/index.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/contracts/src/index.ts:7:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/contracts/src/index.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:23:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/contracts/src/index.ts:6:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/contracts/src/index.ts:9:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:46:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:49:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/contracts/src/index.ts:10:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:55:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:10:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/contracts/src/index.ts:4:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:58:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:52:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:61:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:11:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/contracts/src/index.ts:8:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:70:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/index.ts:12:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/causal/src/index.ts:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/contracts/src/index.ts:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/contracts/src/index.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/contracts/src/index.ts:5:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/models/src/index.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/models/src/voi.js:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/models/src/inference.js:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/timeseries/src/engine.js:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/models/src/inference.js:4:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/timeseries/src/engine.js:4:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/quant-engine.js:4:1)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/quant-engine.js:4:1)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/quant-engine.js:1:1)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/quant-engine.js:1:1)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js:1:1)
+    at <unknown> (./Documents/GitHub/Zeo/packages/core/src/decision-coupling.js:1:1)
+    at <unknown> (./Documents/GitHub/Zeo/apps/web/src/panels/registry.ts:2:1)
+    ... collapsed 3 duplicate lines matching above 1 lines 3 times...
+    at <unknown> (./Documents/GitHub/Zeo/packages/nl/src/index.ts:1:1)
+    at <unknown> (./Documents/GitHub/Zeo/packages/nl/src/index.ts:1:1)
+ ELIFECYCLE  Command failed with exit code 1.
