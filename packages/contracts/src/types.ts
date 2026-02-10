@@ -197,6 +197,73 @@ export type DecisionResult = {
   };
 };
 
+export type TranscriptFactTag = "fact" | "belief" | "assumption" | "unknown";
+
+export type TranscriptEvidenceItem = {
+  evidenceId: UUID;
+  sourceId: string;
+  capturedAt: string;
+  checksum: string;
+  observations: string[];
+  provenance: ProvenancePointer[];
+  cost: { time: string; compute: string; risk: string };
+};
+
+export type TranscriptAgentAdjudication = "accepted" | "rejected" | "modified";
+
+export type TranscriptAgentRecord = {
+  agentId: UUID;
+  proposal: string;
+  proposalHash: string;
+  adjudication: TranscriptAgentAdjudication;
+  reason: string;
+  acceptedSections: string[];
+  rejectedSections: string[];
+};
+
+export type DecisionTranscript = {
+  transcript_version: string;
+  zeo_version: string;
+  timestamp: number;
+  logical_clock: number[];
+  parent_transcript_hash?: string;
+  inputs: {
+    initial_context: string;
+    decision_spec: DecisionSpec;
+    assumptions: Array<{ id: UUID; text: string; status: TranscriptFactTag }>;
+    constraints: Array<{ id: UUID; name: string; value: string; status: TranscriptFactTag }>;
+  };
+  evidence: {
+    submitted: TranscriptEvidenceItem[];
+    totals: { count: number; time: string; risk: string };
+  };
+  analysis: {
+    flip_distances: Array<{ assumption_id: UUID; distance: string; boundary: string }>;
+    decision_boundaries: Array<{ lens: LensId; robust_actions: UUID[]; fragile_assumptions: UUID[] }>;
+    voi_rankings: Array<{ prompt: string; rank: number; rationale: string }>;
+  };
+  plan: {
+    regret_bounded_evidence_plan: Array<{ prompt: string; rationale: string }>;
+    stop_conditions: string[];
+  };
+  outcome: {
+    recommended_action_ids: UUID[];
+    confidence_bounds: { lower: string; upper: string; method: string };
+  };
+  counterfactuals: Array<{ assumption_id: UUID; minimum_change: string }>;
+  agents: TranscriptAgentRecord[];
+  decision_result_hash: string;
+  invariants: {
+    determinism_checks: string[];
+    validation_assertions: string[];
+  };
+};
+
+export type FinalizedDecisionTranscript = DecisionTranscript & {
+  transcript_hash: string;
+  transcript_id: string;
+};
+
 /**
  * A FactCandidate is an unverified claim that cannot be promoted to Fact
  * without explicit provenance. This is the ingestion boundary type:
@@ -947,4 +1014,3 @@ export interface PolicyConfig {
   createdAt: string;
   updatedAt: string;
 }
-

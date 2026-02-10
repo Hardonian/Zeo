@@ -9,6 +9,7 @@ export * from "./evidence.js";
 export * from "./packets.js";
 export * from "./regime-integration.js";
 export * from "./scenarios.js";
+export * from "./transcript.js";
 export type { RunMeta } from "./packets.js";
 export {
   hashDecisionSpec,

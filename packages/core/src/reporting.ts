@@ -1,5 +1,5 @@
-import { DecisionResult, LensEvaluation, Uncertainty } from "@zeo/contracts";
-import { RunData } from "@zeo/repro-pack";
+import { DecisionResult, Uncertainty } from "@zeo/contracts";
+import { RunData, Assumption as ReproAssumption } from "@zeo/repro-pack";
 
 export interface Citation {
     id: string;
@@ -164,7 +164,7 @@ function buildAssumptionsSection(result: DecisionResult, runData?: RunData): Rep
 
     if (assumptions && assumptions.length > 0) {
         content += "### Key Assumptions\n";
-        assumptions.forEach(a => {
+        assumptions.forEach((a: ReproAssumption) => {
             content += `- **${a.label}** (${a.units}): ${a.value} (Sensitivity: ${a.sensitivity})\n`;
         });
         content += "\n";

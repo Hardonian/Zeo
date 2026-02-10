@@ -44,6 +44,7 @@
     "@zeo/measurement": "workspace:*",
     "@zeo/warehouse": "workspace:*",
     "@zeo/replay": "workspace:*",
+    "@zeo/repro-pack": "workspace:*",
     "@zeo/audit": "workspace:*",
     "@zeo/semantic-clustering": "workspace:*",
     "@zeo/dataset-builder": "workspace:*",

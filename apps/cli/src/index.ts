@@ -59,6 +59,7 @@ Options:
   --packet-out <path>         Write evidence packet (JSON + MD) to directory
   --voi                       Print Value of Information (VOI) ranked list
   --world                     Print World Model posterior state
+  --emit-transcript           Emit deterministic decision transcript
   --help, -h                  Show this help message
 `);
 }
@@ -103,8 +104,15 @@ async function runDefaultCommand(args: CliArgs, startedMs: number): Promise<numb
   const startedAt = new Date().toISOString();
 
   let result;
+  let transcript;
   try {
-    result = core.runDecision(spec, { depth: args.depth === 3 ? 3 : 2 });
+    if (args.emitTranscript) {
+      const executed = core.executeDecision({ spec, opts: { depth: args.depth === 3 ? 3 : 2 }, logicalTimestamp: 0 });
+      result = executed.result;
+      transcript = executed.transcript;
+    } else {
+      result = core.runDecision(spec, { depth: args.depth === 3 ? 3 : 2 });
+    }
   } catch (err) {
     if (args.strict) {
       const zeError = contracts.ZeoError.from(err);
@@ -136,7 +144,8 @@ async function runDefaultCommand(args: CliArgs, startedMs: number): Promise<numb
   }
 
   if (args.jsonOnly) {
-    process.stdout.write(`${formatJson(packet)}\n`);
+    const payload = args.emitTranscript ? { packet, transcript } : packet;
+    process.stdout.write(`${formatJson(payload)}\n`);
     reportPerf(startedMs, "default-json");
     return 0;
   }
@@ -153,6 +162,7 @@ async function runDefaultCommand(args: CliArgs, startedMs: number): Promise<numb
 
   if (result) {
     console.log(`\nBranches: ${result.graph.nodes.length} nodes, ${result.graph.edges.length} edges`);
+    if (transcript) console.log(`Transcript: ${transcript.transcript_id} (${transcript.transcript_hash.slice(0, 16)}...)`);
     const robustness = result.evaluations.find(e => e.lens === "robustness");
     if (robustness) {
       console.log(`Robust actions (ids): ${robustness.robustActions.join(", ") || "none"}`);
@@ -273,6 +283,11 @@ async function main(): Promise<void> {
   if (argv[0] === "zeolite") {
     const mod = await import("./zeolite-cli.js");
     process.exit(await mod.runZeoliteCommand(mod.parseZeoliteArgs(argv.slice(1))));
+  }
+
+  if (argv[0] === "transcript") {
+    const mod = await import("./transcript-cli.js");
+    process.exit(await mod.runTranscriptCommand(mod.parseTranscriptArgs(argv.slice(1))));
   }
 
   const args = parseArgs(argv);
