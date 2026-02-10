@@ -26,6 +26,8 @@ jobs:
         run: pnpm fixtures:coverage
       - name: Typecheck
         run: pnpm typecheck
+      - name: Core API Surface Typecheck
+        run: pnpm -C packages/core typecheck:exports
       - name: Test
         run: pnpm test
       - name: Lint

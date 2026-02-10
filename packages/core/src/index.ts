@@ -59,3 +59,4 @@ export {
 // and type incompatibility issues. Import directly from packages instead.
 
 export * from "./transcript-security.js";
+export { computeTranscriptHash as computeSecurityTranscriptHash } from "./transcript-security.js";
