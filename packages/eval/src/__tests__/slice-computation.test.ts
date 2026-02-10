@@ -449,7 +449,7 @@ describe("Gating Rules", () => {
   });
 
   it("should pass rules when thresholds are met", () => {
-    const rules: import("../slice-types").SliceGatingRule[] = [
+    const rules: import("../slice-types.js").SliceGatingRule[] = [
       {
         id: "test-rule",
         name: "Test Rule",
@@ -460,9 +460,9 @@ describe("Gating Rules", () => {
       },
     ];
 
-    const slices: import("../slice-types").SliceMetrics[] = [
+    const slices: import("../slice-types.js").SliceMetrics[] = [
       {
-        slice: { dimension: "domain" as import("../slice-types").SliceDimension, value: "test" },
+        slice: { dimension: "domain" as import("../slice-types.js").SliceDimension, value: "test" },
         sampleSize: 20,
         coverage: { overall: 0.8, byMetricId: {} },
         properScores: { overall: 0.1, byMetricId: {} },
