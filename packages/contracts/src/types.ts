@@ -172,7 +172,7 @@ export interface BudgetUsage {
   tokensUsed?: number;
 }
 
-export type RunStatus = "completed" | "budget_reached" | "failed";
+export type RunStatus = "completed" | "budget_reached" | "failed" | "cancelled";
 
 export type DecisionResult = {
   graph: BranchGraph;
