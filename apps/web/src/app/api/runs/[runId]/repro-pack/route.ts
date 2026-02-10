@@ -3,9 +3,9 @@ import { NextResponse } from 'next/server';
 
 export async function GET(
     request: Request,
-    { params }: { params: { runId: string } }
+    { params }: { params: Promise<{ runId: string }> }
 ) {
-    const { runId } = params;
+    const { runId } = await params;
 
     // TODO: integrate with run storage service once available.
     // Currently runs are stored client-side in localStorage or via CLI in filesystem.
