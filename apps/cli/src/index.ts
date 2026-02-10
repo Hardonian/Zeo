@@ -44,7 +44,9 @@ Commands:
   llm                         LLM commands (doctor)
   agents                      Agent plugin commands
   zeolite <op>                Zeolite deterministic operations
-  transcript <cmd>            Transcript tooling (verify/replay/diff)
+  transcript <cmd>            Transcript signing and verification
+  keys <cmd>                  Local keyring operations
+  trust <cmd>                 Trust profile operations
 
 Options:
   --catalog <dir>             Catalog directory (default: external/catalog)
@@ -270,6 +272,12 @@ async function main(): Promise<void> {
   if (argv[0] === "agents") {
     const mod = await import("./agents-cli.js");
     process.exit(await mod.runAgentsCommand(mod.parseAgentsArgs(argv.slice(1))));
+  }
+
+
+  if (["transcript", "keys", "trust", "keygen", "key"].includes(argv[0] ?? "")) {
+    const mod = await import("./transcript-cli.js");
+    process.exit(await mod.runTranscriptCommand(argv));
   }
 
   if (argv[0] === "zeolite") {
