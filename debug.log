@@ -1,0 +1,83 @@
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/scott/Documents/GitHub/Zeo[39m
+
+[90mstdout[2m | packages/core/src/transcript.test.ts
+[22m[39mDEBUG: computeTranscriptHash imported: [90mundefined[39m
+
+ [31mΓ¥»[39m packages/core/src/transcript.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[90m 8[2mms[22m[39m
+[31m   [31m├ù[31m decision transcript[2m > [22mproduces stable hash for identical inputs[90m 6[2mms[22m[31m[39m
+[31m     ΓåÆ computeTranscriptHash is not a function[39m
+[31m   [31m├ù[31m decision transcript[2m > [22mreplay is deterministic[90m 1[2mms[22m[31m[39m
+[31m     ΓåÆ computeTranscriptHash is not a function[39m
+[31m   [31m├ù[31m decision transcript[2m > [22mvalidates required transcript invariants[90m 1[2mms[22m[31m[39m
+[31m     ΓåÆ computeTranscriptHash is not a function[39m
+[31m   [31m├ù[31m decision transcript[2m > [22mrecords agent adjudication without mutating decision[90m 1[2mms[22m[31m[39m
+[31m     ΓåÆ computeTranscriptHash is not a function[39m
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 4 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  packages/core/src/transcript.test.ts > decision transcript > produces stable hash for identical inputs
+TypeError: computeTranscriptHash is not a function
+ Γ¥» computeStableHash packages/core/src/transcript.ts:38:10
+     36| 
+     37| export function computeStableHash(value: unknown): string {
+     38|   return computeTranscriptHash(value);
+       |          ^
+     39| }
+     40| 
+ Γ¥» buildTranscript packages/core/src/transcript.ts:170:27
+ Γ¥» Module.executeDecision packages/core/src/transcript.ts:197:49
+ Γ¥» packages/core/src/transcript.test.ts:31:19
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/4]ΓÄ»
+
+ FAIL  packages/core/src/transcript.test.ts > decision transcript > replay is deterministic
+TypeError: computeTranscriptHash is not a function
+ Γ¥» computeStableHash packages/core/src/transcript.ts:38:10
+     36| 
+     37| export function computeStableHash(value: unknown): string {
+     38|   return computeTranscriptHash(value);
+       |          ^
+     39| }
+     40| 
+ Γ¥» buildTranscript packages/core/src/transcript.ts:170:27
+ Γ¥» Module.executeDecision packages/core/src/transcript.ts:197:49
+ Γ¥» packages/core/src/transcript.test.ts:47:22
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/4]ΓÄ»
+
+ FAIL  packages/core/src/transcript.test.ts > decision transcript > validates required transcript invariants
+TypeError: computeTranscriptHash is not a function
+ Γ¥» computeStableHash packages/core/src/transcript.ts:38:10
+     36| 
+     37| export function computeStableHash(value: unknown): string {
+     38|   return computeTranscriptHash(value);
+       |          ^
+     39| }
+     40| 
+ Γ¥» buildTranscript packages/core/src/transcript.ts:170:27
+ Γ¥» Module.executeDecision packages/core/src/transcript.ts:197:49
+ Γ¥» packages/core/src/transcript.test.ts:58:24
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[3/4]ΓÄ»
+
+ FAIL  packages/core/src/transcript.test.ts > decision transcript > records agent adjudication without mutating decision
+TypeError: computeTranscriptHash is not a function
+ Γ¥» computeStableHash packages/core/src/transcript.ts:38:10
+     36| 
+     37| export function computeStableHash(value: unknown): string {
+     38|   return computeTranscriptHash(value);
+       |          ^
+     39| }
+     40| 
+ Γ¥» buildTranscript packages/core/src/transcript.ts:170:27
+ Γ¥» Module.executeDecision packages/core/src/transcript.ts:197:49
+ Γ¥» packages/core/src/transcript.test.ts:68:26
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[4/4]ΓÄ»
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[90m (4)[39m
+[2m   Start at [22m 17:23:04
+[2m   Duration [22m 866ms[2m (transform 140ms, setup 0ms, collect 457ms, tests 8ms, environment 0ms, prepare 144ms)[22m
+
