@@ -20,6 +20,7 @@ describe("Quarantine Store", () => {
     provenance: [],
     sourceId: "source-test",
     rawRef: { kind: "market", id: "test-1" },
+    biasAdjustmentsApplied: [],
   };
 
   beforeEach(async () => {
