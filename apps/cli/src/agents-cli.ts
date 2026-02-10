@@ -39,7 +39,10 @@ function readManifest(path: string): AgentManifest {
 
 export function parseAgentsArgs(argv: string[]): AgentsArgs {
   const command = ["list", "add", "remove", "inspect", "recommend"].includes(argv[0] ?? "") ? argv[0] as AgentsArgs["command"] : null;
-  return { command, value: argv[1], accept: argv.includes("--accept"), json: argv.includes("--json") };
+  const taskIdx = argv.indexOf("--task");
+  // If parsing 'agents recommend --task foo', argv[0] is 'recommend'.
+  const value = taskIdx >= 0 ? argv[taskIdx + 1] : argv[1];
+  return { command, value, accept: argv.includes("--accept"), json: argv.includes("--json") };
 }
 
 function ensureRoot(): void {
