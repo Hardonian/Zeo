@@ -373,6 +373,60 @@ Source-specific adapters normalize vendor formats:
 
 ---
 
+
+## Transcript Signatures, Chaining, and Trust Profiles
+
+Fact: transcript hashes are computed from canonical transcript JSON only.
+Fact: signatures are stored in an external envelope and do not modify transcript hashes.
+Assumption: users manage private keys locally and protect passphrases appropriately.
+
+### Offline signing flow
+
+```bash
+# 1) Generate an ed25519 key locally
+pnpm -C apps/cli start -- keygen --out ./.zeo/keys/id_ed25519.pem
+
+# 2) Export and register public key in local keyring
+pnpm -C apps/cli start -- key export --key ./.zeo/keys/id_ed25519.pem > ./.zeo/keys/id_ed25519.pub
+pnpm -C apps/cli start -- keys add ./.zeo/keys/id_ed25519.pub
+
+# 3) Sign transcript into an envelope
+pnpm -C apps/cli start -- transcript sign external/examples/transcripts/example.transcript.json --key ./.zeo/keys/id_ed25519.pem --out ./signed.envelope.json
+
+# 4) Verify offline
+pnpm -C apps/cli start -- transcript verify ./signed.envelope.json --keyring ./.zeo/keyring
+
+# 5) Inspect signers and metadata
+pnpm -C apps/cli start -- transcript inspect ./signed.envelope.json
+```
+
+### Trust profiles
+
+```bash
+# Record objective trust events from envelope verification
+pnpm -C apps/cli start -- trust record --from ./signed.envelope.json
+
+# List/show local trust profiles
+pnpm -C apps/cli start -- trust list
+pnpm -C apps/cli start -- trust show key:<fingerprint>
+
+# Deterministic compaction / explicit reset
+pnpm -C apps/cli start -- trust compact
+pnpm -C apps/cli start -- trust reset
+```
+
+### Chaining
+
+```bash
+# Verify parent pointers and detect forks in a directory of envelopes
+pnpm -C apps/cli start -- transcript chain verify ./envelopes
+```
+
+Examples:
+- `external/examples/transcripts/example.transcript.json`
+- `external/examples/transcripts/example.envelope.json`
+- `external/examples/transcripts/example.trust.snapshot.json`
+
 ## Replay Harness (v0.3.1)
 
 Zeo includes a deterministic replay runner for empirical calibration and backtesting. This makes Zeo empirically accountable by measuring how well prediction intervals cover actual outcomes.

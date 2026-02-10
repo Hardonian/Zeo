@@ -1,0 +1,21 @@
+[
+  {
+    "subject_type": "key",
+    "subject_id": "b8ed225fc6f8adf2b97865659f88b2bb322e6e95b34f4ef4d9fd22807f74f7f5",
+    "counters": {
+      "runs_total": 3,
+      "verify_pass": 3,
+      "verify_fail": 0,
+      "replay_pass": 3,
+      "replay_fail": 0,
+      "adjudications": {
+        "accepted": 2,
+        "rejected": 0,
+        "modified": 1
+      }
+    },
+    "last_seq": 3,
+    "last_seen_transcript_hash": "e0f423ecf5f089db4078b74b38be5e246dbf2cf5ff82bb778be8ed5bf67e4776",
+    "notes": "Fact: all verification and replay checks passed in the recorded window."
+  }
+]

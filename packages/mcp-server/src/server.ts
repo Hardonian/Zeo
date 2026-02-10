@@ -36,6 +36,10 @@ import { searchQueryDefinition, searchQuery } from "./tools/search-query.js";
 import { auditTailDefinition, auditTail } from "./tools/audit-tail.js";
 
 // New Zeo Tools (v0.7.0)
+import { transcriptVerifyDefinition, transcriptVerify } from "./tools/transcript-verify.js";
+import { transcriptInspectDefinition, transcriptInspect } from "./tools/transcript-inspect.js";
+import { trustShowDefinition, trustShow } from "./tools/trust-show.js";
+import { trustRecordDefinition, trustRecord } from "./tools/trust-record.js";
 import { zeoHealthDefinition, zeoHealth } from "./tools/zeo-health.js";
 import { zeoIngestDefinition, zeoIngest } from "./tools/zeo-ingest.js";
 import { zeoSummaryDefinition, zeoSummary } from "./tools/zeo-summary.js";
@@ -102,6 +106,22 @@ const TOOL_REGISTRY: Array<{
             definition: { ...packetExportDefinition, name: "zeo.exportReproPack", description: "Export a repro pack (evidence bundle) for external use. Alias for packet.export." },
             handler: (params, warehouse, _audit, basePath) =>
                 packetExport(params, warehouse, basePath),
+        },
+        {
+            definition: transcriptVerifyDefinition,
+            handler: (params) => transcriptVerify(params),
+        },
+        {
+            definition: transcriptInspectDefinition,
+            handler: (params) => transcriptInspect(params),
+        },
+        {
+            definition: trustShowDefinition,
+            handler: (params) => trustShow(params),
+        },
+        {
+            definition: trustRecordDefinition,
+            handler: (params) => trustRecord(params),
         },
     ];
 
