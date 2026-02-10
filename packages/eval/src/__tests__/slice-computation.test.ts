@@ -439,11 +439,11 @@ describe("Gating Rules", () => {
     const rules = createDefaultGatingRules();
     expect(rules.length).toBeGreaterThan(0);
 
-    const sampleSizeRule = rules.find((r) => r.id === "rule-sample-size");
+    const sampleSizeRule = rules.find((r: { id: string }) => r.id === "rule-sample-size");
     expect(sampleSizeRule).toBeDefined();
     expect(sampleSizeRule?.conditions.minSampleSize).toBe(10);
 
-    const coverageRule = rules.find((r) => r.id === "rule-coverage");
+    const coverageRule = rules.find((r: { id: string }) => r.id === "rule-coverage");
     expect(coverageRule).toBeDefined();
     expect(coverageRule?.conditions.minCoverage).toBe(0.7);
   });
