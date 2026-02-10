@@ -1,5 +1,7 @@
 import type { CausalDAG, DAGNode, DAGEdge, CausalClaim, PredictiveClaim, CausalInferenceResult } from "./types.js";
-import { nanoid } from "nanoid";
+import { randomUUID } from "node:crypto";
+
+const createId = () => randomUUID();
 
 /**
  * Causal Inference Engine using DoWhy methodology.
@@ -16,7 +18,7 @@ export class CausalEngine {
   ): CausalDAG {
     const nodeIds = new Map<string, string>();
     const dagNodes: DAGNode[] = nodes.map(n => {
-      const id = nanoid();
+      const id = createId();
       nodeIds.set(n.name, id);
       return { ...n, id };
     });
@@ -32,7 +34,7 @@ export class CausalEngine {
     const backdoorPaths = this.identifyBackdoorPaths(dagNodes, dagEdges);
 
     return {
-      id: nanoid(),
+      id: createId(),
       name,
       nodes: dagNodes,
       edges: dagEdges,
@@ -147,7 +149,7 @@ export class CausalEngine {
     association: { low: number; high: number }
   ): PredictiveClaim {
     return {
-      id: nanoid(),
+      id: createId(),
       type: "predictive",
       antecedent: antecedentId,
       consequent: consequentId,
@@ -180,7 +182,7 @@ export class CausalEngine {
 
       if (!canBlock) {
         return {
-          id: nanoid(),
+          id: createId(),
           type: "causal",
           treatment: treatmentId,
           outcome: outcomeId,
@@ -206,7 +208,7 @@ export class CausalEngine {
     }
 
     return {
-      id: nanoid(),
+      id: createId(),
       type: "causal",
       treatment: treatmentId,
       outcome: outcomeId,

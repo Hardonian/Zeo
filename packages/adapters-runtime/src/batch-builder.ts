@@ -116,7 +116,7 @@ export function buildReplayDataset(
         agents: [] as Agent[],
         constraints: [] as Constraint[],
         assumptions: [] as Claim[],
-        objectives: [],
+        objectives: [] as Array<{ id: string; metric: string; weight: number; target?: number }>,
         unknowns: [] as Unknown[],
       },
       observationBatches: [

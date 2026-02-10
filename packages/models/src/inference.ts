@@ -11,7 +11,9 @@ import { spawn } from "child_process";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { writeFile, unlink } from "fs/promises";
-import { nanoid } from "nanoid";
+import { randomUUID } from "node:crypto";
+
+const createId = () => randomUUID();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -25,7 +27,7 @@ const PYTHON_SCRIPT_PATH = join(__dirname, "..", "python", "inference.py");
 export async function runInference(
   request: InferenceRequest
 ): Promise<InferenceResponse> {
-  const tempFile = `/tmp/zeo_inference_${nanoid()}.json`;
+  const tempFile = `/tmp/zeo_inference_${createId()}.json`;
   
   try {
     await writeFile(tempFile, JSON.stringify(request));

@@ -120,8 +120,8 @@ export async function runReplayCommand(args: ReplayCliArgs): Promise<number> {
             units: "boolean",
             source: "user",
             rationale: "Explicit in spec",
-            sensitivity: 0.5,
-            provenance: "spec definition",
+            sensitivity: "med",
+            provenance: { path: "spec.assumptions" },
           });
         }
       }
