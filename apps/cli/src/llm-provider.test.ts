@@ -96,16 +96,36 @@ describe("provider response fixtures", () => {
         expected: { json: unknown; usage: { inputTokens?: number; outputTokens?: number } };
       };
 
+      expect(fixture.provider).toBe(file.split(".")[0]);
       const parsed = __internal.parseProviderResponse(fixture.provider, fixture.payload);
       expect(parsed.json).toEqual(fixture.expected.json);
       expect(parsed.usage).toEqual(fixture.expected.usage);
     }
   });
 
+
+  it("covers malformed and nonjson negative fixtures for each provider", () => {
+    const fixtureDir = resolve(process.cwd(), "src/fixtures/provider-contracts/negative");
+    const files = readdirSync(fixtureDir).filter((name) => name.endsWith(".response.json"));
+    const grouped = new Map<string, Set<string>>();
+
+    for (const file of files) {
+      const [provider, kind] = file.split(".");
+      if (!grouped.has(provider)) grouped.set(provider, new Set());
+      grouped.get(provider)?.add(kind);
+    }
+
+    for (const provider of SUPPORTED_PROVIDER_FIXTURE_NAMES) {
+      expect(grouped.get(provider)).toBeDefined();
+      expect(grouped.get(provider)?.has("malformed")).toBe(true);
+      expect(grouped.get(provider)?.has("nonjson")).toBe(true);
+    }
+  });
+
   it("fails with explicit diagnostics for malformed provider envelopes", () => {
     const fixtureDir = resolve(process.cwd(), "src/fixtures/provider-contracts/negative");
     const files = readdirSync(fixtureDir).filter((name) => name.endsWith(".response.json"));
-    expect(files.length).toBe(4);
+    expect(files.length).toBe(8);
 
     for (const file of files) {
       const fixture = JSON.parse(readFileSync(resolve(fixtureDir, file), "utf8")) as {

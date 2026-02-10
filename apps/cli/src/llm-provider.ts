@@ -128,11 +128,11 @@ function buildRequest(provider: LlmProviderName, config: LlmConfig, messages: Ll
   };
 }
 
-function tryParseJsonObject(raw: string): unknown {
+function tryParseJsonObject(raw: string, provider: LlmProviderName): unknown {
   try {
     return JSON.parse(raw);
   } catch {
-    throw new Error("Provider returned non-JSON content for schema-constrained response");
+    throw new Error(`Provider '${provider}' returned non-JSON content`);
   }
 }
 
@@ -146,7 +146,7 @@ function parseProviderResponse(provider: LlmProviderName, payload: Record<string
       throw new Error(`Malformed ${provider} response: missing choices[0].message.content`);
     }
     return {
-      json: tryParseJsonObject(content),
+      json: tryParseJsonObject(content, provider),
       usage: {
         inputTokens: typeof (payload.usage as Record<string, unknown> | undefined)?.prompt_tokens === "number"
           ? (payload.usage as Record<string, number>).prompt_tokens
@@ -166,7 +166,7 @@ function parseProviderResponse(provider: LlmProviderName, payload: Record<string
       throw new Error("Malformed anthropic response: missing content[0].text");
     }
     return {
-      json: tryParseJsonObject(text),
+      json: tryParseJsonObject(text, provider),
       usage: {
         inputTokens: typeof (payload.usage as Record<string, unknown> | undefined)?.input_tokens === "number"
           ? (payload.usage as Record<string, number>).input_tokens
@@ -184,7 +184,7 @@ function parseProviderResponse(provider: LlmProviderName, payload: Record<string
     throw new Error("Malformed ollama response: missing message.content");
   }
   return {
-    json: tryParseJsonObject(content),
+    json: tryParseJsonObject(content, provider),
     usage: {
       inputTokens: typeof (payload.prompt_eval_count) === "number" ? payload.prompt_eval_count as number : undefined,
       outputTokens: typeof (payload.eval_count) === "number" ? payload.eval_count as number : undefined,
