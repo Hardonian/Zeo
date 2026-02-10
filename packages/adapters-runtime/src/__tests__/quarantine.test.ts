@@ -239,6 +239,7 @@ describe("Anomaly Detection", () => {
         provenance: [],
         sourceId: "source-1",
         rawRef: { kind: "market", id: "test-1" },
+        biasAdjustmentsApplied: [],
       });
 
       const result = detector.detect(observations);
