@@ -1,5 +1,15 @@
 export type UUID = string;
 
+export type Scenario = {
+  id: UUID;
+  name: string;
+  description: string;
+  spec: DecisionSpec;
+  version: number;
+  tags?: string[];
+  createdAt: string;
+};
+
 export type EpistemicStatus = "fact" | "belief" | "assumption" | "unknown";
 
 export type ConfidenceBand = "low" | "medium" | "high";
@@ -679,15 +689,9 @@ export function isRawSourceItem(item: unknown): item is RawSourceItem {
 // WORLD MODEL TYPES (v0.3.0)
 // =============================================================================
 
-export type Scenario = {
-  id: UUID;
-  name: string;
-  description: string;
-  spec: DecisionSpec;
-  version: number;
-  tags?: string[];
-  createdAt: string;
-};
+// =============================================================================
+// WORLD MODEL TYPES (v0.3.0)
+// =============================================================================
 
 /**
  * A latent variable representing an uncertain quantity in the world.

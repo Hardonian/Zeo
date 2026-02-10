@@ -8,6 +8,7 @@ export * from "./flip-conditions";
 export * from "./evidence";
 export * from "./packets";
 export * from "./regime-integration";
+export * from "./scenarios";
 export type { RunMeta } from "./packets";
 export {
   hashDecisionSpec,
