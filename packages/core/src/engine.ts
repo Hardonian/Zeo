@@ -243,7 +243,7 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
     edges: [],
   };
 
-  let evaluations: LensEvaluation[] = [];
+  const evaluations: LensEvaluation[] = [];
   let nextBestEvidence: { prompt: string; rationale: string }[] = [];
   let flipConditions: Array<{ assumptionId: string; flipThreshold: string; reasoning: string }> = [];
 
