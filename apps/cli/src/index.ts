@@ -243,6 +243,11 @@ async function main(): Promise<void> {
     process.exit(await runPerfCommand(parsePerfArgs(argv)));
   }
 
+  if (argv[0] === "audit") {
+    const { runAuditCommand } = await import("./audit-cli.js");
+    process.exit(await runAuditCommand(argv));
+  }
+
   const delegatedFlags = [
     ["--warehouse", "./warehouse-cli.js", "parseWarehouseArgs", "runWarehouseCommand"],
     ["--analytics", "./warehouse-cli.js", "parseAnalyticsArgs", "runAnalyticsCommand"],
