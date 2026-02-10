@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { JobQueue, resetJobQueue, getJobQueue } from './queue';
-import type { JobHandler } from './types';
+import { JobQueue, resetJobQueue, getJobQueue } from './queue.js';
+import type { JobHandler, Job, JobProgress } from './types.js';
 
 // Helper to process all pending jobs synchronously
 async function processAllJobs(queue: JobQueue): Promise<void> {
@@ -46,7 +46,7 @@ describe('JobQueue', () => {
 
     const handler: JobHandler<string, void> = {
       type: 'replay',
-      async execute(job) {
+      async execute(job: Job) {
         processed.push(job.payload as string);
       },
     };
@@ -69,7 +69,7 @@ describe('JobQueue', () => {
 
     const handler: JobHandler<string, void> = {
       type: 'analytics',
-      async execute(job) {
+      async execute(job: Job) {
         processed.push(job.payload as string);
       },
     };
@@ -92,7 +92,7 @@ describe('JobQueue', () => {
 
     const handler: JobHandler<string, void> = {
       type: 'tournament',
-      async execute(job, updateProgress) {
+      async execute(job: Job, updateProgress: (progress: Partial<JobProgress>) => void) {
         updateProgress({ percentComplete: 50, currentOperation: 'Halfway' });
         // Capture progress immediately after update
         progressUpdates.push({
@@ -126,7 +126,11 @@ describe('JobQueue', () => {
 
     const handler: JobHandler<string, void> = {
       type: 'replay',
-      async execute(job, updateProgress, checkCancelled) {
+      async execute(
+        job: Job,
+        _updateProgress: (progress: Partial<JobProgress>) => void,
+        checkCancelled: () => boolean
+      ) {
         await new Promise(r => setTimeout(r, 50));
         wasCancelled = checkCancelled();
       },
@@ -220,7 +224,7 @@ describe('Job Determinism', () => {
 
       const handler: JobHandler<string, void> = {
         type: 'replay',
-        async execute(job) {
+        async execute(job: Job) {
           processed.push(job.payload as string);
         },
       };
