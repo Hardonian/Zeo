@@ -15,8 +15,8 @@ const PATTERNS: Array<{ kind: string; regex: RegExp }> = [
     { kind: "AWS Access Key", regex: /AKIA[0-9A-Z]{16}/ },
     { kind: "Slack Token", regex: /xox[baprs]-[a-zA-Z0-9-]{10,}/ },
     { kind: "Generic Private Key", regex: /-----BEGIN PRIVATE KEY-----/ },
-    { kind: "Generic API Key (assignment)", regex: /(?:api_key|access_token|secret_key)\s*[:=]\s*["']?([a-zA-Z0-9-_\.]{16,})["']?/i },
-    { kind: "Bearer Token", regex: /Bearer\s+[a-zA-Z0-9-_\.]+/i }
+    { kind: "Generic API Key (assignment)", regex: /(?:api_key|access_token|secret_key)\s*[:=]\s*["']?([a-zA-Z0-9-_.]{16,})["']?/i },
+    { kind: "Bearer Token", regex: /Bearer\s+[a-zA-Z0-9-_.]+/i }
 ];
 
 export function scanForSecrets(text: string): SecretMatch[] {
