@@ -299,6 +299,7 @@ describe("Anomaly Detection", () => {
           provenance: [],
           sourceId: "source-1",
           rawRef: { kind: "market", id: "test-1" },
+          biasAdjustmentsApplied: [],
         },
       ];
 
@@ -325,6 +326,7 @@ describe("Anomaly Detection", () => {
           provenance: [],
           sourceId: "source-1",
           rawRef: { kind: "market", id: "test-1" },
+          biasAdjustmentsApplied: [],
         },
       ];
 
