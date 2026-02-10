@@ -18,6 +18,15 @@ const nextConfig = {
       bodySizeLimit: '2mb',
     },
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/quickstart',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
