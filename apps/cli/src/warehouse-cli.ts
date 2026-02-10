@@ -21,7 +21,7 @@ interface PinnedRecords {
 }
 
 interface WarehouseCliArgs {
-  command: "export" | "import" | "list" | "prune" | "pin" | "retention" | null;
+  command: "export" | "import" | "list" | "prune" | "pin" | "unpin" | "retention" | null;
   out?: string;
   input?: string;
   kinds?: WarehouseKind[];
@@ -29,6 +29,7 @@ interface WarehouseCliArgs {
   dryRun?: boolean;
   retentionDays?: number;
   pin?: boolean;
+  id?: string;
 }
 
 interface AnalyticsCliArgs {
@@ -39,9 +40,96 @@ interface AnalyticsCliArgs {
   featureCols?: string[];
 }
 
+// Retention policy helper functions
+async function getRetentionConfig(cwd: string): Promise<RetentionConfig> {
+  const configPath = resolve(cwd, METADATA_DIR, RETENTION_CONFIG_FILE);
+  
+  try {
+    const data = readFileSync(configPath, "utf8");
+    return JSON.parse(data);
+  } catch {
+    // Default config
+    return {
+      defaultRetentionDays: 90,
+      perKindRetention: {
+        decision: 90,
+        outcome: 180,
+        "decision-draft": 30,
+        "evidence-event": 180,
+        "signal-observation": 90,
+        "observation-batch": 90,
+        "run-result": 60,
+        "outcome-record": 180,
+        "calibration-report": 365,
+      },
+      lastUpdated: new Date().toISOString(),
+    };
+  }
+}
+
+async function saveRetentionConfig(cwd: string, config: RetentionConfig): Promise<void> {
+  const configPath = resolve(cwd, METADATA_DIR, RETENTION_CONFIG_FILE);
+  const configDir = resolve(cwd, METADATA_DIR);
+  
+  if (!existsSync(configDir)) {
+    mkdirSync(configDir, { recursive: true });
+  }
+  
+  writeFileSync(configPath, JSON.stringify(config, null, 2), "utf8");
+}
+
+async function getPinnedRecords(cwd: string): Promise<PinnedRecords> {
+  const pinnedPath = resolve(cwd, METADATA_DIR, PINNED_FILE);
+  
+  try {
+    const data = readFileSync(pinnedPath, "utf8");
+    const parsed = JSON.parse(data);
+    return {
+      pinnedIds: parsed.pinnedIds || [],
+      lastUpdated: parsed.lastUpdated || new Date().toISOString(),
+    };
+  } catch {
+    return {
+      pinnedIds: [],
+      lastUpdated: new Date().toISOString(),
+    };
+  }
+}
+
+async function savePinnedRecords(cwd: string, pinned: PinnedRecords): Promise<void> {
+  const pinnedPath = resolve(cwd, METADATA_DIR, PINNED_FILE);
+  const metadataDir = resolve(cwd, METADATA_DIR);
+  
+  if (!existsSync(metadataDir)) {
+    mkdirSync(metadataDir, { recursive: true });
+  }
+  
+  writeFileSync(pinnedPath, JSON.stringify(pinned, null, 2), "utf8");
+}
+
+function isExpired(envelope: WarehouseEnvelope<unknown>, retentionDays: number, pinnedIds: string[]): boolean {
+  // Never expire pinned records
+  if (pinnedIds.includes(envelope.id)) {
+    return false;
+  }
+  
+  // Never expire if no retention days specified
+  if (!retentionDays || retentionDays <= 0) {
+    return false;
+  }
+  
+  const createdAt = new Date(envelope.createdAt);
+  const now = new Date();
+  const ageMs = now.getTime() - createdAt.getTime();
+  const ageDays = ageMs / (1000 * 60 * 60 * 24);
+  
+  return ageDays > retentionDays;
+}
+
 export function parseWarehouseArgs(argv: string[]): WarehouseCliArgs {
   const result: WarehouseCliArgs = {
     command: null,
+    id: null,
   };
 
   for (let i = 0; i < argv.length; i++) {
@@ -58,6 +146,8 @@ export function parseWarehouseArgs(argv: string[]): WarehouseCliArgs {
       result.command = "prune";
     } else if (arg === "pin") {
       result.command = "pin";
+    } else if (arg === "unpin") {
+      result.command = "unpin";
     } else if (arg === "retention") {
       result.command = "retention";
     } else if (arg === "--out" && next) {
@@ -79,6 +169,9 @@ export function parseWarehouseArgs(argv: string[]): WarehouseCliArgs {
       i++;
     } else if (arg === "--pin") {
       result.pin = true;
+    } else if (arg === "--id" && next) {
+      result.id = next;
+      i++;
     }
   }
 
