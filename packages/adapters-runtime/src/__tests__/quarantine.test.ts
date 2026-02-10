@@ -222,10 +222,10 @@ describe("Anomaly Detection", () => {
           qualityScore: 0.9,
           provenance: [],
           sourceId: "source-1",
-          rawRef: { kind: "market" },
+          rawRef: { kind: "market", id: "test-1" },
         });
       }
-      
+
       // Add outlier with clearly different value
       observations.push({
         observationId: "obs-outlier",
@@ -236,7 +236,7 @@ describe("Anomaly Detection", () => {
         qualityScore: 0.9,
         provenance: [],
         sourceId: "source-1",
-        rawRef: { kind: "market" },
+        rawRef: { kind: "market", id: "test-1" },
       });
 
       const result = detector.detect(observations);
