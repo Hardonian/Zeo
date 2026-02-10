@@ -62,6 +62,7 @@ export {
     gate,
     type Clock,
 } from "./determinism-gate.js";
+export * from "./support-bundle.js";
 
 // Sanitizer
 export {
