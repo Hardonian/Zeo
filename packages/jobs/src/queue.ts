@@ -13,7 +13,7 @@ import type {
   JobHandler,
   JobQueueStats,
   JobFilter,
-} from './types';
+} from './types.js';
 
 const DEFAULT_CONFIG: JobQueueConfig = {
   concurrency: 1,  // Deterministic: one job at a time
@@ -165,7 +165,7 @@ export class JobQueue {
 
     if (filter.tags) {
       jobs = jobs.filter(j => 
-        filter.tags!.every(tag => j.tags?.includes(tag))
+        filter.tags!.every((tag: string) => j.tags?.includes(tag))
       );
     }
 

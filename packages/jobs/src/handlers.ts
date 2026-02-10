@@ -3,7 +3,7 @@
  * Example implementations for common job types
  */
 
-import type { JobHandler, Job } from './types';
+import type { JobHandler, Job, JobProgress } from './types.js';
 
 /**
  * Handler for replay analysis jobs
@@ -16,7 +16,11 @@ export interface ReplayJobPayload {
 
 export const replayHandler: JobHandler<ReplayJobPayload, unknown> = {
   type: 'replay',
-  async execute(job, updateProgress, checkCancelled) {
+  async execute(
+    job: Job,
+    updateProgress: (progress: Partial<JobProgress>) => void,
+    checkCancelled: () => boolean
+  ) {
     const payload = job.payload as ReplayJobPayload;
     
     updateProgress({
@@ -62,7 +66,11 @@ export interface AnalyticsJobPayload {
 
 export const analyticsHandler: JobHandler<AnalyticsJobPayload, unknown> = {
   type: 'analytics',
-  async execute(job, updateProgress, checkCancelled) {
+  async execute(
+    job: Job,
+    updateProgress: (progress: Partial<JobProgress>) => void,
+    checkCancelled: () => boolean
+  ) {
     const payload = job.payload as AnalyticsJobPayload;
     
     updateProgress({
@@ -104,7 +112,11 @@ export interface TournamentJobPayload {
 
 export const tournamentHandler: JobHandler<TournamentJobPayload, unknown> = {
   type: 'tournament',
-  async execute(job, updateProgress, checkCancelled) {
+  async execute(
+    job: Job,
+    updateProgress: (progress: Partial<JobProgress>) => void,
+    checkCancelled: () => boolean
+  ) {
     const payload = job.payload as TournamentJobPayload;
     const totalMatches = payload.scenarioCount * 2; // Simplified
     

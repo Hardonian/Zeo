@@ -98,8 +98,8 @@ describe('Determinism Invariants', () => {
   describe('computeDeterministicSeed determinism', () => {
     it('same inputs produce same seed on repeated calls', () => {
       const decisionHash = 'abc123def456789abc123def456789';
-      const observationHash = undefined;
-      const depth = 2;
+      const observationHash: string | undefined = undefined;
+      const depth: number = 2;
       
       const seed1 = computeDeterministicSeed(decisionHash, observationHash, depth);
       const seed2 = computeDeterministicSeed(decisionHash, observationHash, depth);
@@ -112,9 +112,10 @@ describe('Determinism Invariants', () => {
 
     it('same decision hash with same depth produces same seed', () => {
       const hash = 'test-hash-value-for-seed-computation';
+      const obsHash: string | undefined = undefined;
       
-      const seed1 = computeDeterministicSeed(hash, undefined, 1);
-      const seed2 = computeDeterministicSeed(hash, undefined, 1);
+      const seed1 = computeDeterministicSeed(hash, obsHash, 1);
+      const seed2 = computeDeterministicSeed(hash, obsHash, 1);
       
       expect(seed1).toBe(seed2);
     });
