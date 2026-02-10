@@ -1,0 +1,28 @@
+{
+  "envelope_version": "1",
+  "transcript": {
+    "decision_id": "demo-001",
+    "agent_id": "agent:ops-evaluator",
+    "agent_proposal_hash": "a03d1ac9138b5f4d5a3f40b6b4ab2945101f41aa54ed6ea6184c3178a352f8b7",
+    "assumptions": [
+      { "id": "a-1", "status": "assumption", "text": "Counterparty can close by Friday" }
+    ],
+    "conclusion": {
+      "selected_action": "request_clarifying_call",
+      "confidence_range": { "low": 0.51, "high": 0.67 }
+    },
+    "parent_transcript_hash": "9a276ac615f41ff7df31f0f0e277f3ac9f1dcfe8062089f9e4d8a8dc27f40ad8"
+  },
+  "transcript_hash": "e0f423ecf5f089db4078b74b38be5e246dbf2cf5ff82bb778be8ed5bf67e4776",
+  "signatures": [],
+  "attestations": [
+    {
+      "type": "trust_statement",
+      "statement": "Belief: Reviewer observed deterministic replay pass during local audit."
+    }
+  ],
+  "metadata": {
+    "fact": "Example envelope is unsigned; run transcript sign to append signatures.",
+    "unknown": "No external consensus is implied by parent links."
+  }
+}
