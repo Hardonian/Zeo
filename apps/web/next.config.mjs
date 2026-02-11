@@ -15,9 +15,6 @@ const nextConfig = {
     '@zeo/policy',
     '@zeo/analysis'
   ],
-  turbopack: {
-    root: '.',
-  },
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',
