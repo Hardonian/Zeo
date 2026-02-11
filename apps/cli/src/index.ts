@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { performance } from "node:perf_hooks";
 import type { WorldModelSpec, EvidenceCandidate, PosteriorState, VoiReport } from "@zeo/contracts";
 import { parseArgs, type CliArgs } from "./args.js";
+import { createRunContext, log } from "./observability.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -53,6 +54,7 @@ Commands:
   pack                        Zeo pack commands
   doctor                      Environment diagnostics
   perf                        Performance commands
+  cache <list|prune|gc>       Deterministic cache commands
   mcp                         MCP commands (serve/ping/tools)
   llm                         LLM commands (doctor)
   agents                      Agent plugin commands
@@ -73,6 +75,8 @@ Options:
   --voi                       Print Value of Information (VOI) ranked list
   --world                     Print World Model posterior state
   --emit-transcript           Emit deterministic decision transcript
+  --cache <read|write|off>    Cache mode control
+  --no-cache                  Disable cache
   --help, -h                  Show this help message
 `);
 }
@@ -220,7 +224,9 @@ async function runSignalsCommand(inputPath: string, catalogDir: string | undefin
 
 async function main(): Promise<void> {
   const startedMs = performance.now();
+  const run = createRunContext();
   const argv = process.argv.slice(2);
+  log({ level: "info", msg: "cli start", run_id: run.run_id, trace_id: run.trace_id, cmd: argv[0] ?? "default", action: "start" });
 
   if (argv.includes("--help") || argv.includes("-h")) {
     printHelp();
@@ -303,6 +309,11 @@ async function main(): Promise<void> {
   }
 
 
+  if (argv[0] === "cache") {
+    const mod = await import("./cache-cli.js");
+    process.exit(await mod.runCacheCommand(mod.parseCacheArgs(argv.slice(1))));
+  }
+
   if (["transcript", "keys", "trust", "keygen", "key"].includes(argv[0] ?? "")) {
     const mod = await import("./transcript-cli.js");
     process.exit(await mod.runTranscriptCommand(argv));
@@ -332,8 +343,11 @@ async function main(): Promise<void> {
   } catch (err) {
     const contracts = await import("@zeo/contracts");
     const zeError = contracts.ZeoError.from(err);
+    log({ level: "error", msg: zeError.message, run_id: run.run_id, trace_id: run.trace_id, cmd: argv[0] ?? "default", action: "fatal", error_code: zeError.code });
     printError(zeError.code, zeError.message, zeError.details);
     process.exit(1);
+  } finally {
+    log({ level: "info", msg: "run summary", run_id: run.run_id, trace_id: run.trace_id, cmd: argv[0] ?? "default", action: "complete", duration_ms: Math.round(performance.now() - startedMs) });
   }
 }
 

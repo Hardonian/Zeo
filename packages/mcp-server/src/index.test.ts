@@ -106,6 +106,15 @@ describe("MCP Server", () => {
             expect(response.error).toBeDefined();
             expect(response.error.code).toBe(-32700);
         });
+
+        it("returns deterministic error envelope with run_id", async () => {
+            const server = createMcpServer(config);
+            const response = parseResponse(await server.handleRequest("{ bad-json"));
+            expect(response.error).toBeDefined();
+            expect(response.error.message).toBe("Parse error");
+            expect(response.error.data.run_id).toBeTypeOf("string");
+            expect(response.error.data.error_code).toBe("PARSE_ERROR");
+        });
     });
 
     describe("Security", () => {

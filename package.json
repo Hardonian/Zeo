@@ -36,7 +36,8 @@
     "quickstart:all": "pnpm verify:full && echo '=== Quickstart: CLI ===' && pnpm quickstart:cli && echo '=== Quickstart: Demo ===' && pnpm quickstart:demo",
     "cli:perf": "node scripts/cli-perf.mjs",
     "mcp:smoke": "node scripts/mcp-smoke.mjs",
-    "fixtures:coverage": "node scripts/fixture-coverage.mjs"
+    "fixtures:coverage": "node scripts/fixture-coverage.mjs",
+    "perf:budget": "node scripts/perf-budget.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",

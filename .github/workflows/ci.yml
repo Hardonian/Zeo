@@ -21,7 +21,7 @@ jobs:
           node-version: 20
           cache: "pnpm"
       - name: Install
-        run: pnpm i --frozen-lockfile=false
+        run: pnpm i --frozen-lockfile
       - name: Fixture Coverage Matrix
         run: pnpm fixtures:coverage
       - name: Typecheck
@@ -39,6 +39,10 @@ jobs:
         continue-on-error: false
       - name: Build CLI
         run: pnpm -C apps/cli build
+      - name: Perf Budget
+        run: pnpm perf:budget
+      - name: Dependency Audit
+        run: pnpm audit --audit-level=moderate
       - name: Replay Sample Dataset
         run: pnpm -C apps/cli start -- --replay external/examples/replay/sample_dataset.json --report-out /tmp/zeo-replay
       - name: Verify Replay Reports

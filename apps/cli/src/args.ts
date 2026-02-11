@@ -16,7 +16,9 @@ export interface CliArgs {
   pack: string | undefined;
   verify: boolean;
   emitTranscript: boolean;
+  cacheMode: "read" | "write" | "off";
 }
+
 
 export function parseArgs(argv: string[]): CliArgs {
   const result: CliArgs = {
@@ -37,6 +39,7 @@ export function parseArgs(argv: string[]): CliArgs {
     pack: undefined,
     verify: false,
     emitTranscript: false,
+    cacheMode: "write",
   };
 
   for (let i = 0; i < argv.length; i++) {
@@ -92,6 +95,11 @@ export function parseArgs(argv: string[]): CliArgs {
       result.verify = true;
     } else if (arg === "--emit-transcript") {
       result.emitTranscript = true;
+    } else if (arg === "--cache" && next) {
+      if (next === "read" || next === "write" || next === "off") result.cacheMode = next;
+      i++;
+    } else if (arg === "--no-cache") {
+      result.cacheMode = "off";
     }
   }
 
