@@ -1,0 +1,18 @@
+{
+  "id": "example-decision",
+  "title": "Example Decision",
+  "context": "example",
+  "decisionType": "ENG",
+  "workspaceMode": "internal",
+  "decisionState": "proposed",
+  "createdAt": "1970-01-01T00:00:00.000Z",
+  "horizon": "days",
+  "agents": [{"id":"self","name":"Self","role":"self"}],
+  "actions": [
+    {"id":"act_a","label":"Option A","actorId":"self","kind":"commit"},
+    {"id":"act_b","label":"Option B","actorId":"self","kind":"delay"}
+  ],
+  "constraints": [],
+  "assumptions": [],
+  "objectives": [{"id":"obj","metric":"robustness","weight":1}]
+}
