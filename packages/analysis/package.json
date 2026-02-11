@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "zod": "^3.22.4",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "@babel/parser": "^7.28.6",
+    "@babel/types": "^7.28.6"
   },
   "devDependencies": {
     "typescript": "^5.3.3",
