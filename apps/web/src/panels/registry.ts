@@ -64,6 +64,7 @@ const BUILTIN_MANIFESTS: UiPanelManifest[] = [
   explanationPanelManifest as UiPanelManifest,
   scenariosPanelManifest as UiPanelManifest,
   specComparisonManifest as UiPanelManifest,
+  policyStatusManifest as UiPanelManifest,
 ];
 
 const STITCH_MANIFESTS: UiPanelManifest[] = [

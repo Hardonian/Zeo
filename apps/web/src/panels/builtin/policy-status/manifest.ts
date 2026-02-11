@@ -5,12 +5,11 @@ const manifest: UiPanelManifest = {
     title: 'Policy Status',
     description: 'View policy evaluation results and governance evidence',
     route: '/quickstart',
-    slot: 'rightSidebar',
+    slot: 'rightInspector',
     kind: 'react',
     entry: './panel.tsx',
     version: '1.0.0',
     capabilities: {
-        collapsible: true,
     },
     dataDeps: [],
     permissions: {},
