@@ -6,11 +6,17 @@
       "@/*": [
         "src/*"
       ],
-      "@zeo/id": [
-        "../../packages/id/src/index.ts"
+      "@prisma/client": [
+        "../../packages/db/src/prisma-client.d.ts"
       ],
-      "@zeo/radar": [
-        "../../packages/radar/src/index.ts"
+      "@zeo/budgets": [
+        "../../packages/budgets/src/index.ts"
+      ],
+      "@zeo/calibration": [
+        "../../packages/calibration/src/index.ts"
+      ],
+      "@zeo/causal": [
+        "../../packages/causal/src/index.ts"
       ],
       "@zeo/contracts": [
         "../../packages/contracts/src/index.ts"
@@ -18,35 +24,68 @@
       "@zeo/core": [
         "../../packages/core/src/index.ts"
       ],
-      "@zeo/reality": [
-        "../../packages/reality/src/index.ts"
-      ],
-      "@zeo/telemetry": [
-        "../../packages/telemetry/src/index.ts"
-      ],
-      "@zeo/governance": [
-        "../../packages/governance/src/index.ts"
-      ],
-      "@zeo/signal-discovery": [
-        "../../packages/signal-discovery/src/index.ts"
-      ],
-      "@zeo/kpi": [
-        "../../packages/kpi/src/index.ts"
-      ],
-      "@zeo/warehouse": [
-        "../../packages/warehouse/src/index.ts"
-      ],
-      "@zeo/repro-pack": [
-        "../../packages/repro-pack/src/index.ts"
+      "@zeo/counterfactuals": [
+        "../../packages/counterfactuals/src/index.ts"
       ],
       "@zeo/db": [
         "../../packages/db/src/index.ts"
       ],
+      "@zeo/eval": [
+        "../../packages/eval/src/index.ts"
+      ],
+      "@zeo/game": [
+        "../../packages/game/src/index.ts"
+      ],
+      "@zeo/governance": [
+        "../../packages/governance/src/index.ts"
+      ],
+      "@zeo/id": [
+        "../../packages/id/src/index.ts"
+      ],
+      "@zeo/jobs": [
+        "../../packages/jobs/src/index.ts"
+      ],
+      "@zeo/kpi": [
+        "../../packages/kpi/src/index.ts"
+      ],
+      "@zeo/memory": [
+        "../../packages/memory/src/index.ts"
+      ],
       "@zeo/models": [
         "../../packages/models/src/index.ts"
       ],
-      "@prisma/client": [
-        "../../packages/db/src/prisma-client.d.ts"
+      "@zeo/nl": [
+        "../../packages/nl/src/index.ts"
+      ],
+      "@zeo/radar": [
+        "../../packages/radar/src/index.ts"
+      ],
+      "@zeo/reality": [
+        "../../packages/reality/src/index.ts"
+      ],
+      "@zeo/regimes": [
+        "../../packages/regimes/src/index.ts"
+      ],
+      "@zeo/repro-pack": [
+        "../../packages/repro-pack/src/index.ts"
+      ],
+      "@zeo/rsl": [
+        "../../packages/rsl/src/index.ts"
+      ],
+      "@zeo/signal-discovery": [
+        "../../packages/signal-discovery/src/index.ts"
+      ],
+      "@zeo/telemetry": [
+        "../../packages/telemetry/src/index.ts"
+      ],
+      "@zeo/timeseries": [
+        "../../packages/timeseries/src/index.ts"
+      ],
+      "@zeo/trust": [
+        "../../packages/trust/src/index.ts"
+      ],
+      "@zeo/warehouse": [
+        "../../packages/warehouse/src/index.ts"
       ]
     },
     "target": "ES2017",

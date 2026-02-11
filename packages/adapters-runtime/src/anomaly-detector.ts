@@ -28,9 +28,10 @@ export function detectSuddenJump(
   const baselineValues = history.length >= 10
     ? history.map(obs => (obs.valueBand.low + obs.valueBand.high) / 2)
     : allValues.slice(0, -observations.length);
+  const effectiveBaseline = baselineValues.length > 0 ? baselineValues : allValues;
   
-  const mean = baselineValues.reduce((a, b) => a + b, 0) / baselineValues.length;
-  const variance = baselineValues.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / baselineValues.length;
+  const mean = effectiveBaseline.reduce((a, b) => a + b, 0) / effectiveBaseline.length;
+  const variance = effectiveBaseline.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / effectiveBaseline.length;
   const std = Math.sqrt(variance);
   
   if (std === 0) return violations; // No variation to detect

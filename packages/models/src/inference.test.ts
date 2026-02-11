@@ -4,8 +4,8 @@ import {
   mean,
   std,
   credibleInterval,
-} from "./inference.js";
-import type { ProbabilityDistribution, WorldState, ObservationLikelihood } from "./types.js";
+} from "./inference";
+import type { ProbabilityDistribution, WorldState, ObservationLikelihood } from "./types";
 
 describe("models", () => {
   describe("sampling", () => {

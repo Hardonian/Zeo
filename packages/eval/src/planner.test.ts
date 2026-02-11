@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { recommendEvidence, createEvidencePlan, type EvidenceAction, type PlannerConfig } from "@zeo/reality";
 import type { DecisionSpec } from "@zeo/contracts";
-import type { CounterfactualResult } from "@zeo/counterfactuals";
+
+type CounterfactualInput = Parameters<typeof recommendEvidence>[2];
 
 describe("Evidence Planner Regression", () => {
     const spec = {
@@ -35,7 +36,7 @@ describe("Evidence Planner Regression", () => {
     ];
 
     it("should favor cheaper actions for same reduction (dominance check)", () => {
-        const counterfactuals: CounterfactualResult[] = [];
+        const counterfactuals: CounterfactualInput = [];
         const results = recommendEvidence(spec, candidates, counterfactuals, {
             maxCost: "high",
             maxTime: "months",
@@ -53,7 +54,7 @@ describe("Evidence Planner Regression", () => {
     });
 
     it("should respect budget constraints", () => {
-        const counterfactuals: CounterfactualResult[] = [];
+        const counterfactuals: CounterfactualInput = [];
         const results = recommendEvidence(spec, candidates, counterfactuals, {
             maxCost: "low",
             maxTime: "days",
@@ -65,4 +66,3 @@ describe("Evidence Planner Regression", () => {
         expect(expensive!.reasoning).toContain("Exceeds cost/time budget");
     });
 });
-

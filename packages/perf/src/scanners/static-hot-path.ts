@@ -275,11 +275,11 @@ function scanFile(filePath: string, content: string, options: ScanOptions): HotP
     : PATTERNS;
   
   for (const pattern of patterns) {
-    // Reset regex lastIndex
-    pattern.regex.lastIndex = 0;
+    const flags = pattern.regex.flags.includes("g") ? pattern.regex.flags : `${pattern.regex.flags}g`;
+    const regex = new RegExp(pattern.regex.source, flags);
     
     let match: RegExpExecArray | null;
-    while ((match = pattern.regex.exec(content)) !== null) {
+    while ((match = regex.exec(content)) !== null) {
       const position = getPosition(content, match.index);
       const context = extractContext(content, match.index, match[0].length);
       
@@ -312,8 +312,8 @@ function scanFile(filePath: string, content: string, options: ScanOptions): HotP
       findings.push(finding);
       
       // Avoid infinite loops with zero-length matches
-      if (match.index === pattern.regex.lastIndex) {
-        pattern.regex.lastIndex++;
+      if (match.index === regex.lastIndex) {
+        regex.lastIndex++;
       }
     }
   }
