@@ -160,4 +160,63 @@ describe("workflow cli", () => {
     expect(fs.existsSync(join(process.cwd(), "exports", `${hashPrefix}.ics`))).toBe(true);
     expect(fs.existsSync(join(process.cwd(), "exports", hashPrefix, "transcript.json"))).toBe(true);
   });
+
+  it("emits decision health and ROI/drift reports", async () => {
+    pushTempCwd();
+    const id = await setupDecision("Health decision");
+    await runWorkflowCommand(parseWorkflowArgs(["add-note", "--decision", id, "--text", "Security review complete", "--asserted-at", "2024-01-01", "--expires-at", "2024-01-02"]));
+    await runWorkflowCommand(parseWorkflowArgs(["run", "--decision", id, "--as-of", "2024-01-03"]));
+
+    const origWrite = process.stdout.write;
+    const healthOut: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { healthOut.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    await runWorkflowCommand(parseWorkflowArgs(["decision-health", id, "--json"]));
+    const health = JSON.parse(healthOut.join(""));
+    expect(health.health.replayStabilityScore).toBe(100);
+
+    const driftOut: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { driftOut.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    await runWorkflowCommand(parseWorkflowArgs(["drift-report", "--since", "3650d", "--json"]));
+    const drift = JSON.parse(driftOut.join(""));
+    expect(Array.isArray(drift.events)).toBe(true);
+
+    const roiOut: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { roiOut.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    await runWorkflowCommand(parseWorkflowArgs(["roi-report", "--window", "30d", "--json"]));
+    process.stdout.write = origWrite;
+    const roi = JSON.parse(roiOut.join(""));
+    expect(roi.schemaVersion).toBe("1.0.0");
+  });
+
+  it("exports portable decision bundle and verify detects tamper", async () => {
+    pushTempCwd();
+    const id = await setupDecision("Bundle decision");
+    await runWorkflowCommand(parseWorkflowArgs(["add-note", "--decision", id, "--text", "Customer impact validated"]));
+    await runWorkflowCommand(parseWorkflowArgs(["run", "--decision", id]));
+
+    const origWrite = process.stdout.write;
+    const exportOut: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { exportOut.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    await runWorkflowCommand(parseWorkflowArgs(["export", "decision", id, "--out", "exports", "--format", "dir", "--json"]));
+    const exported = JSON.parse(exportOut.join(""));
+    const bundleDir = exported.out as string;
+
+    const verifyOkOut: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { verifyOkOut.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    const verifyCode = await runWorkflowCommand(parseWorkflowArgs(["verify", bundleDir, "--json"]));
+    expect(verifyCode).toBe(0);
+    const verifyOk = JSON.parse(verifyOkOut.join(""));
+    expect(verifyOk.verified).toBe(true);
+
+    const fs = await import("node:fs");
+    fs.writeFileSync(join(bundleDir, "decision.json"), "{\"tampered\":true}\n", "utf8");
+    const verifyFailOut: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { verifyFailOut.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    const verifyFailCode = await runWorkflowCommand(parseWorkflowArgs(["verify", bundleDir, "--json"]));
+    process.stdout.write = origWrite;
+    expect(verifyFailCode).toBe(2);
+    const verifyFail = JSON.parse(verifyFailOut.join(""));
+    expect(verifyFail.verified).toBe(false);
+    expect(verifyFail.drift.length).toBeGreaterThan(0);
+  });
 });

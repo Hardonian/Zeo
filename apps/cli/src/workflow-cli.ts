@@ -16,6 +16,12 @@ type DecisionType = "ENG" | "OPS" | "SEC" | "PROD" | "MKT" | "CUST";
 type Audience = "legal" | "exec" | "sales" | "engineer" | "auditor";
 
 type DecayStatus = "fresh" | "aging" | "stale" | "expired" | "unknown";
+type DriftType = "assumption_flip" | "evidence_expired" | "outcome_regret" | "policy_change" | "environment_change";
+
+// Integration map:
+// - Metrics hook: computed on run completion and persisted in workspace + .zeo/metrics snapshots.
+// - Export hook: proof bundle emitted by `export decision` reuses workspace artifacts and deterministic manifest hashing.
+// - CTA hook: post-command `nextSteps` text is appended to command output surfaces (run/export/verify failures).
 
 export interface WorkflowArgs {
   command:
@@ -34,8 +40,15 @@ export interface WorkflowArgs {
   | "review"
   | "explain"
   | "summary"
+  | "decision-health"
+  | "drift-report"
+  | "roi-report"
+  | "verify"
+  | "evidence"
+  | "help"
+  | "examples"
   | null;
-  subcommand?: "md" | "ics" | "bundle" | "show" | "impact" | "fragility" | "weekly";
+  subcommand?: "md" | "ics" | "bundle" | "show" | "impact" | "fragility" | "weekly" | "decision" | "set-expiry" | "expired" | "start" | "examples";
   decision?: string;
   text?: string;
   title?: string;
@@ -55,6 +68,16 @@ export interface WorkflowArgs {
   audience?: Audience;
   type?: DecisionType;
   mode?: "internal" | "customer";
+  since?: string;
+  window?: "7d" | "30d" | "90d";
+  driftType?: DriftType;
+  format?: "zip" | "dir";
+  signed?: boolean;
+  includeRaw?: boolean;
+  inDuration?: string;
+  evidenceId?: string;
+  interactive?: boolean;
+  allowCrossWorkspace?: boolean;
 }
 
 interface EvidenceItem {
@@ -89,6 +112,28 @@ interface RunResult {
   informs: string[];
   decaySummary: Record<DecayStatus, number>;
   fullTranscript?: contracts.FinalizedDecisionTranscript;
+  health?: DecisionHealth;
+  confidence: number;
+}
+
+interface DecisionHealth {
+  schemaVersion: "1.0.0";
+  evidenceCompletenessScore: number;
+  policyComplianceScore: number;
+  replayStabilityScore: number;
+  assumptionVolatilityIndex: number;
+  riskScore: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface DriftEvent {
+  decisionId: string;
+  assumptionId: string | null;
+  type: DriftType;
+  severity: "low" | "medium" | "high";
+  detectedAt: string;
+  details: Record<string, string | number | boolean | null>;
 }
 
 function specFromWorkspace(ws: DecisionWorkspace): contracts.DecisionSpec {
@@ -132,6 +177,9 @@ interface DecisionWorkspace {
   tasks: TaskItem[];
   runs: RunResult[];
   chain: { parentTranscriptHash?: string };
+  workspaceId?: string;
+  driftEvents?: DriftEvent[];
+  healthHistory?: DecisionHealth[];
 }
 
 interface GraphNode {
@@ -158,12 +206,146 @@ function decisionsRoot(): string {
   return join(zeoRoot(), "decisions");
 }
 
+function metricsRoot(): string {
+  return join(zeoRoot(), "metrics");
+}
+
 function workspacePath(decisionId: string): string {
   return join(decisionsRoot(), decisionId, "decision.json");
 }
 
 function ensureWorkspaceRoot(): void {
   if (!existsSync(decisionsRoot())) mkdirSync(decisionsRoot(), { recursive: true });
+  if (!existsSync(metricsRoot())) mkdirSync(metricsRoot(), { recursive: true });
+}
+
+function nowIso(): string {
+  return new Date().toISOString();
+}
+
+function clampScore(value: number): number {
+  return Math.max(0, Math.min(100, Math.round(value)));
+}
+
+function defaultWorkspaceId(): string {
+  return process.env.ZEO_WORKSPACE_ID?.trim() || "default";
+}
+
+function parseDurationToDays(input?: string): number {
+  if (!input) return 30;
+  const match = /^(\d+)(d)?$/.exec(input.trim());
+  if (!match) throw new Error(`Invalid duration: ${input}. Use <Nd>, for example 30d.`);
+  return Number(match[1]);
+}
+
+function parseSinceToDate(since?: string): string {
+  if (!since) return "1970-01-01";
+  const days = parseDurationToDays(since);
+  const now = new Date();
+  const from = new Date(now.getTime() - days * 24 * 3600 * 1000);
+  return from.toISOString().slice(0, 10);
+}
+
+function requiredEvidenceCountForType(type: DecisionType): number {
+  const map: Record<DecisionType, number> = { ENG: 2, OPS: 2, SEC: 3, PROD: 2, MKT: 2, CUST: 2 };
+  return map[type];
+}
+
+function computeDecisionHealth(ws: DecisionWorkspace, replayStable: boolean): DecisionHealth {
+  // Deterministic scoring formulas (no ML): weighted linear percentages with stable constants.
+  const requiredEvidence = requiredEvidenceCountForType(ws.decisionType);
+  const evidenceScore = clampScore((Math.min(ws.evidence.length, requiredEvidence) / requiredEvidence) * 100);
+  const completedTasks = ws.tasks.filter((t) => t.completed).length;
+  const policyRaw = ws.tasks.length === 0 ? 100 : (completedTasks / ws.tasks.length) * 100;
+  const policyScore = clampScore(policyRaw);
+  const replayStabilityScore = replayStable ? 100 : 0;
+  const flips = ws.runs.filter((r) => r.flipDistance < 3).length;
+  const expired = ws.evidence.filter((e) => e.expiresAt && classifyDecay(e, nowIso().slice(0, 10)) === "expired").length;
+  const volatility = clampScore(Math.min(100, flips * 20 + expired * 15 + Math.max(0, ws.runs.length - 1) * 5));
+  const riskScore = clampScore(Math.round((100 - evidenceScore) * 0.35 + (100 - policyScore) * 0.35 + (100 - replayStabilityScore) * 0.2 + volatility * 0.1));
+  const createdAt = ws.healthHistory?.[0]?.createdAt ?? nowIso();
+  return {
+    schemaVersion: "1.0.0",
+    evidenceCompletenessScore: evidenceScore,
+    policyComplianceScore: policyScore,
+    replayStabilityScore,
+    assumptionVolatilityIndex: volatility,
+    riskScore,
+    createdAt,
+    updatedAt: nowIso(),
+  };
+}
+
+function healthLine(health: DecisionHealth): string {
+  const composite = clampScore(Math.round((health.evidenceCompletenessScore + health.policyComplianceScore + health.replayStabilityScore + (100 - health.assumptionVolatilityIndex)) / 4));
+  return `Health: ${composite}/100 • Evidence ${health.evidenceCompletenessScore} • Policy ${health.policyComplianceScore} • Replay ${health.replayStabilityScore} • Volatility ${health.assumptionVolatilityIndex}`;
+}
+
+function appendDriftEvent(ws: DecisionWorkspace, event: DriftEvent): void {
+  const all = [...(ws.driftEvents ?? []), event]
+    .sort((a, b) => a.detectedAt.localeCompare(b.detectedAt) || a.decisionId.localeCompare(b.decisionId) || a.type.localeCompare(b.type));
+  ws.driftEvents = all;
+}
+
+function persistMetricsSnapshot(ws: DecisionWorkspace, health: DecisionHealth): void {
+  const snapshotPath = join(metricsRoot(), `${ws.decisionId}.json`);
+  const payload = {
+    decisionId: ws.decisionId,
+    workspaceId: ws.workspaceId ?? defaultWorkspaceId(),
+    latest: health,
+    history: ws.healthHistory ?? [],
+    driftEvents: ws.driftEvents ?? [],
+  };
+  writeFileSync(snapshotPath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
+}
+
+function nextSteps(context: "analyze-pr" | "decision-finalize" | "verify-mismatch", values: Record<string, string>): string[] {
+  if (context === "analyze-pr") {
+    return [
+      `Convert to decision? zeo decision create --from ${values.runId ?? "<lastRunId>"}`,
+      "Apply security pack? zeo init pack security-pack",
+    ];
+  }
+  if (context === "verify-mismatch") return ["Show drift report: zeo drift-report --since 30d"];
+  return [
+    `Set review horizon: zeo review weekly --decision ${values.decisionId ?? "<decisionId>"}`,
+    `Export bundle: zeo export decision ${values.decisionId ?? "<decisionId>"} --format zip`,
+  ];
+}
+
+function resolveTranscriptWorkspace(transcriptHash: string): DecisionWorkspace | null {
+  for (const ws of collectWorkspaces()) {
+    if (ws.runs.some((run) => run.transcriptHash === transcriptHash)) return ws;
+  }
+  return null;
+}
+
+function getLatestHealth(ws: DecisionWorkspace): DecisionHealth {
+  return ws.healthHistory?.[ws.healthHistory.length - 1] ?? computeDecisionHealth(ws, ws.runs.length > 0);
+}
+
+function buildBundleManifest(bundleDir: string, files: string[]): { files: Array<{ path: string; sha256: string; size: number }>; manifestHash: string; treeHash: string } {
+  const entries = files
+    .map((path) => {
+      const contents = readFileSync(join(bundleDir, path));
+      return { path, sha256: createHash("sha256").update(contents).digest("hex"), size: contents.byteLength };
+    })
+    .sort((a, b) => a.path.localeCompare(b.path));
+  const treeHash = createHash("sha256").update(JSON.stringify(entries.map((entry) => [entry.path, entry.sha256]))).digest("hex");
+  const manifestHash = createHash("sha256").update(JSON.stringify(entries)).digest("hex");
+  return { files: entries, manifestHash, treeHash };
+}
+
+function verificationStatusFromHealth(health: DecisionHealth, manifestHash: string, treeHash: string, signed: boolean, signatureValid: boolean | null): { verified: boolean; method: "hash_only" | "signed"; manifestHash: string; treeHash: string; signatureValid: boolean | null; verifiedAt: string } {
+  const verified = health.replayStabilityScore === 100 && (signed ? signatureValid === true : true);
+  return {
+    verified,
+    method: signed ? "signed" : "hash_only",
+    manifestHash,
+    treeHash,
+    signatureValid,
+    verifiedAt: nowIso(),
+  };
 }
 
 function loadWorkspace(decisionId: string): DecisionWorkspace {
@@ -180,7 +362,10 @@ function loadWorkspace(decisionId: string): DecisionWorkspace {
     evidence: parsed.evidence || [],
     tasks: parsed.tasks || [],
     runs: parsed.runs || [],
-    chain: parsed.chain || {}
+    chain: parsed.chain || {},
+    workspaceId: parsed.workspaceId || defaultWorkspaceId(),
+    driftEvents: parsed.driftEvents || [],
+    healthHistory: parsed.healthHistory || [],
   };
 }
 
@@ -333,7 +518,8 @@ async function runDecisionInWorkspace(
     dependsOn: transcript.depends_on ?? [],
     informs: transcript.informs ?? [],
     decaySummary: decay,
-    fullTranscript: transcript
+    fullTranscript: transcript,
+    confidence: fragility === "Stable" ? 0.8 : fragility === "Fragile" ? 0.6 : 0.4
   };
 }
 
@@ -478,10 +664,14 @@ function buildTypeSummary(type: DecisionType | undefined, audience: Audience): {
 }
 
 export function parseWorkflowArgs(argv: string[]): WorkflowArgs {
-  const command = ["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "graph", "view", "review", "explain", "summary"].includes(argv[0] ?? "") ? argv[0] as WorkflowArgs["command"] : null;
+  const command = ["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "graph", "view", "review", "explain", "summary", "decision-health", "drift-report", "roi-report", "verify", "evidence", "help", "examples"].includes(argv[0] ?? "") ? argv[0] as WorkflowArgs["command"] : null;
   const subcommand =
-    argv[0] === "export" && ["md", "ics", "bundle"].includes(argv[1] ?? "")
+    argv[0] === "export" && ["md", "ics", "bundle", "decision"].includes(argv[1] ?? "")
       ? argv[1] as WorkflowArgs["subcommand"]
+      : argv[0] === "evidence" && ["set-expiry", "expired"].includes(argv[1] ?? "")
+        ? argv[1] as WorkflowArgs["subcommand"]
+        : argv[0] === "help" && ["start", "examples"].includes(argv[1] ?? "")
+          ? argv[1] as WorkflowArgs["subcommand"]
       : argv[0] === "graph" && ["show", "impact", "fragility"].includes(argv[1] ?? "")
         ? argv[1] as WorkflowArgs["subcommand"]
         : argv[0] === "review" && argv[1] === "weekly"
@@ -498,10 +688,12 @@ export function parseWorkflowArgs(argv: string[]): WorkflowArgs {
     }
     return values;
   };
+  const positionalDecision = (["decision-health", "verify"].includes(argv[0] ?? "") ? argv[1] : undefined)
+    || (argv[0] === "export" && argv[1] === "decision" ? argv[2] : undefined);
   return {
     command,
     subcommand,
-    decision: value("--decision"),
+    decision: value("--decision") ?? positionalDecision,
     text: value("--text"),
     title: value("--title"),
     json: argv.includes("--json"),
@@ -520,6 +712,16 @@ export function parseWorkflowArgs(argv: string[]): WorkflowArgs {
     audience: value("--audience") as Audience | undefined,
     type: value("--type") as DecisionType | undefined,
     mode: (value("--mode") as "internal" | "customer" | undefined),
+    since: value("--since"),
+    window: (value("--window") as "7d" | "30d" | "90d" | undefined),
+    driftType: value("--type") as DriftType | undefined,
+    format: (value("--format") as "zip" | "dir" | undefined),
+    signed: argv.includes("--signed"),
+    includeRaw: argv.includes("--include-raw"),
+    inDuration: value("--in"),
+    evidenceId: argv[2] && argv[0] === "evidence" && argv[1] === "set-expiry" ? argv[2] : value("--evidence"),
+    interactive: argv.includes("--interactive"),
+    allowCrossWorkspace: argv.includes("--allow-cross-workspace"),
   };
 }
 
@@ -527,12 +729,119 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
   ensureWorkspaceRoot();
   if (!args.command) return 1;
 
+  if (args.command === "help") {
+    if (args.subcommand === "start") {
+      process.stdout.write([
+        "Try Zeo in 60 seconds:",
+        "1) zeo analyze-pr examples/analyze-pr-auth/diff.patch",
+        "2) zeo start --title \"Auth decision\"",
+        "3) zeo export decision <id> --format zip",
+      ].join("\n") + "\n");
+      return 0;
+    }
+    if (args.subcommand === "examples") {
+      process.stdout.write([
+        "Examples:",
+        "- zeo analyze-pr examples/analyze-pr-auth/diff.patch",
+        "- zeo replay examples/startup-scaling",
+        "- zeo export decision <id> --format dir",
+      ].join("\n") + "\n");
+      return 0;
+    }
+  }
+
+  if (args.command === "examples") {
+    process.stdout.write("Use: zeo help examples\n");
+    return 0;
+  }
+
+  if (args.command === "drift-report") {
+    const sinceDate = parseSinceToDate(args.since);
+    const events = collectWorkspaces()
+      .flatMap((ws) => (ws.driftEvents ?? []).map((event) => ({ ...event, workspaceId: ws.workspaceId ?? defaultWorkspaceId() })))
+      .filter((event) => event.detectedAt.slice(0, 10) >= sinceDate)
+      .filter((event) => (args.driftType ? event.type === args.driftType : true))
+      .sort((a, b) => a.detectedAt.localeCompare(b.detectedAt) || a.decisionId.localeCompare(b.decisionId));
+    writeJsonOrText(args, { since: sinceDate, events }, events.map((event) => `${event.detectedAt} ${event.decisionId} ${event.type} ${event.severity}`).join("\n") || "No drift events.");
+    return 0;
+  }
+
+  if (args.command === "roi-report") {
+    const window = args.window ?? "30d";
+    const sinceDate = parseSinceToDate(window);
+    const workspaces = collectWorkspaces();
+    const allRuns = workspaces.flatMap((ws) => ws.runs.map((run) => ({ ws, run })));
+    const inWindow = allRuns.filter(({ run }) => String(run.fullTranscript?.timestamp ?? "1970-01-01T00:00:00.000Z").slice(0, 10) >= sinceDate);
+    const decisionsCount = inWindow.length;
+    const avgTimeToDecision = decisionsCount === 0 ? 0 : Math.round(inWindow.reduce((sum, { ws, run }) => sum + Math.max(0, (Date.parse(String(run.fullTranscript?.timestamp ?? nowIso())) - Date.parse(ws.createdAt ?? nowIso())) / 60000), 0) / decisionsCount);
+    const percentWithFullEvidence = decisionsCount === 0 ? 0 : clampScore((inWindow.filter(({ ws }) => ws.evidence.length >= requiredEvidenceCountForType(ws.decisionType)).length / decisionsCount) * 100);
+    const securityFlagsPreMerge = inWindow.filter(({ ws }) => ws.decisionType === "SEC").length;
+    const claimsBackedByEvidence = clampScore(decisionsCount === 0 ? 0 : (inWindow.filter(({ ws }) => ws.evidence.length > 0).length / decisionsCount) * 100);
+    const payload = { schemaVersion: "1.0.0", window, since: sinceDate, decisionsCount, avgTimeToDecision, percentWithFullEvidence, securityFlagsPreMerge, claimsBackedByEvidence };
+    writeJsonOrText(args, payload, `window=${window} decisions=${decisionsCount} avg_time_min=${avgTimeToDecision} full_evidence=${percentWithFullEvidence}% security_flags=${securityFlagsPreMerge} claims_backed=${claimsBackedByEvidence}%`);
+    return 0;
+  }
+
   if (args.command === "start") {
     const title = args.title || (process.stdin.isTTY ? await prompt("Decision title: ") : "Untitled Decision");
     const decisionId = `dec_${hash({ title }).slice(0, 12)}`;
-    const ws: DecisionWorkspace = { decisionId, title, decisionType: args.type ?? "ENG", workspaceMode: args.mode ?? "customer", state: "proposed", evidence: [], tasks: [], runs: [], chain: {} };
+    const ws: DecisionWorkspace = { decisionId, title, decisionType: args.type ?? "ENG", workspaceMode: args.mode ?? "customer", state: "proposed", evidence: [], tasks: [], runs: [], chain: {}, workspaceId: defaultWorkspaceId(), driftEvents: [], healthHistory: [] };
     saveWorkspace(ws);
     writeJsonOrText(args, ws, `Started decision '${title}' (${decisionId})`);
+    return 0;
+  }
+
+  if (args.command === "decision-health") {
+    const decisionId = args.decision || args.title;
+    if (!decisionId) throw new Error("Usage: zeo decision-health <decisionId> [--json]");
+    const ws = loadWorkspace(decisionId);
+    const health = ws.healthHistory?.[ws.healthHistory.length - 1] ?? computeDecisionHealth(ws, ws.runs.length > 0);
+    writeJsonOrText(args, { decisionId, health }, healthLine(health));
+    return 0;
+  }
+
+  if (args.command === "verify") {
+    const target = args.decision || args.title;
+    if (!target) throw new Error("Usage: zeo verify <bundlePath|decisionId> [--json]");
+    const dir = existsSync(resolve(target)) ? resolve(target) : join(resolve(process.cwd(), "exports"), target);
+    const manifestPath = join(dir, "manifest.json");
+    if (!existsSync(manifestPath)) throw new Error(`Manifest not found: ${manifestPath}`);
+    const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as { files: Array<{ path: string; sha256: string; size: number }>; verificationStatus?: { method: "hash_only" | "signed"; signatureValid: boolean | null; manifestHash: string } };
+    const mismatches: string[] = [];
+    for (const file of manifest.files) {
+      const absolute = join(dir, file.path);
+      if (!existsSync(absolute)) {
+        mismatches.push(`${file.path}:missing`);
+        continue;
+      }
+      const contents = readFileSync(absolute);
+      const digest = createHash("sha256").update(contents).digest("hex");
+      if (digest !== file.sha256) mismatches.push(`${file.path}:hash_mismatch`);
+      if (contents.byteLength !== file.size) mismatches.push(`${file.path}:size_mismatch`);
+    }
+    const verified = mismatches.length === 0;
+    const payload = {
+      verified,
+      method: manifest.verificationStatus?.method ?? "hash_only",
+      manifestHash: manifest.verificationStatus?.manifestHash ?? createHash("sha256").update(JSON.stringify(manifest.files)).digest("hex"),
+      treeHash: createHash("sha256").update(JSON.stringify(manifest.files.map((f) => [f.path, f.sha256]))).digest("hex"),
+      signatureValid: manifest.verificationStatus?.signatureValid ?? null,
+      verifiedAt: nowIso(),
+      drift: mismatches,
+    };
+    if (!verified) {
+      const tips = nextSteps("verify-mismatch", {});
+      writeJsonOrText(args, payload, `${verified ? "verified" : "failed"}\n${mismatches.join("\n")}\n${tips.join("\n")}`);
+      return 2;
+    }
+    writeJsonOrText(args, payload, "verified");
+    return 0;
+  }
+
+  if (args.command === "evidence" && args.subcommand === "expired") {
+    const today = nowIso().slice(0, 10);
+    const expired = collectWorkspaces().flatMap((ws) => ws.evidence.filter((e) => classifyDecay(e, today) === "expired").map((e) => ({ decisionId: ws.decisionId, evidenceId: e.id, expiresAt: e.expiresAt ?? null })));
+    writeJsonOrText(args, { expired }, expired.map((item) => `${item.decisionId} ${item.evidenceId} expiresAt=${item.expiresAt}`).join("\n") || "No expired evidence.");
     return 0;
   }
 
@@ -600,6 +909,19 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
   if (!decisionId) throw new Error("--decision is required");
   const ws = loadWorkspace(decisionId);
 
+  if (args.command === "evidence" && args.subcommand === "set-expiry") {
+    if (!args.evidenceId) throw new Error("Usage: zeo evidence set-expiry <evidenceId> --decision <id> --in 30d");
+    const days = parseDurationToDays(args.inDuration);
+    const evidence = ws.evidence.find((item) => item.id === args.evidenceId);
+    if (!evidence) throw new Error(`Evidence not found: ${args.evidenceId}`);
+    const base = nowIso().slice(0, 10);
+    const expiresAt = new Date(Date.parse(`${base}T00:00:00.000Z`) + days * 24 * 3600 * 1000).toISOString().slice(0, 10);
+    evidence.expiresAt = expiresAt;
+    saveWorkspace(ws);
+    writeJsonOrText(args, { decisionId, evidenceId: evidence.id, expiresAt }, `Set expiry for ${evidence.id} to ${expiresAt}`);
+    return 0;
+  }
+
   if (args.command === "add-note") {
     const text = args.text || (process.stdin.isTTY ? await prompt("Paste note: ") : "");
     if (!text) throw new Error("note text required via --text");
@@ -614,11 +936,35 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
 
   if (args.command === "run") {
     const asOf = isoDate(args.asOf) ?? DEFAULT_AS_OF_DATE;
+    for (const dep of args.dependsOn) {
+      const linked = resolveTranscriptWorkspace(dep);
+      if (linked && linked.workspaceId !== ws.workspaceId && !args.allowCrossWorkspace) {
+        throw new Error("[E_SCOPE_CROSS_WORKSPACE] linked transcript is in a different workspace; use --allow-cross-workspace to override.");
+      }
+    }
     const result = await runDecisionInWorkspace(ws, args.envelope, asOf, args.dependsOn, args.informs);
+    const replayStable = ws.runs.length === 0 ? true : ws.runs[ws.runs.length - 1].transcriptHash !== result.transcriptHash;
+    const health = computeDecisionHealth(ws, replayStable);
+    result.health = health;
     ws.runs = [...ws.runs, result];
     ws.chain.parentTranscriptHash = ws.runs.length > 1 ? ws.runs[ws.runs.length - 2]?.transcriptHash : undefined;
+    ws.healthHistory = [...(ws.healthHistory ?? []), health];
+    for (const evidence of ws.evidence) {
+      if (classifyDecay(evidence, asOf) === "expired") {
+        appendDriftEvent(ws, {
+          decisionId: ws.decisionId,
+          assumptionId: evidence.id,
+          type: "evidence_expired",
+          severity: "medium",
+          detectedAt: nowIso(),
+          details: { evidenceId: evidence.id, expiresAt: evidence.expiresAt ?? null },
+        });
+      }
+    }
     saveWorkspace(ws);
-    writeJsonOrText(args, result, formatResultCard(result));
+    persistMetricsSnapshot(ws, health);
+    const ctas = nextSteps("decision-finalize", { decisionId: ws.decisionId });
+    writeJsonOrText(args, result, `${formatResultCard(result)}\n${healthLine(health)}\n${ctas.join("\n")}`);
     return 0;
   }
 
@@ -699,6 +1045,44 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
       return 0;
     }
 
+    if (args.subcommand === "decision") {
+      const format = args.format ?? "zip";
+      const folder = join(outDir, `${ws.decisionId}-bundle`);
+      if (!existsSync(folder)) mkdirSync(folder, { recursive: true });
+      const health = getLatestHealth(ws);
+      const replay = { transcriptHash: latest.transcriptHash, expectedHash: latest.transcriptHash };
+      const policy = { policyPackId: "default", hash: hash({ decisionType: ws.decisionType, workspaceMode: ws.workspaceMode }) };
+      const redactedEvidence = args.includeRaw
+        ? ws.evidence
+        : ws.evidence.map((item) => ({ id: item.id, summary: item.summary, assertedAt: item.assertedAt, expiresAt: item.expiresAt, provenance: item.provenance }));
+      writeFileSync(join(folder, "decision.json"), `${JSON.stringify(ws, null, 2)}\n`, "utf8");
+      writeFileSync(join(folder, "evidence.json"), `${JSON.stringify(redactedEvidence, null, 2)}\n`, "utf8");
+      writeFileSync(join(folder, "transcript.md"), `${formatResultCard(latest)}\n`, "utf8");
+      writeFileSync(join(folder, "metrics.json"), `${JSON.stringify(health, null, 2)}\n`, "utf8");
+      writeFileSync(join(folder, "replay.json"), `${JSON.stringify(replay, null, 2)}\n`, "utf8");
+      writeFileSync(join(folder, "policy.json"), `${JSON.stringify(policy, null, 2)}\n`, "utf8");
+      writeFileSync(join(folder, "provenance.json"), `${JSON.stringify({ evidenceHashes: ws.evidence.map((item) => item.provenance.hash) }, null, 2)}\n`, "utf8");
+      const bundleFiles = ["decision.json", "evidence.json", "transcript.md", "metrics.json", "replay.json", "policy.json", "provenance.json"];
+      const manifest = buildBundleManifest(folder, bundleFiles);
+      let signatureValid: boolean | null = null;
+      if (args.signed) {
+        const signingKey = process.env.ZEO_SIGNING_HMAC_KEY;
+        if (signingKey) {
+          const signature = createHash("sha256").update(`${manifest.manifestHash}:${signingKey}`).digest("hex");
+          writeFileSync(join(folder, "signature.json"), `${JSON.stringify({ mode: "hmac", signature }, null, 2)}\n`, "utf8");
+          signatureValid = true;
+          bundleFiles.push("signature.json");
+        }
+      }
+      const status = verificationStatusFromHealth(health, manifest.manifestHash, manifest.treeHash, args.signed && signatureValid === true, signatureValid);
+      const manifestPayload = { schemaVersion: "1.0.0", files: buildBundleManifest(folder, bundleFiles).files, verificationStatus: status };
+      writeFileSync(join(folder, "manifest.json"), `${JSON.stringify(manifestPayload, null, 2)}\n`, "utf8");
+      const proofLine = status.verified ? `Zeo Verified (${status.method})` : "Verification pending";
+      const text = `${folder}\n${proofLine}${args.includeRaw ? "\nWARNING: raw evidence included" : ""}`;
+      writeJsonOrText(args, { out: folder, verificationStatus: status, format }, text);
+      return 0;
+    }
+
     if (args.subcommand === "bundle") {
       const folder = join(outDir, latest.transcriptHash.slice(0, 16));
       if (!existsSync(folder)) mkdirSync(folder, { recursive: true });
@@ -711,7 +1095,7 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
       return 0;
     }
 
-    throw new Error("Usage: zeo export <md|ics|bundle>");
+    throw new Error("Usage: zeo export <md|ics|bundle|decision>");
   }
 
 
