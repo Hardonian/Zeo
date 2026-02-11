@@ -318,7 +318,9 @@ const ensurePackageJson = (dir, name, deps = {}) => {
     }
 };
 
-ensurePackageJson('packages/policy', '@zeo/policy');
+ensurePackageJson('packages/policy', '@zeo/policy', {
+    "@zeo/analysis": "workspace:*"
+});
 
 console.log('Syncing Static Analysis...');
 copyDir('vendor/readylayer/services/static-analysis', 'packages/analysis/src');
