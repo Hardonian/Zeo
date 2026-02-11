@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zeo.dev/schemas/dashboard-viewmodel.schema.json",
+  "title": "DashboardViewModel",
+  "type": "object",
+  "required": ["schemaVersion", "id", "generatedAt", "persona", "fingerprint", "summary", "story", "trends", "graph", "lists", "ctas", "verificationStatus"],
+  "properties": {
+    "schemaVersion": { "const": "dashboard.viewmodel.v1" },
+    "id": { "type": "string" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "persona": { "enum": ["exec", "tech", "security"] },
+    "verificationStatus": {
+      "type": "object",
+      "required": ["verified", "reason"],
+      "properties": {
+        "verified": { "type": "boolean" },
+        "reason": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "fingerprint": { "type": "object" },
+    "summary": { "type": "object" },
+    "story": { "type": "object" },
+    "trends": { "type": "object" },
+    "graph": { "type": "object" },
+    "lists": { "type": "object" },
+    "ctas": { "type": "array", "minItems": 3 }
+  },
+  "additionalProperties": false
+}

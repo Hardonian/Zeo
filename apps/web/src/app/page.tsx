@@ -40,6 +40,19 @@ export default function Home() {
         </div>
 
         <section className="pt-8 border-t border-gray-200 text-left">
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4 text-center">Try in 60 seconds</h2>
+          <div className="rounded-lg border border-gray-200 p-4 space-y-2">
+            <p className="text-sm"><code>zeo help start</code></p>
+            <ol className="list-decimal list-inside text-sm text-gray-700 space-y-1">
+              <li><code>zeo analyze-pr examples/analyze-pr-auth/diff.patch</code></li>
+              <li><code>zeo view &lt;run_id&gt; --persona exec</code></li>
+              <li><code>zeo export bundle --decision &lt;decision_id&gt;</code></li>
+            </ol>
+            <Link href="/view/example" className="inline-block rounded border px-3 py-1 text-sm">Load example dashboard</Link>
+          </div>
+        </section>
+
+        <section className="pt-8 border-t border-gray-200 text-left">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4 text-center">Live Example</h2>
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
             <p className="text-sm text-gray-700"><strong>Start here:</strong> <code>zeo analyze-pr examples/analyze-pr-auth/diff.patch --policy packs/security-review-pack/pack.json --explain</code></p>

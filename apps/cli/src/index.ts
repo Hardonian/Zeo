@@ -42,7 +42,7 @@ Commands:
   done <taskId>              Mark checklist task as complete
   streaks                    Show epistemic streak metrics
   graph <show|impact|fragility> Decision graph utilities
-  view <lens> <transcript>   Derived lens view from a transcript
+  view <id>                  Persona-aware deterministic dashboard view
   review weekly              Weekly epistemic review
   explain                    Explain a decision for an audience
   summary                    Deterministic summary by decision type
@@ -92,6 +92,21 @@ Options:
   --cache <read|write|off>    Cache mode control
   --no-cache                  Disable cache
   --help, -h                  Show this help message
+`);
+}
+
+function printHelpStart(): void {
+  console.log(`
+Zeo quick start (60 seconds)
+
+1) Analyze an example PR:
+   zeo analyze-pr examples/analyze-pr-auth/diff.patch
+
+2) Open deterministic dashboard:
+   zeo view <run_id> --persona exec
+
+3) Export evidence bundle:
+   zeo export bundle --decision <decision_id>
 `);
 }
 
@@ -253,6 +268,22 @@ async function main(): Promise<void> {
     process.exit(0);
   }
 
+  if (argv[0] === "help" && argv[1] === "start") {
+    printHelpStart();
+    process.exit(0);
+  }
+
+  if (argv[0] === "view") {
+    const legacyLens = new Set(["executive", "engineering", "legal", "personal"]);
+    const arg1 = argv[1] ?? "";
+    if (legacyLens.has(arg1)) {
+      const mod = await import("./workflow-cli.js");
+      process.exit(await mod.runWorkflowCommand(mod.parseWorkflowArgs(argv)));
+    }
+    const mod = await import("./view-cli.js");
+    process.exit(await mod.runViewCommand(mod.parseViewArgs(argv.slice(1))));
+  }
+
   if (argv[0] === "mcp") {
     const { parseMcpArgs, runMcpCommand } = await import("./mcp-cli.js");
     process.exit(await runMcpCommand(parseMcpArgs(argv.slice(1))));
@@ -349,7 +380,7 @@ async function main(): Promise<void> {
     process.exit(await mod.runAgentsCommand(mod.parseAgentsArgs(argv.slice(1))));
   }
 
-  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "view", "review", "explain", "summary"].includes(argv[0] ?? "")) {
+  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "review", "explain", "summary"].includes(argv[0] ?? "")) {
     const mod = await import("./workflow-cli.js");
     process.exit(await mod.runWorkflowCommand(mod.parseWorkflowArgs(argv)));
   }
