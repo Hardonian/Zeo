@@ -16,7 +16,8 @@ import type {
   EvidenceEventType,
   BranchGraph,
   BranchEdge,
-  BranchNode
+  BranchNode,
+  DecisionType
 } from "@zeo/contracts";
 
 // =============================================================================
@@ -89,6 +90,22 @@ export const RISK_TIER_CONFIG: Record<RiskTier, {
 /**
  * Domain to risk tier mapping for common decision domains
  */
+
+
+export const DECISION_TYPE_DEFAULTS: Record<DecisionType, {
+  requiredEvidenceTags: string[];
+  mandatoryPolicies: string[];
+  reviewAfterDays: number;
+  escalation?: { requiresApprovalFrom?: DecisionType[]; onMissingEvidence: "block" | "warn" };
+}> = {
+  ENG: { requiredEvidenceTags: ["architecture", "tradeoff"], mandatoryPolicies: ["eng.change-control"], reviewAfterDays: 30, escalation: { onMissingEvidence: "warn" } },
+  OPS: { requiredEvidenceTags: ["runbook", "signals"], mandatoryPolicies: ["ops.reliability"], reviewAfterDays: 14, escalation: { onMissingEvidence: "block" } },
+  SEC: { requiredEvidenceTags: ["threat-model", "replayable-reasoning"], mandatoryPolicies: ["sec.provenance", "sec.threat-model"], reviewAfterDays: 7, escalation: { onMissingEvidence: "block" } },
+  PROD: { requiredEvidenceTags: ["customer-impact", "metric"], mandatoryPolicies: ["prod.roadmap-governance"], reviewAfterDays: 30, escalation: { requiresApprovalFrom: ["SEC"], onMissingEvidence: "block" } },
+  MKT: { requiredEvidenceTags: ["validated-proof", "confidence-bounds"], mandatoryPolicies: ["mkt.proof-required"], reviewAfterDays: 21, escalation: { onMissingEvidence: "block" } },
+  CUST: { requiredEvidenceTags: ["tenant-context", "outcome"], mandatoryPolicies: ["cust.tenant-isolation"], reviewAfterDays: 30, escalation: { onMissingEvidence: "warn" } }
+} as const;
+
 export const DOMAIN_RISK_MATRIX: Record<string, RiskTier> = {
   // Low risk - informational
   research: "informational",
@@ -344,6 +361,61 @@ export function validatePolicyConfig(config: PolicyConfig): {
   };
 }
 
+
+function collectEvidenceTags(evidenceEvents: EvidenceEvent[]): Set<string> {
+  const tags = new Set<string>();
+  for (const event of evidenceEvents) {
+    for (const claim of event.claims || []) {
+      for (const tag of claim.tags || []) tags.add(tag);
+    }
+  }
+  return tags;
+}
+
+function evaluateDecisionTypeRules(
+  decisionSpec: DecisionSpec,
+  evidenceEvents: EvidenceEvent[],
+  policyConfig?: PolicyConfig
+): { warnings: string[]; approved: boolean } {
+  const warnings: string[] = [];
+  let approved = true;
+  const decisionType = decisionSpec.decisionType;
+  if (!decisionType) return { warnings, approved };
+
+  const defaults = DECISION_TYPE_DEFAULTS[decisionType];
+  const evidenceTags = collectEvidenceTags(evidenceEvents);
+  const requiredTags = new Set<string>([
+    ...defaults.requiredEvidenceTags,
+    ...(policyConfig?.denyUntilEvidenceTagsByDecisionType?.[decisionType] || [])
+  ]);
+
+  for (const tag of requiredTags) {
+    if (!evidenceTags.has(tag)) {
+      warnings.push(`Decision type ${decisionType} requires evidence tag: ${tag}`);
+      if ((defaults.escalation?.onMissingEvidence || "block") === "block") approved = false;
+    }
+  }
+
+  const mandatoryPolicies = new Set<string>([
+    ...defaults.mandatoryPolicies,
+    ...(policyConfig?.requiredPoliciesByDecisionType?.[decisionType] || [])
+  ]);
+  for (const policyName of mandatoryPolicies) {
+    if (!decisionSpec.context.toLowerCase().includes(policyName.toLowerCase())) {
+      warnings.push(`Decision type ${decisionType} missing mandatory policy reference: ${policyName}`);
+      approved = false;
+    }
+  }
+
+  const escalationRule = policyConfig?.escalationByDecisionType?.[decisionType] || defaults.escalation;
+  if (escalationRule?.requiresApprovalFrom?.length && !decisionSpec.constraints.some(c => escalationRule.requiresApprovalFrom!.some(req => c.name.toUpperCase().includes(`${req}_APPROVAL`)))) {
+    warnings.push(`Decision type ${decisionType} requires approval reference from: ${escalationRule.requiresApprovalFrom.join(", ")}`);
+    approved = false;
+  }
+
+  return { warnings, approved };
+}
+
 /**
  * Apply governance rules to a decision
  */
@@ -372,6 +444,9 @@ export function applyGovernanceRules(params: {
   // Check against policy config if provided
   const policyWarnings: string[] = [];
   let policyApproved = true;
+  const decisionTypeRules = evaluateDecisionTypeRules(decisionSpec, evidenceEvents, policyConfig);
+  policyWarnings.push(...decisionTypeRules.warnings);
+  policyApproved = policyApproved && decisionTypeRules.approved;
   
   if (policyConfig) {
     // Validate policy first

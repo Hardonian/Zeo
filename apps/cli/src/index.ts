@@ -40,6 +40,8 @@ Commands:
   graph <show|impact|fragility> Decision graph utilities
   view <lens> <transcript>   Derived lens view from a transcript
   review weekly              Weekly epistemic review
+  explain                    Explain a decision for an audience
+  summary                    Deterministic summary by decision type
   signals <file>              Process external signal payloads (JSON)
   --signals <file>            Process external signal payloads (JSON)
   --replay <file>             Run replay dataset for calibration testing
@@ -75,6 +77,9 @@ Options:
   --voi                       Print Value of Information (VOI) ranked list
   --world                     Print World Model posterior state
   --emit-transcript           Emit deterministic decision transcript
+  --audience <role>           Audience for explain/summary (legal|exec|sales|engineer|auditor)
+  --type <ENG|OPS|SEC|PROD|MKT|CUST>  Decision type filter
+  --mode <internal|customer>  Workspace mode for start
   --cache <read|write|off>    Cache mode control
   --no-cache                  Disable cache
   --help, -h                  Show this help message
@@ -298,7 +303,7 @@ async function main(): Promise<void> {
     process.exit(await mod.runAgentsCommand(mod.parseAgentsArgs(argv.slice(1))));
   }
 
-  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "view", "review"].includes(argv[0] ?? "")) {
+  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "view", "review", "explain", "summary"].includes(argv[0] ?? "")) {
     const mod = await import("./workflow-cli.js");
     process.exit(await mod.runWorkflowCommand(mod.parseWorkflowArgs(argv)));
   }

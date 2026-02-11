@@ -12,6 +12,8 @@ const DECAY_WINDOWS_DAYS = { fresh: 30, aging: 90, stale: 180 } as const;
 const LENSES = ["executive", "engineering", "legal", "personal"] as const;
 type LensType = typeof LENSES[number];
 type EdgeType = "depends_on" | "informs";
+type DecisionType = "ENG" | "OPS" | "SEC" | "PROD" | "MKT" | "CUST";
+type Audience = "legal" | "exec" | "sales" | "engineer" | "auditor";
 
 type DecayStatus = "fresh" | "aging" | "stale" | "expired" | "unknown";
 
@@ -30,6 +32,8 @@ export interface WorkflowArgs {
   | "graph"
   | "view"
   | "review"
+  | "explain"
+  | "summary"
   | null;
   subcommand?: "md" | "ics" | "bundle" | "show" | "impact" | "fragility" | "weekly";
   decision?: string;
@@ -48,6 +52,9 @@ export interface WorkflowArgs {
   assertedAt?: string;
   expiresAt?: string;
   asOf?: string;
+  audience?: Audience;
+  type?: DecisionType;
+  mode?: "internal" | "customer";
 }
 
 interface EvidenceItem {
@@ -90,6 +97,11 @@ function specFromWorkspace(ws: DecisionWorkspace): contracts.DecisionSpec {
     title: ws.title,
     context: ws.title,
     createdAt: ws.createdAt ?? new Date().toISOString(),
+    decisionType: ws.decisionType,
+    workspaceMode: ws.workspaceMode,
+    decisionState: ws.state,
+    reviewAfter: ws.runs[ws.runs.length - 1]?.fullTranscript?.timestamp ? new Date(new Date(ws.createdAt ?? new Date().toISOString()).getTime() + 30 * 24 * 3600 * 1000).toISOString() : undefined,
+    expectedSignals: ws.evidence.map((e) => e.summary),
     horizon: "days",
     agents: [{ id: "self", name: "Self", role: "self" }],
     actions: [
@@ -112,6 +124,9 @@ function specFromWorkspace(ws: DecisionWorkspace): contracts.DecisionSpec {
 interface DecisionWorkspace {
   decisionId: string;
   title: string;
+  decisionType: DecisionType;
+  workspaceMode: "internal" | "customer";
+  state: "proposed" | "challenged" | "amended" | "finalized";
   createdAt?: string;
   evidence: EvidenceItem[];
   tasks: TaskItem[];
@@ -154,7 +169,19 @@ function ensureWorkspaceRoot(): void {
 function loadWorkspace(decisionId: string): DecisionWorkspace {
   const path = workspacePath(decisionId);
   if (!existsSync(path)) throw new Error(`Decision not found: ${decisionId}. Run 'zeo start' first.`);
-  return JSON.parse(readFileSync(path, "utf8")) as DecisionWorkspace;
+  const parsed = JSON.parse(readFileSync(path, "utf8")) as Partial<DecisionWorkspace>;
+  return {
+    decisionId: parsed.decisionId || decisionId,
+    title: parsed.title || "Untitled Decision",
+    decisionType: parsed.decisionType || "ENG",
+    workspaceMode: parsed.workspaceMode || "customer",
+    state: parsed.state || "proposed",
+    createdAt: parsed.createdAt,
+    evidence: parsed.evidence || [],
+    tasks: parsed.tasks || [],
+    runs: parsed.runs || [],
+    chain: parsed.chain || {}
+  };
 }
 
 function saveWorkspace(ws: DecisionWorkspace): void {
@@ -411,8 +438,47 @@ function deriveLens(lens: LensType, ws: DecisionWorkspace, run: RunResult): stri
   return `Fastest mind-change signal: ${run.topEvidence[0]?.summary ?? "no evidence"}`;
 }
 
+
+function citeEvidence(item: EvidenceItem): string {
+  return `${item.id}:${item.provenance.hash.slice(0, 12)}@${item.assertedAt ?? "unknown"}`;
+}
+
+function explainForAudience(ws: DecisionWorkspace, audience: Audience, area?: string): string {
+  const latest = ws.runs[ws.runs.length - 1];
+  const evidenceCitations = ws.evidence.map(citeEvidence).join(", ") || "none";
+  if (audience === "exec") {
+    return `Decision ${ws.decisionId} (${ws.decisionType}/${ws.workspaceMode}) state=${ws.state}. Outcome=${latest?.recommendedAction ?? "unknown"}. Sensitivity=${latest?.plan.stopConditions.join("; ") ?? "unknown"}. Evidence=${evidenceCitations}.`;
+  }
+  if (audience === "legal") {
+    return `Scope=${area ?? ws.decisionType}. Decision=${ws.decisionId}. State=${ws.state}. Transcript=${latest?.transcriptHash ?? "none"}. Provenance=${evidenceCitations}.`;
+  }
+  if (audience === "sales") {
+    return `Claim posture for ${ws.decisionType}: confidence range inferred from fragility=${latest?.fragility ?? "unknown"}. Backing evidence=${evidenceCitations}.`;
+  }
+  if (audience === "auditor") {
+    return `Audit bundle decision=${ws.decisionId} mode=${ws.workspaceMode} state=${ws.state} run_count=${ws.runs.length} evidence_refs=${evidenceCitations}`;
+  }
+  return `Engineering view: decision=${ws.decisionId} type=${ws.decisionType} unresolved_tasks=${ws.tasks.filter(t => !t.completed).length} drift_signals=${latest?.plan.stopConditions.join("; ") ?? "none"}`;
+}
+
+function buildTypeSummary(type: DecisionType | undefined, audience: Audience): { rows: Array<{ decisionId: string; type: DecisionType; mode: string; state: string; reviewAfter: string; evidenceCount: number }>; text: string } {
+  const rows = collectWorkspaces()
+    .filter((ws) => (type ? ws.decisionType === type : true))
+    .sort((a, b) => a.decisionId.localeCompare(b.decisionId))
+    .map((ws) => ({
+      decisionId: ws.decisionId,
+      type: ws.decisionType,
+      mode: ws.workspaceMode,
+      state: ws.state,
+      reviewAfter: ws.createdAt ? new Date(new Date(ws.createdAt).getTime() + 30 * 24 * 3600 * 1000).toISOString() : "unknown",
+      evidenceCount: ws.evidence.length
+    }));
+  const text = rows.map((row) => `${row.decisionId} type=${row.type} mode=${row.mode} state=${row.state} reviewAfter=${row.reviewAfter} evidence=${row.evidenceCount} audience=${audience}`).join("\n") || "No matching decisions.";
+  return { rows, text };
+}
+
 export function parseWorkflowArgs(argv: string[]): WorkflowArgs {
-  const command = ["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "graph", "view", "review"].includes(argv[0] ?? "") ? argv[0] as WorkflowArgs["command"] : null;
+  const command = ["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "graph", "view", "review", "explain", "summary"].includes(argv[0] ?? "") ? argv[0] as WorkflowArgs["command"] : null;
   const subcommand =
     argv[0] === "export" && ["md", "ics", "bundle"].includes(argv[1] ?? "")
       ? argv[1] as WorkflowArgs["subcommand"]
@@ -451,6 +517,9 @@ export function parseWorkflowArgs(argv: string[]): WorkflowArgs {
     assertedAt: value("--asserted-at"),
     expiresAt: value("--expires-at"),
     asOf: value("--as-of"),
+    audience: value("--audience") as Audience | undefined,
+    type: value("--type") as DecisionType | undefined,
+    mode: (value("--mode") as "internal" | "customer" | undefined),
   };
 }
 
@@ -461,7 +530,7 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
   if (args.command === "start") {
     const title = args.title || (process.stdin.isTTY ? await prompt("Decision title: ") : "Untitled Decision");
     const decisionId = `dec_${hash({ title }).slice(0, 12)}`;
-    const ws: DecisionWorkspace = { decisionId, title, evidence: [], tasks: [], runs: [], chain: {} };
+    const ws: DecisionWorkspace = { decisionId, title, decisionType: args.type ?? "ENG", workspaceMode: args.mode ?? "customer", state: "proposed", evidence: [], tasks: [], runs: [], chain: {} };
     saveWorkspace(ws);
     writeJsonOrText(args, ws, `Started decision '${title}' (${decisionId})`);
     return 0;
@@ -643,6 +712,24 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
     }
 
     throw new Error("Usage: zeo export <md|ics|bundle>");
+  }
+
+
+  if (args.command === "explain") {
+    const audience = args.audience ?? "engineer";
+    const target = args.decision;
+    if (!target) throw new Error("Usage: zeo explain --decision <id> [--audience legal|exec|sales|engineer|auditor]");
+    const ws = loadWorkspace(target);
+    const explanation = explainForAudience(ws, audience, args.type);
+    writeJsonOrText(args, { decision: target, audience, explanation }, explanation);
+    return 0;
+  }
+
+  if (args.command === "summary") {
+    const audience = args.audience ?? "engineer";
+    const summary = buildTypeSummary(args.type, audience);
+    writeJsonOrText(args, { audience, type: args.type ?? null, rows: summary.rows }, summary.text);
+    return 0;
   }
 
   if (args.command === "streaks") {
