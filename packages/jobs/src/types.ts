@@ -3,7 +3,7 @@
  * Deterministic background job processing for Zeo
  */
 
-export type JobStatus = 
+export type JobStatus =
   | 'pending'      // Waiting to be processed
   | 'running'      // Currently executing
   | 'paused'       // Paused by user
@@ -11,14 +11,15 @@ export type JobStatus =
   | 'failed'       // Error occurred
   | 'cancelled';   // Cancelled by user
 
-export type JobType = 
+export type JobType =
   | 'replay'       // Replay analysis
   | 'analytics'    // Statistical analytics
   | 'tournament'   // Strategy tournament
   | 'export'       // Data export
   | 'import'       // Data import
   | 'calibration'  // Calibration run
-  | 'indexing';    // Index maintenance
+  | 'indexing'     // Index maintenance
+  | 'github_webhook'; // GitHub webhook processing
 
 export interface JobProgress {
   /** Current step number */
