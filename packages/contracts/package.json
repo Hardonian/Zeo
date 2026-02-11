@@ -17,6 +17,9 @@
     "test": "vitest run",
     "lint": "eslint ."
   },
+  "dependencies": {
+    "@controlplane/contracts": "workspace:*"
+  },
   "devDependencies": {
     "@types/node": "^25.2.1"
   }
