@@ -80,6 +80,21 @@ const ensurePackageJson = (dir, name, deps = {}) => {
         fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
         console.log(`Created ${pkgPath}`);
     }
+
+    const tsConfigPath = path.join(dir, 'tsconfig.json');
+    if (!fs.existsSync(tsConfigPath)) {
+        const tsConfig = {
+            "extends": "../../tsconfig.base.json",
+            "compilerOptions": {
+                "outDir": "dist",
+                "rootDir": "src",
+                "moduleResolution": "bundler"
+            },
+            "include": ["src/**/*"]
+        };
+        fs.writeFileSync(tsConfigPath, JSON.stringify(tsConfig, null, 2));
+        console.log(`Created ${tsConfigPath}`);
+    }
 };
 
 ensurePackageJson('packages/policy', '@zeo/policy');
