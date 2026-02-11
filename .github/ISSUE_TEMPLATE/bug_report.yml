@@ -1,0 +1,115 @@
+name: Bug Report
+description: Report a bug or unexpected behavior in ReadyLayer
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Thanks for reporting a bug.**
+
+        Please:
+        - Search existing issues to avoid duplicates
+        - Share the smallest repro steps you can
+        - Redact secrets before posting logs or screenshots
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug description
+      description: What happened and why is it a problem?
+      placeholder: "When I run X, Y happens instead of Z..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Include exact commands or UI steps.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: "I expected..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      placeholder: "Instead, ..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Web app (Next.js UI/API)
+        - CLI
+        - Runner (Go)
+        - JobForge worker
+        - Docs
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Commit or version
+      description: Git commit SHA or tag (if known).
+      placeholder: "main @ <sha>"
+    validations:
+      required: false
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      placeholder: "v20.11.0"
+    validations:
+      required: false
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: "macOS 14, Ubuntu 22.04, Windows 11"
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Redact secrets before sharing.
+      placeholder: |
+        ```
+        ...
+        ```
+      render: shell
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: I have redacted sensitive information.
+          required: true
+        - label: I included reproduction steps.
+          required: true

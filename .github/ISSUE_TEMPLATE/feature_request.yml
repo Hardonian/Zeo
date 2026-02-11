@@ -1,0 +1,59 @@
+name: Feature Request
+description: Suggest an improvement or new capability
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Thanks for the idea.**
+
+        Please focus on the problem first, then describe a solution.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What pain point are you trying to solve?
+      placeholder: "I can't do X because..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How should ReadyLayer address the problem?
+      placeholder: "Add/change..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other options did you try or evaluate?
+      placeholder: "I also tried..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope & impact
+      description: Who benefits and what areas of the repo are affected?
+      placeholder: "Impacts the CLI and runner..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I searched existing issues and discussions for related requests.
+          required: true
+        - label: This request does not disclose sensitive data.
+          required: true

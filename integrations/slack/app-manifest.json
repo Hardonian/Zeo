@@ -1,0 +1,68 @@
+{
+  "_metadata": {
+    "major_version": 1,
+    "minor_version": 1
+  },
+  "display_information": {
+    "name": "ReadyLayer",
+    "description": "AI-powered code review and testing for secure, quality-driven development",
+    "background_color": "#1a1a1a",
+    "long_description": "ReadyLayer integrates with your Slack workspace to notify teams about blocked PRs, security findings, and code quality issues."
+  },
+  "features": {
+    "bot_user": {
+      "display_name": "ReadyLayer Bot",
+      "always_online": true
+    },
+    "slash_commands": [
+      {
+        "command": "/readylayer",
+        "url": "https://api.readylayer.io/integrations/slack/commands",
+        "description": "Interact with ReadyLayer",
+        "usage_hint": "[status|config|help]"
+      }
+    ]
+  },
+  "oauth_config": {
+    "redirect_urls": [
+      "https://readylayer.io/integrations/slack/callback"
+    ],
+    "scopes": {
+      "bot": [
+        "chat:write",
+        "chat:write.public",
+        "chat:write.customize",
+        "files:read",
+        "files:write",
+        "users:read",
+        "users:read.email",
+        "team:read",
+        "channels:read",
+        "groups:read",
+        "im:read",
+        "mpim:read",
+        "incoming-webhook",
+        "commands"
+      ]
+    }
+  },
+  "settings": {
+    "event_subscriptions": {
+      "request_url": "https://api.readylayer.io/integrations/slack/events",
+      "events_bot": [
+        "app_mention",
+        "message.channels",
+        "message.groups",
+        "message.im",
+        "message.mpim"
+      ]
+    },
+    "interactivity": {
+      "is_enabled": true,
+      "request_url": "https://api.readylayer.io/integrations/slack/interactive"
+    },
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": false,
+    "token_rotation_enabled": false
+  }
+}

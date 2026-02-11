@@ -1,0 +1,1261 @@
+// ReadyLayer Platform Schema
+// This schema replaces the gamification app schema with ReadyLayer core models
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Core User Model (Supabase Auth compatible)
+model User {
+  id            String    @id // Uses Supabase auth.users.id (UUID as TEXT)
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  organizations OrganizationMember[]
+  apiKeys       ApiKey[]
+  reviews       Review[]
+  jobs          Job[]
+  auditLogs     AuditLog[]
+  subscriptions Subscription[]
+  oauthStates   OAuthState[]
+
+  @@index([email])
+}
+
+// Organizations
+model Organization {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  plan         String   @default("starter") // starter, growth, scale
+  billingEmail String?
+  timezone     String   @default("UTC") // P2-FIX: Organization timezone for daily usage limit resets
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  members       OrganizationMember[]
+  repositories  Repository[]
+  configs       OrganizationConfig[]
+  installations Installation[]
+  subscriptions Subscription[]
+  auditLogs     AuditLog[]
+  costTracking  CostTracking[]
+  policyPacks   PolicyPack[]
+  waivers       Waiver[]
+  aiAnomalies   AIAnomaly[]
+  aiSuggestions AIOptimizationSuggestion[]
+  tokenUsage    TokenUsage[]
+  modelPerformances ModelPerformance[]
+  modelPerformanceAggregates ModelPerformanceAggregate[]
+  aggregatedInsights AggregatedInsight[]
+  dataRetentionPolicy DataRetentionPolicy?
+  userConsents UserConsent[]
+  predictiveAlerts PredictiveAlert[]
+  providerConfigs ProviderConfig[]
+  governanceRuns GovernanceRun[]
+  oauthStates    OAuthState[]
+  jobs          Job[]
+  trustVerifications TrustVerification[]
+  provenancePacks ProvenancePack[]
+
+  @@index([slug])
+}
+
+// Organization Members (RBAC)
+model OrganizationMember {
+  id             String   @id @default(cuid())
+  organizationId String
+  userId         String
+  role           String   @default("member") // owner, admin, member
+  joinedAt       DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@index([organizationId])
+  @@index([userId])
+}
+
+// Repositories
+model Repository {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String // repo name
+  fullName       String // owner/repo
+  provider       String // github, gitlab, bitbucket
+  providerId     String? // Provider's repo ID
+  url            String?
+  defaultBranch  String   @default("main")
+  isPrivate      Boolean  @default(true)
+  enabled        Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization  Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  configs       RepositoryConfig[]
+  reviews       Review[]
+  tests         Test[]
+  testRuns      TestRun[]
+  docs          Doc[]
+  installations Installation[]
+  violations    Violation[]
+  jobs          Job[]
+  waivers       Waiver[]
+  policyPacks   PolicyPack[]
+  predictiveAlerts PredictiveAlert[]
+  aiAnomalies   AIAnomaly[]
+  aiSuggestions AIOptimizationSuggestion[]
+  tokenUsage    TokenUsage[]
+  runs          ReadyLayerRun[]
+  governanceRuns GovernanceRun[]
+  provenancePacks ProvenancePack[]
+
+  @@unique([fullName, provider])
+  @@index([organizationId])
+  @@index([provider, providerId])
+  @@index([fullName])
+}
+
+// GitHub/GitLab App Installations
+model Installation {
+  id             String   @id @default(cuid())
+  organizationId String?
+  repositoryId   String?
+  provider       String // github, gitlab, bitbucket
+  providerId     String // Installation ID from provider
+  accessToken    String   @db.Text // Encrypted
+  tokenEncrypted Boolean  @default(false) // Track if token is encrypted (for migration)
+  permissions    Json // Granted permissions/scopes
+  selectedRepos  String[] // Selected repo IDs
+  webhookSecret  String? // HMAC secret for webhook validation
+  isActive       Boolean  @default(true)
+  installedAt    DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  repository   Repository?   @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerId])
+  @@index([organizationId])
+  @@index([repositoryId])
+  @@index([tokenEncrypted])
+}
+
+// OAuth State for CSRF protection
+model OAuthState {
+  id             String   @id @default(cuid())
+  stateHash      String   @unique // SHA-256 hash of state token
+  userId         String
+  organizationId String
+  provider       String   // github, gitlab, bitbucket
+  returnUrl      String   @default("/dashboard/repos")
+  expiresAt      DateTime
+  createdAt      DateTime @default(now())
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([stateHash])
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// Repository Configurations (.readylayer.yml)
+model RepositoryConfig {
+  id           String   @id @default(cuid())
+  repositoryId String   @unique
+  config       Json // Parsed .readylayer.yml
+  rawConfig    String?  @db.Text // Raw YAML
+  version      Int      @default(1)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@index([repositoryId])
+}
+
+// Organization Configurations (org-level defaults)
+model OrganizationConfig {
+  id             String   @id @default(cuid())
+  organizationId String   @unique
+  config         Json // Org-level defaults
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+// Review Guard Results
+model Review {
+  id            String    @id @default(cuid())
+  repositoryId  String
+  prNumber      Int
+  prSha         String // Commit SHA
+  prTitle       String?
+  status        String    @default("pending") // pending, completed, failed, blocked
+  result        Json? // Review results: { issues, summary, blocking }
+  issuesFound   Json // [{ severity, rule_id, file, line, message, fix }]
+  summary       Json? // { total_issues, critical, high, medium, low }
+  isBlocked     Boolean   @default(false)
+  blockedReason String?   @db.Text
+  startedAt     DateTime  @default(now())
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  user       User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId     String?
+
+  violations     Violation[]
+  evidenceBundle EvidenceBundle?
+  tokenUsage     TokenUsage[]
+  run            ReadyLayerRun?
+
+  @@unique([repositoryId, prNumber, prSha])
+  @@index([repositoryId])
+  @@index([status])
+  @@index([isBlocked])
+  @@index([createdAt])
+  // P1-FIX: Composite indexes for dashboard queries (reduces 500ms+ latency)
+  @@index([repositoryId, createdAt]) // Repository timeline queries
+  @@index([repositoryId, status, createdAt]) // Filtered repository queries
+}
+
+// Test Engine Results
+model Test {
+  id           String    @id @default(cuid())
+  repositoryId String
+  prNumber     Int?
+  prSha        String?
+  filePath     String
+  framework    String // jest, mocha, pytest, etc.
+  status       String    @default("pending") // pending, generated, failed
+  testContent  String?   @db.Text // Generated test code
+  coverage     Json? // Coverage metrics
+  placement    String? // Where test was placed
+  startedAt    DateTime  @default(now())
+  completedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  repository     Repository      @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  evidenceBundle EvidenceBundle?
+
+  @@index([repositoryId])
+  @@index([prNumber])
+  @@index([status])
+  @@index([filePath])
+}
+
+// Test Run Execution (CI/CD runs)
+model TestRun {
+  id            String    @id @default(cuid())
+  repositoryId  String
+  prNumber      Int?
+  prSha         String
+  workflowRunId String? // GitHub Actions workflow run ID
+  status        String    @default("pending") // pending, in_progress, completed, failed, cancelled
+  conclusion    String? // success, failure, cancelled, skipped
+  coverage      Json? // Coverage metrics: { total: number, lines: number, functions: number, branches: number }
+  summary       Json? // Test summary: { total: number, passed: number, failed: number, skipped: number }
+  artifactsUrl  String? // URL to download artifacts
+  startedAt     DateTime  @default(now())
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@unique([repositoryId, prSha, workflowRunId])
+  @@index([repositoryId])
+  @@index([prNumber])
+  @@index([prSha])
+  @@index([workflowRunId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Doc Sync Results
+model Doc {
+  id            String    @id @default(cuid())
+  repositoryId  String
+  ref           String // Branch or commit SHA
+  format        String // openapi, markdown, etc.
+  version       String? // Version number
+  content       String?   @db.Text // Generated doc content
+  spec          Json? // Parsed spec (OpenAPI, etc.)
+  status        String    @default("pending") // pending, generated, failed, published
+  driftDetected Boolean   @default(false)
+  driftDetails  Json? // Drift detection results
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  repository     Repository      @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  evidenceBundle EvidenceBundle?
+
+  @@unique([repositoryId, ref, format])
+  @@index([repositoryId])
+  @@index([status])
+  @@index([driftDetected])
+}
+
+// ReadyLayer Run (unified pipeline: Review Guard → Test Engine → Doc Sync)
+model ReadyLayerRun {
+  id            String    @id @default(cuid())
+  correlationId String    @unique // For tracing across services
+  repositoryId  String?
+  sandboxId     String?   @unique // For sandbox demo runs
+  trigger       String    // 'webhook', 'manual', 'sandbox'
+  triggerMetadata Json?   // { prNumber, prSha, userId, etc. }
+  
+  // Stage statuses
+  reviewGuardStatus String @default("pending") // pending, running, succeeded, failed, skipped
+  testEngineStatus  String @default("pending") // pending, running, succeeded, failed, skipped
+  docSyncStatus     String @default("pending") // pending, running, succeeded, failed, skipped
+  
+  // Overall status
+  status        String    @default("pending") // pending, running, completed, failed, cancelled
+  conclusion    String?   // success, failure, partial_success, cancelled
+  
+  // Stage outputs
+  reviewGuardResult Json? // Review result summary
+  testEngineResult   Json? // Test generation/coverage summary
+  docSyncResult      Json? // Doc sync summary
+  
+  // AI-touched detection
+  aiTouchedDetected Boolean @default(false)
+  aiTouchedFiles    Json?   // Array of detected files with confidence
+  
+  // Policy gates
+  gatesPassed  Boolean   @default(false)
+  gatesFailed  Json?     // Array of failed gates with reasons
+  
+  // Timing
+  startedAt     DateTime  @default(now())
+  completedAt  DateTime?
+  reviewGuardStartedAt   DateTime?
+  reviewGuardCompletedAt DateTime?
+  testEngineStartedAt    DateTime?
+  testEngineCompletedAt  DateTime?
+  docSyncStartedAt       DateTime?
+  docSyncCompletedAt    DateTime?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  repository Repository? @relation(fields: [repositoryId], references: [id], onDelete: SetNull)
+  
+  // Relations to stage outputs
+  reviewId     String?   @unique
+  review       Review?   @relation(fields: [reviewId], references: [id], onDelete: SetNull)
+  
+  auditLogs    AuditLog[]
+  jobs         Job[]
+  provenancePacks ProvenancePack[]
+
+  @@index([correlationId])
+  @@index([repositoryId])
+  @@index([sandboxId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([trigger])
+}
+
+// Queue Jobs (Redis-backed, but also persisted for durability)
+model Job {
+  id             String    @id @default(cuid())
+  type           String // review, test_generation, doc_sync, webhook, run
+  status         String    @default("queued") // queued, running, succeeded, failed, dead, canceled
+  payload        Json // Job payload
+  result         Json? // Job result
+  error          String?   @db.Text
+  retryCount     Int       @default(0)
+  maxRetries     Int       @default(3)
+  scheduledAt    DateTime  @default(now())
+  startedAt      DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Tenant isolation
+  organizationId String?
+
+  // Worker claiming
+  lockedAt       DateTime?
+  lockedBy       String?
+
+  // Idempotency
+  idempotencyKey String?
+
+  // Relations
+  repositoryId   String?
+  userId         String?
+  runId          String? // Link to ReadyLayerRun if this job is part of a run
+
+  repository     Repository?    @relation(fields: [repositoryId], references: [id], onDelete: SetNull)
+  user           User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  organization   Organization?  @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  run            ReadyLayerRun? @relation(fields: [runId], references: [id], onDelete: SetNull)
+
+  @@index([type])
+  @@index([status])
+  @@index([scheduledAt])
+  @@index([repositoryId])
+  @@index([runId])
+  @@index([organizationId])
+  @@index([organizationId, status])
+  @@index([status, scheduledAt])
+  @@index([lockedBy])
+  @@index([idempotencyKey])
+  @@unique([organizationId, type, idempotencyKey])
+}
+
+// Historical Violation Tracking (for pattern detection)
+model Violation {
+  id           String   @id @default(cuid())
+  repositoryId String
+  reviewId     String?
+  ruleId       String // security.sql-injection, etc.
+  severity     String // critical, high, medium, low
+  file         String
+  line         Int
+  message      String   @db.Text
+  detectedAt   DateTime @default(now())
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  review     Review?    @relation(fields: [reviewId], references: [id], onDelete: SetNull)
+
+  @@index([repositoryId])
+  @@index([ruleId])
+  @@index([severity])
+  @@index([detectedAt])
+  // P1-FIX: Composite index for violation timeline queries
+  @@index([repositoryId, detectedAt]) // Repository violation history
+}
+
+// API Keys (for programmatic access)
+model ApiKey {
+  id         String    @id @default(cuid())
+  userId     String
+  name       String
+  keyHash    String // Hashed API key
+  scopes     String[] // read, write, admin
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
+  isActive   Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([keyHash])
+  @@index([isActive])
+}
+
+// Billing & Subscriptions
+model Subscription {
+  id                   String    @id @default(cuid())
+  organizationId       String
+  userId               String // User who created subscription
+  plan                 String // starter, growth, scale
+  status               String    @default("active") // active, cancelled, expired, trialing
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId])
+  @@index([status])
+  @@index([stripeCustomerId])
+}
+
+// Cost Tracking (LLM spend, API calls)
+model CostTracking {
+  id             String   @id @default(cuid())
+  organizationId String
+  date           DateTime @db.Date
+  service        String // llm, api, storage
+  provider       String // openai, anthropic, etc.
+  amount         Decimal  @db.Decimal(10, 4) // Cost in USD
+  units          Int // Tokens, API calls, etc.
+  metadata       Json? // Additional tracking data
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, date, service, provider])
+  @@index([organizationId])
+  @@index([date])
+  @@index([service])
+}
+
+// Audit Logs (for compliance and debugging)
+model AuditLog {
+  id             String   @id @default(cuid())
+  organizationId String?
+  userId         String?
+  action         String // create, update, delete, override, block
+  resourceType   String // review, config, installation, etc.
+  resourceId     String?
+  details        Json? // Action details
+  ipAddress      String?
+  userAgent      String?
+  
+  // Hardening fields
+  previousHash   String?
+  hash           String?
+  signature      String?
+  metadata       Json?
+  actorIp        String?
+  governanceRunId String?
+
+  createdAt      DateTime @default(now())
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  user         User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  run          ReadyLayerRun? @relation(fields: [runId], references: [id], onDelete: SetNull)
+  runId        String?
+  governanceRun GovernanceRun? @relation("GovernanceRunAuditLogs", fields: [governanceRunId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([userId])
+  @@index([action])
+  @@index([resourceType])
+  @@index([createdAt])
+  @@index([runId])
+  @@index([governanceRunId])
+  @@index([hash])
+  @@index([previousHash])
+}
+
+// Policy-as-Code Models
+
+// Policy Pack (versioned policy configuration)
+model PolicyPack {
+  id             String   @id @default(cuid())
+  organizationId String
+  repositoryId   String? // null = org-level, set = repo-level
+  version        String // Semantic version (e.g., "1.0.0")
+  source         String   @db.Text // Policy source (YAML/JSON)
+  checksum       String // SHA-256 hash of source for integrity
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  repository   Repository?  @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  rules        PolicyRule[]
+
+  @@unique([organizationId, repositoryId, version])
+  @@index([organizationId])
+  @@index([repositoryId])
+  @@index([checksum])
+  @@index([createdAt])
+}
+
+// Policy Rule (individual rule configuration)
+model PolicyRule {
+  id              String   @id @default(cuid())
+  policyPackId    String
+  ruleId          String // e.g., "security.sql-injection"
+  severityMapping Json // Maps rule severity to action: { critical: "block", high: "block", ... }
+  enabled         Boolean  @default(true)
+  params          Json? // Rule-specific parameters
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  policyPack PolicyPack @relation(fields: [policyPackId], references: [id], onDelete: Cascade)
+
+  @@unique([policyPackId, ruleId])
+  @@index([policyPackId])
+  @@index([ruleId])
+}
+
+// Waiver (temporary exception for specific findings)
+model Waiver {
+  id             String    @id @default(cuid())
+  organizationId String
+  repositoryId   String? // null = org-level, set = repo-level
+  ruleId         String // Rule to waive
+  scope          String // "repo" | "branch" | "path"
+  scopeValue     String? // Branch name or path pattern
+  reason         String    @db.Text
+  expiresAt      DateTime?
+  createdBy      String // User ID
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  repository   Repository?  @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([repositoryId])
+  @@index([ruleId])
+  @@index([expiresAt])
+  @@index([createdAt])
+}
+
+// Evidence Bundle (auditable decision record)
+model EvidenceBundle {
+  id                 String   @id @default(cuid())
+  reviewId           String?  @unique // One of reviewId, testId, docId must be set
+  testId             String?  @unique
+  docId              String?  @unique
+  inputsMetadata     Json // Inputs that led to decision (diff hash, file list hash, etc.)
+  rulesFired         Json // Array of rule IDs that were evaluated
+  deterministicScore Decimal  @db.Decimal(10, 4) // 0-100 score
+  artifacts          Json? // Pointers to artifacts (logs, traces, etc.)
+  policyChecksum     String // Policy pack checksum used
+  toolVersions       Json? // Tool versions used
+  timings            Json? // Performance timings
+  createdAt          DateTime @default(now())
+
+  review Review? @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  test   Test?   @relation(fields: [testId], references: [id], onDelete: Cascade)
+  doc    Doc?    @relation(fields: [docId], references: [id], onDelete: Cascade)
+
+  @@index([reviewId])
+  @@index([testId])
+  @@index([docId])
+  @@index([policyChecksum])
+  @@index([createdAt])
+}
+
+// AI Anomaly Detection Models
+
+// AI Anomaly (tracked anomalies: drift, context slips, hallucinations, token waste)
+model AIAnomaly {
+  id          String   @id @default(cuid())
+  repositoryId String
+  organizationId String
+  type        String // drift, context_slip, hallucination, token_waste, repeated_mistake
+  severity    String // low, medium, high, critical
+  description String   @db.Text
+  file        String?
+  line        Int?
+  metadata    Json? // Additional anomaly data
+  detectedAt  DateTime @default(now())
+  resolvedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  repository  Repository  @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([repositoryId])
+  @@index([organizationId])
+  @@index([type])
+  @@index([severity])
+  @@index([detectedAt])
+  @@index([resolvedAt])
+}
+
+// AI Optimization Suggestion (personalized suggestions for developers)
+model AIOptimizationSuggestion {
+  id          String   @id @default(cuid())
+  repositoryId String?
+  organizationId String
+  type        String // system_prompt, fine_tuning, context_optimization, model_selection
+  difficulty  String // easy, intermediate, advanced
+  title       String
+  description String   @db.Text
+  impact      String // low, medium, high
+  effort      String // low, medium, high
+  stack       String[] // e.g., ['react', 'typescript']
+  llmAccess   String[] // e.g., ['openai', 'anthropic']
+  codeExample String?  @db.Text
+  steps       Json // Array of step strings
+  estimatedSavings Json? // { tokens, cost, time }
+  status      String   @default("pending") // pending, in_progress, completed, dismissed
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  repository  Repository?  @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([repositoryId])
+  @@index([organizationId])
+  @@index([type])
+  @@index([difficulty])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Token Usage Tracking (detailed token usage per review/request)
+model TokenUsage {
+  id             String   @id @default(cuid())
+  repositoryId   String?
+  organizationId String
+  reviewId       String?
+  service        String // review, test_generation, doc_sync
+  provider       String // openai, anthropic
+  model          String
+  inputTokens    Int
+  outputTokens   Int
+  totalTokens    Int
+  cost           Decimal  @db.Decimal(10, 4)
+  contextSize    Int? // Size of context sent
+  wastePercentage Decimal? @db.Decimal(5, 2) // Estimated waste percentage
+  metadata       Json? // Additional tracking data
+  createdAt      DateTime @default(now())
+
+  repository Repository? @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  review     Review?    @relation(fields: [reviewId], references: [id], onDelete: SetNull)
+
+  @@index([repositoryId])
+  @@index([organizationId])
+  @@index([reviewId])
+  @@index([service])
+  @@index([createdAt])
+}
+
+// Predictive Alerts (predictions made by the system)
+model PredictiveAlert {
+  id                 String   @id @default(cuid())
+  organizationId     String
+  repositoryId       String?
+  alertType          String // anomaly, drift, token_waste, repeated_mistake, security, quality
+  severity           String // low, medium, high, critical
+  confidence         Decimal  @db.Decimal(5, 4) // 0-1
+  trustLevel         String // low, medium, high, very_high
+  prediction         String   @db.Text
+  rationale          String   @db.Text
+  suggestedAction    String   @db.Text
+  estimatedLikelihood Decimal @db.Decimal(5, 4) // 0-1
+  historicalAccuracy Decimal? @db.Decimal(5, 4)
+  dataPoints         Int
+  metadata           Json? // Confidence score details
+  resolvedAt         DateTime?
+  wasCorrect         Boolean? // Feedback after resolution
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  repository   Repository?  @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([repositoryId])
+  @@index([alertType])
+  @@index([severity])
+  @@index([confidence])
+  @@index([trustLevel])
+  @@index([resolvedAt])
+  @@index([createdAt])
+}
+
+// Model Performance Tracking (individual performance records)
+model ModelPerformance {
+  id             String   @id @default(cuid())
+  organizationId String
+  modelId        String
+  provider       String
+  success        Boolean
+  responseTimeMs Int      // Response time in milliseconds
+  tokensUsed     Int
+  cost           Decimal  @db.Decimal(10, 4)
+  predictionId   String?  // Optional link to prediction
+  metadata       Json?    // Additional tracking data
+  timestamp      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([modelId])
+  @@index([provider])
+  @@index([timestamp])
+  @@index([predictionId])
+  @@index([organizationId, modelId, provider, timestamp])
+}
+
+// Model Performance Aggregates (aggregated metrics per model)
+model ModelPerformanceAggregate {
+  id                 String   @id @default(cuid())
+  organizationId     String
+  modelId            String
+  provider           String
+  totalRequests      Int
+  successfulRequests Int
+  failedRequests     Int
+  averageResponseTime Decimal  @db.Decimal(10, 2)
+  averageTokensUsed  Int
+  averageCost        Decimal  @db.Decimal(10, 4)
+  accuracyScore      Decimal  @db.Decimal(5, 4) // 0-1
+  confidenceScore    Decimal  @db.Decimal(5, 4) // 0-1
+  trustScore         Decimal  @db.Decimal(5, 4) // 0-1
+  lastUpdated        DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, modelId, provider])
+  @@index([organizationId])
+  @@index([modelId])
+  @@index([provider])
+  @@index([lastUpdated])
+}
+
+// Aggregated Insights (patterns, anomalies, optimizations)
+model AggregatedInsight {
+  id             String   @id @default(cuid())
+  organizationId String
+  insightType    String   // pattern, anomaly, optimization, prediction
+  confidence     Decimal  @db.Decimal(5, 4) // 0-1
+  trustLevel     Decimal  @db.Decimal(5, 4) // 0-1
+  dataPoints     Int
+  firstSeen       DateTime
+  lastSeen        DateTime
+  trend           String   // increasing, decreasing, stable
+  metadata        Json?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([insightType])
+  @@index([confidence])
+  @@index([lastSeen])
+}
+
+// Data Retention Policy (compliance configuration)
+model DataRetentionPolicy {
+  id             String   @id @default(cuid())
+  organizationId String   @unique
+  gdprEnabled    Boolean  @default(true)
+  retentionDays  Int      @default(365)
+  requireConsent Boolean  @default(true)
+  anonymizePII   Boolean  @default(true)
+  allowAggregation Boolean @default(true)
+  aggregationWindow Int   @default(30) // Days
+  provenanceRetentionDays Int @default(180)
+  provenanceMaxPayloadKB Int @default(512)
+  provenanceRedactionDefault String @default("safe")
+  provenanceAllowRawStorage Boolean @default(false)
+  provenanceEnabled Boolean @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+
+
+model ProvenancePack {
+  id                String   @id @default(cuid())
+  organizationId    String
+  repositoryId      String?
+  runId             String?
+  prNumber          Int?
+  prSha             String?
+  correlationId     String?
+  source            String
+  sourceSystem      String
+  agent             Json
+  redactionLevel    String   @default("safe")
+  payloadEncrypted  Boolean  @default(false)
+  payload           Json
+  payloadHash       String
+  promptHashes      Json?
+  toolCallSummary   Json?
+  safeSummary       Json?
+  createdAt         DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  repository   Repository?  @relation(fields: [repositoryId], references: [id], onDelete: SetNull)
+  run          ReadyLayerRun? @relation(fields: [runId], references: [id], onDelete: SetNull)
+  artifacts    ProvenanceArtifact[]
+
+  @@index([organizationId, createdAt])
+  @@index([repositoryId, prNumber])
+  @@index([runId])
+  @@index([correlationId])
+  @@index([payloadHash])
+}
+
+model ProvenanceArtifact {
+  id               String   @id @default(cuid())
+  provenancePackId String
+  kind             String
+  mimeType         String
+  content          String?  @db.Text
+  jsonContent      Json?
+  contentHash      String
+  createdAt        DateTime @default(now())
+
+  provenancePack ProvenancePack @relation(fields: [provenancePackId], references: [id], onDelete: Cascade)
+
+  @@index([provenancePackId])
+  @@index([kind])
+}
+
+// User Consent (GDPR consent tracking)
+model UserConsent {
+  id             String   @id @default(cuid())
+  organizationId String
+  userId         String
+  consentType    String   // data_collection, analytics, marketing, etc.
+  granted        Boolean
+  grantedAt      DateTime @default(now())
+  revokedAt      DateTime?
+  ipAddress      String?
+  userAgent      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId, consentType])
+  @@index([organizationId])
+  @@index([userId])
+  @@index([consentType])
+  @@index([granted])
+}
+
+// Prediction Feedback (feedback on predictions for learning)
+model PredictionFeedback {
+  id                    String    @id @default(cuid())
+  predictionId          String
+  wasCorrect            Boolean
+  actualOutcome         Json?
+  feedbackType          String    // explicit, implicit, outcome_based
+  confidenceAtPrediction Decimal   @db.Decimal(5, 4) // 0-1
+  userId                String?
+  timestamp             DateTime  @default(now())
+
+  @@index([predictionId])
+  @@index([userId])
+  @@index([timestamp])
+  @@index([wasCorrect])
+}
+
+// ============================================================================
+// WEBHOOK IDEMPOTENCY MODEL
+// Ensures exactly-once processing of webhook events
+// ============================================================================
+
+model WebhookEvent {
+  id                String   @id @default(cuid())
+  eventId           String   @unique // Provider's unique event ID (e.g., GitHub delivery-id)
+  provider          String   // github, gitlab, bitbucket, stripe
+  eventType         String   // pull_request, merge_request, etc.
+  installationId    String   // Provider installation ID
+  repositoryId      String?  // Internal repository ID (if known)
+
+  // Idempotency tracking
+  status            String   @default("pending") // pending, processing, completed, failed, duplicate
+  processedAt       DateTime?
+  result            Json?    // Result of processing (for later lookup)
+  error             String?   @db.Text
+  retryCount        Int      @default(0)
+  lastRetryAt       DateTime?
+
+  // Signature info (for audit/debugging, not for re-verification)
+  signatureHash     String?   // First 16 chars of signature (for logging)
+
+  // Timing (for replay detection integration)
+  receivedAt        DateTime  @default(now())
+  eventTimestamp    DateTime? // Timestamp from the event itself (if available)
+
+  // Composite indexes for efficient lookups
+  @@index([provider, installationId])
+  @@index([provider, eventType])
+  @@index([status])
+  @@index([installationId, status])
+  @@index([receivedAt])
+}
+
+// Outbox Pattern for Provider Status Updates
+// Ensures idempotent delivery of status updates to git providers
+model OutboxIntent {
+  id                String   @id @default(cuid())
+  idempotencyKey    String   @unique // Composite key: runId_stage_status
+  runId             String
+  repositoryId      String?
+  sandboxId         String?  // For sandbox runs
+  intentType        String   // 'status_update' | 'check_run' | 'commit_status'
+  payload           Json     // Full payload to send to provider
+  status            String   @default("pending") // pending, processing, completed, failed
+  retryCount        Int      @default(0)
+  maxRetries        Int      @default(3)
+  error             String?  @db.Text
+  postedAt          DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([runId])
+  @@index([repositoryId])
+  @@index([sandboxId])
+  @@index([status])
+  @@index([idempotencyKey])
+  @@index([createdAt])
+}
+
+// ============================================================================
+// GOVERNANCE & VARIANCE MODELS (OpenRouter/OpenCode Integration)
+// ============================================================================
+
+// Provider Configuration (encrypted API keys, routing strategy per org)
+model ProviderConfig {
+  id                String   @id @default(cuid())
+  organizationId    String
+  provider          String   // openai, anthropic, opencode, openrouter
+  encryptedKey      String   @db.Text // Encrypted API key (ChaCha20-Poly1305)
+  encryptionVersion String   @default("v1") // Track encryption version for rotation
+  routingStrategy   String   @default("single") // single, fallback, variance
+  isActive          Boolean  @default(true)
+  metadata          Json?    // Additional provider-specific config
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, provider])
+  @@index([organizationId])
+  @@index([provider])
+  @@index([isActive])
+}
+
+// Governance Run (orchestrates single/variance governance execution)
+model GovernanceRun {
+  id                String   @id @default(cuid())
+  organizationId    String
+  repositoryId      String?
+  mode              String   // single-model, opencode-baseline, variance
+  model             String   // Model name or provider:model
+  modelEpoch        String   // ISO timestamp or semantic version
+  status            String   @default("created") // created, executing, completed, failed
+  diffHash          String?  // SHA256 hash of diff (not the diff itself)
+  diffSize          Int?     // Diff size in bytes (for analytics)
+  intentHash        String?  // SHA256 hash of intent (not raw intent)
+  intentSource      String?  // pr_description, commit_message, prompt_metadata
+  error             String?  @db.Text
+  executionDurationMs Int?
+  createdAt         DateTime @default(now())
+  completedAt       DateTime?
+  updatedAt         DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  repository   Repository?  @relation(fields: [repositoryId], references: [id], onDelete: SetNull)
+  results      GovernanceRunResult?
+  intentArtifact IntentArtifact?
+  auditLogs    AuditLog[]   @relation("GovernanceRunAuditLogs")
+
+  @@index([organizationId])
+  @@index([repositoryId])
+  @@index([status])
+  @@index([mode])
+  @@index([modelEpoch])
+  @@index([createdAt])
+}
+
+// Governance Run Result (findings + signals from governance execution)
+model GovernanceRunResult {
+  id                String   @id @default(cuid())
+  governanceRunId   String   @unique
+  findings          Json     // Array of Finding objects (normalized)
+  varianceScore     Decimal? @db.Decimal(5, 4) // 0-1: model disagreement score
+  varianceMetrics   Json?    // Detailed variance analysis (multi-model mode)
+  intentDrift       Json?    // { score: 0-1, category: high|medium|low|none, signals: [...] }
+  confidenceInflation Json?  // { score: 0-1, quadrant: "confident+stable|..." }
+  temporalFragility Json?    // { tag: fresh|stale-14d|stale-90d|deprecated, age_days: int }
+  negativeSpaceGaps Json?    // Array of missing invariants { type, severity, recommendation }
+  socioTechnicalRisk Json?   // { ai_authorship_pct, reviewer_count, review_duration_ms, orphaned_intelligence: bool }
+  modelAccuracy     Decimal? @db.Decimal(5, 4) // Historical accuracy from ModelPerformanceAggregate
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  governanceRun GovernanceRun @relation(fields: [governanceRunId], references: [id], onDelete: Cascade)
+
+  @@index([governanceRunId])
+  @@index([createdAt])
+}
+
+// Intent Artifact (captured intent sources, hashed + optional raw storage)
+model IntentArtifact {
+  id                String   @id @default(cuid())
+  governanceRunId   String   @unique
+  intentFingerprint String   // SHA256(concat(intent sources))
+  intentSource      String   // pr_description, commit_message, prompt_metadata (or union)
+  rawIntent         String?  @db.Text // Optional raw intent (requires org opt-in)
+  rawIntentAllowed  Boolean  @default(false) // Tracks if org allowed raw storage
+  createdAt         DateTime @default(now())
+
+  governanceRun GovernanceRun @relation(fields: [governanceRunId], references: [id], onDelete: Cascade)
+
+  @@index([governanceRunId])
+  @@index([intentFingerprint])
+  @@index([createdAt])
+}
+
+// Review Signal (socio-technical metrics: reviewers, duration, disagreement)
+model ReviewSignal {
+  id                String   @id @default(cuid())
+  reviewId          String   @unique
+  reviewDurationMs  Int?     // Time from creation to approval
+  reviewerCount     Int      @default(0)
+  reviewerIds       String[] // Array of reviewer user IDs
+  disagreementScore Decimal? @db.Decimal(5, 4) // 0-1: magnitude of reviewer disagreement
+  metadata          Json?    // Additional signals
+  createdAt         DateTime @default(now())
+
+  @@index([reviewId])
+  @@index([createdAt])
+}
+
+// ============================================================================
+// CULTURAL ARTIFACTS (Trust Signaling)
+// ============================================================================
+
+// Merge Confidence Certificate (P0: Complete implementation - immutable audit records)
+model MergeConfidenceCertificate {
+  id                String   @id @default(cuid()) // Stable certificate ID
+  certificateId     String   @unique // Public certificate ID (cert_reviewId_timestamp)
+  reviewId          String   @unique // One certificate per review
+  repositoryId      String
+  prNumber          Int
+  prSha             String
+
+  // Confidence scoring
+  confidenceScore   Decimal  @db.Decimal(5, 2) // 0-100
+  readinessLevel    String   // ready, needs_review, blocked
+
+  // Gates passed (P0: No longer hardcoded)
+  reviewGuardPassed Boolean  @default(false)
+  testEnginePassed  Boolean  @default(false)
+  docSyncPassed     Boolean  @default(false)
+
+  // Policy tracking
+  policyVersion     String
+  policyChecksum    String
+
+  // Evidence bundle link
+  evidenceBundleId  String?
+
+  // Timestamps (INV-D2: Immutable after creation)
+  evaluatedAt       DateTime
+  createdAt         DateTime @default(now())
+
+  @@index([reviewId])
+  @@index([repositoryId])
+  @@index([certificateId])
+  @@index([createdAt])
+}
+
+// Readiness Score Snapshot (P0: Historical tracking, INV-S5: Immutable)
+model ReadinessScoreSnapshot {
+  id                   String   @id @default(cuid())
+  repositoryId         String
+
+  // Score and level
+  score                Decimal  @db.Decimal(5, 2) // 0-100
+  level                String   // excellent, good, fair, poor
+
+  // Factor breakdown (P0: Remove placeholders, use actual values)
+  gatePassRate         Decimal  @db.Decimal(5, 4) // 0-1
+  averageConfidence    Decimal  @db.Decimal(5, 4) // 0-1
+  policyCompliance     Decimal  @db.Decimal(5, 4) // 0-1
+  testCoverage         Decimal  @db.Decimal(5, 4) // 0-1
+  docSync              Decimal  @db.Decimal(5, 4) // 0-1
+
+  // Metadata
+  totalReviews         Int
+  period               String   // 30d, 90d, etc.
+
+  // Immutability (created once, never updated)
+  createdAt            DateTime @default(now())
+
+  @@index([repositoryId])
+  @@index([createdAt])
+  @@index([score])
+}
+
+// AI Risk Exposure Index (P0: Implement from scratch)
+model AIRiskExposureIndex {
+  id                   String   @id @default(cuid())
+  organizationId       String
+
+  // Risk components
+  aiAuthorshipPercent  Decimal  @db.Decimal(5, 2) // % of code authored by AI
+  reviewIntensity      Decimal  @db.Decimal(5, 4) // 0-1: Human review depth
+  testCoverageScore    Decimal  @db.Decimal(5, 4) // 0-1: Test quality score
+  velocityRisk         Decimal  @db.Decimal(5, 4) // 0-1: Speed vs safety balance
+  orphanedIntelligence Decimal  @db.Decimal(5, 4) // 0-1: AI knowledge without human understanding
+
+  // Overall index
+  riskIndex            Decimal  @db.Decimal(5, 2) // 0-100
+  riskLevel            String   // low, medium, high, critical
+
+  // Calculation metadata
+  totalRepositories    Int
+  period               String   // 30d, 90d, etc.
+
+  createdAt            DateTime @default(now())
+
+  @@index([organizationId])
+  @@index([riskIndex])
+  @@index([riskLevel])
+  @@index([createdAt])
+}
+model TrustVerification {
+  id                   String   @id @default(cuid())
+  organizationId       String
+  entityType           String   // model, prediction, alert, insight
+  entityId             String   // Reference to the entity being verified
+  
+  // Trust scores (P0: Multi-dimensional trust assessment)
+  overallTrustScore    Decimal  @db.Decimal(5, 4) // 0-1 composite score
+  accuracyTrust        Decimal  @db.Decimal(5, 4) // 0-1 historical accuracy
+  consistencyTrust     Decimal  @db.Decimal(5, 4) // 0-1 prediction consistency
+  transparencyTrust    Decimal  @db.Decimal(5, 4) // 0-1 explainability score
+  fairnessTrust        Decimal  @db.Decimal(5, 4) // 0-1 bias detection score
+  
+  // Verification metadata
+  verificationMethod   String   // automated, manual, hybrid
+  verificationStatus   String   @default("pending") // pending, verified, failed, revoked
+  verifiedBy           String?  // User ID or system identifier
+  verifiedAt           DateTime?
+  
+  // Evidence and rationale
+  evidenceHash         String?  // SHA256 of supporting evidence
+  rationale            String?  @db.Text // Human-readable explanation
+  confidenceInterval   Json?    // { lower: 0.95, upper: 0.99 }
+  
+  // Audit trail
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  expiresAt            DateTime? // Trust expiration for periodic re-verification
+  
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  @@unique([organizationId, entityType, entityId])
+  @@index([organizationId])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([verificationStatus])
+  @@index([overallTrustScore])
+  @@index([expiresAt])
+  @@index([createdAt])
+}

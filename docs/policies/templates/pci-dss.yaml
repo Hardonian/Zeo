@@ -1,0 +1,81 @@
+id: pci-dss
+name: PCI-DSS Compliance Policy
+description: Payment Card Industry Data Security Standard v3.2.1
+version: "3.2.1"
+category: compliance
+enforced: true
+minimumCoverage: 90
+
+rules:
+  - id: pci-req-3-1
+    name: Protect Stored Cardholder Data
+    description: Render PAN unreadable anywhere it is stored
+    severity: critical
+    patterns:
+      - card_number\s*=
+      - cardNumber\s*=
+      - pan\s*=
+      - credit.*card.*=
+    remediation: Use tokenization or encryption. Never store full PAN.
+    references:
+      - https://www.pcisecuritystandards.org/
+
+  - id: pci-req-4-1
+    name: Protect Transmission of Cardholder Data
+    description: Use strong cryptography for data in transit
+    severity: critical
+    patterns:
+      - http://.*card
+      - plaintext.*payment
+      - cleartext.*credential
+    remediation: Use TLS 1.2 or higher for all cardholder data transmission
+    references:
+      - https://www.pcisecuritystandards.org/
+
+  - id: pci-req-6-5-1
+    name: Injection Prevention
+    description: Prevent injection flaws
+    severity: critical
+    patterns:
+      - SQLQuery.*\$
+      - executeQuery.*user.*input
+      - eval\s*\(.*user
+    remediation: Use parameterized queries and input validation
+    references:
+      - https://www.pcisecuritystandards.org/
+
+  - id: pci-req-6-5-10
+    name: Weak Cryptography
+    description: Ensure strong cryptographic standards
+    severity: critical
+    patterns:
+      - md5\s*\(
+      - sha1\s*\(
+      - crypto:\s*weak
+    remediation: Use SHA-256 or stronger for hashing, AES-256 for encryption
+    references:
+      - https://www.pcisecuritystandards.org/
+
+  - id: pci-req-8-1
+    name: User Authentication
+    description: Assign unique IDs and restrict access
+    severity: high
+    patterns:
+      - password.*default
+      - auth:\s*false
+      - authorization:\s*false
+    remediation: Implement strong password policies and MFA
+    references:
+      - https://www.pcisecuritystandards.org/
+
+  - id: pci-req-10-3
+    name: Audit Logging
+    description: Maintain comprehensive audit logs
+    severity: high
+    patterns:
+      - logging.*disable
+      - audit.*false
+      - logger.*null
+    remediation: Enable and maintain detailed audit logs of all access
+    references:
+      - https://www.pcisecuritystandards.org/
