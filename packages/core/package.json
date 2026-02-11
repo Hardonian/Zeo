@@ -21,6 +21,7 @@
   "dependencies": {
     "@zeo/analysis-planner": "workspace:*",
     "@zeo/audit": "workspace:*",
+    "@zeo/db": "workspace:*",
     "@zeo/calibration": "workspace:*",
     "@zeo/causal": "workspace:*",
     "@zeo/causal-skeletons": "workspace:*",

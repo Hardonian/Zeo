@@ -15,6 +15,7 @@
   "dependencies": {
     "@zeo/budgets": "workspace:*",
     "@zeo/contracts": "workspace:*",
+    "@zeo/db": "workspace:*",
     "@zeo/core": "workspace:*",
     "@zeo/counterfactuals": "workspace:*",
     "@zeo/eval": "workspace:*",
