@@ -132,6 +132,13 @@ Use `flip distance` in the result card.
 - `zeo transcript verify <envelope.json> --keyring <dir>`
 - `zeo share --decision <id> --envelope <envelope.json>`
 
+### PR triage, packs, plugins, and examples
+- Analyze a pull request or diff deterministically: `zeo analyze-pr <path-or-diff> --policy <pack> --explain --json`
+- Inspect plugin extension health: `zeo plugins list` and `zeo plugins doctor`
+- Discover and apply policy packs: `zeo pack list`, `zeo pack apply <pack>`, `zeo pack export`
+- Initialize a new pack scaffold: `zeo init pack <name>`
+- Replay built-in examples instantly: `zeo replay examples/startup-scaling`
+
 ### Bring your own agent
 - Connect through MCP tools only (`zeo mcp serve` / `zeo mcp tools`).
 - Add local agent: `zeo agents add <path> --accept`.

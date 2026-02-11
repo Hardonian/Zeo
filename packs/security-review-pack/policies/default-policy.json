@@ -1,0 +1,8 @@
+{
+  "id": "security-review-default-policy",
+  "version": "1.0.0",
+  "rules": [
+    "Require auth boundary analysis",
+    "Require least-privilege validation evidence"
+  ]
+}

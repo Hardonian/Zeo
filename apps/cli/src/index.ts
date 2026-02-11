@@ -54,6 +54,10 @@ Commands:
   ingest                      Ingest from all enabled adapters
   eval                        Run epistemic evaluation suite
   pack                        Zeo pack commands
+  analyze-pr <target>         Deterministic pull-request risk analysis
+  plugins <cmd>               Plugin extension commands (list/doctor)
+  replay <dataset|example>    Run replay from explicit path or examples/<name>
+  init pack <name>            Initialize a policy pack template
   doctor                      Environment diagnostics
   perf                        Performance commands
   cache <list|prune|gc>       Deterministic cache commands
@@ -286,6 +290,33 @@ async function main(): Promise<void> {
   if (argv[0] === "pack") {
     const mod = await import("./pack-cli.js");
     process.exit(await mod.runPackCommand(mod.parsePackArgs(argv.slice(1))));
+  }
+
+  if (argv[0] === "analyze-pr") {
+    const mod = await import("./analyze-pr-cli.js");
+    process.exit(await mod.runAnalyzePrCommand(argv.slice(1)));
+  }
+
+  if (argv[0] === "plugins") {
+    const mod = await import("./plugins-cli.js");
+    process.exit(await mod.runPluginsCommand(mod.parsePluginsArgs(argv.slice(1))));
+  }
+
+  if (argv[0] === "init" && argv[1] === "pack") {
+    const mod = await import("./pack-cli.js");
+    process.exit(await mod.runPackCommand({ command: "init", value: argv[2], spec: undefined, out: undefined }));
+  }
+
+  if (argv[0] === "replay") {
+    const mod = await import("./replay-cli.js");
+    const requested = argv[1];
+    if (!requested) {
+      console.error("Usage: zeo replay <path|examples/<name>> [--report-out <dir>] [--case <id>]");
+      process.exit(1);
+    }
+    const replayPath = requested.startsWith("examples/") ? join(process.cwd(), requested, "replay.json") : requested;
+    const parsed = mod.parseReplayArgs(["--replay", replayPath, ...argv.slice(2)]);
+    process.exit(await mod.runReplayCommand(parsed));
   }
 
   if (argv[0] === "doctor") {

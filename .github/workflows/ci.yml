@@ -24,6 +24,8 @@ jobs:
         run: pnpm i --frozen-lockfile
       - name: Fixture Coverage Matrix
         run: pnpm fixtures:coverage
+      - name: Validate Ecosystem (packs/plugins)
+        run: pnpm validate:ecosystem
       - name: Typecheck
         run: pnpm typecheck
       - name: Core API Surface Typecheck

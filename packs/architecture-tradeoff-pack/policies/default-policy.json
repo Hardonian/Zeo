@@ -1,0 +1,8 @@
+{
+  "id": "architecture-tradeoff-default-policy",
+  "version": "1.0.0",
+  "rules": [
+    "Require explicit assumptions and alternatives",
+    "Require operational cost and reliability sensitivity"
+  ]
+}
