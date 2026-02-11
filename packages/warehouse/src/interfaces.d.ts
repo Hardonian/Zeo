@@ -24,4 +24,8 @@ export interface BlobStorage {
         createdAt: string;
     }>>;
 }
+export interface EmbeddingProvider {
+    embed(text: string): Promise<number[]>;
+    enabled: boolean;
+}
 //# sourceMappingURL=interfaces.d.ts.map

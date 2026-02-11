@@ -1,6 +1,10 @@
 import type { ForecastRecord, ScoreResult } from "./types.js";
-import type { DecisionRecord } from "@zeo/memory";
 import type { ProbabilityInterval } from "@zeo/contracts";
+type DecisionRecord = {
+    id: string;
+    domain: string;
+    [key: string]: unknown;
+};
 /**
  * Calibration bucket with interval coverage testing.
  */
@@ -113,4 +117,5 @@ export declare class IntervalCalibrationEngine {
      */
     clear(): void;
 }
+export {};
 //# sourceMappingURL=interval-engine.d.ts.map

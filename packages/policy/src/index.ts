@@ -9,6 +9,7 @@
 // import { prisma } from "../../lib/prisma";
 import { createHash } from 'crypto';
 import { Issue } from "@zeo/analysis";
+import { getContractVersionHash } from "@zeo/core";
 export { Issue };
 
 export interface PolicyPack {
@@ -81,6 +82,7 @@ export interface EvidenceBundle {
   deterministicScore: number;
   artifacts?: Record<string, string>;
   policyChecksum: string;
+  contractVersionHash?: string;
   toolVersions?: Record<string, string>;
   timings?: Record<string, number>;
   createdAt: Date;
@@ -142,40 +144,40 @@ export class PolicyEngineService {
   }
 
   async loadEffectivePolicy(organizationId: string, repositoryId: string | null = null, _ref?: string, _branch?: string): Promise<EffectivePolicy> {
-      console.log('[Policy] Loading effective policy (MOCKED)...');
-      const defaultRule: PolicyRule = {
-          id: 'default',
-          ruleId: '*', 
-          severityMapping: { critical: 'block', high: 'warn', medium: 'allow', low: 'allow' },
-          enabled: true,
-      };
-      const rulesMap = new Map<string, PolicyRule>();
-      rulesMap.set('*', defaultRule);
-      return {
-          pack: {
-              id: 'mock-policy',
-              organizationId,
-              repositoryId,
-              version: '1.0.0',
-              source: 'mock',
-              checksum: 'mock-sum',
-              rules: [defaultRule],
-          },
-          rules: rulesMap,
-          waivers: [],
-      };
+    console.log('[Policy] Loading effective policy (MOCKED)...');
+    const defaultRule: PolicyRule = {
+      id: 'default',
+      ruleId: '*',
+      severityMapping: { critical: 'block', high: 'warn', medium: 'allow', low: 'allow' },
+      enabled: true,
+    };
+    const rulesMap = new Map<string, PolicyRule>();
+    rulesMap.set('*', defaultRule);
+    return {
+      pack: {
+        id: 'mock-policy',
+        organizationId,
+        repositoryId,
+        version: '1.0.0',
+        source: 'mock',
+        checksum: 'mock-sum',
+        rules: [defaultRule],
+      },
+      rules: rulesMap,
+      waivers: [],
+    };
   }
 
   evaluate(findings: Issue[], policy: EffectivePolicy): EvaluationResult {
     // Simple mock evaluation
     const blocked = findings.some(f => f.severity === 'critical');
     return {
-        blocked,
-        score: blocked ? 0 : 100,
-        rulesFired: [],
-        waivedFindings: [],
-        nonWaivedFindings: findings,
-        blockingReason: blocked ? 'Critical issues found' : undefined
+      blocked,
+      score: blocked ? 0 : 100,
+      rulesFired: [],
+      waivedFindings: [],
+      nonWaivedFindings: findings,
+      blockingReason: blocked ? 'Critical issues found' : undefined
     };
   }
 
@@ -185,15 +187,16 @@ export class PolicyEngineService {
     policy: EffectivePolicy,
     timings?: Record<string, number>
   ): Promise<EvidenceBundle> {
-      console.log('[Policy] Producing evidence (MOCKED)...');
-      return {
-          id: 'mock-bundle-' + Date.now(),
-          inputsMetadata: inputs,
-          rulesFired: outputs.evaluationResult.rulesFired,
-          deterministicScore: outputs.evaluationResult.score,
-          policyChecksum: policy.pack.checksum,
-          createdAt: new Date(),
-      } as any;
+    console.log('[Policy] Producing evidence (MOCKED)...');
+    return {
+      id: 'mock-bundle-' + Date.now(),
+      inputsMetadata: inputs,
+      rulesFired: outputs.evaluationResult.rulesFired,
+      deterministicScore: outputs.evaluationResult.score,
+      policyChecksum: policy.pack.checksum,
+      contractVersionHash: getContractVersionHash(),
+      createdAt: new Date(),
+    } as any;
   }
 }
 

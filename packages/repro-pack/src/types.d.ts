@@ -1,0 +1,118 @@
+/**
+ * Repro Pack Types
+ *
+ * Types for reproducibility packs, assumptions tracking,
+ * uncertainty surfacing, and typed cost/time/risk.
+ */
+export type AssumptionSource = "user" | "default" | "system";
+export type AssumptionSensitivity = "low" | "med" | "high";
+export interface AssumptionProvenance {
+    path?: string;
+    derivedFrom?: string[];
+}
+export interface Assumption {
+    key: string;
+    label: string;
+    value: unknown;
+    units: string;
+    source: AssumptionSource;
+    rationale: string;
+    sensitivity: AssumptionSensitivity;
+    provenance: AssumptionProvenance;
+}
+export type UncertaintyKind = "interval" | "stddev" | "distribution" | "unknown";
+export interface Uncertainty {
+    kind: UncertaintyKind;
+    params?: Record<string, unknown>;
+    method?: string;
+    note?: string;
+}
+export interface Inference {
+    key: string;
+    value: unknown;
+    units: string;
+    method: string;
+    inputs?: string[];
+    uncertainty?: Uncertainty;
+}
+export interface TypedCost {
+    amount: number;
+    unit: string;
+}
+export interface TypedDuration {
+    amount: number;
+    unit: "seconds" | "minutes" | "hours" | "days" | "weeks" | "months";
+}
+export interface TypedRisk {
+    level: number;
+    unit: string;
+    label: string;
+}
+export interface BudgetConstraints {
+    maxCost?: TypedCost;
+    maxDuration?: TypedDuration;
+    maxRisk?: TypedRisk;
+}
+export type PlanStatus = "FEASIBLE" | "INFEASIBLE";
+export interface InfeasiblePlanExplanation {
+    status: "INFEASIBLE";
+    reasons: string[];
+    constraintsViolated: Array<{
+        constraint: string;
+        required: number;
+        available: number;
+        unit: string;
+    }>;
+    smallestRelaxation: Array<{
+        constraint: string;
+        relaxTo: number;
+        unit: string;
+    }>;
+}
+export interface FeasiblePlan {
+    status: "FEASIBLE";
+    planId: string;
+    totalCost: TypedCost;
+    totalDuration: TypedDuration;
+    totalRisk: TypedRisk;
+}
+export type PlanResult = FeasiblePlan | InfeasiblePlanExplanation;
+export type RunEventType = "RUN_STARTED" | "ASSUMPTION_APPLIED" | "INFERENCE_COMPUTED" | "UNCERTAINTY_RECORDED" | "CONSTRAINT_EVALUATED" | "PLAN_SELECTED" | "PLAN_INFEASIBLE" | "ARTIFACT_PRODUCED" | "WHY_NOT_COMPUTED" | "FLIP_LEVERS_SUMMARIZED" | "SENSITIVITY_RANKED" | "RUN_COMPLETED" | "RUN_FAILED" | "BUDGET_REACHED";
+export interface RunEvent {
+    id: string;
+    timestamp: string;
+    type: RunEventType;
+    data: Record<string, unknown>;
+}
+export interface ReproPackManifest {
+    schemaVersion: "1.0.0";
+    appVersion: string;
+    gitSha: string;
+    createdAt: string;
+    tenantId: string;
+    actor: string;
+    requestId: string;
+    runId: string;
+}
+export interface BuildReproPackParams {
+    runId: string;
+    tenantId: string;
+    actor: string;
+    requestId: string;
+}
+export interface RunData {
+    inputs: Record<string, unknown>;
+    assumptions: Assumption[];
+    uncertaintyMap: Record<string, Uncertainty>;
+    artifacts: {
+        flipDistance: unknown;
+        voiRankings: unknown;
+        evidencePlan: unknown;
+    };
+    outputs: Record<string, unknown>;
+    events: RunEvent[];
+    seed?: string;
+    budget?: Record<string, unknown>;
+    usage?: Record<string, unknown>;
+}
+//# sourceMappingURL=types.d.ts.map

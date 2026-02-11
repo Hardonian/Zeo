@@ -27,6 +27,7 @@ export {
   hashDecisionSpec,
   hashAssumptionSet,
   cacheKey,
+  getContractVersionHash,
 } from "./hashing.js";
 export type {
   LearningDecisionRunner,

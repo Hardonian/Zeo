@@ -44,7 +44,7 @@ export class TimeSeriesEngine {
                     try {
                         resolve(JSON.parse(output));
                     }
-                    catch {
+                    catch (e) {
                         reject(new Error(`Failed to parse Python output: ${output}`));
                     }
                 });

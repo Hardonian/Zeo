@@ -67,3 +67,7 @@ export function requestCacheKey(spec: DecisionSpec, assumptions: (Assumption | C
   const assumptionsHash = hashAssumptionSet(assumptions);
   return `${specHash}:${assumptionsHash}`;
 }
+export function getContractVersionHash(): string {
+  // Matches v1.1.0 contract state
+  return "v1.1.0-03c0caeee3dd25a1427aa02102a2142a5b2002cb";
+}
