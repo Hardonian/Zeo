@@ -29,7 +29,6 @@ import { buildReproPackZip, buildReproPackContents } from "@zeo/repro-pack";
 import { computeManifestHash, computeTreeHash, EvidenceFile, sha256 } from "./evidence-attestation.js";
 
 
-
 /**
  * Configuration for the Zeo Runner
  */
@@ -177,14 +176,19 @@ export class ZeoRunner {
                         explanation: result.explanation
                     },
                     events: [],
-                    budget: result.budget,
-                    usage: result.usage
+                    budget: result.budget as any,
+                    usage: result.usage as any
                 };
 
-                const zipBytes = await buildReproPackZip({
-                    decisionSpec: spec,
-                    runData: runDataValues
-                });
+                const reproParams = {
+                    runId,
+                    tenantId: this.trustContext.organizationId || "default-org",
+                    actor: this.trustContext.userId,
+                    requestId: generateId()
+                };
+
+                const contents = buildReproPackContents(reproParams, runDataValues);
+                const zipBytes = buildReproPackZip(contents);
                 const zipBuffer = Buffer.from(zipBytes);
 
                 const bundleHash = sha256(zipBuffer);
