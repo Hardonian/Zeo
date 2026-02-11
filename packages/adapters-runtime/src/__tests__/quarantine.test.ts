@@ -233,7 +233,7 @@ describe("Anomaly Detection", () => {
         observationId: "obs-outlier",
         signalId: "signal-a",
         t: new Date(2024, 0, 1, 20).toISOString(),
-        valueBand: { low: 0.95, high: 0.95 }, // Clear outlier at high end
+        valueBand: { low: 2.5, high: 2.5 }, // Clear statistical outlier
         weightApplied: 0.8,
         qualityScore: 0.9,
         provenance: [],
@@ -243,9 +243,6 @@ describe("Anomaly Detection", () => {
       });
 
       const result = detector.detect(observations);
-      
-      // Debug: log all violations
-      console.log("All violations found:", result.violations.map(v => ({ ruleId: v.ruleId, message: v.message })));
       
       // Should detect the sudden jump
       const jumpViolation = result.violations.find(v => v.ruleId === "sudden_jump");
@@ -331,9 +328,6 @@ describe("Anomaly Detection", () => {
       ];
 
       const result = detector.detect(observations);
-      
-      // Debug: log all violations
-      console.log("All violations found:", result.violations.map(v => ({ ruleId: v.ruleId, message: v.message })));
       
       // The value band anomalies rule triggers for out of bounds
       const boundsViolation = result.violations.find(

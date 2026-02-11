@@ -1,5 +1,4 @@
 import { createHmac, timingSafeEqual, createHash } from "crypto";
-import { prisma } from "@zeo/db";
 
 export class WebhookSecurity {
     /**
@@ -39,6 +38,7 @@ export class WebhookSecurity {
         const bodyHash = this.computeBodyHash(body);
 
         try {
+            const { prisma } = await import("@zeo/db");
             const existing = await (prisma as any).webhookReceipt.findUnique({
 
                 where: {
