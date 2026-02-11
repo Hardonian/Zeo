@@ -9,6 +9,7 @@
 // import { prisma } from "../../lib/prisma";
 import { createHash } from 'crypto';
 import { Issue } from "@zeo/analysis";
+export { Issue };
 
 export interface PolicyPack {
   id: string;
