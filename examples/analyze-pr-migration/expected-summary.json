@@ -1,0 +1,6 @@
+{
+  "schemaVersion": "2.0.0",
+  "expected_categories": ["data-integrity"],
+  "expected_top_domains": ["ENG", "OPS"],
+  "notes": "Migration diff should trigger data integrity review"
+}

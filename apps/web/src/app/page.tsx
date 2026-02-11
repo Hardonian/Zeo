@@ -3,15 +3,14 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-8">
-      <div className="max-w-2xl text-center space-y-8">
+      <div className="max-w-3xl text-center space-y-8">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-          Zeo <span className="text-blue-600">Edge UI Shell</span>
+          Zeo <span className="text-blue-600">Accountability Layer</span>
         </h1>
         <p className="text-lg text-gray-600">
-          Edge-first web UI with plugin-style Panel Host for Google Stitch injection.
-          Safe, deterministic, and gracefully degrading.
+          Deterministic decision intelligence with replayable evidence. Policy-aware, local-first, and gracefully degrading.
         </p>
-        <div className="flex gap-4 justify-center">
+        <div className="flex gap-4 justify-center flex-wrap">
           <Link
             href="/quickstart"
             className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
@@ -40,6 +39,17 @@ export default function Home() {
           </a>
         </div>
 
+        <section className="pt-8 border-t border-gray-200 text-left">
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4 text-center">Live Example</h2>
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
+            <p className="text-sm text-gray-700"><strong>Start here:</strong> <code>zeo analyze-pr examples/analyze-pr-auth/diff.patch --policy packs/security-review-pack/pack.json --explain</code></p>
+            <div className="text-xs text-gray-700 font-mono whitespace-pre-wrap">
+              {`=== Accountability summary ===\nrisk score: 64\nMust review:\n- [high] src/auth/session.ts: Authentication or session surface changed\nPolicy triggers:\n- security-review-required\nReplay hash: <manifest-hash>`}
+            </div>
+            <p className="text-xs text-gray-600">Zeo Verified (replayable): outputs include run_id and hash manifest for deterministic replay.</p>
+          </div>
+        </section>
+
         <div className="pt-8 border-t border-gray-200">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
             Governance (New)
@@ -53,30 +63,6 @@ export default function Home() {
               <h3 className="font-medium text-emerald-900">Policy Packs</h3>
               <p className="text-sm text-emerald-700">Enterprise governance and compliance as code</p>
             </Link>
-          </div>
-        </div>
-
-        <div className="pt-8 border-t border-gray-200">
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
-            Features
-          </h2>
-          <div className="grid grid-cols-2 gap-4 text-left">
-            <div className="p-4 bg-gray-100 rounded-lg">
-              <h3 className="font-medium">NL Intake</h3>
-              <p className="text-sm text-gray-600">Describe decisions in natural language, auto-extract actions and assumptions</p>
-            </div>
-            <div className="p-4 bg-gray-100 rounded-lg">
-              <h3 className="font-medium">Decision Inbox</h3>
-              <p className="text-sm text-gray-600">Review, snooze, and promote drafts to full decisions</p>
-            </div>
-            <div className="p-4 bg-gray-100 rounded-lg">
-              <h3 className="font-medium">Panel Host</h3>
-              <p className="text-sm text-gray-600">Plugin-style architecture for React and iframe panels</p>
-            </div>
-            <div className="p-4 bg-gray-100 rounded-lg">
-              <h3 className="font-medium">Offline First</h3>
-              <p className="text-sm text-gray-600">IndexedDB persistence with localStorage fallback</p>
-            </div>
           </div>
         </div>
       </div>

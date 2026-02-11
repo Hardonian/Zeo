@@ -7,7 +7,7 @@ import { createAssumptionTracker, buildReproPackContents, buildReproPackZip } fr
 import type { DecisionSpec } from "@zeo/contracts";
 
 export interface PackCliArgs {
-  command?: "list" | "apply" | "export" | "init";
+  command?: "list" | "apply" | "export" | "init" | "describe";
   value?: string;
   spec: string | undefined;
   out: string | undefined;
@@ -39,7 +39,7 @@ function hashPack(packDir: string): string {
 
 export function parsePackArgs(argv: string[]): PackCliArgs {
   const result: PackCliArgs = { spec: undefined, out: undefined };
-  if (["list", "apply", "export", "init"].includes(argv[0] ?? "")) {
+  if (["list", "apply", "export", "init", "describe"].includes(argv[0] ?? "")) {
     result.command = argv[0] as PackCliArgs["command"];
     result.value = argv[1];
   }
@@ -73,6 +73,23 @@ function listPacks(): number {
   return 0;
 }
 
+
+function describePack(packId: string | undefined): number {
+  if (!packId) {
+    console.error("Error: zeo pack describe <pack>");
+    return 1;
+  }
+  const dir = join(PACKS_DIR, packId);
+  if (!existsSync(dir)) {
+    console.error(`Error: pack not found: ${packId}`);
+    return 1;
+  }
+  const manifest = parsePackManifest(dir);
+  const hash = hashPack(dir);
+  const raw = JSON.parse(readFileSync(join(dir, "pack.json"), "utf8")) as Record<string, unknown>;
+  process.stdout.write(`${JSON.stringify({ manifest, hash, raw }, null, 2)}\n`);
+  return 0;
+}
 function applyPack(packId: string | undefined): number {
   if (!packId) {
     console.error("Error: zeo pack apply <pack>");
@@ -190,6 +207,7 @@ export async function runPackCommand(args: PackCliArgs): Promise<number> {
   if (args.command === "apply") return applyPack(args.value);
   if (args.command === "export") return exportPacks();
   if (args.command === "init") return initPack(args.value);
+  if (args.command === "describe") return describePack(args.value);
 
   if (!args.spec || !args.out) {
     console.error("Error: --spec <path> and --out <path> are required for legacy pack build");
@@ -197,3 +215,6 @@ export async function runPackCommand(args: PackCliArgs): Promise<number> {
   }
   return runLegacyPack(args.spec, args.out);
 }
+
+
+export const __private__ = { hashPack, parsePackManifest };

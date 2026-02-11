@@ -1,0 +1,8 @@
+diff --git a/src/auth/session.ts b/src/auth/session.ts
+index 0000000..1111111 100644
+--- a/src/auth/session.ts
++++ b/src/auth/session.ts
+@@ -10,6 +10,8 @@ export function createSession(user) {
++const token = "secret_token_123456789";
++res.setHeader("Set-Cookie", `session=${token}; HttpOnly`);
+ }
