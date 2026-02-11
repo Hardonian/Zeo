@@ -21,7 +21,6 @@
   "dependencies": {
     "@zeo/analysis-planner": "workspace:*",
     "@zeo/audit": "workspace:*",
-    "@zeo/db": "workspace:*",
     "@zeo/calibration": "workspace:*",
     "@zeo/causal": "workspace:*",
     "@zeo/causal-skeletons": "workspace:*",
@@ -29,6 +28,7 @@
     "@zeo/contracts": "workspace:*",
     "@zeo/counterfactuals": "workspace:*",
     "@zeo/dataset-builder": "workspace:*",
+    "@zeo/db": "workspace:*",
     "@zeo/decision-synthesizer": "workspace:*",
     "@zeo/explain": "workspace:*",
     "@zeo/feature-discovery": "workspace:*",
@@ -53,9 +53,11 @@
     "@zeo/values": "workspace:*",
     "@zeo/warehouse": "workspace:*",
     "@zeo/worlds": "workspace:*",
+    "better-sqlite3": "^12.6.2",
     "minimatch": "^10.1.2"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^25.2.1"
   }
 }
