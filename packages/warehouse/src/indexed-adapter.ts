@@ -227,8 +227,11 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
       results = results.slice(start, start + query.limit);
     }
 
-    // Sort by createdAt for determinism
-    results.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+    // Sort by createdAt for determinism (browse mode), or rely on index relevance (search mode)
+    const isRelevanceSearch = (query.vector && query.vector.length > 0) || !!query.containsText;
+    if (!isRelevanceSearch) {
+      results.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+    }
 
     const nextCursor = query.limit && results.length >= query.limit
       ? String((parseInt(query.cursor || '0', 10)) + results.length)
