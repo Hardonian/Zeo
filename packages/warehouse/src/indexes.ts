@@ -375,7 +375,7 @@ export function queryUsingIndex(
 ): { ids: string[]; usedIndex: boolean } {
   let candidateIds: Set<string> | null = null;
   let usedIndex = false;
-  let scores: Map<string, number> = new Map(); // id -> score
+  const scores: Map<string, number> = new Map(); // id -> score
 
   // 1. Vector Search (Primary if available)
   if (query.vector && query.vector.length > 0) {

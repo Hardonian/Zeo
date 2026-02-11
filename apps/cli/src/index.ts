@@ -24,6 +24,10 @@ function printHelp(): void {
   console.log(`
 Zeo CLI - Epistemic Decision Engine v${getCliVersion()}
 
+Deterministic decision intelligence with replayable evidence.
+Start here: zeo analyze-pr <path|git-range|diff-file>
+Replay: zeo replay <run_id|dataset|example>
+
 Usage: zeo [options]
 
 Commands:
@@ -54,10 +58,11 @@ Commands:
   ingest                      Ingest from all enabled adapters
   eval                        Run epistemic evaluation suite
   pack                        Zeo pack commands
-  analyze-pr <target>         Deterministic pull-request risk analysis
+  analyze-pr <target>         Accountability summary for pull-request risk
   plugins <cmd>               Plugin extension commands (list/doctor)
   replay <dataset|example>    Run replay from explicit path or examples/<name>
   init pack <name>            Initialize a policy pack template
+  init analyzer <name>        Initialize analyzer plugin template
   doctor                      Environment diagnostics
   perf                        Performance commands
   cache <list|prune|gc>       Deterministic cache commands
@@ -307,13 +312,23 @@ async function main(): Promise<void> {
     process.exit(await mod.runPackCommand({ command: "init", value: argv[2], spec: undefined, out: undefined }));
   }
 
+  if (argv[0] === "init" && argv[1] === "analyzer") {
+    const mod = await import("./plugins-cli.js");
+    process.exit(await mod.runPluginsCommand({ command: "init-analyzer", name: argv[2] }));
+  }
+
   if (argv[0] === "replay") {
-    const mod = await import("./replay-cli.js");
     const requested = argv[1];
     if (!requested) {
-      console.error("Usage: zeo replay <path|examples/<name>> [--report-out <dir>] [--case <id>]");
+      console.error("Usage: zeo replay <run_id|path|examples/<name>> [--report-out <dir>] [--case <id>]");
       process.exit(1);
     }
+    const analyzeManifest = join(process.cwd(), ".zeo", "analyze-pr", requested, "manifest.json");
+    if (existsSync(analyzeManifest)) {
+      const mod = await import("./analyze-pr-cli.js");
+      process.exit(mod.runAnalyzePrReplay(requested));
+    }
+    const mod = await import("./replay-cli.js");
     const replayPath = requested.startsWith("examples/") ? join(process.cwd(), requested, "replay.json") : requested;
     const parsed = mod.parseReplayArgs(["--replay", replayPath, ...argv.slice(2)]);
     process.exit(await mod.runReplayCommand(parsed));

@@ -1,0 +1,7 @@
+diff --git a/src/service/report-service.ts b/src/service/report-service.ts
+index aaaaaaa..bbbbbbb 100644
+--- a/src/service/report-service.ts
++++ b/src/service/report-service.ts
+@@ -20,4 +20,5 @@ export async function runReports(users) {
++for (const user of users) await db.findUnique({ where: { id: user.id } });
+ }

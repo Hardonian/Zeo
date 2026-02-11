@@ -1,3 +1,4 @@
+import { createHmac } from "node:crypto";
 import { describe, it, expect, beforeEach } from "vitest";
 import {
     sha256,
@@ -99,7 +100,7 @@ describe("Enterprise Defensibility Trifecta", () => {
 
         it("should verify GitHub signatures", () => {
             // Manual HMAC-SHA256 for testing
-            const hmac = require("crypto").createHmac("sha256", secret);
+            const hmac = createHmac("sha256", secret);
             const sig = "sha256=" + hmac.update(payload).digest("hex");
 
             const isValid = WebhookSecurity.verifyGithubSignature(payload, sig, secret);

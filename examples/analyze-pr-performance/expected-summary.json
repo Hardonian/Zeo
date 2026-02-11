@@ -1,0 +1,6 @@
+{
+  "schemaVersion": "2.0.0",
+  "expected_categories": ["performance", "test-impact"],
+  "expected_top_domains": ["ENG", "OPS"],
+  "notes": "Loop plus query pattern should trigger performance review"
+}

@@ -41,8 +41,7 @@ export function hashDecisionSpec(spec: DecisionSpec): string {
 export function hashAssumptionSet(assumptions: (Assumption | Claim)[]): string {
   // Strip IDs for stable hashing
   const localized = assumptions.map((a) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id, ...rest } = a as any;
+        const { id, ...rest } = a as any;
     return rest;
   });
 
