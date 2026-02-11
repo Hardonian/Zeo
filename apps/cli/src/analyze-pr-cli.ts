@@ -304,7 +304,11 @@ function buildText(result: AnalysisResult, explain: boolean): string {
     lines.push("", "=== explain ===");
     for (const finding of result.findings) lines.push(`- ${finding.id} ${finding.why_it_matters} Evidence: ${finding.evidence.join(", ") || "none"}`);
   }
-  return lines.join("\n");
+  const ctas = [
+    `Convert to decision? zeo decision create --from ${result.run_id}`,
+    "Apply security pack? zeo init pack security-pack",
+  ];
+  return `${lines.join("\n")}\n\nNext steps:\n${ctas.map((line) => `- ${line}`).join("\n")}`;
 }
 
 function toAnalysis(target: string, loaded: ReturnType<typeof loadInput>, args: AnalyzePrArgs): AnalysisResult {

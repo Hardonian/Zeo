@@ -31,6 +31,8 @@ Replay: zeo replay <run_id|dataset|example>
 Usage: zeo [options]
 
 Commands:
+  help <start|examples>      Guided quickstart and examples
+  examples                   Alias for help examples
   start                      Start guided decision workspace
   add-note                   Add plain-language note as evidence proposal
   run                        Run deterministic analysis and print result card
@@ -38,6 +40,12 @@ Commands:
   share                      Export compact share summary
   copy                       Print clipboard-friendly share block
   export <md|ics|bundle>     Offline export commands
+  export decision <id>       Portable decision bundle export
+  verify <bundle|decision>   Verify exported bundle hashes/proofs
+  decision-health <id>       Decision health snapshot
+  drift-report               Drift events report
+  roi-report                 Team ROI report by window
+  evidence <cmd>             Evidence expiry commands
   quests                     Show evidence tasks as checkboxes
   done <taskId>              Mark checklist task as complete
   streaks                    Show epistemic streak metrics
@@ -380,7 +388,7 @@ async function main(): Promise<void> {
     process.exit(await mod.runAgentsCommand(mod.parseAgentsArgs(argv.slice(1))));
   }
 
-  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "review", "explain", "summary"].includes(argv[0] ?? "")) {
+  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "view", "review", "explain", "summary", "decision-health", "drift-report", "roi-report", "verify", "evidence", "help", "examples"].includes(argv[0] ?? "")) {
     const mod = await import("./workflow-cli.js");
     process.exit(await mod.runWorkflowCommand(mod.parseWorkflowArgs(argv)));
   }

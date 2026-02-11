@@ -15,7 +15,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run --pool=forks --maxWorkers=1",
+    "test": "NODE_OPTIONS=--max-old-space-size=8192 vitest run --pool=threads --maxWorkers=1",
     "lint": "echo 'No source files to lint'"
   },
   "dependencies": {
