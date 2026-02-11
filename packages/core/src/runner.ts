@@ -25,8 +25,9 @@ import {
 import { cacheKey } from "./hashing.js";
 import { globalCache } from "./cache-layer.js";
 import { type EvidenceStorage } from "./evidence-storage.js";
-import { buildReproPackZip, sha256 } from "@zeo/repro-pack";
-import { computeManifestHash, computeTreeHash, EvidenceFile } from "./evidence-attestation.js";
+import { buildReproPackZip, buildReproPackContents } from "@zeo/repro-pack";
+import { computeManifestHash, computeTreeHash, EvidenceFile, sha256 } from "./evidence-attestation.js";
+
 
 
 /**

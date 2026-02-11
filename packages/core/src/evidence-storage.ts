@@ -28,7 +28,8 @@ export class PrismaEvidenceStorage implements EvidenceStorage {
         // Spec says "Link attestation to runId".
 
         // Create Attestation
-        await prisma.evidenceAttestation.create({
+        await (prisma as any).evidenceAttestation.create({
+
             data: {
                 runId,
                 organizationId: orgId,
@@ -44,7 +45,8 @@ export class PrismaEvidenceStorage implements EvidenceStorage {
 
         // Store Evidence Objects
         // 1. Valid Zip
-        await prisma.evidenceObject.create({
+        await (prisma as any).evidenceObject.create({
+
             data: {
                 organizationId: orgId,
                 runId: runId,
@@ -75,7 +77,8 @@ export class PrismaEvidenceStorage implements EvidenceStorage {
 
         // 2. Manifest
         const manifestJson = JSON.stringify(manifest);
-        await prisma.evidenceObject.create({
+        await (prisma as any).evidenceObject.create({
+
             data: {
                 organizationId: orgId,
                 runId: runId,
