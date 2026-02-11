@@ -76,6 +76,8 @@ export class PrismaEvidenceStorage implements EvidenceStorage {
         await fs.writeFile(path.join(storageDir, `${runId}.zip`), bundleZip);
 
         // 2. Manifest
+        // retrieval hook: embedding generation for RAG
+        // generateEmbedding(manifest.files...)
         const manifestJson = JSON.stringify(manifest);
         await (prisma as any).evidenceObject.create({
 

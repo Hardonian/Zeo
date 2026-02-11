@@ -101,6 +101,9 @@ export class ZeoRunner {
             enforceTrustBoundary(operation, this.trustContext);
         }
 
+        // retrieval hook: context augmentation (RAG)
+        // const context = retrieveRelevantEvidence(...)
+
         // 2. Engine Execution (with Caching)
         // Generate deterministic cache key
         const cKey = globalCache.generateKey(

@@ -11,6 +11,7 @@ import type {
   ImportBundle,
   ConflictStrategy,
   ExportOptions,
+  // retrieval hook: semantic search params in WarehouseQuery definition
 } from '@zeo/contracts';
 import type { WarehouseAdapter } from './interfaces';
 import { computeContentHash } from './hashing';
@@ -19,19 +20,21 @@ import { computeContentHash } from './hashing';
 export interface DeterministicIndex {
   version: number;
   lastUpdated: string;
-  
+
   // Primary indexes
   byKind: Map<WarehouseKind, Set<string>>;        // kind → ids
   byTime: Map<string, Set<string>>;              // date(createdAt) → ids
   byDecisionId: Map<string, Set<string>>;        // decisionId → ids
   byRunId: Map<string, Set<string>>;             // runId → ids
-  
+
   // Token index for text search
   tokenIndex: Map<string, Set<string>>;           // token → ids
-  
+
   // Metadata for quick stats
   totalRecords: number;
   recordHashes: Map<string, string>;              // id → contentHash
+
+  // retrieval hook: semantic search index (embeddings map)
 }
 
 export interface IndexMigration {
@@ -50,7 +53,7 @@ export function tokenize(text: string): string[] {
     .replace(/[^\w\s]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  
+
   // Split and filter (min 3 chars, max 50)
   return normalized
     .split(' ')
@@ -71,15 +74,15 @@ function isStopWord(word: string): boolean {
 // Extract searchable text from envelope content
 function extractSearchableText(envelope: WarehouseEnvelope<unknown>): string {
   const parts: string[] = [];
-  
+
   // Add kind
   parts.push(envelope.kind);
-  
+
   // Add tags
   if (envelope.tags) {
     parts.push(...envelope.tags);
   }
-  
+
   // Extract from content based on structure
   const content = envelope.content as Record<string, unknown> | undefined;
   if (content) {
@@ -91,7 +94,7 @@ function extractSearchableText(envelope: WarehouseEnvelope<unknown>): string {
         parts.push(value);
       }
     }
-    
+
     // Decision-specific
     if (content.actions && Array.isArray(content.actions)) {
       for (const action of content.actions) {
@@ -103,7 +106,7 @@ function extractSearchableText(envelope: WarehouseEnvelope<unknown>): string {
       }
     }
   }
-  
+
   return parts.join(' ');
 }
 
@@ -111,16 +114,16 @@ function extractSearchableText(envelope: WarehouseEnvelope<unknown>): string {
 function extractDecisionId(envelope: WarehouseEnvelope<unknown>): string | undefined {
   const content = envelope.content as Record<string, unknown> | undefined;
   if (!content) return undefined;
-  
+
   // Direct decisionId field
   if (typeof content.decisionId === 'string') return content.decisionId;
-  
+
   // Associated decision IDs
   if (envelope.tags) {
     const decisionTag = envelope.tags.find(t => t.startsWith('decision:'));
     if (decisionTag) return decisionTag.replace('decision:', '');
   }
-  
+
   return undefined;
 }
 
@@ -128,16 +131,16 @@ function extractDecisionId(envelope: WarehouseEnvelope<unknown>): string | undef
 function extractRunId(envelope: WarehouseEnvelope<unknown>): string | undefined {
   const content = envelope.content as Record<string, unknown> | undefined;
   if (!content) return undefined;
-  
+
   if (typeof content.runId === 'string') return content.runId;
   if (typeof content.run_id === 'string') return content.run_id;
-  
+
   // From tags
   if (envelope.tags) {
     const runTag = envelope.tags.find(t => t.startsWith('run:'));
     if (runTag) return runTag.replace('run:', '');
   }
-  
+
   return undefined;
 }
 
@@ -175,14 +178,14 @@ export function migrateIndex(index: DeterministicIndex): DeterministicIndex {
   if (index.version === INDEX_VERSION) {
     return index;
   }
-  
+
   // Apply migrations in sequence
   let current = index;
-  
+
   if (current.version === 1) {
     current = v1ToV2Migration.migrate(current);
   }
-  
+
   return current;
 }
 
@@ -191,16 +194,16 @@ export function indexRecord(
   envelope: WarehouseEnvelope<unknown>
 ): void {
   const id = envelope.id;
-  
+
   // Remove from index first (in case of update)
   unindexRecord(index, id);
-  
+
   // Add to byKind
   if (!index.byKind.has(envelope.kind)) {
     index.byKind.set(envelope.kind, new Set());
   }
   index.byKind.get(envelope.kind)!.add(id);
-  
+
   // Add to byTime (index by date only for efficient date queries)
   const dateKey = envelope.createdAt.split('T')[0] || envelope.createdAt; // YYYY-MM-DD
   if (dateKey && !index.byTime.has(dateKey)) {
@@ -209,7 +212,7 @@ export function indexRecord(
   if (dateKey) {
     index.byTime.get(dateKey)!.add(id);
   }
-  
+
   // Add to byDecisionId
   const decisionId = extractDecisionId(envelope);
   if (decisionId) {
@@ -218,7 +221,7 @@ export function indexRecord(
     }
     index.byDecisionId.get(decisionId)!.add(id);
   }
-  
+
   // Add to byRunId
   const runId = extractRunId(envelope);
   if (runId) {
@@ -227,7 +230,7 @@ export function indexRecord(
     }
     index.byRunId.get(runId)!.add(id);
   }
-  
+
   // Add to tokenIndex
   const text = extractSearchableText(envelope);
   const tokens = tokenize(text);
@@ -237,7 +240,7 @@ export function indexRecord(
     }
     index.tokenIndex.get(token)!.add(id);
   }
-  
+
   // Update metadata
   index.recordHashes.set(id, envelope.hashes.contentHash);
   index.totalRecords++;
@@ -247,33 +250,33 @@ export function indexRecord(
 export function unindexRecord(index: DeterministicIndex, id: string): void {
   const hash = index.recordHashes.get(id);
   if (!hash) return; // Not indexed
-  
+
   // Remove from all indexes
   for (const [kind, ids] of index.byKind) {
     ids.delete(id);
     if (ids.size === 0) index.byKind.delete(kind);
   }
-  
+
   for (const [date, ids] of index.byTime) {
     ids.delete(id);
     if (ids.size === 0) index.byTime.delete(date);
   }
-  
+
   for (const [decisionId, ids] of index.byDecisionId) {
     ids.delete(id);
     if (ids.size === 0) index.byDecisionId.delete(decisionId);
   }
-  
+
   for (const [runId, ids] of index.byRunId) {
     ids.delete(id);
     if (ids.size === 0) index.byRunId.delete(runId);
   }
-  
+
   for (const [token, ids] of index.tokenIndex) {
     ids.delete(id);
     if (ids.size === 0) index.tokenIndex.delete(token);
   }
-  
+
   index.recordHashes.delete(id);
   index.totalRecords = Math.max(0, index.totalRecords - 1);
   index.lastUpdated = new Date().toISOString();
@@ -287,7 +290,7 @@ export function queryUsingIndex(
 ): { ids: string[]; usedIndex: boolean } {
   let candidateIds: Set<string> | null = null;
   let usedIndex = false;
-  
+
   // Start with kind index if specified
   if (query.kinds && query.kinds.length > 0) {
     const kindIds = new Set<string>();
@@ -300,7 +303,7 @@ export function queryUsingIndex(
     candidateIds = kindIds;
     usedIndex = true;
   }
-  
+
   // Intersect with decisionId index
   if (query.decisionIds && query.decisionIds.length > 0) {
     const decisionIds = new Set<string>();
@@ -310,7 +313,7 @@ export function queryUsingIndex(
         for (const id of ids) decisionIds.add(id);
       }
     }
-    
+
     if (candidateIds) {
       candidateIds = new Set([...candidateIds].filter(id => decisionIds.has(id)));
     } else {
@@ -318,13 +321,15 @@ export function queryUsingIndex(
     }
     usedIndex = true;
   }
-  
+
   // Text search using token index
+  // retrieval hook: semantic search implementation
+  // if (query.embeddings) { ... }
   if (query.containsText) {
     const searchTokens = tokenize(query.containsText);
     if (searchTokens.length > 0) {
       const textIds = new Set<string>();
-      
+
       // Start with first token
       const firstToken = searchTokens[0];
       if (firstToken) {
@@ -333,7 +338,7 @@ export function queryUsingIndex(
           for (const id of firstTokenIds) textIds.add(id);
         }
       }
-      
+
       // Intersect with remaining tokens
       for (let i = 1; i < searchTokens.length; i++) {
         const token = searchTokens[i];
@@ -348,7 +353,7 @@ export function queryUsingIndex(
           break;
         }
       }
-      
+
       if (candidateIds) {
         candidateIds = new Set([...candidateIds].filter(id => textIds.has(id)));
       } else {
@@ -357,13 +362,13 @@ export function queryUsingIndex(
       usedIndex = true;
     }
   }
-  
+
   // Time range filter (requires scanning records for precise time)
   // But we can pre-filter by date
   if (query.timeRange) {
     const startDate = query.timeRange.start.split('T')[0] || query.timeRange.start;
     const endDate = query.timeRange.end.split('T')[0] || query.timeRange.end;
-    
+
     const dateIds = new Set<string>();
     if (startDate && endDate) {
       for (const [date, ids] of index.byTime) {
@@ -372,7 +377,7 @@ export function queryUsingIndex(
         }
       }
     }
-    
+
     if (candidateIds) {
       candidateIds = new Set([...candidateIds].filter(id => dateIds.has(id)));
     } else {
@@ -380,13 +385,13 @@ export function queryUsingIndex(
     }
     usedIndex = true;
   }
-  
+
   // If no index was used, return all ids
   if (!candidateIds) {
     candidateIds = new Set(index.recordHashes.keys());
     usedIndex = false;
   }
-  
+
   return { ids: Array.from(candidateIds), usedIndex };
 }
 
@@ -419,7 +424,7 @@ export function serializeIndex(index: DeterministicIndex): string {
 // Deserialize index from storage
 export function deserializeIndex(serialized: string): DeterministicIndex {
   const obj = JSON.parse(serialized);
-  
+
   const index: DeterministicIndex = {
     version: obj.version || 1,
     lastUpdated: obj.lastUpdated,
@@ -431,7 +436,7 @@ export function deserializeIndex(serialized: string): DeterministicIndex {
     totalRecords: obj.totalRecords || 0,
     recordHashes: new Map(Object.entries(obj.recordHashes || {})),
   };
-  
+
   return migrateIndex(index);
 }
 

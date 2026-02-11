@@ -49,6 +49,8 @@ export const searchQueryDefinition: McpToolDefinition = {
                     end: { type: "string", description: "ISO 8601 end" },
                 },
             },
+            // retrieval hook: semantic search params
+            // semantic: { type: "boolean" }
         },
     },
 };
