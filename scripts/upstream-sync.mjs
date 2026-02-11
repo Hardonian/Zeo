@@ -31,7 +31,7 @@ const pullSubtree = (prefix, remote, branch) => {
         }
 
         execSync(`git subtree pull --prefix=${prefix} ${remote} ${branch} --squash`, { stdio: 'inherit' });
-    } catch (e) {
+    } catch {
         console.warn(`${remote} pull failed (possibly no changes or merge conflict).`);
     }
 };

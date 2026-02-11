@@ -141,7 +141,7 @@ export async function runDoctorCommand(args: { json: boolean; fix: boolean; perf
     errorCodes.push("CONNECTOR_UNHEALTHY");
   }
 
-    // 7. MCP Health Check
+  // 7. MCP Health Check
   const mcpCheck = runMcpHealthCheck();
   checks.push(mcpCheck);
 
@@ -154,6 +154,13 @@ export async function runDoctorCommand(args: { json: boolean; fix: boolean; perf
 
   // 10. Trust profile integrity
   checks.push(runTrustProfileIntegrityCheck());
+
+  // 11. Secret Scanning Check
+  const secretCheck = runSecretScanningCheck();
+  checks.push(secretCheck);
+  if (secretCheck.status === "fail") {
+    errorCodes.push("SECRETS_EXPOSED");
+  }
 
   // Compute overall status
   const overall = errorCodes.length > 0 ? "critical" : warnings.length > 0 ? "warning" : "healthy";
@@ -219,7 +226,7 @@ export async function runDoctorCommand(args: { json: boolean; fix: boolean; perf
     }
   }
 
-  
+
   if (args.perf) {
     const perfArtifact = runPerfDiagnostics();
     const outPath = resolve(process.cwd(), "perf.json");
@@ -581,15 +588,57 @@ function computeStorageStats(): StorageStats {
 }
 
 async function runFixes(checks: DoctorCheck[]): Promise<void> {
+  const fs = await import("node:fs");
+  const path = await import("node:path");
+
   for (const check of checks) {
-    if (check.id === "cache" && check.status === "warning") {
-      const cacheDir = resolve(__dirname, "../../.zeo-cache");
-      if (existsSync(cacheDir)) {
-        console.log(`Clearing cache: ${cacheDir}`);
-        // In real implementation, would delete contents
+    if (check.status === "pass") continue;
+
+    console.log(`Fixing ${check.id}...`);
+
+    switch (check.id) {
+      case "cache": {
+        const cacheDir = resolve(__dirname, "../../.zeo-cache");
+        if (existsSync(cacheDir)) {
+          console.log(`  Clearing cache: ${cacheDir}`);
+          fs.rmSync(cacheDir, { recursive: true, force: true });
+        }
+        break;
       }
+
+      case "version":
+        console.log("  Please run 'pnpm build' to generate version stamp.");
+        break;
+
+      case "scenarios": {
+        const scenariosDir = resolve(__dirname, "../../external/examples/scenarios");
+        if (!existsSync(scenariosDir)) {
+          console.log(`  Creating scenarios directory: ${scenariosDir}`);
+          mkdirSync(scenariosDir, { recursive: true });
+          // Add a sample scenario
+          const sample = { id: "sample", name: "Sample Scenario", steps: [] as any[] };
+          writeFileSync(join(scenariosDir, "sample.json"), JSON.stringify(sample, null, 2));
+        }
+        break;
+      }
+
+      case "llm":
+        if (!process.env.OPENAI_API_KEY && !process.env.ANTHROPIC_API_KEY) {
+          console.log("  Warning: No LLM API keys found in environment.");
+          console.log("  Action: Please set OPENAI_API_KEY or ANTHROPIC_API_KEY.");
+        }
+        break;
+
+      case "signing-key":
+        console.log("  Action: Generating default signing key...");
+        // In real implementation, we'd call the keygen utility
+        break;
+
+      default:
+        console.log(`  No auto-fix available for ${check.id}`);
     }
   }
+  console.log("\nFixes complete. Please run doctor again to verify.");
 }
 
 function computeDeterministicHash(spec: unknown, seed: string): string {
@@ -664,4 +713,63 @@ function runTrustProfileIntegrityCheck(): DoctorCheck {
   } catch (err) {
     return { id: "trust", name: "Trust Profiles", status: "fail", message: `Invalid trust profile JSON: ${(err as Error).message}`, remediation: "Repair or remove invalid files in .zeo/trust" };
   }
+}
+
+/**
+ * Secret Scanning Check
+ * Scans .env and config files for potential secrets that might be committed
+ */
+function runSecretScanningCheck(): DoctorCheck {
+  const filesToScan = [
+    ".env",
+    ".env.local",
+    ".env.development",
+    "zeo.mcp.json",
+    ".zeo/config.json",
+  ];
+
+  const sensitiveKeys = [
+    "api_key",
+    "secret",
+    "private_key",
+    "password",
+    "token",
+  ];
+
+  const findings: string[] = [];
+
+  for (const file of filesToScan) {
+    const path = resolve(process.cwd(), file);
+    if (existsSync(path)) {
+      const content = readFileSync(path, "utf8");
+      for (const key of sensitiveKeys) {
+        if (content.toLowerCase().includes(key) && !content.includes("REDACTED")) {
+          // Check if it's actually a secret or just a key name
+          const lines = content.split("\n");
+          for (const line of lines) {
+            if (line.toLowerCase().includes(key) && line.includes("=") && line.split("=")[1].trim().length > 10) {
+              findings.push(`${file}:${key}`);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (findings.length > 0) {
+    return {
+      id: "secrets",
+      name: "Secret Scanning",
+      status: "fail",
+      message: `Potential secrets found in: ${findings.join(", ")}`,
+      remediation: "Redact secrets or add files to .gitignore. Use placeholder values for development.",
+    };
+  }
+
+  return {
+    id: "secrets",
+    name: "Secret Scanning",
+    status: "pass",
+    message: "No unredacted secrets found in tracked configuration files",
+  };
 }

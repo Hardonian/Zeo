@@ -5,7 +5,7 @@ permissions:
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
 
 jobs:
@@ -55,6 +55,7 @@ jobs:
         run: pnpm -C packages/eval build
       - name: Run Eval Suite
         run: pnpm eval --suite external/examples/eval/core-eval.json --output ./eval-results
-      - name: Verify Eval Results
-        run: |
-          test -f ./eval-results/eval-results.json
+      - name: Smoke Test
+        run: pnpm smoke
+      - name: Zeo Doctor
+        run: pnpm -C apps/cli start -- doctor

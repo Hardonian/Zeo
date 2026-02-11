@@ -1,0 +1,53 @@
+name: Upstream Sync
+
+on:
+    schedule:
+        - cron: "0 0 * * *" # Daily at midnight
+    workflow_dispatch: # Manual trigger
+
+permissions:
+    contents: write
+    pull-requests: write
+
+jobs:
+    sync:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 9
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: "pnpm"
+
+            - name: Install
+              run: pnpm i
+
+            - name: Run Upstream Sync
+              run: node scripts/upstream-sync.mjs
+              env:
+                  SKIP_GIT_PULL: "false"
+
+            - name: Create Pull Request
+              uses: peter-evans/create-pull-request@v6
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  commit-message: "chore: upstream sync for policy engine and core"
+                  branch: upstream-sync-auto
+                  title: "Upstream Sync: Policy & Core Hardening"
+                  body: |
+                      Automated upstream sync from ReadyLayer and ControlPlane.
+
+                      This PR incorporates the latest transformations for:
+                      - PolicyEngine Service abstraction (StorageProvider)
+                      - OTEL Tracing integration
+                      - Security hardening
+                  labels: |
+                      upstream
+                      automated-pr
