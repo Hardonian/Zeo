@@ -5,7 +5,7 @@
  * Security, quality, and style rules
  */
 
-import { CodeParserService, ParseResult } from './code-parser';
+import { CodeParserService, ParseResult } from './code-parser/index.js';
 
 export interface Rule {
   id: string;
@@ -284,10 +284,10 @@ export class StaticAnalysisService {
         const issues: Issue[] = [];
 
         // Check if this is middleware or Edge runtime code
-        const isEdgeCode = filePath.includes('middleware') || 
-                          filePath.includes('edge-') ||
-                          content.includes('export const runtime = \'edge\'') ||
-                          content.includes('export const config = { runtime: \'edge\' }');
+        const isEdgeCode = filePath.includes('middleware') ||
+          filePath.includes('edge-') ||
+          content.includes('export const runtime = \'edge\'') ||
+          content.includes('export const config = { runtime: \'edge\' }');
 
         if (!isEdgeCode) {
           return issues; // Skip if not Edge code
@@ -302,7 +302,7 @@ export class StaticAnalysisService {
 
         parseResult.imports.forEach((imp) => {
           const importSource = imp.source;
-          
+
           // Check for Node-only modules
           nodeOnlyModules.forEach((module) => {
             if (importSource.includes(module)) {
@@ -321,10 +321,10 @@ export class StaticAnalysisService {
           // Check for relative imports that might transitively import Node modules
           if (importSource.startsWith('.') || importSource.startsWith('..')) {
             // This would require transitive analysis - flag for manual review
-            if (importSource.includes('prisma') || 
-                importSource.includes('redis') || 
-                importSource.includes('rate-limit') ||
-                importSource.includes('logging') && !importSource.includes('edge-')) {
+            if (importSource.includes('prisma') ||
+              importSource.includes('redis') ||
+              importSource.includes('rate-limit') ||
+              importSource.includes('logging') && !importSource.includes('edge-')) {
               issues.push({
                 ruleId: 'founder.edge-runtime',
                 severity: 'high',
@@ -478,10 +478,10 @@ export class StaticAnalysisService {
 
           // Pattern 1: userId from request body (should be from auth)
           if (/userId.*=.*(?:req\.body|body\.|request\.body|params\.body)/i.test(line) &&
-              !line.includes('getAuthenticatedUser') &&
-              !line.includes('requireAuth') &&
-              !line.includes('// TODO') &&
-              !line.includes('// FIXME')) {
+            !line.includes('getAuthenticatedUser') &&
+            !line.includes('requireAuth') &&
+            !line.includes('// TODO') &&
+            !line.includes('// FIXME')) {
             issues.push({
               ruleId: 'founder.auth-patterns',
               severity: 'critical',
@@ -508,9 +508,9 @@ export class StaticAnalysisService {
 
           // Pattern 3: Missing auth check before resource access
           if (/await\s+prisma\.\w+\.(?:find|create|update|delete)/i.test(line) &&
-              !content.substring(0, content.indexOf(line)).includes('requireAuth') &&
-              !content.substring(0, content.indexOf(line)).includes('getAuthenticatedUser') &&
-              filePath.includes('/api/')) {
+            !content.substring(0, content.indexOf(line)).includes('requireAuth') &&
+            !content.substring(0, content.indexOf(line)).includes('getAuthenticatedUser') &&
+            filePath.includes('/api/')) {
             // This is heuristic - would need better context analysis
             issues.push({
               ruleId: 'founder.auth-patterns',
@@ -629,8 +629,8 @@ export class StaticAnalysisService {
 
           // Detect PII handling without encryption
           if (/(?:ssn|social.?security|credit.?card|password|email|phone)/i.test(line) &&
-              /(?:log|console|print|store|save)/i.test(line) &&
-              !/(?:encrypt|hash|bcrypt|scrypt|argon2)/i.test(line)) {
+            /(?:log|console|print|store|save)/i.test(line) &&
+            !/(?:encrypt|hash|bcrypt|scrypt|argon2)/i.test(line)) {
             issues.push({
               ruleId: 'enterprise.compliance',
               severity: 'critical',
@@ -644,8 +644,8 @@ export class StaticAnalysisService {
 
           // Detect hardcoded secrets (compliance violation)
           if (/(?:api.?key|secret|token|password)\s*[:=]\s*['"]([^'"]{10,})['"]/i.test(line) &&
-              !line.includes('process.env') &&
-              !line.includes('// TODO')) {
+            !line.includes('process.env') &&
+            !line.includes('// TODO')) {
             issues.push({
               ruleId: 'enterprise.compliance',
               severity: 'critical',
@@ -659,7 +659,7 @@ export class StaticAnalysisService {
 
           // Detect missing audit logging for sensitive operations
           if (/(?:delete|update|modify|change).*(?:user|account|data|record)/i.test(line) &&
-              !/(?:log|audit|track)/i.test(content.substring(Math.max(0, index - 10), index + 10))) {
+            !/(?:log|audit|track)/i.test(content.substring(Math.max(0, index - 10), index + 10))) {
             issues.push({
               ruleId: 'enterprise.compliance',
               severity: 'high',
@@ -1069,17 +1069,17 @@ export class StaticAnalysisService {
   private getFunctionContent(content: string, func: { line: number }): string {
     const lines = content.split('\n');
     const startLine = func.line - 1;
-    
+
     // Try to get function body by finding matching braces
     let braceCount = 0;
     let inFunction = false;
     let endLine = startLine;
-    
+
     for (let i = startLine; i < lines.length; i++) {
       const line = lines[i];
       const openBraces = (line.match(/\{/g) || []).length;
       const closeBraces = (line.match(/\}/g) || []).length;
-      
+
       if (openBraces > 0) {
         inFunction = true;
         braceCount += openBraces;
@@ -1092,7 +1092,7 @@ export class StaticAnalysisService {
         }
       }
     }
-    
+
     // Return function body (or at least the function line if parsing fails)
     return lines.slice(startLine, endLine + 1).join('\n') || lines[startLine] || '';
   }

@@ -7,8 +7,8 @@ export async function GET(
 ) {
     const { runId } = await params;
 
-    // TODO: integrate with run storage service once available.
-    // Currently runs are stored client-side in localStorage or via CLI in filesystem.
+    // Repro packs are currently generated via CLI 'zeo pack' or client-side export.
+    // Server-side generation is restricted in this version.
 
     return NextResponse.json(
         {
