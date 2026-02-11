@@ -1,0 +1,158 @@
+{
+  "name": "@controlplane/orchestrator",
+  "version": "1.0.0",
+  "description": "ControlPlane System Orchestrator - coordinates TruthCore, JobForge, and module runners",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "install:all": "pnpm install",
+    "build": "turbo run build",
+    "build:contracts": "pnpm --filter @controlplane/contracts build",
+    "build:test-kit": "pnpm --filter @controlplane/contract-test-kit build",
+    "dev": "turbo run dev --parallel",
+    "dev:stack": "docker-compose up -d && pnpm run wait:healthy",
+    "dev:stack:logs": "docker-compose up",
+    "dev:stack:down": "docker-compose down -v",
+    "dev:stack:clean": "docker-compose down -v --rmi local",
+    "wait:healthy": "node scripts/wait-for-healthy.js",
+    "test": "turbo run test",
+    "test:contracts": "pnpm --filter @controlplane/contract-test-kit test",
+    "test:e2e": "playwright test",
+    "test:e2e:demo": "playwright test --config playwright.demo.config.ts",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
+    "test:smoke": "npx tsx scripts/smoke-test.ts",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "docs:verify": "node scripts/verify-docs.js",
+    "verify": "pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run docs:verify",
+    "verify:full": "pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run docs:verify && pnpm run controlplane verify:ecosystem",
+    "verify:ecosystem": "pnpm run build && node packages/controlplane/dist/cli.js verify:ecosystem",
+    "ci": "pnpm run verify:full && pnpm run test:e2e",
+    "registry:lint": "npx tsx scripts/registry-lint.ts",
+    "registry:verify": "pnpm run registry:lint && pnpm run test:smoke",
+    "contract:validate": "pnpm --filter @controlplane/contract-test-kit exec contract-test",
+    "contract:validate:json": "pnpm --filter @controlplane/contract-test-kit exec contract-test --json",
+    "contract:lint": "pnpm --filter @controlplane/contracts lint",
+    "contract:sync": "pnpm --filter @controlplane/contract-test-kit exec contract-sync",
+    "contract:sync:check": "pnpm --filter @controlplane/contract-test-kit exec contract-sync",
+    "contract:sync:fix": "pnpm --filter @controlplane/contract-test-kit exec contract-sync --fix",
+    "capability:registry": "pnpm --filter @controlplane/contract-test-kit exec capability-registry",
+    "capability:registry:json": "pnpm --filter @controlplane/contract-test-kit exec capability-registry --format=json",
+    "contract:test": "pnpm run contract:validate",
+    "contract:guard": "node scripts/contract-guard.mjs",
+    "contract:guard:json": "node scripts/contract-guard.mjs --json",
+    "marketplace:build": "pnpm --filter @controlplane/contract-test-kit exec marketplace build",
+    "marketplace:serve": "pnpm --filter @controlplane/contract-test-kit exec marketplace serve",
+    "marketplace:query": "pnpm --filter @controlplane/contract-test-kit exec marketplace query",
+    "compat:generate": "node scripts/generate-compat-matrix.js",
+    "compat:check": "node scripts/generate-compat-matrix.js --strict",
+    "compat:json": "node scripts/generate-compat-matrix.js --json --output=compatibility-matrix.json",
+    "distribution:verify": "node scripts/verify-distribution.js",
+    "release": "semantic-release",
+    "release:prepare": "node scripts/release-prepare.js",
+    "release:validate": "pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run compat:check && pnpm run build",
+    "release:verify": "pnpm run registry:verify",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "prepare": "husky install",
+    "sdk:generate": "pnpm --filter @controlplane/sdk-generator generate",
+    "sdk:validate": "pnpm --filter @controlplane/sdk-generator validate",
+    "sdk:check": "node scripts/check-sdk-drift.js",
+    "sdk:build": "pnpm --filter @controlplane/sdk-generator build",
+    "build:sdk-generator": "pnpm --filter @controlplane/sdk-generator build",
+    "secret-scan": "node scripts/secret-scan.js",
+    "benchmark:contract": "pnpm --filter @controlplane/benchmark benchmark:contract",
+    "benchmark:queue": "pnpm --filter @controlplane/benchmark benchmark:queue",
+    "benchmark:health": "pnpm --filter @controlplane/benchmark benchmark:health",
+    "benchmark:all": "pnpm --filter @controlplane/benchmarks benchmark:all",
+    "test:benchmark": "playwright test tests/e2e/benchmark.api.spec.ts",
+    "benchmark": "pnpm --filter @controlplane/benchmarks benchmark",
+    "benchmark:latency": "pnpm --filter @controlplane/benchmarks benchmark:latency",
+    "benchmark:degraded": "pnpm --filter @controlplane/benchmarks benchmark:degraded",
+    "benchmark:scale": "pnpm --filter @controlplane/benchmarks benchmark:scale",
+    "benchmark:report": "pnpm --filter @controlplane/benchmarks benchmark:report",
+    "benchmark:list": "pnpm --filter @controlplane/benchmarks tsx src/runner.ts --list",
+    "test:integration": "pnpm --filter @controlplane/integration-tests test",
+    "test:golden": "node tests/golden/truthcore-determinism.test.mjs",
+    "demo:reset": "node scripts/demo-reset.mjs",
+    "demo:setup": "node scripts/demo-setup.mjs",
+    "demo:start": "node scripts/demo-start.mjs",
+    "verify-integrations": "node packages/controlplane/dist/cli.js verify-integrations",
+    "contracts:check": "node scripts/contracts-check.mjs",
+    "contracts:check:json": "node scripts/contracts-check.mjs --json",
+    "doctor": "node scripts/doctor.mjs",
+    "doctor:json": "node scripts/doctor.mjs --json",
+    "controlplane": "node packages/controlplane/dist/cli.js",
+    "controlplane:plan": "node packages/controlplane/dist/cli.js plan",
+    "controlplane:run:smoke": "node packages/controlplane/dist/cli.js run --smoke",
+    "controlplane:doctor": "node packages/controlplane/dist/cli.js doctor",
+    "connectors:test": "node scripts/connectors-test.mjs",
+    "connectors:test:json": "node scripts/connectors-test.mjs --json",
+    "reality:check": "node scripts/reality-map-check.ts",
+    "reality:check:ci": "node scripts/reality-map-check.ts --ci"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.0",
+    "@commitlint/config-conventional": "^18.4.0",
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.55.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.0",
+    "semantic-release": "^22.0.0",
+    "turbo": "^1.11.0",
+    "typescript": "^5.3.3"
+  },
+  "packageManager": "pnpm@8.12.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release": {
+    "branches": [
+      "main",
+      "next"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "package.json",
+            "packages/*/package.json"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ]
+    ]
+  }
+}
