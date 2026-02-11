@@ -1,9 +1,19 @@
+console.log('=== Antigravity Upstream Sync Governance ===\n');
 
-import { execSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
+// Hash helper for drift detection
+const getHash = (file) => {
+    if (!fs.existsSync(file)) return null;
+    try {
+        return execSync(`git hash-object ${file}`, { encoding: 'utf8' }).trim();
+    } catch {
+        return null;
+    }
+};
 
-console.log('Synchronizing upstream repos...');
+const BASE_CONTRACTS_DIR = 'packages/contracts';
+const PRISMA_SCHEMA = 'packages/db/prisma/schema.prisma';
+
+const initialSchemaHash = getHash(PRISMA_SCHEMA);
 
 // 1. Pull (Git Subtree)
 const pullSubtree = (prefix, remote, branch) => {
@@ -344,4 +354,20 @@ ensurePackageJson('packages/analysis', '@zeo/analysis', {
     "@babel/types": "^7.28.6"
 });
 
-console.log('Sync Complete.');
+// Final Governance Check
+console.log('\n--- Finalizing Governance Sync ---');
+
+const finalSchemaHash = getHash(PRISMA_SCHEMA);
+if (initialSchemaHash && finalSchemaHash && initialSchemaHash !== finalSchemaHash) {
+    console.warn('🚨 ATTENTION: Prisma Schema has drifted during sync!');
+    console.warn('   -> Action Required: Update CHANGELOG.md and bump version if breaking.');
+}
+
+// Check for modified contracts
+const changedContracts = execSync(`git status --short ${BASE_CONTRACTS_DIR}`, { encoding: 'utf8' }).trim();
+if (changedContracts) {
+    console.warn('🚨 ATTENTION: Core Contracts modified during sync!');
+    console.log(changedContracts);
+}
+
+console.log('\nSync Complete. Status: [upstream-sync] Label recommended for PR.');

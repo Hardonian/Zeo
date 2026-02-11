@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.{mjs,js,ts,tsx} text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.prisma text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=lf

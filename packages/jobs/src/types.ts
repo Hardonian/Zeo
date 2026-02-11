@@ -9,6 +9,7 @@ export type JobStatus =
   | 'paused'       // Paused by user
   | 'completed'    // Successfully finished
   | 'failed'       // Error occurred
+  | 'dead_letter'  // Max retries exceeded
   | 'cancelled';   // Cancelled by user
 
 export type JobType =
@@ -73,6 +74,12 @@ export interface Job {
   decisionId?: string;
   /** Tags for organization */
   tags?: string[];
+  /** Current retry attempt count */
+  attempts: number;
+  /** Maximum retry attempts for this specific job */
+  maxRetries: number;
+  /** Next retry timestamp (if backoff applied) */
+  retryAfter?: string;
 }
 
 export interface JobQueueConfig {
@@ -88,6 +95,8 @@ export interface JobQueueConfig {
   autoStart: boolean;
   /** Persist completed jobs for this many ms (default: 86400000 = 24h) */
   completedJobRetentionMs: number;
+  /** Default retry delay in ms (default: 5000) */
+  retryDelayMs: number;
 }
 
 export interface JobEnqueueOptions {
@@ -101,6 +110,8 @@ export interface JobEnqueueOptions {
   decisionId?: string;
   /** Tags for organization */
   tags?: string[];
+  /** Override max retries for this job */
+  maxRetries?: number;
 }
 
 export interface JobHandler<TPayload = unknown, TResult = unknown> {

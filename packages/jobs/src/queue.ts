@@ -22,6 +22,7 @@ const DEFAULT_CONFIG: JobQueueConfig = {
   maxRetries: 0,
   autoStart: true,
   completedJobRetentionMs: 24 * 60 * 60 * 1000, // 24 hours
+  retryDelayMs: 5000,
 };
 
 function generateJobId(): string {
@@ -58,7 +59,7 @@ export class JobQueue {
 
   constructor(config: Partial<JobQueueConfig> = {}) {
     this.config = { ...DEFAULT_CONFIG, ...config };
-    
+
     if (this.config.autoStart) {
       this.start();
     }
@@ -100,13 +101,15 @@ export class JobQueue {
       checkpoint: null,
       decisionId: options.decisionId,
       tags: options.tags,
+      attempts: 0,
+      maxRetries: options.maxRetries ?? this.config.maxRetries,
     };
 
     this.jobs.set(job.id, job);
-    
+
     // Insert in priority order, then FIFO within same priority
     this.insertInOrder(job);
-    
+
     return job;
   }
 
@@ -126,15 +129,15 @@ export class JobQueue {
       const otherId = this.jobOrder[i];
       const other = this.jobs.get(otherId);
       if (!other) continue;
-      
+
       // Lower priority number = higher priority
-      if (job.priority < other.priority || 
-          (job.priority === other.priority && job.createdAt < other.createdAt)) {
+      if (job.priority < other.priority ||
+        (job.priority === other.priority && job.createdAt < other.createdAt)) {
         insertIndex = i;
         break;
       }
     }
-    
+
     this.jobOrder.splice(insertIndex, 0, job.id);
   }
 
@@ -164,7 +167,7 @@ export class JobQueue {
     }
 
     if (filter.tags) {
-      jobs = jobs.filter(j => 
+      jobs = jobs.filter(j =>
         filter.tags!.every((tag: string) => j.tags?.includes(tag))
       );
     }
@@ -233,11 +236,26 @@ export class JobQueue {
   }
 
   /**
+   * Manually retry a failed or dead-letter job
+   */
+  async retry(jobId: string): Promise<boolean> {
+    const job = this.jobs.get(jobId);
+    if (!job) return false;
+    if (job.status !== 'failed' && job.status !== 'dead_letter') return false;
+
+    job.status = 'pending';
+    job.error = null;
+    job.retryAfter = undefined;
+    this.insertInOrder(job);
+    return true;
+  }
+
+  /**
    * Start processing jobs
    */
   start(): void {
     if (this.processingInterval) return;
-    
+
     this.processingInterval = setInterval(() => {
       this.processNextJobs();
     }, this.config.pollIntervalMs);
@@ -264,6 +282,7 @@ export class JobQueue {
       paused: 0,
       completed: 0,
       failed: 0,
+      dead_letter: 0,
       cancelled: 0,
     };
 
@@ -271,14 +290,14 @@ export class JobQueue {
       byStatus[job.status]++;
     }
 
-    const completedLastHour = jobs.filter(j => 
-      j.status === 'completed' && 
+    const completedLastHour = jobs.filter(j =>
+      j.status === 'completed' &&
       j.completedAt &&
       Date.now() - new Date(j.completedAt).getTime() < 60 * 60 * 1000
     ).length;
 
-    const averageDurationMs = this.stats.totalCompleted > 0 
-      ? this.stats.totalDurationMs / this.stats.totalCompleted 
+    const averageDurationMs = this.stats.totalCompleted > 0
+      ? this.stats.totalDurationMs / this.stats.totalCompleted
       : 0;
 
     const pendingJobs = jobs.filter(j => j.status === 'pending');
@@ -322,6 +341,10 @@ export class JobQueue {
     for (const jobId of this.jobOrder) {
       const job = this.jobs.get(jobId);
       if (job && job.status === 'pending') {
+        // Check if backoff period has passed
+        if (job.retryAfter && new Date(job.retryAfter).getTime() > Date.now()) {
+          continue;
+        }
         return job;
       }
     }
@@ -394,9 +417,25 @@ export class JobQueue {
         this.stats.totalDurationMs += Date.now() - startTime;
       }
     } catch (error) {
-      job.status = 'failed';
-      job.error = error instanceof Error ? error.message : String(error);
-      job.completedAt = new Date().toISOString();
+      const errorMessage = error instanceof Error ? error.message : String(error);
+
+      if (job.attempts < job.maxRetries) {
+        job.attempts++;
+        job.status = 'pending';
+        job.error = `Attempt ${job.attempts} failed: ${errorMessage}`;
+
+        // Exponential backoff: retryDelayMs * 2^(attempts-1)
+        const delay = this.config.retryDelayMs * Math.pow(2, job.attempts - 1);
+        job.retryAfter = new Date(Date.now() + delay).toISOString();
+
+        console.warn(`[JobQueue] Job ${job.id} failed, retrying in ${delay}ms...`);
+        this.insertInOrder(job);
+      } else {
+        job.status = job.maxRetries > 0 ? 'dead_letter' : 'failed';
+        job.error = errorMessage;
+        job.completedAt = new Date().toISOString();
+        console.error(`[JobQueue] Job ${job.id} failed terminal: ${errorMessage}`);
+      }
     } finally {
       if (timeoutId) clearTimeout(timeoutId);
       this.runningJobs.delete(job.id);
@@ -409,7 +448,7 @@ export class JobQueue {
    */
   private cleanupOldJobs(): void {
     const cutoff = Date.now() - this.config.completedJobRetentionMs;
-    
+
     for (const [id, job] of this.jobs) {
       if (
         (job.status === 'completed' || job.status === 'failed' || job.status === 'cancelled') &&

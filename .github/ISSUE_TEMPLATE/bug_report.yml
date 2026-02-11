@@ -1,0 +1,41 @@
+name: "Bug Report"
+description: "Report a bug in Antigravity"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: version
+    attributes:
+      label: Antigravity Version
+      placeholder: e.g. v1.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: |
+        Please provide a clear set of steps to reproduce the bug.
+      placeholder: |
+        1. Push a PR with...
+        2. Wait for webhook...
+        3. Observe...
+    validations:
+      required: true
+  - type: textarea
+    id: doctor_output
+    attributes:
+      label: "Antigravity Doctor Output"
+      description: |
+        Run `pnpm doctor` and paste the output here.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs
+      description: |
+        Please paste any relevant logs from the web app or JobForge worker.
