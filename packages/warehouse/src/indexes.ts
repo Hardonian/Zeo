@@ -32,7 +32,7 @@ export interface DeterministicIndex {
   tokenIndex: Map<string, Set<string>>;           // token → ids
 
   // Semantic search (V3)
-  embeddingIndex: Map<string, number[]>;          // id → vector
+  embeddingIndex: Map<string, number[][]>;        // id → vectors (one per chunk)
   termFreqs: Map<string, Record<string, number>>; // id → { token: count }
   docLengths: Map<string, number>;                // id → length
   avgDocLength: number;
@@ -287,14 +287,25 @@ export async function indexRecord(
   index.avgDocLength = newAvg;
 
   // Embedding
+  // Embedding
   if (provider && provider.enabled) {
     try {
-      // Only embed if substantial
-      if (text.length > 20) {
-        const vector = await provider.embed(text);
-        if (vector && vector.length > 0) {
-          index.embeddingIndex.set(id, vector);
+      // Deterministic chunking (256 tokens per chunk, 25 overlap)
+      const chunks = chunkTokens(tokens, 256, 25);
+      const vectors: number[][] = [];
+
+      for (const chunk of chunks) {
+        const chunkText = chunk.join(' ');
+        if (chunkText.length > 20) {
+          const vec = await provider.embed(chunkText);
+          if (vec && vec.length > 0) {
+            vectors.push(vec);
+          }
         }
+      }
+
+      if (vectors.length > 0) {
+        index.embeddingIndex.set(id, vectors);
       }
     } catch (e) {
       // ignore embedding failure
@@ -370,12 +381,19 @@ export function queryUsingIndex(
   if (query.vector && query.vector.length > 0) {
     const vectorCandidates = new Set<string>();
     // Brute force cosine similarity
-    for (const [id, embedding] of index.embeddingIndex) {
-      if (!embedding) continue;
-      const score = cosineSimilarity(query.vector, embedding);
-      if (score > 0.0) {
+    // MaxSim strategy: Max similarity across all chunks
+    for (const [id, embeddings] of index.embeddingIndex) {
+      if (!embeddings || embeddings.length === 0) continue;
+
+      let maxScore = 0;
+      for (const embedding of embeddings) {
+        const score = cosineSimilarity(query.vector, embedding);
+        if (score > maxScore) maxScore = score;
+      }
+
+      if (maxScore > 0.3) { // Threshold
         vectorCandidates.add(id);
-        scores.set(id, (scores.get(id) || 0) + score);
+        scores.set(id, (scores.get(id) || 0) + maxScore);
       }
     }
 
@@ -576,3 +594,23 @@ export function deserializeIndex(serialized: string): DeterministicIndex {
   return migrateIndex(index);
 }
 
+// Helper: Deterministic chunking
+function chunkTokens(tokens: string[], chunkSize: number, overlap: number): string[][] {
+  const chunks: string[][] = [];
+  if (tokens.length === 0) return chunks;
+
+  if (tokens.length <= chunkSize) {
+    return [tokens];
+  }
+
+  let start = 0;
+  while (start < tokens.length) {
+    const end = Math.min(start + chunkSize, tokens.length);
+    chunks.push(tokens.slice(start, end));
+
+    if (end === tokens.length) break;
+    start += (chunkSize - overlap);
+  }
+
+  return chunks;
+}
