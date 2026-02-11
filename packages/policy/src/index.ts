@@ -245,13 +245,15 @@ export class PolicyEngineService {
 
   private async getDefaultPolicy(organizationId: string, repositoryId: string | null): Promise<EffectivePolicy> {
     const strength = this.storage ? await this.storage.getEnforcementStrength(organizationId) : 'basic';
-    const mappings = {
+    const mappings: Record<string, Record<string, 'block' | 'warn' | 'allow'>> = {
       basic: { critical: 'block', high: 'warn', medium: 'allow', low: 'allow' },
       moderate: { critical: 'block', high: 'block', medium: 'warn', low: 'allow' },
       maximum: { critical: 'block', high: 'block', medium: 'block', low: 'warn' },
-    }[strength as 'basic' | 'moderate' | 'maximum'];
+    };
+    const strengthKey = (strength as 'basic' | 'moderate' | 'maximum') || 'basic';
+    const activeMappings = mappings[strengthKey] || mappings.basic;
 
-    const defaultRule: PolicyRule = { id: 'default', ruleId: '*', severityMapping: mappings, enabled: true };
+    const defaultRule: PolicyRule = { id: 'default', ruleId: '*', severityMapping: activeMappings, enabled: true };
     const rulesMap = new Map();
     rulesMap.set('*', defaultRule);
 

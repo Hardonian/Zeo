@@ -14,6 +14,9 @@ import type {
   JobQueueStats,
   JobFilter,
 } from './types.js';
+import { trace, SpanStatusCode } from '@opentelemetry/api';
+
+const tracer = trace.getTracer('zeo-jobforge');
 
 const DEFAULT_CONFIG: JobQueueConfig = {
   concurrency: 1,  // Deterministic: one job at a time
@@ -82,35 +85,40 @@ export class JobQueue {
     payload: TPayload,
     options: JobEnqueueOptions = {}
   ): Job {
-    const now = new Date().toISOString();
-    const job: Job = {
-      id: options.priority !== undefined ? `priority-${options.priority}-${generateJobId()}` : generateJobId(),
-      type,
-      description,
-      payload,
-      status: 'pending',
-      progress: createInitialProgress(),
-      createdAt: now,
-      startedAt: null,
-      completedAt: null,
-      error: null,
-      result: null,
-      priority: options.priority ?? 0,
-      timeoutSeconds: options.timeoutSeconds ?? this.config.defaultTimeoutSeconds,
-      resumable: options.resumable ?? false,
-      checkpoint: null,
-      decisionId: options.decisionId,
-      tags: options.tags,
-      attempts: 0,
-      maxRetries: options.maxRetries ?? this.config.maxRetries,
-    };
+    return tracer.startActiveSpan('job.enqueue', (span) => {
+      span.setAttribute('job.type', type);
+      span.setAttribute('job.description', description);
 
-    this.jobs.set(job.id, job);
+      const now = new Date().toISOString();
+      const job: Job = {
+        id: options.priority !== undefined ? `priority-${options.priority}-${generateJobId()}` : generateJobId(),
+        type,
+        description,
+        payload,
+        status: 'pending',
+        progress: createInitialProgress(),
+        createdAt: now,
+        startedAt: null,
+        completedAt: null,
+        error: null,
+        result: null,
+        priority: options.priority ?? 0,
+        timeoutSeconds: options.timeoutSeconds ?? this.config.defaultTimeoutSeconds,
+        resumable: options.resumable ?? false,
+        checkpoint: null,
+        decisionId: options.decisionId,
+        tags: options.tags,
+        attempts: 0,
+        maxRetries: options.maxRetries ?? this.config.maxRetries,
+      };
 
-    // Insert in priority order, then FIFO within same priority
-    this.insertInOrder(job);
+      this.jobs.set(job.id, job);
+      this.insertInOrder(job);
 
-    return job;
+      span.setAttribute('job.id', job.id);
+      span.end();
+      return job;
+    });
   }
 
   /**
@@ -194,7 +202,7 @@ export class JobQueue {
     if (!job) return false;
 
     if (job.status === 'completed' || job.status === 'failed' || job.status === 'cancelled') {
-      return false;  // Already terminal
+      return false; // Already terminal
     }
 
     if (job.status === 'running') {
@@ -355,92 +363,92 @@ export class JobQueue {
    * Process a single job
    */
   private async processJob(job: Job): Promise<void> {
-    const handler = this.handlers.get(job.type);
-    if (!handler) {
-      job.status = 'failed';
-      job.error = `No handler registered for job type: ${job.type}`;
-      job.completedAt = new Date().toISOString();
-      return;
-    }
+    await tracer.startActiveSpan('job.process', async (span) => {
+      span.setAttribute('job.id', job.id);
+      span.setAttribute('job.type', job.type);
 
-    job.status = 'running';
-    job.startedAt = new Date().toISOString();
-    this.runningJobs.add(job.id);
+      const handler = this.handlers.get(job.type);
+      if (!handler) {
+        job.status = 'failed';
+        job.error = `No handler registered for job type: ${job.type}`;
+        job.completedAt = new Date().toISOString();
+        span.setStatus({ code: SpanStatusCode.ERROR, message: job.error });
+        span.end();
+        return;
+      }
 
-    const startTime = Date.now();
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+      job.status = 'running';
+      job.startedAt = new Date().toISOString();
+      this.runningJobs.add(job.id);
 
-    try {
-      // Set up timeout
-      const timeoutPromise = new Promise<never>((_, reject) => {
-        if (job.timeoutSeconds > 0) {
-          timeoutId = setTimeout(() => {
-            reject(new Error(`Job timed out after ${job.timeoutSeconds} seconds`));
-          }, job.timeoutSeconds * 1000);
-        }
-      });
+      const startTime = Date.now();
+      let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-      // Progress update callback
-      const updateProgress = (progress: Partial<JobProgress>) => {
-        job.progress = {
-          ...job.progress,
-          ...progress,
-          updatedAt: new Date().toISOString(),
+      try {
+        const timeoutPromise = new Promise<never>((_, reject) => {
+          if (job.timeoutSeconds > 0) {
+            timeoutId = setTimeout(() => {
+              reject(new Error(`Job timed out after ${job.timeoutSeconds} seconds`));
+            }, job.timeoutSeconds * 1000);
+          }
+        });
+
+        const updateProgress = (progress: Partial<JobProgress>) => {
+          job.progress = {
+            ...job.progress,
+            ...progress,
+            updatedAt: new Date().toISOString(),
+          };
         };
-      };
 
-      // Cancellation check
-      const checkCancelled = () => {
-        const j = this.jobs.get(job.id);
-        return j?.status === 'cancelled';
-      };
+        const checkCancelled = () => {
+          const j = this.jobs.get(job.id);
+          return j?.status === 'cancelled';
+        };
 
-      // Execute job with timeout race
-      const result = await Promise.race([
-        handler.execute(job, updateProgress, checkCancelled),
-        timeoutPromise,
-      ]);
+        const result = await Promise.race([
+          handler.execute(job, updateProgress, checkCancelled),
+          timeoutPromise,
+        ]);
 
-      // Re-read job status after await (may have been cancelled)
-      const currentJob = this.jobs.get(job.id);
-      if (currentJob?.status === 'cancelled') {
-        job.completedAt = new Date().toISOString();
-      } else {
-        job.status = 'completed';
-        job.result = result;
-        job.completedAt = new Date().toISOString();
-        job.progress.percentComplete = 100;
-        job.progress.currentOperation = 'Completed';
+        const currentJob = this.jobs.get(job.id);
+        if (currentJob?.status === 'cancelled') {
+          job.completedAt = new Date().toISOString();
+          span.addEvent('job.cancelled');
+        } else {
+          job.status = 'completed';
+          job.result = result;
+          job.completedAt = new Date().toISOString();
+          job.progress.percentComplete = 100;
+          job.progress.currentOperation = 'Completed';
+          this.stats.totalCompleted++;
+          this.stats.totalDurationMs += Date.now() - startTime;
+          span.setStatus({ code: SpanStatusCode.OK });
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        span.recordException(error as Error);
 
-        // Update stats
-        this.stats.totalCompleted++;
-        this.stats.totalDurationMs += Date.now() - startTime;
+        if (job.attempts < job.maxRetries) {
+          job.attempts++;
+          job.status = 'pending';
+          job.error = `Attempt ${job.attempts} failed: ${errorMessage}`;
+          const delay = this.config.retryDelayMs * Math.pow(2, job.attempts - 1);
+          job.retryAfter = new Date(Date.now() + delay).toISOString();
+          this.insertInOrder(job);
+        } else {
+          job.status = job.maxRetries > 0 ? 'dead_letter' : 'failed';
+          job.error = errorMessage;
+          job.completedAt = new Date().toISOString();
+          span.setStatus({ code: SpanStatusCode.ERROR, message: errorMessage });
+        }
+      } finally {
+        if (timeoutId) clearTimeout(timeoutId);
+        this.runningJobs.delete(job.id);
+        this.cleanupOldJobs();
+        span.end();
       }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-
-      if (job.attempts < job.maxRetries) {
-        job.attempts++;
-        job.status = 'pending';
-        job.error = `Attempt ${job.attempts} failed: ${errorMessage}`;
-
-        // Exponential backoff: retryDelayMs * 2^(attempts-1)
-        const delay = this.config.retryDelayMs * Math.pow(2, job.attempts - 1);
-        job.retryAfter = new Date(Date.now() + delay).toISOString();
-
-        console.warn(`[JobQueue] Job ${job.id} failed, retrying in ${delay}ms...`);
-        this.insertInOrder(job);
-      } else {
-        job.status = job.maxRetries > 0 ? 'dead_letter' : 'failed';
-        job.error = errorMessage;
-        job.completedAt = new Date().toISOString();
-        console.error(`[JobQueue] Job ${job.id} failed terminal: ${errorMessage}`);
-      }
-    } finally {
-      if (timeoutId) clearTimeout(timeoutId);
-      this.runningJobs.delete(job.id);
-      this.cleanupOldJobs();
-    }
+    });
   }
 
   /**
@@ -492,4 +500,3 @@ export function resetJobQueue(): void {
   }
   globalQueue = null;
 }
-

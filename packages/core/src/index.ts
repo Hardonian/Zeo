@@ -26,6 +26,8 @@ export {
   computeTranscriptHash,
   hashDecisionSpec,
   hashAssumptionSet,
+  cacheKey,
+  getContractVersionHash,
 } from "./hashing.js";
 export type {
   LearningDecisionRunner,
@@ -77,3 +79,4 @@ export * from "./transcript-security.js";
 export * from "./storage-provider.js";
 export * from "./storage/prisma.js";
 export * from "./storage/sqlite.js";
+export * from "./evidence-signing.js";
