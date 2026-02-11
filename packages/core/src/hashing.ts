@@ -40,10 +40,9 @@ export function hashDecisionSpec(spec: DecisionSpec): string {
 
 export function hashAssumptionSet(assumptions: (Assumption | Claim)[]): string {
   // Strip IDs for stable hashing
-  const localized = assumptions.map((a) => {
-        const { id, ...rest } = a as any;
-    return rest;
-  });
+  const localized = assumptions.map((a) => Object.fromEntries(
+    Object.entries(a as Record<string, unknown>).filter(([key]) => key !== "id")
+  ));
 
   // Sort by canonical JSON string to ensure order independence without relying on IDs
   // Since we stripped IDs, we must rely on content for sorting.

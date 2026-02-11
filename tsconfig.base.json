@@ -170,6 +170,12 @@
       ],
       "@zeo/id": [
         "packages/id/src"
+      ],
+      "@zeo/db": [
+        "packages/db/src"
+      ],
+      "@prisma/client": [
+        "packages/db/src/prisma-client.d.ts"
       ]
     }
   }
