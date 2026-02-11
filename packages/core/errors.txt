@@ -1,7 +1,0 @@
-src/evidence-storage.ts(31,22): error TS2339: Property 'evidenceAttestation' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
-src/evidence-storage.ts(47,22): error TS2339: Property 'evidenceObject' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
-src/evidence-storage.ts(78,22): error TS2339: Property 'evidenceObject' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
-src/runner.ts(184,21): error TS2322: Type 'DecisionSpec' is not assignable to type 'string'.
-src/runner.ts(189,43): error TS2345: Argument of type 'Buffer<ArrayBuffer>' is not assignable to parameter of type 'string'.
-src/webhooks-security.ts(42,43): error TS2339: Property 'webhookReceipt' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
-src/webhooks-security.ts(56,26): error TS2339: Property 'webhookReceipt' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.

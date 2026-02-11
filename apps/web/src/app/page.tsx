@@ -39,6 +39,23 @@ export default function Home() {
             View on GitHub
           </a>
         </div>
+
+        <div className="pt-8 border-t border-gray-200">
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+            Governance (New)
+          </h2>
+          <div className="grid grid-cols-2 gap-4 text-left">
+            <Link href="/audit" className="p-4 bg-blue-50 border border-blue-100 rounded-lg hover:bg-blue-100 transition-colors">
+              <h3 className="font-medium text-blue-900">Evidence Chain</h3>
+              <p className="text-sm text-blue-700">Audit logs with tamper-evident cryptographic proofs</p>
+            </Link>
+            <Link href="/policy-packs" className="p-4 bg-emerald-50 border border-emerald-100 rounded-lg hover:bg-emerald-100 transition-colors">
+              <h3 className="font-medium text-emerald-900">Policy Packs</h3>
+              <p className="text-sm text-emerald-700">Enterprise governance and compliance as code</p>
+            </Link>
+          </div>
+        </div>
+
         <div className="pt-8 border-t border-gray-200">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
             Features
