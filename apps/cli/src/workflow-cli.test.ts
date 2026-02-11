@@ -219,4 +219,48 @@ describe("workflow cli", () => {
     expect(verifyFail.verified).toBe(false);
     expect(verifyFail.drift.length).toBeGreaterThan(0);
   });
+
+  it("lists templates and creates decisions from template with review horizon", async () => {
+    pushTempCwd();
+    const origWrite = process.stdout.write;
+    const listOut: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { listOut.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    await runWorkflowCommand(parseWorkflowArgs(["template", "list", "--json"]));
+    const listed = JSON.parse(listOut.join(""));
+    expect(listed.templates.map((t: { id: string }) => t.id)).toEqual(["infra-migration", "product-launch", "security-review"]);
+
+    const createOut: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { createOut.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    await runWorkflowCommand(parseWorkflowArgs(["decision", "create", "--template", "security-review", "--title", "Template SEC", "--json"]));
+    process.stdout.write = origWrite;
+    const created = JSON.parse(createOut.join(""));
+
+    const ws = JSON.parse(readFileSync(join(process.cwd(), ".zeo", "decisions", created.decisionId, "decision.json"), "utf8"));
+    expect(ws.decisionType).toBe("SEC");
+    expect(typeof ws.reviewAt).toBe("string");
+    expect(ws.evidence.length).toBeGreaterThanOrEqual(5);
+  });
+
+  it("records review_overdue drift and degrades health when reviewAt has passed", async () => {
+    pushTempCwd();
+    await runWorkflowCommand(parseWorkflowArgs(["decision", "create", "--template", "security-review", "--title", "Overdue Review"]));
+    const id = (await import("node:fs")).readdirSync(join(process.cwd(), ".zeo", "decisions"))[0];
+
+    const wsPath = join(process.cwd(), ".zeo", "decisions", id, "decision.json");
+    const ws = JSON.parse(readFileSync(wsPath, "utf8"));
+    ws.reviewAt = "1970-01-02";
+    (await import("node:fs")).writeFileSync(wsPath, `${JSON.stringify(ws, null, 2)}\n`, "utf8");
+
+    const origWrite = process.stdout.write;
+    const out: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { out.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    await runWorkflowCommand(parseWorkflowArgs(["run", "--decision", id, "--as-of", "1970-01-03", "--json"]));
+    process.stdout.write = origWrite;
+    const runPayload = JSON.parse(out.join(""));
+    expect(runPayload.health.policyComplianceScore).toBeLessThan(100);
+
+    const wsAfter = JSON.parse(readFileSync(wsPath, "utf8"));
+    expect(wsAfter.driftEvents.some((event: { type: string }) => event.type === "review_overdue")).toBe(true);
+  });
+
 });

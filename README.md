@@ -127,20 +127,20 @@ Zeo avoids fake numbers. It uses:
 
 ## Zeo in 5 minutes
 ```bash
-# 1) Start a decision workspace
-zeo start --title "Choose deployment window"
+# 1) Analyze something
+zeo analyze-pr examples/analyze-pr-auth/diff.patch
 
-# 2) Add evidence from plain language notes
-zeo add-note --decision dec_<id> --text "Vendor says rollback takes 30 minutes"
+# 2) Convert to decision from a deterministic template
+zeo decision create --template security-review --title "Choose deployment window"
 
 # 3) Run deterministic analysis
 zeo run --decision dec_<id>
 
-# 4) See next evidence checklist
-zeo next --decision dec_<id>
+# 4) View dashboard
+zeo view <run_id> --persona exec
 
-# 5) Share with proof-friendly export
-zeo export md --decision dec_<id> --out ./exports
+# 5) Export proof-friendly bundle
+zeo export decision dec_<id> --format dir --out ./exports
 ```
 
 ### What would change my mind?
@@ -159,6 +159,8 @@ Use `flip distance` in the result card.
 - Inspect plugin extension health: `zeo plugins list` and `zeo plugins doctor`
 - Discover and apply policy packs: `zeo pack list`, `zeo pack apply <pack>`, `zeo pack export`
 - Initialize a new pack scaffold: `zeo init pack <name>`
+- List built-in templates: `zeo template list`
+- Set review horizon automatically with templates (`reviewAt`), and monitor drift using `zeo drift-report`
 - Replay built-in examples instantly: `zeo replay examples/startup-scaling`
 
 ### Bring your own agent

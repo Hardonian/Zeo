@@ -16,7 +16,7 @@ type DecisionType = "ENG" | "OPS" | "SEC" | "PROD" | "MKT" | "CUST";
 type Audience = "legal" | "exec" | "sales" | "engineer" | "auditor";
 
 type DecayStatus = "fresh" | "aging" | "stale" | "expired" | "unknown";
-type DriftType = "assumption_flip" | "evidence_expired" | "outcome_regret" | "policy_change" | "environment_change";
+type DriftType = "assumption_flip" | "evidence_expired" | "outcome_regret" | "policy_change" | "environment_change" | "review_overdue";
 
 // Integration map:
 // - Metrics hook: computed on run completion and persisted in workspace + .zeo/metrics snapshots.
@@ -47,8 +47,10 @@ export interface WorkflowArgs {
   | "evidence"
   | "help"
   | "examples"
+  | "template"
+  | "decision"
   | null;
-  subcommand?: "md" | "ics" | "bundle" | "show" | "impact" | "fragility" | "weekly" | "decision" | "set-expiry" | "expired" | "start" | "examples";
+  subcommand?: "md" | "ics" | "bundle" | "show" | "impact" | "fragility" | "weekly" | "decision" | "set-expiry" | "expired" | "start" | "examples" | "list" | "create";
   decision?: string;
   text?: string;
   title?: string;
@@ -68,6 +70,7 @@ export interface WorkflowArgs {
   audience?: Audience;
   type?: DecisionType;
   mode?: "internal" | "customer";
+  templateId?: string;
   since?: string;
   window?: "7d" | "30d" | "90d";
   driftType?: DriftType;
@@ -117,7 +120,7 @@ interface RunResult {
 }
 
 interface DecisionHealth {
-  schemaVersion: "1.0.0";
+  schemaVersion: string;
   evidenceCompletenessScore: number;
   policyComplianceScore: number;
   replayStabilityScore: number;
@@ -136,6 +139,19 @@ interface DriftEvent {
   details: Record<string, string | number | boolean | null>;
 }
 
+interface DecisionTemplate {
+  schemaVersion: string;
+  id: string;
+  title: string;
+  description: string;
+  decisionType: DecisionType;
+  workspaceMode: "internal" | "customer";
+  reviewAfterDays: number;
+  requiredEvidence: string[];
+  requiredAssumptions: string[];
+  requiredPolicyTypes: string[];
+}
+
 function specFromWorkspace(ws: DecisionWorkspace): contracts.DecisionSpec {
   return {
     id: ws.decisionId,
@@ -145,7 +161,7 @@ function specFromWorkspace(ws: DecisionWorkspace): contracts.DecisionSpec {
     decisionType: ws.decisionType,
     workspaceMode: ws.workspaceMode,
     decisionState: ws.state,
-    reviewAfter: ws.runs[ws.runs.length - 1]?.fullTranscript?.timestamp ? new Date(new Date(ws.createdAt ?? new Date().toISOString()).getTime() + 30 * 24 * 3600 * 1000).toISOString() : undefined,
+    reviewAfter: ws.reviewAt ? `${ws.reviewAt}T00:00:00.000Z` : undefined,
     expectedSignals: ws.evidence.map((e) => e.summary),
     horizon: "days",
     agents: [{ id: "self", name: "Self", role: "self" }],
@@ -178,8 +194,72 @@ interface DecisionWorkspace {
   runs: RunResult[];
   chain: { parentTranscriptHash?: string };
   workspaceId?: string;
+  reviewAt?: string;
   driftEvents?: DriftEvent[];
   healthHistory?: DecisionHealth[];
+}
+
+
+
+const DECISION_TEMPLATES: DecisionTemplate[] = ([
+  {
+    schemaVersion: "1.0.0",
+    id: "security-review",
+    title: "Security Review",
+    description: "Security posture decision with threat modeling and provenance checks.",
+    decisionType: "SEC",
+    workspaceMode: "internal",
+    reviewAfterDays: 7,
+    requiredEvidence: ["threat-model", "control-evidence", "replayable-reasoning"],
+    requiredAssumptions: ["threat coverage is complete", "control owners accepted residual risk"],
+    requiredPolicyTypes: ["sec.provenance", "sec.threat-model"]
+  },
+  {
+    schemaVersion: "1.0.0",
+    id: "infra-migration",
+    title: "Infrastructure Migration",
+    description: "Reliability and rollback-focused migration planning.",
+    decisionType: "OPS",
+    workspaceMode: "internal",
+    reviewAfterDays: 14,
+    requiredEvidence: ["rollback-plan", "load-test", "runbook"],
+    requiredAssumptions: ["rollback path remains valid", "traffic profile is representative"],
+    requiredPolicyTypes: ["ops.reliability", "ops.change-control"]
+  },
+  {
+    schemaVersion: "1.0.0",
+    id: "product-launch",
+    title: "Product Launch",
+    description: "Launch decision balancing customer impact and operational readiness.",
+    decisionType: "PROD",
+    workspaceMode: "customer",
+    reviewAfterDays: 30,
+    requiredEvidence: ["customer-impact", "metric-baseline", "support-readiness"],
+    requiredAssumptions: ["target segment demand persists", "support capacity is sufficient"],
+    requiredPolicyTypes: ["prod.roadmap-governance", "prod.customer-safety"]
+  }
+] as DecisionTemplate[]).sort((a, b) => a.id.localeCompare(b.id));
+
+function getTemplate(templateId: string): DecisionTemplate {
+  const template = DECISION_TEMPLATES.find((item) => item.id === templateId);
+  if (!template) {
+    const known = DECISION_TEMPLATES.map((item) => item.id).join(", ");
+    throw new Error(`Unknown template: ${templateId}. Available templates: ${known}`);
+  }
+  return template;
+}
+
+function writeTemplateCatalog(args: WorkflowArgs): number {
+  const root = join(process.cwd(), "templates");
+  if (!existsSync(root)) mkdirSync(root, { recursive: true });
+  for (const template of DECISION_TEMPLATES) {
+    const path = join(root, `${template.id}.json`);
+    writeFileSync(path, `${JSON.stringify(template, null, 2)}\n`, "utf8");
+  }
+  const payload = { schemaVersion: "1.0.0", templates: DECISION_TEMPLATES, outputDir: root };
+  const text = DECISION_TEMPLATES.map((t) => `${t.id} (${t.decisionType})`).join("\n");
+  writeJsonOrText(args, payload, text);
+  return 0;
 }
 
 interface GraphNode {
@@ -364,6 +444,7 @@ function loadWorkspace(decisionId: string): DecisionWorkspace {
     runs: parsed.runs || [],
     chain: parsed.chain || {},
     workspaceId: parsed.workspaceId || defaultWorkspaceId(),
+    reviewAt: parsed.reviewAt,
     driftEvents: parsed.driftEvents || [],
     healthHistory: parsed.healthHistory || [],
   };
@@ -664,7 +745,7 @@ function buildTypeSummary(type: DecisionType | undefined, audience: Audience): {
 }
 
 export function parseWorkflowArgs(argv: string[]): WorkflowArgs {
-  const command = ["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "graph", "view", "review", "explain", "summary", "decision-health", "drift-report", "roi-report", "verify", "evidence", "help", "examples"].includes(argv[0] ?? "") ? argv[0] as WorkflowArgs["command"] : null;
+  const command = ["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "graph", "view", "review", "explain", "summary", "decision-health", "drift-report", "roi-report", "verify", "evidence", "help", "examples", "template", "decision"].includes(argv[0] ?? "") ? argv[0] as WorkflowArgs["command"] : null;
   const subcommand =
     argv[0] === "export" && ["md", "ics", "bundle", "decision"].includes(argv[1] ?? "")
       ? argv[1] as WorkflowArgs["subcommand"]
@@ -676,7 +757,11 @@ export function parseWorkflowArgs(argv: string[]): WorkflowArgs {
         ? argv[1] as WorkflowArgs["subcommand"]
         : argv[0] === "review" && argv[1] === "weekly"
           ? "weekly"
-          : undefined;
+          : argv[0] === "template" && argv[1] === "list"
+            ? "list"
+            : argv[0] === "decision" && argv[1] === "create"
+              ? "create"
+              : undefined;
   const value = (flag: string): string | undefined => {
     const idx = argv.indexOf(flag);
     return idx >= 0 ? argv[idx + 1] : undefined;
@@ -696,6 +781,7 @@ export function parseWorkflowArgs(argv: string[]): WorkflowArgs {
     decision: value("--decision") ?? positionalDecision,
     text: value("--text"),
     title: value("--title"),
+    templateId: value("--template"),
     json: argv.includes("--json"),
     output: value("--out"),
     envelope: value("--envelope"),
@@ -733,9 +819,11 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
     if (args.subcommand === "start") {
       process.stdout.write([
         "Try Zeo in 60 seconds:",
-        "1) zeo analyze-pr examples/analyze-pr-auth/diff.patch",
-        "2) zeo start --title \"Auth decision\"",
-        "3) zeo export decision <id> --format zip",
+        "1) Analyze something: zeo analyze-pr examples/analyze-pr-auth/diff.patch",
+        "2) Convert to decision: zeo decision create --template security-review --title \"Auth decision\"",
+        "3) View dashboard: zeo view <run_id> --persona exec",
+        "4) Export bundle: zeo export decision <id> --format zip",
+        "5) Apply policy pack: zeo pack apply security-pack",
       ].join("\n") + "\n");
       return 0;
     }
@@ -744,6 +832,7 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
         "Examples:",
         "- zeo analyze-pr examples/analyze-pr-auth/diff.patch",
         "- zeo replay examples/startup-scaling",
+        "- zeo template list",
         "- zeo export decision <id> --format dir",
       ].join("\n") + "\n");
       return 0;
@@ -752,6 +841,41 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
 
   if (args.command === "examples") {
     process.stdout.write("Use: zeo help examples\n");
+    return 0;
+  }
+
+  if (args.command === "template" && args.subcommand === "list") {
+    return writeTemplateCatalog(args);
+  }
+
+  if (args.command === "decision" && args.subcommand === "create") {
+    const title = args.title || (process.stdin.isTTY ? await prompt("Decision title: ") : "Untitled Decision");
+    const templateId = args.templateId ?? "product-launch";
+    const template = getTemplate(templateId);
+    const decisionId = `dec_${hash({ title, templateId }).slice(0, 12)}`;
+    const createdAt = nowIso();
+    const reviewAt = new Date(Date.parse(createdAt) + template.reviewAfterDays * 24 * 3600 * 1000).toISOString().slice(0, 10);
+    const evidence = template.requiredEvidence.map((value, index) => parseNoteToEvidence(`template evidence requirement: ${value}`, createdAt.slice(0, 10), reviewAt)).map((proposal, index) => ({ ...proposal, id: `ev_${hash({ decisionId, index, summary: proposal.summary }).slice(0, 10)}` }));
+    const assumptions = template.requiredAssumptions.map((value, index) => parseNoteToEvidence(`template assumption: ${value}`, createdAt.slice(0, 10), reviewAt)).map((proposal, index) => ({ ...proposal, id: `ev_${hash({ decisionId, index, summary: proposal.summary, kind: "assumption" }).slice(0, 10)}` }));
+    const seededEvidence = [...evidence, ...assumptions];
+    const ws: DecisionWorkspace = {
+      decisionId,
+      title,
+      decisionType: template.decisionType,
+      workspaceMode: template.workspaceMode,
+      state: "proposed",
+      createdAt,
+      evidence: seededEvidence,
+      tasks: seededEvidence.flatMap((item) => createTasksFromEvidence(item)),
+      runs: [],
+      chain: {},
+      workspaceId: defaultWorkspaceId(),
+      reviewAt,
+      driftEvents: [],
+      healthHistory: []
+    };
+    saveWorkspace(ws);
+    writeJsonOrText(args, { decisionId, template, reviewAt }, `Started decision '${title}' (${decisionId}) from template ${template.id}. reviewAt=${reviewAt}`);
     return 0;
   }
 
@@ -785,7 +909,8 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
   if (args.command === "start") {
     const title = args.title || (process.stdin.isTTY ? await prompt("Decision title: ") : "Untitled Decision");
     const decisionId = `dec_${hash({ title }).slice(0, 12)}`;
-    const ws: DecisionWorkspace = { decisionId, title, decisionType: args.type ?? "ENG", workspaceMode: args.mode ?? "customer", state: "proposed", evidence: [], tasks: [], runs: [], chain: {}, workspaceId: defaultWorkspaceId(), driftEvents: [], healthHistory: [] };
+    const createdAt = nowIso();
+    const ws: DecisionWorkspace = { decisionId, title, decisionType: args.type ?? "ENG", workspaceMode: args.mode ?? "customer", state: "proposed", createdAt, evidence: [], tasks: [], runs: [], chain: {}, workspaceId: defaultWorkspaceId(), reviewAt: new Date(Date.parse(createdAt) + 30 * 24 * 3600 * 1000).toISOString().slice(0, 10), driftEvents: [], healthHistory: [] };
     saveWorkspace(ws);
     writeJsonOrText(args, ws, `Started decision '${title}' (${decisionId})`);
     return 0;
@@ -945,6 +1070,27 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
     const result = await runDecisionInWorkspace(ws, args.envelope, asOf, args.dependsOn, args.informs);
     const replayStable = ws.runs.length === 0 ? true : ws.runs[ws.runs.length - 1].transcriptHash !== result.transcriptHash;
     const health = computeDecisionHealth(ws, replayStable);
+    const staleCount = ws.evidence.filter((item) => {
+      const status = classifyDecay(item, asOf);
+      return status === "stale" || status === "expired";
+    }).length;
+    if (staleCount > 0) {
+      health.policyComplianceScore = clampScore(health.policyComplianceScore - staleCount * 10);
+      health.riskScore = clampScore(health.riskScore + staleCount * 5);
+    }
+    if (ws.reviewAt && asOf >= ws.reviewAt) {
+      appendDriftEvent(ws, {
+        decisionId: ws.decisionId,
+        assumptionId: null,
+        type: "review_overdue",
+        severity: "high",
+        detectedAt: nowIso(),
+        details: { reviewAt: ws.reviewAt, asOf }
+      });
+      health.policyComplianceScore = clampScore(health.policyComplianceScore - 20);
+      health.assumptionVolatilityIndex = clampScore(health.assumptionVolatilityIndex + 15);
+      health.riskScore = clampScore(health.riskScore + 12);
+    }
     result.health = health;
     ws.runs = [...ws.runs, result];
     ws.chain.parentTranscriptHash = ws.runs.length > 1 ? ws.runs[ws.runs.length - 2]?.transcriptHash : undefined;
