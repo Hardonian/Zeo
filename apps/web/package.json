@@ -31,6 +31,8 @@
     "@zeo/signal-discovery": "workspace:*",
     "@zeo/telemetry": "workspace:*",
     "@zeo/trust": "workspace:*",
+    "@zeo/policy": "workspace:*",
+    "@zeo/analysis": "workspace:*",
     "idb": "^8.0.0",
     "next": "^14.2.0",
     "react": "^18.2.0",

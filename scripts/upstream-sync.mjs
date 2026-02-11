@@ -101,6 +101,9 @@ if (fs.existsSync(analysisIndex)) {
     console.log('Fixed imports in packages/analysis/src/index.ts');
 }
 
-ensurePackageJson('packages/analysis', '@zeo/analysis');
+ensurePackageJson('packages/analysis', '@zeo/analysis', {
+    "@babel/parser": "^7.28.6",
+    "@babel/types": "^7.28.6"
+});
 
 console.log('Sync Complete.');
