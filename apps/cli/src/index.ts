@@ -34,6 +34,8 @@ Commands:
   help <start|examples>      Guided quickstart and examples
   examples                   Alias for help examples
   start                      Start guided decision workspace
+  template list              List built-in decision templates
+  decision create            Create decision from deterministic template
   add-note                   Add plain-language note as evidence proposal
   run                        Run deterministic analysis and print result card
   next                       Show next evidence tasks checklist
@@ -109,14 +111,20 @@ function printHelpStart(): void {
   console.log(`
 Zeo quick start (60 seconds)
 
-1) Analyze an example PR:
+1) Analyze something:
    zeo analyze-pr examples/analyze-pr-auth/diff.patch
 
-2) Open deterministic dashboard:
+2) Convert to decision:
+   zeo decision create --template security-review --title "Auth rollout"
+
+3) View dashboard:
    zeo view <run_id> --persona exec
 
-3) Export evidence bundle:
-   zeo export bundle --decision <decision_id>
+4) Export bundle:
+   zeo export decision <decision_id> --format zip
+
+5) Apply policy pack:
+   zeo pack apply security-pack
 `);
 }
 
@@ -405,7 +413,7 @@ async function main(): Promise<void> {
     process.exit(await mod.runAgentsCommand(mod.parseAgentsArgs(argv.slice(1))));
   }
 
-  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "view", "review", "explain", "summary", "decision-health", "drift-report", "roi-report", "verify", "evidence", "help", "examples"].includes(argv[0] ?? "")) {
+  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "view", "review", "explain", "summary", "decision-health", "drift-report", "roi-report", "verify", "evidence", "help", "examples", "template", "decision"].includes(argv[0] ?? "")) {
     const mod = await import("./workflow-cli.js");
     process.exit(await mod.runWorkflowCommand(mod.parseWorkflowArgs(argv)));
   }
