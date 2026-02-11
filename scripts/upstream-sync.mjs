@@ -115,9 +115,9 @@ if (fs.existsSync(policyIndex)) {
     const testDir = path.join('packages/policy/src/__tests__');
     if (fs.existsSync(testDir)) fs.rmSync(testDir, { recursive: true, force: true });
 
-    // 7. Patch other methods using prisma
+    // 7. Patch other methods using prisma (Corrected Regex)
     content = content.replace(
-        /private\s+async\s+loadLatestPolicyPack\s*\([\s\S]*?\)\s*:\s*Promise<PolicyPack\s*\|\s*null>\s*{[\s\S]*?return\s*{\s*id[\s\S]*?};\s*}/gm,
+        /private\s+async\s+loadLatestPolicyPack\s*\([\s\S]*?\)\s*:\s*Promise<PolicyPack\s*\\\|\s*null>\s*{[\s\S]*?return\s*{\s*id[\s\S]*?};\s*}/gm,
         `private async loadLatestPolicyPack(organizationId: string, repositoryId: string | null): Promise<PolicyPack | null> { return null; }`
     );
 
@@ -197,7 +197,14 @@ const ensurePackageJson = (dir, name, deps = {}) => {
             name,
             version: '0.0.1',
             type: 'module',
-            main: 'src/index.ts',
+            main: 'dist/index.js',
+            types: 'dist/index.d.ts',
+            exports: {
+                ".": {
+                    "types": "./dist/index.d.ts",
+                    "default": "./dist/index.js"
+                }
+            },
             scripts: {
                 "build": "tsc",
                 "test": "vitest run"
@@ -224,7 +231,8 @@ const ensurePackageJson = (dir, name, deps = {}) => {
             "compilerOptions": {
                 "outDir": "dist",
                 "rootDir": "src",
-                "moduleResolution": "bundler"
+                "moduleResolution": "bundler",
+                "declaration": true
             },
             "include": ["src/**/*"]
         };
