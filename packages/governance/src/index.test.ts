@@ -82,6 +82,35 @@ function createBranchGraph(overrides: Partial<BranchGraph> = {}): BranchGraph {
 }
 
 describe("governance", () => {
+
+  describe("decision type governance", () => {
+    test("blocks SEC decisions without required evidence tags", () => {
+      const spec = createDecisionSpec({
+        title: "Security change",
+        context: "sec.provenance sec.threat-model",
+        decisionType: "SEC"
+      });
+      const result = applyGovernanceRules({
+        decisionSpec: spec,
+        evidenceEvents: [createEvidenceEvent({ claims: [{ id: "c1", text: "log", status: "fact", confidence: "high", tags: ["architecture"] }] })]
+      });
+      expect(result.approved).toBe(false);
+      expect(result.warnings.some(w => w.includes("requires evidence tag"))).toBe(true);
+    });
+
+    test("blocks PROD decisions touching auth without SEC approval reference", () => {
+      const spec = createDecisionSpec({
+        title: "Auth roadmap",
+        context: "prod.roadmap-governance",
+        decisionType: "PROD",
+        constraints: [{ id: "x", name: "latency", value: "low", status: "fact" }]
+      });
+      const result = applyGovernanceRules({ decisionSpec: spec, evidenceEvents: [] });
+      expect(result.approved).toBe(false);
+      expect(result.warnings.some(w => w.includes("requires approval reference"))).toBe(true);
+    });
+  });
+
   describe("evaluateRiskTier", () => {
     test("returns informational for research domain", () => {
       const spec = createDecisionSpec({ title: "Market Research Analysis", context: "Analyzing market trends" });

@@ -74,11 +74,16 @@ export type DecisionSpec = {
   title: string;
   context: string;
   createdAt: string;
+  decisionType?: DecisionType;
+  workspaceMode?: WorkspaceMode;
+  decisionState?: DecisionState;
   horizon: "hours" | "days" | "weeks" | "months";
+  reviewAfter?: string;
   agents: Agent[];
   actions: Action[];
   constraints: Constraint[];
   assumptions: Claim[]; // status should be "assumption" or "belief"
+  expectedSignals?: string[];
   objectives: { id: UUID; metric: string; target?: number; weight: number; }[];
 };
 
@@ -1013,6 +1018,18 @@ export interface PolicyConfig {
   inferenceTypeAllowlist: string[];
   inferenceTypeDenylist: string[];
   forbiddenScopes: string[];
+  requiredPoliciesByDecisionType?: Partial<Record<DecisionType, string[]>>;
+  denyUntilEvidenceTagsByDecisionType?: Partial<Record<DecisionType, string[]>>;
+  escalationByDecisionType?: Partial<Record<DecisionType, {
+    requiresApprovalFrom?: DecisionType[];
+    onMissingEvidence: "block" | "warn";
+  }>>;
   createdAt: string;
   updatedAt: string;
 }
+
+export type DecisionType = "ENG" | "OPS" | "SEC" | "PROD" | "MKT" | "CUST";
+
+export type WorkspaceMode = "customer" | "internal";
+
+export type DecisionState = "proposed" | "challenged" | "amended" | "finalized";

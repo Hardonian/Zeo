@@ -97,6 +97,51 @@ describe("workflow cli", () => {
     expect(first).toEqual(second);
   });
 
+
+
+  it("explain output is deterministic and cited", async () => {
+    pushTempCwd();
+    const id = await setupDecision("Security posture");
+    await runWorkflowCommand(parseWorkflowArgs(["add-note", "--decision", id, "--text", "Threat model approved", "--asserted-at", "2024-01-01"]));
+    await runWorkflowCommand(parseWorkflowArgs(["run", "--decision", id]));
+
+    const origWrite = process.stdout.write;
+    const out1: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { out1.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    await runWorkflowCommand(parseWorkflowArgs(["explain", "--decision", id, "--audience", "auditor", "--json"]));
+    const first = JSON.parse(out1.join(""));
+
+    const out2: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { out2.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    await runWorkflowCommand(parseWorkflowArgs(["explain", "--decision", id, "--audience", "auditor", "--json"]));
+    process.stdout.write = origWrite;
+    const second = JSON.parse(out2.join(""));
+
+    expect(first.explanation).toBe(second.explanation);
+    expect(first.explanation).toMatch(/evidence_refs|[a-f0-9]{12}/i);
+  });
+
+  it("summary by decision type is deterministic", async () => {
+    pushTempCwd();
+    await runWorkflowCommand(parseWorkflowArgs(["start", "--title", "Eng Decision", "--type", "ENG"]));
+    await runWorkflowCommand(parseWorkflowArgs(["start", "--title", "Sec Decision", "--type", "SEC"]));
+
+    const origWrite = process.stdout.write;
+    const out1: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { out1.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    await runWorkflowCommand(parseWorkflowArgs(["summary", "--type", "SEC", "--json"]));
+    const first = JSON.parse(out1.join(""));
+
+    const out2: string[] = [];
+    process.stdout.write = ((chunk: string | Uint8Array) => { out2.push(String(chunk)); return true; }) as typeof process.stdout.write;
+    await runWorkflowCommand(parseWorkflowArgs(["summary", "--type", "SEC", "--json"]));
+    process.stdout.write = origWrite;
+    const second = JSON.parse(out2.join(""));
+
+    expect(first).toEqual(second);
+    expect(first.rows.every((row: { type: string }) => row.type === "SEC")).toBe(true);
+  });
+
   it("exports md/ics/bundle with deterministic names", async () => {
     pushTempCwd();
     const id = await setupDecision("Launch decision");
