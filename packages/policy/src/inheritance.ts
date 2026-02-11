@@ -1,3 +1,4 @@
+const metrics = { increment: (...args: any[]) => {} };
 /**
  * Policy Inheritance System
  * 
@@ -84,7 +85,7 @@ export class PolicyInheritanceService {
         'Policy inheritance resolved'
       );
 
-      // metrics.increment('policy_inheritance_resolved', {
+      metrics.increment('policy_inheritance_resolved', {
         level: inherited.source,
       });
 
@@ -229,7 +230,7 @@ export class PolicyInheritanceService {
       'Overriding policy rule'
     );
 
-    // metrics.increment('policy_rule_override', {
+    metrics.increment('policy_rule_override', {
       level,
       action: enabled ? 'enable' : 'disable',
     });

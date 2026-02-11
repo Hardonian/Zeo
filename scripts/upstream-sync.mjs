@@ -162,9 +162,15 @@ if (fs.existsSync(policyIndex)) {
 const inheritancePath = path.join('packages/policy/src', 'inheritance.ts');
 if (fs.existsSync(inheritancePath)) {
     let content = fs.readFileSync(inheritancePath, 'utf8');
+    // Remove imports
     content = content.replace(/import\s+.*\s+from\s*['"]@\/observability.*['"];?/g, '');
+
+    // Inject mock metrics at top
+    content = `const metrics = { increment: (...args: any[]) => {} };\n` + content;
+
+    // Replace logger with console
     content = content.replace(/logger\./g, 'console.');
-    content = content.replace(/metrics\./g, '// metrics.');
+
     fs.writeFileSync(inheritancePath, content);
 }
 
