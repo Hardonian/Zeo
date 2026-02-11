@@ -3,9 +3,9 @@ import { prisma } from "@zeo/db";
 
 export async function GET(
     req: NextRequest,
-    { params }: { params: { runId: string } }
+    { params }: { params: Promise<{ runId: string }> }
 ) {
-    const runId = params.runId;
+    const { runId } = await params;
 
     const attestation = await prisma.evidenceAttestation.findUnique({
         where: { runId }
