@@ -3,10 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = "postgresql://johndoe:mypassword@localhost:5432/mydb?schema=public"
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
-model Test {
-  id String @id @default(cuid())
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
 }
