@@ -37,8 +37,10 @@ Commands:
   add-note                   Add plain-language note as evidence proposal
   run                        Run deterministic analysis and print result card
   next                       Show next evidence tasks checklist
-  share                      Export compact share summary
+  share                      Export compact share summary or channel output
   copy                       Print clipboard-friendly share block
+  render <id>                Render deterministic output for github/slack/markdown/plain
+  demo                       Run offline demo artifact generation
   export <md|ics|bundle>     Offline export commands
   export decision <id>       Portable decision bundle export
   verify <bundle|decision>   Verify exported bundle hashes/proofs
@@ -339,6 +341,21 @@ async function main(): Promise<void> {
   if (argv[0] === "analyze-pr") {
     const mod = await import("./analyze-pr-cli.js");
     process.exit(await mod.runAnalyzePrCommand(argv.slice(1)));
+  }
+
+  if (argv[0] === "render") {
+    const mod = await import("./render-cli.js");
+    process.exit(await mod.runRenderCommand(argv.slice(1)));
+  }
+
+  if (argv[0] === "demo") {
+    const mod = await import("./render-cli.js");
+    process.exit(await mod.runDemoCommand(argv.slice(1)));
+  }
+
+  if (argv[0] === "share" && (argv[1] === "github" || argv[1] === "slack")) {
+    const mod = await import("./render-cli.js");
+    process.exit(await mod.runShareCommand(argv.slice(1)));
   }
 
   if (argv[0] === "plugins") {

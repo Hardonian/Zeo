@@ -12,6 +12,7 @@ import { PolicyTriggersPanel } from "@/components/dashboard/PolicyTriggersPanel"
 import { FindingsTable } from "@/components/dashboard/FindingsTable";
 import { NextStepsPanel } from "@/components/dashboard/NextStepsPanel";
 import { PersonaSwitcher } from "@/components/dashboard/PersonaSwitcher";
+import { DecisionMapPanel } from "@/components/dashboard/DecisionMapPanel";
 
 export default function ViewPage() {
   const params = useParams<{ id: string }>();
@@ -65,6 +66,8 @@ export default function ViewPage() {
     </div>
 
     {showDense ? <FindingsTable model={model} minSeverity={severityFilter} /> : <section className="rounded border p-3"><h3 className="font-semibold">Top risks</h3><ul className="mt-2 text-sm">{topFindings.map((finding) => <li key={finding.id}>{finding.id} · S{finding.severity} · {finding.title}</li>)}</ul></section>}
+
+    <DecisionMapPanel model={model} />
 
     <div className="grid gap-4 md:grid-cols-[2fr_1fr]">
       <section className="rounded border p-3"><h3 className="font-semibold">Filters</h3><div className="mt-2 flex gap-2"><button className="rounded border px-2 py-1 text-sm" onClick={() => setSeverityFilter(1)}>Severity ≥1</button><button className="rounded border px-2 py-1 text-sm" onClick={() => setSeverityFilter(3)}>Severity ≥3</button><button className="rounded border px-2 py-1 text-sm" onClick={() => setSeverityFilter(5)}>Severity ≥5</button><button className="rounded border px-2 py-1 text-sm" onClick={() => setSeverityFilter(1)}>Reset filters</button></div></section>

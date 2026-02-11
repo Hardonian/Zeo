@@ -27,6 +27,8 @@ describe("dashboard viewmodel", () => {
     expect(stableStringify(first)).toBe(stableStringify(second));
     expect(first.lists.findings[0].id).toBe("f1");
     expect(first.schemaVersion).toBe("dashboard.viewmodel.v1");
+    expect(first.graph.nodes.every((node) => Boolean((node.meta as { position?: unknown } | undefined)?.position))).toBe(true);
+    expect(first.ctas.map((cta) => cta.command)).toEqual(second.ctas.map((cta) => cta.command));
     process.chdir(cwd);
   });
 });
