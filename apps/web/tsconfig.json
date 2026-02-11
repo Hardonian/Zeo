@@ -6,8 +6,11 @@
       "@/*": [
         "src/*"
       ],
-      "@zeo/*": [
-        "../../packages/*/src"
+      "@zeo/id": [
+        "../../packages/id/src/index.ts"
+      ],
+      "@zeo/radar": [
+        "../../packages/radar/src/index.ts"
       ]
     },
     "target": "ES2017",

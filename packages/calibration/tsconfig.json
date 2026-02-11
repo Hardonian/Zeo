@@ -17,7 +17,8 @@
     "declarationMap": true,
     "sourceMap": true,
     "strictNullChecks": false,
-    "exactOptionalPropertyTypes": false
+    "exactOptionalPropertyTypes": false,
+    "baseUrl": "."
   },
   "include": [
     "src/**/*"

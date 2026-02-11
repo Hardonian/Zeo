@@ -21,8 +21,8 @@ const PATTERNS: Array<{ kind: string; regex: RegExp }> = [
     { kind: "Square Access Token", regex: /sq0atp-[0-9A-Za-z\-_]{22}/g },
     { kind: "Generic Private Key", regex: /-----BEGIN [A-Z ]+ PRIVATE KEY-----/g },
     // Use capture group 1 for the secret value in generic matches
-    { kind: "Generic API Key (assignment)", regex: /(?:api_key|access_token|secret_key)(?:\s*[:=]\s*|\s+)["']?([a-zA-Z0-9-_\.]{16,})["']?/gi },
-    { kind: "Bearer Token", regex: /Bearer\s+([a-zA-Z0-9-_\.]+)/gi }
+    { kind: "Generic API Key (assignment)", regex: /(?:api_key|access_token|secret_key)(?:\s*[:=]\s*|\s+)["']?([a-zA-Z0-9-_.]{16,})["']?/gi },
+    { kind: "Bearer Token", regex: /Bearer\s+([a-zA-Z0-9-_.]+)/gi }
 ];
 
 export function scanForSecrets(text: string): SecretMatch[] {
@@ -54,7 +54,10 @@ export function scanForSecrets(text: string): SecretMatch[] {
  * Returns true if text contains any secrets.
  */
 export function containsSecrets(text: string): boolean {
-    return PATTERNS.some(p => p.regex.test(text));
+    return PATTERNS.some((p) => {
+        p.regex.lastIndex = 0;
+        return p.regex.test(text);
+    });
 }
 
 /**

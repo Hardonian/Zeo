@@ -1,6 +1,5 @@
 import type { RegimeEvent, RegimeState, RegimeDomain, RegimeKind } from "@zeo/contracts";
 export type { RegimeEvent, RegimeState, RegimeDomain, RegimeKind };
-import { generateId } from "@zeo/id";
 
 export interface NumericPoint {
   t: string;
@@ -12,6 +11,14 @@ export interface DetectorConfig {
   maxWindowSize?: number;
   significanceThreshold?: number;
   minConfidence?: number;
+}
+
+
+function generateId(prefix = "id"): string {
+  if (typeof globalThis !== "undefined" && globalThis.crypto && typeof globalThis.crypto.randomUUID === "function") {
+    return `${prefix}-${globalThis.crypto.randomUUID()}`;
+  }
+  return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
 const DEFAULT_CONFIG: Required<DetectorConfig> = {

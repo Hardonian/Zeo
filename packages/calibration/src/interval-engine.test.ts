@@ -1,6 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { IntervalCalibrationEngine } from "../src/interval-engine.js";
-import type { DecisionRecord } from "@zeo/memory";
+
+type DecisionRecord = {
+  id: string;
+  domain: string;
+  [key: string]: unknown;
+};
 
 describe("IntervalCalibrationEngine", () => {
   let engine: IntervalCalibrationEngine;

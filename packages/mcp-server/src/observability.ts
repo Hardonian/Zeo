@@ -4,7 +4,7 @@ export type RedactionMode = "off" | "safe" | "strict";
 export type LogLevel = "debug" | "info" | "warn" | "error";
 
 const EMAIL_PATTERN = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi;
-const TOKEN_PATTERN = /(bearer\s+[a-z0-9._\-]+|sk-[a-z0-9]{16,}|api[_-]?key\s*[:=]\s*[^\s,]+)/gi;
+const TOKEN_PATTERN = /(bearer\s+[a-z0-9._-]+|sk-[a-z0-9]{16,}|api[_-]?key\s*[:=]\s*[^\s,]+)/gi;
 
 export interface LogEvent {
   level: LogLevel;

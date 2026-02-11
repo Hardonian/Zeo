@@ -1,5 +1,9 @@
 import type { WarehouseEnvelope, WarehouseQuery } from '@zeo/contracts';
-import type { WarehouseAdapter } from '@zeo/warehouse';
+
+
+interface WarehouseAdapter {
+  list(query: WarehouseQuery): Promise<{ items: WarehouseEnvelope[] }>;
+}
 
 export interface FeatureRow {
   rowId: string;

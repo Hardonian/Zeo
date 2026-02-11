@@ -18,7 +18,7 @@
     "doctor:secrets": "node scripts/secret-scan.mjs",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r --filter @zeo/contracts build && pnpm -r typecheck && pnpm -C packages/core typecheck:exports",
-    "test": "pnpm -r test",
+    "test": "NODE_OPTIONS=--max-old-space-size=4096 pnpm -r test",
     "lint": "pnpm -r lint",
     "verify": "pnpm run typecheck && pnpm run test && pnpm run lint",
     "verify:fast": "pnpm run typecheck && pnpm run test && pnpm run lint",

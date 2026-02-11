@@ -1,4 +1,3 @@
-import { generateId } from "@zeo/id";
 import type { UUID, DecisionSpec, BranchGraph, Claim } from "@zeo/contracts";
 import type { 
   DecisionRecord, 
@@ -10,6 +9,13 @@ import type {
   TemporalContext
 } from "./types.js";
 import type { DecisionStorageAdapter } from "./storage.js";
+
+function generateId(prefix = "id"): string {
+  if (typeof globalThis !== "undefined" && globalThis.crypto && typeof globalThis.crypto.randomUUID === "function") {
+    return `${prefix}-${globalThis.crypto.randomUUID()}`;
+  }
+  return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
 
 export type CreateDecisionOptions = {
   userId: string;

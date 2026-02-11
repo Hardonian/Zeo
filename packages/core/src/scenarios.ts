@@ -1,5 +1,5 @@
 import type { DecisionSpec, Scenario, UUID } from "@zeo/contracts";
-import { generateId } from "@zeo/id";
+import { generateId } from "./id.js";
 
 /**
  * ScenarioLibrary: Manages saving, loading, and versioning of decision scenarios.
