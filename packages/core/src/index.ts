@@ -26,8 +26,6 @@ export {
   computeTranscriptHash,
   hashDecisionSpec,
   hashAssumptionSet,
-  cacheKey,
-  getContractVersionHash,
 } from "./hashing.js";
 export type {
   LearningDecisionRunner,
@@ -76,3 +74,6 @@ export * from "./webhooks-security.js";
 // and type incompatibility issues. Import directly from packages instead.
 
 export * from "./transcript-security.js";
+export * from "./storage-provider.js";
+export * from "./storage/prisma.js";
+export * from "./storage/sqlite.js";
