@@ -13,6 +13,7 @@ model Organization {
   createdAt DateTime @default(now())
 
   // Relations
+  repositories        Repository[]
   runs                ReadyLayerRun[]
   evidenceAttestations EvidenceAttestation[]
   evidenceObjects     EvidenceObject[]
