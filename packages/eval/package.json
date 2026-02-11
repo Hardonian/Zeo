@@ -25,7 +25,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "pnpm --filter @zeo/reality build && tsc --noEmit",
     "test": "vitest run",
     "eval:quant": "tsx scripts/quant-eval.ts",
     "eval:planner": "tsx scripts/planner-eval.ts"

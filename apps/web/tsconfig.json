@@ -38,6 +38,15 @@
       ],
       "@zeo/repro-pack": [
         "../../packages/repro-pack/src/index.ts"
+      ],
+      "@zeo/db": [
+        "../../packages/db/src/index.ts"
+      ],
+      "@zeo/models": [
+        "../../packages/models/src/index.ts"
+      ],
+      "@prisma/client": [
+        "../../packages/db/src/prisma-client.d.ts"
       ]
     },
     "target": "ES2017",

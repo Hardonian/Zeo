@@ -2,7 +2,12 @@ import type { DecisionSpec } from "@zeo/contracts";
 import type { EvidenceAction, VoiResult, PlannerConfig, EvidencePlan } from "./planner-types.js";
 import { createHash } from "crypto";
 import type { UUID } from "@zeo/contracts";
-import type { CounterfactualResult } from "@zeo/counterfactuals";
+
+type CounterfactualResult = {
+    variable: string;
+    flipDistance: number;
+    found: boolean;
+};
 
 /**
  * Evidence Planner Engine
