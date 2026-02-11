@@ -1,0 +1,3 @@
+{
+  "/api/evidence/v1/verify/route": "app/api/evidence/v1/verify/route.js"
+}
