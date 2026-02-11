@@ -1,0 +1,121 @@
+id: owasp-top-10
+name: OWASP Top 10 Security Policy
+description: OWASP Top 10 Web Application Security Risks
+version: "2.1"
+category: security
+enforced: true
+minimumCoverage: 80
+
+rules:
+  - id: a01-injection
+    name: Injection Prevention
+    description: Prevent SQL injection, NoSQL injection, and OS command injection
+    severity: critical
+    patterns:
+      - SQLQuery.*\$
+      - NoSQLQuery.*\$
+      - eval\s*\(
+      - exec\s*\(
+    remediation: Use parameterized queries and prepared statements
+    references:
+      - https://owasp.org/www-project-top-ten/
+
+  - id: a02-authentication
+    name: Authentication & Session Management
+    description: Implement strong authentication and secure session handling
+    severity: critical
+    patterns:
+      - hardcoded.*password
+      - hardcoded.*secret
+      - hardcoded.*token
+    remediation: Use secure session management, enforce password policies
+    references:
+      - https://owasp.org/www-project-top-ten/
+
+  - id: a03-sensitive-data
+    name: Sensitive Data Exposure
+    description: Protect sensitive data in transit and at rest
+    severity: critical
+    patterns:
+      - plaintext.*password
+      - cleartext.*credential
+      - http://.*password
+    remediation: Encrypt sensitive data, use HTTPS, implement access controls
+    references:
+      - https://owasp.org/www-project-top-ten/
+
+  - id: a04-xxe
+    name: XML External Entity (XXE)
+    description: Prevent XXE attacks
+    severity: high
+    patterns:
+      - DOCTYPE\s
+      - ENTITY\s
+      - parseXML
+    remediation: Disable XML external entity processing and DTD
+    references:
+      - https://owasp.org/www-project-top-ten/
+
+  - id: a05-broken-access
+    name: Broken Access Control
+    description: Implement proper authorization controls
+    severity: critical
+    patterns:
+      - authorization:\s*false
+      - permission:\s*false
+      - auth:\s*false
+    remediation: Implement RBAC and verify permissions on every request
+    references:
+      - https://owasp.org/www-project-top-ten/
+
+  - id: a06-config
+    name: Security Misconfiguration
+    description: Secure configuration of frameworks
+    severity: high
+    patterns:
+      - debug:\s*true
+      - CORS:\s*\*
+      - security:\s*false
+    remediation: Disable debug mode, restrict CORS, enable security headers
+    references:
+      - https://owasp.org/www-project-top-ten/
+
+  - id: a07-xss
+    name: Cross-Site Scripting (XSS)
+    description: Prevent XSS attacks
+    severity: high
+    patterns:
+      - innerHTML\s*=
+      - dangerouslySetInnerHTML
+      - eval\s*\(
+    remediation: Use CSP, validate and sanitize inputs
+    references:
+      - https://owasp.org/www-project-top-ten/
+
+  - id: a08-deserial
+    name: Insecure Deserialization
+    description: Prevent arbitrary code execution
+    severity: high
+    patterns:
+      - pickle\.loads
+      - unserialize
+      - deserialize.*untrusted
+    remediation: Validate serialized data before deserialization
+    references:
+      - https://owasp.org/www-project-top-ten/
+
+  - id: a09-vulnerable
+    name: Using Components with Known Vulnerabilities
+    description: Keep dependencies up to date
+    severity: high
+    remediation: Update dependencies, run security audits
+    references:
+      - https://owasp.org/www-project-top-ten/
+
+  - id: a10-logging
+    name: Insufficient Logging & Monitoring
+    description: Implement comprehensive logging
+    severity: medium
+    remediation: Use structured logging, implement security monitoring
+    references:
+      - https://owasp.org/www-project-top-ten/

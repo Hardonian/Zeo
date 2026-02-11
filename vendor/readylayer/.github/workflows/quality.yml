@@ -1,0 +1,45 @@
+name: Quality Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type Check
+        run: npm run type-check
+
+      - name: Lint
+        run: npm run lint -- --max-warnings=0
+
+      - name: Unit Tests
+        run: npm test
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - name: Build
+        run: npm run build
+
+      - name: Security Scan
+        run: |
+          # Simple check for exposed secrets in codebase
+          ! grep -r "STRIPE_SECRET_KEY=" .
+          ! grep -r "SUPABASE_SERVICE_ROLE_KEY=" .
+          echo "No hardcoded secrets found."
