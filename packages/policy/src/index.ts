@@ -300,7 +300,43 @@ export class PolicyEngineService {
   /**
    * Load latest policy pack for org/repo
    */
-  private async loadLatestPolicyPack(organizationId: string, repositoryId: string | null): Promise<PolicyPack | null> { return null; }
+  private async loadLatestPolicyPack(
+    organizationId: string,
+    repositoryId: string | null
+  ): Promise<PolicyPack | null> {
+    const pack = await prisma.policyPack.findFirst({
+      where: {
+        organizationId,
+        repositoryId: repositoryId || null,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        rules: true,
+      },
+    });
+
+    if (!pack) {
+      return null;
+    }
+
+    return {
+      id: pack.id,
+      organizationId: pack.organizationId,
+      repositoryId: pack.repositoryId,
+      version: pack.version,
+      source: pack.source,
+      checksum: pack.checksum,
+      rules: pack.rules.map((r: any) => ({
+        id: r.id,
+        ruleId: r.ruleId,
+        severityMapping: r.severityMapping as Record<string, 'block' | 'warn' | 'allow'>,
+        enabled: r.enabled,
+        params: r.params as Record<string, unknown> | undefined,
+      })),
+    };
+  }
 
   /**
    * Load active waivers
