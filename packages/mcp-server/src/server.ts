@@ -12,7 +12,13 @@
  */
 
 import type { WarehouseAdapter } from "@zeo/warehouse";
-import { FilesystemWarehouseAdapter } from "@zeo/warehouse";
+import {
+    FilesystemWarehouseAdapter,
+    EnhancedIndexedWarehouseAdapter,
+    FilesystemIndexStorage,
+    OllamaEmbeddingProvider,
+    NoOpEmbeddingProvider
+} from "@zeo/warehouse";
 import type {
     McpConfig,
     JsonRpcRequest,
@@ -136,8 +142,25 @@ export interface McpServer {
 }
 
 export function createMcpServer(config: McpConfig): McpServer {
-    const warehouse: WarehouseAdapter = new FilesystemWarehouseAdapter(
-        config.warehouse.basePath
+    // 1. Core Storage
+    const fsAdapter = new FilesystemWarehouseAdapter(config.warehouse.basePath);
+
+    // 2. Index & Embeddings (RAG)
+    const indexStorage = new FilesystemIndexStorage(config.warehouse.basePath);
+
+    const embeddingProvider = config.warehouse.semanticSearch
+        ? new OllamaEmbeddingProvider()
+        : new NoOpEmbeddingProvider();
+
+    // 3. Enhanced Warehouse (Indexes + Semantic)
+    const warehouse: WarehouseAdapter = new EnhancedIndexedWarehouseAdapter(
+        fsAdapter,
+        indexStorage,
+        {
+            autoRebuildIndex: true,
+            fallbackToScan: true
+        },
+        embeddingProvider
     );
     const auditBridge = createAuditBridge(config);
     const logger = new StructuredLogger();

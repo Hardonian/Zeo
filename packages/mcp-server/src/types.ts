@@ -114,6 +114,7 @@ export interface McpConfig {
     };
     warehouse: {
         basePath: string;
+        semanticSearch?: boolean;
     };
     audit: {
         enabled: boolean;

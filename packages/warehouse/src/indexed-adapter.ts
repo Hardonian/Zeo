@@ -31,11 +31,11 @@ interface IndexStorage {
 // Memory-based index storage (for testing)
 class MemoryIndexStorage implements IndexStorage {
   private index: DeterministicIndex | null = null;
-  
+
   async loadIndex(): Promise<DeterministicIndex | null> {
     return this.index;
   }
-  
+
   async saveIndex(index: DeterministicIndex): Promise<void> {
     this.index = index;
   }
@@ -56,11 +56,14 @@ const DEFAULT_CONFIG: EnhancedWarehouseConfig = {
   fallbackToScan: true,
 };
 
+import type { EmbeddingProvider } from './interfaces';
+
 export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
   private inner: WarehouseAdapter;
   private indexStorage: IndexStorage;
   private index: DeterministicIndex | null = null;
   private config: EnhancedWarehouseConfig;
+  private provider?: EmbeddingProvider;
   private indexLoaded = false;
   private queryStats = {
     totalQueries: 0,
@@ -72,18 +75,20 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
   constructor(
     inner: WarehouseAdapter,
     indexStorage?: IndexStorage,
-    config?: Partial<EnhancedWarehouseConfig>
+    config?: Partial<EnhancedWarehouseConfig>,
+    provider?: EmbeddingProvider
   ) {
     this.inner = inner;
     this.indexStorage = indexStorage || new MemoryIndexStorage();
     this.config = { ...DEFAULT_CONFIG, ...config };
+    this.provider = provider;
   }
 
   private async ensureIndex(): Promise<DeterministicIndex> {
     if (this.indexLoaded && this.index) {
       return this.index;
     }
-    
+
     const stored = await this.indexStorage.loadIndex();
     if (stored) {
       this.index = stored;
@@ -91,7 +96,7 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
       this.index = createEmptyIndex();
       await this.rebuildIndex();
     }
-    
+
     this.indexLoaded = true;
     return this.index;
   }
@@ -104,14 +109,14 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
 
   private async rebuildIndex(): Promise<void> {
     const index = createEmptyIndex();
-    
+
     // Scan all records and rebuild
     const all = await this.inner.list({ includeDeleted: false });
-    
+
     for (const envelope of all.items) {
-      indexRecord(index, envelope);
+      await indexRecord(index, envelope, this.provider);
     }
-    
+
     this.index = index;
     await this.saveIndex();
   }
@@ -119,12 +124,12 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
   async put<T>(envelope: WarehouseEnvelope<T>): Promise<WarehouseEnvelope<T>> {
     // Write to inner adapter first
     const result = await this.inner.put(envelope);
-    
+
     // Update index
     const index = await this.ensureIndex();
-    indexRecord(index, result);
+    await indexRecord(index, result, this.provider);
     await this.saveIndex();
-    
+
     return result;
   }
 
@@ -135,28 +140,38 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
 
   async list<T>(query: WarehouseQuery): Promise<WarehouseQueryResult<T>> {
     const index = await this.ensureIndex();
-    
+
     this.queryStats.totalQueries++;
-    
+
+    // Semantic augmentation
+    if (this.provider?.enabled && query.containsText && (!query.vector || query.vector.length === 0)) {
+      try {
+        const vec = await this.provider.embed(query.containsText);
+        if (vec.length > 0) {
+          query = { ...query, vector: vec };
+        }
+      } catch (e) { /* ignore */ }
+    }
+
     // Try to use index
     const { ids, usedIndex } = queryUsingIndex(
       index,
       query,
       (id) => undefined // We don't have in-memory records, fetch individually
     );
-    
+
     if (usedIndex) {
       this.queryStats.indexUsed++;
-      this.queryStats.avgCandidatesFromIndex = 
+      this.queryStats.avgCandidatesFromIndex =
         (this.queryStats.avgCandidatesFromIndex * (this.queryStats.indexUsed - 1) + ids.length) /
         this.queryStats.indexUsed;
     } else {
       this.queryStats.fullScan++;
     }
-    
+
     // If we got candidates from index, fetch them
     let candidates: WarehouseEnvelope<T>[] = [];
-    
+
     if (usedIndex && ids.length > 0) {
       // Fetch records by ID
       for (const id of ids) {
@@ -168,7 +183,7 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
             break;
           }
         }
-        
+
         if (kind) {
           const record = await this.get<T>(kind, id);
           if (record) {
@@ -182,22 +197,22 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
       const all = await this.inner.list(queryWithoutPagination);
       candidates = all.items as unknown as WarehouseEnvelope<T>[];
     }
-    
+
     // Apply remaining filters that couldn't use index
     let results = candidates;
-    
+
     // Soft delete filter
     if (!query.includeDeleted) {
       results = results.filter(r => !r.softDeleted);
     }
-    
+
     // Tags filter (if not already applied by index)
     if (query.tags && query.tags.length > 0) {
       results = results.filter(r =>
         query.tags!.every(tag => r.tags?.includes(tag))
       );
     }
-    
+
     // Signal IDs filter
     if (query.signalIds && query.signalIds.length > 0) {
       results = results.filter(r => {
@@ -205,13 +220,13 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
         return content?.signalIds?.some(id => query.signalIds!.includes(id));
       });
     }
-    
+
     // Limit
     if (query.limit) {
       const start = query.cursor ? parseInt(query.cursor, 10) : 0;
       results = results.slice(start, start + query.limit);
     }
-    
+
     // Sort by createdAt for determinism
     results.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 
@@ -233,13 +248,13 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
 
   async delete(kind: WarehouseKind, id: string): Promise<boolean> {
     const result = await this.inner.delete(kind, id);
-    
+
     if (result) {
       const index = await this.ensureIndex();
       unindexRecord(index, id);
       await this.saveIndex();
     }
-    
+
     return result;
   }
 
@@ -252,10 +267,10 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
     strategy?: ConflictStrategy
   ): Promise<{ imported: number; skipped: number; conflicts: number }> {
     const result = await this.inner.importBundle(bundle, strategy);
-    
+
     // Rebuild index after import
     await this.rebuildIndex();
-    
+
     return result;
   }
 

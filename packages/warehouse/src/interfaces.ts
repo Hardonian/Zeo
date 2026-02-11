@@ -28,3 +28,8 @@ export interface BlobStorage {
   listBlobs(): Promise<Array<{ id: string; size: number; createdAt: string }>>;
 }
 
+export interface EmbeddingProvider {
+  embed(text: string): Promise<number[]>;
+  enabled: boolean;
+}
+

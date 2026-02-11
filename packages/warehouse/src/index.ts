@@ -7,6 +7,9 @@ export {
   FilesystemWarehouseAdapter,
   FilesystemBlobStorage,
 } from './filesystem-adapter';
+export { FilesystemIndexStorage } from './filesystem-index-storage';
+export { OllamaEmbeddingProvider, NoOpEmbeddingProvider } from './embedding-provider';
+export type { EmbeddingProvider } from './interfaces';
 export {
   canonicalizeForHash,
   computeSha256,

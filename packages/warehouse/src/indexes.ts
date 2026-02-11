@@ -15,6 +15,7 @@ import type {
 } from '@zeo/contracts';
 import type { WarehouseAdapter } from './interfaces';
 import { computeContentHash } from './hashing';
+import { scoreDocumentBM25, cosineSimilarity } from './scoring';
 
 // Index structures
 export interface DeterministicIndex {
@@ -30,11 +31,15 @@ export interface DeterministicIndex {
   // Token index for text search
   tokenIndex: Map<string, Set<string>>;           // token → ids
 
+  // Semantic search (V3)
+  embeddingIndex: Map<string, number[]>;          // id → vector
+  termFreqs: Map<string, Record<string, number>>; // id → { token: count }
+  docLengths: Map<string, number>;                // id → length
+  avgDocLength: number;
+
   // Metadata for quick stats
   totalRecords: number;
   recordHashes: Map<string, string>;              // id → contentHash
-
-  // retrieval hook: semantic search index (embeddings map)
 }
 
 export interface IndexMigration {
@@ -43,7 +48,7 @@ export interface IndexMigration {
   migrate(index: DeterministicIndex): DeterministicIndex;
 }
 
-const INDEX_VERSION = 2;
+const INDEX_VERSION = 3;
 
 // Tokenization for text search
 export function tokenize(text: string): string[] {
@@ -153,6 +158,10 @@ export function createEmptyIndex(): DeterministicIndex {
     byDecisionId: new Map(),
     byRunId: new Map(),
     tokenIndex: new Map(),
+    embeddingIndex: new Map(),
+    termFreqs: new Map(),
+    docLengths: new Map(),
+    avgDocLength: 0,
     totalRecords: 0,
     recordHashes: new Map(),
   };
@@ -174,6 +183,21 @@ const v1ToV2Migration: IndexMigration = {
   },
 };
 
+const v2ToV3Migration: IndexMigration = {
+  fromVersion: 2,
+  toVersion: 3,
+  migrate(oldIndex) {
+    return {
+      ...oldIndex,
+      version: 3,
+      embeddingIndex: new Map(),
+      termFreqs: new Map(),
+      docLengths: new Map(),
+      avgDocLength: 0,
+    };
+  }
+};
+
 export function migrateIndex(index: DeterministicIndex): DeterministicIndex {
   if (index.version === INDEX_VERSION) {
     return index;
@@ -185,14 +209,20 @@ export function migrateIndex(index: DeterministicIndex): DeterministicIndex {
   if (current.version === 1) {
     current = v1ToV2Migration.migrate(current);
   }
+  if (current.version === 2) {
+    current = v2ToV3Migration.migrate(current);
+  }
 
   return current;
 }
 
-export function indexRecord(
+import type { EmbeddingProvider } from './interfaces';
+
+export async function indexRecord(
   index: DeterministicIndex,
-  envelope: WarehouseEnvelope<unknown>
-): void {
+  envelope: WarehouseEnvelope<unknown>,
+  provider?: EmbeddingProvider
+): Promise<void> {
   const id = envelope.id;
 
   // Remove from index first (in case of update)
@@ -231,14 +261,44 @@ export function indexRecord(
     index.byRunId.get(runId)!.add(id);
   }
 
-  // Add to tokenIndex
+  // Add to tokenIndex & Term Stats
   const text = extractSearchableText(envelope);
   const tokens = tokenize(text);
+
+  // Calculate TF
+  const tf: Record<string, number> = {};
   for (const token of tokens) {
+    tf[token] = (tf[token] || 0) + 1;
+
+    // Inverted Index
     if (!index.tokenIndex.has(token)) {
       index.tokenIndex.set(token, new Set());
     }
     index.tokenIndex.get(token)!.add(id);
+  }
+
+  // Update doc stats
+  index.termFreqs.set(id, tf);
+  index.docLengths.set(id, tokens.length);
+
+  // Update avgDocLength (incremental)
+  const oldTotal = index.totalRecords; // It was decremented in unindex, so this is "N before this add"
+  const newAvg = (index.avgDocLength * oldTotal + tokens.length) / (oldTotal + 1);
+  index.avgDocLength = newAvg;
+
+  // Embedding
+  if (provider && provider.enabled) {
+    try {
+      // Only embed if substantial
+      if (text.length > 20) {
+        const vector = await provider.embed(text);
+        if (vector && vector.length > 0) {
+          index.embeddingIndex.set(id, vector);
+        }
+      }
+    } catch (e) {
+      // ignore embedding failure
+    }
   }
 
   // Update metadata
@@ -277,6 +337,20 @@ export function unindexRecord(index: DeterministicIndex, id: string): void {
     if (ids.size === 0) index.tokenIndex.delete(token);
   }
 
+  // Remove semantic data
+  const len = index.docLengths.get(id) || 0;
+  index.embeddingIndex.delete(id);
+  index.termFreqs.delete(id);
+  index.docLengths.delete(id);
+
+  // Update avgDocLength
+  if (index.totalRecords > 1) {
+    const newAvg = (index.avgDocLength * index.totalRecords - len) / (index.totalRecords - 1);
+    index.avgDocLength = newAvg;
+  } else {
+    index.avgDocLength = 0;
+  }
+
   index.recordHashes.delete(id);
   index.totalRecords = Math.max(0, index.totalRecords - 1);
   index.lastUpdated = new Date().toISOString();
@@ -290,8 +364,30 @@ export function queryUsingIndex(
 ): { ids: string[]; usedIndex: boolean } {
   let candidateIds: Set<string> | null = null;
   let usedIndex = false;
+  let scores: Map<string, number> = new Map(); // id -> score
 
-  // Start with kind index if specified
+  // 1. Vector Search (Primary if available)
+  if (query.vector && query.vector.length > 0) {
+    const vectorCandidates = new Set<string>();
+    // Brute force cosine similarity
+    for (const [id, embedding] of index.embeddingIndex) {
+      if (!embedding) continue;
+      const score = cosineSimilarity(query.vector, embedding);
+      if (score > 0.0) {
+        vectorCandidates.add(id);
+        scores.set(id, (scores.get(id) || 0) + score);
+      }
+    }
+
+    if (candidateIds) {
+      candidateIds = new Set([...candidateIds].filter(id => vectorCandidates.has(id)));
+    } else {
+      candidateIds = vectorCandidates;
+    }
+    usedIndex = true;
+  }
+
+  // 2. Kind Filter
   if (query.kinds && query.kinds.length > 0) {
     const kindIds = new Set<string>();
     for (const kind of query.kinds) {
@@ -300,11 +396,16 @@ export function queryUsingIndex(
         for (const id of ids) kindIds.add(id);
       }
     }
-    candidateIds = kindIds;
+
+    if (candidateIds) {
+      candidateIds = new Set([...candidateIds].filter(id => kindIds.has(id)));
+    } else {
+      candidateIds = kindIds;
+    }
     usedIndex = true;
   }
 
-  // Intersect with decisionId index
+  // 3. DecisionId Filter
   if (query.decisionIds && query.decisionIds.length > 0) {
     const decisionIds = new Set<string>();
     for (const decisionId of query.decisionIds) {
@@ -322,7 +423,7 @@ export function queryUsingIndex(
     usedIndex = true;
   }
 
-  // Text search using token index
+  // 4. Text Search (BM25)
   // retrieval hook: semantic search implementation
   // if (query.embeddings) { ... }
   if (query.containsText) {
@@ -330,27 +431,38 @@ export function queryUsingIndex(
     if (searchTokens.length > 0) {
       const textIds = new Set<string>();
 
-      // Start with first token
-      const firstToken = searchTokens[0];
-      if (firstToken) {
-        const firstTokenIds = index.tokenIndex.get(firstToken);
-        if (firstTokenIds) {
-          for (const id of firstTokenIds) textIds.add(id);
+      // Boolean OR for recall, then rank
+      for (const token of searchTokens) {
+        const tokenIds = index.tokenIndex.get(token);
+        if (tokenIds) {
+          for (const id of tokenIds) textIds.add(id);
         }
       }
 
-      // Intersect with remaining tokens
-      for (let i = 1; i < searchTokens.length; i++) {
-        const token = searchTokens[i];
-        if (!token) continue;
-        const tokenIds = index.tokenIndex.get(token);
-        if (tokenIds) {
-          for (const id of textIds) {
-            if (!tokenIds.has(id)) textIds.delete(id);
+      // Score candidates
+      for (const id of textIds) {
+        const docTerms = index.termFreqs.get(id);
+        const docLen = index.docLengths.get(id) || 0;
+
+        if (docTerms) {
+          // Flatten tokenIndex for DF (map size of Set)
+          const docFreqs = new Map<string, number>();
+          for (const token of searchTokens) {
+            docFreqs.set(token, index.tokenIndex.get(token)?.size || 0);
           }
-        } else {
-          textIds.clear();
-          break;
+
+          const score = scoreDocumentBM25(
+            docTerms,
+            searchTokens,
+            docLen,
+            index.avgDocLength,
+            docFreqs,
+            index.totalRecords
+          );
+
+          if (score > 0) {
+            scores.set(id, (scores.get(id) || 0) + score);
+          }
         }
       }
 
@@ -363,8 +475,7 @@ export function queryUsingIndex(
     }
   }
 
-  // Time range filter (requires scanning records for precise time)
-  // But we can pre-filter by date
+  // 5. Time Range Filter (Post-filter)
   if (query.timeRange) {
     const startDate = query.timeRange.start.split('T')[0] || query.timeRange.start;
     const endDate = query.timeRange.end.split('T')[0] || query.timeRange.end;
@@ -386,13 +497,25 @@ export function queryUsingIndex(
     usedIndex = true;
   }
 
-  // If no index was used, return all ids
+  // If no filters/search used, return all (ordered by recency primarily, which is implicit in insertion order usually but we should sort)
   if (!candidateIds) {
     candidateIds = new Set(index.recordHashes.keys());
     usedIndex = false;
   }
 
-  return { ids: Array.from(candidateIds), usedIndex };
+  // Sort results
+  const items = Array.from(candidateIds);
+
+  if (scores.size > 0) {
+    items.sort((a, b) => {
+      const sA = scores.get(a) || 0;
+      const sB = scores.get(b) || 0;
+      if (sA !== sB) return sB - sA; // Descending score
+      return a.localeCompare(b); // Stable tie-break
+    });
+  }
+
+  return { ids: items, usedIndex };
 }
 
 // Serialize index for storage
@@ -415,6 +538,12 @@ export function serializeIndex(index: DeterministicIndex): string {
     tokenIndex: Object.fromEntries(
       Array.from(index.tokenIndex.entries()).map(([k, v]) => [k, Array.from(v)])
     ),
+    // V3 fields
+    embeddingIndex: Object.fromEntries(index.embeddingIndex),
+    termFreqs: Object.fromEntries(index.termFreqs),
+    docLengths: Object.fromEntries(index.docLengths),
+    avgDocLength: index.avgDocLength,
+
     totalRecords: index.totalRecords,
     recordHashes: Object.fromEntries(index.recordHashes),
   };
@@ -433,6 +562,13 @@ export function deserializeIndex(serialized: string): DeterministicIndex {
     byDecisionId: new Map(Object.entries(obj.byDecisionId || {}).map(([k, v]) => [k, new Set(v as string[])])),
     byRunId: new Map(Object.entries(obj.byRunId || {}).map(([k, v]) => [k, new Set(v as string[])])),
     tokenIndex: new Map(Object.entries(obj.tokenIndex || {}).map(([k, v]) => [k, new Set(v as string[])])),
+
+    // V3
+    embeddingIndex: new Map(Object.entries(obj.embeddingIndex || {})),
+    termFreqs: new Map(Object.entries(obj.termFreqs || {})),
+    docLengths: new Map(Object.entries(obj.docLengths || {})),
+    avgDocLength: obj.avgDocLength || 0,
+
     totalRecords: obj.totalRecords || 0,
     recordHashes: new Map(Object.entries(obj.recordHashes || {})),
   };
