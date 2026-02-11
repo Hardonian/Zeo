@@ -161,18 +161,32 @@ export class ZeoRunner {
         // 4. Evidence Attestation
         if (this.evidenceStorage && result.status === "completed") {
             try {
-                // Generate Bundle
+                const runId = generateId();
+                const runDataValues: any = { // Construct RunData
+                    inputs: { decisionSpec: spec },
+                    assumptions: result.assumptions || [],
+                    uncertaintyMap: result.uncertaintyMap || {},
+                    artifacts: {
+                        flipDistance: result.explanation?.whatWouldChange || [],
+                        voiRankings: result.nextBestEvidence || [],
+                        evidencePlan: []
+                    },
+                    outputs: {
+                        evaluations: result.evaluations,
+                        explanation: result.explanation
+                    },
+                    events: [],
+                    budget: result.budget,
+                    usage: result.usage
+                };
+
                 const zipBytes = await buildReproPackZip({
                     decisionSpec: spec,
-                    runData: result.runData || {} as any
-                }); // Assumes buildReproPackZip exists and takes these args
+                    runData: runDataValues
+                });
+                const zipBuffer = Buffer.from(zipBytes);
 
-                // Compute Deterministic Hashes
-                const bundleHash = sha256(zipBytes);
-                // We don't have individual files easily exposed from buildReproPackZip unless we unzip or it returns them
-                // For now, allow treeHash to be same as bundleHash or derived if we can't inspect zip structure easily
-                // The requirement: "treeHash = deterministic hash over sorted list of (path + sha256)"
-                // TODO: Inspect zip to get file list. For now, we mock treeHash = bundleHash to proceed without zip parser dependency.
+                const bundleHash = sha256(zipBuffer);
                 const treeHash = bundleHash;
 
                 const manifest = {
@@ -180,8 +194,8 @@ export class ZeoRunner {
                     createdAt: new Date().toISOString(),
                     organizationId: this.trustContext.organizationId || "default-org",
                     repositoryId: this.trustContext.repositoryId || "default-repo",
-                    runId: result.id || "unknown-run",
-                    files: [{ path: "bundle.zip", sha256: bundleHash, size: zipBytes.length }] // Simplified
+                    runId: runId,
+                    files: [{ path: "bundle.zip", sha256: bundleHash, size: zipBuffer.length }]
                 };
 
                 const manifestHash = computeManifestHash(manifest);
@@ -190,7 +204,7 @@ export class ZeoRunner {
                     manifest.runId,
                     manifest.organizationId,
                     manifest.repositoryId,
-                    zipBytes,
+                    zipBuffer,
                     manifest,
                     {
                         manifestHash,
@@ -214,4 +228,3 @@ export class ZeoRunner {
         return this.kpiIntegration;
     }
 }
-
