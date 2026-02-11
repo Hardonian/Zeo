@@ -18,6 +18,7 @@ import inferencesPanelManifest from './builtin/inferences-panel/manifest.json';
 import explanationPanelManifest from './builtin/explanation-panel/manifest.json';
 import scenariosPanelManifest from './builtin/scenarios-panel/manifest.json';
 import specComparisonManifest from './builtin/spec-comparison/manifest.json';
+import policyStatusManifest from './builtin/policy-status/manifest';
 
 // Trust & v0.4.0 feature panels
 import trustConsentManagerManifest from './builtin/trust-consent-manager/manifest';
