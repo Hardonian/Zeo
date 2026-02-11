@@ -1,4 +1,4 @@
-import { generateId } from "@zeo/id";
+import { generateId } from "./id.js";
 import type {
   Claim,
   Constraint,

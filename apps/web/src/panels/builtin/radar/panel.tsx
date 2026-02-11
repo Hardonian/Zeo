@@ -69,7 +69,7 @@ export default function RadarPanel({ manifest }: RadarPanelProps) {
                         No signals currently prioritized.
                     </div>
                 ) : (
-                    radar.watchlist.map((item) => (
+                    radar.watchlist.map((item: any) => (
                         <div key={item.id} className="p-3 bg-white border border-gray-200 rounded-md shadow-sm border-l-4 border-l-purple-500">
                             <div className="flex justify-between items-start">
                                 <h3 className="text-sm font-medium text-gray-900">
@@ -85,7 +85,7 @@ export default function RadarPanel({ manifest }: RadarPanelProps) {
                             </p>
 
                             <div className="mt-2 flex gap-1 flex-wrap">
-                                {item.priority.rationale.map((r, i) => (
+                                {item.priority.rationale.map((r: string, i: number) => (
                                     <span key={i} className="text-[10px] px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded border border-gray-200">
                                         {r}
                                     </span>

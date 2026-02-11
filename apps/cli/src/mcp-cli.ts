@@ -1,5 +1,5 @@
 import { createInterface } from "node:readline";
-import { executeZeoliteOperation, type ZeoliteOperation } from "./zeolite-core.js";
+import type { ZeoliteOperation } from "./zeolite-core.js";
 
 type JsonRpcId = string | number | null;
 
@@ -116,6 +116,12 @@ function error(id: JsonRpcId, code: number, message: string): string {
   return JSON.stringify({ jsonrpc: "2.0", id, error: { code, message } });
 }
 
+
+async function executeToolOperation(name: ZeoliteOperation, args: Record<string, unknown>): Promise<Record<string, unknown>> {
+  const { executeZeoliteOperation } = await import("./zeolite-core.js");
+  return executeZeoliteOperation(name, args);
+}
+
 async function handleToolCall(name: string, args: Record<string, unknown>): Promise<Record<string, unknown>> {
   const knownOperations = new Set<ZeoliteOperation>([
     "submit_evidence",
@@ -133,7 +139,7 @@ async function handleToolCall(name: string, args: Record<string, unknown>): Prom
   }
 
   try {
-    const structuredContent = executeZeoliteOperation(name as ZeoliteOperation, args);
+    const structuredContent = await executeToolOperation(name as ZeoliteOperation, args);
     return { schemaVersion: SCHEMA_VERSION, isError: false, structuredContent };
   } catch (caught) {
     const message = caught instanceof Error ? caught.message : String(caught);

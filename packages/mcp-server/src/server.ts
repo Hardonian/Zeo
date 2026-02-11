@@ -24,6 +24,9 @@ import type {
 import { createAuditBridge, type AuditBridge } from "./audit-bridge.js";
 import { validateToolPermission, validateRequestSize, redactSecrets } from "./security.js";
 import { mcpPolicyEngine } from "./policy.js";
+import { MetricsRegistry, StructuredLogger, Tracer } from "./observability.js";
+import { DeterministicCache } from "./deterministic-cache.js";
+import { randomUUID, createHash } from "node:crypto";
 
 // Tool implementations
 import { notesIngestDefinition, notesIngest } from "./tools/notes-ingest.js";
@@ -137,6 +140,13 @@ export function createMcpServer(config: McpConfig): McpServer {
         config.warehouse.basePath
     );
     const auditBridge = createAuditBridge(config);
+    const logger = new StructuredLogger();
+    const metrics = new MetricsRegistry();
+    const cache = new DeterministicCache<JsonRpcResponse>(config.server.version, "zeo.cache.v1");
+    const singleFlight = new Map<string, Promise<JsonRpcResponse>>();
+    let inFlight = 0;
+    let rateWindowStarted = Date.now();
+    let rateWindowCount = 0;
 
     // Filter tools based on allowlist
     const enabledTools = TOOL_REGISTRY.filter(
@@ -152,37 +162,91 @@ export function createMcpServer(config: McpConfig): McpServer {
     }
 
     async function handleRequest(raw: string): Promise<string | null> {
-        // Validate request size
+        const runId = randomUUID();
+        const tracer = new Tracer();
+        const parseSpan = tracer.startSpan("parse_input");
+
         const sizeError = validateRequestSize(config, Buffer.byteLength(raw, "utf-8"));
         if (sizeError) {
-            return JSON.stringify({
-                jsonrpc: "2.0",
-                id: 0,
-                error: sizeError,
-            } as JsonRpcResponse);
+            metrics.inc("parse_failures");
+            return JSON.stringify({ jsonrpc: "2.0", id: 0, error: { code: -32600, message: sizeError.message, data: { run_id: runId, error_code: "REQUEST_TOO_LARGE" } } });
+        }
+
+        if (Date.now() - rateWindowStarted >= 60_000) {
+            rateWindowStarted = Date.now();
+            rateWindowCount = 0;
+        }
+        rateWindowCount += 1;
+        if (rateWindowCount > config.security.rateLimitPerMinute) {
+            return JSON.stringify({ jsonrpc: "2.0", id: 0, error: { code: -32000, message: "Too many requests", data: { run_id: runId, error_code: "RATE_LIMITED" } } });
         }
 
         let request: JsonRpcRequest;
         try {
             request = JSON.parse(raw);
+            parseSpan.end("ok");
         } catch {
-            return JSON.stringify({
-                jsonrpc: "2.0",
-                id: 0,
-                error: { code: -32700, message: "Parse error" },
-            } as JsonRpcResponse);
+            parseSpan.end("error");
+            metrics.inc("parse_failures");
+            return JSON.stringify({ jsonrpc: "2.0", id: 0, error: { code: -32700, message: "Parse error", data: { run_id: runId, error_code: "PARSE_ERROR" } } });
         }
 
-        // Notifications (no id) — ack silently
-        if (request.id === undefined || request.id === null) {
-            return null;
+        if (request.id === undefined || request.id === null) return null;
+
+        if (request.jsonrpc !== "2.0" || typeof request.method !== "string") {
+            metrics.inc("parse_failures");
+            return JSON.stringify({ jsonrpc: "2.0", id: request.id, error: { code: -32600, message: "Invalid request envelope", data: { run_id: runId, error_code: "INVALID_REQUEST" } } });
         }
 
-        const response = await dispatch(request);
-        return JSON.stringify(response);
+        if (inFlight >= config.security.maxInFlightRequests) {
+            return JSON.stringify({ jsonrpc: "2.0", id: request.id, error: { code: -32000, message: "Server busy", data: { run_id: runId, error_code: "MAX_INFLIGHT_EXCEEDED" } } });
+        }
+
+        const reqHash = createHash("sha256").update(raw).digest("hex");
+        const cacheKey = cache.makeKey(request, "mcp", { method: request.method }, config.server.version);
+        if (config.security.cacheMode !== "off") {
+            const cached = cache.get(cacheKey.key);
+            if (cached) {
+                metrics.inc("cache_hit");
+                logger.log({ level: "debug", msg: "mcp cache hit", run_id: runId, trace_id: tracer.traceId, action: request.method, cache_hit: true });
+                return JSON.stringify(cached);
+            }
+            metrics.inc("cache_miss");
+        }
+
+        const existing = singleFlight.get(reqHash);
+        if (existing) return JSON.stringify(await existing);
+
+        const requestPromise = (async () => {
+            inFlight += 1;
+            const work = dispatch(request, runId, tracer);
+            const timeout = new Promise<JsonRpcResponse>((resolve) => setTimeout(() => {
+                metrics.inc("timeouts");
+                resolve({ jsonrpc: "2.0", id: request.id, error: { code: -32000, message: "Request timeout", data: { run_id: runId } } });
+            }, config.security.requestTimeoutMs));
+            return Promise.race([work, timeout]);
+        })();
+
+        singleFlight.set(reqHash, requestPromise);
+        try {
+            const response = await requestPromise;
+            if (config.security.cacheMode === "write" && !response.error) {
+                cache.set(cacheKey.key, cacheKey.inputHash, response, config.security.cacheTtlMs);
+            }
+            return JSON.stringify(response);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            return JSON.stringify({ jsonrpc: "2.0", id: request.id, error: { code: -32603, message, data: { run_id: runId } } });
+        } finally {
+            inFlight = Math.max(0, inFlight - 1);
+            singleFlight.delete(reqHash);
+            const summary = tracer.summarize();
+            logger.log({ level: "info", msg: "run summary", run_id: runId, trace_id: summary.trace_id, cmd: "mcp", action: request.method, duration_ms: summary.total_duration_ms });
+            if (process.env.ZEO_TRACE_VERBOSE === "1") logger.log({ level: "info", msg: "trace summary", run_id: runId, trace_id: summary.trace_id, spans: summary.spans });
+        }
     }
 
-    async function dispatch(request: JsonRpcRequest): Promise<JsonRpcResponse> {
+    async function dispatch(request: JsonRpcRequest, runId: string, tracer: Tracer): Promise<JsonRpcResponse> {
         switch (request.method) {
             case "initialize":
                 return {
@@ -217,7 +281,7 @@ export function createMcpServer(config: McpConfig): McpServer {
                 };
 
             case "tools/call":
-                return handleToolCall(request);
+                return handleToolCall(request, runId, tracer);
 
             default:
                 return {
@@ -232,7 +296,9 @@ export function createMcpServer(config: McpConfig): McpServer {
     }
 
     async function handleToolCall(
-        request: JsonRpcRequest
+        request: JsonRpcRequest,
+        runId: string,
+        tracer: Tracer
     ): Promise<JsonRpcResponse> {
         const params = request.params as unknown as McpToolCallParams | undefined;
         if (!params?.name) {
@@ -290,7 +356,9 @@ export function createMcpServer(config: McpConfig): McpServer {
         }
 
         const startMs = Date.now();
+        const span = tracer.startSpan("compute");
         try {
+            metrics.inc("model_calls");
             const toolArgs = (params.arguments ?? {}) as Record<string, unknown>;
 
             const result = await tool.handler(
@@ -311,6 +379,7 @@ export function createMcpServer(config: McpConfig): McpServer {
                 durationMs
             );
 
+            span.end("ok");
             return {
                 jsonrpc: "2.0",
                 id: request.id,
@@ -331,12 +400,14 @@ export function createMcpServer(config: McpConfig): McpServer {
                 durationMs
             );
 
+            span.end("error");
             return {
                 jsonrpc: "2.0",
                 id: request.id,
                 error: {
                     code: -32603,
                     message: `Tool execution failed: ${errorMessage}`,
+                    data: { run_id: runId },
                 },
             };
         }

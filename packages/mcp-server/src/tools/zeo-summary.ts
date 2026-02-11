@@ -1,7 +1,5 @@
-
 import type { McpToolDefinition, McpToolResult } from "../types";
 import type { WarehouseAdapter } from "@zeo/warehouse";
-import { renderMarkdownReport } from "@zeo/replay";
 
 export const zeoSummaryDefinition: McpToolDefinition = {
     name: "zeo.exportSummary",
@@ -15,16 +13,29 @@ export const zeoSummaryDefinition: McpToolDefinition = {
     },
 };
 
+function renderMarkdownReport(result: Record<string, unknown>): string {
+    const title = typeof result["title"] === "string" ? result["title"] : "Decision Run";
+    const summary = typeof result["summary"] === "string" ? result["summary"] : "No summary provided.";
+    const decisionId = typeof result["decisionId"] === "string" ? result["decisionId"] : "unknown";
+    const timestamp = typeof result["finishedAt"] === "string" ? result["finishedAt"] : new Date().toISOString();
+
+    return [
+        `# ${title}`,
+        "",
+        `- Decision ID: ${decisionId}`,
+        `- Generated At: ${timestamp}`,
+        "",
+        "## Summary",
+        "",
+        summary,
+    ].join("\n");
+}
+
 export async function zeoSummary(
     params: Record<string, unknown>,
     warehouse: WarehouseAdapter
 ): Promise<McpToolResult> {
     const runId = String(params["runId"]);
-
-    // Fetch run data from warehouse
-    // Need to find event with kind=decision-result and matching associatedDecisionId or runId tag?
-    // Assuming we can get by ID if runId is the envelope ID or we search.
-    // For simplicity,    // Assume runId is envelope ID of a run-result.
     const record = await warehouse.get("run-result", runId);
 
     if (!record) {
@@ -34,8 +45,7 @@ export async function zeoSummary(
         };
     }
 
-    // Assume record content is DecisionResult or close enough
-    const result = record.content as any;
+    const result = (record.content ?? {}) as Record<string, unknown>;
 
     try {
         const md = renderMarkdownReport(result);
@@ -43,8 +53,9 @@ export async function zeoSummary(
             content: [{ type: "text", text: md }],
         };
     } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
         return {
-            content: [{ type: "text", text: `Failed to render summary: ${String(err)}` }],
+            content: [{ type: "text", text: `Failed to render summary: ${message}` }],
             isError: true,
         };
     }

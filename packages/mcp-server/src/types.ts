@@ -123,6 +123,11 @@ export interface McpConfig {
     security: {
         redactSecrets: boolean;
         maxRequestSizeBytes: number;
+        requestTimeoutMs: number;
+        maxInFlightRequests: number;
+        rateLimitPerMinute: number;
+        cacheMode: "read" | "write" | "off";
+        cacheTtlMs: number;
     };
 }
 

@@ -100,6 +100,11 @@ export function createDefaultConfig(): McpConfig {
         security: {
             redactSecrets: true,
             maxRequestSizeBytes: 10 * 1024 * 1024, // 10 MB
+            requestTimeoutMs: 15_000,
+            maxInFlightRequests: 32,
+            rateLimitPerMinute: 120,
+            cacheMode: "write",
+            cacheTtlMs: 60_000,
         },
     };
 }
@@ -184,6 +189,18 @@ function applyEnvOverrides(config: McpConfig): McpConfig {
     const warehousePath = process.env["ZEO_MCP_WAREHOUSE_PATH"];
     if (warehousePath) config.warehouse.basePath = warehousePath;
 
+    const timeoutMs = process.env["ZEO_MCP_TIMEOUT_MS"];
+    if (timeoutMs) config.security.requestTimeoutMs = parseInt(timeoutMs, 10);
+
+    const maxInFlight = process.env["ZEO_MCP_MAX_INFLIGHT"];
+    if (maxInFlight) config.security.maxInFlightRequests = parseInt(maxInFlight, 10);
+
+    const rateLimit = process.env["ZEO_MCP_RATE_LIMIT_PER_MIN"];
+    if (rateLimit) config.security.rateLimitPerMinute = parseInt(rateLimit, 10);
+
+    const cacheMode = process.env["ZEO_MCP_CACHE_MODE"];
+    if (cacheMode === "read" || cacheMode === "write" || cacheMode === "off") config.security.cacheMode = cacheMode;
+
     return config;
 }
 
@@ -224,6 +241,16 @@ export function validateConfig(config: McpConfig): string[] {
     const enabledTools = Object.values(config.tools.allowlist).filter(t => t.enabled);
     if (enabledTools.length === 0) {
         issues.push("No tools are enabled in the allowlist");
+    }
+
+    if (config.security.requestTimeoutMs < 100 || config.security.requestTimeoutMs > 300000) {
+        issues.push("security.requestTimeoutMs must be between 100 and 300000");
+    }
+    if (config.security.maxInFlightRequests < 1 || config.security.maxInFlightRequests > 1000) {
+        issues.push("security.maxInFlightRequests must be between 1 and 1000");
+    }
+    if (config.security.rateLimitPerMinute < 1 || config.security.rateLimitPerMinute > 100000) {
+        issues.push("security.rateLimitPerMinute must be between 1 and 100000");
     }
 
     return issues;
