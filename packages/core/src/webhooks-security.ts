@@ -39,7 +39,8 @@ export class WebhookSecurity {
         const bodyHash = this.computeBodyHash(body);
 
         try {
-            const existing = await prisma.webhookReceipt.findUnique({
+            const existing = await (prisma as any).webhookReceipt.findUnique({
+
                 where: {
                     organizationId_provider_deliveryId: {
                         organizationId: orgId,
@@ -53,7 +54,8 @@ export class WebhookSecurity {
                 return { blocked: true };
             }
 
-            await prisma.webhookReceipt.create({
+            await (prisma as any).webhookReceipt.create({
+
                 data: {
                     organizationId: orgId,
                     provider,
