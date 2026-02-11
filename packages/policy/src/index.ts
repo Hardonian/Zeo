@@ -5,10 +5,10 @@
  * Governs Review Guard / Test Engine / Doc Sync decisions
  */
 
-import { Prisma } from '@prisma/client';
-import { prisma } from '../../lib/prisma';
+
+// import { prisma } from "../../lib/prisma";
 import { createHash } from 'crypto';
-import { Issue } from '../static-analysis';
+import { Issue } from "@zeo/analysis";
 
 export interface PolicyPack {
   id: string;
@@ -139,46 +139,32 @@ export class PolicyEngineService {
    * Load effective policy for org/repo/branch
    * Merges org-level defaults with repo-level overrides
    */
-  async loadEffectivePolicy(
-    organizationId: string,
-    repositoryId: string | null,
-    _ref?: string,
-    _branch?: string
-  ): Promise<EffectivePolicy> {
-    // Load repo-level policy if repositoryId provided
-    let repoPolicyPack: PolicyPack | null = null;
-    if (repositoryId) {
-      repoPolicyPack = await this.loadLatestPolicyPack(organizationId, repositoryId);
-    }
-
-    // Load org-level policy (fallback/defaults)
-    const orgPolicyPack = await this.loadLatestPolicyPack(organizationId, null);
-
-    // Use repo policy if available, otherwise org policy
-    const activePack = repoPolicyPack || orgPolicyPack;
-
-    if (!activePack) {
-      // Return safe defaults if no policy configured (respects tier enforcement strength)
-      return await this.getDefaultPolicy(organizationId, repositoryId);
-    }
-
-    // Load active waivers
-    const waivers = await this.loadActiveWaivers(organizationId, repositoryId, _branch);
-
-    // Build rules map
-    const rulesMap = new Map<string, PolicyRule>();
-    for (const rule of activePack.rules) {
-      if (rule.enabled) {
-        rulesMap.set(rule.ruleId, rule);
-      }
-    }
-
-    return {
-      pack: activePack,
-      rules: rulesMap,
-      waivers,
+  async loadEffectivePolicy(organizationId: string, repositoryId: string | null, _ref?: string, _branch?: string): Promise<EffectivePolicy> { 
+    console.log('[Policy] Loading effective policy (MOCKED)...');
+    // Return a default mock policy
+    const defaultRule: PolicyRule = {
+        id: 'default',
+        ruleId: '*', 
+        severityMapping: { critical: 'block', high: 'warn', medium: 'allow', low: 'allow' },
+        enabled: true,
     };
-  }
+    const rulesMap = new Map<string, PolicyRule>();
+    rulesMap.set('*', defaultRule);
+    
+    return Promise.resolve({
+        pack: {
+            id: 'mock-policy',
+            organizationId,
+            repositoryId,
+            version: '1.0.0',
+            source: 'mock',
+            checksum: 'mock-sum',
+            rules: [defaultRule],
+        },
+        rules: rulesMap,
+        waivers: [],
+    });
+     }
 
   /**
    * Evaluate findings against policy
@@ -271,20 +257,8 @@ export class PolicyEngineService {
     };
 
     // Create evidence bundle
-    const bundle = await prisma.evidenceBundle.create({
-      data: {
-        reviewId: resourceId?.reviewId,
-        testId: resourceId?.testId,
-        docId: resourceId?.docId,
-        inputsMetadata: inputsMetadata as Prisma.InputJsonValue,
-        rulesFired: outputs.evaluationResult.rulesFired as Prisma.InputJsonValue,
-        deterministicScore: outputs.evaluationResult.score,
-        artifacts: outputs.artifacts as Prisma.InputJsonValue,
-        policyChecksum: policy.pack.checksum,
-        toolVersions: toolVersions as Prisma.InputJsonValue,
-        timings: timings as Prisma.InputJsonValue,
-      },
-    });
+    console.log('[Policy] Would persist evidence bundle to DB', inputsMetadata);
+         const bundle: any = { id: 'mock-bundle-' + Date.now(), createdAt: new Date(), ...outputs.evaluationResult };
 
     return {
       id: bundle.id,
@@ -354,7 +328,7 @@ export class PolicyEngineService {
       version: pack.version,
       source: pack.source,
       checksum: pack.checksum,
-      rules: pack.rules.map((r) => ({
+      rules: pack.rules.map((r: any) => ({
         id: r.id,
         ruleId: r.ruleId,
         severityMapping: r.severityMapping as Record<string, 'block' | 'warn' | 'allow'>,
@@ -384,7 +358,7 @@ export class PolicyEngineService {
       },
     });
 
-    return waivers.map((w) => ({
+    return waivers.map((w: any) => ({
       id: w.id,
       ruleId: w.ruleId,
       scope: w.scope as 'repo' | 'branch' | 'path',
@@ -457,8 +431,8 @@ export class PolicyEngineService {
     repositoryId: string | null
   ): Promise<EffectivePolicy> {
     // Get tier enforcement strength (deterministic - reads from database, doesn't change during request)
-    const { billingService } = await import('../../billing');
-    const enforcementStrength = await billingService.getEnforcementStrength(organizationId);
+    // const { billingService } ...
+    const enforcementStrength = "basic";
 
     // DETERMINISTIC: Hardcoded severity mappings - same tier always produces same mappings
     // These mappings are deterministic constants, not computed dynamically

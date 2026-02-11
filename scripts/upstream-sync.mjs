@@ -49,8 +49,87 @@ const copyDir = (src, dest) => {
 
 // 3. Sync Packages
 console.log('Syncing Policy Engine...');
-// Copy to src directly so 'index.ts' is at src/index.ts
 copyDir('vendor/readylayer/services/policy-engine', 'packages/policy/src');
+
+const policyIndex = path.join('packages/policy/src', 'index.ts');
+if (fs.existsSync(policyIndex)) {
+    let content = fs.readFileSync(policyIndex, 'utf8');
+
+    // 1. Remove DB imports
+    content = content.replace(/import\s+{\s*Prisma\s*}\s*from\s*['"]@prisma\/client['"];?/g, '');
+    content = content.replace(/import\s+{\s*prisma\s*}\s*from\s*['"]\.\.\/\.\.\/lib\/prisma['"];?/g, '// import { prisma } from "../../lib/prisma";');
+    content = content.replace(/import\s+{\s*Issue\s*}\s*from\s*['"]\.\.\/static-analysis['"];?/g, 'import { Issue } from "@zeo/analysis";');
+    content = content.replace(/import\s+.*\s+from\s*['"]\.\.\/\.\.\/billing['"];?/g, '');
+
+    // 2. Patch loadEffectivePolicy to be mock-only
+    const mockPolicyBody = `
+    console.log('[Policy] Loading effective policy (MOCKED)...');
+    // Return a default mock policy
+    const defaultRule: PolicyRule = {
+        id: 'default',
+        ruleId: '*', 
+        severityMapping: { critical: 'block', high: 'warn', medium: 'allow', low: 'allow' },
+        enabled: true,
+    };
+    const rulesMap = new Map<string, PolicyRule>();
+    rulesMap.set('*', defaultRule);
+    
+    return Promise.resolve({
+        pack: {
+            id: 'mock-policy',
+            organizationId,
+            repositoryId,
+            version: '1.0.0',
+            source: 'mock',
+            checksum: 'mock-sum',
+            rules: [defaultRule],
+        },
+        rules: rulesMap,
+        waivers: [],
+    });
+    `;
+
+    // Regex to replace the body of loadEffectivePolicy
+    // This is tricky with regex. We'll strict replace the start of the method.
+    content = content.replace(
+        /async\s+loadEffectivePolicy\s*\([\s\S]*?\)\s*:\s*Promise<EffectivePolicy>\s*{[\s\S]*?return\s*{\s*pack[\s\S]*?};\s*}/m,
+        `async loadEffectivePolicy(organizationId: string, repositoryId: string | null, _ref?: string, _branch?: string): Promise<EffectivePolicy> { ${mockPolicyBody} }`
+    );
+
+    // 3. Patch produceEvidence to skip DB
+    content = content.replace(
+        /const bundle = await prisma\.evidenceBundle\.create\([\s\S]*?\);/m,
+        `console.log('[Policy] Would persist evidence bundle to DB', inputsMetadata);
+         const bundle: any = { id: 'mock-bundle-' + Date.now(), createdAt: new Date(), ...outputs.evaluationResult };`
+    );
+
+    // 4. Remove getDefaultPolicy usage of billing
+    content = content.replace(/const { billingService } = await import\('\.\.\/\.\.\/billing'\);/g, '// const { billingService } ...');
+    content = content.replace(/await billingService\.getEnforcementStrength\(organizationId\)/g, '"basic"');
+
+    // 5. Fix implicit any in maps
+    content = content.replace(/\(r\)/g, '(r: any)');
+    content = content.replace(/\(w\)/g, '(w: any)');
+
+    fs.writeFileSync(policyIndex, content);
+    console.log('Patched packages/policy/src/index.ts for Mock Mode');
+}
+
+// Patch inheritance.ts to remove observability imports
+const inheritancePath = path.join('packages/policy/src', 'inheritance.ts');
+if (fs.existsSync(inheritancePath)) {
+    let content = fs.readFileSync(inheritancePath, 'utf8');
+    content = content.replace(/import\s+.*\s+from\s*['"]@\/observability.*['"];?/g, '');
+    fs.writeFileSync(inheritancePath, content);
+}
+
+// Patch templates.ts
+const templatesPath = path.join('packages/policy/src', 'templates.ts');
+if (fs.existsSync(templatesPath)) {
+    let content = fs.readFileSync(templatesPath, 'utf8');
+    content = content.replace(/import\s+.*\s+from\s*['"]@\/observability.*['"];?/g, '');
+    fs.writeFileSync(templatesPath, content);
+}
 
 const ensurePackageJson = (dir, name, deps = {}) => {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });

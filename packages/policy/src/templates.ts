@@ -8,7 +8,7 @@
  * - SOC 2
  */
 
-import { logger } from '@/observability/logging';
+
 
 export interface PolicyTemplate {
   id: string;
