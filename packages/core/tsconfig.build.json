@@ -12,6 +12,7 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "outDir": "./dist",
+    "rootDir": "src",
     "baseUrl": "../..",
     "paths": {
       "@zeo/models": [
