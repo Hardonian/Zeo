@@ -1,7 +1,7 @@
 var R=require("../../../../chunks/[turbopack]_runtime.js")("server/app/api/webhooks/github/route.js")
-R.c("server/chunks/[root-of-the-server]__34853d60._.js")
-R.c("server/chunks/499ff__pnpm_d33dea85._.js")
-R.c("server/chunks/[root-of-the-server]__492051d2._.js")
-R.c("server/chunks/ec426_apps_web__next-internal_server_app_api_webhooks_github_route_actions_63a02d50.js")
-R.m(43647)
-module.exports=R.m(43647).exports
+R.c("server/chunks/[root-of-the-server]__23e604d5._.js")
+R.c("server/chunks/node_modules__pnpm_6e9302b8._.js")
+R.c("server/chunks/[root-of-the-server]__349e2a14._.js")
+R.c("server/chunks/apps_web__next-internal_server_app_api_webhooks_github_route_actions_cb9a6631.js")
+R.m(57248)
+module.exports=R.m(57248).exports

@@ -1,0 +1,3 @@
+module.exports=[77930,a=>{"use strict";var b=a.i(37831);function c({children:a}){return(0,b.jsx)("html",{lang:"en",children:(0,b.jsx)("body",{className:"antialiased bg-gray-50 text-gray-900",children:a})})}a.s(["default",()=>c,"metadata",0,{title:"Zeo - Edge UI Shell",description:"Edge-first web UI with plugin-style Panel Host for Zeo"}])}];
+
+//# sourceMappingURL=apps_web_src_app_layout_tsx_a4dff4b0._.js.map
