@@ -1,7 +1,8 @@
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import type { DashboardPersona, DashboardViewModel } from "@zeo/contracts";
+import type { DashboardGraphNode, DashboardPersona, DashboardViewModel } from "@zeo/contracts";
+import { generateCtas } from "../cta.js";
 
 type AnyRecord = Record<string, unknown>;
 
@@ -38,6 +39,32 @@ function normalizeSeverity(severity: string): number {
   if (severity === "high") return 5;
   if (severity === "medium") return 3;
   return 1;
+}
+
+
+
+function deterministicNodeLayout(nodes: DashboardGraphNode[]): Record<string, { x: number; y: number }> {
+  const groups = { policy: [] as DashboardGraphNode[], evidence: [] as DashboardGraphNode[], assumption: [] as DashboardGraphNode[], outcome: [] as DashboardGraphNode[] };
+  let decision: DashboardGraphNode | null = null;
+  for (const node of [...nodes].sort((a, b) => a.id.localeCompare(b.id))) {
+    if (node.type === "decision") decision = node;
+    else if (node.type === "policy") groups.policy.push(node);
+    else if (node.type === "evidence") groups.evidence.push(node);
+    else if (node.type === "assumption") groups.assumption.push(node);
+    else if (node.type === "outcome") groups.outcome.push(node);
+  }
+
+  const positions: Record<string, { x: number; y: number }> = {};
+  const spread = (items: DashboardGraphNode[], x: number, yStart: number, yGap: number): void => {
+    for (let idx = 0; idx < items.length; idx += 1) positions[items[idx].id] = { x, y: yStart + idx * yGap };
+  };
+
+  if (decision) positions[decision.id] = { x: 0, y: 0 };
+  spread(groups.policy, 0, -180, 70);
+  spread(groups.evidence, -320, -160, 70);
+  spread(groups.assumption, 320, -160, 70);
+  spread(groups.outcome, 0, 120, 70);
+  return positions;
 }
 
 function confidenceBand(riskScore: number, evidenceCompleteness: number): "low" | "med" | "high" {
@@ -81,7 +108,7 @@ function fromAnalyzePrArtifact(id: string, persona: DashboardPersona): Dashboard
     .map((finding, idx) => ({
       id: `ev_${finding.id}`,
       qualityScore: Math.max(10, 100 - finding.severity * 12),
-      freshness: (idx < 4 ? "fresh" : idx < 8 ? "aging" : "stale") as const,
+      freshness: (idx < 4 ? "fresh" : idx < 8 ? "aging" : "stale") as "fresh" | "aging" | "stale",
       ageDays: idx * 6,
       expiresAt: idx > 8 ? "1970-01-01" : undefined,
     }))
@@ -92,7 +119,7 @@ function fromAnalyzePrArtifact(id: string, persona: DashboardPersona): Dashboard
   ]
     .map((idValue, idx) => ({
       id: idValue,
-      status: (idx === 0 && policyCompliance < 90 ? "fail" : idx < 2 ? "warn" : "pass") as const,
+      status: (idx === 0 && policyCompliance < 90 ? "fail" : idx < 2 ? "warn" : "pass") as "pass" | "warn" | "fail",
       severity: idx === 0 ? 5 : 3,
       rationaleRefs: [idValue],
     }))
@@ -107,7 +134,7 @@ function fromAnalyzePrArtifact(id: string, persona: DashboardPersona): Dashboard
 
   const driftEvents = sortedFindings.slice(0, 6).map((finding, idx) => ({
     t: `1970-01-0${Math.min(9, idx + 1)}T00:00:00.000Z`,
-    type: (finding.category === "security" ? "policy" : "evidence") as const,
+    type: (finding.category === "security" ? "policy" : "evidence") as "policy" | "evidence",
     severity: Math.min(5, Math.max(1, finding.severity)) as 1 | 2 | 3 | 4 | 5,
     refId: finding.id,
   })).sort((a, b) => b.severity - a.severity || a.refId.localeCompare(b.refId));
@@ -119,6 +146,36 @@ function fromAnalyzePrArtifact(id: string, persona: DashboardPersona): Dashboard
     to: finding.severity >= 5 ? "fail" : "warn",
     severity: Math.min(5, Math.max(1, finding.severity)) as 1 | 2 | 3 | 4 | 5,
   })).sort((a, b) => b.severity - a.severity || a.assumptionId.localeCompare(b.assumptionId));
+
+  const assumptionNodes = sortedFindings.slice(0, 8).map((finding, idx) => {
+    const state = idx % 5 === 0 ? "expired" : finding.severity >= 5 ? "volatile" : "stable";
+    return {
+      id: `assumption:asm_${finding.id}`,
+      type: "assumption" as const,
+      label: `Assumption ${finding.id}`,
+      severity: finding.severity,
+      meta: {
+        findingId: finding.id,
+        assumptionState: state,
+        flipCount: Math.max(1, Math.min(5, finding.severity)),
+        lastFlipAt: `1970-01-0${Math.min(9, idx + 1)}T00:00:00.000Z`,
+        severity: finding.severity,
+      },
+    };
+  });
+
+  const policyNodes = policies.map((policy) => ({ id: `policy:${policy.id}`, type: "policy" as const, label: policy.id, severity: policy.severity }));
+  const outcomeNode = { id: `outcome:${id}`, type: "outcome" as const, label: `Risk ${riskScore}/100`, severity: Math.max(1, Math.round(riskScore / 20)) };
+
+  const graphNodes = [
+    { id: `decision:${id}`, type: "decision" as const, label: id, severity: Math.round(riskScore / 20) },
+    ...sortedFindings.slice(0, 10).map((finding) => ({ id: `finding:${finding.id}`, type: "evidence" as const, label: finding.title, severity: finding.severity, meta: { file: finding.file ?? null, citations: finding.rationaleRefs } })),
+    ...policyNodes,
+    ...assumptionNodes,
+    outcomeNode,
+  ].sort((a, b) => a.id.localeCompare(b.id));
+
+  const positions = deterministicNodeLayout(graphNodes);
 
   const model: DashboardViewModel = {
     schemaVersion: "dashboard.viewmodel.v1",
@@ -149,26 +206,25 @@ function fromAnalyzePrArtifact(id: string, persona: DashboardPersona): Dashboard
     },
     trends: { riskTrajectory: trajectory, driftEvents, assumptionFlips },
     graph: {
-      nodes: [
-        { id: `decision:${id}`, type: "decision" as const, label: id, severity: Math.round(riskScore / 20) },
-        ...sortedFindings.slice(0, 10).map((finding) => ({ id: `finding:${finding.id}`, type: "evidence" as const, label: finding.title, severity: finding.severity })),
-      ].sort((a, b) => a.id.localeCompare(b.id)),
-      edges: sortedFindings
-        .slice(0, 10)
-        .map((finding) => ({ from: `finding:${finding.id}`, to: `decision:${id}`, type: finding.severity >= 5 ? "violates" as const : "supports" as const, weight: finding.severity / 5 }))
-        .sort((a, b) => a.from.localeCompare(b.from) || a.to.localeCompare(b.to)),
+      nodes: graphNodes.map((node) => ({ ...node, meta: { ...(("meta" in node && node.meta) ? node.meta : {}), position: positions[node.id] } })),
+      edges: [
+        ...sortedFindings
+          .slice(0, 10)
+          .map((finding) => ({ from: `finding:${finding.id}`, to: `decision:${id}`, type: finding.severity >= 5 ? "violates" as const : "supports" as const, weight: finding.severity / 5 })),
+        ...policyNodes.map((policy) => ({ from: policy.id, to: `decision:${id}`, type: "constrains" as const, weight: policy.severity / 5 })),
+        ...assumptionNodes.map((node) => ({ from: node.id, to: `decision:${id}`, type: "depends_on" as const, weight: (node.severity ?? 1) / 5 })),
+        { from: `decision:${id}`, to: outcomeNode.id, type: "supports" as const, weight: Math.max(0.2, 1 - riskScore / 120) },
+      ].sort((a, b) => a.from.localeCompare(b.from) || a.to.localeCompare(b.to)),
     },
     lists: {
       findings: sortedFindings,
       evidence,
       policies,
     },
-    ctas: [
-      { label: "Add missing evidence", command: `zeo add-note --decision ${id} --text "add provenance-backed evidence"`, reason: "Increase evidence completeness", priority: 1 },
-      { label: "Set review horizon", command: `zeo review weekly --decision ${id}`, reason: "Track sensitivity and drift", priority: 2 },
-      { label: "Export signed bundle", command: `zeo export bundle --decision ${id}`, reason: "Support audit and sharing", priority: 3 },
-    ],
+    ctas: [],
   };
+
+  model.ctas = generateCtas(model, persona);
 
   return model;
 }
@@ -179,6 +235,8 @@ export function generateDashboardViewModel(options: GenerateDashboardOptions): D
   if (!model) {
     throw new Error(`Dashboard source not found for id '${options.id}'. Expected .zeo/analyze-pr/${options.id}/ manifest + findings + summary artifacts.`);
   }
+
+  model.ctas = generateCtas(model, persona);
 
   return model;
 }
