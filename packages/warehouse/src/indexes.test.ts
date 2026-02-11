@@ -19,7 +19,7 @@ describe('Deterministic Indexes', () => {
 
   it('should tokenize text deterministically', () => {
     const tokens = tokenize('Hello World! This is a TEST.');
-    
+
     expect(tokens).toContain('hello');
     expect(tokens).toContain('world');
     expect(tokens).toContain('test');
@@ -241,6 +241,74 @@ describe('Deterministic Indexes', () => {
     expect(result.ids).toContain('test-1');
     expect(result.ids).not.toContain('test-2');
   });
+  describe('Semantic Search (V3)', () => {
+    it('should index with embeddings when provider is available', async () => {
+      const provider = {
+        embed: async (text: string) => [text.length, 0, 0], // Mock embedding based on length
+        enabled: true,
+      };
+
+      const envelope: WarehouseEnvelope<unknown> = {
+        id: 'sem-1',
+        kind: 'decision',
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        tenant: 'local',
+        hashes: { contentHash: 'abc' },
+        content: { description: 'A sufficiently long description to trigger embedding generation' },
+      };
+
+      await indexRecord(index, envelope, provider);
+
+      expect(index.embeddingIndex.has('sem-1')).toBe(true);
+      const vectors = index.embeddingIndex.get('sem-1');
+      expect(vectors).toBeDefined();
+      expect(vectors!.length).toBeGreaterThan(0);
+      expect(vectors![0]).toEqual([63, 0, 0]); // Length of description
+    });
+
+    it('should use vector similarity in query', async () => {
+      // Mock index with embeddings
+      index.version = 3;
+      index.embeddingIndex.set('doc-1', [[1, 0, 0]]); // Closest to query
+      index.embeddingIndex.set('doc-2', [[0, 1, 0]]); // Orthogonal
+      index.embeddingIndex.set('doc-3', [[-1, 0, 0]]); // Opposite
+
+      const queryVector = [1, 0, 0];
+
+      const result = queryUsingIndex(index, { vector: queryVector }, () => undefined);
+
+      expect(result.usedIndex).toBe(true);
+      expect(result.ids).toEqual(['doc-1']); // Only doc-1 has score > 0
+    });
+
+    it('should support deterministic chunking for long texts', async () => {
+      const provider = {
+        embed: async () => [1, 1, 1],
+        enabled: true
+      };
+
+      // Generate long text > 256 tokens (approx 1000 words)
+      const longText = new Array(1000).fill('word').join(' ');
+
+      const envelope: WarehouseEnvelope<unknown> = {
+        id: 'long-doc',
+        kind: 'decision',
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+        tenant: 'local',
+        hashes: { contentHash: 'abc' },
+        content: { text: longText }
+      };
+
+      await indexRecord(index, envelope, provider);
+
+      const chunks = index.embeddingIndex.get('long-doc');
+      expect(chunks).toBeDefined();
+      // 1000 words roughly 4 chunks of 256 tokens? 
+      expect(chunks!.length).toBeGreaterThan(1);
+    });
+  });
 });
 
 describe('Index Migration', () => {
@@ -248,7 +316,7 @@ describe('Index Migration', () => {
     // Create a minimal index structure and manually set version to 1
     const index = createEmptyIndex();
     (index as { version: number }).version = 1;
-    
+
     const serialized = serializeIndex(index);
     const restored = deserializeIndex(serialized);
 
