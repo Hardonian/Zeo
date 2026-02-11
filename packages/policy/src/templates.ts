@@ -1,4 +1,10 @@
-/**
+
+    const logger = { 
+        info: (...args: any[]) => console.log(...args), 
+        error: (...args: any[]) => console.error(...args),
+        warn: (...args: any[]) => console.warn(...args)
+    };
+    /**
  * Policy Engine Templates
  * 
  * Pre-built policy templates for common compliance standards:
@@ -297,7 +303,7 @@ export function validateRulePattern(
     const pattern = new RegExp(rule.pattern, 'gi');
     return pattern.test(code);
   } catch (error) {
-    console.error(
+    logger.error(
       {
         ruleId: rule.id,
         error: error instanceof Error ? error.message : 'Unknown error',

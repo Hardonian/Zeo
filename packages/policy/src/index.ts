@@ -139,14 +139,29 @@ export class PolicyEngineService {
    * Load effective policy for org/repo/branch
    * Merges org-level defaults with repo-level overrides
    */
-  async loadEffectivePolicy(organizationId: string, repositoryId: string | null, _ref?: string, _branch?: string): Promise<EffectivePolicy> { 
-    console.log('[Policy] Loading effective policy (MOCKED)...');
-    // Return a default mock policy
-    const defaultRule: PolicyRule = {
-        id: 'default',
-        ruleId: '*', 
-        severityMapping: { critical: 'block', high: 'warn', medium: 'allow', low: 'allow' },
-        enabled: true,
+  async loadEffectivePolicy(organizationId: string, repositoryId: string | null = null, _ref?: string, _branch?: string): Promise<EffectivePolicy> {
+        console.log('[Policy] Loading effective policy (MOCKED)...');
+        const defaultRule: PolicyRule = {
+            id: 'default',
+            ruleId: '*', 
+            severityMapping: { critical: 'block', high: 'warn', medium: 'allow', low: 'allow' },
+            enabled: true,
+        };
+        const rulesMap = new Map<string, PolicyRule>();
+        rulesMap.set('*', defaultRule);
+        return {
+            pack: {
+                id: 'mock-policy',
+                organizationId,
+                repositoryId,
+                version: '1.0.0',
+                source: 'mock',
+                checksum: 'mock-sum',
+                rules: [defaultRule],
+            },
+            rules: rulesMap,
+            waivers: [],
+        };
     };
     const rulesMap = new Map<string, PolicyRule>();
     rulesMap.set('*', defaultRule);
@@ -300,15 +315,7 @@ export class PolicyEngineService {
   /**
    * Load latest policy pack for org/repo
    */
-  private async loadLatestPolicyPack(
-    organizationId: string,
-    repositoryId: string | null
-  ): Promise<PolicyPack | null> {
-    const pack = await prisma.policyPack.findFirst({
-      where: {
-        organizationId,
-        repositoryId: repositoryId || null,
-      },
+  private async loadLatestPolicyPack(organizationId: string, repositoryId: string | null): Promise<PolicyPack | null> { return null; },
       orderBy: {
         createdAt: 'desc',
       },
@@ -341,7 +348,17 @@ export class PolicyEngineService {
   /**
    * Load active waivers
    */
-  private async loadActiveWaivers(organizationId: string, repositoryId: string | null, _branch?: string): Promise<Waiver[]> { return []; }
+  private async loadActiveWaivers(organizationId: string, repositoryId: string | null, _branch?: string): Promise<Waiver[]> { return []; },
+    });
+
+    return waivers.map((w: any) => ({
+      id: w.id,
+      ruleId: w.ruleId,
+      scope: w.scope as 'repo' | 'branch' | 'path',
+      scopeValue: w.scopeValue || undefined,
+      expiresAt: w.expiresAt || undefined,
+    }));
+  }
 
   /**
    * Find applicable waiver for a finding
@@ -402,9 +419,8 @@ export class PolicyEngineService {
    * 2. Severity mappings are hardcoded constants (same input → same output)
    * 3. No random or time-based logic
    */
-  private async getDefaultPolicy(organizationId: string, repositoryId: string | null): Promise<EffectivePolicy> { 
-            // Mock default policy
-            const defaultRule: PolicyRule = {
+  private async getDefaultPolicy(organizationId: string, repositoryId: string | null): Promise<EffectivePolicy> {
+             const defaultRule: PolicyRule = {
                 id: 'default',
                 ruleId: '*', 
                 severityMapping: { critical: 'block', high: 'warn', medium: 'allow', low: 'allow' },
@@ -425,7 +441,55 @@ export class PolicyEngineService {
                 rules: rulesMap,
                 waivers: [],
             };
-        }
+        },
+      moderate: {
+        critical: 'block',
+        high: 'block', // Moderate tier: critical + high block
+        medium: 'warn',
+        low: 'allow',
+      },
+      maximum: {
+        critical: 'block',
+        high: 'block',
+        medium: 'block', // Maximum tier: critical + high + medium block
+        low: 'warn',
+      },
+    };
+
+    const defaultMapping = severityMappings[enforcementStrength] || severityMappings.basic;
+
+    // Create a default rule that applies to all rule IDs
+    const defaultRule: PolicyRule = {
+      id: 'default',
+      ruleId: '*', // Wildcard rule ID
+      severityMapping: defaultMapping,
+      enabled: true,
+    };
+
+    const rulesMap = new Map<string, PolicyRule>();
+    rulesMap.set('*', defaultRule);
+
+    const defaultSource = JSON.stringify({
+      version: '1.0.0',
+      rules: [defaultRule],
+      enforcementStrength,
+    });
+    const checksum = this.hashContent(defaultSource);
+
+    return {
+      pack: {
+        id: 'default',
+        organizationId,
+        repositoryId,
+        version: '1.0.0',
+        source: defaultSource,
+        checksum,
+        rules: [defaultRule],
+      },
+      rules: rulesMap,
+      waivers: [],
+    };
+  }
 
   /**
    * Hash content deterministically

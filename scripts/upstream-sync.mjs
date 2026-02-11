@@ -115,63 +115,130 @@ if (fs.existsSync(policyIndex)) {
     const testDir = path.join('packages/policy/src/__tests__');
     if (fs.existsSync(testDir)) fs.rmSync(testDir, { recursive: true, force: true });
 
-    // 7. Patch other methods using prisma (Corrected Regex)
-    content = content.replace(
-        /private\s+async\s+loadLatestPolicyPack\s*\([\s\S]*?\)\s*:\s*Promise<PolicyPack\s*\\\|\s*null>\s*{[\s\S]*?return\s*{\s*id[\s\S]*?};\s*}/gm,
-        `private async loadLatestPolicyPack(organizationId: string, repositoryId: string | null): Promise<PolicyPack | null> { return null; }`
-    );
+    // 7. Overwrite PolicyEngineService class entirely
+    const classStart = content.indexOf('export class PolicyEngineService');
+    if (classStart !== -1) {
+        const preClass = content.substring(0, classStart);
+        const mockClass = `
+export class PolicyEngineService {
+  constructor() {
+    console.log('[Policy] Mock Service Initialized');
+  }
 
-    content = content.replace(
-        /private\s+async\s+loadActiveWaivers\s*\([\s\S]*?\)\s*:\s*Promise<Waiver\[\]>\s*{[\s\S]*?return\s*waivers[\s\S]*?;\s*}/gm,
-        `private async loadActiveWaivers(organizationId: string, repositoryId: string | null, _branch?: string): Promise<Waiver[]> { return []; }`
-    );
+  async loadEffectivePolicy(organizationId: string, repositoryId: string | null = null, _ref?: string, _branch?: string): Promise<EffectivePolicy> {
+      console.log('[Policy] Loading effective policy (MOCKED)...');
+      const defaultRule: PolicyRule = {
+          id: 'default',
+          ruleId: '*', 
+          severityMapping: { critical: 'block', high: 'warn', medium: 'allow', low: 'allow' },
+          enabled: true,
+      };
+      const rulesMap = new Map<string, PolicyRule>();
+      rulesMap.set('*', defaultRule);
+      return {
+          pack: {
+              id: 'mock-policy',
+              organizationId,
+              repositoryId,
+              version: '1.0.0',
+              source: 'mock',
+              checksum: 'mock-sum',
+              rules: [defaultRule],
+          },
+          rules: rulesMap,
+          waivers: [],
+      };
+  }
 
-    content = content.replace(
-        /private\s+async\s+getDefaultPolicy\s*\([\s\S]*?\)\s*:\s*Promise<EffectivePolicy>\s*{[\s\S]*?return\s*{\s*pack[\s\S]*?};\s*}/gm,
-        `private async getDefaultPolicy(organizationId: string, repositoryId: string | null): Promise<EffectivePolicy> { 
-            // Mock default policy
-            const defaultRule: PolicyRule = {
-                id: 'default',
-                ruleId: '*', 
-                severityMapping: { critical: 'block', high: 'warn', medium: 'allow', low: 'allow' },
-                enabled: true,
-            };
-            const rulesMap = new Map<string, PolicyRule>();
-            rulesMap.set('*', defaultRule);
-            return {
-                pack: {
-                    id: 'default',
-                    organizationId,
-                    repositoryId,
-                    version: '1.0.0',
-                    source: 'mock',
-                    checksum: 'mock-sum',
-                    rules: [defaultRule],
-                },
-                rules: rulesMap,
-                waivers: [],
-            };
-        }`
-    );
+  evaluate(findings: Issue[], policy: EffectivePolicy): EvaluationResult {
+    // Simple mock evaluation
+    const blocked = findings.some(f => f.severity === 'critical');
+    return {
+        blocked,
+        score: blocked ? 0 : 100,
+        rulesFired: [],
+        waivedFindings: [],
+        nonWaivedFindings: findings,
+        blockingReason: blocked ? 'Critical issues found' : undefined
+    };
+  }
 
-    fs.writeFileSync(policyIndex, content);
-    console.log('Patched packages/policy/src/index.ts for Mock Mode (Aggressive)');
+  async produceEvidence(
+    inputs: EvidenceInputs,
+    outputs: EvidenceOutputs,
+    policy: EffectivePolicy,
+    timings?: Record<string, number>
+  ): Promise<EvidenceBundle> {
+      console.log('[Policy] Producing evidence (MOCKED)...');
+      return {
+          id: 'mock-bundle-' + Date.now(),
+          inputsMetadata: inputs,
+          rulesFired: outputs.evaluationResult.rulesFired,
+          deterministicScore: outputs.evaluationResult.score,
+          policyChecksum: policy.pack.checksum,
+          createdAt: new Date(),
+      } as any;
+  }
 }
 
-// Patch inheritance.ts to remove observability imports and usage
+export const policyEngineService = new PolicyEngineService();
+`;
+        content = preClass + mockClass;
+    }
+
+    fs.writeFileSync(policyIndex, content);
+    console.log('Patched packages/policy/src/index.ts for Mock Mode (Aggressive Replacement)');
+}
+
+// Patch inheritance.ts
 const inheritancePath = path.join('packages/policy/src', 'inheritance.ts');
 if (fs.existsSync(inheritancePath)) {
     let content = fs.readFileSync(inheritancePath, 'utf8');
-    // Remove imports
+
+    // 1. Remove Imports
     content = content.replace(/import\s+.*\s+from\s*['"]@\/observability.*['"];?/g, '');
 
-    // Inject mock metrics at top
-    content = `const metrics = { increment: (...args: any[]) => {} };\n` + content;
+    // 2. Overwrite Class
+    const classStart = content.indexOf('export class PolicyInheritanceService');
+    if (classStart !== -1) {
+        const preClass = content.substring(0, classStart);
+        const mockClass = `
+export class PolicyInheritanceService {
+  private static instance: PolicyInheritanceService;
+  private constructor() {}
+  static getInstance(): PolicyInheritanceService {
+    if (!PolicyInheritanceService.instance) PolicyInheritanceService.instance = new PolicyInheritanceService();
+    return PolicyInheritanceService.instance;
+  }
 
-    // Replace logger with console
-    content = content.replace(/logger\./g, 'console.');
+  async resolvePolicy(organizationId: string, teamId?: string, repositoryId?: string): Promise<InheritedPolicy> {
+      return {
+        id: 'mock-inherited',
+        name: 'Mock Policy',
+        source: 'organization',
+        rules: [],
+        overrides: new Map()
+      };
+  }
+
+  async overrideRule(ruleId: string, level: 'team' | 'repository', enabled: boolean): Promise<void> {}
+  
+  async validateCompliance(_code: string, policy: InheritedPolicy): Promise<Array<{ ruleId: string; severity: string; message: string }>> {
+      return [];
+  }
+  
+  async suggestImprovements(_organizationId: string, _currentPolicy: InheritedPolicy): Promise<Array<{ suggestion: string; impact: string }>> {
+      return [];
+  }
+}
+
+export const policyInheritanceService = PolicyInheritanceService.getInstance();
+`;
+        content = preClass + mockClass;
+    }
 
     fs.writeFileSync(inheritancePath, content);
+    console.log('Patched packages/policy/src/inheritance.ts for Mock Mode (Aggressive Replacement)');
 }
 
 // Patch templates.ts
@@ -179,7 +246,17 @@ const templatesPath = path.join('packages/policy/src', 'templates.ts');
 if (fs.existsSync(templatesPath)) {
     let content = fs.readFileSync(templatesPath, 'utf8');
     content = content.replace(/import\s+.*\s+from\s*['"]@\/observability.*['"];?/g, '');
-    content = content.replace(/logger\./g, 'console.');
+
+    // Just mock the logger at top
+    const mocks = `
+    const logger = { 
+        info: (...args: any[]) => console.log(...args), 
+        error: (...args: any[]) => console.error(...args),
+        warn: (...args: any[]) => console.warn(...args)
+    };
+    `;
+    content = mocks + content;
+
     fs.writeFileSync(templatesPath, content);
 }
 

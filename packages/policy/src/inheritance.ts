@@ -1,5 +1,11 @@
-const metrics = { increment: (...args: any[]) => {} };
-/**
+
+    const metrics = { increment: (...args: any[]) => {} };
+    const logger = { 
+        info: (...args: any[]) => console.log(...args), 
+        error: (...args: any[]) => console.error(...args),
+        warn: (...args: any[]) => console.warn(...args)
+    };
+    /**
  * Policy Inheritance System
  * 
  * Manages policy inheritance from organization to repository level
@@ -58,7 +64,7 @@ export class PolicyInheritanceService {
     repositoryId?: string
   ): Promise<InheritedPolicy> {
     try {
-      console.info(
+      logger.info(
         {
           organizationId,
           teamId,
@@ -77,7 +83,7 @@ export class PolicyInheritanceService {
 
       const inherited = this.mergePolicy(orgPolicy, teamPolicy, repoPolicy);
 
-      console.info(
+      logger.info(
         {
           policyId: inherited.id,
           ruleCount: inherited.rules.length,
@@ -91,7 +97,7 @@ export class PolicyInheritanceService {
 
       return inherited;
     } catch (error) {
-      console.error(
+      logger.error(
         {
           organizationId,
           error: error instanceof Error ? error.message : 'Unknown error',
@@ -221,7 +227,7 @@ export class PolicyInheritanceService {
     level: 'team' | 'repository',
     enabled: boolean
   ): Promise<void> {
-    console.info(
+    logger.info(
       {
         ruleId,
         level,
