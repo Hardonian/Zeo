@@ -1,0 +1,9 @@
+
+> @zeo/db@1.0.0 db:generate C:\Users\scott\Documents\GitHub\Zeo\packages\db
+> prisma generate
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+C:\Users\scott\Documents\GitHub\Zeo\packages\db:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @zeo/db@1.0.0 db:generate: `prisma generate`
+Exit status 1
