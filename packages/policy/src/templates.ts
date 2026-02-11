@@ -297,7 +297,7 @@ export function validateRulePattern(
     const pattern = new RegExp(rule.pattern, 'gi');
     return pattern.test(code);
   } catch (error) {
-    logger.error(
+    console.error(
       {
         ruleId: rule.id,
         error: error instanceof Error ? error.message : 'Unknown error',

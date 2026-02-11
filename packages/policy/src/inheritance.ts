@@ -57,7 +57,7 @@ export class PolicyInheritanceService {
     repositoryId?: string
   ): Promise<InheritedPolicy> {
     try {
-      logger.info(
+      console.info(
         {
           organizationId,
           teamId,
@@ -76,7 +76,7 @@ export class PolicyInheritanceService {
 
       const inherited = this.mergePolicy(orgPolicy, teamPolicy, repoPolicy);
 
-      logger.info(
+      console.info(
         {
           policyId: inherited.id,
           ruleCount: inherited.rules.length,
@@ -84,13 +84,13 @@ export class PolicyInheritanceService {
         'Policy inheritance resolved'
       );
 
-      metrics.increment('policy_inheritance_resolved', {
+      // metrics.increment('policy_inheritance_resolved', {
         level: inherited.source,
       });
 
       return inherited;
     } catch (error) {
-      logger.error(
+      console.error(
         {
           organizationId,
           error: error instanceof Error ? error.message : 'Unknown error',
@@ -220,7 +220,7 @@ export class PolicyInheritanceService {
     level: 'team' | 'repository',
     enabled: boolean
   ): Promise<void> {
-    logger.info(
+    console.info(
       {
         ruleId,
         level,
@@ -229,7 +229,7 @@ export class PolicyInheritanceService {
       'Overriding policy rule'
     );
 
-    metrics.increment('policy_rule_override', {
+    // metrics.increment('policy_rule_override', {
       level,
       action: enabled ? 'enable' : 'disable',
     });
