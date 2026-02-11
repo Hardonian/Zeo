@@ -1,0 +1,6 @@
+{
+  "schemaVersion": "2.0.0",
+  "expected_categories": ["security"],
+  "expected_top_domains": ["ENG", "SEC"],
+  "notes": "Auth/session change with secret-like token should trigger security review"
+}

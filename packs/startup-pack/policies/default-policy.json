@@ -1,0 +1,8 @@
+{
+  "id": "startup-default-policy",
+  "version": "1.0.0",
+  "rules": [
+    "Require confidence range for major assumptions",
+    "Document sensitivity for growth and burn assumptions"
+  ]
+}

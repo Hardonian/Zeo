@@ -38,7 +38,8 @@
     "cli:perf": "node scripts/cli-perf.mjs",
     "mcp:smoke": "node scripts/mcp-smoke.mjs",
     "fixtures:coverage": "node scripts/fixture-coverage.mjs",
-    "perf:budget": "node scripts/perf-budget.mjs"
+    "perf:budget": "node scripts/perf-budget.mjs",
+    "validate:ecosystem": "node scripts/validate-ecosystem.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",

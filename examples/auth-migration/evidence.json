@@ -1,0 +1,9 @@
+{
+  "items": [
+    {
+      "id": "ev-1",
+      "summary": "Evidence snapshot",
+      "provenance": {"source":"examples","pointer":"evidence.json#items[0]","checksum":"sha256:fixed"}
+    }
+  ]
+}

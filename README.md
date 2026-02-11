@@ -1,6 +1,6 @@
 # Zeo
 
-**Decision intelligence under uncertainty.**
+**Deterministic decision intelligence with replayable evidence.**
 
 Zeo helps responsible decision‑makers reason several steps ahead when outcomes branch, information is incomplete, and human cognition runs out of capacity.
 
@@ -11,6 +11,27 @@ It exposes **plausible futures**, **probability ranges**, and **second‑ and th
 
 ## Product in one line
 **See which decisions remain good even if you’re wrong.**
+
+
+## 60-second try now
+```bash
+zeo analyze-pr examples/analyze-pr-auth/diff.patch --policy packs/security-review-pack/pack.json --explain
+```
+
+Zeo returns an **Accountability summary** with deterministic findings, policy triggers, and replay hash.
+
+## Why teams adopt Zeo quickly
+- **Deterministic by default**: stable ordering, stable scoring, replayable artifacts
+- **Policy-bound**: pack-aware triggers and enforceable gates
+- **Replayable**: every run stores hashes, fingerprints, and a run identifier
+
+## How Zeo differs from terminal agents
+| Dimension | Typical terminal agent | Zeo |
+|---|---|---|
+| Primary optimization | Fast output generation | Accountable decisions with provenance |
+| Determinism default | Often model-dependent | Deterministic analyzers first |
+| Replay/audit | Optional logs | First-class run artifacts + hashes |
+| Policy handling | Prompt conventions | Explicit policy packs and trigger surface |
 
 ---
 
@@ -131,6 +152,14 @@ Use `flip distance` in the result card.
 - `zeo transcript sign <transcript.json> --key <pem> --out <envelope.json>`
 - `zeo transcript verify <envelope.json> --keyring <dir>`
 - `zeo share --decision <id> --envelope <envelope.json>`
+
+### PR triage, packs, plugins, and examples
+- Start here: `zeo analyze-pr <path|git-range|diff-file> --policy <packId|path> --explain`
+- Replay artifacts by run id: `zeo replay <run_id|dataset|example>`
+- Inspect plugin extension health: `zeo plugins list` and `zeo plugins doctor`
+- Discover and apply policy packs: `zeo pack list`, `zeo pack apply <pack>`, `zeo pack export`
+- Initialize a new pack scaffold: `zeo init pack <name>`
+- Replay built-in examples instantly: `zeo replay examples/startup-scaling`
 
 ### Bring your own agent
 - Connect through MCP tools only (`zeo mcp serve` / `zeo mcp tools`).
@@ -554,3 +583,8 @@ MIT License - see `LICENSE` file.
 ## Security
 
 For vulnerability reporting, see `SECURITY.md`. Do not open public issues for security concerns.
+
+
+## Community
+- `community/awesome-zeo.md` tracks community packs, plugins, and examples.
+- Submit additions via pull request with deterministic output evidence.

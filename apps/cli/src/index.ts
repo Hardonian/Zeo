@@ -24,9 +24,15 @@ function printHelp(): void {
   console.log(`
 Zeo CLI - Epistemic Decision Engine v${getCliVersion()}
 
+Deterministic decision intelligence with replayable evidence.
+Start here: zeo analyze-pr <path|git-range|diff-file>
+Replay: zeo replay <run_id|dataset|example>
+
 Usage: zeo [options]
 
 Commands:
+  help <start|examples>      Guided quickstart and examples
+  examples                   Alias for help examples
   start                      Start guided decision workspace
   add-note                   Add plain-language note as evidence proposal
   run                        Run deterministic analysis and print result card
@@ -34,6 +40,12 @@ Commands:
   share                      Export compact share summary
   copy                       Print clipboard-friendly share block
   export <md|ics|bundle>     Offline export commands
+  export decision <id>       Portable decision bundle export
+  verify <bundle|decision>   Verify exported bundle hashes/proofs
+  decision-health <id>       Decision health snapshot
+  drift-report               Drift events report
+  roi-report                 Team ROI report by window
+  evidence <cmd>             Evidence expiry commands
   quests                     Show evidence tasks as checkboxes
   done <taskId>              Mark checklist task as complete
   streaks                    Show epistemic streak metrics
@@ -54,6 +66,11 @@ Commands:
   ingest                      Ingest from all enabled adapters
   eval                        Run epistemic evaluation suite
   pack                        Zeo pack commands
+  analyze-pr <target>         Accountability summary for pull-request risk
+  plugins <cmd>               Plugin extension commands (list/doctor)
+  replay <dataset|example>    Run replay from explicit path or examples/<name>
+  init pack <name>            Initialize a policy pack template
+  init analyzer <name>        Initialize analyzer plugin template
   doctor                      Environment diagnostics
   perf                        Performance commands
   cache <list|prune|gc>       Deterministic cache commands
@@ -288,6 +305,43 @@ async function main(): Promise<void> {
     process.exit(await mod.runPackCommand(mod.parsePackArgs(argv.slice(1))));
   }
 
+  if (argv[0] === "analyze-pr") {
+    const mod = await import("./analyze-pr-cli.js");
+    process.exit(await mod.runAnalyzePrCommand(argv.slice(1)));
+  }
+
+  if (argv[0] === "plugins") {
+    const mod = await import("./plugins-cli.js");
+    process.exit(await mod.runPluginsCommand(mod.parsePluginsArgs(argv.slice(1))));
+  }
+
+  if (argv[0] === "init" && argv[1] === "pack") {
+    const mod = await import("./pack-cli.js");
+    process.exit(await mod.runPackCommand({ command: "init", value: argv[2], spec: undefined, out: undefined }));
+  }
+
+  if (argv[0] === "init" && argv[1] === "analyzer") {
+    const mod = await import("./plugins-cli.js");
+    process.exit(await mod.runPluginsCommand({ command: "init-analyzer", name: argv[2] }));
+  }
+
+  if (argv[0] === "replay") {
+    const requested = argv[1];
+    if (!requested) {
+      console.error("Usage: zeo replay <run_id|path|examples/<name>> [--report-out <dir>] [--case <id>]");
+      process.exit(1);
+    }
+    const analyzeManifest = join(process.cwd(), ".zeo", "analyze-pr", requested, "manifest.json");
+    if (existsSync(analyzeManifest)) {
+      const mod = await import("./analyze-pr-cli.js");
+      process.exit(mod.runAnalyzePrReplay(requested));
+    }
+    const mod = await import("./replay-cli.js");
+    const replayPath = requested.startsWith("examples/") ? join(process.cwd(), requested, "replay.json") : requested;
+    const parsed = mod.parseReplayArgs(["--replay", replayPath, ...argv.slice(2)]);
+    process.exit(await mod.runReplayCommand(parsed));
+  }
+
   if (argv[0] === "doctor") {
     const mod = await import("./doctor-cli.js");
     process.exit(await mod.runDoctorCommand(mod.parseDoctorArgs(argv.slice(1))));
@@ -303,7 +357,7 @@ async function main(): Promise<void> {
     process.exit(await mod.runAgentsCommand(mod.parseAgentsArgs(argv.slice(1))));
   }
 
-  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "view", "review", "explain", "summary"].includes(argv[0] ?? "")) {
+  if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "view", "review", "explain", "summary", "decision-health", "drift-report", "roi-report", "verify", "evidence", "help", "examples"].includes(argv[0] ?? "")) {
     const mod = await import("./workflow-cli.js");
     process.exit(await mod.runWorkflowCommand(mod.parseWorkflowArgs(argv)));
   }
