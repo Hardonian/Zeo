@@ -1,16 +1,11 @@
-/**
- * Policy Engine Service
- * 
- * Deterministic Policy-as-Code evaluation layer
- * Governs Review Guard / Test Engine / Doc Sync decisions
- */
-
-
-// import { prisma } from "../../lib/prisma";
 import { createHash } from 'crypto';
 import { Issue } from "@zeo/analysis";
-import { getContractVersionHash } from "@zeo/core";
+import { getContractVersionHash, type StorageProvider } from "@zeo/core";
+import { trace, context } from "@opentelemetry/api";
+
 export { Issue };
+
+const tracer = trace.getTracer('zeo-policy-engine');
 
 export interface PolicyPack {
   id: string;
@@ -50,7 +45,7 @@ export interface Waiver {
 
 export interface EvaluationResult {
   blocked: boolean;
-  score: number; // 0-100 deterministic score
+  score: number;
   rulesFired: string[];
   waivedFindings: Issue[];
   nonWaivedFindings: Issue[];
@@ -69,6 +64,7 @@ export interface EvidenceInputs {
 export interface EvidenceOutputs {
   findings: Issue[];
   evaluationResult: EvaluationResult;
+  artifacts?: Record<string, string>;
   [key: string]: unknown;
 }
 
@@ -88,115 +84,190 @@ export interface EvidenceBundle {
   createdAt: Date;
 }
 
-export interface EvidenceExport {
-  schemaVersion: string;
-  evidenceBundle: EvidenceBundle;
-  policy: {
-    checksum: string;
-    version: string;
-    rules: PolicyRule[];
-  };
-  inputs: EvidenceInputs;
-  outputs: EvidenceOutputs;
-  timestamps: {
-    createdAt: string;
-    evaluatedAt: string;
-  };
-}
-
 /**
  * Policy Engine Service
- * 
  * Provides Policy-as-Code evaluation with deterministic behavior.
- * Loads policy packs (org-level or repo-level), applies waivers, and evaluates findings.
- * 
- * Key Features:
- * - Deterministic evaluation (same inputs → same outputs)
- * - Policy pack versioning with checksums
- * - Waiver support (temporary exceptions)
- * - Evidence bundle creation (audit trail)
- * - Tier-aware default policies
- * 
- * **Deterministic Behavior:**
- * - Same policy pack → same evaluation result
- * - Same findings → same blocking decision (policy-driven)
- * - Default policies are deterministic (hardcoded mappings)
- * 
- * @example
- * ```typescript
- * const policy = await policyEngineService.loadEffectivePolicy(
- *   organizationId,
- *   repositoryId,
- *   commitSha,
- *   branchName
- * );
- * 
- * const result = policyEngineService.evaluate(findings, policy);
- * if (result.blocked) {
- *   console.log('PR blocked:', result.blockingReason);
- * }
- * ```
  */
-
 export class PolicyEngineService {
-  constructor() {
-    console.log('[Policy] Mock Service Initialized');
+  private storage?: StorageProvider;
+
+  constructor(storage?: StorageProvider) {
+    this.storage = storage;
   }
 
-  async loadEffectivePolicy(organizationId: string, repositoryId: string | null = null, _ref?: string, _branch?: string): Promise<EffectivePolicy> {
-    console.log('[Policy] Loading effective policy (MOCKED)...');
-    const defaultRule: PolicyRule = {
-      id: 'default',
-      ruleId: '*',
-      severityMapping: { critical: 'block', high: 'warn', medium: 'allow', low: 'allow' },
-      enabled: true,
-    };
-    const rulesMap = new Map<string, PolicyRule>();
-    rulesMap.set('*', defaultRule);
-    return {
-      pack: {
-        id: 'mock-policy',
-        organizationId,
-        repositoryId,
-        version: '1.0.0',
-        source: 'mock',
-        checksum: 'mock-sum',
-        rules: [defaultRule],
-      },
-      rules: rulesMap,
-      waivers: [],
-    };
+  setStorage(storage: StorageProvider) {
+    this.storage = storage;
+  }
+
+  async loadEffectivePolicy(
+    organizationId: string,
+    repositoryId: string | null = null,
+    _ref?: string,
+    _branch?: string
+  ): Promise<EffectivePolicy> {
+    return tracer.startActiveSpan('loadEffectivePolicy', async (span) => {
+      span.setAttribute('orgId', organizationId);
+      if (repositoryId) span.setAttribute('repoId', repositoryId);
+
+      if (!this.storage) {
+        return this.getDefaultPolicy(organizationId, repositoryId);
+      }
+
+      try {
+        const repoPolicyPack = repositoryId ? await this.storage.loadLatestPolicyPack(organizationId, repositoryId) : null;
+        const orgPolicyPack = await this.storage.loadLatestPolicyPack(organizationId, null);
+        const activePack = repoPolicyPack || orgPolicyPack;
+
+        if (!activePack) {
+          return this.getDefaultPolicy(organizationId, repositoryId);
+        }
+
+        const waivers = await this.storage.loadActiveWaivers(organizationId, repositoryId);
+        const rulesMap = new Map<string, PolicyRule>();
+        for (const rule of activePack.rules) {
+          if (rule.enabled) rulesMap.set(rule.ruleId, rule);
+        }
+
+        return { pack: activePack, rules: rulesMap, waivers };
+      } catch (error) {
+        span.recordException(error as Error);
+        return this.getDefaultPolicy(organizationId, repositoryId);
+      } finally {
+        span.end();
+      }
+    });
   }
 
   evaluate(findings: Issue[], policy: EffectivePolicy): EvaluationResult {
-    // Simple mock evaluation
-    const blocked = findings.some(f => f.severity === 'critical');
-    return {
-      blocked,
-      score: blocked ? 0 : 100,
-      rulesFired: [],
-      waivedFindings: [],
-      nonWaivedFindings: findings,
-      blockingReason: blocked ? 'Critical issues found' : undefined
-    };
+    return tracer.startActiveSpan('evaluate', (span) => {
+      span.setAttribute('findingsCount', findings.length);
+
+      const waivedFindings: Issue[] = [];
+      const nonWaivedFindings: Issue[] = [];
+      const rulesFired = new Set<string>();
+
+      for (const finding of findings) {
+        const waiver = this.findApplicableWaiver(finding, policy.waivers);
+        if (waiver) {
+          waivedFindings.push(finding);
+        } else {
+          nonWaivedFindings.push(finding);
+          rulesFired.add(finding.ruleId);
+        }
+      }
+
+      let blocked = false;
+      let blockingReason: string | undefined;
+      let totalScore = 100;
+
+      for (const finding of nonWaivedFindings) {
+        const rule = policy.rules.get(finding.ruleId) || policy.rules.get('*');
+        const action = rule?.severityMapping[finding.severity] || this.getDefaultActionSync(finding.severity);
+
+        if (action === 'block') {
+          blocked = true;
+          if (!blockingReason) {
+            blockingReason = `${finding.severity} issue: ${finding.ruleId} in ${finding.file}`;
+          }
+        }
+
+        const penalty = { critical: 20, high: 10, medium: 5, low: 2 }[finding.severity] || 0;
+        totalScore -= penalty;
+      }
+
+      const result = {
+        blocked,
+        score: Math.max(0, totalScore),
+        rulesFired: Array.from(rulesFired),
+        waivedFindings,
+        nonWaivedFindings,
+        blockingReason,
+      };
+
+      span.setAttribute('blocked', result.blocked);
+      span.setAttribute('score', result.score);
+      span.end();
+      return result;
+    });
   }
 
   async produceEvidence(
     inputs: EvidenceInputs,
     outputs: EvidenceOutputs,
     policy: EffectivePolicy,
-    timings?: Record<string, number>
+    timings?: Record<string, number>,
+    resourceId?: { reviewId?: string; testId?: string; docId?: string }
   ): Promise<EvidenceBundle> {
-    console.log('[Policy] Producing evidence (MOCKED)...');
+    return tracer.startActiveSpan('produceEvidence', async (span) => {
+      const bundleData = {
+        reviewId: resourceId?.reviewId,
+        testId: resourceId?.testId,
+        docId: resourceId?.docId,
+        inputsMetadata: inputs,
+        rulesFired: outputs.evaluationResult.rulesFired,
+        deterministicScore: outputs.evaluationResult.score,
+        artifacts: outputs.artifacts,
+        policyChecksum: policy.pack.checksum,
+        contractVersionHash: getContractVersionHash(),
+        toolVersions: { policyEngine: '1.0.0' },
+        timings,
+      };
+
+      if (!this.storage) {
+        span.end();
+        return {
+          id: 'temp-' + Date.now(),
+          ...bundleData,
+          createdAt: new Date(),
+        };
+      }
+
+      try {
+        const bundle = await this.storage.storeEvidenceBundle(bundleData);
+        span.setAttribute('bundleId', bundle.id);
+        return bundle;
+      } catch (error) {
+        span.recordException(error as Error);
+        throw error;
+      } finally {
+        span.end();
+      }
+    });
+  }
+
+  private findApplicableWaiver(finding: Issue, waivers: Waiver[]): Waiver | null {
+    return waivers.find(w => w.ruleId === finding.ruleId) || null;
+  }
+
+  private getDefaultActionSync(severity: string): 'block' | 'warn' | 'allow' {
+    return ({ critical: 'block', high: 'block', medium: 'warn', low: 'allow' } as any)[severity] || 'warn';
+  }
+
+  private async getDefaultPolicy(organizationId: string, repositoryId: string | null): Promise<EffectivePolicy> {
+    const strength = this.storage ? await this.storage.getEnforcementStrength(organizationId) : 'basic';
+    const mappings = {
+      basic: { critical: 'block', high: 'warn', medium: 'allow', low: 'allow' },
+      moderate: { critical: 'block', high: 'block', medium: 'warn', low: 'allow' },
+      maximum: { critical: 'block', high: 'block', medium: 'block', low: 'warn' },
+    }[strength as 'basic' | 'moderate' | 'maximum'];
+
+    const defaultRule: PolicyRule = { id: 'default', ruleId: '*', severityMapping: mappings, enabled: true };
+    const rulesMap = new Map();
+    rulesMap.set('*', defaultRule);
+
     return {
-      id: 'mock-bundle-' + Date.now(),
-      inputsMetadata: inputs,
-      rulesFired: outputs.evaluationResult.rulesFired,
-      deterministicScore: outputs.evaluationResult.score,
-      policyChecksum: policy.pack.checksum,
-      contractVersionHash: getContractVersionHash(),
-      createdAt: new Date(),
-    } as any;
+      pack: {
+        id: 'default',
+        organizationId,
+        repositoryId,
+        version: '1.0.0',
+        source: 'default',
+        checksum: 'default-sum',
+        rules: [defaultRule],
+      },
+      rules: rulesMap,
+      waivers: [],
+    };
   }
 }
 
