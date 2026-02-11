@@ -80,3 +80,4 @@ export * from "./storage-provider.js";
 export * from "./storage/prisma.js";
 export * from "./storage/sqlite.js";
 export * from "./evidence-signing.js";
+export * from "./github-auth.js";
