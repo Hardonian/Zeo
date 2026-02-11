@@ -1,0 +1,14 @@
+
+> @zeo/web@1.0.0 typecheck C:\Users\scott\Documents\GitHub\Zeo\apps\web
+> tsc --noEmit
+
+src/app/api/evidence/v1/runs/[runId]/attestation/route.ts(10,38): error TS2339: Property 'evidenceAttestation' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/app/api/evidence/v1/runs/[runId]/export/route.ts(12,35): error TS2339: Property 'evidenceObject' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/app/api/evidence/v1/runs/[runId]/export/route.ts(32,46): error TS2339: Property 'evidenceAttestation' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/app/api/policy-packs/v1/assign/route.ts(7,37): error TS2339: Property 'policyPackAssignment' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/app/api/policy-packs/v1/assign/route.ts(24,38): error TS2339: Property 'policyPackAssignment' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/app/api/policy-packs/v1/route.ts(6,32): error TS2339: Property 'policyPack' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/app/api/policy-packs/v1/route.ts(18,35): error TS2339: Property 'policyPack' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+C:\Users\scott\Documents\GitHub\Zeo\apps\web:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @zeo/web@1.0.0 typecheck: `tsc --noEmit`
+Exit status 1
