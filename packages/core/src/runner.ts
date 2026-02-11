@@ -1,3 +1,4 @@
+import { generateId } from "@zeo/id";
 
 /**
  * Zeo Runner
@@ -23,6 +24,10 @@ import {
 } from "./kpi-integration.js";
 import { cacheKey } from "./hashing.js";
 import { globalCache } from "./cache-layer.js";
+import { type EvidenceStorage } from "./evidence-storage.js";
+import { buildReproPackZip, buildReproPackContents } from "@zeo/repro-pack";
+import { computeManifestHash, computeTreeHash, EvidenceFile, sha256 } from "./evidence-attestation.js";
+
 
 /**
  * Configuration for the Zeo Runner
@@ -38,7 +43,13 @@ export interface ZeoRunnerConfig {
      * Configuration for KPI integration
      */
     kpiConfig?: Partial<KpiIntegrationConfig>;
+
+    /**
+     * Evidence Storage (optional)
+     */
+    evidenceStorage?: EvidenceStorage;
 }
+
 
 const DEFAULT_RUNNER_CONFIG: ZeoRunnerConfig = {
     enforceTrust: true,
@@ -51,14 +62,17 @@ export class ZeoRunner {
     private kpiIntegration: KpiIntegration;
     private trustContext: TrustContext;
     private config: ZeoRunnerConfig;
+    private evidenceStorage?: EvidenceStorage;
 
     constructor(
         trustContext: TrustContext,
         storage?: KpiWarehouseStorage,
-        config: Partial<ZeoRunnerConfig> = {}
+        config: Partial<ZeoRunnerConfig> = {},
+        evidenceStorage?: EvidenceStorage
     ) {
         this.trustContext = trustContext;
         this.config = { ...DEFAULT_RUNNER_CONFIG, ...config };
+        this.evidenceStorage = evidenceStorage || config.evidenceStorage;
 
         this.kpiIntegration = createKpiIntegration(this.config.kpiConfig);
 
@@ -86,6 +100,9 @@ export class ZeoRunner {
             // This will throw if conset is not granted
             enforceTrustBoundary(operation, this.trustContext);
         }
+
+        // retrieval hook: context augmentation (RAG)
+        // const context = retrieveRelevantEvidence(...)
 
         // 2. Engine Execution (with Caching)
         // Generate deterministic cache key
@@ -144,6 +161,71 @@ export class ZeoRunner {
             }
         }
 
+        // 4. Evidence Attestation
+        if (this.evidenceStorage && result.status === "completed") {
+            try {
+                const runId = generateId();
+                const runDataValues: any = { // Construct RunData
+                    inputs: { decisionSpec: spec },
+                    assumptions: result.assumptions || [],
+                    uncertaintyMap: result.uncertaintyMap || {},
+                    artifacts: {
+                        flipDistance: result.explanation?.whatWouldChange || [],
+                        voiRankings: result.nextBestEvidence || [],
+                        evidencePlan: []
+                    },
+                    outputs: {
+                        evaluations: result.evaluations,
+                        explanation: result.explanation
+                    },
+                    events: [],
+                    budget: result.budget as any,
+                    usage: result.usage as any
+                };
+
+                const reproParams = {
+                    runId,
+                    tenantId: this.trustContext.organizationId || "default-org",
+                    actor: this.trustContext.userId,
+                    requestId: generateId()
+                };
+
+                const contents = buildReproPackContents(reproParams, runDataValues);
+                const zipBytes = buildReproPackZip(contents);
+                const zipBuffer = Buffer.from(zipBytes);
+
+                const bundleHash = sha256(zipBuffer);
+                const treeHash = bundleHash;
+
+                const manifest = {
+                    schemaVersion: 1,
+                    createdAt: new Date().toISOString(),
+                    organizationId: this.trustContext.organizationId || "default-org",
+                    repositoryId: this.trustContext.repositoryId || "default-repo",
+                    runId: runId,
+                    files: [{ path: "bundle.zip", sha256: bundleHash, size: zipBuffer.length }]
+                };
+
+                const manifestHash = computeManifestHash(manifest);
+
+                await this.evidenceStorage.storeEvidence(
+                    manifest.runId,
+                    manifest.organizationId,
+                    manifest.repositoryId,
+                    zipBuffer,
+                    manifest,
+                    {
+                        manifestHash,
+                        bundleHash,
+                        treeHash,
+                        signingMode: "none"
+                    }
+                );
+            } catch (error) {
+                console.warn("Failed to generate/store evidence attestation:", error);
+            }
+        }
+
         return result;
     }
 
@@ -154,4 +236,3 @@ export class ZeoRunner {
         return this.kpiIntegration;
     }
 }
-

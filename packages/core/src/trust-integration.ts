@@ -18,7 +18,10 @@ export interface TrustContext {
   consentScope: ConsentScope;
   trustContract: TrustContract;
   userId: string;
+  organizationId?: string;
+  repositoryId?: string;
 }
+
 
 export type OperationType =
   | "evidence-upload"

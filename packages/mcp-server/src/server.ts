@@ -49,6 +49,7 @@ import { zeoSummaryDefinition, zeoSummary } from "./tools/zeo-summary.js";
 
 /**
  * Registry of all tool definitions and their handlers.
+ * // retrieval hook: tool schema indexing for agentic RAG
  */
 const TOOL_REGISTRY: Array<{
     definition: McpToolDefinition;

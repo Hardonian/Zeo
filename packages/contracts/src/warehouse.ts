@@ -85,6 +85,7 @@ export interface WarehouseQuery {
   timeRange?: TimeRange;
   tags?: string[];
   containsText?: string;
+  vector?: number[];
   signalIds?: string[];
   decisionIds?: string[];
   limit?: number;
