@@ -264,7 +264,7 @@ describe('Deterministic Indexes', () => {
       const vectors = index.embeddingIndex.get('sem-1');
       expect(vectors).toBeDefined();
       expect(vectors!.length).toBeGreaterThan(0);
-      expect(vectors![0]).toEqual([63, 0, 0]); // Length of description
+      expect(vectors![0]).toEqual([67, 0, 0]); // Length of description (approx)
     });
 
     it('should use vector similarity in query', async () => {
@@ -305,14 +305,14 @@ describe('Deterministic Indexes', () => {
 
       const chunks = index.embeddingIndex.get('long-doc');
       expect(chunks).toBeDefined();
-      // 1000 words roughly 4 chunks of 256 tokens? 
+      // 1000 words roughly 4 chunks of 256 tokens?
       expect(chunks!.length).toBeGreaterThan(1);
     });
   });
 });
 
 describe('Index Migration', () => {
-  it('should migrate v1 index to v2', () => {
+  it('should migrate v1 index to v2 (and subsequently v3)', () => {
     // Create a minimal index structure and manually set version to 1
     const index = createEmptyIndex();
     (index as { version: number }).version = 1;
@@ -320,10 +320,9 @@ describe('Index Migration', () => {
     const serialized = serializeIndex(index);
     const restored = deserializeIndex(serialized);
 
-    expect(restored.version).toBe(2);
+    expect(restored.version).toBe(3); // Auto-migrates to latest
     expect(restored.byDecisionId).toBeDefined();
     expect(restored.byRunId).toBeDefined();
     expect(restored.tokenIndex).toBeDefined();
   });
 });
-

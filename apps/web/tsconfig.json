@@ -11,6 +11,33 @@
       ],
       "@zeo/radar": [
         "../../packages/radar/src/index.ts"
+      ],
+      "@zeo/contracts": [
+        "../../packages/contracts/src/index.ts"
+      ],
+      "@zeo/core": [
+        "../../packages/core/src/index.ts"
+      ],
+      "@zeo/reality": [
+        "../../packages/reality/src/index.ts"
+      ],
+      "@zeo/telemetry": [
+        "../../packages/telemetry/src/index.ts"
+      ],
+      "@zeo/governance": [
+        "../../packages/governance/src/index.ts"
+      ],
+      "@zeo/signal-discovery": [
+        "../../packages/signal-discovery/src/index.ts"
+      ],
+      "@zeo/kpi": [
+        "../../packages/kpi/src/index.ts"
+      ],
+      "@zeo/warehouse": [
+        "../../packages/warehouse/src/index.ts"
+      ],
+      "@zeo/repro-pack": [
+        "../../packages/repro-pack/src/index.ts"
       ]
     },
     "target": "ES2017",

@@ -1,0 +1,22 @@
+
+> @zeo/warehouse@0.3.3 test C:\Users\scott\Documents\GitHub\Zeo\packages\warehouse
+> vitest run
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/scott/Documents/GitHub/Zeo/packages/warehouse[39m
+
+ [32mΓ£ô[39m src/hashing.test.ts [2m([22m[2m8 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [31mΓ¥»[39m src/indexes.test.ts [2m([22m[2m15 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[90m 19[2mms[22m[39m
+[31m   [31m├ù[31m Deterministic Indexes[2m > [22mSemantic Search (V3)[2m > [22mshould index with embeddings when provider is available[90m 8[2mms[22m[31m[39m
+[31m     ΓåÆ expected [ 67, +0, +0 ] to deeply equal [ 63, +0, +0 ][39m
+[31m   [31m├ù[31m Index Migration[2m > [22mshould migrate v1 index to v2[90m 1[2mms[22m[31m[39m
+[31m     ΓåÆ expected 3 to be 2 // Object.is equality[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (2)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m21 passed[39m[22m[90m (23)[39m
+[2m   Start at [22m 21:25:48
+[2m   Duration [22m 566ms[2m (transform 97ms, setup 0ms, collect 180ms, tests 24ms, environment 0ms, prepare 314ms)[22m
+
+C:\Users\scott\Documents\GitHub\Zeo\packages\warehouse:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @zeo/warehouse@0.3.3 test: `vitest run`
+Exit status 1
