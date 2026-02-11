@@ -81,6 +81,8 @@ Commands:
   mcp                         MCP commands (serve/ping/tools)
   llm                         LLM commands (doctor)
   agents                      Agent plugin commands
+  cp <cmd>                    ControlPlane commands (status/policy/plan/tools/doctor)
+  artifacts <cmd>             Unified artifact registry commands
   zeolite <op>                Zeolite deterministic operations
   transcript <cmd>            Transcript signing and verification
   keys <cmd>                  Local keyring operations
@@ -411,6 +413,11 @@ async function main(): Promise<void> {
   if (argv[0] === "agents") {
     const mod = await import("./agents-cli.js");
     process.exit(await mod.runAgentsCommand(mod.parseAgentsArgs(argv.slice(1))));
+  }
+
+  if (argv[0] === "cp" || argv[0] === "artifacts") {
+    const mod = await import("./controlplane-cli.js");
+    process.exit(await mod.runControlPlaneCommand(argv));
   }
 
   if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "view", "review", "explain", "summary", "decision-health", "drift-report", "roi-report", "verify", "evidence", "help", "examples", "template", "decision"].includes(argv[0] ?? "")) {
