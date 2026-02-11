@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { WebhookSecurity } from "@zeo/core";
-import { policyEngineService, Issue as PolicyIssue } from "@zeo/policy";
-import { StaticAnalysisService } from "@zeo/analysis";
+import { policyEngineService } from "@zeo/policy";
+import { StaticAnalysisService, Issue as PolicyIssue } from "@zeo/analysis";
 
 // Initialize services (singleton pattern)
 const staticAnalysisService = new StaticAnalysisService();

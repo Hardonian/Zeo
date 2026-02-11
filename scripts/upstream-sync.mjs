@@ -58,7 +58,7 @@ if (fs.existsSync(policyIndex)) {
     // 1. Remove DB imports
     content = content.replace(/import\s+{\s*Prisma\s*}\s*from\s*['"]@prisma\/client['"];?/g, '');
     content = content.replace(/import\s+{\s*prisma\s*}\s*from\s*['"]\.\.\/\.\.\/lib\/prisma['"];?/g, '// import { prisma } from "../../lib/prisma";');
-    content = content.replace(/import\s+{\s*Issue\s*}\s*from\s*['"]\.\.\/static-analysis['"];?/g, 'import { Issue } from "@zeo/analysis";');
+    content = content.replace(/import\s+{\s*Issue\s*}\s*from\s*['"]\.\.\/static-analysis['"];?/g, 'import { Issue } from "@zeo/analysis";\nexport { Issue };');
     content = content.replace(/import\s+.*\s+from\s*['"]\.\.\/\.\.\/billing['"];?/g, '');
 
     // 2. Patch loadEffectivePolicy to be mock-only

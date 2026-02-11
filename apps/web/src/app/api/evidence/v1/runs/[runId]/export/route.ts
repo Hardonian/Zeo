@@ -5,9 +5,9 @@ import path from "path";
 
 export async function GET(
     req: NextRequest,
-    { params }: { params: { runId: string } }
+    { params }: { params: Promise<{ runId: string }> }
 ) {
-    const runId = params.runId;
+    const { runId } = await params;
 
     const evidence = await prisma.evidenceObject.findFirst({
         where: { runId, kind: "zip" }
