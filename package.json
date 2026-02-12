@@ -2,7 +2,7 @@
   "name": "zeo",
   "private": true,
   "version": "1.0.0",
-  "description": "Zeo \u2014 Decision intelligence under uncertainty",
+  "description": "Zeo — Decision intelligence under uncertainty",
   "license": "MIT",
   "packageManager": "pnpm@9.15.5",
   "engines": {
@@ -47,7 +47,10 @@
     "security:licenses": "node scripts/license-check.mjs",
     "deps:dry-run": "node scripts/dependency-upgrade-dry-run.mjs",
     "clean": "node -e \"const fs=require('fs');const p=require('path');for(const t of ['node_modules','.turbo','.pnpm-store'])fs.rmSync(p.resolve(t),{recursive:true,force:true});\"",
-    "ci:install": "pnpm install --frozen-lockfile"
+    "ci:install": "pnpm install --frozen-lockfile",
+    "docker:smoke": "node scripts/docker-smoke.mjs",
+    "mcp:smoke:docker": "node scripts/mcp-smoke-docker.mjs",
+    "docker:size:assert": "node scripts/docker-size-assert.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",

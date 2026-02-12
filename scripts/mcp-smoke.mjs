@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 if (!existsSync('apps/cli/dist/apps/cli/src/index.js')) {
-  const build = spawnSync('pnpm', ['-C', 'apps/cli', 'build'], { encoding: 'utf8' });
+  const build = spawnSync('pnpm', ['-r', '--filter', '@zeo/cli...', 'build'], { encoding: 'utf8' });
   if (build.status !== 0) {
     process.stderr.write(build.stderr || build.stdout || 'build failed\n');
     process.exit(build.status ?? 1);

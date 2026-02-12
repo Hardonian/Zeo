@@ -11,6 +11,10 @@ const steps = [
   ['Lint', 'pnpm lint'],
   ['Test', 'pnpm test'],
   ['Build', 'pnpm build'],
+  ['MCP smoke (local)', 'pnpm mcp:smoke'],
+  ['Docker smoke', 'pnpm docker:smoke'],
+  ['Docker size assert', 'pnpm docker:size:assert'],
+  ['MCP smoke (docker)', 'pnpm mcp:smoke:docker'],
   ['Audit (moderate+)', 'pnpm audit --audit-level=moderate'],
 ];
 
@@ -20,4 +24,4 @@ for (const [label, command] of steps) {
   process.stdout.write('OK\n');
 }
 
-console.log('verify completed: install → doctor → typecheck → lint → test → build → audit');
+console.log('verify completed: install → doctor → typecheck → lint → test → build → mcp-smoke(local) → docker-smoke → docker-size-assert → mcp-smoke(docker) → audit');
