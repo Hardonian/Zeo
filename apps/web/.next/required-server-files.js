@@ -90,7 +90,8 @@ self.__SERVER_FILES_MANIFEST={
     "logging": {},
     "compiler": {},
     "expireTime": 31536000,
-    "staticPageGenerationTimeout": 60,
+    "staticPageGenerationTimeout": 120,
+    "output": "standalone",
     "modularizeImports": {
       "@mui/icons-material": {
         "transform": "@mui/icons-material/{{member}}"
@@ -99,7 +100,7 @@ self.__SERVER_FILES_MANIFEST={
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Users\\scott",
+    "outputFileTracingRoot": "C:\\Users\\scott\\Documents\\GitHub\\Zeo",
     "cacheComponents": false,
     "cacheLife": {
       "default": {
@@ -296,12 +297,12 @@ self.__SERVER_FILES_MANIFEST={
     "configFileName": "next.config.mjs",
     "transpilePackages": [],
     "turbopack": {
-      "root": "C:\\Users\\scott"
+      "root": "C:\\Users\\scott\\Documents\\GitHub\\Zeo"
     },
     "distDirRoot": ".next"
   },
   "appDir": "C:\\Users\\scott\\Documents\\GitHub\\Zeo\\apps\\web",
-  "relativeAppDir": "Documents\\GitHub\\Zeo\\apps\\web",
+  "relativeAppDir": "apps\\web",
   "files": [
     ".next\\routes-manifest.json",
     ".next\\server\\pages-manifest.json",

@@ -1,0 +1,67 @@
+{
+  "name": "@zeo/core",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "default": "./dist/client.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm -r --filter @zeo/core^... build && vitest run",
+    "lint": "eslint src/**/*.ts",
+    "typecheck:exports": "tsc -p tsconfig.exports.json --noEmit"
+  },
+  "dependencies": {
+    "@zeo/analysis-planner": "workspace:*",
+    "@zeo/audit": "workspace:*",
+    "@zeo/calibration": "workspace:*",
+    "@zeo/causal": "workspace:*",
+    "@zeo/causal-skeletons": "workspace:*",
+    "@zeo/constraints": "workspace:*",
+    "@zeo/contracts": "workspace:*",
+    "@zeo/counterfactuals": "workspace:*",
+    "@zeo/dataset-builder": "workspace:*",
+    "@zeo/db": "workspace:*",
+    "@zeo/decision-synthesizer": "workspace:*",
+    "@zeo/explain": "workspace:*",
+    "@zeo/feature-discovery": "workspace:*",
+    "@zeo/game": "workspace:*",
+    "@zeo/hypothesis-registry": "workspace:*",
+    "@zeo/id": "workspace:*",
+    "@zeo/lenses": "workspace:*",
+    "@zeo/measurement": "workspace:*",
+    "@zeo/memory": "workspace:*",
+    "@zeo/meta": "workspace:*",
+    "@zeo/models": "workspace:*",
+    "@zeo/regimes": "workspace:*",
+    "@zeo/repro-pack": "workspace:*",
+    "@zeo/robustness": "workspace:*",
+    "@zeo/rsl": "workspace:*",
+    "@zeo/semantic-clustering": "workspace:*",
+    "@zeo/strategy": "workspace:*",
+    "@zeo/telemetry": "workspace:*",
+    "@zeo/time": "workspace:*",
+    "@zeo/timeseries": "workspace:*",
+    "@zeo/trust": "workspace:*",
+    "@zeo/values": "workspace:*",
+    "@zeo/warehouse": "workspace:*",
+    "@zeo/worlds": "workspace:*",
+    "better-sqlite3": "^12.6.2",
+    "minimatch": "^10.1.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.2.1"
+  }
+}

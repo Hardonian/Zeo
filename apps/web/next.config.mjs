@@ -8,11 +8,25 @@ const rootDir = path.resolve(__dirname, '../..');
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: [],
+  
+  // Turbopack root configuration to silence workspace root warning
+  // NOTE: Webpack is still used due to complex workspace package redirects
+  turbopack: {
+    root: rootDir,
+  },
+  
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',
     },
   },
+  
+  // Ensure all pages are statically generated at build time
+  output: 'standalone',
+  
+  // Generate all static pages - don't bail out to client-side rendering
+  staticPageGenerationTimeout: 120,
+  
   webpack: (config, { isServer, defaultLoaders, webpack }) => {
     // Use NormalModuleReplacementPlugin to forcibly redirect workspace imports
     const workspaceRedirects = [

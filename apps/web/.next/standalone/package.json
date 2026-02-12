@@ -1,0 +1,89 @@
+{
+  "name": "zeo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Zeo — Decision intelligence under uncertainty",
+  "license": "MIT",
+  "packageManager": "pnpm@9.15.5",
+  "engines": {
+    "node": "20.11.0",
+    "pnpm": "9.15.5"
+  },
+  "volta": {
+    "node": "20.11.0",
+    "pnpm": "9.15.5"
+  },
+  "scripts": {
+    "doctor": "node scripts/doctor.mjs",
+    "antigravity": "node scripts/antigravity.mjs",
+    "smoke": "node scripts/smoke-test.mjs",
+    "benchmark": "node scripts/benchmark.mjs",
+    "doctor:secrets": "node scripts/doctor.mjs",
+    "build": "pnpm -r --workspace-concurrency=3 build",
+    "typecheck": "pnpm -r --filter @zeo/contracts build && pnpm -r typecheck && pnpm -C packages/core typecheck:exports",
+    "test": "NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --workspace-concurrency=1 test",
+    "test:ci": "echo 'Running fast tests...' && NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --filter !@zeo/core --filter !@zeo/warehouse --filter !@zeo/repro-pack test && echo 'Running heavy tests sequentially...' && NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --filter @zeo/core --filter @zeo/warehouse --filter @zeo/repro-pack --workspace-concurrency=1 test",
+    "lint": "pnpm -r lint",
+    "verify": "node scripts/verify.mjs",
+    "verify:fast": "pnpm run doctor && pnpm run typecheck && pnpm run test && pnpm run lint",
+    "verify:full": "pnpm install --frozen-lockfile && pnpm run build && pnpm run verify && pnpm audit && pnpm doctor:secrets",
+    "audit": "pnpm audit --audit-level=moderate",
+    "audit:fix": "pnpm audit --fix",
+    "eval": "pnpm -C apps/cli eval",
+    "version:stamp": "node scripts/stamp-version.js",
+    "mcp:server": "node packages/mcp-server/dist/index.js",
+    "mcp:server:http": "node packages/mcp-server/dist/index.js --http",
+    "mcp:doctor": "node packages/mcp-server/dist/doctor.js",
+    "quickstart:web": "pnpm install && pnpm -r build && pnpm -C apps/web dev",
+    "quickstart:cli": "pnpm install && pnpm -r build && pnpm -C apps/cli start -- --example negotiation",
+    "quickstart:demo": "pnpm install && pnpm -r build && pnpm -C apps/cli start -- --replay ../../external/examples/replay/sample_dataset.json --report-out ./reports",
+    "quickstart:all": "pnpm verify:full && echo '=== Quickstart: CLI ===' && pnpm quickstart:cli && echo '=== Quickstart: Demo ===' && pnpm quickstart:demo",
+    "cli:perf": "node scripts/cli-perf.mjs",
+    "mcp:smoke": "node scripts/mcp-smoke.mjs",
+    "fixtures:coverage": "node scripts/fixture-coverage.mjs",
+    "perf:budget": "node scripts/perf-budget.mjs",
+    "validate:ecosystem": "node scripts/validate-ecosystem.mjs",
+    "security:secrets": "node scripts/secret-scan.mjs",
+    "security:licenses": "node scripts/license-check.mjs",
+    "deps:dry-run": "node scripts/dependency-upgrade-dry-run.mjs",
+    "clean": "node -e \"const fs=require('fs');const p=require('path');for(const t of ['node_modules','.turbo','.pnpm-store'])fs.rmSync(p.resolve(t),{recursive:true,force:true});\"",
+    "ci:install": "pnpm install --frozen-lockfile",
+    "docker:smoke": "node scripts/docker-smoke.mjs",
+    "mcp:smoke:docker": "node scripts/mcp-smoke-docker.mjs",
+    "docker:size:assert": "node scripts/docker-size-assert.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.10.0",
+    "eslint": "^9.10.0",
+    "globals": "^15.9.0",
+    "js-yaml": "^4.1.1",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.54.0",
+    "vitest": "^2.1.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild@<=0.24.2": ">=0.25.0",
+      "glob@>=10.2.0 <10.5.0": ">=10.5.0",
+      "next@>=10.0.0 <15.5.10": ">=15.5.10",
+      "next@>=13.0.0 <15.0.8": ">=15.0.8"
+    }
+  },
+  "keywords": [
+    "decision-intelligence",
+    "uncertainty",
+    "epistemology",
+    "negotiation",
+    "operations",
+    "branching-analysis",
+    "open-source"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scott/zeo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/scott/zeo/issues"
+  },
+  "homepage": "https://github.com/scott/zeo#readme"
+}
