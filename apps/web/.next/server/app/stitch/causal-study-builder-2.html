@@ -1,0 +1,246 @@
+<!DOCTYPE html><!--V_sCMn05SiQGXpllElBBM--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/51624f46484614f8.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-50294f2d1a14f928.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-3b36e40479e50727.js" async=""></script><script src="/_next/static/chunks/app/error-e24765025faea277.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/stitch/%5Bslug%5D/page-2eae595a34961720.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first public site and dashboard shell for Zeo."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50 text-gray-900"><header class="border-b border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4"><a class="text-lg font-semibold text-blue-700" href="/">Zeo</a><nav class="flex flex-wrap items-center gap-4 text-sm"><a class="text-gray-700 hover:text-blue-700" href="/">Home</a><a class="text-gray-700 hover:text-blue-700" href="/about">About</a><a class="text-gray-700 hover:text-blue-700" href="/pricing">Pricing</a><a class="text-gray-700 hover:text-blue-700" href="/platform">Platform</a><a class="text-gray-700 hover:text-blue-700" href="/stitch">Stitch Pages</a><a class="text-gray-700 hover:text-blue-700" href="/contact">Contact</a><a class="rounded border border-blue-200 px-3 py-1 text-blue-700 hover:bg-blue-50" href="/dashboard">Dashboard</a></nav></div></header><main class="mx-auto w-full max-w-6xl px-6 py-10"><h1 class="mb-6 text-3xl font-semibold">Causal Study Builder 2</h1><div class="overflow-hidden rounded border border-gray-200 bg-white"><iframe title="Causal Study Builder 2" srcDoc="&lt;!DOCTYPE html&gt;
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Causal Study Builder - Plain Language Mode&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com&quot; rel=&quot;preconnect&quot;/&gt;
+&lt;link crossorigin=&quot;&quot; href=&quot;https://fonts.gstatic.com&quot; rel=&quot;preconnect&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;amp;family=JetBrains+Mono:wght@400;500&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        &quot;primary&quot;: &quot;#137fec&quot;,
+                        &quot;background-light&quot;: &quot;#f6f7f8&quot;,
+                        &quot;background-dark&quot;: &quot;#101922&quot;,
+                        &quot;surface-dark&quot;: &quot;#1c2633&quot;,
+                        &quot;border-dark&quot;: &quot;#2d3b4e&quot;,
+                        &quot;plain-lang&quot;: &quot;#10b981&quot;, 
+                    },
+                    fontFamily: {
+                        &quot;display&quot;: [&quot;Inter&quot;, &quot;sans-serif&quot;],
+                        &quot;mono&quot;: [&quot;JetBrains Mono&quot;, &quot;monospace&quot;],
+                    },
+                    borderRadius: {&quot;DEFAULT&quot;: &quot;0.25rem&quot;, &quot;lg&quot;: &quot;0.5rem&quot;, &quot;xl&quot;: &quot;0.75rem&quot;, &quot;full&quot;: &quot;9999px&quot;},
+                },
+            },
+        }
+    &lt;/script&gt;
+&lt;style&gt;::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #101922; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d3b4e; 
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #137fec; 
+        }input[type=&quot;checkbox&quot;] {
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: transparent;
+            margin: 0;
+        }.toggle-checkbox:checked {
+            right: 0;
+            border-color: #10b981;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #10b981;
+        }
+        .plain-lang-highlight {
+            border-left: 2px solid #10b981;
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col overflow-x-hidden&quot;&gt;
+&lt;header class=&quot;sticky top-0 z-50 bg-background-light dark:bg-background-dark border-b border-gray-200 dark:border-border-dark&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between px-4 py-3&quot;&gt;
+&lt;button class=&quot;flex items-center justify-center w-10 h-10 rounded hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-slate-600 dark:text-slate-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;arrow_back&lt;/span&gt;
+&lt;/button&gt;
+&lt;div class=&quot;flex flex-col items-center&quot;&gt;
+&lt;h1 class=&quot;text-base font-bold tracking-tight&quot;&gt;Causal Study Builder&lt;/h1&gt;
+&lt;span class=&quot;text-[10px] font-mono text-primary uppercase tracking-widest&quot;&gt;Draft Mode • v1.0.4&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;w-10 h-10 flex items-center justify-center&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-slate-600 dark:text-slate-400&quot;&gt;more_vert&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;bg-slate-100 dark:bg-black/30 px-4 py-2 flex items-center justify-between border-t border-gray-200 dark:border-white/5&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-300&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm text-plain-lang&quot;&gt;translate&lt;/span&gt;
+                Plain Language Mode
+            &lt;/div&gt;
+&lt;div class=&quot;relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in&quot;&gt;
+&lt;input checked=&quot;&quot; class=&quot;toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 checked:border-plain-lang transition-all duration-300&quot; id=&quot;plain-lang-toggle&quot; name=&quot;toggle&quot; style=&quot;right: 0;&quot; type=&quot;checkbox&quot;/&gt;
+&lt;label class=&quot;toggle-label block overflow-hidden h-5 rounded-full bg-plain-lang cursor-pointer&quot; for=&quot;plain-lang-toggle&quot;&gt;&lt;/label&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;h-[2px] w-full bg-gray-200 dark:bg-border-dark&quot;&gt;
+&lt;div class=&quot;h-full w-2/3 bg-primary&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/header&gt;
+&lt;main class=&quot;flex-1 flex flex-col p-4 gap-6 max-w-md mx-auto w-full&quot;&gt;
+&lt;section class=&quot;flex flex-col gap-2&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between&quot;&gt;
+&lt;h2 class=&quot;text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;edit_note&lt;/span&gt;
+                    Proposed Change
+                &lt;/h2&gt;
+&lt;span class=&quot;font-mono text-[10px] text-slate-400 dark:text-slate-600&quot;&gt;data-bind:input_01&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark rounded-lg overflow-hidden group focus-within:border-primary transition-colors plain-lang-highlight&quot;&gt;
+&lt;div class=&quot;bg-emerald-50 dark:bg-emerald-900/10 px-3 py-2 border-b border-gray-200 dark:border-border-dark flex justify-between items-center&quot;&gt;
+&lt;label class=&quot;text-xs font-bold text-emerald-700 dark:text-emerald-400&quot;&gt;What are we changing?&lt;/label&gt;
+&lt;div class=&quot;flex gap-1&quot;&gt;
+&lt;span class=&quot;w-2 h-2 rounded-full bg-red-500/50&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;w-2 h-2 rounded-full bg-yellow-500/50&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;w-2 h-2 rounded-full bg-green-500/50&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;relative&quot;&gt;
+&lt;div class=&quot;absolute left-0 top-0 bottom-0 w-8 bg-gray-50 dark:bg-black/10 border-r border-gray-200 dark:border-border-dark flex flex-col items-center pt-3 gap-[2px] text-[10px] font-mono text-slate-400 select-none&quot;&gt;
+&lt;span&gt;1&lt;/span&gt;
+&lt;span&gt;2&lt;/span&gt;
+&lt;span&gt;3&lt;/span&gt;
+&lt;span&gt;4&lt;/span&gt;
+&lt;span&gt;5&lt;/span&gt;
+&lt;/div&gt;
+&lt;textarea class=&quot;w-full h-32 pl-10 pr-3 py-2 bg-transparent border-none text-sm font-mono text-slate-800 dark:text-slate-200 focus:ring-0 placeholder:text-slate-400/50 resize-none leading-relaxed&quot; placeholder=&quot;// Define treatment assignment mechanism here...
+if (X &amp;gt; threshold) {
+  treatment = 1;
+} else {
+  treatment = 0;
+}&quot; spellcheck=&quot;false&quot;&gt;&lt;/textarea&gt;
+&lt;/div&gt;
+&lt;div class=&quot;px-3 py-1 bg-gray-50 dark:bg-black/20 border-t border-gray-200 dark:border-border-dark flex justify-between items-center&quot;&gt;
+&lt;span class=&quot;text-[10px] text-emerald-600 dark:text-emerald-500 font-medium italic&quot;&gt;Describe the new policy in code&lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-mono text-slate-400&quot;&gt;Ln 1, Col 1&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section class=&quot;flex flex-col gap-2&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between&quot;&gt;
+&lt;h2 class=&quot;text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;fact_check&lt;/span&gt;
+                    Rules for the Study
+                &lt;/h2&gt;
+&lt;span class=&quot;font-mono text-[10px] text-slate-400 dark:text-slate-600&quot;&gt;data-panel:checklist&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark rounded-lg flex flex-col divide-y divide-gray-200 dark:divide-border-dark plain-lang-highlight&quot;&gt;
+&lt;label class=&quot;group relative flex items-start gap-3 p-4 cursor-pointer hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors&quot;&gt;
+&lt;div class=&quot;relative flex items-center mt-0.5&quot;&gt;
+&lt;input class=&quot;peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 dark:border-slate-500 checked:border-emerald-500 checked:bg-emerald-500 transition-all&quot; type=&quot;checkbox&quot;/&gt;
+&lt;span class=&quot;material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 text-sm pointer-events-none&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1&quot;&gt;
+&lt;div class=&quot;flex justify-between items-center mb-1&quot;&gt;
+&lt;span class=&quot;text-sm font-bold text-slate-700 dark:text-slate-200&quot;&gt;No Spillover Effects&lt;/span&gt;
+&lt;span class=&quot;text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800&quot;&gt;Fairness&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-slate-500 dark:text-slate-400 leading-tight mb-2&quot;&gt;Changing the policy for one person doesn&#x27;t affect others nearby.&lt;/p&gt;
+&lt;div class=&quot;bg-emerald-50 dark:bg-emerald-900/10 p-2 rounded border border-emerald-100 dark:border-emerald-900/30&quot;&gt;
+&lt;p class=&quot;text-[10px] text-emerald-800 dark:text-emerald-200&quot;&gt;&lt;span class=&quot;font-bold&quot;&gt;Why this matters:&lt;/span&gt; Ensures we can measure individual impact cleanly without neighbors influencing the result.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/label&gt;
+&lt;label class=&quot;group relative flex items-start gap-3 p-4 cursor-pointer hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors&quot;&gt;
+&lt;div class=&quot;relative flex items-center mt-0.5&quot;&gt;
+&lt;input class=&quot;peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 dark:border-slate-500 checked:border-emerald-500 checked:bg-emerald-500 transition-all&quot; type=&quot;checkbox&quot;/&gt;
+&lt;span class=&quot;material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 text-sm pointer-events-none&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1&quot;&gt;
+&lt;div class=&quot;flex justify-between items-center mb-1&quot;&gt;
+&lt;span class=&quot;text-sm font-bold text-slate-700 dark:text-slate-200&quot;&gt;No Hidden Factors&lt;/span&gt;
+&lt;span class=&quot;text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800&quot;&gt;Transparency&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-slate-500 dark:text-slate-400 leading-tight mb-2&quot;&gt;We have data on everything that influenced who got the change.&lt;/p&gt;
+&lt;div class=&quot;bg-emerald-50 dark:bg-emerald-900/10 p-2 rounded border border-emerald-100 dark:border-emerald-900/30&quot;&gt;
+&lt;p class=&quot;text-[10px] text-emerald-800 dark:text-emerald-200&quot;&gt;&lt;span class=&quot;font-bold&quot;&gt;Why this matters:&lt;/span&gt; Prevents confusing the effect of our change with pre-existing differences between groups.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/label&gt;
+&lt;label class=&quot;group relative flex items-start gap-3 p-4 cursor-pointer hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors&quot;&gt;
+&lt;div class=&quot;relative flex items-center mt-0.5&quot;&gt;
+&lt;input class=&quot;peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 dark:border-slate-500 checked:border-emerald-500 checked:bg-emerald-500 transition-all&quot; type=&quot;checkbox&quot;/&gt;
+&lt;span class=&quot;material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 text-sm pointer-events-none&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1&quot;&gt;
+&lt;div class=&quot;flex justify-between items-center mb-1&quot;&gt;
+&lt;span class=&quot;text-sm font-bold text-slate-700 dark:text-slate-200&quot;&gt;Everyone Could Be Chosen&lt;/span&gt;
+&lt;span class=&quot;text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800&quot;&gt;Access&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-slate-500 dark:text-slate-400 leading-tight mb-2&quot;&gt;No specific group was automatically excluded from the start.&lt;/p&gt;
+&lt;div class=&quot;bg-emerald-50 dark:bg-emerald-900/10 p-2 rounded border border-emerald-100 dark:border-emerald-900/30&quot;&gt;
+&lt;p class=&quot;text-[10px] text-emerald-800 dark:text-emerald-200&quot;&gt;&lt;span class=&quot;font-bold&quot;&gt;Why this matters:&lt;/span&gt; Guarantees we can fairly compare similar people who did and didn&#x27;t get the change.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/label&gt;
+&lt;label class=&quot;group relative flex items-start gap-3 p-4 cursor-pointer hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors&quot;&gt;
+&lt;div class=&quot;relative flex items-center mt-0.5&quot;&gt;
+&lt;input class=&quot;peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 dark:border-slate-500 checked:border-emerald-500 checked:bg-emerald-500 transition-all&quot; type=&quot;checkbox&quot;/&gt;
+&lt;span class=&quot;material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 text-sm pointer-events-none&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1&quot;&gt;
+&lt;div class=&quot;flex justify-between items-center mb-1&quot;&gt;
+&lt;span class=&quot;text-sm font-bold text-slate-700 dark:text-slate-200&quot;&gt;Requirement for Fair Testing&lt;/span&gt;
+&lt;span class=&quot;text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800&quot;&gt;Rules&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-slate-500 dark:text-slate-400 leading-tight mb-2&quot;&gt;The &quot;nudge&quot; only affects the outcome by changing the policy.&lt;/p&gt;
+&lt;div class=&quot;bg-emerald-50 dark:bg-emerald-900/10 p-2 rounded border border-emerald-100 dark:border-emerald-900/30&quot;&gt;
+&lt;p class=&quot;text-[10px] text-emerald-800 dark:text-emerald-200&quot;&gt;&lt;span class=&quot;font-bold&quot;&gt;Why this matters:&lt;/span&gt; Ensures the results are due to the policy change itself, not some side effect of how we assigned it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/label&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;div class=&quot;flex-1 min-h-[20px]&quot;&gt;&lt;/div&gt;
+&lt;section class=&quot;sticky bottom-4 z-10&quot;&gt;
+&lt;div class=&quot;bg-white/80 dark:bg-surface-dark/90 backdrop-blur-md border border-gray-200 dark:border-border-dark rounded-xl p-4 shadow-lg shadow-black/20&quot;&gt;
+&lt;div class=&quot;mb-4&quot;&gt;
+&lt;label class=&quot;flex items-center gap-3 cursor-pointer group&quot;&gt;
+&lt;div class=&quot;relative flex items-center&quot;&gt;
+&lt;input class=&quot;peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-400 dark:border-slate-500 checked:border-emerald-500 checked:bg-emerald-500 transition-all&quot; id=&quot;gatekeeper&quot; type=&quot;checkbox&quot;/&gt;
+&lt;span class=&quot;material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 text-sm pointer-events-none&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;text-xs font-semibold text-slate-700 dark:text-slate-300 select-none group-hover:text-emerald-500 transition-colors&quot;&gt;I confirm this study is safe to run&lt;/span&gt;
+&lt;/label&gt;
+&lt;/div&gt;
+&lt;button class=&quot;group w-full h-12 flex items-center justify-center gap-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 font-bold tracking-wide cursor-not-allowed transition-all has-[:checked]:bg-emerald-600 has-[:checked]:text-white has-[:checked]:shadow-lg has-[:checked]:shadow-emerald-500/30 has-[:checked]:cursor-pointer relative overflow-hidden&quot;&gt;
+&lt;input class=&quot;absolute inset-0 opacity-0 cursor-pointer z-10 w-full h-full&quot; onclick=&quot;document.getElementById(&#x27;gatekeeper&#x27;).checked = true;&quot; type=&quot;checkbox&quot;/&gt;
+&lt;span class=&quot;material-symbols-outlined text-[20px] transition-transform group-active:scale-95&quot;&gt;play_circle&lt;/span&gt;
+&lt;span class=&quot;transition-transform group-active:scale-95&quot;&gt;START STUDY&lt;/span&gt;
+&lt;div class=&quot;absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] pointer-events-none&quot;&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;/main&gt;
+&lt;footer class=&quot;bg-background-light dark:bg-background-dark py-4 px-6 text-center border-t border-gray-200 dark:border-border-dark&quot;&gt;
+&lt;div class=&quot;flex justify-center items-center gap-4 text-[10px] text-slate-400 font-mono&quot;&gt;
+&lt;span&gt;STUDY-ID-492&lt;/span&gt;
+&lt;span&gt;|&lt;/span&gt;
+&lt;span class=&quot;flex items-center gap-1&quot;&gt;
+&lt;span class=&quot;w-1.5 h-1.5 rounded-full bg-emerald-500&quot;&gt;&lt;/span&gt;
+                SYSTEM READY
+            &lt;/span&gt;
+&lt;/div&gt;
+&lt;/footer&gt;
+
+&lt;/body&gt;&lt;/html&gt;" class="h-[900px] w-full" sandbox="allow-scripts allow-same-origin"></iframe></div></main><footer class="border-t border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-4 text-sm text-gray-600"><span>Confidence range, assumptions, provenance, and sensitivity first.</span><div class="flex gap-3"><a class="hover:text-blue-700" href="/privacy">Privacy</a><a class="hover:text-blue-700" href="/terms">Terms</a></div></div></footer></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-50294f2d1a14f928.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-e24765025faea277.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-2eae595a34961720.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/51624f46484614f8.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"V_sCMn05SiQGXpllElBBM\",\"c\":[\"\",\"stitch\",\"causal-study-builder-2\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"stitch\",{\"children\":[[\"slug\",\"causal-study-builder-2\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/51624f46484614f8.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first public site and dashboard shell for Zeo.\"}]]\n"])</script><script>self.__next_f.push([1,"f:T3c3b,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eCausal Study Builder - Plain Language Mode\u003c/title\u003e\n\u003clink href=\"https://fonts.googleapis.com\" rel=\"preconnect\"/\u003e\n\u003clink crossorigin=\"\" href=\"https://fonts.gstatic.com\" rel=\"preconnect\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700\u0026amp;family=JetBrains+Mono:wght@400;500\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003cscript\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        \"primary\": \"#137fec\",\n                        \"background-light\": \"#f6f7f8\",\n                        \"background-dark\": \"#101922\",\n                        \"surface-dark\": \"#1c2633\",\n                        \"border-dark\": \"#2d3b4e\",\n                        \"plain-lang\": \"#10b981\", \n                    },\n                    fontFamily: {\n                        \"display\": [\"Inter\", \"sans-serif\"],\n                        \"mono\": [\"JetBrains Mono\", \"monospace\"],\n                    },\n                    borderRadius: {\"DEFAULT\": \"0.25rem\", \"lg\": \"0.5rem\", \"xl\": \"0.75rem\", \"full\": \"9999px\"},\n                },\n            },\n        }\n    \u003c/script\u003e\n\u003cstyle\u003e::-webkit-scrollbar {\n            width: 4px;\n        }\n        ::-webkit-scrollbar-track {\n            background: #101922; \n        }\n        ::-webkit-scrollbar-thumb {\n            background: #2d3b4e; \n            border-radius: 2px;\n        }\n        ::-webkit-scrollbar-thumb:hover {\n            background: #137fec; \n        }input[type=\"checkbox\"] {\n            appearance: none;\n            -webkit-appearance: none;\n            background-color: transparent;\n            margin: 0;\n        }.toggle-checkbox:checked {\n            right: 0;\n            border-color: #10b981;\n        }\n        .toggle-checkbox:checked + .toggle-label {\n            background-color: #10b981;\n        }\n        .plain-lang-highlight {\n            border-left: 2px solid #10b981;\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col overflow-x-hidden\"\u003e\n\u003cheader class=\"sticky top-0 z-50 bg-background-light dark:bg-background-dark border-b border-gray-200 dark:border-border-dark\"\u003e\n\u003cdiv class=\"flex items-center justify-between px-4 py-3\"\u003e\n\u003cbutton class=\"flex items-center justify-center w-10 h-10 rounded hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-slate-600 dark:text-slate-400\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003earrow_back\u003c/span\u003e\n\u003c/button\u003e\n\u003cdiv class=\"flex flex-col items-center\"\u003e\n\u003ch1 class=\"text-base font-bold tracking-tight\"\u003eCausal Study Builder\u003c/h1\u003e\n\u003cspan class=\"text-[10px] font-mono text-primary uppercase tracking-widest\"\u003eDraft Mode • v1.0.4\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"w-10 h-10 flex items-center justify-center\"\u003e\n\u003cspan class=\"material-symbols-outlined text-slate-600 dark:text-slate-400\"\u003emore_vert\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"bg-slate-100 dark:bg-black/30 px-4 py-2 flex items-center justify-between border-t border-gray-200 dark:border-white/5\"\u003e\n\u003cdiv class=\"flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-300\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm text-plain-lang\"\u003etranslate\u003c/span\u003e\n                Plain Language Mode\n            \u003c/div\u003e\n\u003cdiv class=\"relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in\"\u003e\n\u003cinput checked=\"\" class=\"toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 checked:border-plain-lang transition-all duration-300\" id=\"plain-lang-toggle\" name=\"toggle\" style=\"right: 0;\" type=\"checkbox\"/\u003e\n\u003clabel class=\"toggle-label block overflow-hidden h-5 rounded-full bg-plain-lang cursor-pointer\" for=\"plain-lang-toggle\"\u003e\u003c/label\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"h-[2px] w-full bg-gray-200 dark:bg-border-dark\"\u003e\n\u003cdiv class=\"h-full w-2/3 bg-primary\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/header\u003e\n\u003cmain class=\"flex-1 flex flex-col p-4 gap-6 max-w-md mx-auto w-full\"\u003e\n\u003csection class=\"flex flex-col gap-2\"\u003e\n\u003cdiv class=\"flex items-center justify-between\"\u003e\n\u003ch2 class=\"text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm\"\u003eedit_note\u003c/span\u003e\n                    Proposed Change\n                \u003c/h2\u003e\n\u003cspan class=\"font-mono text-[10px] text-slate-400 dark:text-slate-600\"\u003edata-bind:input_01\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark rounded-lg overflow-hidden group focus-within:border-primary transition-colors plain-lang-highlight\"\u003e\n\u003cdiv class=\"bg-emerald-50 dark:bg-emerald-900/10 px-3 py-2 border-b border-gray-200 dark:border-border-dark flex justify-between items-center\"\u003e\n\u003clabel class=\"text-xs font-bold text-emerald-700 dark:text-emerald-400\"\u003eWhat are we changing?\u003c/label\u003e\n\u003cdiv class=\"flex gap-1\"\u003e\n\u003cspan class=\"w-2 h-2 rounded-full bg-red-500/50\"\u003e\u003c/span\u003e\n\u003cspan class=\"w-2 h-2 rounded-full bg-yellow-500/50\"\u003e\u003c/span\u003e\n\u003cspan class=\"w-2 h-2 rounded-full bg-green-500/50\"\u003e\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"relative\"\u003e\n\u003cdiv class=\"absolute left-0 top-0 bottom-0 w-8 bg-gray-50 dark:bg-black/10 border-r border-gray-200 dark:border-border-dark flex flex-col items-center pt-3 gap-[2px] text-[10px] font-mono text-slate-400 select-none\"\u003e\n\u003cspan\u003e1\u003c/span\u003e\n\u003cspan\u003e2\u003c/span\u003e\n\u003cspan\u003e3\u003c/span\u003e\n\u003cspan\u003e4\u003c/span\u003e\n\u003cspan\u003e5\u003c/span\u003e\n\u003c/div\u003e\n\u003ctextarea class=\"w-full h-32 pl-10 pr-3 py-2 bg-transparent border-none text-sm font-mono text-slate-800 dark:text-slate-200 focus:ring-0 placeholder:text-slate-400/50 resize-none leading-relaxed\" placeholder=\"// Define treatment assignment mechanism here...\nif (X \u0026gt; threshold) {\n  treatment = 1;\n} else {\n  treatment = 0;\n}\" spellcheck=\"false\"\u003e\u003c/textarea\u003e\n\u003c/div\u003e\n\u003cdiv class=\"px-3 py-1 bg-gray-50 dark:bg-black/20 border-t border-gray-200 dark:border-border-dark flex justify-between items-center\"\u003e\n\u003cspan class=\"text-[10px] text-emerald-600 dark:text-emerald-500 font-medium italic\"\u003eDescribe the new policy in code\u003c/span\u003e\n\u003cspan class=\"text-[10px] font-mono text-slate-400\"\u003eLn 1, Col 1\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003csection class=\"flex flex-col gap-2\"\u003e\n\u003cdiv class=\"flex items-center justify-between\"\u003e\n\u003ch2 class=\"text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm\"\u003efact_check\u003c/span\u003e\n                    Rules for the Study\n                \u003c/h2\u003e\n\u003cspan class=\"font-mono text-[10px] text-slate-400 dark:text-slate-600\"\u003edata-panel:checklist\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark rounded-lg flex flex-col divide-y divide-gray-200 dark:divide-border-dark plain-lang-highlight\"\u003e\n\u003clabel class=\"group relative flex items-start gap-3 p-4 cursor-pointer hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors\"\u003e\n\u003cdiv class=\"relative flex items-center mt-0.5\"\u003e\n\u003cinput class=\"peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 dark:border-slate-500 checked:border-emerald-500 checked:bg-emerald-500 transition-all\" type=\"checkbox\"/\u003e\n\u003cspan class=\"material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 text-sm pointer-events-none\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1\"\u003e\n\u003cdiv class=\"flex justify-between items-center mb-1\"\u003e\n\u003cspan class=\"text-sm font-bold text-slate-700 dark:text-slate-200\"\u003eNo Spillover Effects\u003c/span\u003e\n\u003cspan class=\"text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800\"\u003eFairness\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-slate-500 dark:text-slate-400 leading-tight mb-2\"\u003eChanging the policy for one person doesn't affect others nearby.\u003c/p\u003e\n\u003cdiv class=\"bg-emerald-50 dark:bg-emerald-900/10 p-2 rounded border border-emerald-100 dark:border-emerald-900/30\"\u003e\n\u003cp class=\"text-[10px] text-emerald-800 dark:text-emerald-200\"\u003e\u003cspan class=\"font-bold\"\u003eWhy this matters:\u003c/span\u003e Ensures we can measure individual impact cleanly without neighbors influencing the result.\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/label\u003e\n\u003clabel class=\"group relative flex items-start gap-3 p-4 cursor-pointer hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors\"\u003e\n\u003cdiv class=\"relative flex items-center mt-0.5\"\u003e\n\u003cinput class=\"peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 dark:border-slate-500 checked:border-emerald-500 checked:bg-emerald-500 transition-all\" type=\"checkbox\"/\u003e\n\u003cspan class=\"material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 text-sm pointer-events-none\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1\"\u003e\n\u003cdiv class=\"flex justify-between items-center mb-1\"\u003e\n\u003cspan class=\"text-sm font-bold text-slate-700 dark:text-slate-200\"\u003eNo Hidden Factors\u003c/span\u003e\n\u003cspan class=\"text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800\"\u003eTransparency\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-slate-500 dark:text-slate-400 leading-tight mb-2\"\u003eWe have data on everything that influenced who got the change.\u003c/p\u003e\n\u003cdiv class=\"bg-emerald-50 dark:bg-emerald-900/10 p-2 rounded border border-emerald-100 dark:border-emerald-900/30\"\u003e\n\u003cp class=\"text-[10px] text-emerald-800 dark:text-emerald-200\"\u003e\u003cspan class=\"font-bold\"\u003eWhy this matters:\u003c/span\u003e Prevents confusing the effect of our change with pre-existing differences between groups.\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/label\u003e\n\u003clabel class=\"group relative flex items-start gap-3 p-4 cursor-pointer hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors\"\u003e\n\u003cdiv class=\"relative flex items-center mt-0.5\"\u003e\n\u003cinput class=\"peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 dark:border-slate-500 checked:border-emerald-500 checked:bg-emerald-500 transition-all\" type=\"checkbox\"/\u003e\n\u003cspan class=\"material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 text-sm pointer-events-none\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1\"\u003e\n\u003cdiv class=\"flex justify-between items-center mb-1\"\u003e\n\u003cspan class=\"text-sm font-bold text-slate-700 dark:text-slate-200\"\u003eEveryone Could Be Chosen\u003c/span\u003e\n\u003cspan class=\"text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800\"\u003eAccess\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-slate-500 dark:text-slate-400 leading-tight mb-2\"\u003eNo specific group was automatically excluded from the start.\u003c/p\u003e\n\u003cdiv class=\"bg-emerald-50 dark:bg-emerald-900/10 p-2 rounded border border-emerald-100 dark:border-emerald-900/30\"\u003e\n\u003cp class=\"text-[10px] text-emerald-800 dark:text-emerald-200\"\u003e\u003cspan class=\"font-bold\"\u003eWhy this matters:\u003c/span\u003e Guarantees we can fairly compare similar people who did and didn't get the change.\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/label\u003e\n\u003clabel class=\"group relative flex items-start gap-3 p-4 cursor-pointer hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors\"\u003e\n\u003cdiv class=\"relative flex items-center mt-0.5\"\u003e\n\u003cinput class=\"peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 dark:border-slate-500 checked:border-emerald-500 checked:bg-emerald-500 transition-all\" type=\"checkbox\"/\u003e\n\u003cspan class=\"material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 text-sm pointer-events-none\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1\"\u003e\n\u003cdiv class=\"flex justify-between items-center mb-1\"\u003e\n\u003cspan class=\"text-sm font-bold text-slate-700 dark:text-slate-200\"\u003eRequirement for Fair Testing\u003c/span\u003e\n\u003cspan class=\"text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800\"\u003eRules\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-slate-500 dark:text-slate-400 leading-tight mb-2\"\u003eThe \"nudge\" only affects the outcome by changing the policy.\u003c/p\u003e\n\u003cdiv class=\"bg-emerald-50 dark:bg-emerald-900/10 p-2 rounded border border-emerald-100 dark:border-emerald-900/30\"\u003e\n\u003cp class=\"text-[10px] text-emerald-800 dark:text-emerald-200\"\u003e\u003cspan class=\"font-bold\"\u003eWhy this matters:\u003c/span\u003e Ensures the results are due to the policy change itself, not some side effect of how we assigned it.\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/label\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003cdiv class=\"flex-1 min-h-[20px]\"\u003e\u003c/div\u003e\n\u003csection class=\"sticky bottom-4 z-10\"\u003e\n\u003cdiv class=\"bg-white/80 dark:bg-surface-dark/90 backdrop-blur-md border border-gray-200 dark:border-border-dark rounded-xl p-4 shadow-lg shadow-black/20\"\u003e\n\u003cdiv class=\"mb-4\"\u003e\n\u003clabel class=\"flex items-center gap-3 cursor-pointer group\"\u003e\n\u003cdiv class=\"relative flex items-center\"\u003e\n\u003cinput class=\"peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-400 dark:border-slate-500 checked:border-emerald-500 checked:bg-emerald-500 transition-all\" id=\"gatekeeper\" type=\"checkbox\"/\u003e\n\u003cspan class=\"material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 text-sm pointer-events-none\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"text-xs font-semibold text-slate-700 dark:text-slate-300 select-none group-hover:text-emerald-500 transition-colors\"\u003eI confirm this study is safe to run\u003c/span\u003e\n\u003c/label\u003e\n\u003c/div\u003e\n\u003cbutton class=\"group w-full h-12 flex items-center justify-center gap-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 font-bold tracking-wide cursor-not-allowed transition-all has-[:checked]:bg-emerald-600 has-[:checked]:text-white has-[:checked]:shadow-lg has-[:checked]:shadow-emerald-500/30 has-[:checked]:cursor-pointer relative overflow-hidden\"\u003e\n\u003cinput class=\"absolute inset-0 opacity-0 cursor-pointer z-10 w-full h-full\" onclick=\"document.getElementById('gatekeeper').checked = true;\" type=\"checkbox\"/\u003e\n\u003cspan class=\"material-symbols-outlined text-[20px] transition-transform group-active:scale-95\"\u003eplay_circle\u003c/span\u003e\n\u003cspan class=\"transition-transform group-active:scale-95\"\u003eSTART STUDY\u003c/span\u003e\n\u003cdiv class=\"absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] pointer-events-none\"\u003e\u003c/div\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c/main\u003e\n\u003cfooter class=\"bg-background-light dark:bg-background-dark py-4 px-6 text-center border-t border-gray-200 dark:border-border-dark\"\u003e\n\u003cdiv class=\"flex justify-center items-center gap-4 text-[10px] text-slate-400 font-mono\"\u003e\n\u003cspan\u003eSTUDY-ID-492\u003c/span\u003e\n\u003cspan\u003e|\u003c/span\u003e\n\u003cspan class=\"flex items-center gap-1\"\u003e\n\u003cspan class=\"w-1.5 h-1.5 rounded-full bg-emerald-500\"\u003e\u003c/span\u003e\n                SYSTEM READY\n            \u003c/span\u003e\n\u003c/div\u003e\n\u003c/footer\u003e\n\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"div\",null,{\"className\":\"min-h-screen bg-gray-50 text-gray-900\",\"children\":[[\"$\",\"header\",null,{\"className\":\"border-b border-gray-200 bg-white\",\"children\":[\"$\",\"div\",null,{\"className\":\"mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4\",\"children\":[[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"text-lg font-semibold text-blue-700\",\"children\":\"Zeo\"}],[\"$\",\"nav\",null,{\"className\":\"flex flex-wrap items-center gap-4 text-sm\",\"children\":[[[\"$\",\"$L5\",\"/\",{\"href\":\"/\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Home\"}],[\"$\",\"$L5\",\"/about\",{\"href\":\"/about\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"About\"}],[\"$\",\"$L5\",\"/pricing\",{\"href\":\"/pricing\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Pricing\"}],[\"$\",\"$L5\",\"/platform\",{\"href\":\"/platform\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Platform\"}],[\"$\",\"$L5\",\"/stitch\",{\"href\":\"/stitch\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Stitch Pages\"}],[\"$\",\"$L5\",\"/contact\",{\"href\":\"/contact\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Contact\"}]],[\"$\",\"$L5\",null,{\"href\":\"/dashboard\",\"className\":\"rounded border border-blue-200 px-3 py-1 text-blue-700 hover:bg-blue-50\",\"children\":\"Dashboard\"}]]}]]}]}],[\"$\",\"main\",null,{\"className\":\"mx-auto w-full max-w-6xl px-6 py-10\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"mb-6 text-3xl font-semibold\",\"children\":\"Causal Study Builder 2\"}],[\"$\",\"div\",null,{\"className\":\"overflow-hidden rounded border border-gray-200 bg-white\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Causal Study Builder 2\",\"srcDoc\":\"$f\",\"className\":\"h-[900px] w-full\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]]}],\"$L10\"]}]\n"])</script><script>self.__next_f.push([1,"10:[\"$\",\"footer\",null,{\"className\":\"border-t border-gray-200 bg-white\",\"children\":[\"$\",\"div\",null,{\"className\":\"mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-4 text-sm text-gray-600\",\"children\":[[\"$\",\"span\",null,{\"children\":\"Confidence range, assumptions, provenance, and sensitivity first.\"}],[\"$\",\"div\",null,{\"className\":\"flex gap-3\",\"children\":[[\"$\",\"$L5\",null,{\"href\":\"/privacy\",\"className\":\"hover:text-blue-700\",\"children\":\"Privacy\"}],[\"$\",\"$L5\",null,{\"href\":\"/terms\",\"className\":\"hover:text-blue-700\",\"children\":\"Terms\"}]]}]]}]}]\n"])</script></body></html>

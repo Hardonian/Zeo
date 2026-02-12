@@ -1,0 +1,251 @@
+<!DOCTYPE html><!--V_sCMn05SiQGXpllElBBM--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/51624f46484614f8.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-50294f2d1a14f928.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-3b36e40479e50727.js" async=""></script><script src="/_next/static/chunks/app/error-e24765025faea277.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/stitch/%5Bslug%5D/page-2eae595a34961720.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first public site and dashboard shell for Zeo."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50 text-gray-900"><header class="border-b border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4"><a class="text-lg font-semibold text-blue-700" href="/">Zeo</a><nav class="flex flex-wrap items-center gap-4 text-sm"><a class="text-gray-700 hover:text-blue-700" href="/">Home</a><a class="text-gray-700 hover:text-blue-700" href="/about">About</a><a class="text-gray-700 hover:text-blue-700" href="/pricing">Pricing</a><a class="text-gray-700 hover:text-blue-700" href="/platform">Platform</a><a class="text-gray-700 hover:text-blue-700" href="/stitch">Stitch Pages</a><a class="text-gray-700 hover:text-blue-700" href="/contact">Contact</a><a class="rounded border border-blue-200 px-3 py-1 text-blue-700 hover:bg-blue-50" href="/dashboard">Dashboard</a></nav></div></header><main class="mx-auto w-full max-w-6xl px-6 py-10"><h1 class="mb-6 text-3xl font-semibold">Structured Debate Panel</h1><div class="overflow-hidden rounded border border-gray-200 bg-white"><iframe title="Structured Debate Panel" srcDoc="&lt;!DOCTYPE html&gt;
+
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Zeo - Structured Debate Panel&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;amp;family=Noto+Sans:wght@400;500;700&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;script id=&quot;tailwind-config&quot;&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        &quot;primary&quot;: &quot;#135bec&quot;,
+                        &quot;background-light&quot;: &quot;#f6f6f8&quot;,
+                        &quot;background-dark&quot;: &quot;#0f0f12&quot;,
+                        &quot;surface-dark&quot;: &quot;#18181b&quot;,
+                        &quot;surface-light&quot;: &quot;#ffffff&quot;,
+                        &quot;tension&quot;: &quot;#f59e0b&quot;, // Amber
+                        &quot;agreement&quot;: &quot;#14b8a6&quot;, // Teal
+                        &quot;neutral-gray&quot;: &quot;#92a4c9&quot;,
+                    },
+                    fontFamily: {
+                        &quot;display&quot;: [&quot;Space Grotesk&quot;, &quot;sans-serif&quot;],
+                        &quot;body&quot;: [&quot;Noto Sans&quot;, &quot;sans-serif&quot;],
+                    },
+                    borderRadius: {&quot;DEFAULT&quot;: &quot;0.25rem&quot;, &quot;lg&quot;: &quot;0.5rem&quot;, &quot;xl&quot;: &quot;0.75rem&quot;, &quot;full&quot;: &quot;9999px&quot;},
+                },
+            },
+        }
+    &lt;/script&gt;
+&lt;style&gt;
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark font-display antialiased text-gray-900 dark:text-white overflow-hidden h-screen flex flex-col w-full max-w-md mx-auto shadow-2xl relative border-x border-gray-200 dark:border-gray-800&quot;&gt;
+&lt;!-- Header --&gt;
+&lt;header class=&quot;flex items-center bg-surface-light dark:bg-surface-dark px-4 py-3 justify-between border-b border-gray-200 dark:border-gray-800 z-10 shrink-0&quot;&gt;
+&lt;button class=&quot;text-gray-500 dark:text-gray-400 flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[24px]&quot;&gt;expand_more&lt;/span&gt;
+&lt;/button&gt;
+&lt;div class=&quot;flex flex-col items-center&quot;&gt;
+&lt;h2 class=&quot;text-gray-900 dark:text-white text-sm font-bold uppercase tracking-wider&quot;&gt;Structured Debate&lt;/h2&gt;
+&lt;span class=&quot;text-xs text-neutral-gray&quot;&gt;Conflict Resolution Mode&lt;/span&gt;
+&lt;/div&gt;
+&lt;button class=&quot;text-primary font-bold text-sm shrink-0 px-2 py-1 rounded hover:bg-primary/10 transition-colors&quot;&gt;
+            Resolve
+        &lt;/button&gt;
+&lt;/header&gt;
+&lt;!-- Scrollable Content Area --&gt;
+&lt;main class=&quot;flex-1 overflow-y-auto scrollbar-hide pb-24&quot;&gt;
+&lt;!-- Assumption Title --&gt;
+&lt;div class=&quot;px-5 pt-6 pb-2&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2 mb-1&quot;&gt;
+&lt;span class=&quot;px-1.5 py-0.5 rounded text-[10px] font-bold uppercase bg-tension/20 text-tension border border-tension/30&quot;&gt;Active Dispute&lt;/span&gt;
+&lt;span class=&quot;text-xs text-neutral-gray&quot;&gt;#ASP-402&lt;/span&gt;
+&lt;/div&gt;
+&lt;h1 class=&quot;text-2xl md:text-[28px] font-bold leading-tight text-gray-900 dark:text-white&quot;&gt;Assumption Conflict: Q4 Growth&lt;/h1&gt;
+&lt;/div&gt;
+&lt;!-- Divergent Belief Ranges (Visualization) --&gt;
+&lt;div class=&quot;px-5 py-4&quot;&gt;
+&lt;div class=&quot;bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 p-4 shadow-sm&quot;&gt;
+&lt;div class=&quot;flex justify-between items-end mb-4&quot;&gt;
+&lt;div&gt;
+&lt;p class=&quot;text-neutral-gray text-xs font-bold uppercase tracking-wider&quot;&gt;Divergence Gap&lt;/p&gt;
+&lt;p class=&quot;text-tension text-2xl font-bold font-display&quot;&gt;50% &lt;span class=&quot;text-sm font-normal text-gray-500 dark:text-gray-400&quot;&gt;spread&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-1 text-xs text-neutral-gray bg-gray-100 dark:bg-gray-800/50 px-2 py-1 rounded&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[14px]&quot;&gt;analytics&lt;/span&gt;
+&lt;span&gt;Probability density&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Range Chart --&gt;
+&lt;div class=&quot;relative h-16 w-full bg-gray-100 dark:bg-[#232f48] rounded-lg overflow-hidden flex items-center mb-3&quot;&gt;
+&lt;!-- Grid lines --&gt;
+&lt;div class=&quot;absolute inset-0 grid grid-cols-4 border-gray-200 dark:border-gray-700/30 divide-x divide-dashed divide-gray-300 dark:divide-gray-600/30&quot;&gt;
+&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Range A --&gt;
+&lt;div class=&quot;absolute top-2 bottom-2 left-[10%] w-[10%] bg-blue-500/30 border-l-2 border-r-2 border-blue-500 rounded-sm z-10 group&quot;&gt;
+&lt;div class=&quot;absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full opacity-0 group-hover:opacity-100 transition-opacity bg-blue-600 text-white text-[10px] px-1 rounded whitespace-nowrap&quot;&gt;User A&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Conflict Zone --&gt;
+&lt;div class=&quot;absolute top-4 bottom-4 left-[20%] w-[50%] bg-[url(&#x27;data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSJ0cmFuc3BhcmVudCIvPgo8cGF0aCBkPSJNLTEgMUw1IDdNLTEgNUw1IDExIiBzdHJva2U9IiNmNTllMGIiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iMC4zIi8+Cjwvc3ZnPg==&#x27;)] opacity-50 z-0&quot;&gt;&lt;/div&gt;
+&lt;!-- Range B --&gt;
+&lt;div class=&quot;absolute top-2 bottom-2 left-[70%] w-[10%] bg-purple-500/30 border-l-2 border-r-2 border-purple-500 rounded-sm z-10 group&quot;&gt;
+&lt;div class=&quot;absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full opacity-0 group-hover:opacity-100 transition-opacity bg-purple-600 text-white text-[10px] px-1 rounded whitespace-nowrap&quot;&gt;User B&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between text-[11px] font-bold text-neutral-gray font-display uppercase tracking-wide&quot;&gt;
+&lt;div class=&quot;flex items-center gap-1.5&quot;&gt;
+&lt;div class=&quot;size-2 rounded-full bg-blue-500&quot;&gt;&lt;/div&gt;
+                        User A (10-20%)
+                    &lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-1.5&quot;&gt;
+&lt;div class=&quot;size-2 rounded-full bg-purple-500&quot;&gt;&lt;/div&gt;
+                        User B (70-80%)
+                    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Common Ground Section --&gt;
+&lt;div class=&quot;px-5 pb-6&quot;&gt;
+&lt;h3 class=&quot;text-xs font-bold text-neutral-gray uppercase tracking-widest mb-3 flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-agreement text-[16px]&quot;&gt;handshake&lt;/span&gt;
+                Common Ground
+            &lt;/h3&gt;
+&lt;div class=&quot;flex flex-col gap-2&quot;&gt;
+&lt;div class=&quot;flex items-start gap-3 p-3 rounded-lg bg-agreement/5 border border-agreement/20&quot;&gt;
+&lt;div class=&quot;text-agreement mt-0.5&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;check_circle&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;p class=&quot;text-sm font-medium text-gray-900 dark:text-gray-200&quot;&gt;Market Cap is &amp;gt;$50B&lt;/p&gt;
+&lt;p class=&quot;text-[10px] text-neutral-gray mt-0.5 font-display&quot;&gt;Source: Bloomberg API • Verified 2h ago&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-start gap-3 p-3 rounded-lg bg-agreement/5 border border-agreement/20&quot;&gt;
+&lt;div class=&quot;text-agreement mt-0.5&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;check_circle&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;p class=&quot;text-sm font-medium text-gray-900 dark:text-gray-200&quot;&gt;Competitor X is exiting market&lt;/p&gt;
+&lt;p class=&quot;text-[10px] text-neutral-gray mt-0.5 font-display&quot;&gt;Source: Q3 Earnings Call&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;h-px bg-gray-200 dark:bg-gray-800 mx-5 mb-6&quot;&gt;&lt;/div&gt;
+&lt;!-- Evidence Duel Section --&gt;
+&lt;div class=&quot;px-5&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between mb-4&quot;&gt;
+&lt;h3 class=&quot;text-xs font-bold text-neutral-gray uppercase tracking-widest flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-tension text-[16px]&quot;&gt;swords&lt;/span&gt;
+                    Evidence Duel
+                &lt;/h3&gt;
+&lt;span class=&quot;text-[10px] px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-neutral-gray&quot;&gt;3 Active Threads&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Stance A --&gt;
+&lt;div class=&quot;mb-6&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between mb-3 px-1&quot;&gt;
+&lt;span class=&quot;text-sm font-bold text-blue-500&quot;&gt;Stance A (Bearish)&lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-mono text-neutral-gray&quot;&gt;Confidence: 65%&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-3&quot;&gt;
+&lt;!-- Card 1 --&gt;
+&lt;div class=&quot;group relative bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 rounded-lg p-3 hover:border-blue-500/50 transition-colors cursor-pointer shadow-sm&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start mb-2&quot;&gt;
+&lt;span class=&quot;text-[10px] font-mono text-neutral-gray bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded&quot;&gt;#EV-102&lt;/span&gt;
+&lt;div class=&quot;flex gap-1&quot;&gt;
+&lt;span class=&quot;size-2 rounded-full bg-blue-500&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;size-2 rounded-full bg-blue-500/30&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;size-2 rounded-full bg-blue-500/30&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2 leading-snug&quot;&gt;Historical Trend Analysis shows cyclical downturn&lt;/p&gt;
+&lt;div class=&quot;flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800&quot;&gt;
+&lt;span class=&quot;text-[10px] font-bold text-green-600 dark:text-green-400 flex items-center gap-1&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[12px]&quot;&gt;verified_user&lt;/span&gt; High Trust
+                            &lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-bold uppercase text-neutral-gray&quot;&gt;Impact: High&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Card 2 --&gt;
+&lt;div class=&quot;group relative bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 rounded-lg p-3 hover:border-blue-500/50 transition-colors cursor-pointer shadow-sm opacity-70&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start mb-2&quot;&gt;
+&lt;span class=&quot;text-[10px] font-mono text-neutral-gray bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded&quot;&gt;#EV-105&lt;/span&gt;
+&lt;div class=&quot;flex gap-1&quot;&gt;
+&lt;span class=&quot;size-2 rounded-full bg-blue-500&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;size-2 rounded-full bg-gray-700/30&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;size-2 rounded-full bg-gray-700/30&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-sm font-medium text-gray-900 dark:text-gray-300 mb-2 leading-snug&quot;&gt;CEO Statement regarding supply chain risks&lt;/p&gt;
+&lt;div class=&quot;flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800&quot;&gt;
+&lt;span class=&quot;text-[10px] font-bold text-neutral-gray flex items-center gap-1&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[12px]&quot;&gt;help&lt;/span&gt; Unverified
+                            &lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-bold uppercase text-neutral-gray&quot;&gt;Impact: Low&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Stance B --&gt;
+&lt;div class=&quot;mb-8&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between mb-3 px-1&quot;&gt;
+&lt;span class=&quot;text-sm font-bold text-purple-500&quot;&gt;Stance B (Bullish)&lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-mono text-neutral-gray&quot;&gt;Confidence: 82%&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-3&quot;&gt;
+&lt;!-- Card 3 --&gt;
+&lt;div class=&quot;group relative bg-surface-light dark:bg-surface-dark border-l-4 border-l-tension border-y border-r border-gray-200 dark:border-y-gray-800 dark:border-r-gray-800 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors cursor-pointer shadow-sm&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start mb-2&quot;&gt;
+&lt;span class=&quot;text-[10px] font-mono text-tension bg-tension/10 px-1.5 py-0.5 rounded border border-tension/20&quot;&gt;#EV-299 • Disputed&lt;/span&gt;
+&lt;div class=&quot;flex gap-1&quot;&gt;
+&lt;span class=&quot;size-2 rounded-full bg-purple-500&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;size-2 rounded-full bg-purple-500&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;size-2 rounded-full bg-purple-500&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2 leading-snug&quot;&gt;Supply Chain Audit Report Q3 2024&lt;/p&gt;
+&lt;p class=&quot;text-xs text-neutral-gray mb-3 line-clamp-2&quot;&gt;Direct contradiction to CEO statement. Audit reveals 20% surplus inventory capability for Q4.&lt;/p&gt;
+&lt;div class=&quot;flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800&quot;&gt;
+&lt;span class=&quot;text-[10px] font-bold text-green-600 dark:text-green-400 flex items-center gap-1&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[12px]&quot;&gt;verified_user&lt;/span&gt; High Trust
+                            &lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-bold uppercase text-tension&quot;&gt;Impact: Critical&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Bottom Spacer --&gt;
+&lt;div class=&quot;h-24&quot;&gt;&lt;/div&gt;
+&lt;/main&gt;
+&lt;!-- Footer Action Bar --&gt;
+&lt;div class=&quot;absolute bottom-0 left-0 right-0 bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800 p-4 z-20&quot;&gt;
+&lt;!-- Status Bar --&gt;
+&lt;div class=&quot;flex justify-between items-center mb-4 text-xs font-display&quot;&gt;
+&lt;span class=&quot;text-neutral-gray&quot;&gt;Convergence Probability&lt;/span&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;div class=&quot;w-24 h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden&quot;&gt;
+&lt;div class=&quot;h-full bg-primary w-[35%] rounded-full&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;font-bold text-gray-900 dark:text-white&quot;&gt;35%&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Main Action --&gt;
+&lt;button class=&quot;w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white font-bold py-3.5 px-4 rounded-lg shadow-lg shadow-blue-500/20 transition-all active:scale-[0.98]&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[20px]&quot;&gt;add_circle&lt;/span&gt;
+            Call for New Evidence
+        &lt;/button&gt;
+&lt;div class=&quot;text-center mt-2&quot;&gt;
+&lt;p class=&quot;text-[10px] text-neutral-gray&quot;&gt;Define an observation to resolve #EV-299&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;" class="h-[900px] w-full" sandbox="allow-scripts allow-same-origin"></iframe></div></main><footer class="border-t border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-4 text-sm text-gray-600"><span>Confidence range, assumptions, provenance, and sensitivity first.</span><div class="flex gap-3"><a class="hover:text-blue-700" href="/privacy">Privacy</a><a class="hover:text-blue-700" href="/terms">Terms</a></div></div></footer></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-50294f2d1a14f928.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-e24765025faea277.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-2eae595a34961720.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/51624f46484614f8.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"V_sCMn05SiQGXpllElBBM\",\"c\":[\"\",\"stitch\",\"structured-debate-panel\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"stitch\",{\"children\":[[\"slug\",\"structured-debate-panel\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/51624f46484614f8.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first public site and dashboard shell for Zeo.\"}]]\n"])</script><script>self.__next_f.push([1,"f:T3422,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eZeo - Structured Debate Panel\u003c/title\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700\u0026amp;family=Noto+Sans:wght@400;500;700\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003cscript id=\"tailwind-config\"\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        \"primary\": \"#135bec\",\n                        \"background-light\": \"#f6f6f8\",\n                        \"background-dark\": \"#0f0f12\",\n                        \"surface-dark\": \"#18181b\",\n                        \"surface-light\": \"#ffffff\",\n                        \"tension\": \"#f59e0b\", // Amber\n                        \"agreement\": \"#14b8a6\", // Teal\n                        \"neutral-gray\": \"#92a4c9\",\n                    },\n                    fontFamily: {\n                        \"display\": [\"Space Grotesk\", \"sans-serif\"],\n                        \"body\": [\"Noto Sans\", \"sans-serif\"],\n                    },\n                    borderRadius: {\"DEFAULT\": \"0.25rem\", \"lg\": \"0.5rem\", \"xl\": \"0.75rem\", \"full\": \"9999px\"},\n                },\n            },\n        }\n    \u003c/script\u003e\n\u003cstyle\u003e\n        .scrollbar-hide::-webkit-scrollbar {\n            display: none;\n        }\n        .scrollbar-hide {\n            -ms-overflow-style: none;\n            scrollbar-width: none;\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark font-display antialiased text-gray-900 dark:text-white overflow-hidden h-screen flex flex-col w-full max-w-md mx-auto shadow-2xl relative border-x border-gray-200 dark:border-gray-800\"\u003e\n\u003c!-- Header --\u003e\n\u003cheader class=\"flex items-center bg-surface-light dark:bg-surface-dark px-4 py-3 justify-between border-b border-gray-200 dark:border-gray-800 z-10 shrink-0\"\u003e\n\u003cbutton class=\"text-gray-500 dark:text-gray-400 flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[24px]\"\u003eexpand_more\u003c/span\u003e\n\u003c/button\u003e\n\u003cdiv class=\"flex flex-col items-center\"\u003e\n\u003ch2 class=\"text-gray-900 dark:text-white text-sm font-bold uppercase tracking-wider\"\u003eStructured Debate\u003c/h2\u003e\n\u003cspan class=\"text-xs text-neutral-gray\"\u003eConflict Resolution Mode\u003c/span\u003e\n\u003c/div\u003e\n\u003cbutton class=\"text-primary font-bold text-sm shrink-0 px-2 py-1 rounded hover:bg-primary/10 transition-colors\"\u003e\n            Resolve\n        \u003c/button\u003e\n\u003c/header\u003e\n\u003c!-- Scrollable Content Area --\u003e\n\u003cmain class=\"flex-1 overflow-y-auto scrollbar-hide pb-24\"\u003e\n\u003c!-- Assumption Title --\u003e\n\u003cdiv class=\"px-5 pt-6 pb-2\"\u003e\n\u003cdiv class=\"flex items-center gap-2 mb-1\"\u003e\n\u003cspan class=\"px-1.5 py-0.5 rounded text-[10px] font-bold uppercase bg-tension/20 text-tension border border-tension/30\"\u003eActive Dispute\u003c/span\u003e\n\u003cspan class=\"text-xs text-neutral-gray\"\u003e#ASP-402\u003c/span\u003e\n\u003c/div\u003e\n\u003ch1 class=\"text-2xl md:text-[28px] font-bold leading-tight text-gray-900 dark:text-white\"\u003eAssumption Conflict: Q4 Growth\u003c/h1\u003e\n\u003c/div\u003e\n\u003c!-- Divergent Belief Ranges (Visualization) --\u003e\n\u003cdiv class=\"px-5 py-4\"\u003e\n\u003cdiv class=\"bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 p-4 shadow-sm\"\u003e\n\u003cdiv class=\"flex justify-between items-end mb-4\"\u003e\n\u003cdiv\u003e\n\u003cp class=\"text-neutral-gray text-xs font-bold uppercase tracking-wider\"\u003eDivergence Gap\u003c/p\u003e\n\u003cp class=\"text-tension text-2xl font-bold font-display\"\u003e50% \u003cspan class=\"text-sm font-normal text-gray-500 dark:text-gray-400\"\u003espread\u003c/span\u003e\u003c/p\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-1 text-xs text-neutral-gray bg-gray-100 dark:bg-gray-800/50 px-2 py-1 rounded\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[14px]\"\u003eanalytics\u003c/span\u003e\n\u003cspan\u003eProbability density\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Range Chart --\u003e\n\u003cdiv class=\"relative h-16 w-full bg-gray-100 dark:bg-[#232f48] rounded-lg overflow-hidden flex items-center mb-3\"\u003e\n\u003c!-- Grid lines --\u003e\n\u003cdiv class=\"absolute inset-0 grid grid-cols-4 border-gray-200 dark:border-gray-700/30 divide-x divide-dashed divide-gray-300 dark:divide-gray-600/30\"\u003e\n\u003cdiv\u003e\u003c/div\u003e\u003cdiv\u003e\u003c/div\u003e\u003cdiv\u003e\u003c/div\u003e\u003cdiv\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Range A --\u003e\n\u003cdiv class=\"absolute top-2 bottom-2 left-[10%] w-[10%] bg-blue-500/30 border-l-2 border-r-2 border-blue-500 rounded-sm z-10 group\"\u003e\n\u003cdiv class=\"absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full opacity-0 group-hover:opacity-100 transition-opacity bg-blue-600 text-white text-[10px] px-1 rounded whitespace-nowrap\"\u003eUser A\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Conflict Zone --\u003e\n\u003cdiv class=\"absolute top-4 bottom-4 left-[20%] w-[50%] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSJ0cmFuc3BhcmVudCIvPgo8cGF0aCBkPSJNLTEgMUw1IDdNLTEgNUw1IDExIiBzdHJva2U9IiNmNTllMGIiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iMC4zIi8+Cjwvc3ZnPg==')] opacity-50 z-0\"\u003e\u003c/div\u003e\n\u003c!-- Range B --\u003e\n\u003cdiv class=\"absolute top-2 bottom-2 left-[70%] w-[10%] bg-purple-500/30 border-l-2 border-r-2 border-purple-500 rounded-sm z-10 group\"\u003e\n\u003cdiv class=\"absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full opacity-0 group-hover:opacity-100 transition-opacity bg-purple-600 text-white text-[10px] px-1 rounded whitespace-nowrap\"\u003eUser B\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between text-[11px] font-bold text-neutral-gray font-display uppercase tracking-wide\"\u003e\n\u003cdiv class=\"flex items-center gap-1.5\"\u003e\n\u003cdiv class=\"size-2 rounded-full bg-blue-500\"\u003e\u003c/div\u003e\n                        User A (10-20%)\n                    \u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-1.5\"\u003e\n\u003cdiv class=\"size-2 rounded-full bg-purple-500\"\u003e\u003c/div\u003e\n                        User B (70-80%)\n                    \u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Common Ground Section --\u003e\n\u003cdiv class=\"px-5 pb-6\"\u003e\n\u003ch3 class=\"text-xs font-bold text-neutral-gray uppercase tracking-widest mb-3 flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-agreement text-[16px]\"\u003ehandshake\u003c/span\u003e\n                Common Ground\n            \u003c/h3\u003e\n\u003cdiv class=\"flex flex-col gap-2\"\u003e\n\u003cdiv class=\"flex items-start gap-3 p-3 rounded-lg bg-agreement/5 border border-agreement/20\"\u003e\n\u003cdiv class=\"text-agreement mt-0.5\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003echeck_circle\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003cp class=\"text-sm font-medium text-gray-900 dark:text-gray-200\"\u003eMarket Cap is \u0026gt;$50B\u003c/p\u003e\n\u003cp class=\"text-[10px] text-neutral-gray mt-0.5 font-display\"\u003eSource: Bloomberg API • Verified 2h ago\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-start gap-3 p-3 rounded-lg bg-agreement/5 border border-agreement/20\"\u003e\n\u003cdiv class=\"text-agreement mt-0.5\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003echeck_circle\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003cp class=\"text-sm font-medium text-gray-900 dark:text-gray-200\"\u003eCompetitor X is exiting market\u003c/p\u003e\n\u003cp class=\"text-[10px] text-neutral-gray mt-0.5 font-display\"\u003eSource: Q3 Earnings Call\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"h-px bg-gray-200 dark:bg-gray-800 mx-5 mb-6\"\u003e\u003c/div\u003e\n\u003c!-- Evidence Duel Section --\u003e\n\u003cdiv class=\"px-5\"\u003e\n\u003cdiv class=\"flex items-center justify-between mb-4\"\u003e\n\u003ch3 class=\"text-xs font-bold text-neutral-gray uppercase tracking-widest flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-tension text-[16px]\"\u003eswords\u003c/span\u003e\n                    Evidence Duel\n                \u003c/h3\u003e\n\u003cspan class=\"text-[10px] px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-neutral-gray\"\u003e3 Active Threads\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Stance A --\u003e\n\u003cdiv class=\"mb-6\"\u003e\n\u003cdiv class=\"flex items-center justify-between mb-3 px-1\"\u003e\n\u003cspan class=\"text-sm font-bold text-blue-500\"\u003eStance A (Bearish)\u003c/span\u003e\n\u003cspan class=\"text-[10px] font-mono text-neutral-gray\"\u003eConfidence: 65%\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-3\"\u003e\n\u003c!-- Card 1 --\u003e\n\u003cdiv class=\"group relative bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 rounded-lg p-3 hover:border-blue-500/50 transition-colors cursor-pointer shadow-sm\"\u003e\n\u003cdiv class=\"flex justify-between items-start mb-2\"\u003e\n\u003cspan class=\"text-[10px] font-mono text-neutral-gray bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded\"\u003e#EV-102\u003c/span\u003e\n\u003cdiv class=\"flex gap-1\"\u003e\n\u003cspan class=\"size-2 rounded-full bg-blue-500\"\u003e\u003c/span\u003e\n\u003cspan class=\"size-2 rounded-full bg-blue-500/30\"\u003e\u003c/span\u003e\n\u003cspan class=\"size-2 rounded-full bg-blue-500/30\"\u003e\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cp class=\"text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2 leading-snug\"\u003eHistorical Trend Analysis shows cyclical downturn\u003c/p\u003e\n\u003cdiv class=\"flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800\"\u003e\n\u003cspan class=\"text-[10px] font-bold text-green-600 dark:text-green-400 flex items-center gap-1\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[12px]\"\u003everified_user\u003c/span\u003e High Trust\n                            \u003c/span\u003e\n\u003cspan class=\"text-[10px] font-bold uppercase text-neutral-gray\"\u003eImpact: High\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Card 2 --\u003e\n\u003cdiv class=\"group relative bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 rounded-lg p-3 hover:border-blue-500/50 transition-colors cursor-pointer shadow-sm opacity-70\"\u003e\n\u003cdiv class=\"flex justify-between items-start mb-2\"\u003e\n\u003cspan class=\"text-[10px] font-mono text-neutral-gray bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded\"\u003e#EV-105\u003c/span\u003e\n\u003cdiv class=\"flex gap-1\"\u003e\n\u003cspan class=\"size-2 rounded-full bg-blue-500\"\u003e\u003c/span\u003e\n\u003cspan class=\"size-2 rounded-full bg-gray-700/30\"\u003e\u003c/span\u003e\n\u003cspan class=\"size-2 rounded-full bg-gray-700/30\"\u003e\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cp class=\"text-sm font-medium text-gray-900 dark:text-gray-300 mb-2 leading-snug\"\u003eCEO Statement regarding supply chain risks\u003c/p\u003e\n\u003cdiv class=\"flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800\"\u003e\n\u003cspan class=\"text-[10px] font-bold text-neutral-gray flex items-center gap-1\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[12px]\"\u003ehelp\u003c/span\u003e Unverified\n                            \u003c/span\u003e\n\u003cspan class=\"text-[10px] font-bold uppercase text-neutral-gray\"\u003eImpact: Low\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Stance B --\u003e\n\u003cdiv class=\"mb-8\"\u003e\n\u003cdiv class=\"flex items-center justify-between mb-3 px-1\"\u003e\n\u003cspan class=\"text-sm font-bold text-purple-500\"\u003eStance B (Bullish)\u003c/span\u003e\n\u003cspan class=\"text-[10px] font-mono text-neutral-gray\"\u003eConfidence: 82%\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-3\"\u003e\n\u003c!-- Card 3 --\u003e\n\u003cdiv class=\"group relative bg-surface-light dark:bg-surface-dark border-l-4 border-l-tension border-y border-r border-gray-200 dark:border-y-gray-800 dark:border-r-gray-800 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors cursor-pointer shadow-sm\"\u003e\n\u003cdiv class=\"flex justify-between items-start mb-2\"\u003e\n\u003cspan class=\"text-[10px] font-mono text-tension bg-tension/10 px-1.5 py-0.5 rounded border border-tension/20\"\u003e#EV-299 • Disputed\u003c/span\u003e\n\u003cdiv class=\"flex gap-1\"\u003e\n\u003cspan class=\"size-2 rounded-full bg-purple-500\"\u003e\u003c/span\u003e\n\u003cspan class=\"size-2 rounded-full bg-purple-500\"\u003e\u003c/span\u003e\n\u003cspan class=\"size-2 rounded-full bg-purple-500\"\u003e\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cp class=\"text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2 leading-snug\"\u003eSupply Chain Audit Report Q3 2024\u003c/p\u003e\n\u003cp class=\"text-xs text-neutral-gray mb-3 line-clamp-2\"\u003eDirect contradiction to CEO statement. Audit reveals 20% surplus inventory capability for Q4.\u003c/p\u003e\n\u003cdiv class=\"flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800\"\u003e\n\u003cspan class=\"text-[10px] font-bold text-green-600 dark:text-green-400 flex items-center gap-1\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[12px]\"\u003everified_user\u003c/span\u003e High Trust\n                            \u003c/span\u003e\n\u003cspan class=\"text-[10px] font-bold uppercase text-tension\"\u003eImpact: Critical\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Bottom Spacer --\u003e\n\u003cdiv class=\"h-24\"\u003e\u003c/div\u003e\n\u003c/main\u003e\n\u003c!-- Footer Action Bar --\u003e\n\u003cdiv class=\"absolute bottom-0 left-0 right-0 bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800 p-4 z-20\"\u003e\n\u003c!-- Status Bar --\u003e\n\u003cdiv class=\"flex justify-between items-center mb-4 text-xs font-display\"\u003e\n\u003cspan class=\"text-neutral-gray\"\u003eConvergence Probability\u003c/span\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cdiv class=\"w-24 h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden\"\u003e\n\u003cdiv class=\"h-full bg-primary w-[35%] rounded-full\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"font-bold text-gray-900 dark:text-white\"\u003e35%\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Main Action --\u003e\n\u003cbutton class=\"w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white font-bold py-3.5 px-4 rounded-lg shadow-lg shadow-blue-500/20 transition-all active:scale-[0.98]\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[20px]\"\u003eadd_circle\u003c/span\u003e\n            Call for New Evidence\n        \u003c/button\u003e\n\u003cdiv class=\"text-center mt-2\"\u003e\n\u003cp class=\"text-[10px] text-neutral-gray\"\u003eDefine an observation to resolve #EV-299\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"div\",null,{\"className\":\"min-h-screen bg-gray-50 text-gray-900\",\"children\":[[\"$\",\"header\",null,{\"className\":\"border-b border-gray-200 bg-white\",\"children\":[\"$\",\"div\",null,{\"className\":\"mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4\",\"children\":[[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"text-lg font-semibold text-blue-700\",\"children\":\"Zeo\"}],[\"$\",\"nav\",null,{\"className\":\"flex flex-wrap items-center gap-4 text-sm\",\"children\":[[[\"$\",\"$L5\",\"/\",{\"href\":\"/\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Home\"}],[\"$\",\"$L5\",\"/about\",{\"href\":\"/about\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"About\"}],[\"$\",\"$L5\",\"/pricing\",{\"href\":\"/pricing\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Pricing\"}],[\"$\",\"$L5\",\"/platform\",{\"href\":\"/platform\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Platform\"}],[\"$\",\"$L5\",\"/stitch\",{\"href\":\"/stitch\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Stitch Pages\"}],[\"$\",\"$L5\",\"/contact\",{\"href\":\"/contact\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Contact\"}]],[\"$\",\"$L5\",null,{\"href\":\"/dashboard\",\"className\":\"rounded border border-blue-200 px-3 py-1 text-blue-700 hover:bg-blue-50\",\"children\":\"Dashboard\"}]]}]]}]}],[\"$\",\"main\",null,{\"className\":\"mx-auto w-full max-w-6xl px-6 py-10\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"mb-6 text-3xl font-semibold\",\"children\":\"Structured Debate Panel\"}],[\"$\",\"div\",null,{\"className\":\"overflow-hidden rounded border border-gray-200 bg-white\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Structured Debate Panel\",\"srcDoc\":\"$f\",\"className\":\"h-[900px] w-full\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]]}],\"$L10\"]}]\n"])</script><script>self.__next_f.push([1,"10:[\"$\",\"footer\",null,{\"className\":\"border-t border-gray-200 bg-white\",\"children\":[\"$\",\"div\",null,{\"className\":\"mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-4 text-sm text-gray-600\",\"children\":[[\"$\",\"span\",null,{\"children\":\"Confidence range, assumptions, provenance, and sensitivity first.\"}],[\"$\",\"div\",null,{\"className\":\"flex gap-3\",\"children\":[[\"$\",\"$L5\",null,{\"href\":\"/privacy\",\"className\":\"hover:text-blue-700\",\"children\":\"Privacy\"}],[\"$\",\"$L5\",null,{\"href\":\"/terms\",\"className\":\"hover:text-blue-700\",\"children\":\"Terms\"}]]}]]}]}]\n"])</script></body></html>

@@ -1,0 +1,310 @@
+1:"$Sreact.fragment"
+2:I[9065,[],""]
+3:I[6815,["8039","static/chunks/app/error-e24765025faea277.js"],"default"]
+4:I[3613,[],""]
+5:I[3180,["3180","static/chunks/3180-49ca78bebb59785c.js","2706","static/chunks/app/stitch/%5Bslug%5D/page-2eae595a34961720.js"],""]
+7:I[8028,[],"OutletBoundary"]
+8:"$Sreact.suspense"
+a:I[8028,[],"ViewportBoundary"]
+c:I[8028,[],"MetadataBoundary"]
+e:I[7211,[],""]
+:HL["/_next/static/css/51624f46484614f8.css","style"]
+0:{"P":null,"b":"V_sCMn05SiQGXpllElBBM","c":["","stitch","signal-dominance-deep-dive"],"q":"","i":false,"f":[[["",{"children":["stitch",{"children":[["slug","signal-dominance-deep-dive","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/51624f46484614f8.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","children":["$","body",null,{"className":"antialiased bg-gray-50 text-gray-900","children":["$","$L2",null,{"parallelRouterKey":"children","error":"$3","errorStyles":[],"errorScripts":[],"template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","main",null,{"className":"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center","children":[["$","h1",null,{"className":"text-3xl font-semibold","children":"Page not found"}],["$","p",null,{"className":"mt-3 text-gray-600","children":"The page you requested could not be found."}],["$","$L5",null,{"href":"/","className":"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100","children":"Return home"}]]}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L6",null,["$","$L7",null,{"children":["$","$8",null,{"name":"Next.MetadataOutlet","children":"$@9"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$La",null,{"children":"$Lb"}],["$","div",null,{"hidden":true,"children":["$","$Lc",null,{"children":["$","$8",null,{"name":"Next.Metadata","children":"$Ld"}]}]}],null]}],false]],"m":"$undefined","G":["$e",[]],"S":true}
+b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+9:null
+d:[["$","title","0",{"children":"Zeo"}],["$","meta","1",{"name":"description","content":"Static-first public site and dashboard shell for Zeo."}]]
+f:T3688,<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Signal Dominance Deep Dive</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "card-dark": "#18232e",
+                        "border-dark": "#2d3a47",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for high-density tech feel */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #101922; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d3a47; 
+            border-radius: 2px;
+        }
+        
+        /* Utility for techy tiny labels */
+        .tech-label {
+            @apply font-mono text-[10px] text-gray-500 uppercase tracking-widest opacity-60;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased min-h-screen flex flex-col overflow-hidden">
+<!-- Header -->
+<header class="flex-none sticky top-0 z-50 bg-background-light dark:bg-background-dark border-b border-gray-200 dark:border-border-dark px-4 py-3">
+<div class="flex items-center justify-between">
+<button class="flex items-center justify-center p-2 -ml-2 rounded-full hover:bg-gray-200 dark:hover:bg-card-dark text-gray-600 dark:text-gray-400 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex flex-col items-center">
+<h1 class="text-sm font-bold uppercase tracking-wide">Signal Analysis</h1>
+<span class="tech-label">ID: 8F2A-USER</span>
+</div>
+<button class="flex items-center justify-center p-2 -mr-2 rounded-full hover:bg-gray-200 dark:hover:bg-card-dark text-primary transition-colors">
+<span class="material-symbols-outlined">ios_share</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto pb-24">
+<!-- Signal Header Card -->
+<div class="p-4 space-y-4">
+<div class="flex items-start justify-between">
+<div>
+<span class="tech-label mb-1 block">Signal Name</span>
+<h2 class="text-2xl font-bold leading-tight">USER_ACTIVITY_LOG</h2>
+<div class="flex items-center gap-2 mt-1">
+<span class="inline-flex items-center rounded-full bg-red-500/10 px-2 py-0.5 text-xs font-medium text-red-500 ring-1 ring-inset ring-red-500/20">Critical Impact</span>
+<span class="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary ring-1 ring-inset ring-primary/20">v2.1.0</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="text-right">
+<span class="text-3xl font-bold text-primary">68.4%</span>
+<p class="text-xs text-gray-500 font-mono text-right">DOMINANCE</p>
+</div>
+</div>
+</div>
+<!-- Key Metrics Grid -->
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark rounded-lg p-3">
+<div class="flex justify-between items-start mb-2">
+<span class="tech-label">Marginal Effect</span>
+<span class="material-symbols-outlined text-primary text-[16px]">trending_up</span>
+</div>
+<div class="text-xl font-bold">+0.85</div>
+<div class="text-xs text-gray-500 mt-1">dy/dx Sensitivity</div>
+<div class="mt-2 h-1 w-full bg-gray-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[85%]"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark rounded-lg p-3">
+<div class="flex justify-between items-start mb-2">
+<span class="tech-label">Risk Level</span>
+<span class="material-symbols-outlined text-red-500 text-[16px]">warning</span>
+</div>
+<div class="text-xl font-bold text-red-400">High</div>
+<div class="text-xs text-gray-500 mt-1">Bias Potential</div>
+<div class="mt-2 h-1 w-full bg-gray-800 rounded-full overflow-hidden">
+<div class="h-full bg-red-500 w-[75%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Contribution Weight Section -->
+<div class="px-4 py-2">
+<div class="flex justify-between items-end mb-3">
+<h3 class="text-sm font-bold uppercase tracking-wider text-gray-400">Global Contribution</h3>
+<span class="font-mono text-xs text-primary bg-primary/10 px-1 rounded">[bind: weights]</span>
+</div>
+<div class="bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark rounded-lg p-4">
+<div class="space-y-4">
+<!-- Visualization of Dominance -->
+<div>
+<div class="flex justify-between text-xs mb-1.5">
+<span class="font-medium">Dominance Score</span>
+<span class="font-mono">0.684</span>
+</div>
+<div class="flex w-full h-3 bg-gray-100 dark:bg-gray-800 rounded-sm overflow-hidden">
+<div class="h-full bg-primary" style="width: 68.4%"></div>
+<div class="h-full bg-gray-300 dark:bg-gray-700" style="width: 31.6%"></div>
+</div>
+<div class="flex justify-between mt-1 text-[10px] text-gray-500 font-mono">
+<span>THIS SIGNAL</span>
+<span>AGGREGATE POOL</span>
+</div>
+</div>
+<div class="border-t border-gray-200 dark:border-border-dark pt-3">
+<div class="flex justify-between items-center text-xs">
+<span class="text-gray-500">Threshold Check</span>
+<span class="text-red-400 font-medium">Exceeds Limit (&gt;60%)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sensitivity Analysis Chart -->
+<div class="px-4 py-4">
+<div class="flex justify-between items-end mb-3">
+<h3 class="text-sm font-bold uppercase tracking-wider text-gray-400">Sensitivity Analysis</h3>
+<span class="font-mono text-xs text-primary bg-primary/10 px-1 rounded">[view: plot_2d]</span>
+</div>
+<div class="bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark rounded-lg p-4 overflow-hidden relative">
+<div class="flex justify-between items-start mb-6">
+<div>
+<div class="text-sm font-medium text-gray-400">Marginal Effect Curve</div>
+<div class="text-xs text-gray-500">Input Variance vs Output Confidence</div>
+</div>
+<div class="text-right">
+<div class="text-primary font-mono font-bold text-lg">+12%</div>
+<div class="text-[10px] text-gray-500 uppercase">Last 24h</div>
+</div>
+</div>
+<!-- Chart SVG -->
+<div class="h-32 w-full relative">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 100 40">
+<!-- Grid lines -->
+<line stroke="#2d3a47" stroke-dasharray="2" stroke-width="0.2" x1="0" x2="100" y1="0" y2="0"></line>
+<line stroke="#2d3a47" stroke-dasharray="2" stroke-width="0.2" x1="0" x2="100" y1="10" y2="10"></line>
+<line stroke="#2d3a47" stroke-dasharray="2" stroke-width="0.2" x1="0" x2="100" y1="20" y2="20"></line>
+<line stroke="#2d3a47" stroke-dasharray="2" stroke-width="0.2" x1="0" x2="100" y1="30" y2="30"></line>
+<!-- Area gradient -->
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#137fec" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#137fec" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,35 Q20,32 40,20 T100,5 V40 H0 Z" fill="url(#chartGradient)"></path>
+<!-- Line -->
+<path d="M0,35 Q20,32 40,20 T100,5" fill="none" stroke="#137fec" stroke-linecap="round" stroke-width="1.5"></path>
+<!-- Active Point -->
+<circle cx="70" cy="12.5" fill="#fff" r="2" stroke="#137fec" stroke-width="1"></circle>
+</svg>
+<!-- Chart Overlay Tooltip simulation -->
+<div class="absolute top-[25%] right-[25%] bg-background-dark border border-border-dark px-2 py-1 rounded text-[10px] font-mono shadow-lg">
+                        dx: 0.85
+                    </div>
+</div>
+<div class="flex justify-between mt-2 font-mono text-[10px] text-gray-500">
+<span>0.0</span>
+<span>0.2</span>
+<span>0.4</span>
+<span>0.6</span>
+<span>0.8</span>
+<span>1.0</span>
+</div>
+</div>
+</div>
+<!-- Falsification Simulator -->
+<div class="px-4 py-4">
+<div class="flex justify-between items-end mb-3">
+<h3 class="text-sm font-bold uppercase tracking-wider text-gray-400">Falsification Check</h3>
+<span class="font-mono text-xs text-primary bg-primary/10 px-1 rounded">[action: nullify]</span>
+</div>
+<div class="bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark rounded-lg p-0 overflow-hidden">
+<div class="p-4 border-b border-gray-200 dark:border-border-dark flex items-center justify-between">
+<div>
+<div class="text-sm font-medium text-white">Nullify Signal</div>
+<div class="text-xs text-gray-500">Simulate model output without this data.</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="p-4 bg-gray-50 dark:bg-black/20">
+<div class="flex items-center gap-3">
+<div class="h-10 w-1 rounded bg-red-500"></div>
+<div>
+<div class="text-xs text-gray-400 uppercase font-bold">Projected Variance</div>
+<div class="text-lg font-mono text-red-400">-42.8% <span class="text-xs text-gray-500 ml-1">Confidence Drop</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Alternative Signals List -->
+<div class="px-4 py-4 pb-8">
+<div class="flex justify-between items-end mb-3">
+<h3 class="text-sm font-bold uppercase tracking-wider text-gray-400">Alternative Signals</h3>
+<span class="font-mono text-xs text-primary bg-primary/10 px-1 rounded">[list: substitutes]</span>
+</div>
+<div class="bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark rounded-lg divide-y divide-gray-200 dark:divide-border-dark">
+<!-- Header Row -->
+<div class="grid grid-cols-6 px-4 py-2 bg-gray-50 dark:bg-black/20 text-[10px] uppercase font-bold text-gray-500">
+<div class="col-span-4">Signal ID</div>
+<div class="col-span-2 text-right">Uncertainty</div>
+</div>
+<!-- Item 1 -->
+<div class="grid grid-cols-6 px-4 py-3 items-center hover:bg-white/5 cursor-pointer group">
+<div class="col-span-4">
+<div class="text-sm font-medium text-white group-hover:text-primary transition-colors">Session_Duration</div>
+<div class="text-[10px] text-gray-500 font-mono">ID: 9942-A</div>
+</div>
+<div class="col-span-2 text-right">
+<span class="inline-flex items-center rounded-md bg-green-500/10 px-2 py-1 text-xs font-medium text-green-500 ring-1 ring-inset ring-green-500/20">Low</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="grid grid-cols-6 px-4 py-3 items-center hover:bg-white/5 cursor-pointer group">
+<div class="col-span-4">
+<div class="text-sm font-medium text-white group-hover:text-primary transition-colors">Click_Depth_Avg</div>
+<div class="text-[10px] text-gray-500 font-mono">ID: 8821-B</div>
+</div>
+<div class="col-span-2 text-right">
+<span class="inline-flex items-center rounded-md bg-yellow-500/10 px-2 py-1 text-xs font-medium text-yellow-500 ring-1 ring-inset ring-yellow-500/20">Med</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="grid grid-cols-6 px-4 py-3 items-center hover:bg-white/5 cursor-pointer group">
+<div class="col-span-4">
+<div class="text-sm font-medium text-white group-hover:text-primary transition-colors">Scroll_Velocity</div>
+<div class="text-[10px] text-gray-500 font-mono">ID: 7715-C</div>
+</div>
+<div class="col-span-2 text-right">
+<span class="inline-flex items-center rounded-md bg-red-500/10 px-2 py-1 text-xs font-medium text-red-500 ring-1 ring-inset ring-red-500/20">High</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Sticky Action Footer -->
+<footer class="flex-none sticky bottom-0 z-50 p-4 bg-background-light dark:bg-background-dark/95 backdrop-blur-md border-t border-gray-200 dark:border-border-dark">
+<div class="flex gap-3">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg bg-gray-200 dark:bg-gray-800 px-4 py-3 text-sm font-semibold text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                Export Log
+            </button>
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">flag</span>
+                Flag for Review
+            </button>
+</div>
+</footer>
+</body></html>6:["$","div",null,{"className":"min-h-screen bg-gray-50 text-gray-900","children":[["$","header",null,{"className":"border-b border-gray-200 bg-white","children":["$","div",null,{"className":"mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4","children":[["$","$L5",null,{"href":"/","className":"text-lg font-semibold text-blue-700","children":"Zeo"}],["$","nav",null,{"className":"flex flex-wrap items-center gap-4 text-sm","children":[[["$","$L5","/",{"href":"/","className":"text-gray-700 hover:text-blue-700","children":"Home"}],["$","$L5","/about",{"href":"/about","className":"text-gray-700 hover:text-blue-700","children":"About"}],["$","$L5","/pricing",{"href":"/pricing","className":"text-gray-700 hover:text-blue-700","children":"Pricing"}],["$","$L5","/platform",{"href":"/platform","className":"text-gray-700 hover:text-blue-700","children":"Platform"}],["$","$L5","/stitch",{"href":"/stitch","className":"text-gray-700 hover:text-blue-700","children":"Stitch Pages"}],["$","$L5","/contact",{"href":"/contact","className":"text-gray-700 hover:text-blue-700","children":"Contact"}]],["$","$L5",null,{"href":"/dashboard","className":"rounded border border-blue-200 px-3 py-1 text-blue-700 hover:bg-blue-50","children":"Dashboard"}]]}]]}]}],["$","main",null,{"className":"mx-auto w-full max-w-6xl px-6 py-10","children":[["$","h1",null,{"className":"mb-6 text-3xl font-semibold","children":"Signal Dominance Deep Dive"}],["$","div",null,{"className":"overflow-hidden rounded border border-gray-200 bg-white","children":["$","iframe",null,{"title":"Signal Dominance Deep Dive","srcDoc":"$f","className":"h-[900px] w-full","sandbox":"allow-scripts allow-same-origin"}]}]]}],"$L10"]}]
+10:["$","footer",null,{"className":"border-t border-gray-200 bg-white","children":["$","div",null,{"className":"mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-4 text-sm text-gray-600","children":[["$","span",null,{"children":"Confidence range, assumptions, provenance, and sensitivity first."}],["$","div",null,{"className":"flex gap-3","children":[["$","$L5",null,{"href":"/privacy","className":"hover:text-blue-700","children":"Privacy"}],["$","$L5",null,{"href":"/terms","className":"hover:text-blue-700","children":"Terms"}]]}]]}]}]

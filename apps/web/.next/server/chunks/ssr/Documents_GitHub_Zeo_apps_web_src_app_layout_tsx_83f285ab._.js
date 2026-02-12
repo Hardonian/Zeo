@@ -1,3 +1,0 @@
-module.exports=[45398,a=>{"use strict";var b=a.i(76120);function c({children:a}){return(0,b.jsx)("html",{lang:"en",children:(0,b.jsx)("body",{className:"antialiased bg-gray-50 text-gray-900",children:a})})}a.s(["default",()=>c,"metadata",0,{title:"Zeo",description:"Static-first public site and dashboard shell for Zeo."}])}];
-
-//# sourceMappingURL=Documents_GitHub_Zeo_apps_web_src_app_layout_tsx_83f285ab._.js.map

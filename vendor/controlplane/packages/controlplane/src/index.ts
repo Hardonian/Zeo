@@ -86,7 +86,7 @@ export const runRunner = async (options: RunRunnerOptions): Promise<RunnerExecut
       JSON.stringify({
         type: 'profile',
         requestId,
-        runner: runner.name,
+        runner: executableRunner.name,
         step,
         durationMs,
       })
@@ -101,6 +101,7 @@ export const runRunner = async (options: RunRunnerOptions): Promise<RunnerExecut
   );
 
   // ── 3. Invoke runner ───────────────────────────────────────────────
+  const invocationStart = Date.now();
   const args = buildArgs(executableRunner.entrypoint.args, inputPath, outputPath);
   const invocation = await runEntrypoint(executableRunner.entrypoint.command, args, {
     cwd,
@@ -120,6 +121,7 @@ export const runRunner = async (options: RunRunnerOptions): Promise<RunnerExecut
   }
 
   // ── 5. Read and validate report ────────────────────────────────────
+  const readStart = Date.now();
   if (!existsSync(outputPath)) {
     throw Errors.invocationFailed(
       executableRunner.name,

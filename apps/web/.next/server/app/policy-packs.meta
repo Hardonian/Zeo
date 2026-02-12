@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/policy-packs/layout,_N_T_/policy-packs/page,_N_T_/policy-packs"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/policy-packs/__PAGE__",
+    "/policy-packs",
+    "/_index",
+    "/_head"
+  ]
+}

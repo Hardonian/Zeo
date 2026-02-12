@@ -1,0 +1,261 @@
+<!DOCTYPE html><!--V_sCMn05SiQGXpllElBBM--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/51624f46484614f8.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-50294f2d1a14f928.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-3b36e40479e50727.js" async=""></script><script src="/_next/static/chunks/app/error-e24765025faea277.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/stitch/%5Bslug%5D/page-2eae595a34961720.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first public site and dashboard shell for Zeo."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50 text-gray-900"><header class="border-b border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4"><a class="text-lg font-semibold text-blue-700" href="/">Zeo</a><nav class="flex flex-wrap items-center gap-4 text-sm"><a class="text-gray-700 hover:text-blue-700" href="/">Home</a><a class="text-gray-700 hover:text-blue-700" href="/about">About</a><a class="text-gray-700 hover:text-blue-700" href="/pricing">Pricing</a><a class="text-gray-700 hover:text-blue-700" href="/platform">Platform</a><a class="text-gray-700 hover:text-blue-700" href="/stitch">Stitch Pages</a><a class="text-gray-700 hover:text-blue-700" href="/contact">Contact</a><a class="rounded border border-blue-200 px-3 py-1 text-blue-700 hover:bg-blue-50" href="/dashboard">Dashboard</a></nav></div></header><main class="mx-auto w-full max-w-6xl px-6 py-10"><h1 class="mb-6 text-3xl font-semibold">Evidence Packet Publisher</h1><div class="overflow-hidden rounded border border-gray-200 bg-white"><iframe title="Evidence Packet Publisher" srcDoc="&lt;!DOCTYPE html&gt;
+
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Evidence Packet Publisher&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com&quot; rel=&quot;preconnect&quot;/&gt;
+&lt;link crossorigin=&quot;&quot; href=&quot;https://fonts.gstatic.com&quot; rel=&quot;preconnect&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;script id=&quot;tailwind-config&quot;&gt;
+        tailwind.config = {
+          darkMode: &quot;class&quot;,
+          theme: {
+            extend: {
+              colors: {
+                &quot;primary&quot;: &quot;#137fec&quot;,
+                &quot;background-light&quot;: &quot;#f6f7f8&quot;,
+                &quot;background-dark&quot;: &quot;#101922&quot;,
+                &quot;surface-dark&quot;: &quot;#1e242b&quot;,
+                &quot;surface-light&quot;: &quot;#ffffff&quot;,
+              },
+              fontFamily: {
+                &quot;display&quot;: [&quot;Inter&quot;, &quot;sans-serif&quot;],
+                &quot;mono&quot;: [&quot;ui-monospace&quot;, &quot;SFMono-Regular&quot;, &quot;Menlo&quot;, &quot;Monaco&quot;, &quot;Consolas&quot;, &quot;Liberation Mono&quot;, &quot;Courier New&quot;, &quot;monospace&quot;],
+              },
+              borderRadius: {&quot;DEFAULT&quot;: &quot;0.25rem&quot;, &quot;lg&quot;: &quot;0.5rem&quot;, &quot;xl&quot;: &quot;0.75rem&quot;, &quot;2xl&quot;: &quot;1rem&quot;, &quot;full&quot;: &quot;9999px&quot;},
+            },
+          },
+        }
+      &lt;/script&gt;
+&lt;style&gt;
+        /* Custom scrollbar hiding for clean UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-x-hidden&quot;&gt;
+&lt;div class=&quot;relative flex min-h-screen w-full flex-col mx-auto max-w-md bg-background-light dark:bg-background-dark shadow-xl overflow-hidden&quot;&gt;
+&lt;!-- Top App Bar --&gt;
+&lt;div class=&quot;sticky top-0 z-50 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 pb-2 justify-between border-b border-gray-200 dark:border-gray-800&quot;&gt;
+&lt;button class=&quot;text-slate-900 dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot; style=&quot;font-size: 24px;&quot;&gt;arrow_back&lt;/span&gt;
+&lt;/button&gt;
+&lt;h2 class=&quot;text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center&quot;&gt;Review Packet&lt;/h2&gt;
+&lt;button class=&quot;flex h-10 px-2 items-center justify-end&quot;&gt;
+&lt;p class=&quot;text-gray-500 dark:text-[#9dabb9] text-sm font-medium leading-normal tracking-[0.015em] shrink-0&quot;&gt;Cancel&lt;/p&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;!-- Main Content --&gt;
+&lt;div class=&quot;flex-1 flex flex-col p-4 gap-6 pb-24 overflow-y-auto no-scrollbar&quot;&gt;
+&lt;!-- Packet Identity Card --&gt;
+&lt;div class=&quot;relative overflow-hidden rounded-2xl bg-surface-light dark:bg-surface-dark shadow-sm border border-gray-200 dark:border-gray-800&quot;&gt;
+&lt;div class=&quot;absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-purple-500&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;p-5 flex flex-col gap-4&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-green-500&quot; style=&quot;font-size: 20px;&quot;&gt;verified_user&lt;/span&gt;
+&lt;p class=&quot;text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-wider&quot;&gt;Ready for Publication&lt;/p&gt;
+&lt;/div&gt;
+&lt;span class=&quot;text-xs text-gray-500 dark:text-gray-400&quot;&gt;v1.4.2&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;p class=&quot;text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider&quot;&gt;Cryptographic Fingerprint&lt;/p&gt;
+&lt;div class=&quot;flex items-center gap-3 group cursor-pointer active:scale-95 transition-transform&quot;&gt;
+&lt;p class=&quot;font-mono text-2xl font-bold tracking-tight text-slate-900 dark:text-white break-all leading-none&quot;&gt;
+                                8f43...9a12
+                            &lt;/p&gt;
+&lt;button class=&quot;text-primary hover:text-blue-400 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot; style=&quot;font-size: 20px;&quot;&gt;content_copy&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;h-px w-full bg-gray-100 dark:bg-gray-700&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex justify-between items-center text-xs text-gray-500 dark:text-gray-400&quot;&gt;
+&lt;span&gt;Generated: Today, 14:02 PM&lt;/span&gt;
+&lt;span&gt;Size: 24KB&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Abstract visual pattern for identity --&gt;
+&lt;div class=&quot;h-2 w-full bg-gradient-to-r from-primary/20 via-primary/5 to-transparent absolute bottom-0&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Packet Contents Accordions --&gt;
+&lt;div class=&quot;flex flex-col gap-4&quot;&gt;
+&lt;h3 class=&quot;text-slate-900 dark:text-white text-lg font-bold px-1&quot;&gt;Packet Contents&lt;/h3&gt;
+&lt;div class=&quot;flex flex-col gap-3&quot;&gt;
+&lt;!-- Core Claims --&gt;
+&lt;details class=&quot;flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark group overflow-hidden&quot; open=&quot;&quot;&gt;
+&lt;summary class=&quot;flex cursor-pointer items-center justify-between p-4 bg-gray-50 dark:bg-surface-dark/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors select-none&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;div class=&quot;size-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-primary&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot; style=&quot;font-size: 18px;&quot;&gt;gavel&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;p class=&quot;text-slate-900 dark:text-white text-sm font-semibold leading-normal&quot;&gt;Core Claims&lt;/p&gt;
+&lt;p class=&quot;text-xs text-gray-500 dark:text-gray-400&quot;&gt;3 Verified&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-200&quot;&gt;expand_more&lt;/span&gt;
+&lt;/summary&gt;
+&lt;div class=&quot;px-4 py-3 flex flex-col gap-3 border-t border-gray-100 dark:border-gray-800&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-green-500&quot; style=&quot;font-size: 16px;&quot;&gt;check_circle&lt;/span&gt;
+&lt;span class=&quot;text-sm text-slate-700 dark:text-gray-300&quot;&gt;SOC2 Compliance Met&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-green-500&quot; style=&quot;font-size: 16px;&quot;&gt;check_circle&lt;/span&gt;
+&lt;span class=&quot;text-sm text-slate-700 dark:text-gray-300&quot;&gt;Encryption Standard AES-256&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-green-500&quot; style=&quot;font-size: 16px;&quot;&gt;check_circle&lt;/span&gt;
+&lt;span class=&quot;text-sm text-slate-700 dark:text-gray-300&quot;&gt;Data Retention Policy Active&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;!-- Supporting Evidence --&gt;
+&lt;details class=&quot;flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark group overflow-hidden&quot;&gt;
+&lt;summary class=&quot;flex cursor-pointer items-center justify-between p-4 bg-gray-50 dark:bg-surface-dark/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors select-none&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;div class=&quot;size-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot; style=&quot;font-size: 18px;&quot;&gt;folder_open&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;p class=&quot;text-slate-900 dark:text-white text-sm font-semibold leading-normal&quot;&gt;Supporting Evidence&lt;/p&gt;
+&lt;p class=&quot;text-xs text-gray-500 dark:text-gray-400&quot;&gt;5 Artifacts Linked&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-200&quot;&gt;expand_more&lt;/span&gt;
+&lt;/summary&gt;
+&lt;div class=&quot;px-4 py-3 flex flex-col gap-3 border-t border-gray-100 dark:border-gray-800&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between py-1&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2 overflow-hidden&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400&quot; style=&quot;font-size: 16px;&quot;&gt;description&lt;/span&gt;
+&lt;span class=&quot;text-sm text-slate-700 dark:text-gray-300 truncate font-mono text-xs&quot;&gt;system_logs_v4.txt&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-500 px-1.5 py-0.5 rounded&quot;&gt;2MB&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center justify-between py-1&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2 overflow-hidden&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400&quot; style=&quot;font-size: 16px;&quot;&gt;picture_as_pdf&lt;/span&gt;
+&lt;span class=&quot;text-sm text-slate-700 dark:text-gray-300 truncate font-mono text-xs&quot;&gt;Audit_Report_2023.pdf&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-500 px-1.5 py-0.5 rounded&quot;&gt;8.5MB&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;!-- Explicit Assumptions --&gt;
+&lt;details class=&quot;flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark group overflow-hidden&quot;&gt;
+&lt;summary class=&quot;flex cursor-pointer items-center justify-between p-4 bg-gray-50 dark:bg-surface-dark/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors select-none&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;div class=&quot;size-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot; style=&quot;font-size: 18px;&quot;&gt;lightbulb&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;p class=&quot;text-slate-900 dark:text-white text-sm font-semibold leading-normal&quot;&gt;Explicit Assumptions&lt;/p&gt;
+&lt;p class=&quot;text-xs text-gray-500 dark:text-gray-400&quot;&gt;2 Listed&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-200&quot;&gt;expand_more&lt;/span&gt;
+&lt;/summary&gt;
+&lt;div class=&quot;px-4 py-3 flex flex-col gap-3 border-t border-gray-100 dark:border-gray-800&quot;&gt;
+&lt;p class=&quot;text-sm text-slate-600 dark:text-gray-300 border-l-2 border-amber-500 pl-3 italic&quot;&gt;
+                                &quot;AWS us-east-1 availability remains &amp;gt; 99.9%&quot;
+                            &lt;/p&gt;
+&lt;p class=&quot;text-sm text-slate-600 dark:text-gray-300 border-l-2 border-amber-500 pl-3 italic&quot;&gt;
+                                &quot;Validator node count stable at 15&quot;
+                            &lt;/p&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;!-- Uncertainty Ledger --&gt;
+&lt;details class=&quot;flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark group overflow-hidden&quot;&gt;
+&lt;summary class=&quot;flex cursor-pointer items-center justify-between p-4 bg-gray-50 dark:bg-surface-dark/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors select-none&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;div class=&quot;size-8 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center text-teal-600 dark:text-teal-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot; style=&quot;font-size: 18px;&quot;&gt;analytics&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;p class=&quot;text-slate-900 dark:text-white text-sm font-semibold leading-normal&quot;&gt;Uncertainty Ledger&lt;/p&gt;
+&lt;p class=&quot;text-xs text-green-600 dark:text-green-400 font-medium&quot;&gt;Low Risk&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-200&quot;&gt;expand_more&lt;/span&gt;
+&lt;/summary&gt;
+&lt;div class=&quot;px-4 py-4 border-t border-gray-100 dark:border-gray-800&quot;&gt;
+&lt;div class=&quot;flex flex-col items-center justify-center py-2 gap-2 text-center&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-green-500 text-3xl&quot;&gt;check_circle_outline&lt;/span&gt;
+&lt;p class=&quot;text-sm text-slate-900 dark:text-white font-medium&quot;&gt;No critical uncertainties logged&lt;/p&gt;
+&lt;p class=&quot;text-xs text-gray-500 dark:text-gray-400&quot;&gt;All risk factors are within acceptable tolerance.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Export Options --&gt;
+&lt;div class=&quot;flex flex-col gap-4&quot;&gt;
+&lt;h3 class=&quot;text-slate-900 dark:text-white text-lg font-bold px-1&quot;&gt;Export Format&lt;/h3&gt;
+&lt;div class=&quot;grid grid-cols-3 gap-3&quot;&gt;
+&lt;!-- PDF Option --&gt;
+&lt;label class=&quot;cursor-pointer group relative&quot;&gt;
+&lt;input checked=&quot;&quot; class=&quot;peer sr-only&quot; name=&quot;export_format&quot; type=&quot;radio&quot;/&gt;
+&lt;div class=&quot;flex flex-col items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark p-3 transition-all peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/10 peer-checked:shadow-sm&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400 peer-checked:text-primary transition-colors group-hover:text-primary&quot;&gt;picture_as_pdf&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-700 dark:text-gray-300 peer-checked:text-primary&quot;&gt;PDF Doc&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;absolute -top-1 -right-1 hidden size-4 items-center justify-center rounded-full bg-primary text-white peer-checked:flex&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[10px]&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;/label&gt;
+&lt;!-- JSON Option --&gt;
+&lt;label class=&quot;cursor-pointer group relative&quot;&gt;
+&lt;input class=&quot;peer sr-only&quot; name=&quot;export_format&quot; type=&quot;radio&quot;/&gt;
+&lt;div class=&quot;flex flex-col items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark p-3 transition-all peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/10 peer-checked:shadow-sm&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400 peer-checked:text-primary transition-colors group-hover:text-primary&quot;&gt;data_object&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-700 dark:text-gray-300 peer-checked:text-primary&quot;&gt;JSON Manifest&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;absolute -top-1 -right-1 hidden size-4 items-center justify-center rounded-full bg-primary text-white peer-checked:flex&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[10px]&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;/label&gt;
+&lt;!-- Hash Option --&gt;
+&lt;label class=&quot;cursor-pointer group relative&quot;&gt;
+&lt;input class=&quot;peer sr-only&quot; name=&quot;export_format&quot; type=&quot;radio&quot;/&gt;
+&lt;div class=&quot;flex flex-col items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark p-3 transition-all peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/10 peer-checked:shadow-sm&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400 peer-checked:text-primary transition-colors group-hover:text-primary&quot;&gt;tag&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-700 dark:text-gray-300 peer-checked:text-primary&quot;&gt;Hash Anchor&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;absolute -top-1 -right-1 hidden size-4 items-center justify-center rounded-full bg-primary text-white peer-checked:flex&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[10px]&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;/label&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Disclaimer --&gt;
+&lt;div class=&quot;rounded-lg bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 p-3 flex gap-3&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-blue-600 dark:text-blue-400 shrink-0&quot; style=&quot;font-size: 20px;&quot;&gt;info&lt;/span&gt;
+&lt;p class=&quot;text-xs text-blue-800 dark:text-blue-200 leading-relaxed&quot;&gt;
+                    By publishing, you certify that all claims are verified. This action is immutable and will be recorded on the public ledger.
+                &lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Sticky Bottom Action --&gt;
+&lt;div class=&quot;sticky bottom-0 z-50 w-full bg-background-light dark:bg-background-dark p-4 border-t border-gray-200 dark:border-gray-800 backdrop-blur-xl bg-opacity-95 dark:bg-opacity-95 safe-pb&quot;&gt;
+&lt;button class=&quot;flex w-full cursor-pointer items-center justify-center gap-3 rounded-lg bg-primary p-4 text-white hover:bg-blue-600 transition-all active:scale-[0.98] shadow-lg shadow-blue-900/20 group&quot;&gt;
+&lt;span class=&quot;text-base font-bold tracking-tight&quot;&gt;Sign &amp;amp; Publish Packet&lt;/span&gt;
+&lt;span class=&quot;material-symbols-outlined group-hover:translate-x-1 transition-transform&quot; style=&quot;font-size: 20px;&quot;&gt;send&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;" class="h-[900px] w-full" sandbox="allow-scripts allow-same-origin"></iframe></div></main><footer class="border-t border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-4 text-sm text-gray-600"><span>Confidence range, assumptions, provenance, and sensitivity first.</span><div class="flex gap-3"><a class="hover:text-blue-700" href="/privacy">Privacy</a><a class="hover:text-blue-700" href="/terms">Terms</a></div></div></footer></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-50294f2d1a14f928.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-e24765025faea277.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-2eae595a34961720.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/51624f46484614f8.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"V_sCMn05SiQGXpllElBBM\",\"c\":[\"\",\"stitch\",\"evidence-packet-publisher\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"stitch\",{\"children\":[[\"slug\",\"evidence-packet-publisher\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/51624f46484614f8.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first public site and dashboard shell for Zeo.\"}]]\n"])</script><script>self.__next_f.push([1,"f:T3cc6,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eEvidence Packet Publisher\u003c/title\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com\" rel=\"preconnect\"/\u003e\n\u003clink crossorigin=\"\" href=\"https://fonts.gstatic.com\" rel=\"preconnect\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003cscript id=\"tailwind-config\"\u003e\n        tailwind.config = {\n          darkMode: \"class\",\n          theme: {\n            extend: {\n              colors: {\n                \"primary\": \"#137fec\",\n                \"background-light\": \"#f6f7f8\",\n                \"background-dark\": \"#101922\",\n                \"surface-dark\": \"#1e242b\",\n                \"surface-light\": \"#ffffff\",\n              },\n              fontFamily: {\n                \"display\": [\"Inter\", \"sans-serif\"],\n                \"mono\": [\"ui-monospace\", \"SFMono-Regular\", \"Menlo\", \"Monaco\", \"Consolas\", \"Liberation Mono\", \"Courier New\", \"monospace\"],\n              },\n              borderRadius: {\"DEFAULT\": \"0.25rem\", \"lg\": \"0.5rem\", \"xl\": \"0.75rem\", \"2xl\": \"1rem\", \"full\": \"9999px\"},\n            },\n          },\n        }\n      \u003c/script\u003e\n\u003cstyle\u003e\n        /* Custom scrollbar hiding for clean UI */\n        .no-scrollbar::-webkit-scrollbar {\n            display: none;\n        }\n        .no-scrollbar {\n            -ms-overflow-style: none;\n            scrollbar-width: none;\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-x-hidden\"\u003e\n\u003cdiv class=\"relative flex min-h-screen w-full flex-col mx-auto max-w-md bg-background-light dark:bg-background-dark shadow-xl overflow-hidden\"\u003e\n\u003c!-- Top App Bar --\u003e\n\u003cdiv class=\"sticky top-0 z-50 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 pb-2 justify-between border-b border-gray-200 dark:border-gray-800\"\u003e\n\u003cbutton class=\"text-slate-900 dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined\" style=\"font-size: 24px;\"\u003earrow_back\u003c/span\u003e\n\u003c/button\u003e\n\u003ch2 class=\"text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center\"\u003eReview Packet\u003c/h2\u003e\n\u003cbutton class=\"flex h-10 px-2 items-center justify-end\"\u003e\n\u003cp class=\"text-gray-500 dark:text-[#9dabb9] text-sm font-medium leading-normal tracking-[0.015em] shrink-0\"\u003eCancel\u003c/p\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c!-- Main Content --\u003e\n\u003cdiv class=\"flex-1 flex flex-col p-4 gap-6 pb-24 overflow-y-auto no-scrollbar\"\u003e\n\u003c!-- Packet Identity Card --\u003e\n\u003cdiv class=\"relative overflow-hidden rounded-2xl bg-surface-light dark:bg-surface-dark shadow-sm border border-gray-200 dark:border-gray-800\"\u003e\n\u003cdiv class=\"absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-purple-500\"\u003e\u003c/div\u003e\n\u003cdiv class=\"p-5 flex flex-col gap-4\"\u003e\n\u003cdiv class=\"flex items-center justify-between\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-green-500\" style=\"font-size: 20px;\"\u003everified_user\u003c/span\u003e\n\u003cp class=\"text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-wider\"\u003eReady for Publication\u003c/p\u003e\n\u003c/div\u003e\n\u003cspan class=\"text-xs text-gray-500 dark:text-gray-400\"\u003ev1.4.2\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cp class=\"text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider\"\u003eCryptographic Fingerprint\u003c/p\u003e\n\u003cdiv class=\"flex items-center gap-3 group cursor-pointer active:scale-95 transition-transform\"\u003e\n\u003cp class=\"font-mono text-2xl font-bold tracking-tight text-slate-900 dark:text-white break-all leading-none\"\u003e\n                                8f43...9a12\n                            \u003c/p\u003e\n\u003cbutton class=\"text-primary hover:text-blue-400 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined\" style=\"font-size: 20px;\"\u003econtent_copy\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"h-px w-full bg-gray-100 dark:bg-gray-700\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex justify-between items-center text-xs text-gray-500 dark:text-gray-400\"\u003e\n\u003cspan\u003eGenerated: Today, 14:02 PM\u003c/span\u003e\n\u003cspan\u003eSize: 24KB\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Abstract visual pattern for identity --\u003e\n\u003cdiv class=\"h-2 w-full bg-gradient-to-r from-primary/20 via-primary/5 to-transparent absolute bottom-0\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Packet Contents Accordions --\u003e\n\u003cdiv class=\"flex flex-col gap-4\"\u003e\n\u003ch3 class=\"text-slate-900 dark:text-white text-lg font-bold px-1\"\u003ePacket Contents\u003c/h3\u003e\n\u003cdiv class=\"flex flex-col gap-3\"\u003e\n\u003c!-- Core Claims --\u003e\n\u003cdetails class=\"flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark group overflow-hidden\" open=\"\"\u003e\n\u003csummary class=\"flex cursor-pointer items-center justify-between p-4 bg-gray-50 dark:bg-surface-dark/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors select-none\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cdiv class=\"size-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-primary\"\u003e\n\u003cspan class=\"material-symbols-outlined\" style=\"font-size: 18px;\"\u003egavel\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003cp class=\"text-slate-900 dark:text-white text-sm font-semibold leading-normal\"\u003eCore Claims\u003c/p\u003e\n\u003cp class=\"text-xs text-gray-500 dark:text-gray-400\"\u003e3 Verified\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-200\"\u003eexpand_more\u003c/span\u003e\n\u003c/summary\u003e\n\u003cdiv class=\"px-4 py-3 flex flex-col gap-3 border-t border-gray-100 dark:border-gray-800\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cspan class=\"material-symbols-outlined text-green-500\" style=\"font-size: 16px;\"\u003echeck_circle\u003c/span\u003e\n\u003cspan class=\"text-sm text-slate-700 dark:text-gray-300\"\u003eSOC2 Compliance Met\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cspan class=\"material-symbols-outlined text-green-500\" style=\"font-size: 16px;\"\u003echeck_circle\u003c/span\u003e\n\u003cspan class=\"text-sm text-slate-700 dark:text-gray-300\"\u003eEncryption Standard AES-256\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cspan class=\"material-symbols-outlined text-green-500\" style=\"font-size: 16px;\"\u003echeck_circle\u003c/span\u003e\n\u003cspan class=\"text-sm text-slate-700 dark:text-gray-300\"\u003eData Retention Policy Active\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/details\u003e\n\u003c!-- Supporting Evidence --\u003e\n\u003cdetails class=\"flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark group overflow-hidden\"\u003e\n\u003csummary class=\"flex cursor-pointer items-center justify-between p-4 bg-gray-50 dark:bg-surface-dark/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors select-none\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cdiv class=\"size-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400\"\u003e\n\u003cspan class=\"material-symbols-outlined\" style=\"font-size: 18px;\"\u003efolder_open\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003cp class=\"text-slate-900 dark:text-white text-sm font-semibold leading-normal\"\u003eSupporting Evidence\u003c/p\u003e\n\u003cp class=\"text-xs text-gray-500 dark:text-gray-400\"\u003e5 Artifacts Linked\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-200\"\u003eexpand_more\u003c/span\u003e\n\u003c/summary\u003e\n\u003cdiv class=\"px-4 py-3 flex flex-col gap-3 border-t border-gray-100 dark:border-gray-800\"\u003e\n\u003cdiv class=\"flex items-center justify-between py-1\"\u003e\n\u003cdiv class=\"flex items-center gap-2 overflow-hidden\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400\" style=\"font-size: 16px;\"\u003edescription\u003c/span\u003e\n\u003cspan class=\"text-sm text-slate-700 dark:text-gray-300 truncate font-mono text-xs\"\u003esystem_logs_v4.txt\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-500 px-1.5 py-0.5 rounded\"\u003e2MB\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center justify-between py-1\"\u003e\n\u003cdiv class=\"flex items-center gap-2 overflow-hidden\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400\" style=\"font-size: 16px;\"\u003epicture_as_pdf\u003c/span\u003e\n\u003cspan class=\"text-sm text-slate-700 dark:text-gray-300 truncate font-mono text-xs\"\u003eAudit_Report_2023.pdf\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-500 px-1.5 py-0.5 rounded\"\u003e8.5MB\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/details\u003e\n\u003c!-- Explicit Assumptions --\u003e\n\u003cdetails class=\"flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark group overflow-hidden\"\u003e\n\u003csummary class=\"flex cursor-pointer items-center justify-between p-4 bg-gray-50 dark:bg-surface-dark/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors select-none\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cdiv class=\"size-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400\"\u003e\n\u003cspan class=\"material-symbols-outlined\" style=\"font-size: 18px;\"\u003elightbulb\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003cp class=\"text-slate-900 dark:text-white text-sm font-semibold leading-normal\"\u003eExplicit Assumptions\u003c/p\u003e\n\u003cp class=\"text-xs text-gray-500 dark:text-gray-400\"\u003e2 Listed\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-200\"\u003eexpand_more\u003c/span\u003e\n\u003c/summary\u003e\n\u003cdiv class=\"px-4 py-3 flex flex-col gap-3 border-t border-gray-100 dark:border-gray-800\"\u003e\n\u003cp class=\"text-sm text-slate-600 dark:text-gray-300 border-l-2 border-amber-500 pl-3 italic\"\u003e\n                                \"AWS us-east-1 availability remains \u0026gt; 99.9%\"\n                            \u003c/p\u003e\n\u003cp class=\"text-sm text-slate-600 dark:text-gray-300 border-l-2 border-amber-500 pl-3 italic\"\u003e\n                                \"Validator node count stable at 15\"\n                            \u003c/p\u003e\n\u003c/div\u003e\n\u003c/details\u003e\n\u003c!-- Uncertainty Ledger --\u003e\n\u003cdetails class=\"flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark group overflow-hidden\"\u003e\n\u003csummary class=\"flex cursor-pointer items-center justify-between p-4 bg-gray-50 dark:bg-surface-dark/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors select-none\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cdiv class=\"size-8 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center text-teal-600 dark:text-teal-400\"\u003e\n\u003cspan class=\"material-symbols-outlined\" style=\"font-size: 18px;\"\u003eanalytics\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003cp class=\"text-slate-900 dark:text-white text-sm font-semibold leading-normal\"\u003eUncertainty Ledger\u003c/p\u003e\n\u003cp class=\"text-xs text-green-600 dark:text-green-400 font-medium\"\u003eLow Risk\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-200\"\u003eexpand_more\u003c/span\u003e\n\u003c/summary\u003e\n\u003cdiv class=\"px-4 py-4 border-t border-gray-100 dark:border-gray-800\"\u003e\n\u003cdiv class=\"flex flex-col items-center justify-center py-2 gap-2 text-center\"\u003e\n\u003cspan class=\"material-symbols-outlined text-green-500 text-3xl\"\u003echeck_circle_outline\u003c/span\u003e\n\u003cp class=\"text-sm text-slate-900 dark:text-white font-medium\"\u003eNo critical uncertainties logged\u003c/p\u003e\n\u003cp class=\"text-xs text-gray-500 dark:text-gray-400\"\u003eAll risk factors are within acceptable tolerance.\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/details\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Export Options --\u003e\n\u003cdiv class=\"flex flex-col gap-4\"\u003e\n\u003ch3 class=\"text-slate-900 dark:text-white text-lg font-bold px-1\"\u003eExport Format\u003c/h3\u003e\n\u003cdiv class=\"grid grid-cols-3 gap-3\"\u003e\n\u003c!-- PDF Option --\u003e\n\u003clabel class=\"cursor-pointer group relative\"\u003e\n\u003cinput checked=\"\" class=\"peer sr-only\" name=\"export_format\" type=\"radio\"/\u003e\n\u003cdiv class=\"flex flex-col items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark p-3 transition-all peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/10 peer-checked:shadow-sm\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400 peer-checked:text-primary transition-colors group-hover:text-primary\"\u003epicture_as_pdf\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium text-slate-700 dark:text-gray-300 peer-checked:text-primary\"\u003ePDF Doc\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"absolute -top-1 -right-1 hidden size-4 items-center justify-center rounded-full bg-primary text-white peer-checked:flex\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[10px]\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003c/label\u003e\n\u003c!-- JSON Option --\u003e\n\u003clabel class=\"cursor-pointer group relative\"\u003e\n\u003cinput class=\"peer sr-only\" name=\"export_format\" type=\"radio\"/\u003e\n\u003cdiv class=\"flex flex-col items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark p-3 transition-all peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/10 peer-checked:shadow-sm\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400 peer-checked:text-primary transition-colors group-hover:text-primary\"\u003edata_object\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium text-slate-700 dark:text-gray-300 peer-checked:text-primary\"\u003eJSON Manifest\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"absolute -top-1 -right-1 hidden size-4 items-center justify-center rounded-full bg-primary text-white peer-checked:flex\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[10px]\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003c/label\u003e\n\u003c!-- Hash Option --\u003e\n\u003clabel class=\"cursor-pointer group relative\"\u003e\n\u003cinput class=\"peer sr-only\" name=\"export_format\" type=\"radio\"/\u003e\n\u003cdiv class=\"flex flex-col items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark p-3 transition-all peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/10 peer-checked:shadow-sm\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400 peer-checked:text-primary transition-colors group-hover:text-primary\"\u003etag\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium text-slate-700 dark:text-gray-300 peer-checked:text-primary\"\u003eHash Anchor\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"absolute -top-1 -right-1 hidden size-4 items-center justify-center rounded-full bg-primary text-white peer-checked:flex\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[10px]\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003c/label\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Disclaimer --\u003e\n\u003cdiv class=\"rounded-lg bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 p-3 flex gap-3\"\u003e\n\u003cspan class=\"material-symbols-outlined text-blue-600 dark:text-blue-400 shrink-0\" style=\"font-size: 20px;\"\u003einfo\u003c/span\u003e\n\u003cp class=\"text-xs text-blue-800 dark:text-blue-200 leading-relaxed\"\u003e\n                    By publishing, you certify that all claims are verified. This action is immutable and will be recorded on the public ledger.\n                \u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Sticky Bottom Action --\u003e\n\u003cdiv class=\"sticky bottom-0 z-50 w-full bg-background-light dark:bg-background-dark p-4 border-t border-gray-200 dark:border-gray-800 backdrop-blur-xl bg-opacity-95 dark:bg-opacity-95 safe-pb\"\u003e\n\u003cbutton class=\"flex w-full cursor-pointer items-center justify-center gap-3 rounded-lg bg-primary p-4 text-white hover:bg-blue-600 transition-all active:scale-[0.98] shadow-lg shadow-blue-900/20 group\"\u003e\n\u003cspan class=\"text-base font-bold tracking-tight\"\u003eSign \u0026amp; Publish Packet\u003c/span\u003e\n\u003cspan class=\"material-symbols-outlined group-hover:translate-x-1 transition-transform\" style=\"font-size: 20px;\"\u003esend\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"div\",null,{\"className\":\"min-h-screen bg-gray-50 text-gray-900\",\"children\":[[\"$\",\"header\",null,{\"className\":\"border-b border-gray-200 bg-white\",\"children\":[\"$\",\"div\",null,{\"className\":\"mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4\",\"children\":[[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"text-lg font-semibold text-blue-700\",\"children\":\"Zeo\"}],[\"$\",\"nav\",null,{\"className\":\"flex flex-wrap items-center gap-4 text-sm\",\"children\":[[[\"$\",\"$L5\",\"/\",{\"href\":\"/\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Home\"}],[\"$\",\"$L5\",\"/about\",{\"href\":\"/about\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"About\"}],[\"$\",\"$L5\",\"/pricing\",{\"href\":\"/pricing\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Pricing\"}],[\"$\",\"$L5\",\"/platform\",{\"href\":\"/platform\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Platform\"}],[\"$\",\"$L5\",\"/stitch\",{\"href\":\"/stitch\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Stitch Pages\"}],[\"$\",\"$L5\",\"/contact\",{\"href\":\"/contact\",\"className\":\"text-gray-700 hover:text-blue-700\",\"children\":\"Contact\"}]],[\"$\",\"$L5\",null,{\"href\":\"/dashboard\",\"className\":\"rounded border border-blue-200 px-3 py-1 text-blue-700 hover:bg-blue-50\",\"children\":\"Dashboard\"}]]}]]}]}],[\"$\",\"main\",null,{\"className\":\"mx-auto w-full max-w-6xl px-6 py-10\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"mb-6 text-3xl font-semibold\",\"children\":\"Evidence Packet Publisher\"}],[\"$\",\"div\",null,{\"className\":\"overflow-hidden rounded border border-gray-200 bg-white\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Evidence Packet Publisher\",\"srcDoc\":\"$f\",\"className\":\"h-[900px] w-full\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]]}],\"$L10\"]}]\n"])</script><script>self.__next_f.push([1,"10:[\"$\",\"footer\",null,{\"className\":\"border-t border-gray-200 bg-white\",\"children\":[\"$\",\"div\",null,{\"className\":\"mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-4 text-sm text-gray-600\",\"children\":[[\"$\",\"span\",null,{\"children\":\"Confidence range, assumptions, provenance, and sensitivity first.\"}],[\"$\",\"div\",null,{\"className\":\"flex gap-3\",\"children\":[[\"$\",\"$L5\",null,{\"href\":\"/privacy\",\"className\":\"hover:text-blue-700\",\"children\":\"Privacy\"}],[\"$\",\"$L5\",null,{\"href\":\"/terms\",\"className\":\"hover:text-blue-700\",\"children\":\"Terms\"}]]}]]}]}]\n"])</script></body></html>

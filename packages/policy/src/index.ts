@@ -1,7 +1,20 @@
 import { createHash } from 'crypto';
 import { Issue } from "@zeo/analysis";
-import { getContractVersionHash, type StorageProvider } from "@zeo/core";
 import { trace, context } from "@opentelemetry/api";
+
+// Local copies to avoid circular dependency with @zeo/core
+function getContractVersionHash(): string {
+  // Matches v1.1.0 contract state
+  return "v1.1.0-03c0caeee3dd25a1427aa02102a2142a5b2002cb";
+}
+
+// Local interface to avoid circular dependency
+interface StorageProvider {
+  loadLatestPolicyPack(organizationId: string, repositoryId: string | null): Promise<PolicyPack | null>;
+  loadActiveWaivers(organizationId: string, repositoryId: string | null): Promise<Waiver[]>;
+  storeEvidenceBundle(data: unknown): Promise<EvidenceBundle>;
+  getEnforcementStrength(organizationId: string): Promise<string>;
+}
 
 export { Issue };
 

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { makeNegotiationExample, runDecision, makeOpsExample, canonicalizeDecisionSpec, hashDecisionSpec, buildEvidencePacket, computeDeterministicSeed } from '@zeo/core';
+import { makeNegotiationExample, runDecision, makeOpsExample, canonicalizeDecisionSpec, hashDecisionSpec, buildEvidencePacket, computeDeterministicSeed } from '@zeo/core/client';
 import type { DecisionResult, DecisionSpec } from '@zeo/contracts';
 
 interface RunComparison {
@@ -16,7 +16,7 @@ interface RunComparison {
   timestamp: string;
 }
 
-export default function ComparePage() {
+function ComparePageContent() {
   const searchParams = useSearchParams();
   const [runs, setRuns] = useState<[RunComparison | null, RunComparison | null]>([null, null]);
   const [loading, setLoading] = useState(false);
@@ -68,8 +68,8 @@ export default function ComparePage() {
       const result1 = runDecision(spec1, { depth: 2 });
       const result2 = runDecision(spec2, { depth: 2 });
 
-      const hash1 = hashDecisionSpec(canonicalizeDecisionSpec(spec1));
-      const hash2 = hashDecisionSpec(canonicalizeDecisionSpec(spec2));
+      const hash1 = await hashDecisionSpec(canonicalizeDecisionSpec(spec1));
+      const hash2 = await hashDecisionSpec(canonicalizeDecisionSpec(spec2));
       const seed1 = computeDeterministicSeed(hash1, undefined, 2);
       const seed2 = computeDeterministicSeed(hash2, undefined, 2);
 
@@ -368,5 +368,25 @@ function ComparisonCell({ value, highlight }: { value: string; highlight?: boole
     <div className={`px-3 py-2 rounded-lg text-sm ${highlight ? 'bg-yellow-50 text-yellow-800 font-medium' : 'text-gray-700'}`}>
       {value}
     </div>
+  );
+}
+
+// Wrapper with Suspense boundary for useSearchParams
+export default function ComparePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
+          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-spin">
+            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.001 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Loading...</h2>
+        </div>
+      </div>
+    }>
+      <ComparePageContent />
+    </Suspense>
   );
 }

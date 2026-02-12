@@ -15,19 +15,14 @@
     "rootDir": "src",
     "baseUrl": "../..",
     "paths": {
-      "@zeo/models": [
-        "packages/models/src"
-      ],
-      "@zeo/id": [
-        "packages/id/src"
-      ],
-      "@zeo/db": [
-        "packages/db/src"
+      "@zeo/*": [
+        "packages/*/dist"
       ],
       "@prisma/client": [
         "packages/db/src/prisma-client.d.ts"
       ]
-    }
+    },
+    "emitDeclarationOnly": false
   },
   "include": [
     "src/**/*"
