@@ -187,7 +187,6 @@ export function inferPosterior(
   seed: string,
   sourceWeights?: Record<string, number>
 ): PosteriorState {
-  const rng = new SeededRandom(seed);
   const canonicalObs = canonicalizeObservations(observations);
 
   const variableStates = new Map<string, {

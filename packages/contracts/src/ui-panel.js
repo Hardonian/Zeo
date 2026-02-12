@@ -116,7 +116,10 @@ export async function verifyManifestSignature(manifest, secretKey) {
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             const computedSignature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
             // Simple timing-safe comparison
-            const provided = manifest.signature.signature;
+            const provided = manifest.signature?.signature;
+            if (!provided || typeof provided !== 'string') {
+                return false;
+            }
             if (computedSignature.length !== provided.length) {
                 return false;
             }
@@ -231,9 +234,9 @@ export function isAllowedOrigin(origin, allowedDomains) {
                 return true;
             }
             // Wildcard subdomain: *.example.com matches sub.example.com
-            if (domain.startsWith("*.")) {
+            if (domain.startsWith('*.')) {
                 const baseDomain = domain.slice(2);
-                return originHost === baseDomain || originHost.endsWith(domain.slice(1));
+                return originHost.endsWith(`.${baseDomain}`);
             }
             return false;
         });

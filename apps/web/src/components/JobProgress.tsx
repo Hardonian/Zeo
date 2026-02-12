@@ -24,6 +24,7 @@ export function JobProgress({
   const isCompleted = job.status === 'completed';
   const isFailed = job.status === 'failed';
   const isCancelled = job.status === 'cancelled';
+  const isDeadLetter = job.status === 'dead_letter';
 
   // Format percent
   const percent = job.progress.percentComplete;
@@ -36,6 +37,7 @@ export function JobProgress({
     paused: 'bg-orange-500',
     completed: 'bg-green-500',
     failed: 'bg-red-500',
+    dead_letter: 'bg-red-700',
     cancelled: 'bg-gray-500',
   };
 
@@ -74,7 +76,7 @@ export function JobProgress({
       )}
 
       {/* Error */}
-      {isFailed && job.error && (
+      {(isFailed || isDeadLetter) && job.error && (
         <div className="mb-3 rounded bg-red-50 p-2 text-sm text-red-600">
           Error: {job.error}
         </div>

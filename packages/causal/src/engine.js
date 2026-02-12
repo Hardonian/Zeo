@@ -156,7 +156,7 @@ export class CausalEngine {
         // If we have data, attempt estimation
         let estimate = { low: 0, high: 0 };
         if (data) {
-            estimate = this.estimateEffect(treatmentId, outcomeId, data, dag);
+            estimate = this.estimateEffect(treatmentId, outcomeId, data);
         }
         return {
             id: toStableUuid(`causal:${dag.id}:${treatmentId}:${outcomeId}:${rounded(estimate.low)}:${rounded(estimate.high)}:${Boolean(data)}`),
@@ -175,7 +175,7 @@ export class CausalEngine {
             provenance: data ? ["data_driven_estimation"] : [],
         };
     }
-    estimateEffect(treatmentId, outcomeId, data, dag) {
+    estimateEffect(treatmentId, outcomeId, data) {
         const treatment = data[treatmentId] ?? [];
         const outcome = data[outcomeId] ?? [];
         if (treatment.length === 0 || outcome.length === 0) {

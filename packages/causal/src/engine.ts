@@ -221,7 +221,7 @@ export class CausalEngine {
     // If we have data, attempt estimation
     let estimate = { low: 0, high: 0 };
     if (data) {
-      estimate = this.estimateEffect(treatmentId, outcomeId, data, dag);
+      estimate = this.estimateEffect(treatmentId, outcomeId, data);
     }
 
     return {
@@ -245,8 +245,7 @@ export class CausalEngine {
   private estimateEffect(
     treatmentId: string,
     outcomeId: string,
-    data: Record<string, number[]>,
-    dag: CausalDAG
+    data: Record<string, number[]>
   ): { low: number; high: number } {
     const treatment = data[treatmentId] ?? [];
     const outcome = data[outcomeId] ?? [];

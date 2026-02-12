@@ -80,6 +80,10 @@ export interface Job {
   maxRetries: number;
   /** Next retry timestamp (if backoff applied) */
   retryAfter?: string;
+  /** Failure classification */
+  failureClass?: 'transient' | 'permanent';
+  /** Stable error code */
+  errorCode?: string;
 }
 
 export interface JobQueueConfig {
@@ -156,4 +160,3 @@ export interface JobFilter {
   /** Pagination cursor */
   cursor?: string;
 }
-
