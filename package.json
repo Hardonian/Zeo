@@ -14,17 +14,17 @@
     "pnpm": "9.15.5"
   },
   "scripts": {
-    "doctor": "node scripts/antigravity.mjs doctor",
+    "doctor": "node scripts/doctor.mjs",
     "antigravity": "node scripts/antigravity.mjs",
     "smoke": "node scripts/smoke-test.mjs",
     "benchmark": "node scripts/benchmark.mjs",
-    "doctor:secrets": "node scripts/antigravity.mjs doctor",
-    "build": "pnpm -r build",
+    "doctor:secrets": "node scripts/doctor.mjs",
+    "build": "pnpm -r --workspace-concurrency=3 build",
     "typecheck": "pnpm -r --filter @zeo/contracts build && pnpm -r typecheck && pnpm -C packages/core typecheck:exports",
     "test": "NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --workspace-concurrency=1 test",
     "test:ci": "echo 'Running fast tests...' && NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --filter !@zeo/core --filter !@zeo/warehouse --filter !@zeo/repro-pack test && echo 'Running heavy tests sequentially...' && NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --filter @zeo/core --filter @zeo/warehouse --filter @zeo/repro-pack --workspace-concurrency=1 test",
     "lint": "pnpm -r lint",
-    "verify": "pnpm run doctor && pnpm run typecheck && pnpm run test && pnpm run lint && pnpm run smoke && pnpm run audit",
+    "verify": "node scripts/verify.mjs",
     "verify:fast": "pnpm run doctor && pnpm run typecheck && pnpm run test && pnpm run lint",
     "verify:full": "pnpm install --frozen-lockfile && pnpm run build && pnpm run verify && pnpm audit && pnpm doctor:secrets",
     "audit": "pnpm audit --audit-level=moderate",
@@ -45,7 +45,9 @@
     "validate:ecosystem": "node scripts/validate-ecosystem.mjs",
     "security:secrets": "node scripts/secret-scan.mjs",
     "security:licenses": "node scripts/license-check.mjs",
-    "deps:dry-run": "node scripts/dependency-upgrade-dry-run.mjs"
+    "deps:dry-run": "node scripts/dependency-upgrade-dry-run.mjs",
+    "clean": "node -e \"const fs=require('fs');const p=require('path');for(const t of ['node_modules','.turbo','.pnpm-store'])fs.rmSync(p.resolve(t),{recursive:true,force:true});\"",
+    "ci:install": "pnpm install --frozen-lockfile"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",

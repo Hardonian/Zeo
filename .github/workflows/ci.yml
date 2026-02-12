@@ -9,12 +9,8 @@ on:
   pull_request:
 
 jobs:
-  build-test:
+  verify:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node: [20, 22]
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -22,50 +18,11 @@ jobs:
           version: 9.15.5
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
-          cache: "pnpm"
+          node-version: 20.11.0
+          cache: pnpm
       - name: Install
-        run: pnpm i --frozen-lockfile
-      - name: Fixture Coverage Matrix
-        run: pnpm fixtures:coverage
-      - name: Validate Ecosystem (packs/plugins)
-        run: pnpm validate:ecosystem
-      - name: Typecheck
-        run: pnpm typecheck
-      - name: Core API Surface Typecheck
-        run: pnpm -C packages/core typecheck:exports
-      - name: Test
-        run: pnpm test
-      - name: Lint
-        run: pnpm lint
-      - name: Build Web
-        run: pnpm -C apps/web build
-      - name: Web E2E Tests
-        run: pnpm -C apps/web test:e2e
-        continue-on-error: false
-      - name: Build CLI
-        run: pnpm -C apps/cli build
-      - name: Perf Budget
-        run: pnpm perf:budget
-      - name: Dependency Audit Baseline
-        run: pnpm audit --audit-level=moderate
-      - name: License Check (SPDX)
-        run: pnpm security:licenses
-      - name: Secret Scan
-        run: pnpm security:secrets
-      - name: Replay Sample Dataset
-        run: pnpm -C apps/cli start -- --replay external/examples/replay/sample_dataset.json --report-out /tmp/zeo-replay
-      - name: Verify Replay Reports
-        run: |
-          test -f /tmp/zeo-replay/replay_results.json
-          test -f /tmp/zeo-replay/calibration_report.md
-      - name: Build Eval Package
-        run: pnpm -C packages/eval build
-      - name: Run Eval Suite
-        run: pnpm eval --suite external/examples/eval/core-eval.json --output ./eval-results
-      - name: Smoke Test
-        run: pnpm smoke
-      - name: Zeo Doctor
-        run: pnpm -C apps/cli start -- doctor
-      - name: Dependency Upgrade Dry-run
-        run: pnpm deps:dry-run
+        run: pnpm run ci:install
+      - name: Doctor
+        run: pnpm doctor
+      - name: Verify
+        run: pnpm verify
