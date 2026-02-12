@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: pnpm/action-setup@v4
         with:
           version: 9.15.5
@@ -24,5 +26,52 @@ jobs:
         run: pnpm run ci:install
       - name: Doctor
         run: pnpm doctor
-      - name: Verify
-        run: pnpm verify
+      - name: Lint
+        run: pnpm lint
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Test
+        run: pnpm test
+      - name: Build
+        run: pnpm build
+      - name: MCP smoke (local)
+        run: pnpm mcp:smoke
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: verify
+    env:
+      ZEO_DOCKER_IMAGE: zeolite:dev
+      ZEO_DOCKER_BASELINE_IMAGE: zeolite:baseline
+      ZEO_DOCKER_MAX_COMPRESSED_BYTES: '250000000'
+      ZEO_DOCKER_MAX_DELTA_COMPRESSED_BYTES: '25000000'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.11.0
+          cache: pnpm
+      - name: Install
+        run: pnpm run ci:install
+      - name: Build baseline Docker image
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --no-tags origin "${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+          git worktree add /tmp/zeo-base "origin/${{ github.base_ref }}"
+          docker build -t "$ZEO_DOCKER_BASELINE_IMAGE" /tmp/zeo-base
+      - name: Docker smoke
+        run: pnpm docker:smoke
+      - name: Docker size assert
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            pnpm docker:size:assert
+          else
+            ZEO_DOCKER_BASELINE_IMAGE='' pnpm docker:size:assert
+          fi
+      - name: MCP smoke (docker)
+        run: pnpm mcp:smoke:docker

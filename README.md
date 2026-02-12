@@ -108,6 +108,35 @@ pnpm quickstart:cli
 pnpm quickstart:demo
 ```
 
+## Docker
+
+Build a production CLI+MCP image:
+
+```bash
+docker build -t zeolite:dev .
+```
+
+Run CLI commands:
+
+```bash
+docker run --rm zeolite:dev --help
+docker run --rm zeolite:dev --version
+```
+
+Run MCP over stdio:
+
+```bash
+docker run -i --rm zeolite:dev mcp serve
+```
+
+Run the full verification pack (local + Docker + MCP handshake):
+
+```bash
+pnpm verify
+```
+
+For hardened runtime flags and mount conventions, see [`docs/docker.md`](docs/docker.md).
+
 
 ### Add a new Stitch panel page (apps/web)
 
