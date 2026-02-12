@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Zeo - Edge UI Shell',
-  description: 'Edge-first web UI with plugin-style Panel Host for Zeo',
+  title: 'Zeo',
+  description: 'Static-first public site and dashboard shell for Zeo.',
 };
 
 export default function RootLayout({
