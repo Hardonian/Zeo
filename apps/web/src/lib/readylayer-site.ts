@@ -5,19 +5,19 @@ const READYLAYER_SITE_ROOT = path.join(process.cwd(), '..', '..', 'vendor', 'rea
 
 function rebrandContent(html: string): string {
   return html
-    .replace(/ReadyLayer — Enforcement-first code review for AI-assisted teams/g, 'Zeo — Enforcement-first review for SEO intelligence teams')
+    .replace(/ReadyLayer — Enforcement-first code review for AI-assisted teams/g, 'Zeo — Enforcement-first review for deterministic quant decision workflows')
     .replace(/ReadyLayer/g, 'Zeo')
     .replace(/readylayer/g, 'zeo')
-    .replace(/Open-core enforcement platform/g, 'SEO intelligence and enforcement platform')
-    .replace(/Free tier is deterministic and runs without AI keys\./g, 'Deterministic mode runs locally; Zeo integrates key and ReadyLayer elements into the SEO workflow.')
+    .replace(/Open-core enforcement platform/g, 'Deterministic quant decision PR analyzer')
+    .replace(/Free tier is deterministic and runs without AI keys\./g, 'Deterministic mode runs locally; Zeo integrates key and ReadyLayer elements into GitHub-native review workflows.')
     .replace(/href="https:\/\/github\.com\/readylayer\/readylayer#readme"/g, 'href="https://github.com/scott/zeo#readme"')
     .replace(/<img[^>]*>/g, '<div class="visual-note">Zeo product visual integrated from the vendored static story layer.</div>');
 }
 
 function rewriteSitePaths(html: string): string {
   return html
-    .replace(/href="styles\.css"/g, 'href="/tax/assets/styles.css"')
-    .replace(/src="assets\//g, 'src="/tax/assets/assets/');
+    .replace(/href="styles\.css"/g, 'href="/platform/assets/styles.css"')
+    .replace(/src="assets\//g, 'src="/platform/assets/assets/');
 }
 
 export async function loadReadyLayerSiteHtml(): Promise<string | null> {

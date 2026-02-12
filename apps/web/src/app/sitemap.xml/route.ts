@@ -1,4 +1,4 @@
-const PUBLIC_ROUTES = ['/', '/about', '/contact', '/pricing', '/privacy', '/terms', '/tax', '/stitch', '/quickstart', '/demo'];
+const PUBLIC_ROUTES = ['/', '/about', '/contact', '/pricing', '/privacy', '/terms', '/platform', '/stitch', '/quickstart', '/demo'];
 
 export function GET() {
   const now = new Date().toISOString();

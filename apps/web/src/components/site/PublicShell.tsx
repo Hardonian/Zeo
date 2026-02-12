@@ -5,7 +5,7 @@ const NAV_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/pricing', label: 'Pricing' },
-  { href: '/tax', label: 'Tax' },
+  { href: '/platform', label: 'Platform' },
   { href: '/stitch', label: 'Stitch Pages' },
   { href: '/contact', label: 'Contact' },
 ];
