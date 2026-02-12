@@ -1,33 +1,53 @@
+export type ZeoEnvStage = 'local' | 'preview' | 'production';
+
+type Visibility = 'server' | 'public';
+
 interface EnvSpec {
   key: string;
-  required: boolean;
-  mode: 'all' | 'dev' | 'prod';
+  requiredIn: ZeoEnvStage[];
+  visibility: Visibility;
   description: string;
 }
 
-const specs: EnvSpec[] = [
-  { key: 'GITHUB_WEBHOOK_SECRET', required: true, mode: 'all', description: 'GitHub webhook HMAC secret' },
-  { key: 'GITHUB_TOKEN', required: false, mode: 'all', description: 'GitHub API token for status checks' },
-  { key: 'NODE_ENV', required: false, mode: 'all', description: 'Runtime mode' },
+const ENV_SPECS: EnvSpec[] = [
+  {
+    key: 'GITHUB_WEBHOOK_SECRET',
+    requiredIn: ['preview', 'production'],
+    visibility: 'server',
+    description: 'GitHub webhook HMAC secret',
+  },
+  {
+    key: 'GITHUB_TOKEN',
+    requiredIn: [],
+    visibility: 'server',
+    description: 'GitHub API token for status checks',
+  },
 ];
 
-export function validateEnvironment(): { ok: true } {
-  const mode = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
-  const missing: string[] = [];
-
-  for (const spec of specs) {
-    const applies = spec.mode === 'all' || spec.mode === mode;
-    if (!applies || !spec.required) {
-      continue;
-    }
-
-    if (!process.env[spec.key] || process.env[spec.key]?.trim() === '') {
-      missing.push(`${spec.key}: ${spec.description}`);
-    }
+export function getEnvStage(): ZeoEnvStage {
+  if (process.env.VERCEL_ENV === 'preview') {
+    return 'preview';
   }
+  if (process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production') {
+    return 'production';
+  }
+  return 'local';
+}
+
+export function getEnvRequirements() {
+  return ENV_SPECS;
+}
+
+export function validateEnvironment(stage: ZeoEnvStage = getEnvStage()): { ok: true } {
+  const missing = ENV_SPECS.filter((spec) => spec.requiredIn.includes(stage))
+    .filter((spec) => !process.env[spec.key] || process.env[spec.key]?.trim() === '');
 
   if (missing.length > 0) {
-    throw new Error(`Invalid environment configuration. Missing required variables:\n${missing.join('\n')}`);
+    throw new Error(
+      `Invalid environment configuration for ${stage}. Missing required variables: ${missing
+        .map((spec) => `${spec.key} (${spec.description})`)
+        .join(', ')}`
+    );
   }
 
   return { ok: true };

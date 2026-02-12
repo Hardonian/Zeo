@@ -47,7 +47,14 @@ export async function POST(req: NextRequest) {
   const orgId = repository?.owner?.login || 'unknown';
   const repoId = repository?.name || 'unknown';
 
-  const { blocked } = await WebhookSecurity.recordReceipt(orgId, 'github', headers.deliveryId, rawBody, true);
+  let blocked = false;
+  try {
+    ({ blocked } = await WebhookSecurity.recordReceipt(orgId, 'github', headers.deliveryId, rawBody, true));
+  } catch (error) {
+    const failure = classifyFailure(error);
+    logger.error('Webhook receipt recording failed', { requestId, orgId, repoId, code: failure.code, failureClass: failure.class });
+    return NextResponse.json({ error: 'Webhook accepted; persistence unavailable, retry later.' }, { status: 202 });
+  }
 
   if (blocked) {
     incrementMetric('webhook.replay_blocked');
