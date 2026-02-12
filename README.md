@@ -108,6 +108,14 @@ pnpm quickstart:cli
 pnpm quickstart:demo
 ```
 
+
+### Add a new Stitch panel page (apps/web)
+
+1. Add your panel folder under `apps/web/src/panels/stitch/stitch_decision_branching_view/<panel_name>/code.html`.
+2. Start the web app with `pnpm -C apps/web dev`.
+3. Open `/stitch` to verify the new panel appears in the generated list.
+4. Open `/stitch/<derived-slug>` to validate the page renders.
+
 ## Architecture Overview
 
 Antigravity is built on a **Deterministic Monorepo** architecture:
