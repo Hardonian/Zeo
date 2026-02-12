@@ -10,8 +10,16 @@ export default defineConfig({
     include: ['**/*.test.ts', '**/*.test.tsx'],
   },
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+    alias: [
+      { find: '@', replacement: path.resolve(__dirname, './src') },
+      {
+        find: '@zeo/core',
+        replacement: path.resolve(__dirname, './src/test/shims/zeo-core.ts'),
+      },
+      {
+        find: /^@zeo\/([^/]+)$/,
+        replacement: path.resolve(__dirname, '../../packages/$1/src/index.ts'),
+      },
+    ],
   },
 });

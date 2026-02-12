@@ -134,8 +134,7 @@ function canonicalizeObservations(observations) {
  * Deterministic: same inputs and seed produce same output.
  */
 export function inferPosterior(worldSpec, observations, seed, sourceWeights) {
-    const rng = new SeededRandom(seed);
-    const canonicalObs = canonicalizeObservations(observations);
+      const canonicalObs = canonicalizeObservations(observations);
     const variableStates = new Map();
     // Initialize with priors
     for (const variable of worldSpec.variables) {

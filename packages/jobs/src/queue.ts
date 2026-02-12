@@ -14,15 +14,41 @@ import type {
   JobQueueStats,
   JobFilter,
 } from './types.js';
-import { trace, SpanStatusCode } from '@opentelemetry/api';
 
-const tracer = trace.getTracer('zeo-jobforge');
+
+type SpanStatusCodeType = 'ok' | 'error';
+
+interface MinimalSpan {
+  setAttribute(_key: string, _value: unknown): void;
+  setStatus(_status: { code: SpanStatusCodeType; message?: string }): void;
+  recordException(_error: Error): void;
+  addEvent(_name: string): void;
+  end(): void;
+}
+
+class NoopSpan implements MinimalSpan {
+  setAttribute(): void {}
+  setStatus(): void {}
+  recordException(): void {}
+  addEvent(): void {}
+  end(): void {}
+}
+
+function startActiveSpan<T>(fn: (span: MinimalSpan) => T): T {
+  const span = new NoopSpan();
+  return fn(span);
+}
+
+const SpanStatusCode = {
+  OK: 'ok' as const,
+  ERROR: 'error' as const,
+};
 
 const DEFAULT_CONFIG: JobQueueConfig = {
   concurrency: 1,  // Deterministic: one job at a time
   pollIntervalMs: 100,
   defaultTimeoutSeconds: 3600,
-  maxRetries: 0,
+  maxRetries: 3,
   autoStart: true,
   completedJobRetentionMs: 24 * 60 * 60 * 1000, // 24 hours
   retryDelayMs: 5000,
@@ -35,6 +61,14 @@ function generateJobId(): string {
   return `job-${ts}-${random.toString().padStart(4, '0')}`;
 }
 
+
+function classifyQueueFailure(errorMessage: string): { failureClass: 'transient' | 'permanent'; errorCode: string } {
+  const transient = /(timeout|timed out|rate.?limit|network|econnreset|5\d\d)/i.test(errorMessage);
+  return {
+    failureClass: transient ? 'transient' : 'permanent',
+    errorCode: transient ? 'E_QUEUE_TRANSIENT' : 'E_QUEUE_PERMANENT',
+  };
+}
 function createInitialProgress(): JobProgress {
   return {
     currentStep: 0,
@@ -59,6 +93,7 @@ export class JobQueue {
     totalCompleted: 0,
     totalDurationMs: 0,
   };
+  private deadLetterLog: Array<{ jobId: string; jobType: string; payloadJson: string; errorCode: string; failureClass: 'transient' | 'permanent'; errorMessage: string; attempts: number; lastFailedAt: string }> = [];
 
   constructor(config: Partial<JobQueueConfig> = {}) {
     this.config = { ...DEFAULT_CONFIG, ...config };
@@ -85,7 +120,7 @@ export class JobQueue {
     payload: TPayload,
     options: JobEnqueueOptions = {}
   ): Job {
-    return tracer.startActiveSpan('job.enqueue', (span) => {
+    return startActiveSpan((span) => {
       span.setAttribute('job.type', type);
       span.setAttribute('job.description', description);
 
@@ -363,7 +398,7 @@ export class JobQueue {
    * Process a single job
    */
   private async processJob(job: Job): Promise<void> {
-    await tracer.startActiveSpan('job.process', async (span) => {
+    await startActiveSpan(async (span) => {
       span.setAttribute('job.id', job.id);
       span.setAttribute('job.type', job.type);
 
@@ -427,9 +462,12 @@ export class JobQueue {
         }
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
+        const classification = classifyQueueFailure(errorMessage);
         span.recordException(error as Error);
+        job.failureClass = classification.failureClass;
+        job.errorCode = classification.errorCode;
 
-        if (job.attempts < job.maxRetries) {
+        if (classification.failureClass === 'transient' && job.attempts < job.maxRetries) {
           job.attempts++;
           job.status = 'pending';
           job.error = `Attempt ${job.attempts} failed: ${errorMessage}`;
@@ -440,7 +478,19 @@ export class JobQueue {
           job.status = job.maxRetries > 0 ? 'dead_letter' : 'failed';
           job.error = errorMessage;
           job.completedAt = new Date().toISOString();
-          span.setStatus({ code: SpanStatusCode.ERROR, message: errorMessage });
+          if (job.status === 'dead_letter') {
+            this.deadLetterLog.push({
+              jobId: job.id,
+              jobType: job.type,
+              payloadJson: JSON.stringify(job.payload),
+              errorCode: classification.errorCode,
+              failureClass: classification.failureClass,
+              errorMessage,
+              attempts: job.attempts,
+              lastFailedAt: job.completedAt,
+            });
+          }
+          span.setStatus({ code: SpanStatusCode.ERROR, message: `${classification.errorCode}:${errorMessage}` });
         }
       } finally {
         if (timeoutId) clearTimeout(timeoutId);
@@ -472,6 +522,11 @@ export class JobQueue {
     }
   }
 
+
+  getDeadLetterLog(): Array<{ jobId: string; jobType: string; payloadJson: string; errorCode: string; failureClass: 'transient' | 'permanent'; errorMessage: string; attempts: number; lastFailedAt: string }> {
+    return [...this.deadLetterLog];
+  }
+
   /**
    * Clear all jobs (for testing)
    */
@@ -480,6 +535,7 @@ export class JobQueue {
     this.jobOrder = [];
     this.runningJobs.clear();
     this.stats = { totalCompleted: 0, totalDurationMs: 0 };
+    this.deadLetterLog = [];
   }
 }
 

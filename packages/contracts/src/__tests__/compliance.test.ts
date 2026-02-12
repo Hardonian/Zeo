@@ -49,7 +49,8 @@ describe("Contract Compliance (Breaking Change Detector)", () => {
             permissions: {},
         };
 
-        // @ts-ignore - using internal for test validation
-        expect(() => contracts.assertUiPanelManifest(mockManifest)).not.toThrow();
+        const manifestAssert = (contracts as { assertUiPanelManifest?: (input: unknown) => void }).assertUiPanelManifest;
+        expect(typeof manifestAssert).toBe('function');
+        expect(() => manifestAssert?.(mockManifest)).not.toThrow();
     });
 });

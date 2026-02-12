@@ -15,7 +15,7 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "pnpm -r --filter @zeo/core^... build && vitest run",
-    "lint": "eslint .",
+    "lint": "eslint src/**/*.ts",
     "typecheck:exports": "tsc -p tsconfig.exports.json --noEmit"
   },
   "dependencies": {

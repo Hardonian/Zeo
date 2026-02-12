@@ -147,3 +147,20 @@ model WebhookReceipt {
 
   @@unique([organizationId, provider, deliveryId])
 }
+
+
+model DeadLetterJob {
+  id             String   @id @default(cuid())
+  jobId          String
+  jobType        String
+  payloadJson    String
+  errorCode      String
+  failureClass   String   // "transient" | "permanent"
+  errorMessage   String
+  attempts       Int
+  createdAt      DateTime @default(now())
+  lastFailedAt   DateTime
+
+  @@index([jobType])
+  @@index([createdAt])
+}

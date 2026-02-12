@@ -182,7 +182,7 @@ describe('JobQueue', () => {
   });
 
   it('should handle job timeout', async () => {
-    const queue = new JobQueue({ autoStart: false });
+    const queue = new JobQueue({ autoStart: false, maxRetries: 0 });
 
     const handler: JobHandler<string, void> = {
       type: 'replay',
@@ -201,6 +201,32 @@ describe('JobQueue', () => {
     expect(job.error).toContain('timed out');
   });
 
+
+
+  it('should classify permanent failures into dead letter', async () => {
+    const queue = new JobQueue({ autoStart: false, maxRetries: 1, retryDelayMs: 1 });
+
+    const handler: JobHandler<string, void> = {
+      type: 'analytics',
+      async execute() {
+        throw new Error('invalid schema payload');
+      },
+    };
+
+    queue.registerHandler(handler);
+    const job = queue.enqueue('analytics', 'Bad job', 'data', { maxRetries: 1 });
+
+    await queue['processJob'](job);
+    await new Promise(r => setTimeout(r, 5));
+    if (job.status === 'pending') {
+      await queue['processJob'](job);
+      await new Promise(r => setTimeout(r, 5));
+    }
+
+    expect(job.status).toBe('dead_letter');
+    expect(job.failureClass).toBe('permanent');
+    expect(queue.getDeadLetterLog().length).toBeGreaterThan(0);
+  });
   it('should use singleton pattern', () => {
     const queue1 = getJobQueue();
     const queue2 = getJobQueue();

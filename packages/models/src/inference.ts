@@ -60,7 +60,7 @@ export async function runInference(
         try {
           const result: InferenceResponse = JSON.parse(output);
           resolve(result);
-        } catch (e) {
+        } catch {
           reject(new Error(`Failed to parse Python output: ${output}`));
         }
       });

@@ -22,6 +22,7 @@ import {
   isValidPermissionRequest,
   createPermissionResponse,
   sanitizeErrorMessage,
+  isAllowedOrigin,
   type SignedUiPanelManifest,
 } from '@zeo/contracts';
 import { createHash } from 'node:crypto';
@@ -263,7 +264,7 @@ export function grantPermission(
     grantId: grant.grantId,
     expiresAt: grant.expiresAt,
     success: true,
-  });
+  }, capability);
   
   return grant;
 }
@@ -294,21 +295,11 @@ export function validateOrigin(
   context: SecureBridgeContext,
   origin: string
 ): boolean {
-  // If no allowed origins specified, only allow same-origin
   if (context.security.allowedOrigins.length === 0) {
-    // In browser, we'd check against window.location.origin
-    // For server-side, we require explicit allowed origins
     return false;
   }
 
-  return context.security.allowedOrigins.some(allowed => {
-    if (allowed === origin) return true;
-    if (allowed.startsWith('*.')) {
-      const domain = allowed.slice(2);
-      return origin.endsWith(domain);
-    }
-    return false;
-  });
+  return isAllowedOrigin(origin, context.security.allowedOrigins);
 }
 
 // =============================================================================

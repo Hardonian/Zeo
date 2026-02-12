@@ -11,6 +11,10 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -18,7 +22,7 @@ jobs:
           version: 9
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ matrix.node }}
           cache: "pnpm"
       - name: Install
         run: pnpm i --frozen-lockfile
@@ -43,8 +47,12 @@ jobs:
         run: pnpm -C apps/cli build
       - name: Perf Budget
         run: pnpm perf:budget
-      - name: Dependency Audit
+      - name: Dependency Audit Baseline
         run: pnpm audit --audit-level=moderate
+      - name: License Check (SPDX)
+        run: pnpm security:licenses
+      - name: Secret Scan
+        run: pnpm security:secrets
       - name: Replay Sample Dataset
         run: pnpm -C apps/cli start -- --replay external/examples/replay/sample_dataset.json --report-out /tmp/zeo-replay
       - name: Verify Replay Reports
@@ -59,3 +67,5 @@ jobs:
         run: pnpm smoke
       - name: Zeo Doctor
         run: pnpm -C apps/cli start -- doctor
+      - name: Dependency Upgrade Dry-run
+        run: pnpm deps:dry-run
