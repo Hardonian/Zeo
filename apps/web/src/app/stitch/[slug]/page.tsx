@@ -22,8 +22,14 @@ export default async function StitchDetailPage({ params }: { params: Promise<{ s
 
   return (
     <PublicShell title={page.title}>
+      <div className="mb-3 text-sm text-gray-500">Category: {page.category}</div>
       <div className="overflow-hidden rounded border border-gray-200 bg-white">
-        <iframe title={page.title} srcDoc={page.html} className="h-[900px] w-full" sandbox="allow-scripts allow-same-origin" />
+        <iframe
+          title={page.title}
+          srcDoc={page.html}
+          className="h-[1100px] w-full"
+          sandbox="allow-scripts allow-same-origin"
+        />
       </div>
     </PublicShell>
   );

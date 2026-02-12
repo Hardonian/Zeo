@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
-import { getWorkerHeartbeat } from '@/lib/jobs';
 
 export async function GET() {
-  return NextResponse.json({ status: 'ok', ...getWorkerHeartbeat() });
+  return NextResponse.json({
+    status: 'ok',
+    mode: 'static-first',
+    lastHeartbeatAt: null,
+    message: 'Background worker is disabled for static-first deployments.',
+  });
 }
