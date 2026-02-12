@@ -1,0 +1,3 @@
+{
+  "/platform/assets/[...path]/route": "app/platform/assets/[...path]/route.js"
+}

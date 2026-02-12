@@ -1,0 +1,10 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/_global-error/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__fafaf2bc._.js")
+R.c("server/chunks/ssr/69614_next_dist_ccdf6c15._.js")
+R.c("server/chunks/ssr/69614_next_dist_5a6915b3._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__b5df06f8._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__be20d455._.js")
+R.c("server/chunks/ssr/499ff__pnpm_c9d27880._.js")
+R.c("server/chunks/ssr/7889e_Zeo_apps_web__next-internal_server_app__global-error_page_actions_df329146.js")
+R.m(53924)
+module.exports=R.m(53924).exports
