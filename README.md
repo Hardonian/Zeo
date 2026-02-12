@@ -19,14 +19,93 @@ Antigravity is a complete suite for enterprise governance:
 Get Antigravity running in under 5 minutes:
 
 ```bash
-# 1. Install dependencies
+# 1. Verify toolchain (exact versions expected)
+node --version
+pnpm --version
+
+# 2. Install dependencies
 pnpm install
 
-# 2. Run system diagnostics
+# 3. Run system diagnostics
 pnpm doctor
 
-# 3. Start local development environment
+# 4. Start local development environment
 pnpm quickstart:web
+```
+
+## Toolchain Setup (Volta + mise-safe)
+
+This repository pins exact Node and pnpm versions to avoid pre-flight tool installer parsing issues.
+
+```bash
+# Install Volta once
+curl https://get.volta.sh | bash
+
+# Reload shell
+source ~/.bashrc  # or ~/.zshrc
+
+# Verify pinned versions
+volta --version
+node --version    # expected: v20.11.0
+pnpm --version    # expected: 9.15.5
+```
+
+If you use `mise`, exact `engines` versions in `package.json` now match the pinned Volta versions, so pre-flight resolution no longer depends on `>=` range parsing.
+
+## Environment Variables (Repo-specific)
+
+Copy the template and fill in only the integrations you need:
+
+```bash
+cp .env.example .env
+```
+
+Required for `apps/web` webhook route:
+
+- `GITHUB_WEBHOOK_SECRET` — HMAC secret used to verify GitHub webhook payloads.
+
+Optional but commonly needed:
+
+- `GITHUB_TOKEN` — GitHub API token for status checks and API operations.
+- `GITHUB_APP_ID` — Numeric GitHub App ID.
+- `GITHUB_PRIVATE_KEY` — PEM private key for GitHub App auth.
+- `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` / `OPENROUTER_API_KEY` — enables model-backed CLI flows.
+- `OCR_VENDOR_KEY`, `STT_VENDOR_KEY`, `MARKET_DATA_KEY`, `NEWS_DATA_KEY` — enables external adapters.
+
+## Build + Dev Commands
+
+Core workflows:
+
+```bash
+# Install all workspace dependencies
+pnpm install
+
+# Build all packages/apps
+pnpm -r build
+
+# Typecheck
+pnpm run typecheck
+
+# Run tests
+pnpm run test
+
+# Lint
+pnpm run lint
+```
+
+Development entrypoints:
+
+```bash
+# Web app (Next.js)
+pnpm -C apps/web dev
+
+# CLI example flow
+pnpm -C apps/cli start -- --example negotiation
+
+# Full quickstart helpers
+pnpm quickstart:web
+pnpm quickstart:cli
+pnpm quickstart:demo
 ```
 
 ## Architecture Overview
