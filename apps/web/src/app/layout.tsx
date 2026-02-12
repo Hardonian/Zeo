@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
+
 export const metadata: Metadata = {
   title: 'Zeo',
-  description: 'Static-first public site and dashboard shell for Zeo.',
+  description: 'Static-first Zeo site for marketing, docs, onboarding, and support.',
 };
 
 export default function RootLayout({

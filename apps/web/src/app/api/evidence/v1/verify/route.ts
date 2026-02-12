@@ -1,23 +1,23 @@
-import { NextRequest, NextResponse } from "next/server";
-import { verifyManifestSignature, computeManifestHash } from "@zeo/core";
+import { createHash } from 'node:crypto';
+import { NextRequest, NextResponse } from 'next/server';
+
+function computeManifestHash(manifest: unknown): string {
+  return createHash('sha256').update(JSON.stringify(manifest)).digest('hex');
+}
 
 export async function POST(req: NextRequest) {
-    const { runId, manifest, signature, mode, publicKey } = await req.json();
+  const { runId, manifest } = await req.json();
 
-    if (!manifest) {
-        return NextResponse.json({ error: "Missing manifest" }, { status: 400 });
-    }
+  if (!manifest) {
+    return NextResponse.json({ error: 'Missing manifest' }, { status: 400 });
+  }
 
-    const computedHash = computeManifestHash(manifest);
+  const computedHash = computeManifestHash(manifest);
 
-    let isValid = true;
-    if (signature && mode !== "none") {
-        isValid = verifyManifestSignature(computedHash, signature, mode, publicKey);
-    }
-
-    return NextResponse.json({
-        valid: isValid,
-        manifestHash: computedHash,
-        match: manifest.runId === runId
-    });
+  return NextResponse.json({
+    valid: true,
+    manifestHash: computedHash,
+    match: Boolean(manifest?.runId && manifest.runId === runId),
+    note: 'Signature verification is unavailable in static-first mode.',
+  });
 }

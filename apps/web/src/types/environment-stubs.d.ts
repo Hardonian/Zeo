@@ -10,6 +10,7 @@ declare module 'next/server' {
     headers: Headers;
     nextUrl: URL;
     url: string;
+    cookies: { get: (name: string) => { value: string } | undefined };
     text(): Promise<string>;
     json(): Promise<any>;
     formData(): Promise<FormData>;
@@ -17,6 +18,7 @@ declare module 'next/server' {
 
   export class NextResponse extends Response {
     constructor(body?: BodyInit | null, init?: ResponseInit);
+    cookies: { set: (name: string, value: string, options?: Record<string, unknown>) => void };
     static json(body: unknown, init?: { status?: number; headers?: Record<string, string> }): NextResponse;
     static next(init?: { request?: { headers?: Headers } }): NextResponse;
     static redirect(url: string | URL, status?: number): NextResponse;
@@ -90,4 +92,19 @@ declare module 'better-sqlite3' {
   }
 
   export default Database;
+}
+
+
+
+
+declare module '@zeo/core/client' {
+  import type { DecisionResult, DecisionSpec } from '@zeo/contracts';
+
+  export function makeNegotiationExample(): DecisionSpec;
+  export function makeOpsExample(): DecisionSpec;
+  export function runDecision(spec: DecisionSpec, options?: { depth?: number }): DecisionResult;
+  export function canonicalizeDecisionSpec(input: DecisionSpec): DecisionSpec;
+  export function hashDecisionSpec(input: DecisionSpec): Promise<string>;
+  export function buildEvidencePacket(...args: unknown[]): unknown;
+  export function computeDeterministicSeed(hash: string, salt?: string, depth?: number): string;
 }

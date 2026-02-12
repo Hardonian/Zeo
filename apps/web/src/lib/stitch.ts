@@ -10,10 +10,9 @@ export interface StitchPageInfo {
 
 const STITCH_ROOT = path.join(process.cwd(), 'src/panels/stitch');
 
-// Panel categories for marketing organization
 const PANEL_CATEGORIES: Record<string, string> = {
-  'stitch_decision_branching_view': 'Decision Intelligence',
-  'stitch_oss_governance_dashboard': 'Governance & Compliance',
+  stitch_decision_branching_view: 'Decision Intelligence',
+  stitch_oss_governance_dashboard: 'Governance & Compliance',
 };
 
 function slugify(name: string): string {
@@ -21,64 +20,66 @@ function slugify(name: string): string {
 }
 
 function formatTitle(name: string): string {
-  // Convert snake_case and kebab-case to readable title
   return name
     .replace(/_/g, ' ')
     .replace(/-/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 async function findCodeHtmlFiles(dirPath: string): Promise<{ filePath: string; category: string }[]> {
   const results: { filePath: string; category: string }[] = [];
-  
+
   try {
     const entries = await fs.readdir(dirPath, { withFileTypes: true });
-    
+
     for (const entry of entries) {
       const fullPath = path.join(dirPath, entry.name);
-      
+
       if (entry.isDirectory()) {
-        // Check if this directory contains code.html
         const codeHtmlPath = path.join(fullPath, 'code.html');
         try {
           await fs.access(codeHtmlPath);
-          // Determine category from parent directory name
           const parentDir = path.basename(dirPath);
           const category = PANEL_CATEGORIES[parentDir] || 'General';
           results.push({ filePath: codeHtmlPath, category });
         } catch {
-          // No code.html here, recurse into subdirectories
           const subResults = await findCodeHtmlFiles(fullPath);
           results.push(...subResults);
         }
       }
     }
   } catch {
-    // Directory doesn't exist or can't be read
+    return [];
   }
-  
+
   return results;
 }
 
 export async function getStitchPages(): Promise<StitchPageInfo[]> {
   const codeFiles = await findCodeHtmlFiles(STITCH_ROOT);
-  const pages: StitchPageInfo[] = [];
+  const slugUsage = new Map<string, number>();
 
-  for (const { filePath, category } of codeFiles) {
+  const pages = codeFiles.map(({ filePath, category }) => {
     const dirName = path.basename(path.dirname(filePath));
-    pages.push({
-      slug: slugify(dirName),
+    const relPath = path.relative(STITCH_ROOT, path.dirname(filePath));
+    const baseSlug = slugify(relPath);
+    const seen = slugUsage.get(baseSlug) || 0;
+    slugUsage.set(baseSlug, seen + 1);
+    const slug = seen === 0 ? baseSlug : `${baseSlug}-${seen + 1}`;
+
+    return {
+      slug,
       title: formatTitle(dirName),
       filePath,
       category,
-    });
-  }
+    };
+  });
 
   return pages.sort((a, b) => {
-    // Sort by category first, then by title
     if (a.category !== b.category) {
       return a.category.localeCompare(b.category);
     }
+
     return a.title.localeCompare(b.title);
   });
 }
@@ -86,18 +87,18 @@ export async function getStitchPages(): Promise<StitchPageInfo[]> {
 export async function getStitchPagesByCategory(): Promise<Record<string, StitchPageInfo[]>> {
   const pages = await getStitchPages();
   const byCategory: Record<string, StitchPageInfo[]> = {};
-  
+
   for (const page of pages) {
     if (!byCategory[page.category]) {
       byCategory[page.category] = [];
     }
     byCategory[page.category].push(page);
   }
-  
+
   return byCategory;
 }
 
-export async function getStitchHtml(slug: string): Promise<StitchPageInfo & { html: string } | null> {
+export async function getStitchHtml(slug: string): Promise<(StitchPageInfo & { html: string }) | null> {
   const pages = await getStitchPages();
   const page = pages.find((item) => item.slug === slug);
   if (!page) {
