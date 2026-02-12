@@ -1,5 +1,5 @@
 import Database from "better-sqlite3";
-import { PolicyPack, Waiver, EvidenceBundle, EvidenceInputs } from "@zeo/policy";
+import { PolicyPack, Waiver, EvidenceBundle, EvidenceInputs } from "@zeo/contracts";
 import { StorageProvider } from "../storage-provider.js";
 import path from "path";
 import fs from "fs";

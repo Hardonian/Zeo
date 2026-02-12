@@ -1,4 +1,31 @@
-import { sign as jwtSign } from "jsonwebtoken";
+import { createSign } from "node:crypto";
+
+function base64UrlEncode(input: string): string {
+    return Buffer.from(input)
+        .toString("base64")
+        .replace(/=/g, "")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_");
+}
+
+function signRs256(payload: Record<string, unknown>, privateKey: string): string {
+    const header = { alg: "RS256", typ: "JWT" };
+    const encodedHeader = base64UrlEncode(JSON.stringify(header));
+    const encodedPayload = base64UrlEncode(JSON.stringify(payload));
+    const signingInput = `${encodedHeader}.${encodedPayload}`;
+
+    const signer = createSign("RSA-SHA256");
+    signer.update(signingInput);
+    signer.end();
+    const signature = signer
+        .sign(privateKey)
+        .toString("base64")
+        .replace(/=/g, "")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_");
+
+    return `${signingInput}.${signature}`;
+}
 
 /**
  * Generate a GitHub App JWT
@@ -15,7 +42,7 @@ export function generateGitHubAppJwt(
         iss: appId,
     };
 
-    return jwtSign(payload, privateKey, { algorithm: "RS256" });
+    return signRs256(payload, privateKey);
 }
 
 /**

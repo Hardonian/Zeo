@@ -1,4 +1,4 @@
-import { type EvidenceBundle } from "@zeo/policy";
+import { type EvidenceBundle } from "@zeo/contracts";
 import { encodeCanonicalJson } from "./canonical-json.js";
 
 /**
@@ -53,7 +53,7 @@ export async function verifyEvidenceBundle(
 /**
  * Generate a key pair for signing evidence bundles
  */
-export async function generateEvidenceKeyPair(): Promise<CryptoKeyPair> {
+export async function generateEvidenceKeyPair(): Promise<{ privateKey: CryptoKey; publicKey: CryptoKey }> {
     return await crypto.subtle.generateKey(
         {
             name: "ECDSA",

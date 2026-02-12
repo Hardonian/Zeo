@@ -1,4 +1,4 @@
-import { PolicyPack, Waiver, EvidenceBundle, EvidenceInputs } from "@zeo/policy";
+import { PolicyPack, Waiver, EvidenceBundle, EvidenceInputs } from "@zeo/contracts";
 import { StorageProvider } from "../storage-provider.js";
 export declare class PrismaStorageProvider implements StorageProvider {
     loadLatestPolicyPack(organizationId: string, repositoryId: string | null): Promise<PolicyPack | null>;
