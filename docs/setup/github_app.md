@@ -1,6 +1,6 @@
 # GitHub App Integration Guide
 
-Antigravity requires a GitHub App installation to perform analysis and post check results back to your repositories.
+Zeo requires a GitHub App installation to perform analysis and post check results back to your repositories.
 
 ## 1. Create the GitHub App
 

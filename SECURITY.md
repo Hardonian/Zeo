@@ -1,13 +1,13 @@
 # Security Policy
 
-Antigravity is designed with a "security-by-default" and "fail-secure" architecture. We take all security reports seriously.
+Zeo is designed with a "security-by-default" and "fail-secure" architecture. We take all security reports seriously.
 
 ## Reporting a Vulnerability
 
 Please **DO NOT** open a public GitHub issue for security vulnerabilities. Instead:
 
 1.  Email `security@hardonian.com` with a detailed description.
-2.  Include a proof-of-concept (repro) or `antigravity doctor` output.
+2.  Include a proof-of-concept (repro) or `zeo doctor` output.
 3.  We will acknowledge your report within 24 hours.
 
 ## Disclosure Process

@@ -1,4 +1,4 @@
-# Antigravity Runbook
+# Zeo Runbook
 
 ## Deploy
 1. `pnpm install --frozen-lockfile`
@@ -9,7 +9,7 @@
 ## Rollback
 1. Re-deploy previous known-good artifact.
 2. Confirm webhook endpoint returns 2xx for signed delivery.
-3. Drain dead-letter queue via `pnpm antigravity retry <jobId>` after fix.
+3. Drain dead-letter queue via `pnpm zeo retry <jobId>` after fix.
 
 ## Incident response
 1. Check `/api/health` and `/api/worker/heartbeat`.

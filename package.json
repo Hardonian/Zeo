@@ -15,7 +15,7 @@
   },
   "scripts": {
     "doctor": "node scripts/doctor.mjs",
-    "antigravity": "node scripts/antigravity.mjs",
+    "zeo": "node scripts/zeo.mjs",
     "smoke": "node scripts/smoke-test.mjs",
     "benchmark": "node scripts/benchmark.mjs",
     "doctor:secrets": "node scripts/doctor.mjs",

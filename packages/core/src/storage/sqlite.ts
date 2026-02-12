@@ -7,7 +7,7 @@ import fs from "fs";
 export class SqliteStorageProvider implements StorageProvider {
     private db: Database.Database;
 
-    constructor(dbPath: string = "storage/antigravity.db") {
+    constructor(dbPath: string = "storage/zeo.db") {
         const dir = path.dirname(dbPath);
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });

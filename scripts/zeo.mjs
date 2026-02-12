@@ -16,7 +16,7 @@ function runNodeScript(scriptPath) {
 }
 
 function printHelp() {
-  console.log('antigravity <command>');
+  console.log('zeo <command>');
   console.log('Commands: doctor, smoke, benchmark, jobs list, jobs retry <id>');
 }
 
@@ -33,19 +33,19 @@ if (command === '--version' || command === '-v') {
 }
 
 if (command === 'doctor') {
-  console.log('Running Antigravity Doctor...');
+  console.log('Running Zeo Doctor...');
   runNodeScript('scripts/doctor.mjs');
   process.exit(0);
 }
 
 if (command === 'smoke') {
-  console.log('Starting Antigravity Smoke Test...');
+  console.log('Starting Zeo Smoke Test...');
   runNodeScript('scripts/smoke-test.mjs');
   process.exit(0);
 }
 
 if (command === 'benchmark') {
-  console.log('Running Antigravity Benchmarks...');
+  console.log('Running Zeo Benchmarks...');
   runNodeScript('scripts/benchmark.mjs');
   process.exit(0);
 }

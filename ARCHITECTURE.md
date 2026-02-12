@@ -1,4 +1,4 @@
-# Antigravity Architecture Invariants
+# Zeo Architecture Invariants
 
 ## Layering model
 

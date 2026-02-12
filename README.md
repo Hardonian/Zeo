@@ -1,10 +1,10 @@
-# Antigravity
+# Zeo
 
-Antigravity is a production-grade governance platform for automated code review, policy enforcement, and deterministic audit trails. 
+Zeo is a production-grade governance platform for automated code review, policy enforcement, and deterministic audit trails. 
 
-## What Antigravity Is
+## What Zeo Is
 
-Antigravity is a complete suite for enterprise governance:
+Zeo is a complete suite for enterprise governance:
 
 *   **Static Analysis**: High-performance "Founder Rules" for catching complex logic errors and security vulnerabilities before they reach production.
 *   **Policy Engine**: Hierarchical policy enforcement that gates PRs based on organization-wide security and quality standards.
@@ -16,7 +16,7 @@ Antigravity is a complete suite for enterprise governance:
 
 ## Quickstart
 
-Get Antigravity running in under 5 minutes:
+Get Zeo running in under 5 minutes:
 
 ```bash
 # 1. Verify toolchain (exact versions expected)
@@ -147,7 +147,7 @@ For hardened runtime flags and mount conventions, see [`docs/docker.md`](docs/do
 
 ## Architecture Overview
 
-Antigravity is built on a **Deterministic Monorepo** architecture:
+Zeo is built on a **Deterministic Monorepo** architecture:
 - **`apps/web`**: Next.js 15+ frontend and governance API.
 - **`packages/policy`**: The core evaluation engine.
 - **`packages/analysis`**: Multi-language static analysis services (babel-based).
@@ -158,7 +158,7 @@ Antigravity is built on a **Deterministic Monorepo** architecture:
 
 1.  **Create GitHub App**: Define permissions for `Checks: Read & Write` and `Pull Requests: Read Only`.
 2.  **Environment Setup**: Add `GITHUB_APP_ID`, `GITHUB_PRIVATE_KEY`, and `GITHUB_WEBHOOK_SECRET` to your `.env`.
-3.  **Webhook Configuration**: Point your webhook to `/api/webhooks/github`. Antigravity handles deliveries asynchronously with replay protection.
+3.  **Webhook Configuration**: Point your webhook to `/api/webhooks/github`. Zeo handles deliveries asynchronously with replay protection.
 
 [View Setup Guide](./docs/setup/github_app.md)
 
@@ -170,7 +170,7 @@ Policies are defined as JSON objects that map analysis findings to enforcement a
 
 ## Evidence Model
 
-Antigravity produces signed **Evidence Bundles**. These bundles capture the initial context, findings, active policy, and the deterministic score. 
+Zeo produces signed **Evidence Bundles**. These bundles capture the initial context, findings, active policy, and the deterministic score. 
 
 ## Performance & Reliability
 

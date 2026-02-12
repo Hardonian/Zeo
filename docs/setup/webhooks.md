@@ -1,6 +1,6 @@
 # Webhook Configuration Guide
 
-Antigravity handles GitHub events asynchronously via **JobForge**. This guide explains how to configure and monitor your webhook integration.
+Zeo handles GitHub events asynchronously via **JobForge**. This guide explains how to configure and monitor your webhook integration.
 
 ## 1. Endpoint Details
 
@@ -21,7 +21,7 @@ WebhookSecurity.verifyGithubSignature(rawBody, signature, secret)
 We use `WebhookSecurity.recordReceipt` to ensure each `X-GitHub-Delivery` ID is only processed once. If a duplicate delivery is detected, we return `202 Accepted` but skip processing.
 
 ## 3. Fast Response Policy
-Antigravity follows a **"Fast Ack, Async Process"** policy.
+Zeo follows a **"Fast Ack, Async Process"** policy.
 1. Webhook receives payload.
 2. Validates signature and ID.
 3. Enqueues job to JobForge.

@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 
-console.log('=== Antigravity Upstream Sync Governance ===\n');
+console.log('=== Zeo Upstream Sync Governance ===\n');
 
 // Hash helper for drift detection
 const getHash = (file) => {

@@ -1,6 +1,6 @@
 # Troubleshooting Guide
 
-Antigravity is designed to be self-diagnostic. If you encounter issues, follow this step-by-step checklist.
+Zeo is designed to be self-diagnostic. If you encounter issues, follow this step-by-step checklist.
 
 ## 1. Run the Doctor
 
@@ -24,7 +24,7 @@ It will check for:
 
 ### Job marked as `dead_letter`
 - **Cause**: The job failed multiple times (check the `error` field in the UI/CLI). Common causes include GitHub rate limiting or invalid commit SHAs.
-- **Fix**: Resolve the underlying cause and run `pnpm antigravity jobs retry <id>`.
+- **Fix**: Resolve the underlying cause and run `pnpm zeo jobs retry <id>`.
 
 ### Policy Not Enforcement (PRs Passing Regardless)
 - **Cause**: The PR author might have a "Waiver" assigned, or the Policy Pack is not correctly loaded for that repo.

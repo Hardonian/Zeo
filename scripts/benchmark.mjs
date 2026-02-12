@@ -1,5 +1,5 @@
 /**
- * Antigravity Benchmark Suite
+ * Zeo Benchmark Suite
  * Performance and latency validation.
  */
 
@@ -7,7 +7,7 @@ import { StaticAnalysisService } from '../packages/analysis/dist/index.js';
 import { policyEngineService } from '../packages/policy/dist/index.js';
 
 async function runBenchmarks() {
-    console.log('=== Antigravity Performance Benchmark ===\n');
+    console.log('=== Zeo Performance Benchmark ===\n');
 
     const analysis = new StaticAnalysisService();
     const iterations = 50;

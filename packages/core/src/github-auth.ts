@@ -42,7 +42,7 @@ export async function getInstallationAccessToken(
             headers: {
                 Authorization: `Bearer ${appJwt}`,
                 Accept: "application/vnd.github.v3+json",
-                "User-Agent": "Antigravity-Sync",
+                "User-Agent": "Zeo-Sync",
             },
         }
     );

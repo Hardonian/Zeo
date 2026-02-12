@@ -1,6 +1,6 @@
 # Support Policy
 
-Thank you for using Antigravity! We are committed to providing operator-grade support.
+Thank you for using Zeo! We are committed to providing operator-grade support.
 
 ## Getting Help
 

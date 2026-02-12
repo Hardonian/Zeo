@@ -1,5 +1,5 @@
 /**
- * Antigravity Smoke Test
+ * Zeo Smoke Test
  * Deterministic end-to-end verification of the governance loop.
  */
 
@@ -8,7 +8,7 @@ import { policyEngineService } from '../packages/policy/dist/index.js';
 import { StaticAnalysisService } from '../packages/analysis/dist/index.js';
 
 async function runSmokeTest() {
-    console.log('=== Antigravity Smoke Test ===\n');
+    console.log('=== Zeo Smoke Test ===\n');
 
     // 1. Setup Mock Job Queue with immediate processing
     const queue = new JobQueue({ concurrency: 1, autoStart: false });
