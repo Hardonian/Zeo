@@ -18,7 +18,7 @@ yarn-error.log*
 .zeo/agents/
 
 # Next.js
-.next/
+**/.next/
 out/
 
 # Logs
