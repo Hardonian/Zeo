@@ -1,20 +1,21 @@
 #!/usr/bin/env node
 
-import { existsSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 
-const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const cliPath = path.join(packageRoot, 'dist', 'cli.js');
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+const cliEntrypoint = path.resolve(currentDir, '../dist/cli.js');
 
-if (!existsSync(cliPath)) {
-  process.stderr.write(
-    [
-      'controlplane CLI build output is not available yet.',
-      'Run "pnpm --filter @controlplane/controlplane build" (or "pnpm -r build") and retry.',
-    ].join('\n') + '\n',
-  );
-  process.exit(1);
+try {
+  await import(pathToFileURL(cliEntrypoint).href);
+} catch (error) {
+  if (error && typeof error === 'object' && 'code' in error && error.code === 'ERR_MODULE_NOT_FOUND') {
+    console.error(
+      'ControlPlane CLI is not built yet. Run "pnpm --filter @controlplane/controlplane build" (or "pnpm run build" at the repo root) and retry.'
+    );
+    process.exit(1);
+  }
+
+  throw error;
 }
-
-await import(pathToFileURL(cliPath).href);
