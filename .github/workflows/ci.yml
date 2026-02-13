@@ -30,6 +30,8 @@ jobs:
         run: pnpm lint
       - name: Typecheck
         run: pnpm typecheck
+      - name: Core dependency-edge guard
+        run: pnpm -r --filter @zeo/core^... build
       - name: Test
         run: pnpm test
       - name: Build

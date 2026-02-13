@@ -1,6 +1,6 @@
 {
-  "name": "@zeo/policy",
-  "version": "0.0.1",
+  "name": "@zeo/policy-types",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,13 +13,6 @@
   "scripts": {
     "build": "tsc",
     "test": "vitest run"
-  },
-  "dependencies": {
-    "@opentelemetry/api": "^1.9.0",
-    "@zeo/analysis": "workspace:*",
-    "@zeo/policy-types": "workspace:*",
-    "js-yaml": "^4.1.0",
-    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

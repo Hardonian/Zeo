@@ -44,6 +44,7 @@
     "@zeo/memory": "workspace:*",
     "@zeo/meta": "workspace:*",
     "@zeo/models": "workspace:*",
+    "@zeo/policy-types": "workspace:*",
     "@zeo/regimes": "workspace:*",
     "@zeo/repro-pack": "workspace:*",
     "@zeo/robustness": "workspace:*",
