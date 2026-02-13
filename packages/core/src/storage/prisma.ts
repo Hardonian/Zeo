@@ -1,5 +1,5 @@
 import { prisma } from "@zeo/db";
-import { PolicyPack, Waiver, EvidenceBundle, EvidenceInputs } from "@zeo/policy";
+import type { PolicyPack, Waiver, EvidenceBundle, EvidenceInputs } from "@zeo/policy-types";
 import { StorageProvider } from "../storage-provider.js";
 
 export class PrismaStorageProvider implements StorageProvider {

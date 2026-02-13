@@ -500,6 +500,9 @@ importers:
       '@zeo/models':
         specifier: workspace:*
         version: link:../models
+      '@zeo/policy-types':
+        specifier: workspace:*
+        version: link:../policy-types
       '@zeo/regimes':
         specifier: workspace:*
         version: link:../regimes
@@ -947,15 +950,27 @@ importers:
       '@zeo/analysis':
         specifier: workspace:*
         version: link:../analysis
-      '@zeo/core':
-        specifier: workspace:^
-        version: link:../core
+      '@zeo/policy-types':
+        specifier: workspace:*
+        version: link:../policy-types
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.1
       zod:
         specifier: ^3.22.4
         version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^20.10.0
+        version: 20.19.33
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
+      vitest:
+        specifier: ^1.1.0
+        version: 1.6.1(@types/node@20.19.33)(jsdom@28.0.0)
+
+  packages/policy-types:
     devDependencies:
       '@types/node':
         specifier: ^20.10.0

@@ -1,5 +1,6 @@
 import { createHash } from 'crypto';
 import { Issue } from "@zeo/analysis";
+import type { EvidenceBundle, EvidenceInputs, PolicyPack, PolicyRule, Waiver } from "@zeo/policy-types";
 import { trace, context } from "@opentelemetry/api";
 
 // Local copies to avoid circular dependency with @zeo/core
@@ -17,43 +18,14 @@ interface StorageProvider {
 }
 
 export { Issue };
+export type { EvidenceBundle, EvidenceInputs, PolicyPack, PolicyRule, Waiver } from "@zeo/policy-types";
 
 const tracer = trace.getTracer('zeo-policy-engine');
-
-export interface PolicyPack {
-  id: string;
-  organizationId: string;
-  repositoryId: string | null;
-  version: string;
-  source: string;
-  checksum: string;
-  rules: PolicyRule[];
-}
-
-export interface PolicyRule {
-  id: string;
-  ruleId: string;
-  severityMapping: Record<string, 'block' | 'warn' | 'allow'>;
-  enabled: boolean;
-  params?: Record<string, unknown>;
-  name?: string;
-  pattern?: RegExp;
-  severity?: 'critical' | 'high' | 'medium' | 'low';
-  evaluate?: (code: string, context?: unknown) => Array<{ ruleId: string; severity: string; message: string; line?: number; column?: number }>;
-}
 
 export interface EffectivePolicy {
   pack: PolicyPack;
   rules: Map<string, PolicyRule>;
   waivers: Waiver[];
-}
-
-export interface Waiver {
-  id: string;
-  ruleId: string;
-  scope: 'repo' | 'branch' | 'path';
-  scopeValue?: string;
-  expiresAt?: Date;
 }
 
 export interface EvaluationResult {
@@ -65,36 +37,11 @@ export interface EvaluationResult {
   blockingReason?: string;
 }
 
-export interface EvidenceInputs {
-  diffHash?: string;
-  fileListHash?: string;
-  commitSha?: string;
-  branch?: string;
-  prNumber?: number;
-  [key: string]: unknown;
-}
-
 export interface EvidenceOutputs {
   findings: Issue[];
   evaluationResult: EvaluationResult;
   artifacts?: Record<string, string>;
   [key: string]: unknown;
-}
-
-export interface EvidenceBundle {
-  id: string;
-  reviewId?: string;
-  testId?: string;
-  docId?: string;
-  inputsMetadata: EvidenceInputs;
-  rulesFired: string[];
-  deterministicScore: number;
-  artifacts?: Record<string, string>;
-  policyChecksum: string;
-  contractVersionHash?: string;
-  toolVersions?: Record<string, string>;
-  timings?: Record<string, number>;
-  createdAt: Date;
 }
 
 /**
@@ -184,7 +131,13 @@ export class PolicyEngineService {
           }
         }
 
-        const penalty = { critical: 20, high: 10, medium: 5, low: 2 }[finding.severity] || 0;
+        const severityPenalty: Record<Issue['severity'], number> = {
+          critical: 20,
+          high: 10,
+          medium: 5,
+          low: 2,
+        };
+        const penalty = severityPenalty[finding.severity] ?? 0;
         totalScore -= penalty;
       }
 

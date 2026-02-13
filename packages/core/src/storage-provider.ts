@@ -1,4 +1,4 @@
-import { PolicyPack, Waiver, EvidenceBundle, EvidenceInputs, EvidenceOutputs } from "@zeo/policy";
+import type { PolicyPack, Waiver, EvidenceBundle, EvidenceInputs } from "@zeo/policy-types";
 
 export interface StorageProvider {
     /**

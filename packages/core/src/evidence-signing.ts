@@ -1,4 +1,4 @@
-import { type EvidenceBundle } from "@zeo/policy";
+import type { EvidenceBundle } from "@zeo/policy-types";
 import { encodeCanonicalJson } from "./canonical-json.js";
 
 /**
