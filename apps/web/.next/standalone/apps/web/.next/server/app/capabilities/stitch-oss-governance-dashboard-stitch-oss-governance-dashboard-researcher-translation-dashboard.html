@@ -1,0 +1,252 @@
+<!DOCTYPE html><!--J_kVknmu6GSF5qixhc85u--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/37847ea80569b263.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-e3a36c2da9ea350c.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-3b36e40479e50727.js" async=""></script><script src="/_next/static/chunks/app/error-e24765025faea277.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/capabilities/%5Bslug%5D/page-b735324e90a667f4.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50"><header class="bg-white border-b border-gray-200 py-4 px-6 md:px-8 sticky top-0 z-20"><div class="max-w-7xl mx-auto flex items-center justify-between"><div class="flex items-center gap-4"><a class="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors" href="/capabilities"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></a><div><h1 class="text-lg font-bold text-gray-900 tracking-tight">Researcher Translation Dashboard</h1><p class="text-xs text-blue-600 font-medium uppercase tracking-widest">Governance &amp; Compliance</p></div></div><div class="flex gap-3"><div class="hidden sm:flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-100"><span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>Live Preview</div></div></div></header><main class="w-full"><div class="bg-white rounded-none shadow-none overflow-hidden"><iframe title="Researcher Translation Dashboard" srcDoc="&lt;!DOCTYPE html&gt;
+
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Researcher Translation Dashboard&lt;/title&gt;
+&lt;!-- Google Fonts --&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;!-- Material Symbols --&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;!-- Tailwind CSS --&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;script id=&quot;tailwind-config&quot;&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        &quot;primary&quot;: &quot;#137fec&quot;,
+                        &quot;background-light&quot;: &quot;#f6f7f8&quot;,
+                        &quot;background-dark&quot;: &quot;#101922&quot;,
+                        &quot;surface-dark&quot;: &quot;#1e293b&quot;,
+                        &quot;surface-darker&quot;: &quot;#0f172a&quot;,
+                    },
+                    fontFamily: {
+                        &quot;display&quot;: [&quot;Inter&quot;, &quot;sans-serif&quot;],
+                        &quot;mono&quot;: [&quot;JetBrains Mono&quot;, &quot;monospace&quot;],
+                    },
+                    borderRadius: {&quot;DEFAULT&quot;: &quot;0.25rem&quot;, &quot;lg&quot;: &quot;0.5rem&quot;, &quot;xl&quot;: &quot;0.75rem&quot;, &quot;full&quot;: &quot;9999px&quot;},
+                },
+            },
+        }
+    &lt;/script&gt;
+&lt;style&gt;
+        /* Custom scrollbar for high-density feel */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark font-display antialiased text-slate-900 dark:text-slate-100 flex flex-col min-h-screen overflow-x-hidden pb-24&quot;&gt;
+&lt;!-- Top App Bar --&gt;
+&lt;header class=&quot;sticky top-0 z-30 flex items-center justify-between bg-surface-darker/95 backdrop-blur-sm border-b border-slate-700/50 p-4&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;button class=&quot;text-slate-400 hover:text-white transition-colors p-1 rounded-md hover:bg-slate-800&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;menu&lt;/span&gt;
+&lt;/button&gt;
+&lt;h1 class=&quot;text-lg font-bold tracking-tight text-white&quot;&gt;Translation Queue&lt;/h1&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;button class=&quot;relative flex h-10 w-10 items-center justify-center rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;notifications&lt;/span&gt;
+&lt;span class=&quot;absolute top-2 right-2 h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-surface-darker&quot;&gt;&lt;/span&gt;
+&lt;/button&gt;
+&lt;div class=&quot;h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 text-primary text-xs font-bold&quot;&gt;
+                JD
+            &lt;/div&gt;
+&lt;/div&gt;
+&lt;/header&gt;
+&lt;!-- Analytics Section (Compact) --&gt;
+&lt;section class=&quot;p-4 overflow-x-auto&quot;&gt;
+&lt;div class=&quot;flex gap-3 min-w-max pb-2&quot;&gt;
+&lt;!-- Stat 1 --&gt;
+&lt;div class=&quot;flex flex-col gap-1 rounded-lg bg-surface-dark border border-slate-700 p-3 min-w-[140px] shadow-sm&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-orange-400 text-[18px]&quot;&gt;pending_actions&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-400&quot;&gt;Pending&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-end gap-2&quot;&gt;
+&lt;span class=&quot;text-xl font-bold text-white&quot;&gt;12&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium text-emerald-400 mb-1&quot;&gt;+2 new&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Stat 2 --&gt;
+&lt;div class=&quot;flex flex-col gap-1 rounded-lg bg-surface-dark border border-slate-700 p-3 min-w-[140px] shadow-sm&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-blue-400 text-[18px]&quot;&gt;timelapse&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-400&quot;&gt;Avg. Time&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-end gap-2&quot;&gt;
+&lt;span class=&quot;text-xl font-bold text-white&quot;&gt;2.5h&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium text-emerald-400 mb-1&quot;&gt;-10%&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Stat 3 --&gt;
+&lt;div class=&quot;flex flex-col gap-1 rounded-lg bg-surface-dark border border-slate-700 p-3 min-w-[160px] shadow-sm&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-red-400 text-[18px]&quot;&gt;report_problem&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-400&quot;&gt;Top Confusion&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-end gap-2&quot;&gt;
+&lt;span class=&quot;text-sm font-bold text-white font-mono truncate max-w-[120px]&quot;&gt;Kubernetes&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-400 mb-0.5&quot;&gt;45 reqs&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- Main Grid: Inbox &amp; Editor Area --&gt;
+&lt;main class=&quot;flex flex-col gap-6 px-4&quot;&gt;
+&lt;!-- Section Title --&gt;
+&lt;div class=&quot;flex items-center justify-between&quot;&gt;
+&lt;h2 class=&quot;text-sm font-bold uppercase tracking-wider text-slate-500&quot;&gt;Inbox&lt;/h2&gt;
+&lt;button class=&quot;text-xs text-primary font-medium hover:text-blue-400&quot;&gt;View All&lt;/button&gt;
+&lt;/div&gt;
+&lt;!-- Inbox List --&gt;
+&lt;div class=&quot;flex flex-col gap-3&quot;&gt;
+&lt;!-- Card 1 (Active/Selected visual indication) --&gt;
+&lt;div class=&quot;relative group rounded-lg border border-primary bg-surface-dark p-4 shadow-lg ring-1 ring-primary/20 transition-all&quot;&gt;
+&lt;div class=&quot;absolute -left-[1px] top-4 bottom-4 w-1 bg-primary rounded-r-sm&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex justify-between items-start mb-2&quot;&gt;
+&lt;div class=&quot;flex flex-col&quot;&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-400 mb-1&quot;&gt;Engineering • High Priority&lt;/span&gt;
+&lt;h3 class=&quot;text-lg font-bold text-white font-mono&quot;&gt;Zero-Knowledge Proof&lt;/h3&gt;
+&lt;/div&gt;
+&lt;span class=&quot;flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-xs font-bold text-slate-300 ring-1 ring-slate-700&quot;&gt;SJ&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-sm text-slate-400 line-clamp-2 mb-3 leading-relaxed border-l-2 border-slate-700 pl-3 italic&quot;&gt;
+                    &quot;...implementation requires a non-interactive ZKP for validation of the transaction without exposing the sender...&quot;
+                &lt;/p&gt;
+&lt;div class=&quot;flex items-center justify-between mt-3 pt-3 border-t border-slate-700/50&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2 text-xs text-slate-500&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[16px]&quot;&gt;schedule&lt;/span&gt;
+                        2 hrs ago
+                    &lt;/div&gt;
+&lt;span class=&quot;text-xs font-bold text-primary&quot;&gt;Editing...&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Card 2 --&gt;
+&lt;div class=&quot;group rounded-lg border border-slate-700 bg-surface-darker/50 p-4 hover:border-slate-500 transition-colors cursor-pointer&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start mb-2&quot;&gt;
+&lt;div class=&quot;flex flex-col&quot;&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-500 mb-1&quot;&gt;Product • Medium Priority&lt;/span&gt;
+&lt;h3 class=&quot;text-lg font-bold text-slate-200 font-mono&quot;&gt;Idempotency&lt;/h3&gt;
+&lt;/div&gt;
+&lt;span class=&quot;flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-xs font-bold text-slate-500 ring-1 ring-slate-700&quot;&gt;MR&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-sm text-slate-500 line-clamp-2 mb-3 leading-relaxed border-l-2 border-slate-800 pl-3&quot;&gt;
+                    &quot;...ensure API calls are idempotent to prevent duplicate charges when network timeout occurs...&quot;
+                &lt;/p&gt;
+&lt;div class=&quot;flex items-center justify-between mt-3 pt-3 border-t border-slate-800&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2 text-xs text-slate-600&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[16px]&quot;&gt;schedule&lt;/span&gt;
+                        4 hrs ago
+                    &lt;/div&gt;
+&lt;button class=&quot;text-xs font-bold text-slate-400 hover:text-white&quot;&gt;Start Draft&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Card 3 --&gt;
+&lt;div class=&quot;group rounded-lg border border-slate-700 bg-surface-darker/50 p-4 hover:border-slate-500 transition-colors cursor-pointer opacity-75&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start mb-2&quot;&gt;
+&lt;div class=&quot;flex flex-col&quot;&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-500 mb-1&quot;&gt;Marketing • Low Priority&lt;/span&gt;
+&lt;h3 class=&quot;text-lg font-bold text-slate-200 font-mono&quot;&gt;Service Mesh&lt;/h3&gt;
+&lt;/div&gt;
+&lt;span class=&quot;flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-xs font-bold text-slate-500 ring-1 ring-slate-700&quot;&gt;AL&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-sm text-slate-500 line-clamp-2 mb-3 leading-relaxed border-l-2 border-slate-800 pl-3&quot;&gt;
+                    &quot;...need a simple explanation for the new landing page regarding our service mesh capabilities...&quot;
+                &lt;/p&gt;
+&lt;div class=&quot;flex items-center justify-between mt-3 pt-3 border-t border-slate-800&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2 text-xs text-slate-600&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[16px]&quot;&gt;schedule&lt;/span&gt;
+                        1 day ago
+                    &lt;/div&gt;
+&lt;button class=&quot;text-xs font-bold text-slate-400 hover:text-white&quot;&gt;Start Draft&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Editor Area (Simulated Slide-up Sheet) --&gt;
+&lt;div class=&quot;mt-4 border-t border-primary/30 pt-4 pb-20&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between mb-3&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-primary text-[20px]&quot;&gt;edit_note&lt;/span&gt;
+&lt;h2 class=&quot;text-sm font-bold text-white&quot;&gt;Draft Definition&lt;/h2&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex gap-1 bg-slate-800 p-0.5 rounded-md&quot;&gt;
+&lt;button class=&quot;p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-white&quot; title=&quot;Bold&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;format_bold&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-white&quot; title=&quot;Italic&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;format_italic&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-white&quot; title=&quot;Link&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;link&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Editor Input --&gt;
+&lt;div class=&quot;bg-surface-dark border border-slate-600 rounded-lg p-3 shadow-inner focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all mb-4&quot;&gt;
+&lt;textarea class=&quot;w-full bg-transparent border-none text-sm text-slate-200 placeholder-slate-500 focus:ring-0 resize-none min-h-[120px] leading-relaxed font-display&quot; placeholder=&quot;Write a plain-language explanation...&quot;&gt;A method where one party proves to another that a statement is true without revealing the actual information.&lt;/textarea&gt;
+&lt;/div&gt;
+&lt;!-- AI Suggestion Box --&gt;
+&lt;div class=&quot;relative bg-indigo-900/20 border border-indigo-500/30 rounded-lg p-4&quot;&gt;
+&lt;div class=&quot;absolute -top-3 left-3 bg-indigo-500/10 border border-indigo-500/50 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-bold text-indigo-300 uppercase tracking-wide flex items-center gap-1&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[12px]&quot;&gt;smart_toy&lt;/span&gt; AI Assist
+                &lt;/div&gt;
+&lt;div class=&quot;flex gap-3&quot;&gt;
+&lt;div class=&quot;flex-1&quot;&gt;
+&lt;p class=&quot;text-xs text-indigo-200 leading-relaxed&quot;&gt;
+&lt;span class=&quot;font-bold text-indigo-100&quot;&gt;Analogy Suggestion:&lt;/span&gt; Like showing a bartender your ID to prove you are 21 without revealing your name or address.
+                        &lt;/p&gt;
+&lt;/div&gt;
+&lt;button class=&quot;flex-shrink-0 flex items-center justify-center h-8 w-8 rounded bg-indigo-500/20 hover:bg-indigo-500/40 text-indigo-300 transition-colors&quot; title=&quot;Copy to Editor&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;content_copy&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/main&gt;
+&lt;!-- Bottom Action Bar (Sticky) --&gt;
+&lt;div class=&quot;fixed bottom-0 left-0 right-0 z-40 bg-surface-darker border-t border-slate-700/80 p-4 pb-6 backdrop-blur-md shadow-2xl&quot;&gt;
+&lt;div class=&quot;max-w-md mx-auto w-full flex flex-col gap-4&quot;&gt;
+&lt;!-- Global Dictionary Toggle --&gt;
+&lt;label class=&quot;flex items-center gap-3 cursor-pointer group select-none&quot;&gt;
+&lt;div class=&quot;relative&quot;&gt;
+&lt;input checked=&quot;&quot; class=&quot;sr-only peer&quot; type=&quot;checkbox&quot;/&gt;
+&lt;div class=&quot;w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[&#x27;&#x27;] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;text-sm font-medium text-slate-300 group-hover:text-white transition-colors&quot;&gt;Global Dictionary Update&lt;/span&gt;
+&lt;/label&gt;
+&lt;!-- Buttons --&gt;
+&lt;div class=&quot;flex gap-3 h-12&quot;&gt;
+&lt;button class=&quot;flex-1 rounded-lg border border-slate-600 bg-transparent text-slate-300 font-bold text-sm hover:bg-slate-800 hover:text-white transition-colors flex items-center justify-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[20px]&quot;&gt;help_outline&lt;/span&gt;
+                    Clarify
+                &lt;/button&gt;
+&lt;button class=&quot;flex-[2] rounded-lg bg-primary text-white font-bold text-sm hover:bg-blue-600 transition-colors shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[20px]&quot;&gt;publish&lt;/span&gt;
+                    Publish Translation
+                &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;" class="w-full h-[calc(100vh-65px)] border-none" sandbox="allow-scripts allow-same-origin"></iframe></div></main></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-e3a36c2da9ea350c.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-e24765025faea277.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"9019\",\"static/chunks/app/capabilities/%5Bslug%5D/page-b735324e90a667f4.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/37847ea80569b263.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"J_kVknmu6GSF5qixhc85u\",\"c\":[\"\",\"capabilities\",\"stitch-oss-governance-dashboard-stitch-oss-governance-dashboard-researcher-translation-dashboard\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"capabilities\",{\"children\":[[\"slug\",\"stitch-oss-governance-dashboard-stitch-oss-governance-dashboard-researcher-translation-dashboard\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/37847ea80569b263.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:T337b,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eResearcher Translation Dashboard\u003c/title\u003e\n\u003c!-- Google Fonts --\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003c!-- Material Symbols --\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003c!-- Tailwind CSS --\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003cscript id=\"tailwind-config\"\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        \"primary\": \"#137fec\",\n                        \"background-light\": \"#f6f7f8\",\n                        \"background-dark\": \"#101922\",\n                        \"surface-dark\": \"#1e293b\",\n                        \"surface-darker\": \"#0f172a\",\n                    },\n                    fontFamily: {\n                        \"display\": [\"Inter\", \"sans-serif\"],\n                        \"mono\": [\"JetBrains Mono\", \"monospace\"],\n                    },\n                    borderRadius: {\"DEFAULT\": \"0.25rem\", \"lg\": \"0.5rem\", \"xl\": \"0.75rem\", \"full\": \"9999px\"},\n                },\n            },\n        }\n    \u003c/script\u003e\n\u003cstyle\u003e\n        /* Custom scrollbar for high-density feel */\n        ::-webkit-scrollbar {\n            width: 4px;\n            height: 4px;\n        }\n        ::-webkit-scrollbar-track {\n            background: #1e293b; \n        }\n        ::-webkit-scrollbar-thumb {\n            background: #334155; \n            border-radius: 4px;\n        }\n        ::-webkit-scrollbar-thumb:hover {\n            background: #475569; \n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark font-display antialiased text-slate-900 dark:text-slate-100 flex flex-col min-h-screen overflow-x-hidden pb-24\"\u003e\n\u003c!-- Top App Bar --\u003e\n\u003cheader class=\"sticky top-0 z-30 flex items-center justify-between bg-surface-darker/95 backdrop-blur-sm border-b border-slate-700/50 p-4\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cbutton class=\"text-slate-400 hover:text-white transition-colors p-1 rounded-md hover:bg-slate-800\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003emenu\u003c/span\u003e\n\u003c/button\u003e\n\u003ch1 class=\"text-lg font-bold tracking-tight text-white\"\u003eTranslation Queue\u003c/h1\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cbutton class=\"relative flex h-10 w-10 items-center justify-center rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003enotifications\u003c/span\u003e\n\u003cspan class=\"absolute top-2 right-2 h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-surface-darker\"\u003e\u003c/span\u003e\n\u003c/button\u003e\n\u003cdiv class=\"h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 text-primary text-xs font-bold\"\u003e\n                JD\n            \u003c/div\u003e\n\u003c/div\u003e\n\u003c/header\u003e\n\u003c!-- Analytics Section (Compact) --\u003e\n\u003csection class=\"p-4 overflow-x-auto\"\u003e\n\u003cdiv class=\"flex gap-3 min-w-max pb-2\"\u003e\n\u003c!-- Stat 1 --\u003e\n\u003cdiv class=\"flex flex-col gap-1 rounded-lg bg-surface-dark border border-slate-700 p-3 min-w-[140px] shadow-sm\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-orange-400 text-[18px]\"\u003epending_actions\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium text-slate-400\"\u003ePending\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-end gap-2\"\u003e\n\u003cspan class=\"text-xl font-bold text-white\"\u003e12\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium text-emerald-400 mb-1\"\u003e+2 new\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Stat 2 --\u003e\n\u003cdiv class=\"flex flex-col gap-1 rounded-lg bg-surface-dark border border-slate-700 p-3 min-w-[140px] shadow-sm\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-blue-400 text-[18px]\"\u003etimelapse\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium text-slate-400\"\u003eAvg. Time\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-end gap-2\"\u003e\n\u003cspan class=\"text-xl font-bold text-white\"\u003e2.5h\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium text-emerald-400 mb-1\"\u003e-10%\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Stat 3 --\u003e\n\u003cdiv class=\"flex flex-col gap-1 rounded-lg bg-surface-dark border border-slate-700 p-3 min-w-[160px] shadow-sm\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-red-400 text-[18px]\"\u003ereport_problem\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium text-slate-400\"\u003eTop Confusion\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-end gap-2\"\u003e\n\u003cspan class=\"text-sm font-bold text-white font-mono truncate max-w-[120px]\"\u003eKubernetes\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium text-slate-400 mb-0.5\"\u003e45 reqs\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c!-- Main Grid: Inbox \u0026 Editor Area --\u003e\n\u003cmain class=\"flex flex-col gap-6 px-4\"\u003e\n\u003c!-- Section Title --\u003e\n\u003cdiv class=\"flex items-center justify-between\"\u003e\n\u003ch2 class=\"text-sm font-bold uppercase tracking-wider text-slate-500\"\u003eInbox\u003c/h2\u003e\n\u003cbutton class=\"text-xs text-primary font-medium hover:text-blue-400\"\u003eView All\u003c/button\u003e\n\u003c/div\u003e\n\u003c!-- Inbox List --\u003e\n\u003cdiv class=\"flex flex-col gap-3\"\u003e\n\u003c!-- Card 1 (Active/Selected visual indication) --\u003e\n\u003cdiv class=\"relative group rounded-lg border border-primary bg-surface-dark p-4 shadow-lg ring-1 ring-primary/20 transition-all\"\u003e\n\u003cdiv class=\"absolute -left-[1px] top-4 bottom-4 w-1 bg-primary rounded-r-sm\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex justify-between items-start mb-2\"\u003e\n\u003cdiv class=\"flex flex-col\"\u003e\n\u003cspan class=\"text-xs font-medium text-slate-400 mb-1\"\u003eEngineering • High Priority\u003c/span\u003e\n\u003ch3 class=\"text-lg font-bold text-white font-mono\"\u003eZero-Knowledge Proof\u003c/h3\u003e\n\u003c/div\u003e\n\u003cspan class=\"flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-xs font-bold text-slate-300 ring-1 ring-slate-700\"\u003eSJ\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-sm text-slate-400 line-clamp-2 mb-3 leading-relaxed border-l-2 border-slate-700 pl-3 italic\"\u003e\n                    \"...implementation requires a non-interactive ZKP for validation of the transaction without exposing the sender...\"\n                \u003c/p\u003e\n\u003cdiv class=\"flex items-center justify-between mt-3 pt-3 border-t border-slate-700/50\"\u003e\n\u003cdiv class=\"flex items-center gap-2 text-xs text-slate-500\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[16px]\"\u003eschedule\u003c/span\u003e\n                        2 hrs ago\n                    \u003c/div\u003e\n\u003cspan class=\"text-xs font-bold text-primary\"\u003eEditing...\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Card 2 --\u003e\n\u003cdiv class=\"group rounded-lg border border-slate-700 bg-surface-darker/50 p-4 hover:border-slate-500 transition-colors cursor-pointer\"\u003e\n\u003cdiv class=\"flex justify-between items-start mb-2\"\u003e\n\u003cdiv class=\"flex flex-col\"\u003e\n\u003cspan class=\"text-xs font-medium text-slate-500 mb-1\"\u003eProduct • Medium Priority\u003c/span\u003e\n\u003ch3 class=\"text-lg font-bold text-slate-200 font-mono\"\u003eIdempotency\u003c/h3\u003e\n\u003c/div\u003e\n\u003cspan class=\"flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-xs font-bold text-slate-500 ring-1 ring-slate-700\"\u003eMR\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-sm text-slate-500 line-clamp-2 mb-3 leading-relaxed border-l-2 border-slate-800 pl-3\"\u003e\n                    \"...ensure API calls are idempotent to prevent duplicate charges when network timeout occurs...\"\n                \u003c/p\u003e\n\u003cdiv class=\"flex items-center justify-between mt-3 pt-3 border-t border-slate-800\"\u003e\n\u003cdiv class=\"flex items-center gap-2 text-xs text-slate-600\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[16px]\"\u003eschedule\u003c/span\u003e\n                        4 hrs ago\n                    \u003c/div\u003e\n\u003cbutton class=\"text-xs font-bold text-slate-400 hover:text-white\"\u003eStart Draft\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Card 3 --\u003e\n\u003cdiv class=\"group rounded-lg border border-slate-700 bg-surface-darker/50 p-4 hover:border-slate-500 transition-colors cursor-pointer opacity-75\"\u003e\n\u003cdiv class=\"flex justify-between items-start mb-2\"\u003e\n\u003cdiv class=\"flex flex-col\"\u003e\n\u003cspan class=\"text-xs font-medium text-slate-500 mb-1\"\u003eMarketing • Low Priority\u003c/span\u003e\n\u003ch3 class=\"text-lg font-bold text-slate-200 font-mono\"\u003eService Mesh\u003c/h3\u003e\n\u003c/div\u003e\n\u003cspan class=\"flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-xs font-bold text-slate-500 ring-1 ring-slate-700\"\u003eAL\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-sm text-slate-500 line-clamp-2 mb-3 leading-relaxed border-l-2 border-slate-800 pl-3\"\u003e\n                    \"...need a simple explanation for the new landing page regarding our service mesh capabilities...\"\n                \u003c/p\u003e\n\u003cdiv class=\"flex items-center justify-between mt-3 pt-3 border-t border-slate-800\"\u003e\n\u003cdiv class=\"flex items-center gap-2 text-xs text-slate-600\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[16px]\"\u003eschedule\u003c/span\u003e\n                        1 day ago\n                    \u003c/div\u003e\n\u003cbutton class=\"text-xs font-bold text-slate-400 hover:text-white\"\u003eStart Draft\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Editor Area (Simulated Slide-up Sheet) --\u003e\n\u003cdiv class=\"mt-4 border-t border-primary/30 pt-4 pb-20\"\u003e\n\u003cdiv class=\"flex items-center justify-between mb-3\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-primary text-[20px]\"\u003eedit_note\u003c/span\u003e\n\u003ch2 class=\"text-sm font-bold text-white\"\u003eDraft Definition\u003c/h2\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex gap-1 bg-slate-800 p-0.5 rounded-md\"\u003e\n\u003cbutton class=\"p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-white\" title=\"Bold\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003eformat_bold\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-white\" title=\"Italic\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003eformat_italic\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"p-1 hover:bg-slate-700 rounded text-slate-400 hover:text-white\" title=\"Link\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003elink\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Editor Input --\u003e\n\u003cdiv class=\"bg-surface-dark border border-slate-600 rounded-lg p-3 shadow-inner focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all mb-4\"\u003e\n\u003ctextarea class=\"w-full bg-transparent border-none text-sm text-slate-200 placeholder-slate-500 focus:ring-0 resize-none min-h-[120px] leading-relaxed font-display\" placeholder=\"Write a plain-language explanation...\"\u003eA method where one party proves to another that a statement is true without revealing the actual information.\u003c/textarea\u003e\n\u003c/div\u003e\n\u003c!-- AI Suggestion Box --\u003e\n\u003cdiv class=\"relative bg-indigo-900/20 border border-indigo-500/30 rounded-lg p-4\"\u003e\n\u003cdiv class=\"absolute -top-3 left-3 bg-indigo-500/10 border border-indigo-500/50 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-bold text-indigo-300 uppercase tracking-wide flex items-center gap-1\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[12px]\"\u003esmart_toy\u003c/span\u003e AI Assist\n                \u003c/div\u003e\n\u003cdiv class=\"flex gap-3\"\u003e\n\u003cdiv class=\"flex-1\"\u003e\n\u003cp class=\"text-xs text-indigo-200 leading-relaxed\"\u003e\n\u003cspan class=\"font-bold text-indigo-100\"\u003eAnalogy Suggestion:\u003c/span\u003e Like showing a bartender your ID to prove you are 21 without revealing your name or address.\n                        \u003c/p\u003e\n\u003c/div\u003e\n\u003cbutton class=\"flex-shrink-0 flex items-center justify-center h-8 w-8 rounded bg-indigo-500/20 hover:bg-indigo-500/40 text-indigo-300 transition-colors\" title=\"Copy to Editor\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003econtent_copy\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/main\u003e\n\u003c!-- Bottom Action Bar (Sticky) --\u003e\n\u003cdiv class=\"fixed bottom-0 left-0 right-0 z-40 bg-surface-darker border-t border-slate-700/80 p-4 pb-6 backdrop-blur-md shadow-2xl\"\u003e\n\u003cdiv class=\"max-w-md mx-auto w-full flex flex-col gap-4\"\u003e\n\u003c!-- Global Dictionary Toggle --\u003e\n\u003clabel class=\"flex items-center gap-3 cursor-pointer group select-none\"\u003e\n\u003cdiv class=\"relative\"\u003e\n\u003cinput checked=\"\" class=\"sr-only peer\" type=\"checkbox\"/\u003e\n\u003cdiv class=\"w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"text-sm font-medium text-slate-300 group-hover:text-white transition-colors\"\u003eGlobal Dictionary Update\u003c/span\u003e\n\u003c/label\u003e\n\u003c!-- Buttons --\u003e\n\u003cdiv class=\"flex gap-3 h-12\"\u003e\n\u003cbutton class=\"flex-1 rounded-lg border border-slate-600 bg-transparent text-slate-300 font-bold text-sm hover:bg-slate-800 hover:text-white transition-colors flex items-center justify-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[20px]\"\u003ehelp_outline\u003c/span\u003e\n                    Clarify\n                \u003c/button\u003e\n\u003cbutton class=\"flex-[2] rounded-lg bg-primary text-white font-bold text-sm hover:bg-blue-600 transition-colors shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[20px]\"\u003epublish\u003c/span\u003e\n                    Publish Translation\n                \u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"div\",null,{\"className\":\"min-h-screen bg-gray-50\",\"children\":[[\"$\",\"header\",null,{\"className\":\"bg-white border-b border-gray-200 py-4 px-6 md:px-8 sticky top-0 z-20\",\"children\":[\"$\",\"div\",null,{\"className\":\"max-w-7xl mx-auto flex items-center justify-between\",\"children\":[[\"$\",\"div\",null,{\"className\":\"flex items-center gap-4\",\"children\":[[\"$\",\"$L5\",null,{\"href\":\"/capabilities\",\"className\":\"p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors\",\"children\":[\"$\",\"svg\",null,{\"className\":\"w-5 h-5\",\"fill\":\"none\",\"viewBox\":\"0 0 24 24\",\"stroke\":\"currentColor\",\"children\":[\"$\",\"path\",null,{\"strokeLinecap\":\"round\",\"strokeLinejoin\":\"round\",\"strokeWidth\":2,\"d\":\"M10 19l-7-7m0 0l7-7m-7 7h18\"}]}]}],[\"$\",\"div\",null,{\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-lg font-bold text-gray-900 tracking-tight\",\"children\":\"Researcher Translation Dashboard\"}],[\"$\",\"p\",null,{\"className\":\"text-xs text-blue-600 font-medium uppercase tracking-widest\",\"children\":\"Governance \u0026 Compliance\"}]]}]]}],[\"$\",\"div\",null,{\"className\":\"flex gap-3\",\"children\":[\"$\",\"div\",null,{\"className\":\"hidden sm:flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-100\",\"children\":[[\"$\",\"span\",null,{\"className\":\"w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse\"}],\"Live Preview\"]}]}]]}]}],[\"$\",\"main\",null,{\"className\":\"w-full\",\"children\":[\"$\",\"div\",null,{\"className\":\"bg-white rounded-none shadow-none overflow-hidden\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Researcher Translation Dashboard\",\"srcDoc\":\"$f\",\"className\":\"w-full h-[calc(100vh-65px)] border-none\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]}]]}]\n"])</script></body></html>

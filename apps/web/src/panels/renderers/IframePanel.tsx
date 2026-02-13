@@ -55,7 +55,7 @@ export function IframePanelRenderer({ manifest, context }: iframePanelProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const panelEntryUrl = React.useMemo(() => {
     const baseUrl = '/panels';
-    const panelDir = manifest.id.replace('stitch-', 'stitch_');
+    const panelDir = manifest.id.replace('stitch-', 'capabilities/stitch_');
     return `${baseUrl}/${panelDir}/${manifest.entry.replace('./', '')}`;
   }, [manifest]);
   const [error, setError] = useState<string | null>(null);

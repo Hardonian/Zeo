@@ -11,7 +11,7 @@ const HEADER_LINKS = [
   { href: '/faq', label: 'FAQ' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
-  { href: '/stitch', label: 'Stitch' },
+  { href: '/capabilities', label: 'Capabilities' },
   { href: '/dashboard', label: 'Dashboard' },
 ];
 
@@ -22,7 +22,7 @@ const FOOTER_LINKS = [
   { href: '/legal/privacy', label: 'Privacy' },
   { href: '/legal/terms', label: 'Terms' },
   { href: '/contact', label: 'Contact' },
-  { href: '/stitch', label: 'Stitch' },
+  { href: '/capabilities', label: 'Capabilities' },
   { href: '/dashboard', label: 'Dashboard' },
 ];
 
@@ -65,7 +65,7 @@ export function PublicShell({ title, children }: { title: string; children: Reac
               {HEADER_LINKS.map((link) => (
                 <NavLink key={link.href} href={link.href} label={link.label} pathname={pathname} />
               ))}
-              <a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" className="text-sm text-gray-700 hover:text-blue-700">GitHub</a>
+              <a href="https://github.com/scott/zeo" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-700 hover:text-blue-700">GitHub</a>
               <Link href="/signin" className="text-sm text-gray-700 hover:text-blue-700">Sign In</Link>
               <Link href="/docs/quickstart" className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700">
                 Get Started
@@ -77,7 +77,7 @@ export function PublicShell({ title, children }: { title: string; children: Reac
               {HEADER_LINKS.map((link) => (
                 <NavLink key={link.href} href={link.href} label={link.label} pathname={pathname} />
               ))}
-              <a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" className="text-sm text-gray-700 hover:text-blue-700">
+              <a href="https://github.com/scott/zeo" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-700 hover:text-blue-700">
                 GitHub
               </a>
               <Link href="/signin" className="text-sm text-gray-700 hover:text-blue-700">Sign In</Link>
@@ -99,7 +99,7 @@ export function PublicShell({ title, children }: { title: string; children: Reac
             {FOOTER_LINKS.map((link) => (
               <Link key={link.href} href={link.href} className="hover:text-blue-700">{link.label}</Link>
             ))}
-            <a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" className="hover:text-blue-700">GitHub</a>
+            <a href="https://github.com/scott/zeo" target="_blank" rel="noopener noreferrer" className="hover:text-blue-700">GitHub</a>
           </div>
         </div>
       </footer>

@@ -54,20 +54,20 @@
       "namedRegex": "^/api/runs/(?<nxtPrunId>[^/]+?)/repro\\-pack(?:/)?$"
     },
     {
+      "page": "/capabilities/[slug]",
+      "regex": "^/capabilities/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/capabilities/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/platform/assets/[...path]",
       "regex": "^/platform/assets/(.+?)(?:/)?$",
       "routeKeys": {
         "nxtPpath": "nxtPpath"
       },
       "namedRegex": "^/platform/assets/(?<nxtPpath>.+?)(?:/)?$"
-    },
-    {
-      "page": "/stitch/[slug]",
-      "regex": "^/stitch/([^/]+?)(?:/)?$",
-      "routeKeys": {
-        "nxtPslug": "nxtPslug"
-      },
-      "namedRegex": "^/stitch/(?<nxtPslug>[^/]+?)(?:/)?$"
     },
     {
       "page": "/view/[id]",
@@ -102,6 +102,18 @@
       "regex": "^/about(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/about(?:/)?$"
+    },
+    {
+      "page": "/api/auth/signin",
+      "regex": "^/api/auth/signin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/signin(?:/)?$"
+    },
+    {
+      "page": "/api/auth/signout",
+      "regex": "^/api/auth/signout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/signout(?:/)?$"
     },
     {
       "page": "/api/evidence/v1/verify",
@@ -152,6 +164,18 @@
       "namedRegex": "^/audit(?:/)?$"
     },
     {
+      "page": "/capabilities",
+      "regex": "^/capabilities(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/capabilities(?:/)?$"
+    },
+    {
+      "page": "/changelog",
+      "regex": "^/changelog(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/changelog(?:/)?$"
+    },
+    {
       "page": "/compare",
       "regex": "^/compare(?:/)?$",
       "routeKeys": {},
@@ -182,6 +206,36 @@
       "namedRegex": "^/demo(?:/)?$"
     },
     {
+      "page": "/docs",
+      "regex": "^/docs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/docs(?:/)?$"
+    },
+    {
+      "page": "/docs/github",
+      "regex": "^/docs/github(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/docs/github(?:/)?$"
+    },
+    {
+      "page": "/docs/install",
+      "regex": "^/docs/install(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/docs/install(?:/)?$"
+    },
+    {
+      "page": "/docs/quickstart",
+      "regex": "^/docs/quickstart(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/docs/quickstart(?:/)?$"
+    },
+    {
+      "page": "/faq",
+      "regex": "^/faq(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/faq(?:/)?$"
+    },
+    {
       "page": "/inbox",
       "regex": "^/inbox(?:/)?$",
       "routeKeys": {},
@@ -192,6 +246,18 @@
       "regex": "^/intake(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/intake(?:/)?$"
+    },
+    {
+      "page": "/legal/privacy",
+      "regex": "^/legal/privacy(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/legal/privacy(?:/)?$"
+    },
+    {
+      "page": "/legal/terms",
+      "regex": "^/legal/terms(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/legal/terms(?:/)?$"
     },
     {
       "page": "/platform",
@@ -242,16 +308,28 @@
       "namedRegex": "^/robots\\.txt(?:/)?$"
     },
     {
+      "page": "/signin",
+      "regex": "^/signin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/signin(?:/)?$"
+    },
+    {
+      "page": "/signup",
+      "regex": "^/signup(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/signup(?:/)?$"
+    },
+    {
       "page": "/sitemap.xml",
       "regex": "^/sitemap\\.xml(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/sitemap\\.xml(?:/)?$"
     },
     {
-      "page": "/stitch",
-      "regex": "^/stitch(?:/)?$",
+      "page": "/status",
+      "regex": "^/status(?:/)?$",
       "routeKeys": {},
-      "namedRegex": "^/stitch(?:/)?$"
+      "namedRegex": "^/status(?:/)?$"
     },
     {
       "page": "/terms",

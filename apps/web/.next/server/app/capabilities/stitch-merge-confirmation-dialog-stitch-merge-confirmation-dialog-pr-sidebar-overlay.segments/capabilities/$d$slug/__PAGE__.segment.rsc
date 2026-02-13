@@ -1,0 +1,264 @@
+1:"$Sreact.fragment"
+2:I[3180,["3180","static/chunks/3180-49ca78bebb59785c.js","9019","static/chunks/app/capabilities/%5Bslug%5D/page-b735324e90a667f4.js"],""]
+5:I[8028,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+3:T3886,<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ReadyLayer PR Sidebar Overlay</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3b82f6", // Blue similar to the screenshot
+                        "background-light": "#f6f8fa", // GitHub light bg
+                        "background-dark": "#0d1117", // GitHub dark bg
+                        "panel-light": "#ffffff",
+                        "panel-dark": "#161b22",
+                        "border-light": "#d0d7de",
+                        "border-dark": "#30363d",
+                        "text-light": "#24292f",
+                        "text-dark": "#c9d1d9",
+                        "muted-light": "#57606a",
+                        "muted-dark": "#8b949e",
+                        "success-light": "#1a7f37",
+                        "success-dark": "#238636",
+                        "warn-light": "#9a6700",
+                        "warn-dark": "#d29922",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        mono: ["ui-monospace", "SFMono-Regular", "SF Mono", "Menlo", "Consolas", "Liberation Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "6px",
+                        'lg': '8px',
+                        'xl': '12px',
+                        '2xl': '16px',
+                    },
+                    boxShadow: {
+                        'github': '0 1px 0 rgba(27,31,36,0.04), 0 8px 24px rgba(66,74,83,0.12)',
+                        'github-dark': '0 1px 0 rgba(240,246,252,0.1), 0 8px 24px rgba(1,4,9,0.85)',
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }.overlay-active {
+            transform: translateX(0);
+        }::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(150, 150, 150, 0.3);
+            border-radius: 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased transition-colors duration-200">
+<div class="max-w-md mx-auto min-h-screen relative overflow-hidden bg-white dark:bg-[#0d1117] shadow-2xl">
+<header class="bg-[#24292f] text-white p-4 flex items-center justify-between sticky top-0 z-10">
+<div class="flex items-center gap-3">
+<span class="material-icons-round text-2xl">menu</span>
+<div class="flex items-center gap-2">
+<svg aria-hidden="true" fill="currentColor" height="32" version="1.1" viewBox="0 0 16 16" width="32"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0 4.42 3.58 8 8 8Z"></path></svg>
+<span class="font-semibold text-sm">readylayer / core-api</span>
+</div>
+</div>
+<span class="material-icons-round text-gray-400">notifications</span>
+</header>
+<main class="p-4 pb-24 relative z-0">
+<div class="mb-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-gray-500 dark:text-gray-400">#42</span>
+<h1 class="text-xl font-semibold leading-tight">feat: Implement deterministic governance checks</h1>
+</div>
+<div class="flex items-center gap-2 mb-4">
+<span class="bg-[#2da44e] text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+<span class="material-icons-round text-sm">call_merge</span> Open
+                    </span>
+<span class="text-sm text-gray-500 dark:text-gray-400">
+<span class="font-medium text-gray-900 dark:text-gray-100">dev-alex</span> wants to merge 12 commits into <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded text-xs">main</code>
+</span>
+</div>
+</div>
+<div class="border-b border-border-light dark:border-border-dark flex gap-6 mb-4 text-sm font-medium overflow-x-auto">
+<div class="pb-2 border-b-2 border-transparent text-gray-500 dark:text-gray-400">Conversation <span class="bg-gray-200 dark:bg-gray-800 rounded-full px-1.5 py-0.5 text-xs">4</span></div>
+<div class="pb-2 border-b-2 border-transparent text-gray-500 dark:text-gray-400">Commits <span class="bg-gray-200 dark:bg-gray-800 rounded-full px-1.5 py-0.5 text-xs">12</span></div>
+<div class="pb-2 border-b-2 border-[#fd8c73] text-gray-900 dark:text-gray-100 font-semibold">Checks <span class="bg-gray-200 dark:bg-gray-800 rounded-full px-1.5 py-0.5 text-xs">8</span></div>
+<div class="pb-2 border-b-2 border-transparent text-gray-500 dark:text-gray-400">Files changed <span class="bg-gray-200 dark:bg-gray-800 rounded-full px-1.5 py-0.5 text-xs">15</span></div>
+</div>
+<div class="bg-panel-light dark:bg-panel-dark border border-border-light dark:border-border-dark rounded-md mb-4 opacity-50 filter blur-[1px]">
+<div class="p-3 border-b border-border-light dark:border-border-dark flex justify-between items-center">
+<span class="font-semibold text-sm">All checks have passed</span>
+<span class="text-success-light dark:text-success-dark material-icons-round">check_circle</span>
+</div>
+<div class="p-3">
+<div class="flex items-center gap-3 py-2">
+<span class="material-icons-round text-success-light dark:text-success-dark text-sm">check</span>
+<div class="flex-1 text-sm font-mono text-xs">ci/circleci: build</div>
+<span class="text-xs text-gray-500">Required</span>
+</div>
+<div class="flex items-center gap-3 py-2">
+<span class="material-icons-round text-success-light dark:text-success-dark text-sm">check</span>
+<div class="flex-1 text-sm font-mono text-xs">ci/circleci: test</div>
+<span class="text-xs text-gray-500">Required</span>
+</div>
+</div>
+</div>
+<div class="opacity-40">
+<div class="prose dark:prose-invert text-sm max-w-none">
+<p>This PR introduces the new governance module which allows us to define policy-as-code for our deployments. Key changes include:</p>
+<ul class="list-disc pl-4">
+<li>Added `ReviewGuard` implementation</li>
+<li>Updated CI workflow to include deterministic checks</li>
+</ul>
+</div>
+</div>
+</main>
+<div class="absolute inset-x-0 bottom-0 top-20 z-20 flex flex-col pointer-events-none">
+<div class="flex-1 bg-black/20 dark:bg-black/50 backdrop-blur-[1px]"></div>
+<div class="bg-white dark:bg-[#1c2128] rounded-t-2xl shadow-github dark:shadow-github-dark border-t border-border-light dark:border-border-dark pointer-events-auto transform transition-transform duration-300 ease-out flex flex-col max-h-[85vh]">
+<div class="w-full flex justify-center pt-3 pb-1">
+<div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+</div>
+<div class="px-5 pt-2 pb-4 flex justify-between items-center border-b border-border-light dark:border-border-dark">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-primary">
+<span class="material-icons-round text-lg">shield</span>
+</div>
+<div>
+<h2 class="text-base font-bold text-gray-900 dark:text-white">Readiness Panel</h2>
+<p class="text-xs text-muted-light dark:text-muted-dark">AI-assisted governance signals</p>
+</div>
+</div>
+<div class="flex items-center">
+<span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide border border-green-200 dark:border-green-800">Verified</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-5 space-y-4">
+<div class="group relative bg-white dark:bg-[#22272e] border border-orange-200 dark:border-orange-900/50 rounded-xl p-4 shadow-sm hover:border-orange-300 transition-all">
+<div class="absolute top-4 right-4 text-gray-300 dark:text-gray-600">
+<span class="material-icons-round text-sm">info</span>
+</div>
+<div class="flex items-start gap-3">
+<div class="mt-1 min-w-[24px] h-6 w-6 rounded-full bg-orange-100 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400">
+<span class="material-icons-round text-sm">warning</span>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Review Guard</h3>
+<p class="text-xs text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">
+                                    Missing tests for new logic in <code class="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-[10px]">auth_controller.ts</code>. Coverage dropped by 2.4%.
+                                </p>
+<button class="mt-3 text-xs font-medium text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/10 px-3 py-1.5 rounded-md hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors">
+                                    View Suggestion
+                                </button>
+</div>
+</div>
+</div>
+<div class="group relative bg-white dark:bg-[#22272e] border border-border-light dark:border-border-dark rounded-xl p-4 shadow-sm">
+<div class="absolute top-4 right-4 text-gray-300 dark:text-gray-600">
+<span class="material-icons-round text-sm">info</span>
+</div>
+<div class="flex items-start gap-3">
+<div class="mt-1 min-w-[24px] h-6 w-6 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center text-green-600 dark:text-green-400">
+<span class="material-icons-round text-sm">task_alt</span>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Test Engine</h3>
+<p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                    Workflow verified. All 42 unit tests passed in simulated environment.
+                                </p>
+</div>
+</div>
+</div>
+<div class="group relative bg-white dark:bg-[#22272e] border border-blue-100 dark:border-blue-900/30 rounded-xl p-4 shadow-sm">
+<div class="absolute top-4 right-4 text-gray-300 dark:text-gray-600">
+<span class="material-icons-round text-sm">info</span>
+</div>
+<div class="flex items-start gap-3">
+<div class="mt-1 min-w-[24px] h-6 w-6 rounded-full bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center text-primary">
+<span class="material-icons-round text-sm">description</span>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Doc Sync</h3>
+<p class="text-xs text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">
+                                    Drift detected in API docs. The parameter <code class="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-[10px]">max_retries</code> was added but not documented.
+                                </p>
+<div class="mt-3 flex gap-2">
+<button class="text-xs font-medium text-white bg-primary px-3 py-1.5 rounded-md shadow-sm hover:bg-blue-600 transition-colors">
+                                        Auto-fix Docs
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-2">
+<h4 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3 px-1">Governance Artifacts</h4>
+<div class="space-y-2">
+<a class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-[#22272e] border border-transparent hover:border-border-light dark:hover:border-border-dark transition-all group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-icons-round text-gray-400 text-sm group-hover:text-primary transition-colors">receipt_long</span>
+<span class="text-sm text-gray-700 dark:text-gray-300">Policy Decision Record</span>
+</div>
+<span class="material-icons-round text-gray-300 text-sm">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-[#22272e] border border-transparent hover:border-border-light dark:hover:border-border-dark transition-all group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-icons-round text-gray-400 text-sm group-hover:text-primary transition-colors">fingerprint</span>
+<span class="text-sm text-gray-700 dark:text-gray-300">Signed Evidence Bundle</span>
+</div>
+<span class="material-icons-round text-gray-300 text-sm">chevron_right</span>
+</a>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-border-light dark:border-border-dark bg-gray-50 dark:bg-[#161b22] rounded-b-lg">
+<button class="w-full bg-primary hover:bg-blue-600 text-white font-medium py-3 rounded-lg shadow-sm flex justify-center items-center gap-2 transition-colors">
+<span>Merge Pull Request</span>
+<span class="opacity-70 text-xs font-normal border-l border-white/30 pl-2 ml-1">checks verified</span>
+</button>
+<p class="text-center text-[10px] text-gray-400 mt-2">
+                        Powered by ReadyLayer Deterministic Policy Engine
+                    </p>
+</div>
+</div>
+</div>
+<div class="fixed bottom-0 w-full max-w-md bg-white dark:bg-[#161b22] border-t border-border-light dark:border-border-dark p-3 flex justify-around text-gray-500 dark:text-gray-400 z-0">
+<div class="flex flex-col items-center gap-1">
+<span class="material-icons-round text-primary">home</span>
+<span class="text-[10px] font-medium text-primary">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-icons-round">notifications</span>
+<span class="text-[10px] font-medium">Notifications</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-icons-round">explore</span>
+<span class="text-[10px] font-medium">Explore</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-icons-round">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</div>
+</div>
+</div>
+
+</body></html>0:{"buildId":"J_kVknmu6GSF5qixhc85u","rsc":["$","$1","c",{"children":[["$","div",null,{"className":"min-h-screen bg-gray-50","children":[["$","header",null,{"className":"bg-white border-b border-gray-200 py-4 px-6 md:px-8 sticky top-0 z-20","children":["$","div",null,{"className":"max-w-7xl mx-auto flex items-center justify-between","children":[["$","div",null,{"className":"flex items-center gap-4","children":[["$","$L2",null,{"href":"/capabilities","className":"p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors","children":["$","svg",null,{"className":"w-5 h-5","fill":"none","viewBox":"0 0 24 24","stroke":"currentColor","children":["$","path",null,{"strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":2,"d":"M10 19l-7-7m0 0l7-7m-7 7h18"}]}]}],["$","div",null,{"children":[["$","h1",null,{"className":"text-lg font-bold text-gray-900 tracking-tight","children":"Pr Sidebar Overlay"}],["$","p",null,{"className":"text-xs text-blue-600 font-medium uppercase tracking-widest","children":"Collaboration"}]]}]]}],["$","div",null,{"className":"flex gap-3","children":["$","div",null,{"className":"hidden sm:flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-100","children":[["$","span",null,{"className":"w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"}],"Live Preview"]}]}]]}]}],["$","main",null,{"className":"w-full","children":["$","div",null,{"className":"bg-white rounded-none shadow-none overflow-hidden","children":["$","iframe",null,{"title":"Pr Sidebar Overlay","srcDoc":"$3","className":"w-full h-[calc(100vh-65px)] border-none","sandbox":"allow-scripts allow-same-origin"}]}]}]]}],null,"$L4"]}],"loading":null,"isPartial":false}
+4:["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]
+7:null

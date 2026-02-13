@@ -1,0 +1,271 @@
+1:"$Sreact.fragment"
+2:I[3180,["3180","static/chunks/3180-49ca78bebb59785c.js","9019","static/chunks/app/capabilities/%5Bslug%5D/page-b735324e90a667f4.js"],""]
+5:I[8028,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+3:T395d,<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ReadyLayer - In-Line Explanation Popover</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ffffff", 
+              "background-light": "#000000",
+              "background-dark": "#000000",
+              "code-bg": "#000000",
+              "code-gutter": "#000000", 
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"],
+              "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            backdropBlur: {
+              xs: '2px',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+        }
+        .code-line {
+            counter-increment: line;
+        }
+        .code-line::before {
+            content: counter(line);
+            display: inline-block;
+            width: 2rem;
+            margin-right: 1rem;
+            text-align: right;
+            color: #4b5563;
+            font-size: 0.75rem;
+            font-family: 'ui-monospace', monospace;
+        }.sh-keyword { color: #ff79c6; }.sh-function { color: #8be9fd; }.sh-string { color: #f1fa8c; }.sh-number { color: #bd93f9; }.sh-comment { color: #6272a4; font-style: italic; }.sh-class { color: #50fa7b; }.code-scroll::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .code-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .code-scroll::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-black min-h-screen flex justify-center items-center overflow-hidden">
+<div class="relative w-full max-w-md h-screen max-h-[900px] bg-black overflow-hidden shadow-2xl flex flex-col font-display border border-white/10 rounded-[2rem]">
+<div class="h-12 w-full bg-black flex items-center justify-between px-6 pt-2 z-20">
+<span class="text-white text-xs font-medium">9:41</span>
+<div class="flex gap-1.5">
+<span class="material-symbols-outlined text-white text-[16px]">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-white text-[16px]">wifi</span>
+<span class="material-symbols-outlined text-white text-[16px]">battery_full</span>
+</div>
+</div>
+<div class="flex items-center bg-black px-4 pb-2 justify-between z-20 border-b border-white/10">
+<div class="text-white flex size-10 shrink-0 items-center justify-center cursor-pointer hover:bg-white/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</div>
+<div class="flex flex-col items-center">
+<h2 class="text-white text-base font-bold leading-tight tracking-tight">NetworkUtils.swift</h2>
+<span class="text-gray-500 text-xs">Edited 2m ago</span>
+</div>
+<div class="flex w-10 items-center justify-end">
+<button class="flex items-center justify-center rounded-lg size-10 text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</div>
+<div class="flex-1 relative overflow-y-auto code-scroll bg-black pt-4 pb-32">
+<div class="flex items-start px-2 min-h-[28px] group hover:bg-white/5">
+<div class="w-8 text-right text-gray-600 font-mono text-xs pt-1 select-none">1</div>
+<div class="w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white">add</span>
+</div>
+<div class="flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5">
+<span class="sh-keyword">import</span> Foundation
+                </div>
+</div>
+<div class="flex items-start px-2 min-h-[28px] group hover:bg-white/5">
+<div class="w-8 text-right text-gray-600 font-mono text-xs pt-1 select-none">2</div>
+<div class="w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white">add</span>
+</div>
+<div class="flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5">
+<span class="sh-keyword">import</span> Combine
+                </div>
+</div>
+<div class="flex items-start px-2 min-h-[28px] group hover:bg-white/5">
+<div class="w-8 text-right text-gray-600 font-mono text-xs pt-1 select-none">3</div>
+<div class="w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white">add</span>
+</div>
+<div class="flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5"></div>
+</div>
+<div class="flex items-start px-2 min-h-[28px] group hover:bg-white/5">
+<div class="w-8 text-right text-gray-600 font-mono text-xs pt-1 select-none">4</div>
+<div class="w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white">add</span>
+</div>
+<div class="flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5">
+<span class="sh-keyword">class</span> <span class="sh-class">NetworkManager</span> {
+                </div>
+</div>
+<div class="flex items-start px-2 min-h-[28px] group hover:bg-white/5">
+<div class="w-8 text-right text-gray-600 font-mono text-xs pt-1 select-none">5</div>
+<div class="w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white">add</span>
+</div>
+<div class="flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5">
+                      <span class="sh-keyword">static</span> <span class="sh-keyword">let</span> shared = <span class="sh-class">NetworkManager</span>()
+                </div>
+</div>
+<div class="flex items-start px-2 min-h-[28px] bg-white/10 border-l-2 border-white relative shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+<div class="w-8 text-right text-white font-mono text-xs pt-1 select-none font-bold">6</div>
+<div class="w-8 flex justify-center items-center">
+<div class="size-6 rounded-md bg-white/10 flex items-center justify-center cursor-pointer hover:bg-white/20 transition-colors animate-pulse border border-white/20">
+<span class="material-symbols-outlined text-white text-[16px]">spark</span>
+</div>
+</div>
+<div class="flex-1 font-mono text-sm pl-2 text-white whitespace-nowrap pt-0.5 overflow-x-auto">
+                      <span class="sh-keyword">func</span> <span class="sh-function">retryConnection</span>(url: <span class="sh-class">String</span>) {
+                </div>
+</div>
+<div class="flex items-start px-2 min-h-[28px] group hover:bg-white/5">
+<div class="w-8 text-right text-gray-600 font-mono text-xs pt-1 select-none">7</div>
+<div class="w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white">add</span>
+</div>
+<div class="flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5">
+                        <span class="sh-keyword">guard</span> attempts &lt; <span class="sh-number">5</span> <span class="sh-keyword">else</span> { <span class="sh-keyword">throw</span> <span class="sh-class">Timeout</span> }
+                </div>
+</div>
+<div class="flex items-start px-2 min-h-[28px] group hover:bg-white/5">
+<div class="w-8 text-right text-gray-600 font-mono text-xs pt-1 select-none">8</div>
+<div class="w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white">add</span>
+</div>
+<div class="flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5">
+                         <span class="sh-function">connect</span>(url, attempts + <span class="sh-number">1</span>)
+                </div>
+</div>
+<div class="flex items-start px-2 min-h-[28px] group hover:bg-white/5">
+<div class="w-8 text-right text-gray-600 font-mono text-xs pt-1 select-none">9</div>
+<div class="w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white">add</span>
+</div>
+<div class="flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5">
+                       }
+                </div>
+</div>
+<div class="absolute left-4 right-4 top-[180px] z-30">
+<div class="absolute -top-2 left-12 w-4 h-4 bg-[#111] border-t border-l border-white/20 transform rotate-45 z-40"></div>
+<div class="bg-black/60 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl p-0 overflow-hidden ring-1 ring-white/5">
+<div class="px-4 py-3 border-b border-white/10 flex items-center justify-between bg-white/5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-white text-xl">bolt</span>
+<h3 class="text-white text-sm font-semibold tracking-wide font-display">ReadyLayer Insight</h3>
+</div>
+<button class="text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">close</span>
+</button>
+</div>
+<div class="p-4 space-y-5">
+<div>
+<p class="text-gray-200 text-sm leading-relaxed font-display">
+                                This function recursively retries the API connection with <span class="text-white font-medium border-b border-white/30">exponential backoff</span>. It safeguards against infinite loops by limiting attempts to 5 before throwing a timeout error.
+                            </p>
+</div>
+<div class="bg-white/5 rounded-lg p-3 border border-white/10">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-gray-300 text-sm">science</span>
+<span class="text-xs font-bold text-gray-300 uppercase tracking-wider font-display">How to Test</span>
+</div>
+<p class="text-xs text-gray-400 font-mono leading-relaxed">
+                                Mock a network failure 4 times to verify the retry logic triggers, then return success on the 5th attempt to ensure it resolves.
+                            </p>
+</div>
+<div class="flex items-center justify-between pt-1">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white transition-colors border border-white/20 group">
+<span class="text-xs font-semibold font-display">View Docs</span>
+<span class="material-symbols-outlined text-[14px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-white/10 transition-colors" title="Copy Explanation">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-white/10 transition-colors" title="Regenerate">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+</button>
+<div class="w-px h-4 bg-white/10 mx-1"></div>
+<button class="p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[18px]">thumb_up</span>
+</button>
+<button class="p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[18px]">thumb_down</span>
+</button>
+</div>
+</div>
+</div>
+<div class="h-0.5 w-full bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-30"></div>
+</div>
+</div>
+<div class="flex items-start px-2 min-h-[28px] group hover:bg-white/5 opacity-50">
+<div class="w-8 text-right text-gray-600 font-mono text-xs pt-1 select-none">10</div>
+<div class="w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white">add</span>
+</div>
+<div class="flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5">
+</div>
+</div>
+<div class="flex items-start px-2 min-h-[28px] group hover:bg-white/5 opacity-50">
+<div class="w-8 text-right text-gray-600 font-mono text-xs pt-1 select-none">11</div>
+<div class="w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white">add</span>
+</div>
+<div class="flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5">
+                      <span class="sh-keyword">func</span> <span class="sh-function">connect</span>(_ url: <span class="sh-class">String</span>, _ attempts: <span class="sh-class">Int</span>) {
+                </div>
+</div>
+<div class="flex items-start px-2 min-h-[28px] group hover:bg-white/5 opacity-50">
+<div class="w-8 text-right text-gray-600 font-mono text-xs pt-1 select-none">12</div>
+<div class="w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white">add</span>
+</div>
+<div class="flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5">
+                        <span class="sh-comment">// Implementation details...</span>
+</div>
+</div>
+</div>
+<div class="absolute bottom-6 right-6 z-20">
+<button class="bg-white hover:bg-gray-200 text-black p-3 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all active:scale-95 flex items-center justify-center">
+<span class="material-symbols-outlined">smart_toy</span>
+</button>
+</div>
+</div>
+
+</body></html>0:{"buildId":"J_kVknmu6GSF5qixhc85u","rsc":["$","$1","c",{"children":[["$","div",null,{"className":"min-h-screen bg-gray-50","children":[["$","header",null,{"className":"bg-white border-b border-gray-200 py-4 px-6 md:px-8 sticky top-0 z-20","children":["$","div",null,{"className":"max-w-7xl mx-auto flex items-center justify-between","children":[["$","div",null,{"className":"flex items-center gap-4","children":[["$","$L2",null,{"href":"/capabilities","className":"p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors","children":["$","svg",null,{"className":"w-5 h-5","fill":"none","viewBox":"0 0 24 24","stroke":"currentColor","children":["$","path",null,{"strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":2,"d":"M10 19l-7-7m0 0l7-7m-7 7h18"}]}]}],["$","div",null,{"children":[["$","h1",null,{"className":"text-lg font-bold text-gray-900 tracking-tight","children":"In Line Explanation Popover 1"}],["$","p",null,{"className":"text-xs text-blue-600 font-medium uppercase tracking-widest","children":"Collaboration"}]]}]]}],["$","div",null,{"className":"flex gap-3","children":["$","div",null,{"className":"hidden sm:flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-100","children":[["$","span",null,{"className":"w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"}],"Live Preview"]}]}]]}]}],["$","main",null,{"className":"w-full","children":["$","div",null,{"className":"bg-white rounded-none shadow-none overflow-hidden","children":["$","iframe",null,{"title":"In Line Explanation Popover 1","srcDoc":"$3","className":"w-full h-[calc(100vh-65px)] border-none","sandbox":"allow-scripts allow-same-origin"}]}]}]]}],null,"$L4"]}],"loading":null,"isPartial":false}
+4:["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]
+7:null
