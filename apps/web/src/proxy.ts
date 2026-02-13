@@ -25,7 +25,7 @@ const DEFAULT_CSP: CSPConfig = {
   formAction: ["'self'"],
 };
 
-const PROTECTED_PREFIXES = ['/dashboard', '/audit', '/controlplane', '/inbox', '/intake', '/policy-packs', '/regimes', '/replay'];
+const PROTECTED_PREFIXES = ['/app', '/dashboard', '/audit', '/controlplane', '/inbox', '/intake', '/policy-packs', '/regimes', '/replay'];
 
 function generateCSPHeader(config: CSPConfig): string {
   const directives = [
@@ -57,7 +57,7 @@ export function proxy(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
 
   if (isProtectedPath(pathname) && !request.cookies.get('zeo_session')?.value) {
-    const signInUrl = new URL('/signin', request.url);
+    const signInUrl = new URL('/login', request.url);
     signInUrl.searchParams.set('next', pathname);
     return NextResponse.redirect(signInUrl);
   }

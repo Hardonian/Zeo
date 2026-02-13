@@ -1,54 +1,41 @@
-export type ZeoEnvStage = 'local' | 'preview' | 'production';
-
-type Visibility = 'server' | 'public';
-
-interface EnvSpec {
-  key: string;
-  requiredIn: ZeoEnvStage[];
-  visibility: Visibility;
-  description: string;
+export class EnvValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'EnvValidationError';
+  }
 }
 
-const ENV_SPECS: EnvSpec[] = [
-  {
-    key: 'GITHUB_WEBHOOK_SECRET',
-    requiredIn: ['preview', 'production'],
-    visibility: 'server',
-    description: 'GitHub webhook HMAC secret',
-  },
-  {
-    key: 'GITHUB_TOKEN',
-    requiredIn: [],
-    visibility: 'server',
-    description: 'GitHub API token for status checks',
-  },
-];
-
-export function getEnvStage(): ZeoEnvStage {
-  if (process.env.VERCEL_ENV === 'preview') {
-    return 'preview';
+function readRequired(key: string): string {
+  const value = process.env[key]?.trim();
+  if (!value) {
+    throw new EnvValidationError(`Missing required environment variable: ${key}`);
   }
-  if (process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production') {
-    return 'production';
-  }
-  return 'local';
+  return value;
 }
 
-export function getEnvRequirements() {
-  return ENV_SPECS;
+export interface PublicEnv {
+  supabaseUrl: string;
+  supabaseAnonKey: string;
 }
 
-export function validateEnvironment(stage: ZeoEnvStage = getEnvStage()): { ok: true } {
-  const missing = ENV_SPECS.filter((spec) => spec.requiredIn.includes(stage))
-    .filter((spec) => !process.env[spec.key] || process.env[spec.key]?.trim() === '');
+export interface ServerEnv extends PublicEnv {
+  supabaseServiceRoleKey: string;
+}
 
-  if (missing.length > 0) {
-    throw new Error(
-      `Invalid environment configuration for ${stage}. Missing required variables: ${missing
-        .map((spec) => `${spec.key} (${spec.description})`)
-        .join(', ')}`
-    );
-  }
+export function getPublicEnv(): PublicEnv {
+  return {
+    supabaseUrl: readRequired('NEXT_PUBLIC_SUPABASE_URL'),
+    supabaseAnonKey: readRequired('NEXT_PUBLIC_SUPABASE_ANON_KEY'),
+  };
+}
 
-  return { ok: true };
+export function getServerEnv(): ServerEnv {
+  return {
+    ...getPublicEnv(),
+    supabaseServiceRoleKey: readRequired('SUPABASE_SERVICE_ROLE_KEY'),
+  };
+}
+
+export function hasPublicSupabaseEnv(): boolean {
+  return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 }
