@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zeo - Innovate with Future Tech</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2463eb",
+                        "primary-dark": "#1d4ed8",
+                        "primary-light": "#60a5fa",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                        "neutral-surface": "#ffffff",
+                        "neutral-surface-dark": "#1a2233",
+                        "slate-50": "#f8fafc",
+                        "slate-100": "#f1f5f9",
+                        "slate-200": "#e2e8f0",
+                        "slate-300": "#cbd5e1",
+                        "slate-600": "#475569",
+                        "slate-700": "#334155",
+                        "slate-800": "#1e293b",
+                        "slate-900": "#0f172a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(36, 99, 235, 0.05), 0 2px 4px -1px rgba(36, 99, 235, 0.03)',
+                        'glow': '0 0 15px rgba(36, 99, 235, 0.3)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(36, 99, 235, 0.05) 0%, rgba(246, 246, 248, 0) 100%);
+        }
+        .dark .hero-gradient {
+            background: linear-gradient(135deg, rgba(36, 99, 235, 0.15) 0%, rgba(17, 22, 33, 0) 100%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-100 antialiased font-display selection:bg-primary selection:text-white">
+<!-- Navigation -->
+<nav class="fixed w-full z-50 top-0 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between h-16 items-center">
+<!-- Logo -->
+<div class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-icons text-xl">bolt</span>
+</div>
+<span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white">Zeo</span>
+</div>
+<!-- Desktop Menu -->
+<div class="hidden md:flex space-x-8 items-center">
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#features">Features</a>
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#services">Services</a>
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#about">About</a>
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#contact">Contact</a>
+</div>
+<!-- CTA Button -->
+<div class="hidden md:flex">
+<a class="bg-primary hover:bg-primary-dark text-white px-5 py-2 rounded-lg text-sm font-medium transition-all shadow-soft hover:shadow-lg transform hover:-translate-y-0.5" href="#">
+                        Get Started
+                    </a>
+</div>
+<!-- Mobile Menu Button -->
+<div class="md:hidden flex items-center">
+<button class="text-slate-600 dark:text-slate-300 hover:text-primary focus:outline-none" type="button">
+<span class="material-icons">menu</span>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden hero-gradient">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+<!-- Text Content -->
+<div class="mb-12 lg:mb-0 text-center lg:text-left">
+<div class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-6 border border-primary/20">
+<span class="w-2 h-2 rounded-full bg-primary mr-2 animate-pulse"></span>
+                        Next Gen Platform
+                    </div>
+<h1 class="text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6 leading-tight">
+                        Innovate with <span class="text-primary">Zeo</span>
+</h1>
+<p class="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Empowering your business with next-generation AI solutions and scalable cloud infrastructure. Build the future, today with a platform designed for growth.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+<a class="bg-primary hover:bg-primary-dark text-white px-8 py-3.5 rounded-lg text-base font-semibold transition-all shadow-lg shadow-primary/30 transform hover:-translate-y-1 text-center" href="#">
+                            Start Free Trial
+                        </a>
+<a class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-8 py-3.5 rounded-lg text-base font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all text-center flex items-center justify-center gap-2" href="#">
+<span class="material-icons text-primary text-sm">play_circle</span>
+                            Watch Demo
+                        </a>
+</div>
+<div class="mt-10 flex items-center justify-center lg:justify-start gap-6 text-sm text-slate-500 dark:text-slate-400">
+<div class="flex items-center gap-2">
+<span class="material-icons text-primary text-base">check_circle</span>
+<span>No credit card required</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-icons text-primary text-base">check_circle</span>
+<span>14-day free trial</span>
+</div>
+</div>
+</div>
+<!-- Hero Image -->
+<div class="relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary to-primary-light rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+<div class="relative bg-white dark:bg-neutral-surface-dark rounded-xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-700">
+<div class="absolute top-0 left-0 right-0 h-6 bg-slate-100 dark:bg-slate-800 flex items-center px-4 gap-1.5 border-b border-slate-200 dark:border-slate-700 z-10">
+<div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+</div>
+<img alt="Abstract data visualization dashboard displaying analytics charts and graphs on a dark background" class="w-full h-auto object-cover pt-6" data-alt="Abstract data visualization dashboard displaying analytics charts and graphs on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO7wGNaZ8IeSrNdP9Ob1LbZnkDnSgfTpe-KRirnil0JOojnbQi2NTCdVTNJA0Phaw6BPtnDOTpNDGnPC2HK58jwAqNmRu39mMGz-e2du42wH-G3OjB5gFlF1ckBFaLnpNvxJuwZ82rb-snTN2Qd6GNTmeOL-97ePQjfiWyauZtBa4ThJMCc8on7KCNCtfFaa4Epsk923YmytdBTg7BCA7NN_kRuJqKXSrByioVfH5OSwM8VXYuSsdJkGresod9l-0GYTRglLCbXy8"/>
+<!-- Overlay gradient for depth -->
+<div class="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent dark:from-black/20 pointer-events-none"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Background decorative blobs -->
+<div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10"></div>
+<div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-primary/10 rounded-full blur-3xl -z-10"></div>
+</section>
+<!-- Logo Cloud Section (Social Proof) -->
+<section class="py-10 border-y border-slate-200 dark:border-slate-800 bg-white dark:bg-neutral-surface-dark">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<p class="text-center text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-6">Trusted by innovative teams worldwide</p>
+<div class="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+<!-- Replace with SVG Logos ideally, using text placeholders styled as logos for now -->
+<div class="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300"><span class="material-icons">change_history</span> ACME Corp</div>
+<div class="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300"><span class="material-icons">hexagon</span> GlobalTech</div>
+<div class="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300"><span class="material-icons">all_inclusive</span> Infinity</div>
+<div class="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300"><span class="material-icons">spa</span> LeafLife</div>
+<div class="flex items-center gap-2 font-bold text-xl text-slate-700 dark:text-slate-300"><span class="material-icons">waves</span> RiverBank</div>
+</div>
+</div>
+</section>
+<!-- Services Section -->
+<section class="py-24 bg-background-light dark:bg-background-dark relative" id="services">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">Our Services</h2>
+<p class="text-lg text-slate-600 dark:text-slate-400">
+                    Comprehensive technology solutions designed to scale with your ambition. We provide the tools you need to succeed in a digital-first world.
+                </p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Card 1: AI Solutions -->
+<div class="group bg-white dark:bg-neutral-surface-dark rounded-xl p-8 shadow-sm hover:shadow-xl hover:shadow-primary/10 border border-slate-100 dark:border-slate-800 transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-primary-light transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+<div class="w-14 h-14 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+<span class="material-icons text-3xl text-primary dark:text-primary-light group-hover:text-white">psychology</span>
+</div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">AI Solutions</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                        Deploy intelligent models that learn and adapt to your business needs in real-time. Automate complex workflows effortlessly.
+                    </p>
+<a class="inline-flex items-center text-primary font-semibold hover:text-primary-dark transition-colors group-hover:translate-x-1 duration-300" href="#">
+                        Learn more <span class="material-icons text-sm ml-1">arrow_forward</span>
+</a>
+</div>
+<!-- Card 2: Cloud Infrastructure -->
+<div class="group bg-white dark:bg-neutral-surface-dark rounded-xl p-8 shadow-sm hover:shadow-xl hover:shadow-primary/10 border border-slate-100 dark:border-slate-800 transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-primary-light transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+<div class="w-14 h-14 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+<span class="material-icons text-3xl text-primary dark:text-primary-light group-hover:text-white">cloud_queue</span>
+</div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Cloud Infrastructure</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                        Secure, scalable, and resilient server architecture for mission-critical applications. Experience 99.99% uptime reliability.
+                    </p>
+<a class="inline-flex items-center text-primary font-semibold hover:text-primary-dark transition-colors group-hover:translate-x-1 duration-300" href="#">
+                        Learn more <span class="material-icons text-sm ml-1">arrow_forward</span>
+</a>
+</div>
+<!-- Card 3: Data Analytics -->
+<div class="group bg-white dark:bg-neutral-surface-dark rounded-xl p-8 shadow-sm hover:shadow-xl hover:shadow-primary/10 border border-slate-100 dark:border-slate-800 transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-primary-light transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+<div class="w-14 h-14 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+<span class="material-icons text-3xl text-primary dark:text-primary-light group-hover:text-white">insights</span>
+</div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Data Analytics</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                        Turn raw data into actionable insights with our advanced visualization tools. Make informed decisions faster than ever.
+                    </p>
+<a class="inline-flex items-center text-primary font-semibold hover:text-primary-dark transition-colors group-hover:translate-x-1 duration-300" href="#">
+                        Learn more <span class="material-icons text-sm ml-1">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Split Section (Optional Enhancement for Visual Balance) -->
+<section class="py-24 bg-white dark:bg-neutral-surface-dark border-t border-slate-100 dark:border-slate-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="lg:grid lg:grid-cols-2 lg:gap-20 items-center">
+<div class="relative order-2 lg:order-1 mt-12 lg:mt-0">
+<div class="absolute -inset-4 bg-primary/20 rounded-xl blur-xl opacity-30"></div>
+<img alt="Cybersecurity lock interface glowing blue on a dark background showing protection status" class="relative rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full" data-alt="Cybersecurity lock interface glowing blue on a dark background showing protection status" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAb3zd_Eq6nQMHBzujsGu_clDOlJlsBtjZEVibFX7A8DxnateAChBgaSCX3ACrYOnRyzmHXjg8Rh55G2teyqRAlJNR5cXrn6THfcVSWIlyQHIRd9KlN5PDxg1P62GV4QTtrOkARyPrEXlFl5MMCX935-KPL3v6BUH9pPgaIp_Az1SHbTaG4dEP6B9cu9uJNl587OrFgeE-OvhsxZp7MUwis-3qpp-IMSSTpOIUbbzmANla4YMhcodHkaczUZGaGyhTg0VpD1KquB38"/>
+</div>
+<div class="order-1 lg:order-2">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-6">Built for Security First</h2>
+<p class="text-lg text-slate-600 dark:text-slate-400 mb-8">
+                        Your data is your most valuable asset. Zeo ensures enterprise-grade security with end-to-end encryption and compliance with global standards.
+                    </p>
+<ul class="space-y-4">
+<li class="flex items-start">
+<span class="material-icons text-primary mr-3 mt-1">verified_user</span>
+<div>
+<strong class="block text-slate-900 dark:text-white">SOC 2 Compliant</strong>
+<span class="text-slate-500 text-sm">Audited security controls for your peace of mind.</span>
+</div>
+</li>
+<li class="flex items-start">
+<span class="material-icons text-primary mr-3 mt-1">vpn_key</span>
+<div>
+<strong class="block text-slate-900 dark:text-white">End-to-End Encryption</strong>
+<span class="text-slate-500 text-sm">Data is encrypted at rest and in transit.</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-20 relative overflow-hidden">
+<div class="absolute inset-0 bg-primary/5 dark:bg-primary/10 z-0"></div>
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+<h2 class="text-4xl font-extrabold text-slate-900 dark:text-white mb-6">Ready to transform your business?</h2>
+<p class="text-xl text-slate-600 dark:text-slate-300 mb-10">Join thousands of companies using Zeo to innovate and scale.</p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<a class="bg-primary hover:bg-primary-dark text-white px-8 py-4 rounded-lg text-lg font-bold shadow-lg transition-transform transform hover:-translate-y-1" href="#">
+                    Get Started Now
+                </a>
+<a class="bg-white dark:bg-slate-800 text-slate-700 dark:text-white border border-slate-200 dark:border-slate-600 px-8 py-4 rounded-lg text-lg font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors" href="#">
+                    Contact Sales
+                </a>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white dark:bg-neutral-surface-dark border-t border-slate-200 dark:border-slate-800 pt-16 pb-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+<div class="col-span-2 lg:col-span-2">
+<div class="flex items-center gap-2 mb-4">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-icons text-xl">bolt</span>
+</div>
+<span class="font-bold text-xl text-slate-900 dark:text-white">Zeo</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-6 max-w-xs">
+                        Making technology accessible, scalable, and secure for modern enterprises worldwide.
+                    </p>
+<div class="flex space-x-4">
+<a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="material-icons">facebook</span></a>
+<a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="material-icons">smart_display</span></a> <!-- Twitter/X proxy icon -->
+<a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="material-icons">work</span></a> <!-- LinkedIn proxy icon -->
+</div>
+</div>
+<div>
+<h4 class="font-semibold text-slate-900 dark:text-white mb-4">Product</h4>
+<ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+<li><a class="hover:text-primary transition-colors" href="#">Features</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Pricing</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">API</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Integrations</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold text-slate-900 dark:text-white mb-4">Company</h4>
+<ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Blog</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold text-slate-900 dark:text-white mb-4">Legal</h4>
+<ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Cookie Policy</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-sm text-slate-500 dark:text-slate-500">© 2023 Zeo Platform Inc. All rights reserved.</p>
+<div class="flex items-center gap-2 text-sm text-slate-500">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    System Operational
+                </div>
+</div>
+</div>
+</footer>
+</body></html>

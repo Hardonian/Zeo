@@ -1,0 +1,223 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e5] [cursor=pointer]:
+        - generic [ref=e7]: bolt
+        - generic [ref=e8]: Zeo
+      - generic [ref=e9]:
+        - button "Dashboard" [ref=e10] [cursor=pointer]
+        - button "Governance" [ref=e11] [cursor=pointer]
+        - button "CLI Assist" [ref=e12] [cursor=pointer]
+        - button "Signals" [ref=e13] [cursor=pointer]
+        - button "Evidence" [ref=e14] [cursor=pointer]
+        - button "Runner" [ref=e15] [cursor=pointer]
+        - button "Merge" [ref=e16] [cursor=pointer]
+        - button "Study" [ref=e17] [cursor=pointer]
+      - generic [ref=e18]:
+        - button "dark_mode" [ref=e19] [cursor=pointer]:
+          - generic [ref=e20]: dark_mode
+        - button "Get Started" [ref=e21] [cursor=pointer]
+  - main [ref=e22]:
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - generic [ref=e29]: Enterprise Governance Platform
+        - heading "Zeo Platform" [level=1] [ref=e31]
+        - paragraph [ref=e32]: Comprehensive suite for enterprise governance, automated code review, policy enforcement, and deterministic audit trails. Make decisions with confidence.
+        - generic [ref=e33]:
+          - button "Explore Platform" [ref=e34] [cursor=pointer]
+          - button "play_circle Watch Demo" [ref=e35] [cursor=pointer]:
+            - generic [ref=e36]: play_circle
+            - text: Watch Demo
+      - generic [ref=e37]:
+        - generic [ref=e38] [cursor=pointer]:
+          - generic [ref=e40]: dashboard
+          - heading "Dashboard" [level=3] [ref=e41]
+          - paragraph [ref=e42]: Real-time system metrics and performance monitoring
+        - generic [ref=e43] [cursor=pointer]:
+          - generic [ref=e45]: shield
+          - heading "Governance" [level=3] [ref=e46]
+          - paragraph [ref=e47]: OSS compliance matrix and policy enforcement
+        - generic [ref=e48] [cursor=pointer]:
+          - generic [ref=e50]: terminal
+          - heading "CLI Assist" [level=3] [ref=e51]
+          - paragraph [ref=e52]: Interactive command builder with safety checks
+        - generic [ref=e53] [cursor=pointer]:
+          - generic [ref=e55]: insights
+          - heading "Signals" [level=3] [ref=e56]
+          - paragraph [ref=e57]: Discover and analyze business signals
+        - generic [ref=e58] [cursor=pointer]:
+          - generic [ref=e60]: fact_check
+          - heading "Evidence" [level=3] [ref=e61]
+          - paragraph [ref=e62]: Uncertainty reduction and action planning
+        - generic [ref=e63] [cursor=pointer]:
+          - generic [ref=e65]: smart_toy
+          - heading "Runner" [level=3] [ref=e66]
+          - paragraph [ref=e67]: System monitoring and job execution status
+        - generic [ref=e68] [cursor=pointer]:
+          - generic [ref=e70]: merge
+          - heading "Merge Check" [level=3] [ref=e71]
+          - paragraph [ref=e72]: PR verification and risk analysis
+        - generic [ref=e73] [cursor=pointer]:
+          - generic [ref=e75]: science
+          - heading "Study Builder" [level=3] [ref=e76]
+          - paragraph [ref=e77]: Causal study design and execution
+    - generic [ref=e263]:
+      - generic [ref=e264]:
+        - generic [ref=e265]:
+          - heading "Signal Discovery Workbench" [level=2] [ref=e266]
+          - paragraph [ref=e267]: Discover and analyze business signals with confidence metrics
+        - button "arrow_back Back" [ref=e268] [cursor=pointer]:
+          - generic [ref=e269]: arrow_back
+          - text: Back
+      - generic [ref=e270]:
+        - generic [ref=e271]:
+          - generic [ref=e272]:
+            - button "arrow_back_ios_new" [ref=e273] [cursor=pointer]:
+              - generic [ref=e274]: arrow_back_ios_new
+            - button "notifications" [ref=e276] [cursor=pointer]:
+              - generic [ref=e277]: notifications
+          - heading "Signal Discovery" [level=1] [ref=e279]
+          - generic [ref=e280]:
+            - generic:
+              - generic: search
+            - textbox "Search signals by KPI..." [ref=e281]
+            - button "tune" [ref=e283] [cursor=pointer]:
+              - generic [ref=e284]: tune
+          - generic [ref=e285]:
+            - button "All Signals" [ref=e286] [cursor=pointer]
+            - button "Lead Signals" [ref=e287] [cursor=pointer]
+            - button "High Stability" [ref=e288] [cursor=pointer]
+            - button "Low Risk" [ref=e289] [cursor=pointer]
+        - generic [ref=e290]:
+          - generic [ref=e291]:
+            - generic [ref=e292]: Candidate Signals (12)
+            - generic [ref=e293] [cursor=pointer]:
+              - generic [ref=e294]: Sort by Relevance
+              - generic [ref=e295]: sort
+          - generic [ref=e296]:
+            - generic [ref=e297]:
+              - generic [ref=e298]:
+                - generic [ref=e299]:
+                  - generic [ref=e300]:
+                    - generic [ref=e301]: Lead
+                    - generic [ref=e302]: Stable
+                  - heading "Cart Abandonment vs. Email Open Rate" [level=3] [ref=e303]
+                - button "expand_more" [ref=e304] [cursor=pointer]:
+                  - generic [ref=e305]: expand_more
+              - generic [ref=e306]:
+                - generic [ref=e307]:
+                  - generic [ref=e308]:
+                    - generic [ref=e309]: Effect Size
+                    - generic [ref=e310]: Strong Positive
+                  - generic [ref=e313]:
+                    - generic [ref=e314]: "0.0"
+                    - generic [ref=e315]: "0.5"
+                    - generic [ref=e316]: "1.0"
+                - generic [ref=e317]:
+                  - generic [ref=e318]: Stability
+                  - generic [ref=e319]:
+                    - img [ref=e321]
+                    - generic [ref=e324]: 88%
+                - generic [ref=e325]:
+                  - generic [ref=e326]: Conf. Risk / N
+                  - generic [ref=e327]: Low | 4.5k
+            - generic [ref=e328]:
+              - generic [ref=e329]:
+                - paragraph [ref=e330]: Evidence
+                - paragraph [ref=e331]: Strong correlation observed in Q3 cohorts across mobile segments. P-value < 0.001 suggests high statistical significance.
+              - generic [ref=e341]:
+                - button "analytics Analyze Signal" [ref=e342] [cursor=pointer]:
+                  - generic [ref=e343]: analytics
+                  - text: Analyze Signal
+                - button "bookmark_border" [ref=e344] [cursor=pointer]:
+                  - generic [ref=e345]: bookmark_border
+          - generic [ref=e346] [cursor=pointer]:
+            - generic [ref=e347]:
+              - generic [ref=e348]:
+                - generic [ref=e350]: Lag
+                - heading "Checkout Duration vs. Support Tickets" [level=3] [ref=e351]
+              - generic [ref=e352]: expand_more
+            - generic [ref=e353]:
+              - generic [ref=e355]:
+                - generic [ref=e356]: Effect Size
+                - generic [ref=e357]: Moderate Negative
+              - generic [ref=e361]:
+                - generic [ref=e362]: Stability
+                - generic [ref=e363]:
+                  - img [ref=e365]
+                  - generic [ref=e368]: 64%
+              - generic [ref=e369]:
+                - generic [ref=e370]: Conf. Risk / N
+                - generic [ref=e371]: Med | 12k
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - heading "Runner Status Popover" [level=2] [ref=e82]
+          - paragraph [ref=e83]: Real-time job execution monitoring
+        - button "arrow_back Back" [ref=e84] [cursor=pointer]:
+          - generic [ref=e85]: arrow_back
+          - text: Back
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - heading "ops-autopilot" [level=2] [ref=e91]
+            - paragraph [ref=e92]: v2.4.0-alpha
+          - button "close" [ref=e93] [cursor=pointer]:
+            - generic [ref=e94]: close
+        - generic [ref=e95]:
+          - generic [ref=e100]:
+            - generic [ref=e101]: Running
+            - text: Healthy check 2s ago
+          - generic [ref=e102]:
+            - generic [ref=e103]:
+              - generic [ref=e104]: Last Execution
+              - generic [ref=e105]: Today, 10:42 AM
+            - generic [ref=e106]:
+              - generic [ref=e107]: Exit Reason
+              - generic [ref=e108]: Success
+            - generic [ref=e109]:
+              - generic [ref=e110]: Runner ID
+              - generic [ref=e111]: runner-aws-us-east...
+            - generic [ref=e112]:
+              - generic [ref=e113]: Uptime
+              - generic [ref=e114]: 4d 12h 30m
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - button "replay Rerun" [ref=e117] [cursor=pointer]:
+              - generic [ref=e118]: replay
+              - generic [ref=e119]: Rerun
+            - button "pause Pause" [ref=e120] [cursor=pointer]:
+              - generic [ref=e121]: pause
+              - generic [ref=e122]: Pause
+          - button "View Full Logs arrow_forward" [ref=e123] [cursor=pointer]:
+            - generic [ref=e124]: View Full Logs
+            - generic [ref=e125]: arrow_forward
+    - generic [ref=e127]:
+      - generic [ref=e128]:
+        - generic [ref=e129]:
+          - heading "Merge Confirmation Dialog" [level=2] [ref=e130]
+          - paragraph [ref=e131]: PR verification with risk analysis
+        - button "arrow_back Back" [ref=e132] [cursor=pointer]:
+          - generic [ref=e133]: arrow_back
+          - text: Back
+      - generic [ref=e135]:
+        - generic [ref=e136]:
+          - generic [ref=e138]: security
+          - heading "Merge Check" [level=2] [ref=e139]
+          - paragraph [ref=e140]: ReadyLayer found potential risks in this PR.
+        - generic [ref=e142]:
+          - generic [ref=e143]:
+            - generic [ref=e144]: alt_route
+            - generic [ref=e145]:
+              - heading "Uncovered Logic Paths" [level=3] [ref=e146]
+              - paragraph [ref=e147]: Several conditional branches in the checkout flow lack unit tests.
+          - generic [ref=e148]:
+            - generic [ref=e149]: integration_instructions
+            - generic [ref=e150]:
+              - heading "Unverified Workflows" [level=3] [ref=e151]
+              - paragraph [ref=e152]: Payment gateway integration changes have not been fully simulated.
+        - generic [ref=e153]:
+          - button "play_circle Run Verification Now" [ref=e154] [cursor=pointer]:
+            - generic [ref=e155]: play_circle
+            - text: Run Verification Now
+          - button "Proceed Anyway" [ref=e156] [cursor=pointer]

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zeo Analytics &amp; AI Insights</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3B82F6", // Blue-500
+                        "primary-dark": "#2563EB", // Blue-600
+                        "background-light": "#F3F4F6", // Gray-100
+                        "background-dark": "#111827", // Gray-900
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1F2937", // Gray-800
+                        "text-light": "#111827", // Gray-900
+                        "text-dark": "#F9FAFB", // Gray-50
+                        "text-muted-light": "#6B7280", // Gray-500
+                        "text-muted-dark": "#9CA3AF", // Gray-400
+                        "border-light": "#E5E7EB", // Gray-200
+                        "border-dark": "#374151", // Gray-700
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased min-h-screen transition-colors duration-200">
+<nav class="bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between h-16">
+<div class="flex">
+<div class="flex-shrink-0 flex items-center">
+<span class="bg-primary text-white p-2 rounded-lg mr-3">
+<span class="material-icons text-xl">insights</span>
+</span>
+<h1 class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">Zeo Analytics</h1>
+</div>
+<div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+<a class="border-primary text-gray-900 dark:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" href="#">Dashboard</a>
+<a class="border-transparent text-gray-500 dark:text-gray-400 hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-200 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" href="#">Reports</a>
+<a class="border-transparent text-gray-500 dark:text-gray-400 hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-200 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" href="#">Settings</a>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<button class="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none" id="theme-toggle">
+<span class="material-icons dark:hidden">dark_mode</span>
+<span class="material-icons hidden dark:block">light_mode</span>
+</button>
+<div class="relative">
+<button aria-haspopup="true" class="flex items-center max-w-xs bg-white dark:bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" id="user-menu">
+<img alt="User avatar" class="h-8 w-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzfJE07NJ4ey-oa0YWoaOKx1GI3iSGiZ0PzcKKAziea5dblAXlQ3N9gUkXkKgOjnL9GRuZXfsFaA--f-wcXT0BaMlhbaAlTGpE7jD29DLD_4Uz9tyVAUR4FVSmCSlYNkT0_kw0xYJZi2z_kVPVpNPc1j2-Kh2Qo4G4QVLMuZ5Ssn_WR4CzT7UEe0jP2YmW8OrEhrokH8EGokV0HMaLrimxWWHjQ42kMwZazCMo9LB3_jIgOp_rZVM_UfAdqA8Vt5SCEWRqWm8gWZk"/>
+</button>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="md:flex md:items-center md:justify-between mb-8">
+<div class="flex-1 min-w-0">
+<h2 class="text-2xl font-bold leading-7 text-gray-900 dark:text-white sm:text-3xl sm:truncate">
+                    Overview &amp; AI Insights
+                </h2>
+<p class="mt-1 text-sm text-text-muted-light dark:text-text-muted-dark">
+                    Real-time data monitoring and AI-driven anomaly detection.
+                </p>
+</div>
+<div class="mt-4 flex md:mt-0 md:ml-4 space-x-3">
+<div class="inline-flex rounded-md shadow-sm" role="group">
+<button class="py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 hover:text-primary focus:z-10 focus:ring-2 focus:ring-primary focus:text-primary dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white" type="button">
+                        24h
+                    </button>
+<button class="py-2 px-4 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-primary focus:z-10 focus:ring-2 focus:ring-primary focus:text-primary dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white" type="button">
+                        7d
+                    </button>
+<button class="py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-r-lg border border-gray-200 hover:bg-gray-100 hover:text-primary focus:z-10 focus:ring-2 focus:ring-primary focus:text-primary dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white" type="button">
+                        30d
+                    </button>
+</div>
+<button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors" type="button">
+<span class="material-icons text-sm mr-2">download</span>
+                    Export
+                </button>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+<div class="bg-surface-light dark:bg-surface-dark overflow-hidden shadow rounded-lg border border-border-light dark:border-border-dark">
+<div class="p-5">
+<div class="flex items-center">
+<div class="flex-shrink-0 bg-blue-100 dark:bg-blue-900 rounded-md p-3">
+<span class="material-icons text-primary text-2xl">analytics</span>
+</div>
+<div class="ml-5 w-0 flex-1">
+<dl>
+<dt class="text-sm font-medium text-text-muted-light dark:text-text-muted-dark truncate">
+                                    Total Throughput
+                                </dt>
+<dd>
+<div class="text-lg font-medium text-gray-900 dark:text-white">
+                                        12.5 TB
+                                    </div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 dark:bg-gray-900/50 px-5 py-3">
+<div class="text-sm">
+<span class="text-green-600 font-medium flex items-center">
+<span class="material-icons text-sm mr-1">arrow_upward</span> 12%
+                        </span>
+<span class="text-gray-500 dark:text-gray-400 ml-2">from last month</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark overflow-hidden shadow rounded-lg border border-border-light dark:border-border-dark">
+<div class="p-5">
+<div class="flex items-center">
+<div class="flex-shrink-0 bg-green-100 dark:bg-green-900 rounded-md p-3">
+<span class="material-icons text-green-600 text-2xl">check_circle</span>
+</div>
+<div class="ml-5 w-0 flex-1">
+<dl>
+<dt class="text-sm font-medium text-text-muted-light dark:text-text-muted-dark truncate">
+                                    Success Rate
+                                </dt>
+<dd>
+<div class="text-lg font-medium text-gray-900 dark:text-white">
+                                        99.98%
+                                    </div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 dark:bg-gray-900/50 px-5 py-3">
+<div class="text-sm">
+<span class="text-green-600 font-medium flex items-center">
+<span class="material-icons text-sm mr-1">arrow_upward</span> 0.2%
+                        </span>
+<span class="text-gray-500 dark:text-gray-400 ml-2">stability increase</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark overflow-hidden shadow rounded-lg border border-border-light dark:border-border-dark">
+<div class="p-5">
+<div class="flex items-center">
+<div class="flex-shrink-0 bg-yellow-100 dark:bg-yellow-900 rounded-md p-3">
+<span class="material-icons text-yellow-600 text-2xl">bolt</span>
+</div>
+<div class="ml-5 w-0 flex-1">
+<dl>
+<dt class="text-sm font-medium text-text-muted-light dark:text-text-muted-dark truncate">
+                                    AI Predictions
+                                </dt>
+<dd>
+<div class="text-lg font-medium text-gray-900 dark:text-white">
+                                        24,593
+                                    </div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 dark:bg-gray-900/50 px-5 py-3">
+<div class="text-sm">
+<span class="text-primary font-medium flex items-center">
+                            New
+                        </span>
+<span class="text-gray-500 dark:text-gray-400 ml-2">model deployed 2h ago</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark overflow-hidden shadow rounded-lg border border-border-light dark:border-border-dark">
+<div class="p-5">
+<div class="flex items-center">
+<div class="flex-shrink-0 bg-red-100 dark:bg-red-900 rounded-md p-3">
+<span class="material-icons text-red-600 text-2xl">warning</span>
+</div>
+<div class="ml-5 w-0 flex-1">
+<dl>
+<dt class="text-sm font-medium text-text-muted-light dark:text-text-muted-dark truncate">
+                                    Anomalies Detected
+                                </dt>
+<dd>
+<div class="text-lg font-medium text-gray-900 dark:text-white">
+                                        3
+                                    </div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 dark:bg-gray-900/50 px-5 py-3">
+<div class="text-sm">
+<span class="text-red-600 font-medium flex items-center">
+                           Action required
+                        </span>
+<span class="text-gray-500 dark:text-gray-400 ml-2">in network flows</span>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 space-y-8">
+<div class="bg-surface-light dark:bg-surface-dark shadow rounded-lg p-6 border border-border-light dark:border-border-dark">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white">Monthly Data Throughput</h3>
+<div class="flex items-center space-x-2">
+<span class="flex h-3 w-3 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+</span>
+<span class="text-sm text-gray-500 dark:text-gray-400">Live</span>
+</div>
+</div>
+<div class="relative h-72 w-full">
+<canvas id="throughputChart"></canvas>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="bg-surface-light dark:bg-surface-dark shadow rounded-lg p-6 border border-border-light dark:border-border-dark">
+<h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white mb-4">Traffic by Source</h3>
+<div class="relative h-64 w-full flex justify-center">
+<canvas id="sourceChart"></canvas>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark shadow rounded-lg p-6 border border-border-light dark:border-border-dark flex flex-col justify-center">
+<h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white mb-4">Source Breakdown</h3>
+<ul class="space-y-4">
+<li class="flex items-center justify-between">
+<div class="flex items-center">
+<span class="h-3 w-3 rounded-full bg-primary mr-2"></span>
+<span class="text-sm text-gray-600 dark:text-gray-300">API Gateway</span>
+</div>
+<span class="text-sm font-semibold text-gray-900 dark:text-white">45%</span>
+</li>
+<li class="flex items-center justify-between">
+<div class="flex items-center">
+<span class="h-3 w-3 rounded-full bg-cyan-500 mr-2"></span>
+<span class="text-sm text-gray-600 dark:text-gray-300">Direct Upload</span>
+</div>
+<span class="text-sm font-semibold text-gray-900 dark:text-white">30%</span>
+</li>
+<li class="flex items-center justify-between">
+<div class="flex items-center">
+<span class="h-3 w-3 rounded-full bg-purple-500 mr-2"></span>
+<span class="text-sm text-gray-600 dark:text-gray-300">Webhooks</span>
+</div>
+<span class="text-sm font-semibold text-gray-900 dark:text-white">15%</span>
+</li>
+<li class="flex items-center justify-between">
+<div class="flex items-center">
+<span class="h-3 w-3 rounded-full bg-gray-400 mr-2"></span>
+<span class="text-sm text-gray-600 dark:text-gray-300">Other</span>
+</div>
+<span class="text-sm font-semibold text-gray-900 dark:text-white">10%</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="lg:col-span-1">
+<div class="bg-surface-light dark:bg-surface-dark shadow rounded-lg h-full border border-border-light dark:border-border-dark flex flex-col">
+<div class="p-6 border-b border-border-light dark:border-border-dark flex justify-between items-center">
+<h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white">Smart Insights</h3>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                            AI Powered
+                        </span>
+</div>
+<div class="p-6 flex-1 overflow-y-auto">
+<div class="flow-root">
+<ul class="-mb-8" role="list">
+<li>
+<div class="relative pb-8">
+<span aria-hidden="true" class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200 dark:bg-gray-700"></span>
+<div class="relative flex space-x-3">
+<div>
+<span class="h-8 w-8 rounded-full bg-red-500 flex items-center justify-center ring-8 ring-white dark:ring-gray-800">
+<span class="material-icons text-white text-sm">priority_high</span>
+</span>
+</div>
+<div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+<div>
+<p class="text-sm text-gray-500 dark:text-gray-400">Anomaly Detected</p>
+<p class="text-sm font-medium text-gray-900 dark:text-white mt-1">Unusual spike in latency from EU-West-1 region.</p>
+</div>
+<div class="text-right text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
+<time datetime="2020-09-20">10m ago</time>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<div class="relative pb-8">
+<span aria-hidden="true" class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200 dark:bg-gray-700"></span>
+<div class="relative flex space-x-3">
+<div>
+<span class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white dark:ring-gray-800">
+<span class="material-icons text-white text-sm">trending_up</span>
+</span>
+</div>
+<div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+<div>
+<p class="text-sm text-gray-500 dark:text-gray-400">Trend Alert</p>
+<p class="text-sm font-medium text-gray-900 dark:text-white mt-1">Data ingestion rate increased by 15% over the last hour.</p>
+</div>
+<div class="text-right text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
+<time datetime="2020-09-22">1h ago</time>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<div class="relative pb-8">
+<span aria-hidden="true" class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200 dark:bg-gray-700"></span>
+<div class="relative flex space-x-3">
+<div>
+<span class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white dark:ring-gray-800">
+<span class="material-icons text-white text-sm">check</span>
+</span>
+</div>
+<div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+<div>
+<p class="text-sm text-gray-500 dark:text-gray-400">System Optimization</p>
+<p class="text-sm font-medium text-gray-900 dark:text-white mt-1">Auto-scaling group successfully reduced instances, saving ~8% cost.</p>
+</div>
+<div class="text-right text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
+<time datetime="2020-09-30">3h ago</time>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<div class="relative pb-8">
+<div class="relative flex space-x-3">
+<div>
+<span class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white dark:ring-gray-800">
+<span class="material-icons text-white text-sm">info</span>
+</span>
+</div>
+<div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+<div>
+<p class="text-sm text-gray-500 dark:text-gray-400">Maintenance</p>
+<p class="text-sm font-medium text-gray-900 dark:text-white mt-1">Scheduled database maintenance in 24 hours.</p>
+</div>
+<div class="text-right text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
+<time datetime="2020-10-04">5h ago</time>
+</div>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-b-lg border-t border-border-light dark:border-border-dark">
+<button class="w-full flex justify-center items-center px-4 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none">
+                            View all insights
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // --- Theme Toggling Logic ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        // Check for saved user preference, if any, on load of the website
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        themeToggleBtn.addEventListener('click', function() {
+            // if set via local storage previously
+            if (localStorage.theme === 'dark') {
+                localStorage.theme = 'light';
+                document.documentElement.classList.remove('dark');
+            } else {
+                localStorage.theme = 'dark';
+                document.documentElement.classList.add('dark');
+            }
+        });
+        // --- Chart.js Configuration ---
+        // Setup defaults for dark/light mode awareness in charts
+        Chart.defaults.color = '#9CA3AF';
+        Chart.defaults.borderColor = '#374151';
+        // Bar Chart
+        const ctxBar = document.getElementById('throughputChart').getContext('2d');
+        const throughputChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Data Throughput (TB)',
+                    data: [12, 19, 15, 25, 22, 30, 28, 35, 20, 25, 30, 40],
+                    backgroundColor: '#3B82F6',
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: function(context) {
+                                return document.documentElement.classList.contains('dark') ? '#374151' : '#E5E7EB';
+                            }
+                        },
+                        ticks: {
+                            color: function(context) {
+                                return document.documentElement.classList.contains('dark') ? '#9CA3AF' : '#4B5563';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                             display: false
+                        },
+                        ticks: {
+                            color: function(context) {
+                                return document.documentElement.classList.contains('dark') ? '#9CA3AF' : '#4B5563';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+        // Donut Chart
+        const ctxDonut = document.getElementById('sourceChart').getContext('2d');
+        const sourceChart = new Chart(ctxDonut, {
+            type: 'doughnut',
+            data: {
+                labels: ['API Gateway', 'Direct Upload', 'Webhooks', 'Other'],
+                datasets: [{
+                    data: [45, 30, 15, 10],
+                    backgroundColor: [
+                        '#3B82F6', // Blue
+                        '#06B6D4', // Cyan
+                        '#A855F7', // Purple
+                        '#9CA3AF'  // Gray
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+        // Watch for theme changes to update chart colors dynamically (optional but good for UX)
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === "class") {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    const gridColor = isDark ? '#374151' : '#E5E7EB';
+                    const textColor = isDark ? '#9CA3AF' : '#4B5563';
+                    throughputChart.options.scales.y.grid.color = gridColor;
+                    throughputChart.options.scales.y.ticks.color = textColor;
+                    throughputChart.options.scales.x.ticks.color = textColor;
+                    throughputChart.update();
+                }
+            });
+        });
+        observer.observe(document.documentElement, {
+            attributes: true 
+        });
+    </script>
+
+</body></html>

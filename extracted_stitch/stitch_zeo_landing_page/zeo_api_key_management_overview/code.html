@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zeo API Key Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2463eb",
+                        "primary-hover": "#1d54cf",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a202c",
+                        "border-light": "#e2e8f0",
+                        "border-dark": "#2d3748",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for clean look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155; 
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200 min-h-screen flex antialiased">
+<!-- Sidebar -->
+<aside class="w-64 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark flex-shrink-0 hidden lg:flex flex-col fixed h-full z-10">
+<div class="p-6 flex items-center space-x-3 border-b border-border-light dark:border-border-dark">
+<div class="h-8 w-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-lg">Z</div>
+<span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white">Zeo Platform</span>
+</div>
+<nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors" href="#">
+<span class="material-icons-round text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<div class="pt-4 pb-2 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Authentication</div>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:text-primary dark:bg-primary/20 transition-colors" href="#">
+<span class="material-icons-round text-[20px]">vpn_key</span>
+<span class="text-sm font-medium">API Keys</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors" href="#">
+<span class="material-icons-round text-[20px]">security</span>
+<span class="text-sm font-medium">OAuth Tokens</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors" href="#">
+<span class="material-icons-round text-[20px]">policy</span>
+<span class="text-sm font-medium">Access Policies</span>
+</a>
+<div class="pt-4 pb-2 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Resources</div>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors" href="#">
+<span class="material-icons-round text-[20px]">description</span>
+<span class="text-sm font-medium">API Docs</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors" href="#">
+<span class="material-icons-round text-[20px]">bar_chart</span>
+<span class="text-sm font-medium">Usage Quotas</span>
+</a>
+</nav>
+<div class="p-4 border-t border-border-light dark:border-border-dark bg-slate-50/50 dark:bg-slate-800/30">
+<div class="flex items-center gap-3">
+<img alt="User Profile" class="h-9 w-9 rounded-full" data-alt="User profile avatar circle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_JbG8E2Cx-OEq03hAhwZY8IYykrH3fdDrsFxtHk0O7-LvTw__fTWNmkpOF9zNf-aMO1Qzu0Ew0Ur428kVK7j9RQ-8lDZ1TS6bSLirdLj4HNd1Ef0Dt80JlTur2aw9FxzgaFNAVkQxXR_ZMptUm1IcY0QGTu6IJf3DEPjDR8B8saPwtVDjSvgHfZcxXpyULQKeApm-VgpAR2sbQgOMyXHLJ3E0VfN5omU8Kr4Bw1CfBwoWPom8xV2bfJqxXosWLluNR1_1eOY9j74"/>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-slate-900 dark:text-white truncate">Alex Dev</p>
+<p class="text-xs text-slate-500 truncate">alex@zeo.tech</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 lg:ml-64 w-full">
+<!-- Top Navigation (Mobile/Tablet visible, Desktop just spacing/utility) -->
+<header class="bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark h-16 flex items-center justify-between px-6 lg:px-8">
+<div class="lg:hidden flex items-center space-x-3">
+<button class="text-slate-500 hover:text-primary">
+<span class="material-icons-round">menu</span>
+</button>
+<span class="font-bold text-lg">Zeo</span>
+</div>
+<div class="hidden lg:flex items-center text-sm text-slate-500">
+<span class="hover:text-primary cursor-pointer">Project Settings</span>
+<span class="mx-2">/</span>
+<span class="font-medium text-slate-900 dark:text-white">API Key Management</span>
+</div>
+<div class="flex items-center space-x-4">
+<button class="relative p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-icons-round">notifications</span>
+<span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border-2 border-surface-light dark:border-surface-dark"></span>
+</button>
+<a class="text-sm font-medium text-primary hover:text-primary-hover" href="#">Help Center</a>
+</div>
+</header>
+<div class="p-6 lg:p-10 max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">API Keys</h1>
+<p class="mt-2 text-slate-500 dark:text-slate-400 max-w-2xl">
+                        Manage your secret keys for accessing the Zeo API. Keep these keys secure and rotate them periodically for best security practices.
+                    </p>
+</div>
+<div class="flex-shrink-0">
+<button class="bg-primary hover:bg-primary-hover text-white px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all flex items-center gap-2 font-medium">
+<span class="material-icons-round text-[20px]">add</span>
+                        Create New API Key
+                    </button>
+</div>
+</div>
+<!-- Stats/Context Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Total Requests (24h)</h3>
+<span class="p-1.5 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-md">
+<span class="material-icons-round text-[18px]">trending_up</span>
+</span>
+</div>
+<div class="text-2xl font-bold text-slate-900 dark:text-white">142,093</div>
+<p class="text-xs text-slate-500 mt-1">Updated 2 mins ago</p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Active Keys</h3>
+<span class="p-1.5 bg-primary/10 text-primary rounded-md">
+<span class="material-icons-round text-[18px]">vpn_key</span>
+</span>
+</div>
+<div class="text-2xl font-bold text-slate-900 dark:text-white">4</div>
+<p class="text-xs text-slate-500 mt-1">2 keys expiring soon</p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl border border-border-light dark:border-border-dark shadow-sm bg-gradient-to-br from-surface-light to-primary/5 dark:from-surface-dark dark:to-primary/10">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-medium text-slate-500 dark:text-slate-400">Monthly Quota</h3>
+<span class="text-xs font-semibold text-primary">Upgrade Plan</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full mb-2">
+<div class="bg-primary h-2 rounded-full" style="width: 65%"></div>
+</div>
+<div class="flex justify-between text-xs text-slate-500">
+<span>6.5M Used</span>
+<span>10M Limit</span>
+</div>
+</div>
+</div>
+<!-- Filters & Actions -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-t-xl border border-border-light dark:border-border-dark p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="relative max-w-sm w-full">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+<span class="material-icons-round text-[20px]">search</span>
+</span>
+<input class="block w-full pl-10 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg leading-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm transition-shadow" placeholder="Search keys by name or prefix..." type="text"/>
+</div>
+<div class="flex items-center space-x-3">
+<div class="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400 mr-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span>Active (3)</span>
+<span class="w-2 h-2 rounded-full bg-slate-300 ml-2"></span>
+<span>Inactive (1)</span>
+</div>
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 border border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-icons-round text-[20px]">filter_list</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 border border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-icons-round text-[20px]">download</span>
+</button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="bg-surface-light dark:bg-surface-dark border-x border-b border-border-light dark:border-border-dark rounded-b-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-border-light dark:divide-border-dark">
+<thead class="bg-slate-50 dark:bg-slate-800/50">
+<tr>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Key Name</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Token</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Created</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Last Used</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Status</th>
+<th class="px-6 py-4 text-right text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light dark:divide-border-dark bg-surface-light dark:bg-surface-dark">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="flex-shrink-0 h-8 w-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-primary flex items-center justify-center">
+<span class="material-icons-round text-[18px]">rocket_launch</span>
+</div>
+<div class="ml-4">
+<div class="text-sm font-medium text-slate-900 dark:text-white">Production Web</div>
+<div class="text-xs text-slate-500">eCommerce Mainfront</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center space-x-2">
+<code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-1 rounded border border-slate-200 dark:border-slate-700 select-all">zeo_live_k8s...89x2</code>
+<button class="text-slate-400 hover:text-primary opacity-0 group-hover:opacity-100 transition-opacity" title="Copy to clipboard">
+<span class="material-icons-round text-[16px]">content_copy</span>
+</button>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Oct 24, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">2 mins ago</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end space-x-2">
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="View Key">
+<span class="material-icons-round text-[20px]">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="Edit Name">
+<span class="material-icons-round text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-orange-500 transition-colors p-1" title="Regenerate">
+<span class="material-icons-round text-[20px]">refresh</span>
+</button>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-1" title="Delete">
+<span class="material-icons-round text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="flex-shrink-0 h-8 w-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+<span class="material-icons-round text-[18px]">smartphone</span>
+</div>
+<div class="ml-4">
+<div class="text-sm font-medium text-slate-900 dark:text-white">Staging Mobile</div>
+<div class="text-xs text-slate-500">iOS Beta App</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center space-x-2">
+<code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-1 rounded border border-slate-200 dark:border-slate-700 select-all">zeo_test_ios...b4m1</code>
+<button class="text-slate-400 hover:text-primary opacity-0 group-hover:opacity-100 transition-opacity" title="Copy to clipboard">
+<span class="material-icons-round text-[16px]">content_copy</span>
+</button>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Nov 02, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">1 day ago</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end space-x-2">
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="View Key">
+<span class="material-icons-round text-[20px]">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="Edit Name">
+<span class="material-icons-round text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-orange-500 transition-colors p-1" title="Regenerate">
+<span class="material-icons-round text-[20px]">refresh</span>
+</button>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-1" title="Delete">
+<span class="material-icons-round text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="flex-shrink-0 h-8 w-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+<span class="material-icons-round text-[18px]">dns</span>
+</div>
+<div class="ml-4">
+<div class="text-sm font-medium text-slate-900 dark:text-white">Internal Analytics</div>
+<div class="text-xs text-slate-500">Data Pipeline</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center space-x-2">
+<code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-1 rounded border border-slate-200 dark:border-slate-700 select-all">zeo_live_ana...99p2</code>
+<button class="text-slate-400 hover:text-primary opacity-0 group-hover:opacity-100 transition-opacity" title="Copy to clipboard">
+<span class="material-icons-round text-[16px]">content_copy</span>
+</button>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Sep 15, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">4 hours ago</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end space-x-2">
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="View Key">
+<span class="material-icons-round text-[20px]">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="Edit Name">
+<span class="material-icons-round text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-orange-500 transition-colors p-1" title="Regenerate">
+<span class="material-icons-round text-[20px]">refresh</span>
+</button>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-1" title="Delete">
+<span class="material-icons-round text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 (Inactive) -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group opacity-60 hover:opacity-100">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="flex-shrink-0 h-8 w-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center">
+<span class="material-icons-round text-[18px]">terminal</span>
+</div>
+<div class="ml-4">
+<div class="text-sm font-medium text-slate-900 dark:text-white">Legacy CLI Token</div>
+<div class="text-xs text-slate-500">Deprecated v1</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center space-x-2">
+<code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-2 py-1 rounded border border-slate-200 dark:border-slate-700 select-all">zeo_v1_cli_o...x001</code>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Jan 10, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">3 months ago</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>
+                                        Inactive
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end space-x-2">
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="View Key">
+<span class="material-icons-round text-[20px]">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="Edit Name">
+<span class="material-icons-round text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-orange-500 transition-colors p-1" title="Regenerate">
+<span class="material-icons-round text-[20px]">refresh</span>
+</button>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-1" title="Delete">
+<span class="material-icons-round text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="bg-surface-light dark:bg-surface-dark px-4 py-3 flex items-center justify-between border-t border-border-light dark:border-border-dark sm:px-6">
+<div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+<div>
+<p class="text-sm text-slate-700 dark:text-slate-300">
+                                Showing <span class="font-medium">1</span> to <span class="font-medium">4</span> of <span class="font-medium">4</span> results
+                            </p>
+</div>
+<div>
+<nav aria-label="Pagination" class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+<a class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700" href="#">
+<span class="material-icons-round text-[20px]">chevron_left</span>
+</a>
+<a aria-current="page" class="z-10 bg-primary/10 border-primary text-primary relative inline-flex items-center px-4 py-2 border text-sm font-medium" href="#">1</a>
+<a class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700" href="#">
+<span class="material-icons-round text-[20px]">chevron_right</span>
+</a>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<!-- Security Tip Box -->
+<div class="mt-8 bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 rounded-lg p-4 flex items-start gap-3">
+<span class="material-icons-round text-primary mt-0.5">info</span>
+<div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white">Security Best Practice</h4>
+<p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Never expose your secret keys in client-side code (browsers, mobile apps). Use environment variables to store them securely. If you suspect a leak, regenerate the key immediately.</p>
+</div>
+</div>
+</div>
+</main>
+</body></html>

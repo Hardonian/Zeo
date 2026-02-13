@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zeo Infrastructure Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#6366f1", // Indigo 500
+              "primary-dark": "#4f46e5", // Indigo 600
+              "background-light": "#f3f4f6", // Gray 100
+              "background-dark": "#0f172a", // Slate 900
+              "surface-light": "#ffffff",
+              "surface-dark": "#1e293b", // Slate 800
+              "text-light": "#1f2937", // Gray 800
+              "text-dark": "#f8fafc", // Slate 50
+              "border-light": "#e5e7eb", // Gray 200
+              "border-dark": "#334155", // Slate 700
+              "success": "#10b981", // Emerald 500
+              "warning": "#f59e0b", // Amber 500
+              "danger": "#ef4444", // Red 500
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+              mono: ["Fira Code", "monospace"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+            },
+          },
+        },
+      };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased transition-colors duration-200 h-screen flex flex-col overflow-hidden">
+<header class="bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark h-16 flex items-center justify-between px-6 shrink-0 z-20 shadow-sm">
+<div class="flex items-center space-x-4">
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl">Z</div>
+<span class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Zeo<span class="text-primary">.cloud</span></span>
+</div>
+<div class="h-6 w-px bg-gray-300 dark:bg-gray-700 mx-4"></div>
+<nav class="hidden md:flex space-x-1">
+<a class="px-3 py-2 rounded-md text-sm font-medium bg-primary/10 text-primary" href="#">Overview</a>
+<a class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700" href="#">Clusters</a>
+<a class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700" href="#">Networking</a>
+<a class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700" href="#">Billing</a>
+</nav>
+</div>
+<div class="flex items-center space-x-4">
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-2 text-gray-400">
+<span class="material-icons text-lg">search</span>
+</span>
+<input class="pl-8 pr-4 py-1.5 text-sm bg-gray-100 dark:bg-slate-700/50 border border-transparent focus:border-primary rounded-md focus:ring-1 focus:ring-primary w-64 transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400" placeholder="Search resources..." type="text"/>
+</div>
+<button class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white relative">
+<span class="material-icons">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+<div class="h-8 w-8 rounded-full bg-gradient-to-tr from-primary to-purple-500 p-0.5 cursor-pointer">
+<img alt="User" class="rounded-full bg-white dark:bg-slate-800 p-0.5 h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB88rLMiqtQbnzhyWAjHroDWq8SHXZRfrtQ8gsZk6kioXl9-GDUM3z29RaQavm2AQOuPDgrco-wa20KwUD1NH1zYKfozhGU3sEPT3CZ2ne4CjE53mYLeQpnHxUYx0JITlxFo8wJw0sHp-UHTnbSQahb0QvXBFFq5WCPTDZgSFVJ6rD5M4rIk-tj0QEln66TdxhSH8B78zylwEbBKjP7sZ9Xi8SbS_iMYgU9yCx2zCMyRq4KHGcGBnXuzFpVrc5nKJmT-x3r_voosnY"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden relative">
+<aside class="w-16 md:w-64 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark flex flex-col shrink-0 transition-all duration-300">
+<div class="flex-1 overflow-y-auto py-4">
+<div class="px-4 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider hidden md:block">Infrastructure</div>
+<ul class="space-y-1 px-2">
+<li>
+<a class="flex items-center px-2 py-2 text-sm font-medium rounded-md bg-primary/10 text-primary group" href="#">
+<span class="material-icons mr-3 text-primary">dns</span>
+<span class="hidden md:block">Nodes &amp; Clusters</span>
+</a>
+</li>
+<li>
+<a class="flex items-center px-2 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-slate-700/50 group" href="#">
+<span class="material-icons mr-3 text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-200">storage</span>
+<span class="hidden md:block">Virtual Machines</span>
+</a>
+</li>
+<li>
+<a class="flex items-center px-2 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-slate-700/50 group" href="#">
+<span class="material-icons mr-3 text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-200">folder_shared</span>
+<span class="hidden md:block">Storage Buckets</span>
+</a>
+</li>
+<li>
+<a class="flex items-center px-2 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-slate-700/50 group" href="#">
+<span class="material-icons mr-3 text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-200">security</span>
+<span class="hidden md:block">Firewalls</span>
+</a>
+</li>
+</ul>
+<div class="mt-8 px-4 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider hidden md:block">Monitoring</div>
+<ul class="space-y-1 px-2">
+<li>
+<a class="flex items-center px-2 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-slate-700/50 group" href="#">
+<span class="material-icons mr-3 text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-200">insights</span>
+<span class="hidden md:block">Analytics</span>
+</a>
+</li>
+<li>
+<a class="flex items-center px-2 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-slate-700/50 group" href="#">
+<span class="material-icons mr-3 text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-200">history</span>
+<span class="hidden md:block">Logs</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="p-4 border-t border-border-light dark:border-border-dark">
+<div class="flex items-center space-x-3">
+<div class="flex-shrink-0">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+</span>
+</div>
+<div class="hidden md:block">
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400">System Status</p>
+<p class="text-xs font-semibold text-success">Operational</p>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto p-6 bg-background-light dark:bg-background-dark">
+<div class="max-w-7xl mx-auto space-y-6">
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+<div>
+<h1 class="text-2xl font-bold text-gray-900 dark:text-white">Cluster Visualization</h1>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Region: <span class="font-mono text-xs bg-gray-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-gray-700 dark:text-gray-300">us-east-1</span> • 12 Active Nodes</p>
+</div>
+<div class="flex items-center space-x-3">
+<div class="flex bg-white dark:bg-slate-800 rounded-lg p-1 border border-border-light dark:border-border-dark shadow-sm">
+<button class="px-3 py-1.5 text-xs font-medium rounded-md bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-white shadow-sm">Graph</button>
+<button class="px-3 py-1.5 text-xs font-medium rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Grid</button>
+<button class="px-3 py-1.5 text-xs font-medium rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">List</button>
+</div>
+<button class="flex items-center px-4 py-2 bg-white dark:bg-slate-800 border border-border-light dark:border-border-dark rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm transition-colors">
+<span class="material-icons text-base mr-2">refresh</span>
+                            Refresh
+                        </button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-border-light dark:border-border-dark">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Total CPU Usage</p>
+<h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1">42%</h3>
+</div>
+<span class="p-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg">
+<span class="material-icons text-xl">memory</span>
+</span>
+</div>
+<div class="mt-3 w-full bg-gray-200 dark:bg-slate-700 rounded-full h-1.5">
+<div class="bg-blue-500 h-1.5 rounded-full" style="width: 42%"></div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-border-light dark:border-border-dark">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Memory Load</p>
+<h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1">78%</h3>
+</div>
+<span class="p-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg">
+<span class="material-icons text-xl">sd_storage</span>
+</span>
+</div>
+<div class="mt-3 w-full bg-gray-200 dark:bg-slate-700 rounded-full h-1.5">
+<div class="bg-purple-500 h-1.5 rounded-full" style="width: 78%"></div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-border-light dark:border-border-dark">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Active Nodes</p>
+<h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1">12<span class="text-sm font-normal text-gray-400 ml-1">/ 15</span></h3>
+</div>
+<span class="p-1.5 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg">
+<span class="material-icons text-xl">grid_view</span>
+</span>
+</div>
+<div class="flex mt-3 space-x-1">
+<span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+<span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+<span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+<span class="h-1.5 w-1.5 rounded-full bg-gray-300 dark:bg-slate-600"></span>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-border-light dark:border-border-dark">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Monthly Cost</p>
+<h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1">$1,240</h3>
+</div>
+<span class="p-1.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded-lg">
+<span class="material-icons text-xl">attach_money</span>
+</span>
+</div>
+<p class="text-xs text-gray-500 mt-3">+5% from last month</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="text-lg font-semibold text-gray-900 dark:text-white">Active Instances</h2>
+<div class="flex items-center space-x-2 text-sm">
+<span class="flex items-center"><span class="w-2 h-2 rounded-full bg-success mr-1"></span> Healthy</span>
+<span class="flex items-center"><span class="w-2 h-2 rounded-full bg-warning mr-1"></span> Warning</span>
+<span class="flex items-center"><span class="w-2 h-2 rounded-full bg-danger mr-1"></span> Offline</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-success"></div>
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center space-x-3">
+<div class="p-2 bg-gray-100 dark:bg-slate-800 rounded-lg">
+<span class="material-icons text-gray-500 dark:text-gray-400 text-lg">computer</span>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-gray-900 dark:text-white">worker-node-01</h3>
+<p class="text-xs font-mono text-gray-500">192.168.1.104</p>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">
+                                        Healthy
+                                    </span>
+</div>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-gray-500 dark:text-gray-400">CPU (8 vCores)</span>
+<span class="font-medium text-gray-700 dark:text-gray-300">24%</span>
+</div>
+<div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 24%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-gray-500 dark:text-gray-400">RAM (32 GB)</span>
+<span class="font-medium text-gray-700 dark:text-gray-300">45%</span>
+</div>
+<div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-1.5">
+<div class="bg-purple-500 h-1.5 rounded-full" style="width: 45%"></div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-gray-100 dark:border-slate-700/50 flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-xs text-gray-500 hover:text-primary mr-3">Logs</button>
+<button class="text-xs text-gray-500 hover:text-primary">SSH</button>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-warning"></div>
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center space-x-3">
+<div class="p-2 bg-gray-100 dark:bg-slate-800 rounded-lg">
+<span class="material-icons text-gray-500 dark:text-gray-400 text-lg">computer</span>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-gray-900 dark:text-white">db-primary-01</h3>
+<p class="text-xs font-mono text-gray-500">192.168.1.201</p>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300">
+                                        High Load
+                                    </span>
+</div>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-gray-500 dark:text-gray-400">CPU (16 vCores)</span>
+<span class="font-medium text-warning dark:text-yellow-400">89%</span>
+</div>
+<div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-1.5">
+<div class="bg-warning h-1.5 rounded-full" style="width: 89%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-gray-500 dark:text-gray-400">RAM (64 GB)</span>
+<span class="font-medium text-gray-700 dark:text-gray-300">62%</span>
+</div>
+<div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-1.5">
+<div class="bg-purple-500 h-1.5 rounded-full" style="width: 62%"></div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-gray-100 dark:border-slate-700/50 flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-xs text-gray-500 hover:text-primary mr-3">Logs</button>
+<button class="text-xs text-gray-500 hover:text-primary">SSH</button>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-success"></div>
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center space-x-3">
+<div class="p-2 bg-gray-100 dark:bg-slate-800 rounded-lg">
+<span class="material-icons text-gray-500 dark:text-gray-400 text-lg">computer</span>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-gray-900 dark:text-white">worker-node-02</h3>
+<p class="text-xs font-mono text-gray-500">192.168.1.105</p>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">
+                                        Healthy
+                                    </span>
+</div>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-gray-500 dark:text-gray-400">CPU (8 vCores)</span>
+<span class="font-medium text-gray-700 dark:text-gray-300">12%</span>
+</div>
+<div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 12%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-gray-500 dark:text-gray-400">RAM (32 GB)</span>
+<span class="font-medium text-gray-700 dark:text-gray-300">30%</span>
+</div>
+<div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-1.5">
+<div class="bg-purple-500 h-1.5 rounded-full" style="width: 30%"></div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-gray-100 dark:border-slate-700/50 flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-xs text-gray-500 hover:text-primary mr-3">Logs</button>
+<button class="text-xs text-gray-500 hover:text-primary">SSH</button>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden opacity-75 grayscale hover:grayscale-0 group">
+<div class="absolute top-0 left-0 w-1 h-full bg-danger"></div>
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center space-x-3">
+<div class="p-2 bg-gray-100 dark:bg-slate-800 rounded-lg">
+<span class="material-icons text-gray-500 dark:text-gray-400 text-lg">computer</span>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-gray-900 dark:text-white">redis-cache-01</h3>
+<p class="text-xs font-mono text-gray-500">192.168.1.150</p>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300">
+                                        Offline
+                                    </span>
+</div>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-gray-500 dark:text-gray-400">CPU</span>
+<span class="font-medium text-gray-400">--</span>
+</div>
+<div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-1.5"></div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-gray-500 dark:text-gray-400">RAM</span>
+<span class="font-medium text-gray-400">--</span>
+</div>
+<div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-1.5"></div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-gray-100 dark:border-slate-700/50 flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-xs text-danger hover:text-red-600 font-medium">Reboot</button>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-1">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-lg border border-border-light dark:border-border-dark overflow-hidden sticky top-0">
+<div class="p-5 border-b border-border-light dark:border-border-dark bg-gray-50 dark:bg-slate-800/50">
+<h3 class="text-lg font-bold text-gray-900 dark:text-white">Quick Provisioning</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Deploy a new instance instantly.</p>
+</div>
+<div class="p-5 space-y-5">
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">OS Image</label>
+<div class="grid grid-cols-3 gap-2">
+<div class="border-2 border-primary rounded-lg p-2 text-center cursor-pointer bg-primary/5">
+<span class="material-icons text-primary text-2xl mb-1">adb</span>
+<p class="text-xs font-semibold text-primary">Ubuntu</p>
+</div>
+<div class="border border-gray-200 dark:border-slate-600 rounded-lg p-2 text-center cursor-pointer hover:border-gray-400 dark:hover:border-slate-500">
+<span class="material-icons text-gray-500 dark:text-gray-400 text-2xl mb-1">window</span>
+<p class="text-xs font-medium text-gray-600 dark:text-gray-300">Windows</p>
+</div>
+<div class="border border-gray-200 dark:border-slate-600 rounded-lg p-2 text-center cursor-pointer hover:border-gray-400 dark:hover:border-slate-500">
+<span class="material-icons text-gray-500 dark:text-gray-400 text-2xl mb-1">layers</span>
+<p class="text-xs font-medium text-gray-600 dark:text-gray-300">Docker</p>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Region</label>
+<select class="w-full bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-200 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+<option>us-east-1 (N. Virginia)</option>
+<option>us-west-2 (Oregon)</option>
+<option>eu-central-1 (Frankfurt)</option>
+</select>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300">vCPUs</label>
+<span class="text-sm font-bold text-primary">4 Cores</span>
+</div>
+<input class="w-full h-2 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary" max="16" min="1" type="range" value="4"/>
+<div class="flex justify-between text-xs text-gray-400 mt-1">
+<span>1</span>
+<span>8</span>
+<span>16</span>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Memory</label>
+<span class="text-sm font-bold text-primary">16 GB</span>
+</div>
+<input class="w-full h-2 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary" max="64" min="2" step="2" type="range" value="16"/>
+<div class="flex justify-between text-xs text-gray-400 mt-1">
+<span>2GB</span>
+<span>32GB</span>
+<span>64GB</span>
+</div>
+</div>
+<div class="bg-gray-50 dark:bg-slate-800/50 p-3 rounded-lg flex justify-between items-center border border-gray-100 dark:border-slate-700">
+<div>
+<p class="text-xs text-gray-500 dark:text-gray-400">Estimated Cost</p>
+<p class="text-lg font-bold text-gray-900 dark:text-white">$48.50<span class="text-xs font-normal text-gray-500">/mo</span></p>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-slate-800 flex items-center justify-center">
+<span class="material-icons mr-2 text-sm">rocket_launch</span>
+                                    Deploy Instance
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="mt-12 border-t border-border-light dark:border-border-dark py-6">
+<div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+<p>© 2023 Zeo Cloud Inc. All rights reserved.</p>
+<div class="flex space-x-4 mt-2 md:mt-0">
+<a class="hover:text-gray-900 dark:hover:text-white" href="#">Privacy</a>
+<a class="hover:text-gray-900 dark:hover:text-white" href="#">Terms</a>
+<a class="hover:text-gray-900 dark:hover:text-white" href="#">Status</a>
+</div>
+</div>
+</footer>
+</main>
+</div>
+<div class="md:hidden fixed bottom-6 right-6">
+<button class="w-14 h-14 bg-primary text-white rounded-full shadow-xl flex items-center justify-center hover:bg-primary-dark transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+<span class="material-icons text-2xl">add</span>
+</button>
+</div>
+
+</body></html>

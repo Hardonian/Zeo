@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zeo - Pricing &amp; Conversion</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2463eb",
+                        "primary-hover": "#1d4ed8",
+                        "primary-light": "#eff4ff",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                        "neutral-slate": "#475569", // Slate-600 derived neutral
+                        "neutral-dark": "#0f172a", // Slate-900 derived
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Smooth scrolling for anchor links */
+        html { scroll-behavior: smooth; }
+        .pricing-card-highlight {
+            box-shadow: 0 0 0 2px #2463eb;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-neutral-dark dark:text-white font-display antialiased">
+<!-- Global Navigation -->
+<nav class="sticky top-0 z-50 w-full backdrop-blur-md bg-white/80 dark:bg-background-dark/90 border-b border-gray-200 dark:border-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between h-16 items-center">
+<!-- Logo -->
+<div class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-xl">Z</div>
+<span class="font-bold text-xl tracking-tight text-neutral-dark dark:text-white">Zeo</span>
+</div>
+<!-- Desktop Menu -->
+<div class="hidden md:flex space-x-8 items-center">
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" href="#">Features</a>
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" href="#">Solutions</a>
+<a class="text-sm font-medium text-primary dark:text-white transition-colors" href="#">Pricing</a>
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" href="#">Docs</a>
+</div>
+<!-- CTA -->
+<div class="flex items-center space-x-4">
+<a class="hidden sm:block text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-white transition-colors" href="#">Log In</a>
+<a class="bg-primary hover:bg-primary-hover text-white px-5 py-2 rounded-lg text-sm font-medium transition-all shadow-lg shadow-primary/25" href="#">Get Started</a>
+</div>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative pt-20 pb-16 lg:pt-32 lg:pb-24 overflow-hidden">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+<div class="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-sm font-medium text-primary mb-6">
+<span class="flex h-2 w-2 rounded-full bg-primary mr-2"></span>
+                v2.0 is now live
+            </div>
+<h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-neutral-dark dark:text-white mb-6">
+                Scale your workflow with <span class="text-primary">Zeo</span>.
+            </h1>
+<p class="mt-4 max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-400">
+                The all-in-one platform designed to optimize your team's performance. Automate tasks, track progress, and ship faster.
+            </p>
+<div class="mt-10 flex justify-center gap-4">
+<a class="px-8 py-3.5 rounded-lg bg-primary text-white font-semibold text-lg shadow-xl shadow-primary/20 hover:bg-primary-hover hover:-translate-y-0.5 transition-all duration-200" href="#pricing">
+                    Get Started Free
+                </a>
+<a class="px-8 py-3.5 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-white border border-gray-200 dark:border-gray-700 font-semibold text-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200" href="#">
+                    View Demo
+                </a>
+</div>
+<div class="mt-12 text-sm text-gray-500 dark:text-gray-400">
+                No credit card required · 14-day free trial · Cancel anytime
+            </div>
+</div>
+<!-- Abstract Background Decoration -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full z-0 pointer-events-none opacity-40 dark:opacity-20">
+<div class="absolute top-10 left-10 w-72 h-72 bg-primary/20 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-[100px]"></div>
+</div>
+</section>
+<!-- Social Proof -->
+<section class="py-10 border-y border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-background-dark/50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<p class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-8">Trusted by forward-thinking teams worldwide</p>
+<div class="grid grid-cols-2 gap-8 md:grid-cols-5 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+<!-- Logos using text placeholders for cleaner code structure without image dependencies, styled to look like logos -->
+<div class="flex items-center justify-center space-x-2">
+<span class="material-icons text-3xl">token</span>
+<span class="font-bold text-xl">AcmeCorp</span>
+</div>
+<div class="flex items-center justify-center space-x-2">
+<span class="material-icons text-3xl">bolt</span>
+<span class="font-bold text-xl">FlashInc</span>
+</div>
+<div class="flex items-center justify-center space-x-2">
+<span class="material-icons text-3xl">change_history</span>
+<span class="font-bold text-xl">Triangle</span>
+</div>
+<div class="flex items-center justify-center space-x-2">
+<span class="material-icons text-3xl">all_inclusive</span>
+<span class="font-bold text-xl">Infinite</span>
+</div>
+<div class="flex items-center justify-center space-x-2">
+<span class="material-icons text-3xl">layers</span>
+<span class="font-bold text-xl">StackLy</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Section -->
+<section class="py-20 lg:py-32 relative" id="pricing">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<h2 class="text-3xl font-bold text-neutral-dark dark:text-white sm:text-4xl">Simple, transparent pricing</h2>
+<p class="mt-4 text-lg text-gray-600 dark:text-gray-400">Choose the plan that's right for your growth stage.</p>
+<!-- Billing Toggle -->
+<div class="mt-8 flex justify-center items-center gap-3">
+<span class="text-sm font-medium text-gray-900 dark:text-white">Monthly</span>
+<button aria-checked="false" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 bg-gray-200 dark:bg-gray-700" role="switch" type="button">
+<span class="pointer-events-none inline-block h-5 w-5 translate-x-0 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+</button>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400">Yearly <span class="text-primary text-xs font-bold ml-1 bg-primary/10 px-2 py-0.5 rounded-full">-20%</span></span>
+</div>
+</div>
+<div class="grid md:grid-cols-3 gap-8 lg:gap-12 items-start">
+<!-- Starter Plan -->
+<div class="bg-white dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:border-primary/50 transition-colors duration-300 flex flex-col h-full">
+<div class="mb-6">
+<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Starter</h3>
+<p class="text-sm text-gray-500 mt-2">Perfect for individuals just getting started.</p>
+</div>
+<div class="mb-6">
+<span class="text-4xl font-bold text-gray-900 dark:text-white">$0</span>
+<span class="text-gray-500">/month</span>
+</div>
+<a class="block w-full py-3 px-4 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-900 dark:text-white text-center font-medium rounded-lg transition-colors mb-8 border border-gray-200 dark:border-gray-600" href="#">
+                        Start for free
+                    </a>
+<ul class="space-y-4 mb-6 flex-1">
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">Up to 3 projects</span>
+</li>
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">Basic analytics</span>
+</li>
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">24-hour support response</span>
+</li>
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">1GB Storage</span>
+</li>
+</ul>
+</div>
+<!-- Professional Plan (Highlighted) -->
+<div class="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-primary shadow-2xl shadow-primary/10 relative transform md:-translate-y-4 flex flex-col h-full z-10">
+<div class="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
+<span class="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-md">Most Popular</span>
+</div>
+<div class="mb-6">
+<h3 class="text-lg font-bold text-primary">Professional</h3>
+<p class="text-sm text-gray-500 mt-2">Best for growing teams needing power.</p>
+</div>
+<div class="mb-6">
+<span class="text-5xl font-bold text-gray-900 dark:text-white">$29</span>
+<span class="text-gray-500">/user/mo</span>
+</div>
+<a class="block w-full py-3 px-4 bg-primary hover:bg-primary-hover text-white text-center font-bold rounded-lg transition-all shadow-lg shadow-primary/25 mb-8" href="#">
+                        Get Started
+                    </a>
+<ul class="space-y-4 mb-6 flex-1">
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm font-medium">Everything in Starter</span>
+</li>
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">Unlimited projects</span>
+</li>
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">Advanced analytics &amp; reporting</span>
+</li>
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">Priority Support</span>
+</li>
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">Custom integrations</span>
+</li>
+</ul>
+</div>
+<!-- Enterprise Plan -->
+<div class="bg-white dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:border-primary/50 transition-colors duration-300 flex flex-col h-full">
+<div class="mb-6">
+<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Enterprise</h3>
+<p class="text-sm text-gray-500 mt-2">For large organizations requiring scale.</p>
+</div>
+<div class="mb-6">
+<span class="text-4xl font-bold text-gray-900 dark:text-white">Custom</span>
+</div>
+<a class="block w-full py-3 px-4 bg-white dark:bg-transparent border border-gray-300 dark:border-gray-600 hover:border-primary text-gray-900 dark:text-white text-center font-medium rounded-lg transition-colors mb-8" href="#">
+                        Contact Sales
+                    </a>
+<ul class="space-y-4 mb-6 flex-1">
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">Unlimited Users</span>
+</li>
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">Dedicated account manager</span>
+</li>
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">SSO &amp; Advanced Security</span>
+</li>
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">99.9% Uptime SLA</span>
+</li>
+<li class="flex items-start">
+<span class="material-icons text-primary text-xl mr-2">check_circle</span>
+<span class="text-gray-600 dark:text-gray-300 text-sm">Custom Contracts</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="mt-16 text-center">
+<p class="text-gray-500 dark:text-gray-400">Need a custom plan for a non-profit? <a class="text-primary font-medium hover:underline" href="#">Contact us</a> for special pricing.</p>
+</div>
+</div>
+</section>
+<!-- FAQ Teaser (Optional for conversion page to handle objections) -->
+<section class="py-16 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-2xl font-bold text-center mb-10 text-neutral-dark dark:text-white">Frequently Asked Questions</h2>
+<div class="grid gap-6 md:grid-cols-2">
+<div>
+<h3 class="font-semibold text-lg text-neutral-dark dark:text-white mb-2">Can I cancel anytime?</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm">Yes, absolutely. There are no long-term contracts for the monthly plans. You can upgrade, downgrade, or cancel at any time.</p>
+</div>
+<div>
+<h3 class="font-semibold text-lg text-neutral-dark dark:text-white mb-2">Is there a free trial?</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm">We offer a 14-day free trial on the Professional plan. No credit card is required to start your trial.</p>
+</div>
+<div>
+<h3 class="font-semibold text-lg text-neutral-dark dark:text-white mb-2">What payment methods do you accept?</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm">We accept all major credit cards (Visa, Mastercard, Amex) and PayPal. For Enterprise plans, we support invoicing.</p>
+</div>
+<div>
+<h3 class="font-semibold text-lg text-neutral-dark dark:text-white mb-2">Do you offer refunds?</h3>
+<p class="text-gray-600 dark:text-gray-400 text-sm">If you're not satisfied within the first 30 days, we'll offer a full refund, no questions asked.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Comprehensive Footer -->
+<footer class="bg-white dark:bg-background-dark pt-16 pb-8 border-t border-gray-200 dark:border-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+<!-- Brand & Newsletter -->
+<div class="col-span-2 lg:col-span-2">
+<div class="flex items-center gap-2 mb-4">
+<div class="w-6 h-6 rounded bg-primary flex items-center justify-center text-white font-bold text-xs">Z</div>
+<span class="font-bold text-lg text-neutral-dark dark:text-white">Zeo</span>
+</div>
+<p class="text-gray-500 text-sm mb-6 max-w-sm">
+                        Empowering teams to achieve more with less effort. Join thousands of productive organizations.
+                    </p>
+<form class="flex flex-col sm:flex-row gap-2 max-w-sm">
+<input class="flex-1 appearance-none rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="Enter your email" type="email"/>
+<button class="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors" type="button">
+                            Subscribe
+                        </button>
+</form>
+<p class="text-xs text-gray-400 mt-2">Get the latest news and updates. No spam.</p>
+</div>
+<!-- Column 1 -->
+<div>
+<h4 class="font-semibold text-neutral-dark dark:text-white mb-4">Product</h4>
+<ul class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+<li><a class="hover:text-primary transition-colors" href="#">Features</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Integrations</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Pricing</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Changelog</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Roadmap</a></li>
+</ul>
+</div>
+<!-- Column 2 -->
+<div>
+<h4 class="font-semibold text-neutral-dark dark:text-white mb-4">Company</h4>
+<ul class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Blog</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Press</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Partners</a></li>
+</ul>
+</div>
+<!-- Column 3 -->
+<div>
+<h4 class="font-semibold text-neutral-dark dark:text-white mb-4">Resources</h4>
+<ul class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+<li><a class="hover:text-primary transition-colors" href="#">Community</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">API Docs</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Status</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="border-t border-gray-200 dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-sm text-gray-500">
+                    © 2023 Zeo Inc. All rights reserved.
+                </p>
+<div class="flex space-x-6">
+<a class="text-gray-400 hover:text-primary transition-colors" href="#">
+<span class="sr-only">Twitter</span>
+<svg aria-hidden="true" class="h-5 w-5" fill="currentColor" viewbox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg>
+</a>
+<a class="text-gray-400 hover:text-primary transition-colors" href="#">
+<span class="sr-only">GitHub</span>
+<svg aria-hidden="true" class="h-5 w-5" fill="currentColor" viewbox="0 0 24 24"><path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path></svg>
+</a>
+<a class="text-gray-400 hover:text-primary transition-colors" href="#">
+<span class="sr-only">LinkedIn</span>
+<svg aria-hidden="true" class="h-5 w-5" fill="currentColor" viewbox="0 0 24 24"><path clip-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" fill-rule="evenodd"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

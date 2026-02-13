@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pricing Plans - Zeo Decision Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#2463eb",
+                "background-light": "#f6f6f8",
+                "background-dark": "#111621",
+              },
+              fontFamily: {
+                "display": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-size: 20px; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111318] dark:text-white transition-colors">
+<div class="relative flex min-h-screen flex-col">
+<!-- Navigation Header -->
+<header class="sticky top-0 z-50 w-full border-b border-[#e5e7eb] dark:border-[#1e293b] bg-white/80 dark:bg-[#111621]/80 backdrop-blur-md">
+<div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="bg-primary p-1.5 rounded-lg text-white">
+<span class="material-symbols-outlined">database</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Zeo</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Product</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Solutions</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Resources</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Pricing</a>
+</nav>
+<div class="flex items-center gap-3">
+<button class="text-sm font-bold px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">Sign In</button>
+<button class="bg-primary text-white text-sm font-bold px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Get Started</button>
+</div>
+</div>
+</header>
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="mx-auto max-w-4xl px-6 pt-20 pb-12 text-center">
+<h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">Pricing Plans Built for Scale</h1>
+<p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    Flexible plans for teams of all sizes, from individual researchers to global enterprises. Harness the power of decision intelligence with zero friction.
+                </p>
+</section>
+<!-- Billing Toggle -->
+<div class="flex justify-center mb-12 px-6">
+<div class="bg-gray-200/50 dark:bg-gray-800/50 p-1 rounded-xl flex items-center w-fit">
+<button class="px-6 py-2 text-sm font-semibold rounded-lg text-gray-500 dark:text-gray-400 hover:text-[#111318] dark:hover:text-white transition-all">Monthly</button>
+<button class="px-6 py-2 text-sm font-semibold rounded-lg bg-white dark:bg-gray-700 shadow-sm text-primary transition-all flex items-center gap-2">
+                        Annual 
+                        <span class="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full">Save 20%</span>
+</button>
+</div>
+</div>
+<!-- Pricing Cards Grid -->
+<div class="mx-auto max-w-7xl px-6 grid grid-cols-1 md:grid-cols-3 gap-8 pb-20">
+<!-- Community Card -->
+<div class="flex flex-col p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1a202c] shadow-sm hover:shadow-md transition-shadow">
+<div class="mb-6">
+<h3 class="text-lg font-bold mb-2">Community</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400">Perfect for individual data scientists and open source projects.</p>
+</div>
+<div class="mb-6">
+<span class="text-4xl font-black">$0</span>
+<span class="text-gray-500 font-medium">/month</span>
+</div>
+<button class="w-full py-3 rounded-xl border border-gray-200 dark:border-gray-700 font-bold text-sm mb-8 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Get Started</button>
+<div class="space-y-4">
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            Decision Branching
+                        </div>
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            Core Analytics
+                        </div>
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            Community Support
+                        </div>
+<div class="flex items-center gap-3 text-sm text-gray-400">
+<span class="material-symbols-outlined text-gray-300 dark:text-gray-600">cancel</span>
+                            API Access
+                        </div>
+</div>
+</div>
+<!-- Professional Card -->
+<div class="flex flex-col p-8 rounded-2xl border-2 border-primary bg-white dark:bg-[#1a202c] shadow-xl relative scale-105 z-10">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full">
+                        Most Popular
+                    </div>
+<div class="mb-6">
+<h3 class="text-lg font-bold mb-2">Professional</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400">Scale your business with usage-based decision intelligence.</p>
+</div>
+<div class="mb-6">
+<span class="text-4xl font-black">$49</span>
+<span class="text-gray-500 font-medium">+ usage</span>
+</div>
+<button class="w-full py-3 rounded-xl bg-primary text-white font-bold text-sm mb-8 hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/20">Start Free Trial</button>
+<div class="space-y-4">
+<div class="flex items-center gap-3 text-sm font-medium">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            Everything in Community
+                        </div>
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            Uncertainty Ledger
+                        </div>
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            Full API Access
+                        </div>
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            Priority Email Support
+                        </div>
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            Advanced Branching
+                        </div>
+</div>
+</div>
+<!-- Enterprise Card -->
+<div class="flex flex-col p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1a202c] shadow-sm hover:shadow-md transition-shadow">
+<div class="mb-6">
+<h3 class="text-lg font-bold mb-2">Enterprise</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400">Advanced controls and support for global organizations.</p>
+</div>
+<div class="mb-6">
+<span class="text-4xl font-black">Custom</span>
+<span class="text-gray-500 font-medium">/annual</span>
+</div>
+<button class="w-full py-3 rounded-xl border border-gray-200 dark:border-gray-700 font-bold text-sm mb-8 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Contact Sales</button>
+<div class="space-y-4">
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            All Professional features
+                        </div>
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            Custom Integrations
+                        </div>
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            SAML &amp; Single Sign-On (SSO)
+                        </div>
+<div class="flex items-center gap-3 text-sm font-bold">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            24/7 Dedicated Support
+                        </div>
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            Custom SLA
+                        </div>
+</div>
+</div>
+</div>
+<!-- Compare Features Section -->
+<section class="bg-white dark:bg-[#111621] py-24">
+<div class="mx-auto max-w-7xl px-6">
+<div class="mb-16">
+<h2 class="text-3xl font-black mb-4">Compare Features</h2>
+<p class="text-gray-600 dark:text-gray-400">A detailed breakdown of every feature available in our tiers.</p>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-gray-100 dark:border-gray-800">
+<th class="py-6 font-bold text-gray-400 text-sm uppercase tracking-wider w-1/4">Capability</th>
+<th class="py-6 font-bold text-sm px-4">Community</th>
+<th class="py-6 font-bold text-sm px-4">Professional</th>
+<th class="py-6 font-bold text-sm px-4">Enterprise</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+<tr>
+<td class="py-6 font-semibold">Max Users</td>
+<td class="py-6 px-4">1 User</td>
+<td class="py-6 px-4">Unlimited</td>
+<td class="py-6 px-4">Unlimited</td>
+</tr>
+<tr>
+<td class="py-6 font-semibold">Decision Branching</td>
+<td class="py-6 px-4">Basic</td>
+<td class="py-6 px-4">Advanced</td>
+<td class="py-6 px-4">Unlimited</td>
+</tr>
+<tr>
+<td class="py-6 font-semibold">Uncertainty Ledger</td>
+<td class="py-6 px-4 text-gray-300">—</td>
+<td class="py-6 px-4"><span class="material-symbols-outlined text-primary">check</span></td>
+<td class="py-6 px-4"><span class="material-symbols-outlined text-primary">check</span></td>
+</tr>
+<tr>
+<td class="py-6 font-semibold">API Rate Limits</td>
+<td class="py-6 px-4 text-gray-300">—</td>
+<td class="py-6 px-4">10,000 req/mo</td>
+<td class="py-6 px-4">Unlimited</td>
+</tr>
+<tr>
+<td class="py-6 font-semibold">Data Retention</td>
+<td class="py-6 px-4">30 Days</td>
+<td class="py-6 px-4">1 Year</td>
+<td class="py-6 px-4">Custom</td>
+</tr>
+<tr>
+<td class="py-6 font-semibold">Security (SSO)</td>
+<td class="py-6 px-4 text-gray-300">—</td>
+<td class="py-6 px-4 text-gray-300">—</td>
+<td class="py-6 px-4"><span class="material-symbols-outlined text-primary">check</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="py-24 max-w-4xl mx-auto px-6">
+<h2 class="text-3xl font-black mb-12 text-center">Frequently Asked Questions</h2>
+<div class="space-y-6">
+<div class="p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1a202c]">
+<h4 class="font-bold mb-2 flex justify-between items-center">
+                            Is my data secure and private?
+                            <span class="material-symbols-outlined">expand_more</span>
+</h4>
+<p class="text-gray-600 dark:text-gray-400 text-sm">Yes, we use AES-256 encryption at rest and TLS 1.3 in transit. Enterprise customers can choose specific regions for data residency to comply with local regulations.</p>
+</div>
+<div class="p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1a202c]">
+<h4 class="font-bold mb-2 flex justify-between items-center">
+                            How does usage-based billing work?
+                            <span class="material-symbols-outlined">expand_more</span>
+</h4>
+<p class="text-gray-600 dark:text-gray-400 text-sm">Professional plans pay a base monthly fee, plus a small increment for each decision branch computed. You can set monthly caps to avoid unexpected costs.</p>
+</div>
+<div class="p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1a202c]">
+<h4 class="font-bold mb-2 flex justify-between items-center">
+                            Can I cancel or downgrade anytime?
+                            <span class="material-symbols-outlined">expand_more</span>
+</h4>
+<p class="text-gray-600 dark:text-gray-400 text-sm">Absolutely. If you cancel your subscription, you will retain access to your plan features until the end of your current billing cycle.</p>
+</div>
+<div class="p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1a202c]">
+<h4 class="font-bold mb-2 flex justify-between items-center">
+                            Do you offer discounts for non-profits?
+                            <span class="material-symbols-outlined">expand_more</span>
+</h4>
+<p class="text-gray-600 dark:text-gray-400 text-sm">We provide special pricing for academic institutions and registered non-profits. Please contact our sales team for more information.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-[#111621] border-t border-gray-200 dark:border-gray-800 pt-16 pb-8 px-6">
+<div class="mx-auto max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+<div class="col-span-2 md:col-span-1">
+<div class="flex items-center gap-2 mb-6">
+<div class="bg-primary p-1.5 rounded-lg text-white">
+<span class="material-symbols-outlined">database</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Zeo</h2>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Empowering decision makers with intelligent, scalable analytics and automated reasoning.</p>
+<div class="flex gap-4">
+<a class="text-gray-400 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">language</span></a>
+<a class="text-gray-400 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+<a class="text-gray-400 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+</div>
+</div>
+<div>
+<h5 class="font-bold text-sm mb-6 uppercase tracking-wider text-gray-400">Product</h5>
+<ul class="space-y-4 text-sm font-medium">
+<li><a class="hover:text-primary transition-colors" href="#">Features</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Integrations</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Enterprise</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Security</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-sm mb-6 uppercase tracking-wider text-gray-400">Company</h5>
+<ul class="space-y-4 text-sm font-medium">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-sm mb-6 uppercase tracking-wider text-gray-400">Support</h5>
+<ul class="space-y-4 text-sm font-medium">
+<li><a class="hover:text-primary transition-colors" href="#">Documentation</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact Support</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">API Status</a></li>
+</ul>
+</div>
+</div>
+<div class="mx-auto max-w-7xl pt-8 border-t border-gray-100 dark:border-gray-800 text-center text-xs text-gray-500">
+                © 2024 Zeo Inc. All rights reserved. Decision Intelligence at Scale.
+            </div>
+</footer>
+</div>
+</body></html>

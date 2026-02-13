@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zeo Features &amp; Trust</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Google Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2463eb",
+                        "primary-dark": "#1d4ed8",
+                        "primary-light": "#60a5fa",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                        "neutral-50": "#f8fafc",
+                        "neutral-100": "#f1f5f9",
+                        "neutral-200": "#e2e8f0",
+                        "neutral-300": "#cbd5e1",
+                        "neutral-400": "#94a3b8",
+                        "neutral-500": "#64748b",
+                        "neutral-600": "#475569",
+                        "neutral-700": "#334155",
+                        "neutral-800": "#1e293b",
+                        "neutral-900": "#0f172a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-neutral-800 dark:text-neutral-100 antialiased selection:bg-primary/30">
+<!-- Navbar -->
+<nav class="sticky top-0 z-50 w-full border-b border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-16">
+<!-- Logo -->
+<div class="flex-shrink-0 flex items-center gap-2">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-white font-bold text-xl">Z</div>
+<span class="font-bold text-xl tracking-tight text-neutral-900 dark:text-white">Zeo</span>
+</div>
+<!-- Desktop Menu -->
+<div class="hidden md:flex space-x-8 items-center">
+<a class="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="#">Platform</a>
+<a class="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="#">Solutions</a>
+<a class="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="#">Pricing</a>
+<a class="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="#">Resources</a>
+</div>
+<!-- CTA -->
+<div class="hidden md:flex items-center space-x-4">
+<a class="text-neutral-900 dark:text-white font-medium text-sm hover:text-primary transition-colors" href="#">Log in</a>
+<a class="px-4 py-2 rounded bg-primary hover:bg-primary-dark text-white text-sm font-medium transition-all shadow-sm shadow-primary/20" href="#">Get Started</a>
+</div>
+<!-- Mobile menu button -->
+<div class="md:hidden flex items-center">
+<button class="text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white p-2">
+<span class="material-icons">menu</span>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative pt-12 pb-20 lg:pt-24 lg:pb-28 overflow-hidden">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="lg:grid lg:grid-cols-12 lg:gap-16 items-center">
+<!-- Text Content -->
+<div class="lg:col-span-6 text-center lg:text-left mb-12 lg:mb-0">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold uppercase tracking-wider mb-6">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                        v2.0 Now Available
+                    </div>
+<h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-neutral-900 dark:text-white mb-6">
+                        Enterprise-Grade <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">Infrastructure</span> for Modern Teams
+                    </h1>
+<p class="text-lg text-neutral-600 dark:text-neutral-300 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                        Zeo provides the speed, security, and scalability you need to deploy faster than ever before. Build your next big idea on a foundation that grows with you.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+<a class="px-8 py-3.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold shadow-lg shadow-primary/25 transition-all flex items-center justify-center gap-2 group" href="#">
+                            Start Free Trial
+                            <span class="material-icons text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+<a class="px-8 py-3.5 rounded-lg bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200 font-semibold hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-all flex items-center justify-center" href="#">
+                            View Documentation
+                        </a>
+</div>
+<div class="mt-8 flex items-center justify-center lg:justify-start gap-4 text-sm text-neutral-500 dark:text-neutral-400">
+<div class="flex items-center gap-1">
+<span class="material-icons text-green-500 text-base">check_circle</span>
+<span>No credit card required</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-icons text-green-500 text-base">check_circle</span>
+<span>14-day free trial</span>
+</div>
+</div>
+</div>
+<!-- Hero Image -->
+<div class="lg:col-span-6 relative">
+<div class="relative rounded-xl overflow-hidden shadow-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
+<!-- Decorative elements behind image -->
+<div class="absolute -top-12 -right-12 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-12 -left-12 w-64 h-64 bg-blue-300/20 rounded-full blur-3xl"></div>
+<img alt="Modern high-tech open office space with glass walls" class="relative z-10 w-full h-auto object-cover rounded-xl transform transition-transform hover:scale-[1.02] duration-700" data-alt="Modern high-tech open office space with glass walls" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBT6XHVsID9b97t4JShbZ7aQ_HHwJiVPtVA9vdOncb20Y7vR2Izu2sFpGgxTdZpj-5ztR1yuCthNQAg5itN0QPFqpQMC1wul7b4Yi0nJ_4YJjh722nAy8IU3b5x4I-HjOloOyjEcVJnaGGIHjL2pHL9M7aW7dgwTfgF6u6sMUGuP_vFVPr8g73u10xrSEL79aZJTLZES19FvkdnrDyLxOypO5q1QWv50k6jx4YW8ZZVtNBgfGBzjxOvRJRw_wZycn7LQGLdRbb46fk"/>
+<!-- Floating Card Overlay -->
+<div class="absolute bottom-6 left-6 z-20 bg-white/90 dark:bg-neutral-900/90 backdrop-blur shadow-lg p-4 rounded-lg border border-neutral-100 dark:border-neutral-700 max-w-xs hidden sm:block">
+<div class="flex items-start gap-3">
+<div class="p-2 bg-green-100 dark:bg-green-900/30 rounded text-green-600 dark:text-green-400">
+<span class="material-icons text-lg">trending_up</span>
+</div>
+<div>
+<p class="text-xs text-neutral-500 dark:text-neutral-400 font-medium uppercase">Performance</p>
+<p class="text-sm font-bold text-neutral-900 dark:text-white mt-0.5">99.99% Uptime Guaranteed</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trusted By Section -->
+<section class="py-12 border-y border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<p class="text-center text-sm font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400 mb-8">
+                Trusted by forward-thinking companies
+            </p>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center opacity-70 hover:opacity-100 transition-opacity">
+<!-- Logo 1 -->
+<div class="h-8 flex items-center group cursor-default">
+<span class="material-icons text-3xl text-neutral-400 group-hover:text-primary transition-colors mr-2">token</span>
+<span class="font-bold text-xl text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">Acme</span>
+</div>
+<!-- Logo 2 -->
+<div class="h-8 flex items-center group cursor-default">
+<span class="material-icons text-3xl text-neutral-400 group-hover:text-primary transition-colors mr-2">spa</span>
+<span class="font-bold text-xl text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">Organic</span>
+</div>
+<!-- Logo 3 -->
+<div class="h-8 flex items-center group cursor-default">
+<span class="material-icons text-3xl text-neutral-400 group-hover:text-primary transition-colors mr-2">hexagon</span>
+<span class="font-bold text-xl text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">PolyTech</span>
+</div>
+<!-- Logo 4 -->
+<div class="h-8 flex items-center group cursor-default">
+<span class="material-icons text-3xl text-neutral-400 group-hover:text-primary transition-colors mr-2">waves</span>
+<span class="font-bold text-xl text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">Current</span>
+</div>
+<!-- Logo 5 -->
+<div class="h-8 flex items-center group cursor-default">
+<span class="material-icons text-3xl text-neutral-400 group-hover:text-primary transition-colors mr-2">bolt</span>
+<span class="font-bold text-xl text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">Spark</span>
+</div>
+<!-- Logo 6 -->
+<div class="h-8 flex items-center group cursor-default">
+<span class="material-icons text-3xl text-neutral-400 group-hover:text-primary transition-colors mr-2">cloud_queue</span>
+<span class="font-bold text-xl text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">Nebula</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="py-20 lg:py-28 bg-background-light dark:bg-background-dark">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<h2 class="text-primary font-semibold tracking-wide uppercase text-sm mb-3">Why Choose Zeo</h2>
+<h3 class="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white mb-6">Built for scale, designed for speed.</h3>
+<p class="text-lg text-neutral-600 dark:text-neutral-300">
+                    Our platform provides the essential building blocks for modern applications, removing the complexity of infrastructure management so you can focus on code.
+                </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Feature 1: Scalability -->
+<div class="bg-white dark:bg-neutral-800 rounded-xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+<div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-icons text-primary text-3xl group-hover:text-white transition-colors">auto_graph</span>
+</div>
+<h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-3">Infinite Scalability</h4>
+<p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                        Grow without limits. Our elastic architecture handles traffic spikes effortlessly, auto-scaling resources up or down in milliseconds.
+                    </p>
+</div>
+<!-- Feature 2: Security -->
+<div class="bg-white dark:bg-neutral-800 rounded-xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+<div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-icons text-primary text-3xl group-hover:text-white transition-colors">shield</span>
+</div>
+<h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-3">Bank-Grade Security</h4>
+<p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                        Enterprise-ready protection with SOC2 compliance, end-to-end encryption, and automated threat detection out of the box.
+                    </p>
+</div>
+<!-- Feature 3: Speed -->
+<div class="bg-white dark:bg-neutral-800 rounded-xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+<div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-icons text-primary text-3xl group-hover:text-white transition-colors">flash_on</span>
+</div>
+<h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-3">Lightning Speed</h4>
+<p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                        Our global edge network ensures low latency for users everywhere. Deploy closer to your customers with a single click.
+                    </p>
+</div>
+<!-- Feature 4: Analytics -->
+<div class="bg-white dark:bg-neutral-800 rounded-xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+<div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-icons text-primary text-3xl group-hover:text-white transition-colors">insights</span>
+</div>
+<h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-3">Real-time Analytics</h4>
+<p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                        Gain actionable insights with our built-in dashboard. Monitor performance, usage, and errors in real-time to make data-backed decisions.
+                    </p>
+</div>
+<!-- Feature 5: Integration -->
+<div class="bg-white dark:bg-neutral-800 rounded-xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+<div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-icons text-primary text-3xl group-hover:text-white transition-colors">hub</span>
+</div>
+<h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-3">Seamless Integration</h4>
+<p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                        Connects flawlessly with your existing tech stack. Whether it's GitHub, Slack, or Jira, Zeo fits right into your workflow.
+                    </p>
+</div>
+<!-- Feature 6: Support -->
+<div class="bg-white dark:bg-neutral-800 rounded-xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+<div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-icons text-primary text-3xl group-hover:text-white transition-colors">support_agent</span>
+</div>
+<h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-3">24/7 Expert Support</h4>
+<p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                        Never get stuck again. Our dedicated support team consists of engineering experts ready to help you solve complex problems at any time.
+                    </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 pt-16 pb-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+<div class="col-span-2 lg:col-span-2">
+<div class="flex items-center gap-2 mb-4">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-white font-bold text-xl">Z</div>
+<span class="font-bold text-xl tracking-tight text-neutral-900 dark:text-white">Zeo</span>
+</div>
+<p class="text-neutral-500 dark:text-neutral-400 text-sm max-w-xs mb-6">
+                        Making enterprise infrastructure accessible to everyone. Build faster, scale better.
+                    </p>
+<div class="flex gap-4">
+<a class="text-neutral-400 hover:text-primary transition-colors" href="#"><span class="material-icons">facebook</span></a>
+<a class="text-neutral-400 hover:text-primary transition-colors" href="#"><span class="material-icons">code</span></a> <!-- Github placeholder -->
+<a class="text-neutral-400 hover:text-primary transition-colors" href="#"><span class="material-icons">alternate_email</span></a> <!-- Twitter placeholder -->
+</div>
+</div>
+<div>
+<h4 class="font-bold text-neutral-900 dark:text-white mb-4">Product</h4>
+<ul class="space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
+<li><a class="hover:text-primary transition-colors" href="#">Features</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Integrations</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Pricing</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Changelog</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-neutral-900 dark:text-white mb-4">Company</h4>
+<ul class="space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Blog</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-neutral-900 dark:text-white mb-4">Legal</h4>
+<ul class="space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
+<li><a class="hover:text-primary transition-colors" href="#">Privacy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Security</a></li>
+</ul>
+</div>
+</div>
+<div class="border-t border-neutral-100 dark:border-neutral-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+<p class="text-sm text-neutral-500 dark:text-neutral-500">© 2023 Zeo Inc. All rights reserved.</p>
+<div class="mt-4 md:mt-0">
+<!-- Simple language selector -->
+<button class="flex items-center text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
+<span class="material-icons text-base mr-1">language</span>
+                       English (US)
+                   </button>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

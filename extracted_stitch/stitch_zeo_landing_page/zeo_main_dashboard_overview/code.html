@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zeo Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#0F172A", // Deep blue/slate as primary
+                        secondary: "#3B82F6", // Bright blue for accents
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0B1120",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1E293B",
+                        "border-light": "#E2E8F0",
+                        "border-dark": "#334155",
+                        "text-main-light": "#1E293B",
+                        "text-main-dark": "#F1F5F9",
+                        "text-muted-light": "#64748B",
+                        "text-muted-dark": "#94A3B8",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark transition-colors duration-200">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-64 flex-shrink-0 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark flex flex-col transition-colors duration-200">
+<div class="h-16 flex items-center px-6 border-b border-border-light dark:border-border-dark">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-lg">Z</div>
+<span class="text-xl font-bold tracking-tight text-primary dark:text-white">Zeo</span>
+</div>
+</div>
+<nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-3 py-2.5 bg-primary/5 text-primary dark:text-white dark:bg-white/5 rounded-lg font-medium" href="#">
+<span class="material-icons-outlined text-xl">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-text-muted-light dark:text-text-muted-dark hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors" href="#">
+<span class="material-icons-outlined text-xl">folder_open</span>
+                    Projects
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-text-muted-light dark:text-text-muted-dark hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors" href="#">
+<span class="material-icons-outlined text-xl">dns</span>
+                    Infrastructure
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-text-muted-light dark:text-text-muted-dark hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors" href="#">
+<span class="material-icons-outlined text-xl">bar_chart</span>
+                    Analytics
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-text-muted-light dark:text-text-muted-dark hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors" href="#">
+<span class="material-icons-outlined text-xl">settings</span>
+                    Settings
+                </a>
+</nav>
+<div class="p-4 border-t border-border-light dark:border-border-dark">
+<div class="flex items-center gap-3">
+<img alt="User Avatar" class="w-9 h-9 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe_jfbnrcd2h_ESkwCqD6kBoSE_TjSle_wBy2t5dNPHko5mkOM6buJgWSzpaSph1g7E_EO59D9Xng4BgUpfRdBGSANptqCFehm1lrKzoS2tBNikB23obhSIzeY_ctbepTqx-hK7LbbIPrF-Uj6RE--WZTTunxyhwwOUFYcw25qTohytZamjIGWRNXWcjdI4x5j8letKzCm9WEczXK2nd-0B3wA-aVQmXvG51kns7xAk8eG-grZnuSkL8MXhGtE8hgkMrlsOzsL5uI"/>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium truncate text-text-main-light dark:text-text-main-dark">Alex Morgan</p>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark truncate">alex@zeotech.io</p>
+</div>
+<button class="text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-white">
+<span class="material-icons-outlined text-xl">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-8">
+<header class="flex justify-between items-center mb-8">
+<div>
+<h1 class="text-2xl font-bold text-text-main-light dark:text-text-main-dark">Dashboard Overview</h1>
+<p class="text-text-muted-light dark:text-text-muted-dark mt-1">Welcome back, here's what's happening with your systems today.</p>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-text-muted-light dark:text-text-muted-dark hover:bg-surface-light dark:hover:bg-surface-dark rounded-full transition-colors border border-transparent hover:border-border-light dark:hover:border-border-dark">
+<span class="material-icons-outlined">notifications</span>
+</button>
+<button class="bg-primary hover:bg-opacity-90 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors flex items-center gap-2">
+<span class="material-icons-outlined text-base">add</span>
+                        New Instance
+                    </button>
+</div>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+<span class="material-icons-outlined text-blue-600 dark:text-blue-400">cloud_queue</span>
+</div>
+<span class="text-xs font-medium text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400 px-2 py-1 rounded-full">+12%</span>
+</div>
+<h3 class="text-text-muted-light dark:text-text-muted-dark text-sm font-medium">Active Instances</h3>
+<p class="text-2xl font-bold text-text-main-light dark:text-text-main-dark mt-1">1,284</p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+<span class="material-icons-outlined text-purple-600 dark:text-purple-400">compare_arrows</span>
+</div>
+<span class="text-xs font-medium text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400 px-2 py-1 rounded-full">+5.2%</span>
+</div>
+<h3 class="text-text-muted-light dark:text-text-muted-dark text-sm font-medium">Total Requests</h3>
+<p class="text-2xl font-bold text-text-main-light dark:text-text-main-dark mt-1">45.2M</p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
+<span class="material-icons-outlined text-red-600 dark:text-red-400">security</span>
+</div>
+<span class="text-xs font-medium text-red-600 bg-red-50 dark:bg-red-900/20 dark:text-red-400 px-2 py-1 rounded-full">3 New</span>
+</div>
+<h3 class="text-text-muted-light dark:text-text-muted-dark text-sm font-medium">Security Alerts</h3>
+<p class="text-2xl font-bold text-text-main-light dark:text-text-main-dark mt-1">7</p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+<span class="material-icons-outlined text-amber-600 dark:text-amber-400">memory</span>
+</div>
+<span class="text-xs font-medium text-text-muted-light dark:text-text-muted-dark px-2 py-1">Stable</span>
+</div>
+<h3 class="text-text-muted-light dark:text-text-muted-dark text-sm font-medium">CPU Usage</h3>
+<p class="text-2xl font-bold text-text-main-light dark:text-text-main-dark mt-1">42%</p>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-6 mb-8">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h2 class="text-lg font-bold text-text-main-light dark:text-text-main-dark">System Status</h2>
+<p class="text-sm text-text-muted-light dark:text-text-muted-dark">Real-time server performance metrics across all regions.</p>
+</div>
+<div class="flex gap-2">
+<select class="text-sm bg-background-light dark:bg-background-dark border-border-light dark:border-border-dark rounded-lg px-3 py-1.5 focus:ring-primary focus:border-primary text-text-main-light dark:text-text-main-dark outline-none">
+<option>Last 24 Hours</option>
+<option>Last 7 Days</option>
+<option>Last 30 Days</option>
+</select>
+</div>
+</div>
+<div class="h-80 w-full relative">
+<canvas id="performanceChart"></canvas>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden">
+<div class="p-6 border-b border-border-light dark:border-border-dark flex justify-between items-center">
+<h2 class="text-lg font-bold text-text-main-light dark:text-text-main-dark">Recent Activity</h2>
+<a class="text-sm text-secondary hover:text-secondary/80 font-medium" href="#">View All</a>
+</div>
+<div class="divide-y divide-border-light dark:divide-border-dark">
+<div class="p-4 flex items-center gap-4 hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+<span class="material-icons-outlined text-green-600 dark:text-green-400 text-xl">check_circle</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-text-main-light dark:text-text-main-dark">Deployment Success: API v2.4</p>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark">Deployed by Sarah Jenkins to Production</p>
+</div>
+<span class="text-xs text-text-muted-light dark:text-text-muted-dark whitespace-nowrap">2 min ago</span>
+</div>
+<div class="p-4 flex items-center gap-4 hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
+<span class="material-icons-outlined text-red-600 dark:text-red-400 text-xl">warning</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-text-main-light dark:text-text-main-dark">High Latency Detected: EU-West-1</p>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark">Automatic scaling triggered</p>
+</div>
+<span class="text-xs text-text-muted-light dark:text-text-muted-dark whitespace-nowrap">15 min ago</span>
+</div>
+<div class="p-4 flex items-center gap-4 hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+<span class="material-icons-outlined text-blue-600 dark:text-blue-400 text-xl">cloud_upload</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-text-main-light dark:text-text-main-dark">Database Backup Completed</p>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark">Daily snapshot stored in S3</p>
+</div>
+<span class="text-xs text-text-muted-light dark:text-text-muted-dark whitespace-nowrap">1 hr ago</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-1 bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+<div class="p-6 border-b border-border-light dark:border-border-dark">
+<h2 class="text-lg font-bold text-text-main-light dark:text-text-main-dark">Quick Actions</h2>
+</div>
+<div class="p-6 grid grid-cols-2 gap-4">
+<button class="flex flex-col items-center justify-center p-4 bg-background-light dark:bg-background-dark hover:bg-gray-100 dark:hover:bg-gray-800 border border-border-light dark:border-border-dark rounded-lg transition-colors group">
+<span class="material-icons-outlined text-2xl text-primary dark:text-white mb-2 group-hover:scale-110 transition-transform">add_to_queue</span>
+<span class="text-xs font-medium text-text-main-light dark:text-text-main-dark">Deploy App</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-background-light dark:bg-background-dark hover:bg-gray-100 dark:hover:bg-gray-800 border border-border-light dark:border-border-dark rounded-lg transition-colors group">
+<span class="material-icons-outlined text-2xl text-primary dark:text-white mb-2 group-hover:scale-110 transition-transform">storage</span>
+<span class="text-xs font-medium text-text-main-light dark:text-text-main-dark">Manage DB</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-background-light dark:bg-background-dark hover:bg-gray-100 dark:hover:bg-gray-800 border border-border-light dark:border-border-dark rounded-lg transition-colors group">
+<span class="material-icons-outlined text-2xl text-primary dark:text-white mb-2 group-hover:scale-110 transition-transform">people</span>
+<span class="text-xs font-medium text-text-main-light dark:text-text-main-dark">Invite Team</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-background-light dark:bg-background-dark hover:bg-gray-100 dark:hover:bg-gray-800 border border-border-light dark:border-border-dark rounded-lg transition-colors group">
+<span class="material-icons-outlined text-2xl text-primary dark:text-white mb-2 group-hover:scale-110 transition-transform">description</span>
+<span class="text-xs font-medium text-text-main-light dark:text-text-main-dark">View Logs</span>
+</button>
+</div>
+<div class="px-6 pb-6">
+<div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg flex items-start gap-3">
+<span class="material-icons-outlined text-blue-600 dark:text-blue-400 text-lg mt-0.5">info</span>
+<div>
+<p class="text-xs font-semibold text-blue-800 dark:text-blue-300">System Maintenance</p>
+<p class="text-xs text-blue-700 dark:text-blue-400 mt-1">Scheduled for tomorrow at 02:00 UTC. Expect minor downtime.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        // Detect dark mode roughly for initial render colors, typically logic would handle switch dynamically
+        const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const gridColor = isDarkMode ? '#334155' : '#E2E8F0';
+        const textColor = isDarkMode ? '#94A3B8' : '#64748B';
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '23:59'],
+                datasets: [{
+                    label: 'Server Load (%)',
+                    data: [25, 32, 45, 85, 60, 55, 42],
+                    borderColor: '#3B82F6', // Blue-500
+                    backgroundColor: (context) => {
+                        const bg = context.chart.ctx.createLinearGradient(0, 0, 0, 300);
+                        bg.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
+                        bg.addColorStop(1, 'rgba(59, 130, 246, 0)');
+                        return bg;
+                    },
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#FFFFFF',
+                    pointBorderColor: '#3B82F6',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: isDarkMode ? '#1E293B' : '#FFFFFF',
+                        titleColor: isDarkMode ? '#F1F5F9' : '#1E293B',
+                        bodyColor: isDarkMode ? '#94A3B8' : '#64748B',
+                        borderColor: isDarkMode ? '#334155' : '#E2E8F0',
+                        borderWidth: 1,
+                        padding: 10,
+                        displayColors: false,
+                        cornerRadius: 8
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: textColor
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: gridColor,
+                            borderDash: [5, 5],
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: textColor,
+                            stepSize: 25
+                        },
+                        min: 0,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+
+</body></html>
