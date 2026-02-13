@@ -1,4 +1,4 @@
-// File: C:\Users\scott\Documents\GitHub\Zeo\apps\web\src\app\contact\page.tsx
+// File: /home/user/Zeo/apps/web/src/app/contact/page.tsx
 import * as entry from '../../../../src/app/contact/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

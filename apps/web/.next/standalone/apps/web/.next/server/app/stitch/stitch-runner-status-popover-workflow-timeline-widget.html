@@ -1,0 +1,173 @@
+<!DOCTYPE html><!--8ZfsPSrfgPx8SRye8yuF4--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/bc06321d88be975e.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-573fdd58969ad59e.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-baa4ef70fea4d55f.js" async=""></script><script src="/_next/static/chunks/app/error-17b4afe27e88d3cd.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50 text-gray-900"><header class="sticky top-0 z-10 border-b border-gray-200 bg-white/95 backdrop-blur"><div class="mx-auto w-full max-w-6xl px-6 py-4"><div class="flex items-center justify-between"><a class="text-lg font-semibold text-blue-700" href="/">Zeo</a><button type="button" class="rounded border border-gray-300 px-3 py-1 text-sm md:hidden">Menu</button><nav class="hidden items-center gap-4 md:flex"><a class="text-sm transition-colors text-blue-700 font-semibold" href="/">Home</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/features">Features</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/cli">CLI</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/docs">Docs</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/pricing">Pricing</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/about">About</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/stitch">Stitch</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/dashboard">Dashboard</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="text-sm text-gray-700 hover:text-blue-700">GitHub</a><a class="text-sm text-gray-700 hover:text-blue-700" href="/signin">Sign In</a><a class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700" href="/docs/quickstart">Get Started</a></nav></div></div></header><main class="mx-auto w-full max-w-6xl px-6 py-10"><h1 class="mb-6 text-3xl font-semibold">Workflow Timeline Widget</h1><div class="mb-3 text-sm text-gray-500">Category: <!-- -->Runtime Status</div><div class="overflow-hidden rounded border border-gray-200 bg-white"><iframe title="Workflow Timeline Widget" srcDoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Workflow Timeline Widget&lt;/title&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,typography&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;amp;family=JetBrains+Mono:wght@400;500&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons+Round&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script&gt;
+      tailwind.config = {
+        darkMode: &quot;class&quot;,
+        theme: {
+          extend: {
+            colors: {
+              primary: &quot;#2563EB&quot;, // Blue for Zeo identity (often associated with tech/dev tools)
+              danger: &quot;#DC2626&quot;, // Red for errors
+              success: &quot;#10B981&quot;, // Green for success
+              neutral: &quot;#6B7280&quot;, // Gray for waiting/neutral states
+              &quot;background-light&quot;: &quot;#F3F4F6&quot;, // Light gray background
+              &quot;background-dark&quot;: &quot;#111827&quot;, // Dark background
+              &quot;surface-light&quot;: &quot;#FFFFFF&quot;,
+              &quot;surface-dark&quot;: &quot;#1F2937&quot;,
+              &quot;border-light&quot;: &quot;#E5E7EB&quot;,
+              &quot;border-dark&quot;: &quot;#374151&quot;,
+            },
+            fontFamily: {
+              sans: [&quot;Inter&quot;, &quot;sans-serif&quot;],
+              mono: [&quot;JetBrains Mono&quot;, &quot;monospace&quot;],
+            },
+            borderRadius: {
+              DEFAULT: &quot;0.75rem&quot;, // 12px
+              xl: &quot;1rem&quot;, // 16px
+            },
+            boxShadow: {
+              &#x27;soft&#x27;: &#x27;0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)&#x27;,
+            }
+          },
+        },
+      };
+    &lt;/script&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark min-h-screen font-sans text-gray-900 dark:text-gray-100 flex items-center justify-center p-4 selection:bg-primary selection:text-white antialiased&quot;&gt;
+&lt;div class=&quot;w-full max-w-sm mx-auto bg-surface-light dark:bg-surface-dark rounded-3xl shadow-xl overflow-hidden border border-border-light dark:border-border-dark flex flex-col h-[800px]&quot;&gt;
+&lt;div class=&quot;px-6 py-5 border-b border-border-light dark:border-border-dark flex justify-between items-center sticky top-0 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-md z-10&quot;&gt;
+&lt;div&gt;
+&lt;h1 class=&quot;text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-icons-round text-primary text-xl&quot;&gt;hub&lt;/span&gt;
+                    Workflow #8392
+                &lt;/h1&gt;
+&lt;p class=&quot;text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-medium&quot;&gt;Zeo • Runner 01&lt;/p&gt;
+&lt;/div&gt;
+&lt;button class=&quot;p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-500 dark:text-gray-400&quot;&gt;
+&lt;span class=&quot;material-icons-round&quot;&gt;more_vert&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 overflow-y-auto p-6 scrollbar-hide&quot;&gt;
+&lt;div class=&quot;relative pl-4&quot;&gt;
+&lt;div class=&quot;absolute left-[19px] top-4 bottom-8 w-0.5 bg-gray-200 dark:bg-gray-700 -z-10&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;relative flex gap-4 mb-8 group&quot;&gt;
+&lt;div class=&quot;relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-success flex items-center justify-center shadow-soft ring-4 ring-surface-light dark:ring-surface-dark&quot;&gt;
+&lt;span class=&quot;material-icons-round text-white text-sm&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 pt-1.5&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start&quot;&gt;
+&lt;h3 class=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;Queued&lt;/h3&gt;
+&lt;span class=&quot;text-xs font-mono text-gray-400 dark:text-gray-500&quot;&gt;10:42:01&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-gray-500 dark:text-gray-400 mt-1&quot;&gt;Job accepted by scheduler&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;relative flex gap-4 mb-8 group&quot;&gt;
+&lt;div class=&quot;relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-success flex items-center justify-center shadow-soft ring-4 ring-surface-light dark:ring-surface-dark&quot;&gt;
+&lt;span class=&quot;material-icons-round text-white text-sm&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 pt-1.5&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start&quot;&gt;
+&lt;h3 class=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;Started&lt;/h3&gt;
+&lt;span class=&quot;text-xs font-mono text-gray-400 dark:text-gray-500&quot;&gt;10:42:05&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-gray-500 dark:text-gray-400 mt-1&quot;&gt;Runner environment initialized&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;relative flex gap-4 mb-8 group&quot;&gt;
+&lt;div class=&quot;relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-success flex items-center justify-center shadow-soft ring-4 ring-surface-light dark:ring-surface-dark&quot;&gt;
+&lt;span class=&quot;material-icons-round text-white text-sm&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 pt-1.5&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start&quot;&gt;
+&lt;h3 class=&quot;font-semibold text-gray-900 dark:text-white&quot;&gt;Step A: Schema Val&lt;/h3&gt;
+&lt;span class=&quot;text-xs font-mono text-gray-400 dark:text-gray-500&quot;&gt;10:42:12&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-2 mt-1&quot;&gt;
+&lt;span class=&quot;inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300&quot;&gt;
+                                Pass
+                            &lt;/span&gt;
+&lt;span class=&quot;text-xs text-gray-500 dark:text-gray-400&quot;&gt;12 checks&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;relative flex gap-4 mb-8&quot;&gt;
+&lt;div class=&quot;relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-danger flex items-center justify-center shadow-lg ring-4 ring-surface-light dark:ring-surface-dark animate-pulse&quot;&gt;
+&lt;span class=&quot;material-icons-round text-white text-sm&quot;&gt;priority_high&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 pt-1.5 min-w-0&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start&quot;&gt;
+&lt;h3 class=&quot;font-bold text-danger dark:text-red-400&quot;&gt;Step B: Execution&lt;/h3&gt;
+&lt;span class=&quot;text-xs font-mono text-gray-400 dark:text-gray-500&quot;&gt;10:42:15&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-danger/80 dark:text-red-400/80 mt-1 mb-3 font-medium&quot;&gt;Process exited with code 1&lt;/p&gt;
+&lt;div class=&quot;bg-gray-50 dark:bg-black/30 border border-red-200 dark:border-red-900/50 rounded-lg overflow-hidden&quot;&gt;
+&lt;div class=&quot;px-3 py-2 border-b border-red-100 dark:border-red-900/30 flex justify-between items-center bg-red-50/50 dark:bg-red-900/10&quot;&gt;
+&lt;span class=&quot;text-[10px] uppercase font-bold text-red-600 dark:text-red-400 tracking-wide&quot;&gt;Error Log&lt;/span&gt;
+&lt;span class=&quot;material-icons-round text-xs text-red-400 cursor-pointer hover:text-red-600&quot;&gt;content_copy&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;p-3 overflow-x-auto&quot;&gt;
+&lt;pre class=&quot;text-[11px] leading-relaxed font-mono text-red-700 dark:text-red-300 whitespace-pre-wrap break-all&quot;&gt;{
+  &quot;error&quot;: &quot;DbConnectionTimeout&quot;,
+  &quot;source&quot;: &quot;payment_gateway_v2&quot;,
+  &quot;trace_id&quot;: &quot;req_88f9a0c&quot;,
+  &quot;details&quot;: {
+    &quot;retry_count&quot;: 3,
+    &quot;latency_ms&quot;: 5002
+  }
+}&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;px-3 py-2 bg-white dark:bg-transparent border-t border-red-100 dark:border-red-900/30&quot;&gt;
+&lt;button class=&quot;w-full py-1.5 rounded bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 text-xs font-semibold hover:bg-red-200 dark:hover:bg-red-900/60 transition-colors flex items-center justify-center gap-1&quot;&gt;
+&lt;span class=&quot;material-icons-round text-sm&quot;&gt;restart_alt&lt;/span&gt;
+                                    Retry Step
+                                &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;relative flex gap-4&quot;&gt;
+&lt;div class=&quot;relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-surface-light dark:bg-surface-dark border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center shadow-sm ring-4 ring-surface-light dark:ring-surface-dark&quot;&gt;
+&lt;span class=&quot;material-icons-round text-gray-300 dark:text-gray-600 text-sm&quot;&gt;radio_button_unchecked&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 pt-1.5 opacity-50&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start&quot;&gt;
+&lt;h3 class=&quot;font-semibold text-gray-500 dark:text-gray-400&quot;&gt;Finalize&lt;/h3&gt;
+&lt;span class=&quot;text-xs font-mono text-gray-300 dark:text-gray-600&quot;&gt;--:--:--&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-gray-400 dark:text-gray-500 mt-1&quot;&gt;Cleanup and reporting&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;p-4 border-t border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark rounded-b-3xl&quot;&gt;
+&lt;div class=&quot;grid grid-cols-2 gap-3&quot;&gt;
+&lt;button class=&quot;px-4 py-3 rounded-xl border border-border-light dark:border-border-dark text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center gap-2&quot;&gt;
+&lt;span class=&quot;material-icons-round text-base&quot;&gt;terminal&lt;/span&gt;
+                    View Full Logs
+                &lt;/button&gt;
+&lt;button class=&quot;px-4 py-3 rounded-xl bg-primary text-white font-medium text-sm hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2&quot;&gt;
+&lt;span class=&quot;material-icons-round text-base&quot;&gt;stop_circle&lt;/span&gt;
+                    Abort Run
+                &lt;/button&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mt-4 flex items-center justify-center gap-1.5&quot;&gt;
+&lt;div class=&quot;h-1.5 w-1.5 rounded-full bg-gray-300 dark:bg-gray-600&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;h-1.5 w-1.5 rounded-full bg-primary&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;h-1.5 w-1.5 rounded-full bg-gray-300 dark:bg-gray-600&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;&lt;/html&gt;" class="h-[1100px] w-full" sandbox="allow-scripts allow-same-origin"></iframe></div></main><footer class="border-t border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-5 text-sm text-gray-600 md:flex-row md:items-center md:justify-between"><span>Confidence range, assumptions, provenance, and sensitivity first.</span><div class="flex flex-wrap gap-3"><a class="hover:text-blue-700" href="/docs">Docs</a><a class="hover:text-blue-700" href="/features">Features</a><a class="hover:text-blue-700" href="/cli">CLI</a><a class="hover:text-blue-700" href="/changelog">Changelog</a><a class="hover:text-blue-700" href="/status">Status</a><a class="hover:text-blue-700" href="/legal/privacy">Privacy</a><a class="hover:text-blue-700" href="/legal/terms">Terms</a><a class="hover:text-blue-700" href="/stitch">Stitch</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="hover:text-blue-700">GitHub</a></div></div></footer></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-573fdd58969ad59e.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-17b4afe27e88d3cd.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/bc06321d88be975e.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"8ZfsPSrfgPx8SRye8yuF4\",\"c\":[\"\",\"stitch\",\"stitch-runner-status-popover-workflow-timeline-widget\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"stitch\",{\"children\":[[\"slug\",\"stitch-runner-status-popover-workflow-timeline-widget\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/bc06321d88be975e.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:I[785,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"PublicShell\"]\n10:T2318,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eWorkflow Timeline Widget\u003c/title\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,typography\"\u003e\u003c/script\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700\u0026amp;family=JetBrains+Mono:wght@400;500\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/icon?family=Material+Icons+Round\" rel=\"stylesheet\"/\u003e\n\u003cscript\u003e\n      tailwind.config = {\n        darkMode: \"class\",\n        theme: {\n          extend: {\n            colors: {\n              primary: \"#2563EB\", // Blue for Zeo identity (often associated with tech/dev tools)\n              danger: \"#DC2626\", // Red for errors\n              success: \"#10B981\", // Green for success\n              neutral: \"#6B7280\", // Gray for waiting/neutral states\n              \"background-light\": \"#F3F4F6\", // Light gray background\n              \"background-dark\": \"#111827\", // Dark background\n              \"surface-light\": \"#FFFFFF\",\n              \"surface-dark\": \"#1F2937\",\n              \"border-light\": \"#E5E7EB\",\n              \"border-dark\": \"#374151\",\n            },\n            fontFamily: {\n              sans: [\"Inter\", \"sans-serif\"],\n              mono: [\"JetBrains Mono\", \"monospace\"],\n            },\n            borderRadius: {\n              DEFAULT: \"0.75rem\", // 12px\n              xl: \"1rem\", // 16px\n            },\n            boxShadow: {\n              'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',\n            }\n          },\n        },\n      };\n    \u003c/script\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark min-h-screen font-sans text-gray-900 dark:text-gray-100 flex items-center justify-center p-4 selection:bg-primary selection:text-white antialiased\"\u003e\n\u003cdiv class=\"w-full max-w-sm mx-auto bg-surface-light dark:bg-surface-dark rounded-3xl shadow-xl overflow-hidden border border-border-light dark:border-border-dark flex flex-col h-[800px]\"\u003e\n\u003cdiv class=\"px-6 py-5 border-b border-border-light dark:border-border-dark flex justify-between items-center sticky top-0 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-md z-10\"\u003e\n\u003cdiv\u003e\n\u003ch1 class=\"text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2\"\u003e\n\u003cspan class=\"material-icons-round text-primary text-xl\"\u003ehub\u003c/span\u003e\n                    Workflow #8392\n                \u003c/h1\u003e\n\u003cp class=\"text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-medium\"\u003eZeo • Runner 01\u003c/p\u003e\n\u003c/div\u003e\n\u003cbutton class=\"p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-500 dark:text-gray-400\"\u003e\n\u003cspan class=\"material-icons-round\"\u003emore_vert\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 overflow-y-auto p-6 scrollbar-hide\"\u003e\n\u003cdiv class=\"relative pl-4\"\u003e\n\u003cdiv class=\"absolute left-[19px] top-4 bottom-8 w-0.5 bg-gray-200 dark:bg-gray-700 -z-10\"\u003e\u003c/div\u003e\n\u003cdiv class=\"relative flex gap-4 mb-8 group\"\u003e\n\u003cdiv class=\"relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-success flex items-center justify-center shadow-soft ring-4 ring-surface-light dark:ring-surface-dark\"\u003e\n\u003cspan class=\"material-icons-round text-white text-sm\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 pt-1.5\"\u003e\n\u003cdiv class=\"flex justify-between items-start\"\u003e\n\u003ch3 class=\"font-semibold text-gray-900 dark:text-white\"\u003eQueued\u003c/h3\u003e\n\u003cspan class=\"text-xs font-mono text-gray-400 dark:text-gray-500\"\u003e10:42:01\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-gray-500 dark:text-gray-400 mt-1\"\u003eJob accepted by scheduler\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"relative flex gap-4 mb-8 group\"\u003e\n\u003cdiv class=\"relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-success flex items-center justify-center shadow-soft ring-4 ring-surface-light dark:ring-surface-dark\"\u003e\n\u003cspan class=\"material-icons-round text-white text-sm\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 pt-1.5\"\u003e\n\u003cdiv class=\"flex justify-between items-start\"\u003e\n\u003ch3 class=\"font-semibold text-gray-900 dark:text-white\"\u003eStarted\u003c/h3\u003e\n\u003cspan class=\"text-xs font-mono text-gray-400 dark:text-gray-500\"\u003e10:42:05\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-gray-500 dark:text-gray-400 mt-1\"\u003eRunner environment initialized\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"relative flex gap-4 mb-8 group\"\u003e\n\u003cdiv class=\"relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-success flex items-center justify-center shadow-soft ring-4 ring-surface-light dark:ring-surface-dark\"\u003e\n\u003cspan class=\"material-icons-round text-white text-sm\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 pt-1.5\"\u003e\n\u003cdiv class=\"flex justify-between items-start\"\u003e\n\u003ch3 class=\"font-semibold text-gray-900 dark:text-white\"\u003eStep A: Schema Val\u003c/h3\u003e\n\u003cspan class=\"text-xs font-mono text-gray-400 dark:text-gray-500\"\u003e10:42:12\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-2 mt-1\"\u003e\n\u003cspan class=\"inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300\"\u003e\n                                Pass\n                            \u003c/span\u003e\n\u003cspan class=\"text-xs text-gray-500 dark:text-gray-400\"\u003e12 checks\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"relative flex gap-4 mb-8\"\u003e\n\u003cdiv class=\"relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-danger flex items-center justify-center shadow-lg ring-4 ring-surface-light dark:ring-surface-dark animate-pulse\"\u003e\n\u003cspan class=\"material-icons-round text-white text-sm\"\u003epriority_high\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 pt-1.5 min-w-0\"\u003e\n\u003cdiv class=\"flex justify-between items-start\"\u003e\n\u003ch3 class=\"font-bold text-danger dark:text-red-400\"\u003eStep B: Execution\u003c/h3\u003e\n\u003cspan class=\"text-xs font-mono text-gray-400 dark:text-gray-500\"\u003e10:42:15\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-danger/80 dark:text-red-400/80 mt-1 mb-3 font-medium\"\u003eProcess exited with code 1\u003c/p\u003e\n\u003cdiv class=\"bg-gray-50 dark:bg-black/30 border border-red-200 dark:border-red-900/50 rounded-lg overflow-hidden\"\u003e\n\u003cdiv class=\"px-3 py-2 border-b border-red-100 dark:border-red-900/30 flex justify-between items-center bg-red-50/50 dark:bg-red-900/10\"\u003e\n\u003cspan class=\"text-[10px] uppercase font-bold text-red-600 dark:text-red-400 tracking-wide\"\u003eError Log\u003c/span\u003e\n\u003cspan class=\"material-icons-round text-xs text-red-400 cursor-pointer hover:text-red-600\"\u003econtent_copy\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"p-3 overflow-x-auto\"\u003e\n\u003cpre class=\"text-[11px] leading-relaxed font-mono text-red-700 dark:text-red-300 whitespace-pre-wrap break-all\"\u003e{\n  \"error\": \"DbConnectionTimeout\",\n  \"source\": \"payment_gateway_v2\",\n  \"trace_id\": \"req_88f9a0c\",\n  \"details\": {\n    \"retry_count\": 3,\n    \"latency_ms\": 5002\n  }\n}\u003c/pre\u003e\n\u003c/div\u003e\n\u003cdiv class=\"px-3 py-2 bg-white dark:bg-transparent border-t border-red-100 dark:border-red-900/30\"\u003e\n\u003cbutton class=\"w-full py-1.5 rounded bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 text-xs font-semibold hover:bg-red-200 dark:hover:bg-red-900/60 transition-colors flex items-center justify-center gap-1\"\u003e\n\u003cspan class=\"material-icons-round text-sm\"\u003erestart_alt\u003c/span\u003e\n                                    Retry Step\n                                \u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"relative flex gap-4\"\u003e\n\u003cdiv class=\"relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-surface-light dark:bg-surface-dark border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center shadow-sm ring-4 ring-surface-light dark:ring-surface-dark\"\u003e\n\u003cspan class=\"material-icons-round text-gray-300 dark:text-gray-600 text-sm\"\u003eradio_button_unchecked\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 pt-1.5 opacity-50\"\u003e\n\u003cdiv class=\"flex justify-between items-start\"\u003e\n\u003ch3 class=\"font-semibold text-gray-500 dark:text-gray-400\"\u003eFinalize\u003c/h3\u003e\n\u003cspan class=\"text-xs font-mono text-gray-300 dark:text-gray-600\"\u003e--:--:--\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-gray-400 dark:text-gray-500 mt-1\"\u003eCleanup and reporting\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"p-4 border-t border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark rounded-b-3xl\"\u003e\n\u003cdiv class=\"grid grid-cols-2 gap-3\"\u003e\n\u003cbutton class=\"px-4 py-3 rounded-xl border border-border-light dark:border-border-dark text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center gap-2\"\u003e\n\u003cspan class=\"material-icons-round text-base\"\u003eterminal\u003c/span\u003e\n                    View Full Logs\n                \u003c/button\u003e\n\u003cbutton class=\"px-4 py-3 rounded-xl bg-primary text-white font-medium text-sm hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2\"\u003e\n\u003cspan class=\"material-icons-round text-base\"\u003estop_circle\u003c/span\u003e\n                    Abort Run\n                \u003c/button\u003e\n\u003c/div\u003e\n\u003cdiv class=\"mt-4 flex items-center justify-center gap-1.5\"\u003e\n\u003cdiv class=\"h-1.5 w-1.5 rounded-full bg-gray-300 dark:bg-gray-600\"\u003e\u003c/div\u003e\n\u003cdiv class=\"h-1.5 w-1.5 rounded-full bg-primary\"\u003e\u003c/div\u003e\n\u003cdiv class=\"h-1.5 w-1.5 rounded-full bg-gray-300 dark:bg-gray-600\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"$Lf\",null,{\"title\":\"Workflow Timeline Widget\",\"children\":[[\"$\",\"div\",null,{\"className\":\"mb-3 text-sm text-gray-500\",\"children\":[\"Category: \",\"Runtime Status\"]}],[\"$\",\"div\",null,{\"className\":\"overflow-hidden rounded border border-gray-200 bg-white\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Workflow Timeline Widget\",\"srcDoc\":\"$10\",\"className\":\"h-[1100px] w-full\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]]}]\n"])</script></body></html>

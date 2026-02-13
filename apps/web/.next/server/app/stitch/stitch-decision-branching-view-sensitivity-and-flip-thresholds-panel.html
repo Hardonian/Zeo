@@ -1,0 +1,273 @@
+<!DOCTYPE html><!--8ZfsPSrfgPx8SRye8yuF4--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/bc06321d88be975e.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-573fdd58969ad59e.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-baa4ef70fea4d55f.js" async=""></script><script src="/_next/static/chunks/app/error-17b4afe27e88d3cd.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50 text-gray-900"><header class="sticky top-0 z-10 border-b border-gray-200 bg-white/95 backdrop-blur"><div class="mx-auto w-full max-w-6xl px-6 py-4"><div class="flex items-center justify-between"><a class="text-lg font-semibold text-blue-700" href="/">Zeo</a><button type="button" class="rounded border border-gray-300 px-3 py-1 text-sm md:hidden">Menu</button><nav class="hidden items-center gap-4 md:flex"><a class="text-sm transition-colors text-blue-700 font-semibold" href="/">Home</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/features">Features</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/cli">CLI</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/docs">Docs</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/pricing">Pricing</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/about">About</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/stitch">Stitch</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/dashboard">Dashboard</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="text-sm text-gray-700 hover:text-blue-700">GitHub</a><a class="text-sm text-gray-700 hover:text-blue-700" href="/signin">Sign In</a><a class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700" href="/docs/quickstart">Get Started</a></nav></div></div></header><main class="mx-auto w-full max-w-6xl px-6 py-10"><h1 class="mb-6 text-3xl font-semibold">Sensitivity &amp; Flip Thresholds Panel</h1><div class="mb-3 text-sm text-gray-500">Category: <!-- -->Decision Intelligence</div><div class="overflow-hidden rounded border border-gray-200 bg-white"><iframe title="Sensitivity &amp; Flip Thresholds Panel" srcDoc="&lt;!DOCTYPE html&gt;
+
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Zeo - Sensitivity Analysis&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;script id=&quot;tailwind-config&quot;&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        &quot;primary&quot;: &quot;#1258e2&quot;,
+                        &quot;background-light&quot;: &quot;#f6f6f8&quot;,
+                        &quot;background-dark&quot;: &quot;#101622&quot;,
+                        &quot;card-dark&quot;: &quot;#1a2332&quot;,
+                        &quot;risk-high&quot;: &quot;#fbbf24&quot;, // Amber
+                        &quot;risk-low&quot;: &quot;#14b8a6&quot;, // Teal
+                        &quot;risk-critical&quot;: &quot;#ef4444&quot;, // Red
+                    },
+                    fontFamily: {
+                        &quot;display&quot;: [&quot;Space Grotesk&quot;, &quot;sans-serif&quot;],
+                        &quot;mono&quot;: [&quot;ui-monospace&quot;, &quot;SFMono-Regular&quot;, &quot;Menlo&quot;, &quot;Monaco&quot;, &quot;Consolas&quot;, &quot;Liberation Mono&quot;, &quot;Courier New&quot;, &quot;monospace&quot;],
+                    },
+                    borderRadius: {&quot;DEFAULT&quot;: &quot;0.25rem&quot;, &quot;lg&quot;: &quot;0.5rem&quot;, &quot;xl&quot;: &quot;0.75rem&quot;, &quot;2xl&quot;: &quot;1rem&quot;, &quot;full&quot;: &quot;9999px&quot;},
+                },
+            },
+        }
+    &lt;/script&gt;
+&lt;style&gt;
+        /* Custom range slider styling */
+        .range-thumb {
+            -webkit-appearance: none;
+            pointer-events: none;
+        }
+        .range-thumb::-webkit-slider-thumb {
+            pointer-events: auto;
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.5);
+        }
+        /* Hide scrollbar for clean horizontal scroll */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen flex flex-col antialiased&quot;&gt;
+&lt;!-- Top Navigation --&gt;
+&lt;header class=&quot;sticky top-0 z-20 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between px-4 py-3&quot;&gt;
+&lt;button class=&quot;text-slate-500 dark:text-slate-400 hover:text-primary transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-2xl&quot;&gt;arrow_back&lt;/span&gt;
+&lt;/button&gt;
+&lt;h1 class=&quot;text-base font-bold tracking-tight&quot;&gt;Sensitivity Analysis&lt;/h1&gt;
+&lt;button class=&quot;text-slate-500 dark:text-slate-400 hover:text-primary transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-2xl&quot;&gt;tune&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/header&gt;
+&lt;!-- Main Content Area --&gt;
+&lt;main class=&quot;flex-1 flex flex-col w-full max-w-md mx-auto p-4 pb-24 gap-6&quot;&gt;
+&lt;!-- Decision Fragility Dashboard --&gt;
+&lt;section class=&quot;bg-card-dark rounded-2xl p-6 shadow-lg border border-slate-800 relative overflow-hidden group&quot;&gt;
+&lt;div class=&quot;absolute top-0 right-0 w-32 h-32 bg-risk-high/10 rounded-full blur-3xl -mr-10 -mt-10&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex justify-between items-start mb-4 relative z-10&quot;&gt;
+&lt;div&gt;
+&lt;h2 class=&quot;text-slate-400 text-sm font-medium uppercase tracking-wider mb-1&quot;&gt;Decision Fragility&lt;/h2&gt;
+&lt;div class=&quot;flex items-baseline gap-2&quot;&gt;
+&lt;span class=&quot;text-5xl font-bold text-white tracking-tighter&quot;&gt;72%&lt;/span&gt;
+&lt;span class=&quot;text-risk-high font-bold text-sm bg-risk-high/10 px-2 py-0.5 rounded flex items-center gap-1&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;warning&lt;/span&gt;
+                            High Risk
+                        &lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Mini Donut Chart Representation --&gt;
+&lt;div class=&quot;relative w-16 h-16 flex items-center justify-center&quot;&gt;
+&lt;svg class=&quot;w-full h-full transform -rotate-90&quot;&gt;
+&lt;circle class=&quot;text-slate-700&quot; cx=&quot;32&quot; cy=&quot;32&quot; fill=&quot;transparent&quot; r=&quot;28&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;4&quot;&gt;&lt;/circle&gt;
+&lt;circle cx=&quot;32&quot; cy=&quot;32&quot; fill=&quot;transparent&quot; r=&quot;28&quot; stroke=&quot;#fbbf24&quot; stroke-dasharray=&quot;175.9&quot; stroke-dashoffset=&quot;49.2&quot; stroke-linecap=&quot;round&quot; stroke-width=&quot;4&quot;&gt;&lt;/circle&gt;
+&lt;/svg&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-slate-400 text-sm leading-relaxed relative z-10&quot;&gt;
+                Your current strategy is highly sensitive to 3 key assumptions. A minor shift in belief could flip the optimal decision.
+            &lt;/p&gt;
+&lt;/section&gt;
+&lt;!-- Filters --&gt;
+&lt;div class=&quot;flex gap-3 overflow-x-auto no-scrollbar pb-1&quot;&gt;
+&lt;button class=&quot;flex items-center gap-2 px-4 py-2 bg-primary/20 text-primary rounded-full text-sm font-semibold border border-primary/30 whitespace-nowrap&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-lg&quot;&gt;priority_high&lt;/span&gt;
+                Most Fragile
+            &lt;/button&gt;
+&lt;button class=&quot;flex items-center gap-2 px-4 py-2 bg-card-dark text-slate-300 rounded-full text-sm font-medium border border-slate-700 whitespace-nowrap hover:bg-slate-800 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-lg&quot;&gt;trending_up&lt;/span&gt;
+                Highest Impact
+            &lt;/button&gt;
+&lt;button class=&quot;flex items-center gap-2 px-4 py-2 bg-card-dark text-slate-300 rounded-full text-sm font-medium border border-slate-700 whitespace-nowrap hover:bg-slate-800 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-lg&quot;&gt;new_releases&lt;/span&gt;
+                Newest Beliefs
+            &lt;/button&gt;
+&lt;/div&gt;
+&lt;!-- Critical Flip-Thresholds List --&gt;
+&lt;section class=&quot;flex flex-col gap-4&quot;&gt;
+&lt;h3 class=&quot;text-lg font-bold text-white px-1&quot;&gt;Critical Flip-Thresholds&lt;/h3&gt;
+&lt;!-- Card 1: Critical/Fragile --&gt;
+&lt;div class=&quot;bg-card-dark rounded-xl p-5 border border-risk-high/30 shadow-lg relative overflow-hidden&quot;&gt;
+&lt;!-- Status Indicator Line --&gt;
+&lt;div class=&quot;absolute left-0 top-0 bottom-0 w-1 bg-risk-high&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex justify-between items-start mb-4 pl-2&quot;&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;font-mono text-xs text-risk-high bg-risk-high/10 px-1.5 py-0.5 rounded border border-risk-high/20&quot;&gt;ASSUMPTION_04&lt;/span&gt;
+&lt;span class=&quot;text-xs text-slate-400&quot;&gt;Market Growth Rate&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-white font-semibold text-base mt-1&quot;&gt;Growth drops below 3.2%&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col items-end&quot;&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-400 uppercase tracking-wide&quot;&gt;Buffer&lt;/span&gt;
+&lt;span class=&quot;text-risk-high font-bold font-mono&quot;&gt;+3%&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Slider Visualization Area --&gt;
+&lt;div class=&quot;pl-2 pt-2 pb-1&quot;&gt;
+&lt;div class=&quot;relative h-12 w-full select-none&quot;&gt;
+&lt;!-- Track Background --&gt;
+&lt;div class=&quot;absolute top-1/2 left-0 right-0 h-1.5 bg-slate-700 rounded-full -translate-y-1/2 overflow-hidden&quot;&gt;
+&lt;!-- Danger Zone Gradient --&gt;
+&lt;div class=&quot;absolute left-0 h-full w-[48%]&quot; style=&quot;background: linear-gradient(90deg, #1a2332 0%, #fbbf24 100%); opacity: 0.5;&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Threshold Marker (The Flip Point) --&gt;
+&lt;div class=&quot;absolute top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 group cursor-help z-10&quot; style=&quot;left: 48%;&quot;&gt;
+&lt;div class=&quot;h-4 w-0.5 bg-risk-high&quot;&gt;&lt;/div&gt; &lt;!-- Vertical Line --&gt;
+&lt;div class=&quot;w-3 h-3 rotate-45 border-2 border-risk-high bg-card-dark -mt-1.5&quot;&gt;&lt;/div&gt; &lt;!-- Diamond --&gt;
+&lt;span class=&quot;absolute -top-7 text-[10px] font-mono text-risk-high whitespace-nowrap opacity-100 transition-opacity bg-background-dark/90 px-1 rounded&quot;&gt;Threshold: 48%&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Current Belief Handle (User Draggable) --&gt;
+&lt;div class=&quot;absolute top-1/2 -translate-y-1/2 z-20 flex flex-col items-center&quot; style=&quot;left: 45%;&quot;&gt;
+&lt;div class=&quot;w-5 h-5 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)] border-2 border-slate-900 cursor-grab active:cursor-grabbing flex items-center justify-center&quot;&gt;
+&lt;div class=&quot;w-1.5 h-1.5 bg-primary rounded-full&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;absolute top-7 text-[10px] font-mono text-white font-bold whitespace-nowrap&quot;&gt;45%&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Connection Line (Visualizing the buffer) --&gt;
+&lt;div class=&quot;absolute top-1/2 -translate-y-1/2 h-0.5 bg-risk-high/50&quot; style=&quot;left: 45%; width: 3%;&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between mt-2 text-[10px] text-slate-500 font-mono uppercase&quot;&gt;
+&lt;span&gt;Pessimistic (0%)&lt;/span&gt;
+&lt;span&gt;Optimistic (100%)&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Card 2: Moderate Risk --&gt;
+&lt;div class=&quot;bg-card-dark rounded-xl p-5 border border-slate-700 shadow-md relative overflow-hidden&quot;&gt;
+&lt;!-- Status Indicator Line --&gt;
+&lt;div class=&quot;absolute left-0 top-0 bottom-0 w-1 bg-slate-500&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex justify-between items-start mb-4 pl-2&quot;&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;font-mono text-xs text-slate-300 bg-slate-700/50 px-1.5 py-0.5 rounded border border-slate-600&quot;&gt;ASSUMPTION_09&lt;/span&gt;
+&lt;span class=&quot;text-xs text-slate-400&quot;&gt;Competitor Response&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-white font-semibold text-base mt-1&quot;&gt;Launch Delay &amp;gt; 2mo&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col items-end&quot;&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-400 uppercase tracking-wide&quot;&gt;Buffer&lt;/span&gt;
+&lt;span class=&quot;text-white font-bold font-mono&quot;&gt;+20%&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Slider Visualization Area --&gt;
+&lt;div class=&quot;pl-2 pt-2 pb-1&quot;&gt;
+&lt;div class=&quot;relative h-12 w-full select-none&quot;&gt;
+&lt;!-- Track --&gt;
+&lt;div class=&quot;absolute top-1/2 left-0 right-0 h-1.5 bg-slate-700 rounded-full -translate-y-1/2&quot;&gt;&lt;/div&gt;
+&lt;!-- Threshold Marker --&gt;
+&lt;div class=&quot;absolute top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 z-10&quot; style=&quot;left: 40%;&quot;&gt;
+&lt;div class=&quot;h-4 w-0.5 bg-slate-400&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;w-3 h-3 rotate-45 border-2 border-slate-400 bg-card-dark -mt-1.5&quot;&gt;&lt;/div&gt;
+&lt;span class=&quot;absolute -top-7 text-[10px] font-mono text-slate-400 whitespace-nowrap&quot;&gt;Threshold: 40%&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Current Belief Handle --&gt;
+&lt;div class=&quot;absolute top-1/2 -translate-y-1/2 z-20 flex flex-col items-center&quot; style=&quot;left: 60%;&quot;&gt;
+&lt;div class=&quot;w-5 h-5 rounded-full bg-white shadow-lg border-2 border-slate-900 cursor-grab flex items-center justify-center&quot;&gt;
+&lt;div class=&quot;w-1.5 h-1.5 bg-primary rounded-full&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;absolute top-7 text-[10px] font-mono text-white font-bold whitespace-nowrap&quot;&gt;60%&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Connection Line --&gt;
+&lt;div class=&quot;absolute top-1/2 -translate-y-1/2 h-0.5 bg-white/30 border-t border-b border-white/10&quot; style=&quot;left: 40%; width: 20%;&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Card 3: Stable/Safe --&gt;
+&lt;div class=&quot;bg-card-dark rounded-xl p-5 border border-slate-800 shadow-md relative overflow-hidden opacity-90&quot;&gt;
+&lt;!-- Status Indicator Line --&gt;
+&lt;div class=&quot;absolute left-0 top-0 bottom-0 w-1 bg-risk-low&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex justify-between items-start mb-4 pl-2&quot;&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;font-mono text-xs text-risk-low bg-risk-low/10 px-1.5 py-0.5 rounded border border-risk-low/20&quot;&gt;ASSUMPTION_01&lt;/span&gt;
+&lt;span class=&quot;text-xs text-slate-400&quot;&gt;Regulatory Approval&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-white font-semibold text-base mt-1&quot;&gt;License granted Q1&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col items-end&quot;&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-400 uppercase tracking-wide&quot;&gt;Buffer&lt;/span&gt;
+&lt;span class=&quot;text-risk-low font-bold font-mono&quot;&gt;+70%&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Slider Visualization Area --&gt;
+&lt;div class=&quot;pl-2 pt-2 pb-1&quot;&gt;
+&lt;div class=&quot;relative h-12 w-full select-none&quot;&gt;
+&lt;!-- Track --&gt;
+&lt;div class=&quot;absolute top-1/2 left-0 right-0 h-1.5 bg-slate-700 rounded-full -translate-y-1/2 overflow-hidden&quot;&gt;
+&lt;!-- Safe Zone Gradient --&gt;
+&lt;div class=&quot;absolute right-0 h-full w-[80%]&quot; style=&quot;background: linear-gradient(90deg, #1a2332 0%, #14b8a6 100%); opacity: 0.3;&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Threshold Marker --&gt;
+&lt;div class=&quot;absolute top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 z-10&quot; style=&quot;left: 20%;&quot;&gt;
+&lt;div class=&quot;h-4 w-0.5 bg-risk-low&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;w-3 h-3 rotate-45 border-2 border-risk-low bg-card-dark -mt-1.5&quot;&gt;&lt;/div&gt;
+&lt;span class=&quot;absolute -top-7 text-[10px] font-mono text-risk-low whitespace-nowrap&quot;&gt;Threshold: 20%&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Current Belief Handle --&gt;
+&lt;div class=&quot;absolute top-1/2 -translate-y-1/2 z-20 flex flex-col items-center&quot; style=&quot;left: 90%;&quot;&gt;
+&lt;div class=&quot;w-5 h-5 rounded-full bg-white shadow-lg border-2 border-slate-900 cursor-grab flex items-center justify-center&quot;&gt;
+&lt;div class=&quot;w-1.5 h-1.5 bg-primary rounded-full&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;absolute top-7 text-[10px] font-mono text-white font-bold whitespace-nowrap&quot;&gt;90%&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Connection Line --&gt;
+&lt;div class=&quot;absolute top-1/2 -translate-y-1/2 h-0.5 bg-risk-low/50 dashed&quot; style=&quot;left: 20%; width: 70%;&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;/main&gt;
+&lt;!-- Fixed Action Footer --&gt;
+&lt;div class=&quot;fixed bottom-0 left-0 right-0 p-4 bg-background-dark/95 backdrop-blur-xl border-t border-slate-800 z-30&quot;&gt;
+&lt;div class=&quot;max-w-md mx-auto w-full flex flex-col gap-2&quot;&gt;
+&lt;div class=&quot;flex justify-between items-center px-1 mb-1&quot;&gt;
+&lt;span class=&quot;text-xs text-slate-400&quot;&gt;Simulation Mode Active&lt;/span&gt;
+&lt;span class=&quot;text-xs text-primary flex items-center gap-1&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;history&lt;/span&gt;
+                    Changes Unsaved
+                &lt;/span&gt;
+&lt;/div&gt;
+&lt;button class=&quot;w-full bg-primary hover:bg-blue-600 text-white font-bold text-lg h-14 rounded-xl shadow-[0_4px_14px_0_rgba(18,88,226,0.39)] transition-all active:scale-[0.98] flex items-center justify-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;refresh&lt;/span&gt;
+                Re-run Analysis
+            &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;" class="h-[1100px] w-full" sandbox="allow-scripts allow-same-origin"></iframe></div></main><footer class="border-t border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-5 text-sm text-gray-600 md:flex-row md:items-center md:justify-between"><span>Confidence range, assumptions, provenance, and sensitivity first.</span><div class="flex flex-wrap gap-3"><a class="hover:text-blue-700" href="/docs">Docs</a><a class="hover:text-blue-700" href="/features">Features</a><a class="hover:text-blue-700" href="/cli">CLI</a><a class="hover:text-blue-700" href="/changelog">Changelog</a><a class="hover:text-blue-700" href="/status">Status</a><a class="hover:text-blue-700" href="/legal/privacy">Privacy</a><a class="hover:text-blue-700" href="/legal/terms">Terms</a><a class="hover:text-blue-700" href="/stitch">Stitch</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="hover:text-blue-700">GitHub</a></div></div></footer></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-573fdd58969ad59e.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-17b4afe27e88d3cd.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/bc06321d88be975e.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"8ZfsPSrfgPx8SRye8yuF4\",\"c\":[\"\",\"stitch\",\"stitch-decision-branching-view-sensitivity-and-flip-thresholds-panel\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"stitch\",{\"children\":[[\"slug\",\"stitch-decision-branching-view-sensitivity-and-flip-thresholds-panel\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/bc06321d88be975e.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:I[785,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"PublicShell\"]\n10:T3619,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eZeo - Sensitivity Analysis\u003c/title\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003cscript id=\"tailwind-config\"\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        \"primary\": \"#1258e2\",\n                        \"background-light\": \"#f6f6f8\",\n                        \"background-dark\": \"#101622\",\n                        \"card-dark\": \"#1a2332\",\n                        \"risk-high\": \"#fbbf24\", // Amber\n                        \"risk-low\": \"#14b8a6\", // Teal\n                        \"risk-critical\": \"#ef4444\", // Red\n                    },\n                    fontFamily: {\n                        \"display\": [\"Space Grotesk\", \"sans-serif\"],\n                        \"mono\": [\"ui-monospace\", \"SFMono-Regular\", \"Menlo\", \"Monaco\", \"Consolas\", \"Liberation Mono\", \"Courier New\", \"monospace\"],\n                    },\n                    borderRadius: {\"DEFAULT\": \"0.25rem\", \"lg\": \"0.5rem\", \"xl\": \"0.75rem\", \"2xl\": \"1rem\", \"full\": \"9999px\"},\n                },\n            },\n        }\n    \u003c/script\u003e\n\u003cstyle\u003e\n        /* Custom range slider styling */\n        .range-thumb {\n            -webkit-appearance: none;\n            pointer-events: none;\n        }\n        .range-thumb::-webkit-slider-thumb {\n            pointer-events: auto;\n            -webkit-appearance: none;\n            height: 16px;\n            width: 16px;\n            border-radius: 50%;\n            background: #ffffff;\n            cursor: pointer;\n            margin-top: -6px;\n            box-shadow: 0 0 0 2px rgba(0,0,0,0.5);\n        }\n        /* Hide scrollbar for clean horizontal scroll */\n        .no-scrollbar::-webkit-scrollbar {\n            display: none;\n        }\n        .no-scrollbar {\n            -ms-overflow-style: none;\n            scrollbar-width: none;\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen flex flex-col antialiased\"\u003e\n\u003c!-- Top Navigation --\u003e\n\u003cheader class=\"sticky top-0 z-20 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800\"\u003e\n\u003cdiv class=\"flex items-center justify-between px-4 py-3\"\u003e\n\u003cbutton class=\"text-slate-500 dark:text-slate-400 hover:text-primary transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-2xl\"\u003earrow_back\u003c/span\u003e\n\u003c/button\u003e\n\u003ch1 class=\"text-base font-bold tracking-tight\"\u003eSensitivity Analysis\u003c/h1\u003e\n\u003cbutton class=\"text-slate-500 dark:text-slate-400 hover:text-primary transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-2xl\"\u003etune\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/header\u003e\n\u003c!-- Main Content Area --\u003e\n\u003cmain class=\"flex-1 flex flex-col w-full max-w-md mx-auto p-4 pb-24 gap-6\"\u003e\n\u003c!-- Decision Fragility Dashboard --\u003e\n\u003csection class=\"bg-card-dark rounded-2xl p-6 shadow-lg border border-slate-800 relative overflow-hidden group\"\u003e\n\u003cdiv class=\"absolute top-0 right-0 w-32 h-32 bg-risk-high/10 rounded-full blur-3xl -mr-10 -mt-10\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex justify-between items-start mb-4 relative z-10\"\u003e\n\u003cdiv\u003e\n\u003ch2 class=\"text-slate-400 text-sm font-medium uppercase tracking-wider mb-1\"\u003eDecision Fragility\u003c/h2\u003e\n\u003cdiv class=\"flex items-baseline gap-2\"\u003e\n\u003cspan class=\"text-5xl font-bold text-white tracking-tighter\"\u003e72%\u003c/span\u003e\n\u003cspan class=\"text-risk-high font-bold text-sm bg-risk-high/10 px-2 py-0.5 rounded flex items-center gap-1\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm\"\u003ewarning\u003c/span\u003e\n                            High Risk\n                        \u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Mini Donut Chart Representation --\u003e\n\u003cdiv class=\"relative w-16 h-16 flex items-center justify-center\"\u003e\n\u003csvg class=\"w-full h-full transform -rotate-90\"\u003e\n\u003ccircle class=\"text-slate-700\" cx=\"32\" cy=\"32\" fill=\"transparent\" r=\"28\" stroke=\"currentColor\" stroke-width=\"4\"\u003e\u003c/circle\u003e\n\u003ccircle cx=\"32\" cy=\"32\" fill=\"transparent\" r=\"28\" stroke=\"#fbbf24\" stroke-dasharray=\"175.9\" stroke-dashoffset=\"49.2\" stroke-linecap=\"round\" stroke-width=\"4\"\u003e\u003c/circle\u003e\n\u003c/svg\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cp class=\"text-slate-400 text-sm leading-relaxed relative z-10\"\u003e\n                Your current strategy is highly sensitive to 3 key assumptions. A minor shift in belief could flip the optimal decision.\n            \u003c/p\u003e\n\u003c/section\u003e\n\u003c!-- Filters --\u003e\n\u003cdiv class=\"flex gap-3 overflow-x-auto no-scrollbar pb-1\"\u003e\n\u003cbutton class=\"flex items-center gap-2 px-4 py-2 bg-primary/20 text-primary rounded-full text-sm font-semibold border border-primary/30 whitespace-nowrap\"\u003e\n\u003cspan class=\"material-symbols-outlined text-lg\"\u003epriority_high\u003c/span\u003e\n                Most Fragile\n            \u003c/button\u003e\n\u003cbutton class=\"flex items-center gap-2 px-4 py-2 bg-card-dark text-slate-300 rounded-full text-sm font-medium border border-slate-700 whitespace-nowrap hover:bg-slate-800 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-lg\"\u003etrending_up\u003c/span\u003e\n                Highest Impact\n            \u003c/button\u003e\n\u003cbutton class=\"flex items-center gap-2 px-4 py-2 bg-card-dark text-slate-300 rounded-full text-sm font-medium border border-slate-700 whitespace-nowrap hover:bg-slate-800 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-lg\"\u003enew_releases\u003c/span\u003e\n                Newest Beliefs\n            \u003c/button\u003e\n\u003c/div\u003e\n\u003c!-- Critical Flip-Thresholds List --\u003e\n\u003csection class=\"flex flex-col gap-4\"\u003e\n\u003ch3 class=\"text-lg font-bold text-white px-1\"\u003eCritical Flip-Thresholds\u003c/h3\u003e\n\u003c!-- Card 1: Critical/Fragile --\u003e\n\u003cdiv class=\"bg-card-dark rounded-xl p-5 border border-risk-high/30 shadow-lg relative overflow-hidden\"\u003e\n\u003c!-- Status Indicator Line --\u003e\n\u003cdiv class=\"absolute left-0 top-0 bottom-0 w-1 bg-risk-high\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex justify-between items-start mb-4 pl-2\"\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"font-mono text-xs text-risk-high bg-risk-high/10 px-1.5 py-0.5 rounded border border-risk-high/20\"\u003eASSUMPTION_04\u003c/span\u003e\n\u003cspan class=\"text-xs text-slate-400\"\u003eMarket Growth Rate\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-white font-semibold text-base mt-1\"\u003eGrowth drops below 3.2%\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col items-end\"\u003e\n\u003cspan class=\"text-xs font-medium text-slate-400 uppercase tracking-wide\"\u003eBuffer\u003c/span\u003e\n\u003cspan class=\"text-risk-high font-bold font-mono\"\u003e+3%\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Slider Visualization Area --\u003e\n\u003cdiv class=\"pl-2 pt-2 pb-1\"\u003e\n\u003cdiv class=\"relative h-12 w-full select-none\"\u003e\n\u003c!-- Track Background --\u003e\n\u003cdiv class=\"absolute top-1/2 left-0 right-0 h-1.5 bg-slate-700 rounded-full -translate-y-1/2 overflow-hidden\"\u003e\n\u003c!-- Danger Zone Gradient --\u003e\n\u003cdiv class=\"absolute left-0 h-full w-[48%]\" style=\"background: linear-gradient(90deg, #1a2332 0%, #fbbf24 100%); opacity: 0.5;\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Threshold Marker (The Flip Point) --\u003e\n\u003cdiv class=\"absolute top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 group cursor-help z-10\" style=\"left: 48%;\"\u003e\n\u003cdiv class=\"h-4 w-0.5 bg-risk-high\"\u003e\u003c/div\u003e \u003c!-- Vertical Line --\u003e\n\u003cdiv class=\"w-3 h-3 rotate-45 border-2 border-risk-high bg-card-dark -mt-1.5\"\u003e\u003c/div\u003e \u003c!-- Diamond --\u003e\n\u003cspan class=\"absolute -top-7 text-[10px] font-mono text-risk-high whitespace-nowrap opacity-100 transition-opacity bg-background-dark/90 px-1 rounded\"\u003eThreshold: 48%\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Current Belief Handle (User Draggable) --\u003e\n\u003cdiv class=\"absolute top-1/2 -translate-y-1/2 z-20 flex flex-col items-center\" style=\"left: 45%;\"\u003e\n\u003cdiv class=\"w-5 h-5 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)] border-2 border-slate-900 cursor-grab active:cursor-grabbing flex items-center justify-center\"\u003e\n\u003cdiv class=\"w-1.5 h-1.5 bg-primary rounded-full\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"absolute top-7 text-[10px] font-mono text-white font-bold whitespace-nowrap\"\u003e45%\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Connection Line (Visualizing the buffer) --\u003e\n\u003cdiv class=\"absolute top-1/2 -translate-y-1/2 h-0.5 bg-risk-high/50\" style=\"left: 45%; width: 3%;\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between mt-2 text-[10px] text-slate-500 font-mono uppercase\"\u003e\n\u003cspan\u003ePessimistic (0%)\u003c/span\u003e\n\u003cspan\u003eOptimistic (100%)\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Card 2: Moderate Risk --\u003e\n\u003cdiv class=\"bg-card-dark rounded-xl p-5 border border-slate-700 shadow-md relative overflow-hidden\"\u003e\n\u003c!-- Status Indicator Line --\u003e\n\u003cdiv class=\"absolute left-0 top-0 bottom-0 w-1 bg-slate-500\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex justify-between items-start mb-4 pl-2\"\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"font-mono text-xs text-slate-300 bg-slate-700/50 px-1.5 py-0.5 rounded border border-slate-600\"\u003eASSUMPTION_09\u003c/span\u003e\n\u003cspan class=\"text-xs text-slate-400\"\u003eCompetitor Response\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-white font-semibold text-base mt-1\"\u003eLaunch Delay \u0026gt; 2mo\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col items-end\"\u003e\n\u003cspan class=\"text-xs font-medium text-slate-400 uppercase tracking-wide\"\u003eBuffer\u003c/span\u003e\n\u003cspan class=\"text-white font-bold font-mono\"\u003e+20%\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Slider Visualization Area --\u003e\n\u003cdiv class=\"pl-2 pt-2 pb-1\"\u003e\n\u003cdiv class=\"relative h-12 w-full select-none\"\u003e\n\u003c!-- Track --\u003e\n\u003cdiv class=\"absolute top-1/2 left-0 right-0 h-1.5 bg-slate-700 rounded-full -translate-y-1/2\"\u003e\u003c/div\u003e\n\u003c!-- Threshold Marker --\u003e\n\u003cdiv class=\"absolute top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 z-10\" style=\"left: 40%;\"\u003e\n\u003cdiv class=\"h-4 w-0.5 bg-slate-400\"\u003e\u003c/div\u003e\n\u003cdiv class=\"w-3 h-3 rotate-45 border-2 border-slate-400 bg-card-dark -mt-1.5\"\u003e\u003c/div\u003e\n\u003cspan class=\"absolute -top-7 text-[10px] font-mono text-slate-400 whitespace-nowrap\"\u003eThreshold: 40%\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Current Belief Handle --\u003e\n\u003cdiv class=\"absolute top-1/2 -translate-y-1/2 z-20 flex flex-col items-center\" style=\"left: 60%;\"\u003e\n\u003cdiv class=\"w-5 h-5 rounded-full bg-white shadow-lg border-2 border-slate-900 cursor-grab flex items-center justify-center\"\u003e\n\u003cdiv class=\"w-1.5 h-1.5 bg-primary rounded-full\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"absolute top-7 text-[10px] font-mono text-white font-bold whitespace-nowrap\"\u003e60%\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Connection Line --\u003e\n\u003cdiv class=\"absolute top-1/2 -translate-y-1/2 h-0.5 bg-white/30 border-t border-b border-white/10\" style=\"left: 40%; width: 20%;\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Card 3: Stable/Safe --\u003e\n\u003cdiv class=\"bg-card-dark rounded-xl p-5 border border-slate-800 shadow-md relative overflow-hidden opacity-90\"\u003e\n\u003c!-- Status Indicator Line --\u003e\n\u003cdiv class=\"absolute left-0 top-0 bottom-0 w-1 bg-risk-low\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex justify-between items-start mb-4 pl-2\"\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"font-mono text-xs text-risk-low bg-risk-low/10 px-1.5 py-0.5 rounded border border-risk-low/20\"\u003eASSUMPTION_01\u003c/span\u003e\n\u003cspan class=\"text-xs text-slate-400\"\u003eRegulatory Approval\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-white font-semibold text-base mt-1\"\u003eLicense granted Q1\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col items-end\"\u003e\n\u003cspan class=\"text-xs font-medium text-slate-400 uppercase tracking-wide\"\u003eBuffer\u003c/span\u003e\n\u003cspan class=\"text-risk-low font-bold font-mono\"\u003e+70%\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Slider Visualization Area --\u003e\n\u003cdiv class=\"pl-2 pt-2 pb-1\"\u003e\n\u003cdiv class=\"relative h-12 w-full select-none\"\u003e\n\u003c!-- Track --\u003e\n\u003cdiv class=\"absolute top-1/2 left-0 right-0 h-1.5 bg-slate-700 rounded-full -translate-y-1/2 overflow-hidden\"\u003e\n\u003c!-- Safe Zone Gradient --\u003e\n\u003cdiv class=\"absolute right-0 h-full w-[80%]\" style=\"background: linear-gradient(90deg, #1a2332 0%, #14b8a6 100%); opacity: 0.3;\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Threshold Marker --\u003e\n\u003cdiv class=\"absolute top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 z-10\" style=\"left: 20%;\"\u003e\n\u003cdiv class=\"h-4 w-0.5 bg-risk-low\"\u003e\u003c/div\u003e\n\u003cdiv class=\"w-3 h-3 rotate-45 border-2 border-risk-low bg-card-dark -mt-1.5\"\u003e\u003c/div\u003e\n\u003cspan class=\"absolute -top-7 text-[10px] font-mono text-risk-low whitespace-nowrap\"\u003eThreshold: 20%\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Current Belief Handle --\u003e\n\u003cdiv class=\"absolute top-1/2 -translate-y-1/2 z-20 flex flex-col items-center\" style=\"left: 90%;\"\u003e\n\u003cdiv class=\"w-5 h-5 rounded-full bg-white shadow-lg border-2 border-slate-900 cursor-grab flex items-center justify-center\"\u003e\n\u003cdiv class=\"w-1.5 h-1.5 bg-primary rounded-full\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"absolute top-7 text-[10px] font-mono text-white font-bold whitespace-nowrap\"\u003e90%\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Connection Line --\u003e\n\u003cdiv class=\"absolute top-1/2 -translate-y-1/2 h-0.5 bg-risk-low/50 dashed\" style=\"left: 20%; width: 70%;\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c/main\u003e\n\u003c!-- Fixed Action Footer --\u003e\n\u003cdiv class=\"fixed bottom-0 left-0 right-0 p-4 bg-background-dark/95 backdrop-blur-xl border-t border-slate-800 z-30\"\u003e\n\u003cdiv class=\"max-w-md mx-auto w-full flex flex-col gap-2\"\u003e\n\u003cdiv class=\"flex justify-between items-center px-1 mb-1\"\u003e\n\u003cspan class=\"text-xs text-slate-400\"\u003eSimulation Mode Active\u003c/span\u003e\n\u003cspan class=\"text-xs text-primary flex items-center gap-1\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm\"\u003ehistory\u003c/span\u003e\n                    Changes Unsaved\n                \u003c/span\u003e\n\u003c/div\u003e\n\u003cbutton class=\"w-full bg-primary hover:bg-blue-600 text-white font-bold text-lg h-14 rounded-xl shadow-[0_4px_14px_0_rgba(18,88,226,0.39)] transition-all active:scale-[0.98] flex items-center justify-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003erefresh\u003c/span\u003e\n                Re-run Analysis\n            \u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"$Lf\",null,{\"title\":\"Sensitivity \u0026 Flip Thresholds Panel\",\"children\":[[\"$\",\"div\",null,{\"className\":\"mb-3 text-sm text-gray-500\",\"children\":[\"Category: \",\"Decision Intelligence\"]}],[\"$\",\"div\",null,{\"className\":\"overflow-hidden rounded border border-gray-200 bg-white\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Sensitivity \u0026 Flip Thresholds Panel\",\"srcDoc\":\"$10\",\"className\":\"h-[1100px] w-full\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]]}]\n"])</script></body></html>

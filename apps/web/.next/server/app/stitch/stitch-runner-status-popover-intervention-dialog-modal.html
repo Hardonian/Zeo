@@ -1,0 +1,148 @@
+<!DOCTYPE html><!--8ZfsPSrfgPx8SRye8yuF4--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/bc06321d88be975e.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-573fdd58969ad59e.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-baa4ef70fea4d55f.js" async=""></script><script src="/_next/static/chunks/app/error-17b4afe27e88d3cd.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50 text-gray-900"><header class="sticky top-0 z-10 border-b border-gray-200 bg-white/95 backdrop-blur"><div class="mx-auto w-full max-w-6xl px-6 py-4"><div class="flex items-center justify-between"><a class="text-lg font-semibold text-blue-700" href="/">Zeo</a><button type="button" class="rounded border border-gray-300 px-3 py-1 text-sm md:hidden">Menu</button><nav class="hidden items-center gap-4 md:flex"><a class="text-sm transition-colors text-blue-700 font-semibold" href="/">Home</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/features">Features</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/cli">CLI</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/docs">Docs</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/pricing">Pricing</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/about">About</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/stitch">Stitch</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/dashboard">Dashboard</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="text-sm text-gray-700 hover:text-blue-700">GitHub</a><a class="text-sm text-gray-700 hover:text-blue-700" href="/signin">Sign In</a><a class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700" href="/docs/quickstart">Get Started</a></nav></div></div></header><main class="mx-auto w-full max-w-6xl px-6 py-10"><h1 class="mb-6 text-3xl font-semibold">Intervention Dialog Modal</h1><div class="mb-3 text-sm text-gray-500">Category: <!-- -->Runtime Status</div><div class="overflow-hidden rounded border border-gray-200 bg-white"><iframe title="Intervention Dialog Modal" srcDoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Intervention Dialog Modal - Zeo&lt;/title&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,typography&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;amp;family=JetBrains+Mono:wght@400;500&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons+Round&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        primary: &quot;#2563EB&quot;, // Strong Royal Blue for primary actions
+                        danger: &quot;#DC2626&quot;,
+                        warning: &quot;#F59E0B&quot;,
+                        &quot;warning-light&quot;: &quot;#FFFBEB&quot;,
+                        &quot;warning-dark&quot;: &quot;#451a03&quot;,
+                        &quot;background-light&quot;: &quot;#F3F4F6&quot;, // Light gray background
+                        &quot;background-dark&quot;: &quot;#0F172A&quot;, // Dark slate background
+                        &quot;surface-light&quot;: &quot;#FFFFFF&quot;,
+                        &quot;surface-dark&quot;: &quot;#1E293B&quot;,
+                        &quot;border-light&quot;: &quot;#E2E8F0&quot;,
+                        &quot;border-dark&quot;: &quot;#334155&quot;,
+                    },
+                    fontFamily: {
+                        sans: [&quot;Inter&quot;, &quot;sans-serif&quot;],
+                        mono: [&quot;JetBrains Mono&quot;, &quot;monospace&quot;],
+                    },
+                    boxShadow: {
+                        &#x27;modal&#x27;: &#x27;0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)&#x27;,
+                    }
+                },
+            },
+        };
+    &lt;/script&gt;
+&lt;style&gt;.json-scroll::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .json-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .json-scroll::-webkit-scrollbar-thumb {
+            background-color: #CBD5E1;
+            border-radius: 4px;
+        }
+        .dark .json-scroll::-webkit-scrollbar-thumb {
+            background-color: #475569;
+        }body {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark font-sans text-slate-800 dark:text-slate-200 min-h-screen flex items-center justify-center p-4&quot;&gt;
+&lt;div aria-hidden=&quot;true&quot; class=&quot;fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 transition-opacity&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;relative w-full max-w-md bg-surface-light dark:bg-surface-dark rounded-2xl shadow-modal overflow-hidden z-50 border border-border-light dark:border-border-dark flex flex-col max-h-[90vh]&quot;&gt;
+&lt;div class=&quot;px-5 py-4 border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex items-center justify-between shrink-0&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;div class=&quot;w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center shrink-0&quot;&gt;
+&lt;span class=&quot;material-icons-round text-red-600 dark:text-red-400 text-lg&quot;&gt;error_outline&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;h2 class=&quot;text-lg font-semibold text-slate-900 dark:text-white leading-tight&quot;&gt;Action Required&lt;/h2&gt;
+&lt;p class=&quot;text-xs text-slate-500 dark:text-slate-400&quot;&gt;Runner ID: &lt;span class=&quot;font-mono&quot;&gt;run-ax92-f4&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;button class=&quot;text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors&quot;&gt;
+&lt;span class=&quot;material-icons-round&quot;&gt;close&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 overflow-y-auto p-5 json-scroll&quot;&gt;
+&lt;div class=&quot;bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-lg p-3 mb-5 flex gap-3&quot;&gt;
+&lt;span class=&quot;material-icons-round text-amber-600 dark:text-amber-400 shrink-0 mt-0.5&quot;&gt;warning&lt;/span&gt;
+&lt;div&gt;
+&lt;h3 class=&quot;text-sm font-medium text-amber-800 dark:text-amber-200&quot;&gt;Validation Failure Detected&lt;/h3&gt;
+&lt;p class=&quot;text-xs text-amber-700 dark:text-amber-300/80 mt-1 leading-relaxed&quot;&gt;
+                        The runner encountered a schema mismatch in the payload. Retrying without modification may result in a crash.
+                    &lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mb-4&quot;&gt;
+&lt;label class=&quot;block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2&quot;&gt;Failure Reason&lt;/label&gt;
+&lt;div class=&quot;bg-slate-50 dark:bg-slate-800/50 rounded-md p-3 border border-border-light dark:border-border-dark&quot;&gt;
+&lt;code class=&quot;text-xs text-red-600 dark:text-red-400 font-mono break-all&quot;&gt;Error: Invalid property &#x27;timestamp_ms&#x27; expected number, got string.&lt;/code&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;div class=&quot;flex items-center justify-between mb-2&quot;&gt;
+&lt;label class=&quot;block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide&quot;&gt;Input Overrides&lt;/label&gt;
+&lt;button class=&quot;text-xs text-primary hover:text-blue-600 font-medium flex items-center gap-1&quot;&gt;
+&lt;span class=&quot;material-icons-round text-[14px]&quot;&gt;history&lt;/span&gt;
+                        Restore Default
+                    &lt;/button&gt;
+&lt;/div&gt;
+&lt;div class=&quot;relative group&quot;&gt;
+&lt;div class=&quot;absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+&lt;button class=&quot;p-1 rounded bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300&quot; title=&quot;Format JSON&quot;&gt;
+&lt;span class=&quot;material-icons-round text-sm&quot;&gt;code&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;textarea class=&quot;w-full h-48 bg-slate-900 text-slate-300 font-mono text-xs p-3 rounded-lg border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none leading-relaxed json-scroll&quot; spellcheck=&quot;false&quot;&gt;{
+  &quot;task_id&quot;: &quot;gen_8821&quot;,
+  &quot;priority&quot;: &quot;high&quot;,
+  &quot;payload&quot;: {
+    &quot;timestamp_ms&quot;: 1699402100,
+    &quot;retry_strategy&quot;: &quot;exponential&quot;,
+    &quot;context&quot;: {
+        &quot;region&quot;: &quot;us-east-1&quot;,
+        &quot;shards&quot;: 4
+    }
+  }
+}&lt;/textarea&gt;
+&lt;div class=&quot;mt-1 flex justify-end&quot;&gt;
+&lt;span class=&quot;text-[10px] text-green-600 dark:text-green-400 flex items-center gap-1&quot;&gt;
+&lt;span class=&quot;material-icons-round text-[10px]&quot;&gt;check_circle&lt;/span&gt; Valid JSON
+                        &lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;p-5 border-t border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-800/30 shrink-0 flex flex-col gap-3&quot;&gt;
+&lt;button class=&quot;w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg shadow-sm active:transform active:scale-[0.98] transition-all flex items-center justify-center gap-2&quot;&gt;
+&lt;span class=&quot;material-icons-round text-sm&quot;&gt;edit_note&lt;/span&gt;
+                Retry with Overrides
+            &lt;/button&gt;
+&lt;div class=&quot;grid grid-cols-2 gap-3&quot;&gt;
+&lt;button class=&quot;w-full bg-white dark:bg-slate-700 border border-border-light dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-600 font-medium py-2.5 px-4 rounded-lg shadow-sm active:transform active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm&quot;&gt;
+&lt;span class=&quot;material-icons-round text-sm&quot;&gt;replay&lt;/span&gt;
+                    Retry Same
+                &lt;/button&gt;
+&lt;button class=&quot;w-full bg-transparent border border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium py-2.5 px-4 rounded-lg active:transform active:scale-[0.98] transition-all text-sm&quot;&gt;
+                    Acknowledge
+                &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-20 dark:opacity-10&quot;&gt;
+&lt;div class=&quot;absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-200 via-slate-100 to-transparent dark:from-indigo-900 dark:via-slate-900&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;&lt;/html&gt;" class="h-[1100px] w-full" sandbox="allow-scripts allow-same-origin"></iframe></div></main><footer class="border-t border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-5 text-sm text-gray-600 md:flex-row md:items-center md:justify-between"><span>Confidence range, assumptions, provenance, and sensitivity first.</span><div class="flex flex-wrap gap-3"><a class="hover:text-blue-700" href="/docs">Docs</a><a class="hover:text-blue-700" href="/features">Features</a><a class="hover:text-blue-700" href="/cli">CLI</a><a class="hover:text-blue-700" href="/changelog">Changelog</a><a class="hover:text-blue-700" href="/status">Status</a><a class="hover:text-blue-700" href="/legal/privacy">Privacy</a><a class="hover:text-blue-700" href="/legal/terms">Terms</a><a class="hover:text-blue-700" href="/stitch">Stitch</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="hover:text-blue-700">GitHub</a></div></div></footer></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-573fdd58969ad59e.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-17b4afe27e88d3cd.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/bc06321d88be975e.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"8ZfsPSrfgPx8SRye8yuF4\",\"c\":[\"\",\"stitch\",\"stitch-runner-status-popover-intervention-dialog-modal\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"stitch\",{\"children\":[[\"slug\",\"stitch-runner-status-popover-intervention-dialog-modal\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/bc06321d88be975e.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:I[785,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"PublicShell\"]\n10:T1e1f,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eIntervention Dialog Modal - Zeo\u003c/title\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,typography\"\u003e\u003c/script\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700\u0026amp;family=JetBrains+Mono:wght@400;500\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/icon?family=Material+Icons+Round\" rel=\"stylesheet\"/\u003e\n\u003cscript\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        primary: \"#2563EB\", // Strong Royal Blue for primary actions\n                        danger: \"#DC2626\",\n                        warning: \"#F59E0B\",\n                        \"warning-light\": \"#FFFBEB\",\n                        \"warning-dark\": \"#451a03\",\n                        \"background-light\": \"#F3F4F6\", // Light gray background\n                        \"background-dark\": \"#0F172A\", // Dark slate background\n                        \"surface-light\": \"#FFFFFF\",\n                        \"surface-dark\": \"#1E293B\",\n                        \"border-light\": \"#E2E8F0\",\n                        \"border-dark\": \"#334155\",\n                    },\n                    fontFamily: {\n                        sans: [\"Inter\", \"sans-serif\"],\n                        mono: [\"JetBrains Mono\", \"monospace\"],\n                    },\n                    boxShadow: {\n                        'modal': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',\n                    }\n                },\n            },\n        };\n    \u003c/script\u003e\n\u003cstyle\u003e.json-scroll::-webkit-scrollbar {\n            width: 8px;\n            height: 8px;\n        }\n        .json-scroll::-webkit-scrollbar-track {\n            background: transparent;\n        }\n        .json-scroll::-webkit-scrollbar-thumb {\n            background-color: #CBD5E1;\n            border-radius: 4px;\n        }\n        .dark .json-scroll::-webkit-scrollbar-thumb {\n            background-color: #475569;\n        }body {\n            padding-bottom: env(safe-area-inset-bottom);\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark font-sans text-slate-800 dark:text-slate-200 min-h-screen flex items-center justify-center p-4\"\u003e\n\u003cdiv aria-hidden=\"true\" class=\"fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 transition-opacity\"\u003e\u003c/div\u003e\n\u003cdiv class=\"relative w-full max-w-md bg-surface-light dark:bg-surface-dark rounded-2xl shadow-modal overflow-hidden z-50 border border-border-light dark:border-border-dark flex flex-col max-h-[90vh]\"\u003e\n\u003cdiv class=\"px-5 py-4 border-b border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex items-center justify-between shrink-0\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cdiv class=\"w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center shrink-0\"\u003e\n\u003cspan class=\"material-icons-round text-red-600 dark:text-red-400 text-lg\"\u003eerror_outline\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003ch2 class=\"text-lg font-semibold text-slate-900 dark:text-white leading-tight\"\u003eAction Required\u003c/h2\u003e\n\u003cp class=\"text-xs text-slate-500 dark:text-slate-400\"\u003eRunner ID: \u003cspan class=\"font-mono\"\u003erun-ax92-f4\u003c/span\u003e\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cbutton class=\"text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors\"\u003e\n\u003cspan class=\"material-icons-round\"\u003eclose\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 overflow-y-auto p-5 json-scroll\"\u003e\n\u003cdiv class=\"bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-lg p-3 mb-5 flex gap-3\"\u003e\n\u003cspan class=\"material-icons-round text-amber-600 dark:text-amber-400 shrink-0 mt-0.5\"\u003ewarning\u003c/span\u003e\n\u003cdiv\u003e\n\u003ch3 class=\"text-sm font-medium text-amber-800 dark:text-amber-200\"\u003eValidation Failure Detected\u003c/h3\u003e\n\u003cp class=\"text-xs text-amber-700 dark:text-amber-300/80 mt-1 leading-relaxed\"\u003e\n                        The runner encountered a schema mismatch in the payload. Retrying without modification may result in a crash.\n                    \u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"mb-4\"\u003e\n\u003clabel class=\"block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2\"\u003eFailure Reason\u003c/label\u003e\n\u003cdiv class=\"bg-slate-50 dark:bg-slate-800/50 rounded-md p-3 border border-border-light dark:border-border-dark\"\u003e\n\u003ccode class=\"text-xs text-red-600 dark:text-red-400 font-mono break-all\"\u003eError: Invalid property 'timestamp_ms' expected number, got string.\u003c/code\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003cdiv class=\"flex items-center justify-between mb-2\"\u003e\n\u003clabel class=\"block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide\"\u003eInput Overrides\u003c/label\u003e\n\u003cbutton class=\"text-xs text-primary hover:text-blue-600 font-medium flex items-center gap-1\"\u003e\n\u003cspan class=\"material-icons-round text-[14px]\"\u003ehistory\u003c/span\u003e\n                        Restore Default\n                    \u003c/button\u003e\n\u003c/div\u003e\n\u003cdiv class=\"relative group\"\u003e\n\u003cdiv class=\"absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity\"\u003e\n\u003cbutton class=\"p-1 rounded bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300\" title=\"Format JSON\"\u003e\n\u003cspan class=\"material-icons-round text-sm\"\u003ecode\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003ctextarea class=\"w-full h-48 bg-slate-900 text-slate-300 font-mono text-xs p-3 rounded-lg border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none leading-relaxed json-scroll\" spellcheck=\"false\"\u003e{\n  \"task_id\": \"gen_8821\",\n  \"priority\": \"high\",\n  \"payload\": {\n    \"timestamp_ms\": 1699402100,\n    \"retry_strategy\": \"exponential\",\n    \"context\": {\n        \"region\": \"us-east-1\",\n        \"shards\": 4\n    }\n  }\n}\u003c/textarea\u003e\n\u003cdiv class=\"mt-1 flex justify-end\"\u003e\n\u003cspan class=\"text-[10px] text-green-600 dark:text-green-400 flex items-center gap-1\"\u003e\n\u003cspan class=\"material-icons-round text-[10px]\"\u003echeck_circle\u003c/span\u003e Valid JSON\n                        \u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"p-5 border-t border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-800/30 shrink-0 flex flex-col gap-3\"\u003e\n\u003cbutton class=\"w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg shadow-sm active:transform active:scale-[0.98] transition-all flex items-center justify-center gap-2\"\u003e\n\u003cspan class=\"material-icons-round text-sm\"\u003eedit_note\u003c/span\u003e\n                Retry with Overrides\n            \u003c/button\u003e\n\u003cdiv class=\"grid grid-cols-2 gap-3\"\u003e\n\u003cbutton class=\"w-full bg-white dark:bg-slate-700 border border-border-light dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-600 font-medium py-2.5 px-4 rounded-lg shadow-sm active:transform active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm\"\u003e\n\u003cspan class=\"material-icons-round text-sm\"\u003ereplay\u003c/span\u003e\n                    Retry Same\n                \u003c/button\u003e\n\u003cbutton class=\"w-full bg-transparent border border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium py-2.5 px-4 rounded-lg active:transform active:scale-[0.98] transition-all text-sm\"\u003e\n                    Acknowledge\n                \u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-20 dark:opacity-10\"\u003e\n\u003cdiv class=\"absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-200 via-slate-100 to-transparent dark:from-indigo-900 dark:via-slate-900\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"$Lf\",null,{\"title\":\"Intervention Dialog Modal\",\"children\":[[\"$\",\"div\",null,{\"className\":\"mb-3 text-sm text-gray-500\",\"children\":[\"Category: \",\"Runtime Status\"]}],[\"$\",\"div\",null,{\"className\":\"overflow-hidden rounded border border-gray-200 bg-white\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Intervention Dialog Modal\",\"srcDoc\":\"$10\",\"className\":\"h-[1100px] w-full\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]]}]\n"])</script></body></html>

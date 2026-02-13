@@ -1,0 +1,194 @@
+<!DOCTYPE html><!--8ZfsPSrfgPx8SRye8yuF4--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/bc06321d88be975e.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-573fdd58969ad59e.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-baa4ef70fea4d55f.js" async=""></script><script src="/_next/static/chunks/app/error-17b4afe27e88d3cd.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50 text-gray-900"><header class="sticky top-0 z-10 border-b border-gray-200 bg-white/95 backdrop-blur"><div class="mx-auto w-full max-w-6xl px-6 py-4"><div class="flex items-center justify-between"><a class="text-lg font-semibold text-blue-700" href="/">Zeo</a><button type="button" class="rounded border border-gray-300 px-3 py-1 text-sm md:hidden">Menu</button><nav class="hidden items-center gap-4 md:flex"><a class="text-sm transition-colors text-blue-700 font-semibold" href="/">Home</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/features">Features</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/cli">CLI</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/docs">Docs</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/pricing">Pricing</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/about">About</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/stitch">Stitch</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/dashboard">Dashboard</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="text-sm text-gray-700 hover:text-blue-700">GitHub</a><a class="text-sm text-gray-700 hover:text-blue-700" href="/signin">Sign In</a><a class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700" href="/docs/quickstart">Get Started</a></nav></div></div></header><main class="mx-auto w-full max-w-6xl px-6 py-10"><h1 class="mb-6 text-3xl font-semibold">Log Viewer Widget</h1><div class="mb-3 text-sm text-gray-500">Category: <!-- -->Runtime Status</div><div class="overflow-hidden rounded border border-gray-200 bg-white"><iframe title="Log Viewer Widget" srcDoc="&lt;!DOCTYPE html&gt;
+
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Zeo Log Viewer&lt;/title&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;amp;family=JetBrains+Mono:wght@400;500&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script id=&quot;tailwind-config&quot;&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        &quot;primary&quot;: &quot;#136dec&quot;,
+                        &quot;background-light&quot;: &quot;#f6f7f8&quot;,
+                        &quot;background-dark&quot;: &quot;#101822&quot;,
+                    },
+                    fontFamily: {
+                        &quot;display&quot;: [&quot;Space Grotesk&quot;, &quot;sans-serif&quot;],
+                        &quot;mono&quot;: [&quot;JetBrains Mono&quot;, &quot;monospace&quot;]
+                    },
+                    borderRadius: {
+                        &quot;DEFAULT&quot;: &quot;0.125rem&quot;,
+                        &quot;lg&quot;: &quot;0.25rem&quot;,
+                        &quot;xl&quot;: &quot;0.5rem&quot;,
+                        &quot;full&quot;: &quot;0.75rem&quot;
+                    },
+                },
+            },
+        }
+    &lt;/script&gt;
+&lt;style&gt;
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #233348;
+            border-radius: 2px;
+        }
+        .log-line:hover {
+            background-color: rgba(19, 109, 236, 0.05);
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200&quot;&gt;
+&lt;div class=&quot;flex flex-col h-screen max-w-full overflow-hidden border border-slate-200 dark:border-slate-800&quot;&gt;
+&lt;!-- Header Section --&gt;
+&lt;header class=&quot;flex items-center justify-between px-4 py-3 bg-white dark:bg-background-dark border-b border-slate-200 dark:border-slate-800&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;div class=&quot;flex items-center justify-center size-8 rounded bg-primary text-white&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-lg&quot;&gt;terminal&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;h1 class=&quot;text-sm font-bold tracking-tight text-slate-900 dark:text-white uppercase leading-none&quot;&gt;Zeo&lt;/h1&gt;
+&lt;p class=&quot;text-[10px] text-slate-500 dark:text-slate-400 font-medium&quot;&gt;CLUSTER-PROD-01 • LOGS&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-1&quot;&gt;
+&lt;button class=&quot;p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors text-slate-600 dark:text-slate-400&quot; title=&quot;Copy to Clipboard&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-xl&quot;&gt;content_copy&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors text-slate-600 dark:text-slate-400&quot; title=&quot;Download Full Log&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-xl&quot;&gt;download&lt;/span&gt;
+&lt;/button&gt;
+&lt;div class=&quot;w-px h-6 bg-slate-200 dark:bg-slate-800 mx-1&quot;&gt;&lt;/div&gt;
+&lt;button class=&quot;p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors text-slate-600 dark:text-slate-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-xl&quot;&gt;settings&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/header&gt;
+&lt;!-- Search and Filter Bar --&gt;
+&lt;div class=&quot;flex flex-col md:flex-row gap-2 px-4 py-2 bg-slate-50 dark:bg-[#151e2b] border-b border-slate-200 dark:border-slate-800&quot;&gt;
+&lt;div class=&quot;relative flex-1&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg&quot;&gt;search&lt;/span&gt;
+&lt;input class=&quot;w-full bg-white dark:bg-[#1a2636] border border-slate-200 dark:border-slate-700 rounded py-1.5 pl-10 pr-4 text-sm focus:ring-1 focus:ring-primary focus:border-primary dark:text-white placeholder:text-slate-500&quot; placeholder=&quot;Filter logs (grep...)&quot; type=&quot;text&quot;/&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex gap-2&quot;&gt;
+&lt;div class=&quot;flex rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1a2636] overflow-hidden&quot;&gt;
+&lt;button class=&quot;px-3 py-1 text-xs font-semibold bg-primary text-white&quot;&gt;ALL&lt;/button&gt;
+&lt;button class=&quot;px-3 py-1 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 border-l border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400&quot;&gt;INFO&lt;/button&gt;
+&lt;button class=&quot;px-3 py-1 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 border-l border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400&quot;&gt;WARN&lt;/button&gt;
+&lt;button class=&quot;px-3 py-1 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 border-l border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400&quot;&gt;ERROR&lt;/button&gt;
+&lt;/div&gt;
+&lt;button class=&quot;flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1a2636] text-slate-600 dark:text-slate-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;wrap_text&lt;/span&gt;
+                    Wrap
+                &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Log Content Viewport --&gt;
+&lt;div class=&quot;flex-1 overflow-auto bg-white dark:bg-background-dark font-mono text-[13px] custom-scrollbar selection:bg-primary/30&quot;&gt;
+&lt;div class=&quot;min-w-full w-max flex flex-col py-2&quot;&gt;
+&lt;!-- Log Line: INFO --&gt;
+&lt;div class=&quot;log-line group flex items-start px-4 py-0.5 whitespace-nowrap&quot;&gt;
+&lt;span class=&quot;text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none&quot;&gt;[2023-11-15 14:30:01.423]&lt;/span&gt;
+&lt;span class=&quot;w-16 shrink-0 text-primary font-bold select-none px-1&quot;&gt;INFO&lt;/span&gt;
+&lt;span class=&quot;text-slate-700 dark:text-slate-300&quot;&gt;Initialized API gateway controller. Mode: high-availability.&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Log Line: INFO --&gt;
+&lt;div class=&quot;log-line group flex items-start px-4 py-0.5 whitespace-nowrap&quot;&gt;
+&lt;span class=&quot;text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none&quot;&gt;[2023-11-15 14:30:02.112]&lt;/span&gt;
+&lt;span class=&quot;w-16 shrink-0 text-primary font-bold select-none px-1&quot;&gt;INFO&lt;/span&gt;
+&lt;span class=&quot;text-slate-700 dark:text-slate-300&quot;&gt;Connection established with Redis cluster at 10.0.4.12:6379&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Log Line: WARN --&gt;
+&lt;div class=&quot;log-line group flex items-start px-4 py-0.5 whitespace-nowrap bg-amber-500/5&quot;&gt;
+&lt;span class=&quot;text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none&quot;&gt;[2023-11-15 14:30:05.890]&lt;/span&gt;
+&lt;span class=&quot;w-16 shrink-0 text-amber-500 font-bold select-none px-1&quot;&gt;WARN&lt;/span&gt;
+&lt;span class=&quot;text-slate-700 dark:text-slate-300&quot;&gt;Latency spike detected on upstream service &#x27;auth-v2&#x27;. Mean RTT: 450ms.&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Log Line: INFO --&gt;
+&lt;div class=&quot;log-line group flex items-start px-4 py-0.5 whitespace-nowrap&quot;&gt;
+&lt;span class=&quot;text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none&quot;&gt;[2023-11-15 14:30:10.002]&lt;/span&gt;
+&lt;span class=&quot;w-16 shrink-0 text-primary font-bold select-none px-1&quot;&gt;INFO&lt;/span&gt;
+&lt;span class=&quot;text-slate-700 dark:text-slate-300&quot;&gt;Health check passed for node worker-04.&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Log Line: ERROR --&gt;
+&lt;div class=&quot;log-line group flex items-start px-4 py-0.5 whitespace-nowrap bg-red-500/10&quot;&gt;
+&lt;span class=&quot;text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none&quot;&gt;[2023-11-15 14:31:22.567]&lt;/span&gt;
+&lt;span class=&quot;w-16 shrink-0 text-red-500 font-bold select-none px-1&quot;&gt;ERROR&lt;/span&gt;
+&lt;span class=&quot;text-slate-700 dark:text-slate-300&quot;&gt;Failed to sync state with peer node-02. Connection reset by peer.&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Log Line: Stack Trace --&gt;
+&lt;div class=&quot;log-line group flex items-start px-4 py-0.5 whitespace-nowrap opacity-70&quot;&gt;
+&lt;span class=&quot;text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;w-16 shrink-0 select-none&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;text-slate-600 dark:text-slate-400&quot;&gt;at Internal/Protocol/SyncEngine.ts:182:24&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;log-line group flex items-start px-4 py-0.5 whitespace-nowrap opacity-70&quot;&gt;
+&lt;span class=&quot;text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;w-16 shrink-0 select-none&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;text-slate-600 dark:text-slate-400&quot;&gt;at async Node.processQueue (Internal/Core/Node.ts:44:11)&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Log Line: INFO --&gt;
+&lt;div class=&quot;log-line group flex items-start px-4 py-0.5 whitespace-nowrap&quot;&gt;
+&lt;span class=&quot;text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none&quot;&gt;[2023-11-15 14:31:25.101]&lt;/span&gt;
+&lt;span class=&quot;w-16 shrink-0 text-primary font-bold select-none px-1&quot;&gt;INFO&lt;/span&gt;
+&lt;span class=&quot;text-slate-700 dark:text-slate-300&quot;&gt;Retrying sync operation (attempt 1/5)...&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Log Line: WARN --&gt;
+&lt;div class=&quot;log-line group flex items-start px-4 py-0.5 whitespace-nowrap bg-amber-500/5&quot;&gt;
+&lt;span class=&quot;text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none&quot;&gt;[2023-11-15 14:31:30.992]&lt;/span&gt;
+&lt;span class=&quot;w-16 shrink-0 text-amber-500 font-bold select-none px-1&quot;&gt;WARN&lt;/span&gt;
+&lt;span class=&quot;text-slate-700 dark:text-slate-300&quot;&gt;Memory usage for &#x27;control-plane-api&#x27; exceeded 85% threshold.&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Log Line: INFO --&gt;
+&lt;div class=&quot;log-line group flex items-start px-4 py-0.5 whitespace-nowrap&quot;&gt;
+&lt;span class=&quot;text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none&quot;&gt;[2023-11-15 14:32:01.000]&lt;/span&gt;
+&lt;span class=&quot;w-16 shrink-0 text-primary font-bold select-none px-1&quot;&gt;INFO&lt;/span&gt;
+&lt;span class=&quot;text-slate-700 dark:text-slate-300&quot;&gt;Snapshot created successfully: snap_20231115_143201.db&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Empty State / Loading Pulse --&gt;
+&lt;div class=&quot;flex items-center gap-3 px-4 py-3&quot;&gt;
+&lt;div class=&quot;flex gap-1.5&quot;&gt;
+&lt;div class=&quot;size-1.5 rounded-full bg-primary animate-pulse&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;size-1.5 rounded-full bg-primary/60 animate-pulse [animation-delay:0.2s]&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;size-1.5 rounded-full bg-primary/30 animate-pulse [animation-delay:0.4s]&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;text-xs italic text-slate-400 dark:text-slate-500&quot;&gt;Waiting for live stream logs...&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Footer / Status Bar --&gt;
+&lt;footer class=&quot;flex items-center justify-between px-4 py-2 bg-slate-50 dark:bg-background-dark border-t border-slate-200 dark:border-slate-800&quot;&gt;
+&lt;div class=&quot;flex items-center gap-4&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;div class=&quot;size-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]&quot;&gt;&lt;/div&gt;
+&lt;span class=&quot;text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider&quot;&gt;Live&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-[11px] text-slate-400 font-medium&quot;&gt;
+                    102.4 KB/s
+                &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;button class=&quot;flex items-center gap-1.5 px-3 py-1.5 rounded bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;keyboard_arrow_down&lt;/span&gt;
+                    Follow Tail
+                &lt;/button&gt;
+&lt;/div&gt;
+&lt;/footer&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;" class="h-[1100px] w-full" sandbox="allow-scripts allow-same-origin"></iframe></div></main><footer class="border-t border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-5 text-sm text-gray-600 md:flex-row md:items-center md:justify-between"><span>Confidence range, assumptions, provenance, and sensitivity first.</span><div class="flex flex-wrap gap-3"><a class="hover:text-blue-700" href="/docs">Docs</a><a class="hover:text-blue-700" href="/features">Features</a><a class="hover:text-blue-700" href="/cli">CLI</a><a class="hover:text-blue-700" href="/changelog">Changelog</a><a class="hover:text-blue-700" href="/status">Status</a><a class="hover:text-blue-700" href="/legal/privacy">Privacy</a><a class="hover:text-blue-700" href="/legal/terms">Terms</a><a class="hover:text-blue-700" href="/stitch">Stitch</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="hover:text-blue-700">GitHub</a></div></div></footer></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-573fdd58969ad59e.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-17b4afe27e88d3cd.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/bc06321d88be975e.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"8ZfsPSrfgPx8SRye8yuF4\",\"c\":[\"\",\"stitch\",\"stitch-runner-status-popover-log-viewer-widget\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"stitch\",{\"children\":[[\"slug\",\"stitch-runner-status-popover-log-viewer-widget\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/bc06321d88be975e.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:I[785,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"PublicShell\"]\n10:T2af8,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eZeo Log Viewer\u003c/title\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700\u0026amp;family=JetBrains+Mono:wght@400;500\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003cscript id=\"tailwind-config\"\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        \"primary\": \"#136dec\",\n                        \"background-light\": \"#f6f7f8\",\n                        \"background-dark\": \"#101822\",\n                    },\n                    fontFamily: {\n                        \"display\": [\"Space Grotesk\", \"sans-serif\"],\n                        \"mono\": [\"JetBrains Mono\", \"monospace\"]\n                    },\n                    borderRadius: {\n                        \"DEFAULT\": \"0.125rem\",\n                        \"lg\": \"0.25rem\",\n                        \"xl\": \"0.5rem\",\n                        \"full\": \"0.75rem\"\n                    },\n                },\n            },\n        }\n    \u003c/script\u003e\n\u003cstyle\u003e\n        .custom-scrollbar::-webkit-scrollbar {\n            width: 4px;\n            height: 4px;\n        }\n        .custom-scrollbar::-webkit-scrollbar-track {\n            background: rgba(0,0,0,0.1);\n        }\n        .custom-scrollbar::-webkit-scrollbar-thumb {\n            background: #233348;\n            border-radius: 2px;\n        }\n        .log-line:hover {\n            background-color: rgba(19, 109, 236, 0.05);\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200\"\u003e\n\u003cdiv class=\"flex flex-col h-screen max-w-full overflow-hidden border border-slate-200 dark:border-slate-800\"\u003e\n\u003c!-- Header Section --\u003e\n\u003cheader class=\"flex items-center justify-between px-4 py-3 bg-white dark:bg-background-dark border-b border-slate-200 dark:border-slate-800\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cdiv class=\"flex items-center justify-center size-8 rounded bg-primary text-white\"\u003e\n\u003cspan class=\"material-symbols-outlined text-lg\"\u003eterminal\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003ch1 class=\"text-sm font-bold tracking-tight text-slate-900 dark:text-white uppercase leading-none\"\u003eZeo\u003c/h1\u003e\n\u003cp class=\"text-[10px] text-slate-500 dark:text-slate-400 font-medium\"\u003eCLUSTER-PROD-01 • LOGS\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-1\"\u003e\n\u003cbutton class=\"p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors text-slate-600 dark:text-slate-400\" title=\"Copy to Clipboard\"\u003e\n\u003cspan class=\"material-symbols-outlined text-xl\"\u003econtent_copy\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors text-slate-600 dark:text-slate-400\" title=\"Download Full Log\"\u003e\n\u003cspan class=\"material-symbols-outlined text-xl\"\u003edownload\u003c/span\u003e\n\u003c/button\u003e\n\u003cdiv class=\"w-px h-6 bg-slate-200 dark:bg-slate-800 mx-1\"\u003e\u003c/div\u003e\n\u003cbutton class=\"p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors text-slate-600 dark:text-slate-400\"\u003e\n\u003cspan class=\"material-symbols-outlined text-xl\"\u003esettings\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/header\u003e\n\u003c!-- Search and Filter Bar --\u003e\n\u003cdiv class=\"flex flex-col md:flex-row gap-2 px-4 py-2 bg-slate-50 dark:bg-[#151e2b] border-b border-slate-200 dark:border-slate-800\"\u003e\n\u003cdiv class=\"relative flex-1\"\u003e\n\u003cspan class=\"material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg\"\u003esearch\u003c/span\u003e\n\u003cinput class=\"w-full bg-white dark:bg-[#1a2636] border border-slate-200 dark:border-slate-700 rounded py-1.5 pl-10 pr-4 text-sm focus:ring-1 focus:ring-primary focus:border-primary dark:text-white placeholder:text-slate-500\" placeholder=\"Filter logs (grep...)\" type=\"text\"/\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex gap-2\"\u003e\n\u003cdiv class=\"flex rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1a2636] overflow-hidden\"\u003e\n\u003cbutton class=\"px-3 py-1 text-xs font-semibold bg-primary text-white\"\u003eALL\u003c/button\u003e\n\u003cbutton class=\"px-3 py-1 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 border-l border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400\"\u003eINFO\u003c/button\u003e\n\u003cbutton class=\"px-3 py-1 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 border-l border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400\"\u003eWARN\u003c/button\u003e\n\u003cbutton class=\"px-3 py-1 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 border-l border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400\"\u003eERROR\u003c/button\u003e\n\u003c/div\u003e\n\u003cbutton class=\"flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1a2636] text-slate-600 dark:text-slate-400\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm\"\u003ewrap_text\u003c/span\u003e\n                    Wrap\n                \u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Log Content Viewport --\u003e\n\u003cdiv class=\"flex-1 overflow-auto bg-white dark:bg-background-dark font-mono text-[13px] custom-scrollbar selection:bg-primary/30\"\u003e\n\u003cdiv class=\"min-w-full w-max flex flex-col py-2\"\u003e\n\u003c!-- Log Line: INFO --\u003e\n\u003cdiv class=\"log-line group flex items-start px-4 py-0.5 whitespace-nowrap\"\u003e\n\u003cspan class=\"text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none\"\u003e[2023-11-15 14:30:01.423]\u003c/span\u003e\n\u003cspan class=\"w-16 shrink-0 text-primary font-bold select-none px-1\"\u003eINFO\u003c/span\u003e\n\u003cspan class=\"text-slate-700 dark:text-slate-300\"\u003eInitialized API gateway controller. Mode: high-availability.\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Log Line: INFO --\u003e\n\u003cdiv class=\"log-line group flex items-start px-4 py-0.5 whitespace-nowrap\"\u003e\n\u003cspan class=\"text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none\"\u003e[2023-11-15 14:30:02.112]\u003c/span\u003e\n\u003cspan class=\"w-16 shrink-0 text-primary font-bold select-none px-1\"\u003eINFO\u003c/span\u003e\n\u003cspan class=\"text-slate-700 dark:text-slate-300\"\u003eConnection established with Redis cluster at 10.0.4.12:6379\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Log Line: WARN --\u003e\n\u003cdiv class=\"log-line group flex items-start px-4 py-0.5 whitespace-nowrap bg-amber-500/5\"\u003e\n\u003cspan class=\"text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none\"\u003e[2023-11-15 14:30:05.890]\u003c/span\u003e\n\u003cspan class=\"w-16 shrink-0 text-amber-500 font-bold select-none px-1\"\u003eWARN\u003c/span\u003e\n\u003cspan class=\"text-slate-700 dark:text-slate-300\"\u003eLatency spike detected on upstream service 'auth-v2'. Mean RTT: 450ms.\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Log Line: INFO --\u003e\n\u003cdiv class=\"log-line group flex items-start px-4 py-0.5 whitespace-nowrap\"\u003e\n\u003cspan class=\"text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none\"\u003e[2023-11-15 14:30:10.002]\u003c/span\u003e\n\u003cspan class=\"w-16 shrink-0 text-primary font-bold select-none px-1\"\u003eINFO\u003c/span\u003e\n\u003cspan class=\"text-slate-700 dark:text-slate-300\"\u003eHealth check passed for node worker-04.\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Log Line: ERROR --\u003e\n\u003cdiv class=\"log-line group flex items-start px-4 py-0.5 whitespace-nowrap bg-red-500/10\"\u003e\n\u003cspan class=\"text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none\"\u003e[2023-11-15 14:31:22.567]\u003c/span\u003e\n\u003cspan class=\"w-16 shrink-0 text-red-500 font-bold select-none px-1\"\u003eERROR\u003c/span\u003e\n\u003cspan class=\"text-slate-700 dark:text-slate-300\"\u003eFailed to sync state with peer node-02. Connection reset by peer.\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Log Line: Stack Trace --\u003e\n\u003cdiv class=\"log-line group flex items-start px-4 py-0.5 whitespace-nowrap opacity-70\"\u003e\n\u003cspan class=\"text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none\"\u003e\u003c/span\u003e\n\u003cspan class=\"w-16 shrink-0 select-none\"\u003e\u003c/span\u003e\n\u003cspan class=\"text-slate-600 dark:text-slate-400\"\u003eat Internal/Protocol/SyncEngine.ts:182:24\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"log-line group flex items-start px-4 py-0.5 whitespace-nowrap opacity-70\"\u003e\n\u003cspan class=\"text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none\"\u003e\u003c/span\u003e\n\u003cspan class=\"w-16 shrink-0 select-none\"\u003e\u003c/span\u003e\n\u003cspan class=\"text-slate-600 dark:text-slate-400\"\u003eat async Node.processQueue (Internal/Core/Node.ts:44:11)\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Log Line: INFO --\u003e\n\u003cdiv class=\"log-line group flex items-start px-4 py-0.5 whitespace-nowrap\"\u003e\n\u003cspan class=\"text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none\"\u003e[2023-11-15 14:31:25.101]\u003c/span\u003e\n\u003cspan class=\"w-16 shrink-0 text-primary font-bold select-none px-1\"\u003eINFO\u003c/span\u003e\n\u003cspan class=\"text-slate-700 dark:text-slate-300\"\u003eRetrying sync operation (attempt 1/5)...\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Log Line: WARN --\u003e\n\u003cdiv class=\"log-line group flex items-start px-4 py-0.5 whitespace-nowrap bg-amber-500/5\"\u003e\n\u003cspan class=\"text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none\"\u003e[2023-11-15 14:31:30.992]\u003c/span\u003e\n\u003cspan class=\"w-16 shrink-0 text-amber-500 font-bold select-none px-1\"\u003eWARN\u003c/span\u003e\n\u003cspan class=\"text-slate-700 dark:text-slate-300\"\u003eMemory usage for 'control-plane-api' exceeded 85% threshold.\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Log Line: INFO --\u003e\n\u003cdiv class=\"log-line group flex items-start px-4 py-0.5 whitespace-nowrap\"\u003e\n\u003cspan class=\"text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none\"\u003e[2023-11-15 14:32:01.000]\u003c/span\u003e\n\u003cspan class=\"w-16 shrink-0 text-primary font-bold select-none px-1\"\u003eINFO\u003c/span\u003e\n\u003cspan class=\"text-slate-700 dark:text-slate-300\"\u003eSnapshot created successfully: snap_20231115_143201.db\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Empty State / Loading Pulse --\u003e\n\u003cdiv class=\"flex items-center gap-3 px-4 py-3\"\u003e\n\u003cdiv class=\"flex gap-1.5\"\u003e\n\u003cdiv class=\"size-1.5 rounded-full bg-primary animate-pulse\"\u003e\u003c/div\u003e\n\u003cdiv class=\"size-1.5 rounded-full bg-primary/60 animate-pulse [animation-delay:0.2s]\"\u003e\u003c/div\u003e\n\u003cdiv class=\"size-1.5 rounded-full bg-primary/30 animate-pulse [animation-delay:0.4s]\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"text-xs italic text-slate-400 dark:text-slate-500\"\u003eWaiting for live stream logs...\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Footer / Status Bar --\u003e\n\u003cfooter class=\"flex items-center justify-between px-4 py-2 bg-slate-50 dark:bg-background-dark border-t border-slate-200 dark:border-slate-800\"\u003e\n\u003cdiv class=\"flex items-center gap-4\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cdiv class=\"size-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]\"\u003e\u003c/div\u003e\n\u003cspan class=\"text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider\"\u003eLive\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-[11px] text-slate-400 font-medium\"\u003e\n                    102.4 KB/s\n                \u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cbutton class=\"flex items-center gap-1.5 px-3 py-1.5 rounded bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm\"\u003ekeyboard_arrow_down\u003c/span\u003e\n                    Follow Tail\n                \u003c/button\u003e\n\u003c/div\u003e\n\u003c/footer\u003e\n\u003c/div\u003e\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"$Lf\",null,{\"title\":\"Log Viewer Widget\",\"children\":[[\"$\",\"div\",null,{\"className\":\"mb-3 text-sm text-gray-500\",\"children\":[\"Category: \",\"Runtime Status\"]}],[\"$\",\"div\",null,{\"className\":\"overflow-hidden rounded border border-gray-200 bg-white\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Log Viewer Widget\",\"srcDoc\":\"$10\",\"className\":\"h-[1100px] w-full\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]]}]\n"])</script></body></html>

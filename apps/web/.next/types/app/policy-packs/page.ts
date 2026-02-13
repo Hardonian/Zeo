@@ -1,4 +1,4 @@
-// File: C:\Users\scott\Documents\GitHub\Zeo\apps\web\src\app\policy-packs\page.tsx
+// File: /home/user/Zeo/apps/web/src/app/policy-packs/page.tsx
 import * as entry from '../../../../src/app/policy-packs/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

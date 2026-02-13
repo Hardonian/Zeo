@@ -1,0 +1,130 @@
+1:"$Sreact.fragment"
+2:I[785,["3180","static/chunks/3180-49ca78bebb59785c.js","2706","static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js"],"PublicShell"]
+5:I[8028,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+3:T237a,<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Readiness Insight</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "surface-dark": "#1A2230",
+                        "surface-light": "#FFFFFF",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display transition-colors duration-200">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto border-x border-slate-200 dark:border-slate-800 shadow-2xl">
+<!-- Header -->
+<div class="sticky top-0 z-50 flex items-center justify-between bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 pb-2 border-b border-slate-200 dark:border-slate-800">
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-900 dark:text-white">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-10">Readiness Insight</h2>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col p-5 gap-6">
+<!-- Title & Badge -->
+<div class="flex flex-col gap-3">
+<div class="inline-flex items-center gap-2 self-start rounded-full bg-blue-100 dark:bg-blue-900/30 px-3 py-1 text-xs font-semibold text-primary">
+<span class="material-symbols-outlined text-[16px]">lightbulb</span>
+<span>Review Guard Signal</span>
+</div>
+<h1 class="text-3xl font-bold leading-tight tracking-tight">Missing tests for new logic</h1>
+</div>
+<!-- Logic Impact Section -->
+<div class="group flex flex-col gap-3 rounded-xl bg-surface-light dark:bg-surface-dark p-5 border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="flex items-center gap-3 mb-1">
+<div class="flex size-8 shrink-0 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-500/10 text-primary">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+</div>
+<p class="text-base font-bold">Logic Impact</p>
+</div>
+<div class="pl-11">
+<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        The newly added function <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono text-primary font-bold">handlePayment</code> introduces complex branching logic but currently has <span class="font-bold text-slate-900 dark:text-white">0% unit test coverage</span>.
+                    </p>
+</div>
+</div>
+<!-- Risk Context Section (Visual Card) -->
+<div class="relative overflow-hidden rounded-xl bg-slate-900 shadow-sm">
+<!-- Abstract Background -->
+<div class="absolute inset-0 z-0 opacity-40 mix-blend-overlay" data-alt="Abstract blue gradient mesh background representing digital security" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgmQiZm4DxwBoWXHyxK0w7kEsdLCOxo4lFCuMiXZsZ7QqxVYfHzZAFXF4cFTy_gpHuVnqvvXefKsZiTulBf0rQtHzgrkm3hFeNSLxxE7Qr_VMCDMCNxjDtkcDnCi1wrDsTk8Pu6UMfQG-ogF5QGWQP7s9VD2y5o00_CHLFap9FUpfZvEoQ1k9ZHYR1krDkfY9nJGYMY0Jzpx5rsElpHrbetNxbrAk4dn8BoShnFaMfHNNN030tfBCXuCNVDdMXsMpVXwjALdt0WZQM'); background-size: cover; background-position: center;"></div>
+<!-- Gradient Overlay -->
+<div class="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+<div class="relative z-20 p-5 flex flex-col gap-4">
+<div class="flex items-center gap-2 text-blue-200">
+<span class="material-symbols-outlined">shield</span>
+<span class="text-xs font-bold uppercase tracking-wider">Risk Context</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-tight mb-2">High Sensitivity Path</p>
+<p class="text-slate-300 text-sm font-medium leading-relaxed">
+                            This path handles sensitive financial transactions. Uncaught errors here could result in failed payments or data inconsistencies.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Code Snippet -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between px-1">
+<span class="text-sm font-semibold text-slate-500 dark:text-slate-400">Code Preview</span>
+<span class="text-xs text-slate-400">payment_controller.ts</span>
+</div>
+<div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-[#0d1117] overflow-hidden">
+<div class="flex border-b border-slate-800 bg-[#161b22] px-4 py-2">
+<div class="flex gap-1.5">
+<div class="size-2.5 rounded-full bg-red-500/50"></div>
+<div class="size-2.5 rounded-full bg-yellow-500/50"></div>
+<div class="size-2.5 rounded-full bg-green-500/50"></div>
+</div>
+</div>
+<div class="p-4 overflow-x-auto">
+<pre class="font-mono text-xs leading-6"><div class="flex text-slate-500"><span class="w-6 shrink-0 select-none text-right mr-3 opacity-50">44</span><span></span></div><div class="flex text-slate-300"><span class="w-6 shrink-0 select-none text-right mr-3 text-slate-600">45</span><span><span class="text-[#ff7b72]">export</span> <span class="text-[#79c0ff]">async</span> <span class="text-[#ff7b72]">function</span> <span class="text-[#d2a8ff]">handlePayment</span>(ctx) {</span></div><div class="flex text-slate-300 bg-primary/10 -mx-4 px-4 border-l-2 border-primary"><span class="w-6 shrink-0 select-none text-right mr-3 text-slate-600">46</span><span>  <span class="text-[#ff7b72]">const</span> { amount, currency } = ctx.body;</span></div><div class="flex text-slate-300 bg-primary/10 -mx-4 px-4 border-l-2 border-primary"><span class="w-6 shrink-0 select-none text-right mr-3 text-slate-600">47</span><span>  </span></div><div class="flex text-slate-300 bg-primary/10 -mx-4 px-4 border-l-2 border-primary"><span class="w-6 shrink-0 select-none text-right mr-3 text-slate-600">48</span><span>  <span class="text-[#ff7b72]">if</span> (amount <span class="text-[#ff7b72]">&lt;</span> <span class="text-[#79c0ff]">0</span>) {</span></div><div class="flex text-slate-300 bg-primary/10 -mx-4 px-4 border-l-2 border-primary"><span class="w-6 shrink-0 select-none text-right mr-3 text-slate-600">49</span><span>    <span class="text-[#ff7b72]">throw</span> <span class="text-[#ff7b72]">new</span> <span class="text-[#d2a8ff]">Error</span>(<span class="text-[#a5d6ff]">"Invalid amount"</span>);</span></div><div class="flex text-slate-300 bg-primary/10 -mx-4 px-4 border-l-2 border-primary"><span class="w-6 shrink-0 select-none text-right mr-3 text-slate-600">50</span><span>  }</span></div><div class="flex text-slate-300 bg-primary/10 -mx-4 px-4 border-l-2 border-primary"><span class="w-6 shrink-0 select-none text-right mr-3 text-slate-600">51</span><span></span></div><div class="flex text-slate-300 bg-primary/10 -mx-4 px-4 border-l-2 border-primary"><span class="w-6 shrink-0 select-none text-right mr-3 text-slate-600">52</span><span>  <span class="text-[#8b949e]">// TODO: Add currency validation logic</span></span></div><div class="flex text-slate-500"><span class="w-6 shrink-0 select-none text-right mr-3 opacity-50">53</span><span>}</span></div></pre>
+</div>
+</div>
+</div>
+<!-- Spacer for scroll -->
+<div class="h-10"></div>
+</div>
+<!-- Sticky Footer Action -->
+<div class="sticky bottom-0 z-40 w-full border-t border-slate-200 dark:border-slate-800 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-lg p-5">
+<button class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3.5 px-4 text-sm font-bold text-white shadow-lg shadow-blue-900/20 hover:bg-blue-600 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">smart_button</span>
+<span>Generate Test Template</span>
+</button>
+</div>
+</div>
+</body></html>0:{"buildId":"8ZfsPSrfgPx8SRye8yuF4","rsc":["$","$1","c",{"children":[["$","$L2",null,{"title":"Readiness Insight Explanation","children":[["$","div",null,{"className":"mb-3 text-sm text-gray-500","children":["Category: ","Action Guard"]}],["$","div",null,{"className":"overflow-hidden rounded border border-gray-200 bg-white","children":["$","iframe",null,{"title":"Readiness Insight Explanation","srcDoc":"$3","className":"h-[1100px] w-full","sandbox":"allow-scripts allow-same-origin"}]}]]}],null,"$L4"]}],"loading":null,"isPartial":false}
+4:["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]
+7:null

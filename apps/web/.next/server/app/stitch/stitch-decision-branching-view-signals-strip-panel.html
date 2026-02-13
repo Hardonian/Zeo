@@ -1,0 +1,338 @@
+<!DOCTYPE html><!--8ZfsPSrfgPx8SRye8yuF4--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/bc06321d88be975e.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-573fdd58969ad59e.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-baa4ef70fea4d55f.js" async=""></script><script src="/_next/static/chunks/app/error-17b4afe27e88d3cd.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50 text-gray-900"><header class="sticky top-0 z-10 border-b border-gray-200 bg-white/95 backdrop-blur"><div class="mx-auto w-full max-w-6xl px-6 py-4"><div class="flex items-center justify-between"><a class="text-lg font-semibold text-blue-700" href="/">Zeo</a><button type="button" class="rounded border border-gray-300 px-3 py-1 text-sm md:hidden">Menu</button><nav class="hidden items-center gap-4 md:flex"><a class="text-sm transition-colors text-blue-700 font-semibold" href="/">Home</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/features">Features</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/cli">CLI</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/docs">Docs</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/pricing">Pricing</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/about">About</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/stitch">Stitch</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/dashboard">Dashboard</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="text-sm text-gray-700 hover:text-blue-700">GitHub</a><a class="text-sm text-gray-700 hover:text-blue-700" href="/signin">Sign In</a><a class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700" href="/docs/quickstart">Get Started</a></nav></div></div></header><main class="mx-auto w-full max-w-6xl px-6 py-10"><h1 class="mb-6 text-3xl font-semibold">Signals Strip Panel</h1><div class="mb-3 text-sm text-gray-500">Category: <!-- -->Decision Intelligence</div><div class="overflow-hidden rounded border border-gray-200 bg-white"><iframe title="Signals Strip Panel" srcDoc="&lt;!DOCTYPE html&gt;
+
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Zeo Signals Strip&lt;/title&gt;
+&lt;!-- Fonts --&gt;
+&lt;link href=&quot;https://fonts.googleapis.com&quot; rel=&quot;preconnect&quot;/&gt;
+&lt;link crossorigin=&quot;&quot; href=&quot;https://fonts.gstatic.com&quot; rel=&quot;preconnect&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;amp;family=JetBrains+Mono:wght@400;500;700&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;!-- Material Symbols --&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;!-- Tailwind CSS --&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;!-- Theme Configuration --&gt;
+&lt;script id=&quot;tailwind-config&quot;&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        &quot;primary&quot;: &quot;#135bec&quot;,
+                        &quot;background-light&quot;: &quot;#f6f6f8&quot;,
+                        &quot;background-dark&quot;: &quot;#0f172a&quot;, // Deep Slate/Navy as requested
+                        &quot;surface-dark&quot;: &quot;#1e293b&quot;, // Slightly lighter for cards
+                        &quot;surface-border&quot;: &quot;#334155&quot;, 
+                        &quot;success&quot;: &quot;#10b981&quot;,
+                        &quot;warning&quot;: &quot;#f59e0b&quot;,
+                        &quot;danger&quot;: &quot;#ef4444&quot;,
+                    },
+                    fontFamily: {
+                        &quot;display&quot;: [&quot;Inter&quot;, &quot;sans-serif&quot;],
+                        &quot;mono&quot;: [&quot;JetBrains Mono&quot;, &quot;monospace&quot;],
+                    },
+                    borderRadius: {&quot;DEFAULT&quot;: &quot;0.375rem&quot;, &quot;lg&quot;: &quot;0.5rem&quot;, &quot;xl&quot;: &quot;0.75rem&quot;, &quot;full&quot;: &quot;9999px&quot;},
+                },
+            },
+        }
+    &lt;/script&gt;
+&lt;style&gt;
+        /* Custom scrollbar for horizontal scrolling areas */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .pulse-dot {
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display antialiased selection:bg-primary/30&quot;&gt;
+&lt;!-- App Container --&gt;
+&lt;div class=&quot;relative flex min-h-screen w-full flex-col max-w-md mx-auto border-x border-slate-200 dark:border-slate-800 shadow-2xl&quot;&gt;
+&lt;!-- Header --&gt;
+&lt;header class=&quot;sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-[#0f172a]/90 border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;div class=&quot;h-8 w-8 rounded bg-primary flex items-center justify-center text-white font-bold text-xl tracking-tighter shadow-lg shadow-primary/20&quot;&gt;
+                    Z
+                &lt;/div&gt;
+&lt;h2 class=&quot;text-lg font-bold tracking-tight text-slate-900 dark:text-white&quot;&gt;Zeo&lt;/h2&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-2 bg-slate-100 dark:bg-slate-800/50 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700&quot;&gt;
+&lt;div class=&quot;h-2 w-2 rounded-full bg-success pulse-dot&quot;&gt;&lt;/div&gt;
+&lt;span class=&quot;text-xs font-mono font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider&quot;&gt;Live&lt;/span&gt;
+&lt;/div&gt;
+&lt;/header&gt;
+&lt;!-- Filter Strip --&gt;
+&lt;div class=&quot;sticky top-[60px] z-30 bg-background-light dark:bg-background-dark border-b border-slate-200 dark:border-slate-800&quot;&gt;
+&lt;div class=&quot;flex gap-2 p-3 overflow-x-auto hide-scrollbar items-center&quot;&gt;
+&lt;!-- Active Filter --&gt;
+&lt;button class=&quot;flex h-8 shrink-0 items-center justify-center gap-x-1.5 rounded-lg bg-primary text-white pl-2.5 pr-3 shadow-lg shadow-primary/20 transition-transform active:scale-95&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;check_circle&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium&quot;&gt;All Signals&lt;/span&gt;
+&lt;/button&gt;
+&lt;!-- Inactive Filters --&gt;
+&lt;button class=&quot;flex h-8 shrink-0 items-center justify-center gap-x-1.5 rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border pl-2.5 pr-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;ecg_heart&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium&quot;&gt;Health&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;flex h-8 shrink-0 items-center justify-center gap-x-1.5 rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border pl-2.5 pr-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;schedule&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium&quot;&gt;Recency&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;flex h-8 shrink-0 items-center justify-center gap-x-1.5 rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border pl-2.5 pr-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;label&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium&quot;&gt;Category&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Scrollable Content Area --&gt;
+&lt;div class=&quot;flex-1 overflow-y-auto p-3 space-y-3 pb-24&quot;&gt;
+&lt;!-- Section Header --&gt;
+&lt;div class=&quot;flex items-center justify-between px-1 pt-2 pb-1&quot;&gt;
+&lt;p class=&quot;text-xs font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest&quot;&gt;Active Observations (12)&lt;/p&gt;
+&lt;span class=&quot;material-symbols-outlined text-slate-400 text-sm cursor-pointer hover:text-white&quot;&gt;tune&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Signal Card 1: High Priority --&gt;
+&lt;div class=&quot;group relative overflow-hidden rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border shadow-sm hover:border-primary/50 transition-all cursor-pointer&quot;&gt;
+&lt;div class=&quot;absolute top-0 left-0 w-1 h-full bg-warning&quot;&gt;&lt;/div&gt; &lt;!-- Status Strip --&gt;
+&lt;div class=&quot;p-3 pl-4 flex flex-col gap-3&quot;&gt;
+&lt;!-- Header Row --&gt;
+&lt;div class=&quot;flex justify-between items-start&quot;&gt;
+&lt;div class=&quot;flex flex-col&quot;&gt;
+&lt;h3 class=&quot;text-sm font-bold text-slate-900 dark:text-white leading-tight&quot;&gt;Market Volatility&lt;/h3&gt;
+&lt;span class=&quot;text-[10px] text-slate-500 font-medium&quot;&gt;VIX Index Tracking&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[12px] text-slate-400&quot;&gt;update&lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-mono text-slate-600 dark:text-slate-300&quot;&gt;10s ago&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Viz Row: Weighted Band --&gt;
+&lt;div class=&quot;flex flex-col gap-1.5&quot;&gt;
+&lt;div class=&quot;flex justify-between text-[10px] font-mono text-slate-400&quot;&gt;
+&lt;span&gt;12.5&lt;/span&gt;
+&lt;span class=&quot;text-white font-bold&quot;&gt;42.8&lt;/span&gt;
+&lt;span&gt;80.0&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;relative h-2 w-full rounded-full bg-slate-100 dark:bg-slate-900 overflow-hidden&quot;&gt;
+&lt;!-- Background markers --&gt;
+&lt;div class=&quot;absolute left-[20%] top-0 bottom-0 w-[1px] bg-slate-700/50&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;absolute left-[80%] top-0 bottom-0 w-[1px] bg-slate-700/50&quot;&gt;&lt;/div&gt;
+&lt;!-- Active Bar --&gt;
+&lt;div class=&quot;h-full rounded-full bg-gradient-to-r from-primary/80 to-primary w-[55%] relative group-hover:brightness-110 transition-all duration-500&quot;&gt;
+&lt;!-- Shine effect --&gt;
+&lt;div class=&quot;absolute top-0 bottom-0 right-0 w-[1px] bg-white/50 shadow-[0_0_4px_rgba(255,255,255,0.5)]&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Footer Row --&gt;
+&lt;div class=&quot;flex items-center justify-between border-t border-slate-100 dark:border-slate-700/50 pt-2 mt-1&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;div class=&quot;px-1.5 py-0.5 rounded bg-primary/10 border border-primary/20 text-primary text-[10px] font-mono font-bold&quot;&gt;
+                                Q: 0.98
+                            &lt;/div&gt;
+&lt;div class=&quot;px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-medium&quot;&gt;
+                                High Conf
+                            &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-1.5&quot;&gt;
+&lt;span class=&quot;text-[10px] text-slate-400&quot;&gt;Status&lt;/span&gt;
+&lt;div class=&quot;h-1.5 w-1.5 rounded-full bg-warning shadow-[0_0_4px_rgba(245,158,11,0.4)]&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Signal Card 2: Good Health --&gt;
+&lt;div class=&quot;group relative overflow-hidden rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border shadow-sm hover:border-primary/50 transition-all cursor-pointer&quot;&gt;
+&lt;div class=&quot;absolute top-0 left-0 w-1 h-full bg-success&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;p-3 pl-4 flex flex-col gap-3&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start&quot;&gt;
+&lt;div class=&quot;flex flex-col&quot;&gt;
+&lt;h3 class=&quot;text-sm font-bold text-slate-900 dark:text-white leading-tight&quot;&gt;Liquidity Depth&lt;/h3&gt;
+&lt;span class=&quot;text-[10px] text-slate-500 font-medium&quot;&gt;Order Book Aggregate&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700&quot;&gt;
+&lt;span class=&quot;text-[10px] font-mono text-slate-600 dark:text-slate-300&quot;&gt;5m ago&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-1.5&quot;&gt;
+&lt;div class=&quot;relative h-2 w-full rounded-full bg-slate-100 dark:bg-slate-900 overflow-hidden&quot;&gt;
+&lt;div class=&quot;absolute left-[30%] top-0 bottom-0 w-[1px] bg-slate-700/50&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;h-full rounded-full bg-success/80 w-[88%] relative&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between items-center&quot;&gt;
+&lt;span class=&quot;text-[10px] font-mono text-slate-400&quot;&gt;Range: &lt;span class=&quot;text-slate-300&quot;&gt;High&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-mono text-success font-bold&quot;&gt;98.2%&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center justify-between border-t border-slate-100 dark:border-slate-700/50 pt-2 mt-1&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;div class=&quot;px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-mono font-bold&quot;&gt;
+                                Q: 0.99
+                            &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-1.5&quot;&gt;
+&lt;span class=&quot;text-[10px] text-slate-400&quot;&gt;Healthy&lt;/span&gt;
+&lt;div class=&quot;h-1.5 w-1.5 rounded-full bg-success shadow-[0_0_4px_rgba(16,185,129,0.4)]&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Signal Card 3: Warning --&gt;
+&lt;div class=&quot;group relative overflow-hidden rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border shadow-sm hover:border-primary/50 transition-all cursor-pointer&quot;&gt;
+&lt;div class=&quot;absolute top-0 left-0 w-1 h-full bg-danger&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;p-3 pl-4 flex flex-col gap-3&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start&quot;&gt;
+&lt;div class=&quot;flex flex-col&quot;&gt;
+&lt;h3 class=&quot;text-sm font-bold text-slate-900 dark:text-white leading-tight&quot;&gt;News Flow Sentiment&lt;/h3&gt;
+&lt;span class=&quot;text-[10px] text-slate-500 font-medium&quot;&gt;Global Macro&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700&quot;&gt;
+&lt;span class=&quot;text-[10px] font-mono text-slate-600 dark:text-slate-300&quot;&gt;2m ago&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-1.5&quot;&gt;
+&lt;div class=&quot;relative h-2 w-full rounded-full bg-slate-100 dark:bg-slate-900 overflow-hidden&quot;&gt;
+&lt;div class=&quot;h-full rounded-full bg-danger/80 w-[12%] relative&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between items-center&quot;&gt;
+&lt;span class=&quot;text-[10px] font-mono text-slate-400&quot;&gt;Bearish&lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-mono text-danger font-bold&quot;&gt;-0.85&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center justify-between border-t border-slate-100 dark:border-slate-700/50 pt-2 mt-1&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;div class=&quot;px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-mono font-bold&quot;&gt;
+                                Q: 0.92
+                            &lt;/div&gt;
+&lt;div class=&quot;px-1.5 py-0.5 rounded bg-danger/10 text-danger text-[10px] font-medium&quot;&gt;
+                                Low Volume
+                            &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-1.5&quot;&gt;
+&lt;span class=&quot;text-[10px] text-slate-400&quot;&gt;Warning&lt;/span&gt;
+&lt;div class=&quot;h-1.5 w-1.5 rounded-full bg-danger shadow-[0_0_4px_rgba(239,68,68,0.4)]&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Signal Card 4: Standard --&gt;
+&lt;div class=&quot;group relative overflow-hidden rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border shadow-sm hover:border-primary/50 transition-all cursor-pointer opacity-80&quot;&gt;
+&lt;div class=&quot;absolute top-0 left-0 w-1 h-full bg-slate-500&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;p-3 pl-4 flex flex-col gap-3&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start&quot;&gt;
+&lt;div class=&quot;flex flex-col&quot;&gt;
+&lt;h3 class=&quot;text-sm font-bold text-slate-900 dark:text-white leading-tight&quot;&gt;System Latency&lt;/h3&gt;
+&lt;span class=&quot;text-[10px] text-slate-500 font-medium&quot;&gt;Infrastructure&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700&quot;&gt;
+&lt;span class=&quot;text-[10px] font-mono text-slate-600 dark:text-slate-300&quot;&gt;14m ago&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Mini chart representation for variety --&gt;
+&lt;div class=&quot;flex items-end gap-0.5 h-6 w-full pt-1&quot;&gt;
+&lt;div class=&quot;w-full bg-slate-800 rounded-sm h-[40%]&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;w-full bg-slate-800 rounded-sm h-[60%]&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;w-full bg-slate-800 rounded-sm h-[30%]&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;w-full bg-slate-800 rounded-sm h-[80%]&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;w-full bg-slate-800 rounded-sm h-[50%]&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;w-full bg-slate-800 rounded-sm h-[45%]&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;w-full bg-slate-800 rounded-sm h-[70%]&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;w-full bg-slate-800 rounded-sm h-[55%]&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;w-full bg-primary/50 rounded-sm h-[65%]&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;w-full bg-primary rounded-sm h-[60%]&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center justify-between border-t border-slate-100 dark:border-slate-700/50 pt-2 mt-1&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;div class=&quot;px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-mono font-bold&quot;&gt;
+                                Q: 0.99
+                            &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-1.5&quot;&gt;
+&lt;span class=&quot;text-[10px] text-slate-400&quot;&gt;Stable&lt;/span&gt;
+&lt;div class=&quot;h-1.5 w-1.5 rounded-full bg-slate-400&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Details Drawer (Simulated as positioned absolute at bottom) --&gt;
+&lt;div class=&quot;absolute bottom-0 left-0 right-0 rounded-t-2xl bg-[#0f172a] border-t border-slate-700 shadow-[0_-8px_30px_rgba(0,0,0,0.5)] transform translate-y-[calc(100%-60px)] hover:translate-y-0 transition-transform duration-300 ease-out z-50&quot;&gt;
+&lt;!-- Drag Handle --&gt;
+&lt;div class=&quot;w-full flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing&quot;&gt;
+&lt;div class=&quot;h-1.5 w-12 rounded-full bg-slate-600&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Drawer Header (Always visible peek) --&gt;
+&lt;div class=&quot;px-4 pb-4 pt-1 flex items-center justify-between&quot;&gt;
+&lt;div&gt;
+&lt;h3 class=&quot;text-white text-base font-bold&quot;&gt;Signal Details&lt;/h3&gt;
+&lt;p class=&quot;text-xs text-slate-400&quot;&gt;Swipe up to view analysis&lt;/p&gt;
+&lt;/div&gt;
+&lt;button class=&quot;h-8 w-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;expand_less&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;!-- Drawer Content (Hidden until expanded) --&gt;
+&lt;div class=&quot;px-4 pb-8 space-y-4&quot;&gt;
+&lt;div class=&quot;h-[1px] w-full bg-slate-800 mb-4&quot;&gt;&lt;/div&gt;
+&lt;!-- Expanded Data View --&gt;
+&lt;div class=&quot;grid grid-cols-2 gap-3&quot;&gt;
+&lt;div class=&quot;bg-slate-900/50 p-3 rounded-lg border border-slate-800&quot;&gt;
+&lt;p class=&quot;text-[10px] text-slate-400 uppercase font-mono mb-1&quot;&gt;Raw Value&lt;/p&gt;
+&lt;p class=&quot;text-xl text-white font-mono font-medium&quot;&gt;42.8 &lt;span class=&quot;text-sm text-slate-500&quot;&gt;idx&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;bg-slate-900/50 p-3 rounded-lg border border-slate-800&quot;&gt;
+&lt;p class=&quot;text-[10px] text-slate-400 uppercase font-mono mb-1&quot;&gt;Deviation&lt;/p&gt;
+&lt;p class=&quot;text-xl text-warning font-mono font-medium&quot;&gt;+2.4σ&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Abstract Chart Placeholder --&gt;
+&lt;div class=&quot;bg-slate-900/50 p-3 rounded-lg border border-slate-800 h-40 flex items-center justify-center relative overflow-hidden&quot;&gt;
+&lt;div class=&quot;absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent&quot;&gt;&lt;/div&gt;
+&lt;!-- Using CSS for a simple chart line --&gt;
+&lt;svg class=&quot;w-full h-full text-primary&quot; preserveaspectratio=&quot;none&quot; viewbox=&quot;0 0 100 40&quot;&gt;
+&lt;path d=&quot;M0 30 Q 10 25, 20 28 T 40 20 T 60 25 T 80 10 T 100 15&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; vector-effect=&quot;non-scaling-stroke&quot;&gt;&lt;/path&gt;
+&lt;path d=&quot;M0 30 Q 10 25, 20 28 T 40 20 T 60 25 T 80 10 T 100 15 V 40 H 0 Z&quot; fill=&quot;currentColor&quot; fill-opacity=&quot;0.2&quot; stroke=&quot;none&quot;&gt;&lt;/path&gt;
+&lt;/svg&gt;
+&lt;p class=&quot;absolute top-2 left-2 text-[10px] text-slate-500 font-mono&quot;&gt;1H Trend&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex gap-2&quot;&gt;
+&lt;button class=&quot;flex-1 bg-primary hover:bg-primary/90 text-white text-sm font-medium py-2.5 rounded-lg transition-colors&quot;&gt;
+                        Investigate
+                    &lt;/button&gt;
+&lt;button class=&quot;bg-slate-800 hover:bg-slate-700 text-white p-2.5 rounded-lg transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[20px]&quot;&gt;share&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;" class="h-[1100px] w-full" sandbox="allow-scripts allow-same-origin"></iframe></div></main><footer class="border-t border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-5 text-sm text-gray-600 md:flex-row md:items-center md:justify-between"><span>Confidence range, assumptions, provenance, and sensitivity first.</span><div class="flex flex-wrap gap-3"><a class="hover:text-blue-700" href="/docs">Docs</a><a class="hover:text-blue-700" href="/features">Features</a><a class="hover:text-blue-700" href="/cli">CLI</a><a class="hover:text-blue-700" href="/changelog">Changelog</a><a class="hover:text-blue-700" href="/status">Status</a><a class="hover:text-blue-700" href="/legal/privacy">Privacy</a><a class="hover:text-blue-700" href="/legal/terms">Terms</a><a class="hover:text-blue-700" href="/stitch">Stitch</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="hover:text-blue-700">GitHub</a></div></div></footer></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-573fdd58969ad59e.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-17b4afe27e88d3cd.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/bc06321d88be975e.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"8ZfsPSrfgPx8SRye8yuF4\",\"c\":[\"\",\"stitch\",\"stitch-decision-branching-view-signals-strip-panel\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"stitch\",{\"children\":[[\"slug\",\"stitch-decision-branching-view-signals-strip-panel\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/bc06321d88be975e.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:I[785,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"PublicShell\"]\n10:T4578,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eZeo Signals Strip\u003c/title\u003e\n\u003c!-- Fonts --\u003e\n\u003clink href=\"https://fonts.googleapis.com\" rel=\"preconnect\"/\u003e\n\u003clink crossorigin=\"\" href=\"https://fonts.gstatic.com\" rel=\"preconnect\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700\u0026amp;family=JetBrains+Mono:wght@400;500;700\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003c!-- Material Symbols --\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003c!-- Tailwind CSS --\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003c!-- Theme Configuration --\u003e\n\u003cscript id=\"tailwind-config\"\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        \"primary\": \"#135bec\",\n                        \"background-light\": \"#f6f6f8\",\n                        \"background-dark\": \"#0f172a\", // Deep Slate/Navy as requested\n                        \"surface-dark\": \"#1e293b\", // Slightly lighter for cards\n                        \"surface-border\": \"#334155\", \n                        \"success\": \"#10b981\",\n                        \"warning\": \"#f59e0b\",\n                        \"danger\": \"#ef4444\",\n                    },\n                    fontFamily: {\n                        \"display\": [\"Inter\", \"sans-serif\"],\n                        \"mono\": [\"JetBrains Mono\", \"monospace\"],\n                    },\n                    borderRadius: {\"DEFAULT\": \"0.375rem\", \"lg\": \"0.5rem\", \"xl\": \"0.75rem\", \"full\": \"9999px\"},\n                },\n            },\n        }\n    \u003c/script\u003e\n\u003cstyle\u003e\n        /* Custom scrollbar for horizontal scrolling areas */\n        .hide-scrollbar::-webkit-scrollbar {\n            display: none;\n        }\n        .hide-scrollbar {\n            -ms-overflow-style: none;\n            scrollbar-width: none;\n        }\n        \n        .pulse-dot {\n            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);\n            animation: pulse-green 2s infinite;\n        }\n\n        @keyframes pulse-green {\n            0% {\n                transform: scale(0.95);\n                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);\n            }\n            70% {\n                transform: scale(1);\n                box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);\n            }\n            100% {\n                transform: scale(0.95);\n                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);\n            }\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display antialiased selection:bg-primary/30\"\u003e\n\u003c!-- App Container --\u003e\n\u003cdiv class=\"relative flex min-h-screen w-full flex-col max-w-md mx-auto border-x border-slate-200 dark:border-slate-800 shadow-2xl\"\u003e\n\u003c!-- Header --\u003e\n\u003cheader class=\"sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-[#0f172a]/90 border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cdiv class=\"h-8 w-8 rounded bg-primary flex items-center justify-center text-white font-bold text-xl tracking-tighter shadow-lg shadow-primary/20\"\u003e\n                    Z\n                \u003c/div\u003e\n\u003ch2 class=\"text-lg font-bold tracking-tight text-slate-900 dark:text-white\"\u003eZeo\u003c/h2\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-2 bg-slate-100 dark:bg-slate-800/50 rounded-full px-3 py-1 border border-slate-200 dark:border-slate-700\"\u003e\n\u003cdiv class=\"h-2 w-2 rounded-full bg-success pulse-dot\"\u003e\u003c/div\u003e\n\u003cspan class=\"text-xs font-mono font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider\"\u003eLive\u003c/span\u003e\n\u003c/div\u003e\n\u003c/header\u003e\n\u003c!-- Filter Strip --\u003e\n\u003cdiv class=\"sticky top-[60px] z-30 bg-background-light dark:bg-background-dark border-b border-slate-200 dark:border-slate-800\"\u003e\n\u003cdiv class=\"flex gap-2 p-3 overflow-x-auto hide-scrollbar items-center\"\u003e\n\u003c!-- Active Filter --\u003e\n\u003cbutton class=\"flex h-8 shrink-0 items-center justify-center gap-x-1.5 rounded-lg bg-primary text-white pl-2.5 pr-3 shadow-lg shadow-primary/20 transition-transform active:scale-95\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003echeck_circle\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium\"\u003eAll Signals\u003c/span\u003e\n\u003c/button\u003e\n\u003c!-- Inactive Filters --\u003e\n\u003cbutton class=\"flex h-8 shrink-0 items-center justify-center gap-x-1.5 rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border pl-2.5 pr-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003eecg_heart\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium\"\u003eHealth\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"flex h-8 shrink-0 items-center justify-center gap-x-1.5 rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border pl-2.5 pr-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003eschedule\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium\"\u003eRecency\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"flex h-8 shrink-0 items-center justify-center gap-x-1.5 rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border pl-2.5 pr-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003elabel\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium\"\u003eCategory\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Scrollable Content Area --\u003e\n\u003cdiv class=\"flex-1 overflow-y-auto p-3 space-y-3 pb-24\"\u003e\n\u003c!-- Section Header --\u003e\n\u003cdiv class=\"flex items-center justify-between px-1 pt-2 pb-1\"\u003e\n\u003cp class=\"text-xs font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest\"\u003eActive Observations (12)\u003c/p\u003e\n\u003cspan class=\"material-symbols-outlined text-slate-400 text-sm cursor-pointer hover:text-white\"\u003etune\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Signal Card 1: High Priority --\u003e\n\u003cdiv class=\"group relative overflow-hidden rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border shadow-sm hover:border-primary/50 transition-all cursor-pointer\"\u003e\n\u003cdiv class=\"absolute top-0 left-0 w-1 h-full bg-warning\"\u003e\u003c/div\u003e \u003c!-- Status Strip --\u003e\n\u003cdiv class=\"p-3 pl-4 flex flex-col gap-3\"\u003e\n\u003c!-- Header Row --\u003e\n\u003cdiv class=\"flex justify-between items-start\"\u003e\n\u003cdiv class=\"flex flex-col\"\u003e\n\u003ch3 class=\"text-sm font-bold text-slate-900 dark:text-white leading-tight\"\u003eMarket Volatility\u003c/h3\u003e\n\u003cspan class=\"text-[10px] text-slate-500 font-medium\"\u003eVIX Index Tracking\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[12px] text-slate-400\"\u003eupdate\u003c/span\u003e\n\u003cspan class=\"text-[10px] font-mono text-slate-600 dark:text-slate-300\"\u003e10s ago\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Viz Row: Weighted Band --\u003e\n\u003cdiv class=\"flex flex-col gap-1.5\"\u003e\n\u003cdiv class=\"flex justify-between text-[10px] font-mono text-slate-400\"\u003e\n\u003cspan\u003e12.5\u003c/span\u003e\n\u003cspan class=\"text-white font-bold\"\u003e42.8\u003c/span\u003e\n\u003cspan\u003e80.0\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"relative h-2 w-full rounded-full bg-slate-100 dark:bg-slate-900 overflow-hidden\"\u003e\n\u003c!-- Background markers --\u003e\n\u003cdiv class=\"absolute left-[20%] top-0 bottom-0 w-[1px] bg-slate-700/50\"\u003e\u003c/div\u003e\n\u003cdiv class=\"absolute left-[80%] top-0 bottom-0 w-[1px] bg-slate-700/50\"\u003e\u003c/div\u003e\n\u003c!-- Active Bar --\u003e\n\u003cdiv class=\"h-full rounded-full bg-gradient-to-r from-primary/80 to-primary w-[55%] relative group-hover:brightness-110 transition-all duration-500\"\u003e\n\u003c!-- Shine effect --\u003e\n\u003cdiv class=\"absolute top-0 bottom-0 right-0 w-[1px] bg-white/50 shadow-[0_0_4px_rgba(255,255,255,0.5)]\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Footer Row --\u003e\n\u003cdiv class=\"flex items-center justify-between border-t border-slate-100 dark:border-slate-700/50 pt-2 mt-1\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cdiv class=\"px-1.5 py-0.5 rounded bg-primary/10 border border-primary/20 text-primary text-[10px] font-mono font-bold\"\u003e\n                                Q: 0.98\n                            \u003c/div\u003e\n\u003cdiv class=\"px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-medium\"\u003e\n                                High Conf\n                            \u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-1.5\"\u003e\n\u003cspan class=\"text-[10px] text-slate-400\"\u003eStatus\u003c/span\u003e\n\u003cdiv class=\"h-1.5 w-1.5 rounded-full bg-warning shadow-[0_0_4px_rgba(245,158,11,0.4)]\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Signal Card 2: Good Health --\u003e\n\u003cdiv class=\"group relative overflow-hidden rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border shadow-sm hover:border-primary/50 transition-all cursor-pointer\"\u003e\n\u003cdiv class=\"absolute top-0 left-0 w-1 h-full bg-success\"\u003e\u003c/div\u003e\n\u003cdiv class=\"p-3 pl-4 flex flex-col gap-3\"\u003e\n\u003cdiv class=\"flex justify-between items-start\"\u003e\n\u003cdiv class=\"flex flex-col\"\u003e\n\u003ch3 class=\"text-sm font-bold text-slate-900 dark:text-white leading-tight\"\u003eLiquidity Depth\u003c/h3\u003e\n\u003cspan class=\"text-[10px] text-slate-500 font-medium\"\u003eOrder Book Aggregate\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700\"\u003e\n\u003cspan class=\"text-[10px] font-mono text-slate-600 dark:text-slate-300\"\u003e5m ago\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-1.5\"\u003e\n\u003cdiv class=\"relative h-2 w-full rounded-full bg-slate-100 dark:bg-slate-900 overflow-hidden\"\u003e\n\u003cdiv class=\"absolute left-[30%] top-0 bottom-0 w-[1px] bg-slate-700/50\"\u003e\u003c/div\u003e\n\u003cdiv class=\"h-full rounded-full bg-success/80 w-[88%] relative\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between items-center\"\u003e\n\u003cspan class=\"text-[10px] font-mono text-slate-400\"\u003eRange: \u003cspan class=\"text-slate-300\"\u003eHigh\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\"text-[10px] font-mono text-success font-bold\"\u003e98.2%\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center justify-between border-t border-slate-100 dark:border-slate-700/50 pt-2 mt-1\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cdiv class=\"px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-mono font-bold\"\u003e\n                                Q: 0.99\n                            \u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-1.5\"\u003e\n\u003cspan class=\"text-[10px] text-slate-400\"\u003eHealthy\u003c/span\u003e\n\u003cdiv class=\"h-1.5 w-1.5 rounded-full bg-success shadow-[0_0_4px_rgba(16,185,129,0.4)]\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Signal Card 3: Warning --\u003e\n\u003cdiv class=\"group relative overflow-hidden rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border shadow-sm hover:border-primary/50 transition-all cursor-pointer\"\u003e\n\u003cdiv class=\"absolute top-0 left-0 w-1 h-full bg-danger\"\u003e\u003c/div\u003e\n\u003cdiv class=\"p-3 pl-4 flex flex-col gap-3\"\u003e\n\u003cdiv class=\"flex justify-between items-start\"\u003e\n\u003cdiv class=\"flex flex-col\"\u003e\n\u003ch3 class=\"text-sm font-bold text-slate-900 dark:text-white leading-tight\"\u003eNews Flow Sentiment\u003c/h3\u003e\n\u003cspan class=\"text-[10px] text-slate-500 font-medium\"\u003eGlobal Macro\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700\"\u003e\n\u003cspan class=\"text-[10px] font-mono text-slate-600 dark:text-slate-300\"\u003e2m ago\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-1.5\"\u003e\n\u003cdiv class=\"relative h-2 w-full rounded-full bg-slate-100 dark:bg-slate-900 overflow-hidden\"\u003e\n\u003cdiv class=\"h-full rounded-full bg-danger/80 w-[12%] relative\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between items-center\"\u003e\n\u003cspan class=\"text-[10px] font-mono text-slate-400\"\u003eBearish\u003c/span\u003e\n\u003cspan class=\"text-[10px] font-mono text-danger font-bold\"\u003e-0.85\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center justify-between border-t border-slate-100 dark:border-slate-700/50 pt-2 mt-1\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cdiv class=\"px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-mono font-bold\"\u003e\n                                Q: 0.92\n                            \u003c/div\u003e\n\u003cdiv class=\"px-1.5 py-0.5 rounded bg-danger/10 text-danger text-[10px] font-medium\"\u003e\n                                Low Volume\n                            \u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-1.5\"\u003e\n\u003cspan class=\"text-[10px] text-slate-400\"\u003eWarning\u003c/span\u003e\n\u003cdiv class=\"h-1.5 w-1.5 rounded-full bg-danger shadow-[0_0_4px_rgba(239,68,68,0.4)]\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Signal Card 4: Standard --\u003e\n\u003cdiv class=\"group relative overflow-hidden rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border shadow-sm hover:border-primary/50 transition-all cursor-pointer opacity-80\"\u003e\n\u003cdiv class=\"absolute top-0 left-0 w-1 h-full bg-slate-500\"\u003e\u003c/div\u003e\n\u003cdiv class=\"p-3 pl-4 flex flex-col gap-3\"\u003e\n\u003cdiv class=\"flex justify-between items-start\"\u003e\n\u003cdiv class=\"flex flex-col\"\u003e\n\u003ch3 class=\"text-sm font-bold text-slate-900 dark:text-white leading-tight\"\u003eSystem Latency\u003c/h3\u003e\n\u003cspan class=\"text-[10px] text-slate-500 font-medium\"\u003eInfrastructure\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700\"\u003e\n\u003cspan class=\"text-[10px] font-mono text-slate-600 dark:text-slate-300\"\u003e14m ago\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Mini chart representation for variety --\u003e\n\u003cdiv class=\"flex items-end gap-0.5 h-6 w-full pt-1\"\u003e\n\u003cdiv class=\"w-full bg-slate-800 rounded-sm h-[40%]\"\u003e\u003c/div\u003e\n\u003cdiv class=\"w-full bg-slate-800 rounded-sm h-[60%]\"\u003e\u003c/div\u003e\n\u003cdiv class=\"w-full bg-slate-800 rounded-sm h-[30%]\"\u003e\u003c/div\u003e\n\u003cdiv class=\"w-full bg-slate-800 rounded-sm h-[80%]\"\u003e\u003c/div\u003e\n\u003cdiv class=\"w-full bg-slate-800 rounded-sm h-[50%]\"\u003e\u003c/div\u003e\n\u003cdiv class=\"w-full bg-slate-800 rounded-sm h-[45%]\"\u003e\u003c/div\u003e\n\u003cdiv class=\"w-full bg-slate-800 rounded-sm h-[70%]\"\u003e\u003c/div\u003e\n\u003cdiv class=\"w-full bg-slate-800 rounded-sm h-[55%]\"\u003e\u003c/div\u003e\n\u003cdiv class=\"w-full bg-primary/50 rounded-sm h-[65%]\"\u003e\u003c/div\u003e\n\u003cdiv class=\"w-full bg-primary rounded-sm h-[60%]\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center justify-between border-t border-slate-100 dark:border-slate-700/50 pt-2 mt-1\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cdiv class=\"px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-mono font-bold\"\u003e\n                                Q: 0.99\n                            \u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-1.5\"\u003e\n\u003cspan class=\"text-[10px] text-slate-400\"\u003eStable\u003c/span\u003e\n\u003cdiv class=\"h-1.5 w-1.5 rounded-full bg-slate-400\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Details Drawer (Simulated as positioned absolute at bottom) --\u003e\n\u003cdiv class=\"absolute bottom-0 left-0 right-0 rounded-t-2xl bg-[#0f172a] border-t border-slate-700 shadow-[0_-8px_30px_rgba(0,0,0,0.5)] transform translate-y-[calc(100%-60px)] hover:translate-y-0 transition-transform duration-300 ease-out z-50\"\u003e\n\u003c!-- Drag Handle --\u003e\n\u003cdiv class=\"w-full flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing\"\u003e\n\u003cdiv class=\"h-1.5 w-12 rounded-full bg-slate-600\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Drawer Header (Always visible peek) --\u003e\n\u003cdiv class=\"px-4 pb-4 pt-1 flex items-center justify-between\"\u003e\n\u003cdiv\u003e\n\u003ch3 class=\"text-white text-base font-bold\"\u003eSignal Details\u003c/h3\u003e\n\u003cp class=\"text-xs text-slate-400\"\u003eSwipe up to view analysis\u003c/p\u003e\n\u003c/div\u003e\n\u003cbutton class=\"h-8 w-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003eexpand_less\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c!-- Drawer Content (Hidden until expanded) --\u003e\n\u003cdiv class=\"px-4 pb-8 space-y-4\"\u003e\n\u003cdiv class=\"h-[1px] w-full bg-slate-800 mb-4\"\u003e\u003c/div\u003e\n\u003c!-- Expanded Data View --\u003e\n\u003cdiv class=\"grid grid-cols-2 gap-3\"\u003e\n\u003cdiv class=\"bg-slate-900/50 p-3 rounded-lg border border-slate-800\"\u003e\n\u003cp class=\"text-[10px] text-slate-400 uppercase font-mono mb-1\"\u003eRaw Value\u003c/p\u003e\n\u003cp class=\"text-xl text-white font-mono font-medium\"\u003e42.8 \u003cspan class=\"text-sm text-slate-500\"\u003eidx\u003c/span\u003e\u003c/p\u003e\n\u003c/div\u003e\n\u003cdiv class=\"bg-slate-900/50 p-3 rounded-lg border border-slate-800\"\u003e\n\u003cp class=\"text-[10px] text-slate-400 uppercase font-mono mb-1\"\u003eDeviation\u003c/p\u003e\n\u003cp class=\"text-xl text-warning font-mono font-medium\"\u003e+2.4σ\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Abstract Chart Placeholder --\u003e\n\u003cdiv class=\"bg-slate-900/50 p-3 rounded-lg border border-slate-800 h-40 flex items-center justify-center relative overflow-hidden\"\u003e\n\u003cdiv class=\"absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent\"\u003e\u003c/div\u003e\n\u003c!-- Using CSS for a simple chart line --\u003e\n\u003csvg class=\"w-full h-full text-primary\" preserveaspectratio=\"none\" viewbox=\"0 0 100 40\"\u003e\n\u003cpath d=\"M0 30 Q 10 25, 20 28 T 40 20 T 60 25 T 80 10 T 100 15\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" vector-effect=\"non-scaling-stroke\"\u003e\u003c/path\u003e\n\u003cpath d=\"M0 30 Q 10 25, 20 28 T 40 20 T 60 25 T 80 10 T 100 15 V 40 H 0 Z\" fill=\"currentColor\" fill-opacity=\"0.2\" stroke=\"none\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\u003cp class=\"absolute top-2 left-2 text-[10px] text-slate-500 font-mono\"\u003e1H Trend\u003c/p\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex gap-2\"\u003e\n\u003cbutton class=\"flex-1 bg-primary hover:bg-primary/90 text-white text-sm font-medium py-2.5 rounded-lg transition-colors\"\u003e\n                        Investigate\n                    \u003c/button\u003e\n\u003cbutton class=\"bg-slate-800 hover:bg-slate-700 text-white p-2.5 rounded-lg transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[20px]\"\u003eshare\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"$Lf\",null,{\"title\":\"Signals Strip Panel\",\"children\":[[\"$\",\"div\",null,{\"className\":\"mb-3 text-sm text-gray-500\",\"children\":[\"Category: \",\"Decision Intelligence\"]}],[\"$\",\"div\",null,{\"className\":\"overflow-hidden rounded border border-gray-200 bg-white\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Signals Strip Panel\",\"srcDoc\":\"$10\",\"className\":\"h-[1100px] w-full\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]]}]\n"])</script></body></html>

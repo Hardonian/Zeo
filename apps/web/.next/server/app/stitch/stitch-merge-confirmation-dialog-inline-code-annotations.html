@@ -1,0 +1,210 @@
+<!DOCTYPE html><!--8ZfsPSrfgPx8SRye8yuF4--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/bc06321d88be975e.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-573fdd58969ad59e.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-baa4ef70fea4d55f.js" async=""></script><script src="/_next/static/chunks/app/error-17b4afe27e88d3cd.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50 text-gray-900"><header class="sticky top-0 z-10 border-b border-gray-200 bg-white/95 backdrop-blur"><div class="mx-auto w-full max-w-6xl px-6 py-4"><div class="flex items-center justify-between"><a class="text-lg font-semibold text-blue-700" href="/">Zeo</a><button type="button" class="rounded border border-gray-300 px-3 py-1 text-sm md:hidden">Menu</button><nav class="hidden items-center gap-4 md:flex"><a class="text-sm transition-colors text-blue-700 font-semibold" href="/">Home</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/features">Features</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/cli">CLI</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/docs">Docs</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/pricing">Pricing</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/about">About</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/stitch">Stitch</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/dashboard">Dashboard</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="text-sm text-gray-700 hover:text-blue-700">GitHub</a><a class="text-sm text-gray-700 hover:text-blue-700" href="/signin">Sign In</a><a class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700" href="/docs/quickstart">Get Started</a></nav></div></div></header><main class="mx-auto w-full max-w-6xl px-6 py-10"><h1 class="mb-6 text-3xl font-semibold">Inline Code Annotations</h1><div class="mb-3 text-sm text-gray-500">Category: <!-- -->Action Guard</div><div class="overflow-hidden rounded border border-gray-200 bg-white"><iframe title="Inline Code Annotations" srcDoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Zeo Inline Code Annotations&lt;/title&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,typography&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;amp;family=JetBrains+Mono:wght@400;500&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script&gt;
+      tailwind.config = {
+        darkMode: &quot;class&quot;,
+        theme: {
+          extend: {
+            colors: {
+              primary: &quot;#3B82F6&quot;, // Blue from screenshot/description
+              &quot;background-light&quot;: &quot;#F9FAFB&quot;, // Light gray background
+              &quot;background-dark&quot;: &quot;#0D1117&quot;, // GitHub dark mode background
+              &quot;card-light&quot;: &quot;#FFFFFF&quot;,
+              &quot;card-dark&quot;: &quot;#161B22&quot;, // GitHub dark mode card
+              &quot;border-light&quot;: &quot;#E5E7EB&quot;,
+              &quot;border-dark&quot;: &quot;#30363D&quot;,
+              &quot;diff-add-light&quot;: &quot;#E6FFEC&quot;,
+              &quot;diff-add-dark&quot;: &quot;#132318&quot;, // Darker green bg
+              &quot;diff-add-text-light&quot;: &quot;#22863A&quot;,
+              &quot;diff-add-text-dark&quot;: &quot;#3FB950&quot;,
+              &quot;diff-del-light&quot;: &quot;#FFEBE9&quot;,
+              &quot;diff-del-dark&quot;: &quot;#291515&quot;, // Darker red bg
+              &quot;diff-del-text-light&quot;: &quot;#CF222E&quot;,
+              &quot;diff-del-text-dark&quot;: &quot;#F85149&quot;,
+            },
+            fontFamily: {
+              sans: [&quot;Inter&quot;, &quot;sans-serif&quot;],
+              mono: [&quot;JetBrains Mono&quot;, &quot;monospace&quot;],
+            },
+            borderRadius: {
+              DEFAULT: &quot;0.375rem&quot;,
+              &#x27;lg&#x27;: &#x27;0.5rem&#x27;,
+              &#x27;xl&#x27;: &#x27;0.75rem&#x27;,
+              &#x27;2xl&#x27;: &#x27;1rem&#x27;,
+            },
+          },
+        },
+      };
+    &lt;/script&gt;
+&lt;style&gt;.no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 font-sans min-h-screen transition-colors duration-200&quot;&gt;
+&lt;header class=&quot;sticky top-0 z-50 bg-card-light/95 dark:bg-card-dark/95 backdrop-blur-sm border-b border-border-light dark:border-border-dark px-4 py-3 flex items-center justify-between&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;div class=&quot;w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold&quot;&gt;
+&lt;span class=&quot;material-icons text-xl&quot;&gt;layers&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;font-semibold text-sm tracking-tight&quot;&gt;Zeo&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;span class=&quot;text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-full border border-gray-200 dark:border-gray-700&quot;&gt;PR #42&lt;/span&gt;
+&lt;button class=&quot;p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400&quot;&gt;
+&lt;span class=&quot;material-icons text-xl&quot;&gt;more_horiz&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/header&gt;
+&lt;main class=&quot;max-w-md mx-auto px-0 pb-20 pt-4&quot;&gt;
+&lt;div class=&quot;px-4 mb-6&quot;&gt;
+&lt;h1 class=&quot;text-xl font-bold mb-1&quot;&gt;Update User Authentication Flow&lt;/h1&gt;
+&lt;div class=&quot;flex items-center text-xs text-gray-500 dark:text-gray-400 gap-2 mb-4&quot;&gt;
+&lt;span class=&quot;flex items-center gap-1 text-green-600 dark:text-green-400&quot;&gt;
+&lt;span class=&quot;material-icons text-sm&quot;&gt;call_split&lt;/span&gt; Open
+                &lt;/span&gt;
+&lt;span&gt;•&lt;/span&gt;
+&lt;span&gt;opened 2 hours ago&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg p-3 flex items-start gap-3&quot;&gt;
+&lt;div class=&quot;bg-primary/10 p-1.5 rounded-full mt-0.5&quot;&gt;
+&lt;span class=&quot;material-icons text-primary text-sm&quot;&gt;auto_awesome&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;h3 class=&quot;text-sm font-semibold text-gray-900 dark:text-gray-100&quot;&gt;Zeo Checks&lt;/h3&gt;
+&lt;p class=&quot;text-xs text-gray-600 dark:text-gray-400 mt-1&quot;&gt;2 potential issues detected in public contracts.&lt;/p&gt;
+&lt;/div&gt;
+&lt;span class=&quot;material-icons text-gray-400 text-sm ml-auto&quot;&gt;chevron_right&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;bg-card-light dark:bg-card-dark border-y border-border-light dark:border-border-dark mt-4&quot;&gt;
+&lt;div class=&quot;px-4 py-2 border-b border-border-light dark:border-border-dark flex items-center justify-between bg-gray-50 dark:bg-[#1C2128]&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2 overflow-hidden&quot;&gt;
+&lt;span class=&quot;material-icons text-gray-400 text-sm&quot;&gt;description&lt;/span&gt;
+&lt;span class=&quot;text-xs font-mono text-gray-600 dark:text-gray-300 truncate&quot;&gt;src/auth/UserSession.ts&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-xs text-gray-500&quot;&gt;
+&lt;span class=&quot;text-diff-add-text-light dark:text-diff-add-text-dark&quot;&gt;+12&lt;/span&gt;
+&lt;span class=&quot;text-diff-del-text-light dark:text-diff-del-text-dark ml-1&quot;&gt;-4&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;font-mono text-[11px] leading-5 overflow-x-auto no-scrollbar relative&quot;&gt;
+&lt;div class=&quot;flex&quot;&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;23&lt;/div&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;23&lt;/div&gt;
+&lt;div class=&quot;px-2 py-0.5 text-gray-600 dark:text-gray-400 whitespace-pre&quot;&gt;  public async validateSession(token: string): Promise&amp;lt;boolean&amp;gt; {&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex&quot;&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;24&lt;/div&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;24&lt;/div&gt;
+&lt;div class=&quot;px-2 py-0.5 text-gray-600 dark:text-gray-400 whitespace-pre&quot;&gt;    const session = await this.store.get(token);&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex bg-diff-del-light dark:bg-diff-del-dark&quot;&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-diff-del-text-light dark:text-diff-del-text-dark select-none bg-diff-del-light dark:bg-diff-del-dark border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;25&lt;/div&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-gray-400 select-none bg-diff-del-light dark:bg-diff-del-dark border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;px-2 py-0.5 text-diff-del-text-light dark:text-diff-del-text-dark whitespace-pre&quot;&gt;-   if (!session || session.isExpired) return false;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex bg-diff-add-light dark:bg-diff-add-dark group relative&quot;&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-gray-400 select-none bg-diff-add-light dark:bg-diff-add-dark border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-diff-add-text-light dark:text-diff-add-text-dark select-none bg-diff-add-light dark:bg-diff-add-dark border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;25&lt;/div&gt;
+&lt;div class=&quot;px-2 py-0.5 text-diff-add-text-light dark:text-diff-add-text-dark whitespace-pre flex-1&quot;&gt;+   if (!session || !session.isValid()) return false;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex bg-diff-add-light dark:bg-diff-add-dark relative&quot;&gt;
+&lt;div class=&quot;absolute left-0 top-0 bottom-0 w-8 z-10 flex items-center justify-center&quot;&gt;
+&lt;button class=&quot;w-5 h-5 bg-primary text-white rounded shadow-md flex items-center justify-center hover:scale-110 transition-transform cursor-pointer animate-pulse&quot;&gt;
+&lt;span class=&quot;material-icons&quot; style=&quot;font-size: 14px;&quot;&gt;priority_high&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-gray-400 select-none bg-diff-add-light dark:bg-diff-add-dark border-r border-border-light dark:border-border-dark py-0.5 opacity-0&quot;&gt;&lt;/div&gt; 
+&lt;div class=&quot;w-8 shrink-0 text-center text-diff-add-text-light dark:text-diff-add-text-dark select-none bg-diff-add-light dark:bg-diff-add-dark border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;26&lt;/div&gt;
+&lt;div class=&quot;px-2 py-0.5 text-diff-add-text-light dark:text-diff-add-text-dark whitespace-pre flex-1&quot;&gt;+   return this.updateLastAccess(session.id);&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;absolute left-10 top-[120px] w-64 z-20&quot;&gt;
+&lt;div class=&quot;bg-card-light dark:bg-[#22272E] rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 p-4 transform transition-all duration-200&quot;&gt;
+&lt;div class=&quot;absolute -left-2 top-4 w-4 h-4 bg-card-light dark:bg-[#22272E] border-l border-b border-gray-200 dark:border-gray-700 transform rotate-45&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;relative z-10&quot;&gt;
+&lt;div class=&quot;flex items-start gap-3 mb-2&quot;&gt;
+&lt;div class=&quot;shrink-0 mt-0.5&quot;&gt;
+&lt;span class=&quot;material-icons text-primary&quot; style=&quot;font-size: 18px;&quot;&gt;info&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;space-y-2&quot;&gt;
+&lt;p class=&quot;text-xs font-medium text-gray-800 dark:text-gray-200 leading-relaxed&quot;&gt;
+                                        This change affects a public contract.
+                                    &lt;/p&gt;
+&lt;p class=&quot;text-xs text-gray-500 dark:text-gray-400 leading-relaxed&quot;&gt;
+                                        Docs reference outdated behavior for &lt;code class=&quot;bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-gray-700 dark:text-gray-300&quot;&gt;updateLastAccess&lt;/code&gt;.
+                                    &lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center justify-end gap-3 mt-3 pt-2 border-t border-gray-100 dark:border-gray-700&quot;&gt;
+&lt;button class=&quot;text-[11px] font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors&quot;&gt;
+                                    Dismiss
+                                &lt;/button&gt;
+&lt;button class=&quot;text-[11px] font-semibold text-primary hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1 transition-colors&quot;&gt;
+                                    See Why
+                                    &lt;span class=&quot;material-icons&quot; style=&quot;font-size: 12px;&quot;&gt;arrow_forward&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex&quot;&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;27&lt;/div&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;27&lt;/div&gt;
+&lt;div class=&quot;px-2 py-0.5 text-gray-600 dark:text-gray-400 whitespace-pre&quot;&gt;  }&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex&quot;&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;28&lt;/div&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5&quot;&gt;28&lt;/div&gt;
+&lt;div class=&quot;px-2 py-0.5 text-gray-600 dark:text-gray-400 whitespace-pre&quot;&gt;}&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;h-20 bg-background-light dark:bg-background-dark&quot;&gt;&lt;/div&gt; 
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;px-4 mt-6&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2 mb-2&quot;&gt;
+&lt;span class=&quot;material-icons text-gray-400 text-sm&quot;&gt;folder_open&lt;/span&gt;
+&lt;h3 class=&quot;text-sm font-semibold text-gray-700 dark:text-gray-300&quot;&gt;Related Artifacts&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div class=&quot;bg-card-light dark:bg-card-dark rounded-lg border border-border-light dark:border-border-dark p-3 shadow-sm flex items-center justify-between&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;div class=&quot;bg-purple-100 dark:bg-purple-900/30 p-2 rounded-md&quot;&gt;
+&lt;span class=&quot;material-icons text-purple-600 dark:text-purple-400 text-sm&quot;&gt;article&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;p class=&quot;text-xs font-semibold text-gray-900 dark:text-gray-100&quot;&gt;API Documentation&lt;/p&gt;
+&lt;p class=&quot;text-[10px] text-gray-500&quot;&gt;Last updated 2 days ago&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;button class=&quot;text-xs text-primary font-medium px-2 py-1 bg-primary/10 rounded hover:bg-primary/20 transition-colors&quot;&gt;
+                    View
+                &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/main&gt;
+&lt;div class=&quot;fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-card-light dark:bg-[#22272E] p-1.5 rounded-full shadow-lg border border-border-light dark:border-gray-700 z-50&quot;&gt;
+&lt;button class=&quot;w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors&quot;&gt;
+&lt;span class=&quot;material-icons text-xl&quot;&gt;chevron_left&lt;/span&gt;
+&lt;/button&gt;
+&lt;span class=&quot;text-xs font-mono px-2 text-gray-500 dark:text-gray-400&quot;&gt;1 / 4 files&lt;/span&gt;
+&lt;button class=&quot;w-10 h-10 rounded-full flex items-center justify-center text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors&quot;&gt;
+&lt;span class=&quot;material-icons text-xl&quot;&gt;chevron_right&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;&lt;/html&gt;" class="h-[1100px] w-full" sandbox="allow-scripts allow-same-origin"></iframe></div></main><footer class="border-t border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-5 text-sm text-gray-600 md:flex-row md:items-center md:justify-between"><span>Confidence range, assumptions, provenance, and sensitivity first.</span><div class="flex flex-wrap gap-3"><a class="hover:text-blue-700" href="/docs">Docs</a><a class="hover:text-blue-700" href="/features">Features</a><a class="hover:text-blue-700" href="/cli">CLI</a><a class="hover:text-blue-700" href="/changelog">Changelog</a><a class="hover:text-blue-700" href="/status">Status</a><a class="hover:text-blue-700" href="/legal/privacy">Privacy</a><a class="hover:text-blue-700" href="/legal/terms">Terms</a><a class="hover:text-blue-700" href="/stitch">Stitch</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="hover:text-blue-700">GitHub</a></div></div></footer></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-573fdd58969ad59e.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-17b4afe27e88d3cd.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/bc06321d88be975e.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"8ZfsPSrfgPx8SRye8yuF4\",\"c\":[\"\",\"stitch\",\"stitch-merge-confirmation-dialog-inline-code-annotations\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"stitch\",{\"children\":[[\"slug\",\"stitch-merge-confirmation-dialog-inline-code-annotations\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/bc06321d88be975e.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:I[785,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"PublicShell\"]\n10:T308d,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eZeo Inline Code Annotations\u003c/title\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,typography\"\u003e\u003c/script\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700\u0026amp;family=JetBrains+Mono:wght@400;500\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\"/\u003e\n\u003cscript\u003e\n      tailwind.config = {\n        darkMode: \"class\",\n        theme: {\n          extend: {\n            colors: {\n              primary: \"#3B82F6\", // Blue from screenshot/description\n              \"background-light\": \"#F9FAFB\", // Light gray background\n              \"background-dark\": \"#0D1117\", // GitHub dark mode background\n              \"card-light\": \"#FFFFFF\",\n              \"card-dark\": \"#161B22\", // GitHub dark mode card\n              \"border-light\": \"#E5E7EB\",\n              \"border-dark\": \"#30363D\",\n              \"diff-add-light\": \"#E6FFEC\",\n              \"diff-add-dark\": \"#132318\", // Darker green bg\n              \"diff-add-text-light\": \"#22863A\",\n              \"diff-add-text-dark\": \"#3FB950\",\n              \"diff-del-light\": \"#FFEBE9\",\n              \"diff-del-dark\": \"#291515\", // Darker red bg\n              \"diff-del-text-light\": \"#CF222E\",\n              \"diff-del-text-dark\": \"#F85149\",\n            },\n            fontFamily: {\n              sans: [\"Inter\", \"sans-serif\"],\n              mono: [\"JetBrains Mono\", \"monospace\"],\n            },\n            borderRadius: {\n              DEFAULT: \"0.375rem\",\n              'lg': '0.5rem',\n              'xl': '0.75rem',\n              '2xl': '1rem',\n            },\n          },\n        },\n      };\n    \u003c/script\u003e\n\u003cstyle\u003e.no-scrollbar::-webkit-scrollbar {\n            display: none;\n        }\n        .no-scrollbar {\n            -ms-overflow-style: none;\n            scrollbar-width: none;\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 font-sans min-h-screen transition-colors duration-200\"\u003e\n\u003cheader class=\"sticky top-0 z-50 bg-card-light/95 dark:bg-card-dark/95 backdrop-blur-sm border-b border-border-light dark:border-border-dark px-4 py-3 flex items-center justify-between\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cdiv class=\"w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold\"\u003e\n\u003cspan class=\"material-icons text-xl\"\u003elayers\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"font-semibold text-sm tracking-tight\"\u003eZeo\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cspan class=\"text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-full border border-gray-200 dark:border-gray-700\"\u003ePR #42\u003c/span\u003e\n\u003cbutton class=\"p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400\"\u003e\n\u003cspan class=\"material-icons text-xl\"\u003emore_horiz\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/header\u003e\n\u003cmain class=\"max-w-md mx-auto px-0 pb-20 pt-4\"\u003e\n\u003cdiv class=\"px-4 mb-6\"\u003e\n\u003ch1 class=\"text-xl font-bold mb-1\"\u003eUpdate User Authentication Flow\u003c/h1\u003e\n\u003cdiv class=\"flex items-center text-xs text-gray-500 dark:text-gray-400 gap-2 mb-4\"\u003e\n\u003cspan class=\"flex items-center gap-1 text-green-600 dark:text-green-400\"\u003e\n\u003cspan class=\"material-icons text-sm\"\u003ecall_split\u003c/span\u003e Open\n                \u003c/span\u003e\n\u003cspan\u003e•\u003c/span\u003e\n\u003cspan\u003eopened 2 hours ago\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg p-3 flex items-start gap-3\"\u003e\n\u003cdiv class=\"bg-primary/10 p-1.5 rounded-full mt-0.5\"\u003e\n\u003cspan class=\"material-icons text-primary text-sm\"\u003eauto_awesome\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003ch3 class=\"text-sm font-semibold text-gray-900 dark:text-gray-100\"\u003eZeo Checks\u003c/h3\u003e\n\u003cp class=\"text-xs text-gray-600 dark:text-gray-400 mt-1\"\u003e2 potential issues detected in public contracts.\u003c/p\u003e\n\u003c/div\u003e\n\u003cspan class=\"material-icons text-gray-400 text-sm ml-auto\"\u003echevron_right\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"bg-card-light dark:bg-card-dark border-y border-border-light dark:border-border-dark mt-4\"\u003e\n\u003cdiv class=\"px-4 py-2 border-b border-border-light dark:border-border-dark flex items-center justify-between bg-gray-50 dark:bg-[#1C2128]\"\u003e\n\u003cdiv class=\"flex items-center gap-2 overflow-hidden\"\u003e\n\u003cspan class=\"material-icons text-gray-400 text-sm\"\u003edescription\u003c/span\u003e\n\u003cspan class=\"text-xs font-mono text-gray-600 dark:text-gray-300 truncate\"\u003esrc/auth/UserSession.ts\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-xs text-gray-500\"\u003e\n\u003cspan class=\"text-diff-add-text-light dark:text-diff-add-text-dark\"\u003e+12\u003c/span\u003e\n\u003cspan class=\"text-diff-del-text-light dark:text-diff-del-text-dark ml-1\"\u003e-4\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"font-mono text-[11px] leading-5 overflow-x-auto no-scrollbar relative\"\u003e\n\u003cdiv class=\"flex\"\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5\"\u003e23\u003c/div\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5\"\u003e23\u003c/div\u003e\n\u003cdiv class=\"px-2 py-0.5 text-gray-600 dark:text-gray-400 whitespace-pre\"\u003e  public async validateSession(token: string): Promise\u0026lt;boolean\u0026gt; {\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex\"\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5\"\u003e24\u003c/div\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5\"\u003e24\u003c/div\u003e\n\u003cdiv class=\"px-2 py-0.5 text-gray-600 dark:text-gray-400 whitespace-pre\"\u003e    const session = await this.store.get(token);\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex bg-diff-del-light dark:bg-diff-del-dark\"\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-diff-del-text-light dark:text-diff-del-text-dark select-none bg-diff-del-light dark:bg-diff-del-dark border-r border-border-light dark:border-border-dark py-0.5\"\u003e25\u003c/div\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-gray-400 select-none bg-diff-del-light dark:bg-diff-del-dark border-r border-border-light dark:border-border-dark py-0.5\"\u003e\u003c/div\u003e\n\u003cdiv class=\"px-2 py-0.5 text-diff-del-text-light dark:text-diff-del-text-dark whitespace-pre\"\u003e-   if (!session || session.isExpired) return false;\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex bg-diff-add-light dark:bg-diff-add-dark group relative\"\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-gray-400 select-none bg-diff-add-light dark:bg-diff-add-dark border-r border-border-light dark:border-border-dark py-0.5\"\u003e\u003c/div\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-diff-add-text-light dark:text-diff-add-text-dark select-none bg-diff-add-light dark:bg-diff-add-dark border-r border-border-light dark:border-border-dark py-0.5\"\u003e25\u003c/div\u003e\n\u003cdiv class=\"px-2 py-0.5 text-diff-add-text-light dark:text-diff-add-text-dark whitespace-pre flex-1\"\u003e+   if (!session || !session.isValid()) return false;\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex bg-diff-add-light dark:bg-diff-add-dark relative\"\u003e\n\u003cdiv class=\"absolute left-0 top-0 bottom-0 w-8 z-10 flex items-center justify-center\"\u003e\n\u003cbutton class=\"w-5 h-5 bg-primary text-white rounded shadow-md flex items-center justify-center hover:scale-110 transition-transform cursor-pointer animate-pulse\"\u003e\n\u003cspan class=\"material-icons\" style=\"font-size: 14px;\"\u003epriority_high\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-gray-400 select-none bg-diff-add-light dark:bg-diff-add-dark border-r border-border-light dark:border-border-dark py-0.5 opacity-0\"\u003e\u003c/div\u003e \n\u003cdiv class=\"w-8 shrink-0 text-center text-diff-add-text-light dark:text-diff-add-text-dark select-none bg-diff-add-light dark:bg-diff-add-dark border-r border-border-light dark:border-border-dark py-0.5\"\u003e26\u003c/div\u003e\n\u003cdiv class=\"px-2 py-0.5 text-diff-add-text-light dark:text-diff-add-text-dark whitespace-pre flex-1\"\u003e+   return this.updateLastAccess(session.id);\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"absolute left-10 top-[120px] w-64 z-20\"\u003e\n\u003cdiv class=\"bg-card-light dark:bg-[#22272E] rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 p-4 transform transition-all duration-200\"\u003e\n\u003cdiv class=\"absolute -left-2 top-4 w-4 h-4 bg-card-light dark:bg-[#22272E] border-l border-b border-gray-200 dark:border-gray-700 transform rotate-45\"\u003e\u003c/div\u003e\n\u003cdiv class=\"relative z-10\"\u003e\n\u003cdiv class=\"flex items-start gap-3 mb-2\"\u003e\n\u003cdiv class=\"shrink-0 mt-0.5\"\u003e\n\u003cspan class=\"material-icons text-primary\" style=\"font-size: 18px;\"\u003einfo\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"space-y-2\"\u003e\n\u003cp class=\"text-xs font-medium text-gray-800 dark:text-gray-200 leading-relaxed\"\u003e\n                                        This change affects a public contract.\n                                    \u003c/p\u003e\n\u003cp class=\"text-xs text-gray-500 dark:text-gray-400 leading-relaxed\"\u003e\n                                        Docs reference outdated behavior for \u003ccode class=\"bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-gray-700 dark:text-gray-300\"\u003eupdateLastAccess\u003c/code\u003e.\n                                    \u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center justify-end gap-3 mt-3 pt-2 border-t border-gray-100 dark:border-gray-700\"\u003e\n\u003cbutton class=\"text-[11px] font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors\"\u003e\n                                    Dismiss\n                                \u003c/button\u003e\n\u003cbutton class=\"text-[11px] font-semibold text-primary hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1 transition-colors\"\u003e\n                                    See Why\n                                    \u003cspan class=\"material-icons\" style=\"font-size: 12px;\"\u003earrow_forward\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex\"\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5\"\u003e27\u003c/div\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5\"\u003e27\u003c/div\u003e\n\u003cdiv class=\"px-2 py-0.5 text-gray-600 dark:text-gray-400 whitespace-pre\"\u003e  }\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex\"\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5\"\u003e28\u003c/div\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-gray-400 select-none bg-white dark:bg-[#0D1117] border-r border-border-light dark:border-border-dark py-0.5\"\u003e28\u003c/div\u003e\n\u003cdiv class=\"px-2 py-0.5 text-gray-600 dark:text-gray-400 whitespace-pre\"\u003e}\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"h-20 bg-background-light dark:bg-background-dark\"\u003e\u003c/div\u003e \n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"px-4 mt-6\"\u003e\n\u003cdiv class=\"flex items-center gap-2 mb-2\"\u003e\n\u003cspan class=\"material-icons text-gray-400 text-sm\"\u003efolder_open\u003c/span\u003e\n\u003ch3 class=\"text-sm font-semibold text-gray-700 dark:text-gray-300\"\u003eRelated Artifacts\u003c/h3\u003e\n\u003c/div\u003e\n\u003cdiv class=\"bg-card-light dark:bg-card-dark rounded-lg border border-border-light dark:border-border-dark p-3 shadow-sm flex items-center justify-between\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cdiv class=\"bg-purple-100 dark:bg-purple-900/30 p-2 rounded-md\"\u003e\n\u003cspan class=\"material-icons text-purple-600 dark:text-purple-400 text-sm\"\u003earticle\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003cp class=\"text-xs font-semibold text-gray-900 dark:text-gray-100\"\u003eAPI Documentation\u003c/p\u003e\n\u003cp class=\"text-[10px] text-gray-500\"\u003eLast updated 2 days ago\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cbutton class=\"text-xs text-primary font-medium px-2 py-1 bg-primary/10 rounded hover:bg-primary/20 transition-colors\"\u003e\n                    View\n                \u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/main\u003e\n\u003cdiv class=\"fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-card-light dark:bg-[#22272E] p-1.5 rounded-full shadow-lg border border-border-light dark:border-gray-700 z-50\"\u003e\n\u003cbutton class=\"w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors\"\u003e\n\u003cspan class=\"material-icons text-xl\"\u003echevron_left\u003c/span\u003e\n\u003c/button\u003e\n\u003cspan class=\"text-xs font-mono px-2 text-gray-500 dark:text-gray-400\"\u003e1 / 4 files\u003c/span\u003e\n\u003cbutton class=\"w-10 h-10 rounded-full flex items-center justify-center text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors\"\u003e\n\u003cspan class=\"material-icons text-xl\"\u003echevron_right\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"$Lf\",null,{\"title\":\"Inline Code Annotations\",\"children\":[[\"$\",\"div\",null,{\"className\":\"mb-3 text-sm text-gray-500\",\"children\":[\"Category: \",\"Action Guard\"]}],[\"$\",\"div\",null,{\"className\":\"overflow-hidden rounded border border-gray-200 bg-white\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Inline Code Annotations\",\"srcDoc\":\"$10\",\"className\":\"h-[1100px] w-full\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]]}]\n"])</script></body></html>

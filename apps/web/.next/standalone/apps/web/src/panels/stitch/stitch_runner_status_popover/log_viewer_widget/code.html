@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zeo Log Viewer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#136dec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101822",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #233348;
+            border-radius: 2px;
+        }
+        .log-line:hover {
+            background-color: rgba(19, 109, 236, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200">
+<div class="flex flex-col h-screen max-w-full overflow-hidden border border-slate-200 dark:border-slate-800">
+<!-- Header Section -->
+<header class="flex items-center justify-between px-4 py-3 bg-white dark:bg-background-dark border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-8 rounded bg-primary text-white">
+<span class="material-symbols-outlined text-lg">terminal</span>
+</div>
+<div>
+<h1 class="text-sm font-bold tracking-tight text-slate-900 dark:text-white uppercase leading-none">Zeo</h1>
+<p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">CLUSTER-PROD-01 • LOGS</p>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors text-slate-600 dark:text-slate-400" title="Copy to Clipboard">
+<span class="material-symbols-outlined text-xl">content_copy</span>
+</button>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors text-slate-600 dark:text-slate-400" title="Download Full Log">
+<span class="material-symbols-outlined text-xl">download</span>
+</button>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-800 mx-1"></div>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+</div>
+</header>
+<!-- Search and Filter Bar -->
+<div class="flex flex-col md:flex-row gap-2 px-4 py-2 bg-slate-50 dark:bg-[#151e2b] border-b border-slate-200 dark:border-slate-800">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="w-full bg-white dark:bg-[#1a2636] border border-slate-200 dark:border-slate-700 rounded py-1.5 pl-10 pr-4 text-sm focus:ring-1 focus:ring-primary focus:border-primary dark:text-white placeholder:text-slate-500" placeholder="Filter logs (grep...)" type="text"/>
+</div>
+<div class="flex gap-2">
+<div class="flex rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1a2636] overflow-hidden">
+<button class="px-3 py-1 text-xs font-semibold bg-primary text-white">ALL</button>
+<button class="px-3 py-1 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 border-l border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400">INFO</button>
+<button class="px-3 py-1 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 border-l border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400">WARN</button>
+<button class="px-3 py-1 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 border-l border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400">ERROR</button>
+</div>
+<button class="flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1a2636] text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">wrap_text</span>
+                    Wrap
+                </button>
+</div>
+</div>
+<!-- Log Content Viewport -->
+<div class="flex-1 overflow-auto bg-white dark:bg-background-dark font-mono text-[13px] custom-scrollbar selection:bg-primary/30">
+<div class="min-w-full w-max flex flex-col py-2">
+<!-- Log Line: INFO -->
+<div class="log-line group flex items-start px-4 py-0.5 whitespace-nowrap">
+<span class="text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none">[2023-11-15 14:30:01.423]</span>
+<span class="w-16 shrink-0 text-primary font-bold select-none px-1">INFO</span>
+<span class="text-slate-700 dark:text-slate-300">Initialized API gateway controller. Mode: high-availability.</span>
+</div>
+<!-- Log Line: INFO -->
+<div class="log-line group flex items-start px-4 py-0.5 whitespace-nowrap">
+<span class="text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none">[2023-11-15 14:30:02.112]</span>
+<span class="w-16 shrink-0 text-primary font-bold select-none px-1">INFO</span>
+<span class="text-slate-700 dark:text-slate-300">Connection established with Redis cluster at 10.0.4.12:6379</span>
+</div>
+<!-- Log Line: WARN -->
+<div class="log-line group flex items-start px-4 py-0.5 whitespace-nowrap bg-amber-500/5">
+<span class="text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none">[2023-11-15 14:30:05.890]</span>
+<span class="w-16 shrink-0 text-amber-500 font-bold select-none px-1">WARN</span>
+<span class="text-slate-700 dark:text-slate-300">Latency spike detected on upstream service 'auth-v2'. Mean RTT: 450ms.</span>
+</div>
+<!-- Log Line: INFO -->
+<div class="log-line group flex items-start px-4 py-0.5 whitespace-nowrap">
+<span class="text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none">[2023-11-15 14:30:10.002]</span>
+<span class="w-16 shrink-0 text-primary font-bold select-none px-1">INFO</span>
+<span class="text-slate-700 dark:text-slate-300">Health check passed for node worker-04.</span>
+</div>
+<!-- Log Line: ERROR -->
+<div class="log-line group flex items-start px-4 py-0.5 whitespace-nowrap bg-red-500/10">
+<span class="text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none">[2023-11-15 14:31:22.567]</span>
+<span class="w-16 shrink-0 text-red-500 font-bold select-none px-1">ERROR</span>
+<span class="text-slate-700 dark:text-slate-300">Failed to sync state with peer node-02. Connection reset by peer.</span>
+</div>
+<!-- Log Line: Stack Trace -->
+<div class="log-line group flex items-start px-4 py-0.5 whitespace-nowrap opacity-70">
+<span class="text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none"></span>
+<span class="w-16 shrink-0 select-none"></span>
+<span class="text-slate-600 dark:text-slate-400">at Internal/Protocol/SyncEngine.ts:182:24</span>
+</div>
+<div class="log-line group flex items-start px-4 py-0.5 whitespace-nowrap opacity-70">
+<span class="text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none"></span>
+<span class="w-16 shrink-0 select-none"></span>
+<span class="text-slate-600 dark:text-slate-400">at async Node.processQueue (Internal/Core/Node.ts:44:11)</span>
+</div>
+<!-- Log Line: INFO -->
+<div class="log-line group flex items-start px-4 py-0.5 whitespace-nowrap">
+<span class="text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none">[2023-11-15 14:31:25.101]</span>
+<span class="w-16 shrink-0 text-primary font-bold select-none px-1">INFO</span>
+<span class="text-slate-700 dark:text-slate-300">Retrying sync operation (attempt 1/5)...</span>
+</div>
+<!-- Log Line: WARN -->
+<div class="log-line group flex items-start px-4 py-0.5 whitespace-nowrap bg-amber-500/5">
+<span class="text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none">[2023-11-15 14:31:30.992]</span>
+<span class="w-16 shrink-0 text-amber-500 font-bold select-none px-1">WARN</span>
+<span class="text-slate-700 dark:text-slate-300">Memory usage for 'control-plane-api' exceeded 85% threshold.</span>
+</div>
+<!-- Log Line: INFO -->
+<div class="log-line group flex items-start px-4 py-0.5 whitespace-nowrap">
+<span class="text-slate-400 dark:text-slate-500 w-44 shrink-0 select-none">[2023-11-15 14:32:01.000]</span>
+<span class="w-16 shrink-0 text-primary font-bold select-none px-1">INFO</span>
+<span class="text-slate-700 dark:text-slate-300">Snapshot created successfully: snap_20231115_143201.db</span>
+</div>
+<!-- Empty State / Loading Pulse -->
+<div class="flex items-center gap-3 px-4 py-3">
+<div class="flex gap-1.5">
+<div class="size-1.5 rounded-full bg-primary animate-pulse"></div>
+<div class="size-1.5 rounded-full bg-primary/60 animate-pulse [animation-delay:0.2s]"></div>
+<div class="size-1.5 rounded-full bg-primary/30 animate-pulse [animation-delay:0.4s]"></div>
+</div>
+<span class="text-xs italic text-slate-400 dark:text-slate-500">Waiting for live stream logs...</span>
+</div>
+</div>
+</div>
+<!-- Footer / Status Bar -->
+<footer class="flex items-center justify-between px-4 py-2 bg-slate-50 dark:bg-background-dark border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+<span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Live</span>
+</div>
+<div class="text-[11px] text-slate-400 font-medium">
+                    102.4 KB/s
+                </div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+                    Follow Tail
+                </button>
+</div>
+</footer>
+</div>
+</body></html>

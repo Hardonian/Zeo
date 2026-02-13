@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/stitch/layout,_N_T_/stitch/[slug]/layout,_N_T_/stitch/[slug]/page,_N_T_/stitch/stitch-merge-confirmation-dialog-personal-impact-report"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/stitch/$d$slug/__PAGE__",
+    "/stitch/$d$slug",
+    "/stitch",
+    "/_index",
+    "/_head"
+  ]
+}

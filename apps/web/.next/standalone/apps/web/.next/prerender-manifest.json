@@ -98,6 +98,54 @@
         "x-next-revalidate-tag-token"
       ]
     },
+    "/changelog": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/changelog",
+      "dataRoute": "/changelog.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/cli": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/cli",
+      "dataRoute": "/cli.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
     "/compare": {
       "experimentalBypassFor": [
         {
@@ -218,6 +266,150 @@
         "x-next-revalidate-tag-token"
       ]
     },
+    "/docs/github": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/docs/github",
+      "dataRoute": "/docs/github.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/docs/install": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/docs/install",
+      "dataRoute": "/docs/install.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/docs": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/docs",
+      "dataRoute": "/docs.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/docs/quickstart": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/docs/quickstart",
+      "dataRoute": "/docs/quickstart.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/faq": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/faq",
+      "dataRoute": "/faq.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/features": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/features",
+      "dataRoute": "/features.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
     "/inbox": {
       "experimentalBypassFor": [
         {
@@ -257,6 +449,102 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/intake",
       "dataRoute": "/intake.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/legal/privacy": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/legal/privacy",
+      "dataRoute": "/legal/privacy.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/legal/terms": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/legal/terms",
+      "dataRoute": "/legal/terms.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/mcp": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/mcp",
+      "dataRoute": "/mcp.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/oss": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/oss",
+      "dataRoute": "/oss.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -487,6 +775,54 @@
         "x-next-revalidate-tag-token"
       ]
     },
+    "/runtime": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/runtime",
+      "dataRoute": "/runtime.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/signup": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/signup",
+      "dataRoute": "/signup.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
     "/sitemap.xml": {
       "initialHeaders": {
         "cache-control": "public, max-age=3600",
@@ -516,7 +852,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/ai-proposed-kpi-review": {
+    "/status": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -529,8 +865,1160 @@
         }
       ],
       "initialRevalidateSeconds": false,
+      "srcRoute": "/status",
+      "dataRoute": "/status.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-cli-assist-overlay-cli-assist-overlay": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-cli-assist-overlay-cli-assist-overlay.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-cli-assist-overlay-dry-run-summary-modal": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-cli-assist-overlay-dry-run-summary-modal.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-cli-assist-overlay-enterprise-execution-history": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-cli-assist-overlay-enterprise-execution-history.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-cli-assist-overlay-enterprise-promotion-panel": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-cli-assist-overlay-enterprise-promotion-panel.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-cli-assist-overlay-inline-cell-annotations": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-cli-assist-overlay-inline-cell-annotations.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-cli-assist-overlay-notebook-header-overlay-oss": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-cli-assist-overlay-notebook-header-overlay-oss.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-cli-assist-overlay-notebook-header-policy-violation": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-cli-assist-overlay-notebook-header-policy-violation.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-cli-assist-overlay-org-policies-configuration": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-cli-assist-overlay-org-policies-configuration.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-cli-assist-overlay-view-policy-detail": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-cli-assist-overlay-view-policy-detail.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-assumption-inspector-panel": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-assumption-inspector-panel.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-audit-packet-builder": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-audit-packet-builder.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-bias-inspector-and-counterweights": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-bias-inspector-and-counterweights.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-branch-explorer-panel": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-branch-explorer-panel.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-collaboration-and-belief-overlap-view": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-collaboration-and-belief-overlap-view.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-contribution-and-epistemic-leaderboard": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-contribution-and-epistemic-leaderboard.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-decision-branching-view-1": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-decision-branching-view-1.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-decision-branching-view-2": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-decision-branching-view-2.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-decision-composer-panel": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-decision-composer-panel.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-decision-memory-timeline": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-decision-memory-timeline.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-edge-status-and-connectivity-1": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-edge-status-and-connectivity-1.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-edge-status-and-connectivity-2": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-edge-status-and-connectivity-2.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-evidence-and-inputs-ledger": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-evidence-and-inputs-ledger.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-evidence-inbox-panel-1": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-evidence-inbox-panel-1.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-evidence-inbox-panel-2": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-evidence-inbox-panel-2.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-evidence-request-tracker": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-evidence-request-tracker.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-explainability-viewer-panel": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-explainability-viewer-panel.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-model-calibration-panel": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-model-calibration-panel.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-option-value-inspector": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-option-value-inspector.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-processing-and-hashing-state": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-processing-and-hashing-state.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-provenance-explorer-panel": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-provenance-explorer-panel.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-quick-capture-panel-1": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-quick-capture-panel-1.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-quick-capture-panel-2": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-quick-capture-panel-2.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-risk-tier-and-governance-panel-1": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-risk-tier-and-governance-panel-1.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-risk-tier-and-governance-panel-2": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-risk-tier-and-governance-panel-2.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-scenario-comparison-matrix-1": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-scenario-comparison-matrix-1.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-scenario-comparison-matrix-2": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-scenario-comparison-matrix-2.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-sensitivity-and-flip-thresholds-panel": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-sensitivity-and-flip-thresholds-panel.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-signals-strip-panel": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-signals-strip-panel.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-signed-packet-receipt-and-manifest": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-signed-packet-receipt-and-manifest.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-structured-debate-panel": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-structured-debate-panel.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-user-epistemic-profile-deep-dive-1": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-user-epistemic-profile-deep-dive-1.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-user-epistemic-profile-deep-dive-2": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-user-epistemic-profile-deep-dive-2.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-decision-branching-view-zeo-decision-dashboard": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-decision-branching-view-zeo-decision-dashboard.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-merge-confirmation-dialog-central-activity-feed-1": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-central-activity-feed-1.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-merge-confirmation-dialog-central-activity-feed-2": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-central-activity-feed-2.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-merge-confirmation-dialog-doc-sync-drift-explanation-1": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-doc-sync-drift-explanation-1.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-merge-confirmation-dialog-doc-sync-drift-explanation-2": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/stitch/[slug]",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-doc-sync-drift-explanation-2.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/stitch/stitch-merge-confirmation-dialog-ide-nudge-widget": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/ai-proposed-kpi-review.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-ide-nudge-widget.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -540,7 +2028,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/assumption-inspector-panel": {
+    "/stitch/stitch-merge-confirmation-dialog-in-line-explanation-popover-1": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -554,7 +2042,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/assumption-inspector-panel.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-in-line-explanation-popover-1.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -564,7 +2052,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/audit-and-provenance-ledger": {
+    "/stitch/stitch-merge-confirmation-dialog-in-line-explanation-popover-2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -578,7 +2066,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/audit-and-provenance-ledger.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-in-line-explanation-popover-2.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -588,7 +2076,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/audit-packet-builder": {
+    "/stitch/stitch-merge-confirmation-dialog-inline-code-annotations": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -602,7 +2090,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/audit-packet-builder.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-inline-code-annotations.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -612,7 +2100,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/bias-inspector-and-counterweights": {
+    "/stitch/stitch-merge-confirmation-dialog-merge-confirmation-dialog": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -626,7 +2114,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/bias-inspector-and-counterweights.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-merge-confirmation-dialog.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -636,7 +2124,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/branch-explorer-panel": {
+    "/stitch/stitch-merge-confirmation-dialog-personal-impact-report": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -650,7 +2138,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/branch-explorer-panel.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-personal-impact-report.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -660,7 +2148,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/causal-study-builder-1": {
+    "/stitch/stitch-merge-confirmation-dialog-pr-sidebar-overlay": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -674,7 +2162,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/causal-study-builder-1.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-pr-sidebar-overlay.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -684,7 +2172,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/causal-study-builder-2": {
+    "/stitch/stitch-merge-confirmation-dialog-readiness-insight-explanation": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -698,7 +2186,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/causal-study-builder-2.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-readiness-insight-explanation.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -708,7 +2196,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/collaboration-and-belief-overlap-view": {
+    "/stitch/stitch-merge-confirmation-dialog-ready-state-sidebar-overlay-1": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -722,7 +2210,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/collaboration-and-belief-overlap-view.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-ready-state-sidebar-overlay-1.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -732,7 +2220,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/contribution-and-epistemic-leaderboard": {
+    "/stitch/stitch-merge-confirmation-dialog-ready-state-sidebar-overlay-2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -746,7 +2234,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/contribution-and-epistemic-leaderboard.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-ready-state-sidebar-overlay-2.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -756,7 +2244,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/correlation-quality-inspector": {
+    "/stitch/stitch-merge-confirmation-dialog-readylayer-push-notifications": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -770,7 +2258,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/correlation-quality-inspector.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-readylayer-push-notifications.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -780,7 +2268,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/data-retention-and-redaction": {
+    "/stitch/stitch-merge-confirmation-dialog-readylayer-settings-and-config-1": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -794,7 +2282,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/data-retention-and-redaction.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-readylayer-settings-and-config-1.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -804,7 +2292,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/decision-branching-view-1": {
+    "/stitch/stitch-merge-confirmation-dialog-readylayer-settings-and-config-2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -818,7 +2306,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/decision-branching-view-1.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-readylayer-settings-and-config-2.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -828,7 +2316,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/decision-branching-view-2": {
+    "/stitch/stitch-merge-confirmation-dialog-team-readiness-analytics": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -842,7 +2330,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/decision-branching-view-2.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-team-readiness-analytics.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -852,7 +2340,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/decision-composer-panel": {
+    "/stitch/stitch-merge-confirmation-dialog-test-engine-details": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -866,7 +2354,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/decision-composer-panel.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-test-engine-details.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -876,7 +2364,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/decision-memory-timeline": {
+    "/stitch/stitch-merge-confirmation-dialog-test-engine-verification-details-1": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -890,7 +2378,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/decision-memory-timeline.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-test-engine-verification-details-1.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -900,7 +2388,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/drift-and-degradation-monitor": {
+    "/stitch/stitch-merge-confirmation-dialog-test-engine-verification-details-2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -914,7 +2402,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/drift-and-degradation-monitor.rsc",
+      "dataRoute": "/stitch/stitch-merge-confirmation-dialog-test-engine-verification-details-2.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -924,7 +2412,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/edge-status-and-connectivity-1": {
+    "/stitch/stitch-oss-governance-dashboard-ai-proposed-kpi-review": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -938,7 +2426,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/edge-status-and-connectivity-1.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-ai-proposed-kpi-review.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -948,7 +2436,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/edge-status-and-connectivity-2": {
+    "/stitch/stitch-oss-governance-dashboard-audit-and-provenance-ledger": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -962,7 +2450,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/edge-status-and-connectivity-2.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-audit-and-provenance-ledger.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -972,7 +2460,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/epistemic-translator-panel-1": {
+    "/stitch/stitch-oss-governance-dashboard-causal-study-builder-1": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -986,7 +2474,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/epistemic-translator-panel-1.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-causal-study-builder-1.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -996,7 +2484,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/epistemic-translator-panel-2": {
+    "/stitch/stitch-oss-governance-dashboard-causal-study-builder-2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1010,7 +2498,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/epistemic-translator-panel-2.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-causal-study-builder-2.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1020,7 +2508,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/epistemic-translator-panel-3": {
+    "/stitch/stitch-oss-governance-dashboard-correlation-quality-inspector": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1034,7 +2522,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/epistemic-translator-panel-3.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-correlation-quality-inspector.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1044,7 +2532,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/epistemic-translator-panel-4": {
+    "/stitch/stitch-oss-governance-dashboard-data-retention-and-redaction": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1058,7 +2546,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/epistemic-translator-panel-4.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-data-retention-and-redaction.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1068,7 +2556,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/epistemic-translator-with-request-review": {
+    "/stitch/stitch-oss-governance-dashboard-drift-and-degradation-monitor": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1082,7 +2570,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/epistemic-translator-with-request-review.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-drift-and-degradation-monitor.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1092,7 +2580,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/evidence-and-inputs-ledger": {
+    "/stitch/stitch-oss-governance-dashboard-epistemic-translator-panel-1": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1106,7 +2594,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/evidence-and-inputs-ledger.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-epistemic-translator-panel-1.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1116,7 +2604,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/evidence-inbox-panel-1": {
+    "/stitch/stitch-oss-governance-dashboard-epistemic-translator-panel-2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1130,7 +2618,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/evidence-inbox-panel-1.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-epistemic-translator-panel-2.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1140,7 +2628,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/evidence-inbox-panel-2": {
+    "/stitch/stitch-oss-governance-dashboard-epistemic-translator-panel-3": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1154,7 +2642,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/evidence-inbox-panel-2.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-epistemic-translator-panel-3.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1164,7 +2652,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/evidence-packet-publisher": {
+    "/stitch/stitch-oss-governance-dashboard-epistemic-translator-panel-4": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1178,7 +2666,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/evidence-packet-publisher.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-epistemic-translator-panel-4.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1188,7 +2676,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/evidence-plan-builder": {
+    "/stitch/stitch-oss-governance-dashboard-epistemic-translator-with-request-review": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1202,7 +2690,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/evidence-plan-builder.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-epistemic-translator-with-request-review.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1212,7 +2700,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/evidence-planner": {
+    "/stitch/stitch-oss-governance-dashboard-evidence-packet-publisher": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1226,7 +2714,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/evidence-planner.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-evidence-packet-publisher.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1236,7 +2724,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/evidence-request-tracker": {
+    "/stitch/stitch-oss-governance-dashboard-evidence-plan-builder": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1250,7 +2738,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/evidence-request-tracker.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-evidence-plan-builder.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1260,7 +2748,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/explainability-viewer-panel": {
+    "/stitch/stitch-oss-governance-dashboard-evidence-planner": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1274,7 +2762,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/explainability-viewer-panel.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-evidence-planner.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1284,7 +2772,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/explanation-consistency-checker": {
+    "/stitch/stitch-oss-governance-dashboard-explanation-consistency-checker": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1298,7 +2786,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/explanation-consistency-checker.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-explanation-consistency-checker.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1308,7 +2796,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/failure-modes-and-safety-controls": {
+    "/stitch/stitch-oss-governance-dashboard-failure-modes-and-safety-controls": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1322,7 +2810,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/failure-modes-and-safety-controls.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-failure-modes-and-safety-controls.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1332,7 +2820,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/game-outcome-matrix": {
+    "/stitch/stitch-oss-governance-dashboard-game-outcome-matrix": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1346,7 +2834,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/game-outcome-matrix.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-game-outcome-matrix.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1356,7 +2844,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/intuitive-risk-visualizer": {
+    "/stitch/stitch-oss-governance-dashboard-intuitive-risk-visualizer": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1370,7 +2858,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/intuitive-risk-visualizer.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-intuitive-risk-visualizer.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1380,7 +2868,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/kpi-health-monitor-1": {
+    "/stitch/stitch-oss-governance-dashboard-kpi-health-monitor-1": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1394,7 +2882,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/kpi-health-monitor-1.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-kpi-health-monitor-1.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1404,7 +2892,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/kpi-health-monitor-2": {
+    "/stitch/stitch-oss-governance-dashboard-kpi-health-monitor-2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1418,7 +2906,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/kpi-health-monitor-2.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-kpi-health-monitor-2.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1428,7 +2916,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/kpi-studio-definition-editor": {
+    "/stitch/stitch-oss-governance-dashboard-kpi-studio-definition-editor": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1442,7 +2930,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/kpi-studio-definition-editor.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-kpi-studio-definition-editor.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1452,7 +2940,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/model-calibration-panel": {
+    "/stitch/stitch-oss-governance-dashboard-narrative-briefing-panel": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1466,7 +2954,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/model-calibration-panel.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-narrative-briefing-panel.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1476,7 +2964,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/narrative-briefing-panel": {
+    "/stitch/stitch-oss-governance-dashboard-opponent-signal-tracker": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1490,7 +2978,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/narrative-briefing-panel.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-opponent-signal-tracker.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1500,7 +2988,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/opponent-signal-tracker": {
+    "/stitch/stitch-oss-governance-dashboard-oss-governance-dashboard": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1514,7 +3002,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/opponent-signal-tracker.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-oss-governance-dashboard.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1524,7 +3012,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/option-value-inspector": {
+    "/stitch/stitch-oss-governance-dashboard-permissions-inspector": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1538,7 +3026,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/option-value-inspector.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-permissions-inspector.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1548,7 +3036,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/oss-governance-dashboard": {
+    "/stitch/stitch-oss-governance-dashboard-research-loop-detail": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1562,7 +3050,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/oss-governance-dashboard.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-research-loop-detail.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1572,7 +3060,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/permissions-inspector": {
+    "/stitch/stitch-oss-governance-dashboard-research-queue-manager": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1586,7 +3074,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/permissions-inspector.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-research-queue-manager.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1596,7 +3084,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/processing-and-hashing-state": {
+    "/stitch/stitch-oss-governance-dashboard-researcher-translation-dashboard": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1610,7 +3098,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/processing-and-hashing-state.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-researcher-translation-dashboard.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1620,7 +3108,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/provenance-explorer-panel": {
+    "/stitch/stitch-oss-governance-dashboard-run-and-replay-manager": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1634,7 +3122,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/provenance-explorer-panel.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-run-and-replay-manager.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1644,7 +3132,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/quick-capture-panel-1": {
+    "/stitch/stitch-oss-governance-dashboard-sensitivity-and-placebo-analysis": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1658,7 +3146,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/quick-capture-panel-1.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-sensitivity-and-placebo-analysis.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1668,7 +3156,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/quick-capture-panel-2": {
+    "/stitch/stitch-oss-governance-dashboard-signal-discovery-workbench": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1682,7 +3170,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/quick-capture-panel-2.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-signal-discovery-workbench.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1692,7 +3180,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/research-loop-detail": {
+    "/stitch/stitch-oss-governance-dashboard-signal-dominance-deep-dive": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1706,7 +3194,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/research-loop-detail.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-signal-dominance-deep-dive.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1716,7 +3204,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/research-queue-manager": {
+    "/stitch/stitch-oss-governance-dashboard-strategy-lab-configuration-1": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1730,7 +3218,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/research-queue-manager.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-strategy-lab-configuration-1.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1740,7 +3228,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/researcher-translation-dashboard": {
+    "/stitch/stitch-oss-governance-dashboard-strategy-lab-configuration-2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1754,7 +3242,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/researcher-translation-dashboard.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-strategy-lab-configuration-2.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1764,7 +3252,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/risk-tier-and-governance-panel-1": {
+    "/stitch/stitch-oss-governance-dashboard-system-health-and-determinism": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1778,7 +3266,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/risk-tier-and-governance-panel-1.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-system-health-and-determinism.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1788,7 +3276,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/risk-tier-and-governance-panel-2": {
+    "/stitch/stitch-oss-governance-dashboard-translation-request-queue": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1802,7 +3290,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/risk-tier-and-governance-panel-2.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-translation-request-queue.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1812,7 +3300,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/run-and-replay-manager": {
+    "/stitch/stitch-oss-governance-dashboard-translation-review-completed-notification": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1826,7 +3314,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/run-and-replay-manager.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-translation-review-completed-notification.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1836,7 +3324,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/scenario-comparison-matrix-1": {
+    "/stitch/stitch-oss-governance-dashboard-uncertainty-band-variations": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1850,7 +3338,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/scenario-comparison-matrix-1.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-uncertainty-band-variations.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1860,7 +3348,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/scenario-comparison-matrix-2": {
+    "/stitch/stitch-oss-governance-dashboard-uncertainty-ledger-viewer-1": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1874,7 +3362,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/scenario-comparison-matrix-2.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-uncertainty-ledger-viewer-1.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1884,7 +3372,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/sensitivity-and-flip-thresholds-panel": {
+    "/stitch/stitch-oss-governance-dashboard-uncertainty-ledger-viewer-2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1898,7 +3386,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/sensitivity-and-flip-thresholds-panel.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-uncertainty-ledger-viewer-2.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1908,7 +3396,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/sensitivity-and-placebo-analysis": {
+    "/stitch/stitch-oss-governance-dashboard-uncertainty-ledger-viewer-3": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1922,7 +3410,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/sensitivity-and-placebo-analysis.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-uncertainty-ledger-viewer-3.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1932,7 +3420,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/signal-discovery-workbench": {
+    "/stitch/stitch-oss-governance-dashboard-uncertainty-ledger-viewer-4": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1946,7 +3434,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/signal-discovery-workbench.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-uncertainty-ledger-viewer-4.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1956,7 +3444,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/signal-dominance-deep-dive": {
+    "/stitch/stitch-oss-governance-dashboard-uncertainty-ledger-with-request-review": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1970,7 +3458,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/signal-dominance-deep-dive.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-uncertainty-ledger-with-request-review.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -1980,7 +3468,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/signals-strip-panel": {
+    "/stitch/stitch-oss-governance-dashboard-urgent-review-notification-dashboard": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -1994,7 +3482,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/signals-strip-panel.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-urgent-review-notification-dashboard.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2004,7 +3492,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/signed-packet-receipt-and-manifest": {
+    "/stitch/stitch-oss-governance-dashboard-voi-breakdown-detail": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2018,7 +3506,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/signed-packet-receipt-and-manifest.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-voi-breakdown-detail.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2028,7 +3516,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/strategy-lab-configuration-1": {
+    "/stitch/stitch-oss-governance-dashboard-zeo-research-console-ui-kit": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2042,7 +3530,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/strategy-lab-configuration-1.rsc",
+      "dataRoute": "/stitch/stitch-oss-governance-dashboard-zeo-research-console-ui-kit.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2052,7 +3540,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/strategy-lab-configuration-2": {
+    "/stitch/stitch-runner-status-popover-deployment-topology": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2066,7 +3554,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/strategy-lab-configuration-2.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-deployment-topology.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2076,7 +3564,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/structured-debate-panel": {
+    "/stitch/stitch-runner-status-popover-full-screen-json-override-editor-1": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2090,7 +3578,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/structured-debate-panel.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-full-screen-json-override-editor-1.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2100,7 +3588,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/system-health-and-determinism": {
+    "/stitch/stitch-runner-status-popover-full-screen-json-override-editor-2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2114,7 +3602,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/system-health-and-determinism.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-full-screen-json-override-editor-2.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2124,7 +3612,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/translation-request-queue": {
+    "/stitch/stitch-runner-status-popover-full-screen-json-override-editor-3": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2138,7 +3626,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/translation-request-queue.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-full-screen-json-override-editor-3.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2148,7 +3636,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/translation-review-completed-notification": {
+    "/stitch/stitch-runner-status-popover-full-screen-json-override-editor-4": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2162,7 +3650,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/translation-review-completed-notification.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-full-screen-json-override-editor-4.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2172,7 +3660,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/uncertainty-band-variations": {
+    "/stitch/stitch-runner-status-popover-intervention-dialog-modal": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2186,7 +3674,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/uncertainty-band-variations.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-intervention-dialog-modal.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2196,7 +3684,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/uncertainty-ledger-viewer-1": {
+    "/stitch/stitch-runner-status-popover-json-diff-with-change-navigation": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2210,7 +3698,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/uncertainty-ledger-viewer-1.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-json-diff-with-change-navigation.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2220,7 +3708,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/uncertainty-ledger-viewer-2": {
+    "/stitch/stitch-runner-status-popover-json-override-diff-view-1": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2234,7 +3722,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/uncertainty-ledger-viewer-2.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-json-override-diff-view-1.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2244,7 +3732,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/uncertainty-ledger-viewer-3": {
+    "/stitch/stitch-runner-status-popover-json-override-diff-view-2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2258,7 +3746,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/uncertainty-ledger-viewer-3.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-json-override-diff-view-2.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2268,7 +3756,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/uncertainty-ledger-viewer-4": {
+    "/stitch/stitch-runner-status-popover-log-viewer-widget": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2282,7 +3770,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/uncertainty-ledger-viewer-4.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-log-viewer-widget.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2292,7 +3780,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/uncertainty-ledger-with-request-review": {
+    "/stitch/stitch-runner-status-popover-runner-list-with-health-badges": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2306,7 +3794,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/uncertainty-ledger-with-request-review.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-runner-list-with-health-badges.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2316,7 +3804,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/urgent-review-notification-dashboard": {
+    "/stitch/stitch-runner-status-popover-runner-status-failed-state": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2330,7 +3818,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/urgent-review-notification-dashboard.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-runner-status-failed-state.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2340,7 +3828,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/user-epistemic-profile-deep-dive-1": {
+    "/stitch/stitch-runner-status-popover-runner-status-paused-state-1": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2354,7 +3842,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/user-epistemic-profile-deep-dive-1.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-runner-status-paused-state-1.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2364,7 +3852,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/user-epistemic-profile-deep-dive-2": {
+    "/stitch/stitch-runner-status-popover-runner-status-paused-state-2": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2378,7 +3866,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/user-epistemic-profile-deep-dive-2.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-runner-status-paused-state-2.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2388,7 +3876,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/voi-breakdown-detail": {
+    "/stitch/stitch-runner-status-popover-runner-status-popover": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2402,7 +3890,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/voi-breakdown-detail.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-runner-status-popover.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2412,7 +3900,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/zeo-decision-dashboard": {
+    "/stitch/stitch-runner-status-popover-runner-status-scheduled-resume": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2426,7 +3914,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/zeo-decision-dashboard.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-runner-status-scheduled-resume.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2436,7 +3924,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/stitch/zeo-research-console-ui-kit": {
+    "/stitch/stitch-runner-status-popover-workflow-timeline-widget": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -2450,7 +3938,7 @@
       ],
       "initialRevalidateSeconds": false,
       "srcRoute": "/stitch/[slug]",
-      "dataRoute": "/stitch/zeo-research-console-ui-kit.rsc",
+      "dataRoute": "/stitch/stitch-runner-status-popover-workflow-timeline-widget.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -2540,8 +4028,8 @@
   },
   "notFoundRoutes": [],
   "preview": {
-    "previewModeId": "59c640f18cb74ab763082e2095c9d4ac",
-    "previewModeSigningKey": "99c699d68cb529dc4a09b879dde900f2619fe32822cadee0ba441532f6e3b744",
-    "previewModeEncryptionKey": "a5df1bcf6ffe7b7485204b8659509f221f23b79b6be0eb4b1b049dbe02f0c6c4"
+    "previewModeId": "9b1d6f5dd85614762fe7c5f03e48293f",
+    "previewModeSigningKey": "28521e76f97e48bd40603188f62861e5ad9d3df274a09903058d3b2bd3818ed3",
+    "previewModeEncryptionKey": "a26ccf82849203c9a992b68000636d7b76bacf5473065ae86f309a77233a9a64"
   }
 }

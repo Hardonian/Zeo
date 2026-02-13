@@ -1,4 +1,4 @@
-// File: C:\Users\scott\Documents\GitHub\Zeo\apps\web\src\app\api\dashboard\[id]\route.ts
+// File: /home/user/Zeo/apps/web/src/app/api/dashboard/[id]/route.ts
 import * as entry from '../../../../../../src/app/api/dashboard/[id]/route.js'
 import type { NextRequest } from 'next/server.js'
 

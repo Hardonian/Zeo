@@ -1,0 +1,567 @@
+<!DOCTYPE html><!--8ZfsPSrfgPx8SRye8yuF4--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/bc06321d88be975e.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-573fdd58969ad59e.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-baa4ef70fea4d55f.js" async=""></script><script src="/_next/static/chunks/app/error-17b4afe27e88d3cd.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50 text-gray-900"><header class="sticky top-0 z-10 border-b border-gray-200 bg-white/95 backdrop-blur"><div class="mx-auto w-full max-w-6xl px-6 py-4"><div class="flex items-center justify-between"><a class="text-lg font-semibold text-blue-700" href="/">Zeo</a><button type="button" class="rounded border border-gray-300 px-3 py-1 text-sm md:hidden">Menu</button><nav class="hidden items-center gap-4 md:flex"><a class="text-sm transition-colors text-blue-700 font-semibold" href="/">Home</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/features">Features</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/cli">CLI</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/docs">Docs</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/pricing">Pricing</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/about">About</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/stitch">Stitch</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/dashboard">Dashboard</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="text-sm text-gray-700 hover:text-blue-700">GitHub</a><a class="text-sm text-gray-700 hover:text-blue-700" href="/signin">Sign In</a><a class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700" href="/docs/quickstart">Get Started</a></nav></div></div></header><main class="mx-auto w-full max-w-6xl px-6 py-10"><h1 class="mb-6 text-3xl font-semibold">Zeo Research Console Ui Kit</h1><div class="mb-3 text-sm text-gray-500">Category: <!-- -->Governance &amp; Compliance</div><div class="overflow-hidden rounded border border-gray-200 bg-white"><iframe title="Zeo Research Console Ui Kit" srcDoc="&lt;!DOCTYPE html&gt;
+
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Zeo Research Console UI Kit&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;script id=&quot;tailwind-config&quot;&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        &quot;primary&quot;: &quot;#137fec&quot;,
+                        &quot;background-light&quot;: &quot;#f6f7f8&quot;,
+                        &quot;background-dark&quot;: &quot;#0f172a&quot;,
+                        &quot;surface-dark&quot;: &quot;#1e293b&quot;,
+                        &quot;surface-dark-hover&quot;: &quot;#334155&quot;,
+                        &quot;border-dark&quot;: &quot;#334155&quot;,
+                    },
+                    fontFamily: {
+                        &quot;display&quot;: [&quot;Space Grotesk&quot;, &quot;sans-serif&quot;]
+                    },
+                    borderRadius: {&quot;DEFAULT&quot;: &quot;0.125rem&quot;, &quot;lg&quot;: &quot;0.25rem&quot;, &quot;xl&quot;: &quot;0.5rem&quot;, &quot;full&quot;: &quot;0.75rem&quot;},
+                },
+            },
+        }
+    &lt;/script&gt;
+&lt;style&gt;
+        /* Custom scrollbar for high-density technical look */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+        body {
+            font-family: &#x27;Space Grotesk&#x27;, sans-serif;
+        }
+        .technical-grid {
+            background-size: 20px 20px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen flex flex-col overflow-hidden&quot;&gt;
+&lt;!-- App Shell Container --&gt;
+&lt;div class=&quot;flex flex-1 h-screen overflow-hidden&quot;&gt;
+&lt;!-- Technical Sidebar (Collapsed Rail) --&gt;
+&lt;aside class=&quot;w-16 bg-surface-dark border-r border-border-dark flex-col items-center py-4 hidden sm:flex z-20&quot;&gt;
+&lt;div class=&quot;mb-8 text-primary&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-3xl&quot;&gt;token&lt;/span&gt;
+&lt;/div&gt;
+&lt;nav class=&quot;flex flex-col gap-6 w-full items-center&quot;&gt;
+&lt;button class=&quot;text-primary bg-primary/10 p-2 rounded hover:bg-primary/20 transition-colors w-10 h-10 flex items-center justify-center&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;dashboard&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;text-slate-400 hover:text-white p-2 rounded hover:bg-white/5 transition-colors w-10 h-10 flex items-center justify-center&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;science&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;text-slate-400 hover:text-white p-2 rounded hover:bg-white/5 transition-colors w-10 h-10 flex items-center justify-center&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;dataset&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;text-slate-400 hover:text-white p-2 rounded hover:bg-white/5 transition-colors w-10 h-10 flex items-center justify-center&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;settings_suggest&lt;/span&gt;
+&lt;/button&gt;
+&lt;/nav&gt;
+&lt;div class=&quot;mt-auto flex flex-col gap-4&quot;&gt;
+&lt;div class=&quot;w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/aside&gt;
+&lt;!-- Main Content Area --&gt;
+&lt;div class=&quot;flex-1 flex flex-col h-full relative&quot;&gt;
+&lt;!-- Topbar --&gt;
+&lt;header class=&quot;h-14 bg-background-dark/95 backdrop-blur border-b border-border-dark flex items-center justify-between px-4 sticky top-0 z-10&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;button class=&quot;sm:hidden text-slate-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;menu&lt;/span&gt;
+&lt;/button&gt;
+&lt;div class=&quot;flex items-center text-sm font-medium text-slate-400&quot;&gt;
+&lt;span class=&quot;hover:text-white cursor-pointer transition-colors&quot;&gt;Project Zeo&lt;/span&gt;
+&lt;span class=&quot;material-symbols-outlined text-base mx-1&quot;&gt;chevron_right&lt;/span&gt;
+&lt;span class=&quot;hover:text-white cursor-pointer transition-colors&quot;&gt;System&lt;/span&gt;
+&lt;span class=&quot;material-symbols-outlined text-base mx-1&quot;&gt;chevron_right&lt;/span&gt;
+&lt;span class=&quot;text-white&quot;&gt;UI Kit v1.0&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;div class=&quot;relative hidden md:block&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined absolute left-2 top-1.5 text-slate-500 text-lg&quot;&gt;search&lt;/span&gt;
+&lt;input class=&quot;bg-surface-dark border border-border-dark rounded text-xs pl-8 pr-3 py-1.5 w-64 text-white placeholder-slate-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all&quot; placeholder=&quot;Search tokens...&quot; type=&quot;text&quot;/&gt;
+&lt;/div&gt;
+&lt;button class=&quot;text-slate-400 hover:text-white&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;notifications&lt;/span&gt;
+&lt;/button&gt;
+&lt;div class=&quot;w-6 h-6 rounded-full bg-gradient-to-br from-primary to-purple-600 border border-white/10&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/header&gt;
+&lt;!-- Scrollable Content --&gt;
+&lt;main class=&quot;flex-1 overflow-y-auto technical-grid p-4 sm:p-6 pb-24&quot;&gt;
+&lt;div class=&quot;max-w-4xl mx-auto space-y-8&quot;&gt;
+&lt;!-- Header --&gt;
+&lt;div class=&quot;flex flex-col gap-2 border-b border-border-dark pb-6&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between&quot;&gt;
+&lt;h1 class=&quot;text-3xl font-bold tracking-tight text-white&quot;&gt;Zeo Component System&lt;/h1&gt;
+&lt;span class=&quot;px-2 py-0.5 rounded text-[10px] font-mono bg-primary/20 text-primary border border-primary/30 uppercase tracking-wider&quot;&gt;v1.0.4-beta&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-slate-400 text-sm max-w-2xl&quot;&gt;
+                            A high-density component library designed for epistemic clarity. Optimized for technical data entry, uncertainty visualization, and research workflows.
+                        &lt;/p&gt;
+&lt;/div&gt;
+&lt;!-- Section: Design Tokens --&gt;
+&lt;section class=&quot;space-y-4&quot;&gt;
+&lt;h3 class=&quot;text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;w-2 h-2 bg-slate-500 rounded-full&quot;&gt;&lt;/span&gt;
+                            Design Tokens
+                        &lt;/h3&gt;
+&lt;div class=&quot;bg-surface-dark border border-border-dark rounded-lg p-4 grid grid-cols-1 md:grid-cols-2 gap-6&quot;&gt;
+&lt;!-- Colors --&gt;
+&lt;div&gt;
+&lt;h4 class=&quot;text-sm font-medium text-white mb-3&quot;&gt;Palette&lt;/h4&gt;
+&lt;div class=&quot;flex flex-wrap gap-3&quot;&gt;
+&lt;div class=&quot;group relative&quot;&gt;
+&lt;div class=&quot;w-10 h-10 rounded bg-primary border border-white/10 shadow-lg shadow-primary/20&quot;&gt;&lt;/div&gt;
+&lt;span class=&quot;text-[10px] text-slate-400 mt-1 block font-mono&quot;&gt;Pri&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;group relative&quot;&gt;
+&lt;div class=&quot;w-10 h-10 rounded bg-emerald-500 border border-white/10&quot;&gt;&lt;/div&gt;
+&lt;span class=&quot;text-[10px] text-slate-400 mt-1 block font-mono&quot;&gt;Suc&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;group relative&quot;&gt;
+&lt;div class=&quot;w-10 h-10 rounded bg-amber-500 border border-white/10&quot;&gt;&lt;/div&gt;
+&lt;span class=&quot;text-[10px] text-slate-400 mt-1 block font-mono&quot;&gt;Warn&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;group relative&quot;&gt;
+&lt;div class=&quot;w-10 h-10 rounded bg-rose-500 border border-white/10&quot;&gt;&lt;/div&gt;
+&lt;span class=&quot;text-[10px] text-slate-400 mt-1 block font-mono&quot;&gt;Err&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;group relative&quot;&gt;
+&lt;div class=&quot;w-10 h-10 rounded bg-[#0f172a] border border-border-dark&quot;&gt;&lt;/div&gt;
+&lt;span class=&quot;text-[10px] text-slate-400 mt-1 block font-mono&quot;&gt;Bg&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Typography --&gt;
+&lt;div&gt;
+&lt;h4 class=&quot;text-sm font-medium text-white mb-3&quot;&gt;Typography (Space Grotesk)&lt;/h4&gt;
+&lt;div class=&quot;space-y-2&quot;&gt;
+&lt;div class=&quot;flex items-baseline justify-between border-b border-white/5 pb-1&quot;&gt;
+&lt;span class=&quot;text-2xl font-bold text-white&quot;&gt;Aa&lt;/span&gt;
+&lt;span class=&quot;text-xs font-mono text-slate-500&quot;&gt;Bold 700&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-baseline justify-between border-b border-white/5 pb-1&quot;&gt;
+&lt;span class=&quot;text-xl font-medium text-white&quot;&gt;Aa&lt;/span&gt;
+&lt;span class=&quot;text-xs font-mono text-slate-500&quot;&gt;Medium 500&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-baseline justify-between&quot;&gt;
+&lt;span class=&quot;text-lg font-normal text-white&quot;&gt;Aa&lt;/span&gt;
+&lt;span class=&quot;text-xs font-mono text-slate-500&quot;&gt;Regular 400&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- Section: KPI Cards --&gt;
+&lt;section class=&quot;space-y-4&quot;&gt;
+&lt;h3 class=&quot;text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;w-2 h-2 bg-slate-500 rounded-full&quot;&gt;&lt;/span&gt;
+                            Epistemic Indicators
+                        &lt;/h3&gt;
+&lt;div class=&quot;grid grid-cols-1 md:grid-cols-3 gap-4&quot;&gt;
+&lt;!-- Card 1 --&gt;
+&lt;div class=&quot;bg-surface-dark border border-border-dark hover:border-primary/50 transition-colors rounded-lg p-4 relative group&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start mb-2&quot;&gt;
+&lt;span class=&quot;text-xs text-slate-400 uppercase font-medium tracking-wide&quot;&gt;P(Success)&lt;/span&gt;
+&lt;span class=&quot;material-symbols-outlined text-slate-600 group-hover:text-primary transition-colors text-lg&quot;&gt;timeline&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-baseline gap-2&quot;&gt;
+&lt;span class=&quot;text-3xl font-bold text-white tabular-nums&quot;&gt;87.4%&lt;/span&gt;
+&lt;span class=&quot;text-xs font-mono text-emerald-400 bg-emerald-400/10 px-1.5 py-0.5 rounded border border-emerald-400/20&quot;&gt;▲ 2.1%&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mt-3 flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;w-2 h-2 rounded-full bg-amber-500&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;text-xs text-amber-500/80 font-mono&quot;&gt;Uncertainty: High (±12%)&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Card 2 --&gt;
+&lt;div class=&quot;bg-surface-dark border border-border-dark hover:border-primary/50 transition-colors rounded-lg p-4 relative group&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start mb-2&quot;&gt;
+&lt;span class=&quot;text-xs text-slate-400 uppercase font-medium tracking-wide&quot;&gt;Candidates&lt;/span&gt;
+&lt;span class=&quot;material-symbols-outlined text-slate-600 group-hover:text-primary transition-colors text-lg&quot;&gt;group_work&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-baseline gap-2&quot;&gt;
+&lt;span class=&quot;text-3xl font-bold text-white tabular-nums&quot;&gt;1,024&lt;/span&gt;
+&lt;span class=&quot;text-xs text-slate-500&quot;&gt;total&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mt-3 w-full bg-slate-800 h-1.5 rounded-full overflow-hidden&quot;&gt;
+&lt;div class=&quot;bg-primary h-full w-3/4 rounded-full&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mt-1 flex justify-between text-[10px] text-slate-500 font-mono&quot;&gt;
+&lt;span&gt;Processed: 768&lt;/span&gt;
+&lt;span&gt;Remaining: 256&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Card 3 --&gt;
+&lt;div class=&quot;bg-surface-dark border border-border-dark hover:border-primary/50 transition-colors rounded-lg p-4 relative group&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start mb-2&quot;&gt;
+&lt;span class=&quot;text-xs text-slate-400 uppercase font-medium tracking-wide&quot;&gt;Error Rate&lt;/span&gt;
+&lt;span class=&quot;material-symbols-outlined text-slate-600 group-hover:text-primary transition-colors text-lg&quot;&gt;warning&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex items-baseline gap-2&quot;&gt;
+&lt;span class=&quot;text-3xl font-bold text-white tabular-nums&quot;&gt;0.04&lt;/span&gt;
+&lt;span class=&quot;text-xs font-mono text-slate-500&quot;&gt;p-value&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mt-3 flex flex-wrap gap-2&quot;&gt;
+&lt;span class=&quot;px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 font-mono&quot;&gt;CI: 95%&lt;/span&gt;
+&lt;span class=&quot;px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 font-mono&quot;&gt;N: 500&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- Section: Badges &amp; Status --&gt;
+&lt;section class=&quot;space-y-4&quot;&gt;
+&lt;h3 class=&quot;text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;w-2 h-2 bg-slate-500 rounded-full&quot;&gt;&lt;/span&gt;
+                            Semantic Badges
+                        &lt;/h3&gt;
+&lt;div class=&quot;bg-surface-dark border border-border-dark rounded-lg p-6 flex flex-wrap gap-4 items-center&quot;&gt;
+&lt;!-- Success --&gt;
+&lt;div class=&quot;flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium uppercase tracking-wide&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;check_circle&lt;/span&gt;
+                                High Confidence
+                            &lt;/div&gt;
+&lt;!-- Warning --&gt;
+&lt;div class=&quot;flex items-center gap-1.5 px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium uppercase tracking-wide&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;help&lt;/span&gt;
+                                Estimate
+                            &lt;/div&gt;
+&lt;!-- Error --&gt;
+&lt;div class=&quot;flex items-center gap-1.5 px-2.5 py-1 rounded bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-medium uppercase tracking-wide&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;cancel&lt;/span&gt;
+                                Refuted
+                            &lt;/div&gt;
+&lt;!-- Neutral --&gt;
+&lt;div class=&quot;flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-700/30 border border-slate-600 text-slate-300 text-xs font-medium uppercase tracking-wide&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;info&lt;/span&gt;
+                                Candidate
+                            &lt;/div&gt;
+&lt;!-- Outline Variant --&gt;
+&lt;div class=&quot;flex items-center gap-1.5 px-2 py-0.5 rounded border border-dashed border-slate-500 text-slate-400 text-xs font-mono&quot;&gt;
+                                Pending Peer Review
+                            &lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- Section: Interactive Controls --&gt;
+&lt;section class=&quot;space-y-4&quot;&gt;
+&lt;h3 class=&quot;text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;w-2 h-2 bg-slate-500 rounded-full&quot;&gt;&lt;/span&gt;
+                            Inputs &amp;amp; Controls
+                        &lt;/h3&gt;
+&lt;div class=&quot;grid grid-cols-1 md:grid-cols-2 gap-6&quot;&gt;
+&lt;!-- Input Column --&gt;
+&lt;div class=&quot;bg-surface-dark border border-border-dark rounded-lg p-6 space-y-5&quot;&gt;
+&lt;h4 class=&quot;text-sm font-bold text-white mb-4 border-b border-white/5 pb-2&quot;&gt;Form Elements&lt;/h4&gt;
+&lt;!-- Text Input --&gt;
+&lt;div class=&quot;space-y-1.5&quot;&gt;
+&lt;label class=&quot;text-xs text-slate-400 font-medium ml-1&quot;&gt;Experiment ID&lt;/label&gt;
+&lt;div class=&quot;relative&quot;&gt;
+&lt;input class=&quot;w-full bg-background-dark border border-border-dark rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-mono transition-all&quot; type=&quot;text&quot; value=&quot;EXP-2023-A99&quot;/&gt;
+&lt;span class=&quot;material-symbols-outlined absolute right-3 top-2.5 text-slate-500 text-sm&quot;&gt;fingerprint&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Input with Dropdown (Epistemic Status) --&gt;
+&lt;div class=&quot;space-y-1.5&quot;&gt;
+&lt;label class=&quot;text-xs text-slate-400 font-medium ml-1&quot;&gt;Hypothesis Claim&lt;/label&gt;
+&lt;div class=&quot;flex rounded border border-border-dark overflow-hidden focus-within:ring-1 focus-within:ring-primary focus-within:border-primary&quot;&gt;
+&lt;select class=&quot;bg-background-dark text-xs text-amber-500 font-medium px-2 py-2 border-r border-border-dark focus:outline-none appearance-none cursor-pointer&quot;&gt;
+&lt;option&gt;Suspected&lt;/option&gt;
+&lt;option&gt;Confirmed&lt;/option&gt;
+&lt;option&gt;Unlikely&lt;/option&gt;
+&lt;/select&gt;
+&lt;input class=&quot;flex-1 bg-background-dark border-none px-3 py-2 text-sm text-white focus:outline-none focus:ring-0&quot; placeholder=&quot;Enter claim...&quot; type=&quot;text&quot;/&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Buttons --&gt;
+&lt;div class=&quot;flex flex-wrap gap-3 pt-2&quot;&gt;
+&lt;button class=&quot;bg-primary hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded shadow-lg shadow-blue-500/20 transition-all active:scale-95 flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-base&quot;&gt;play_arrow&lt;/span&gt;
+                                        Run Sim
+                                    &lt;/button&gt;
+&lt;button class=&quot;bg-surface-dark-hover hover:bg-slate-600 border border-slate-600 text-white text-sm font-medium px-4 py-2 rounded transition-all active:scale-95&quot;&gt;
+                                        Cancel
+                                    &lt;/button&gt;
+&lt;button class=&quot;bg-transparent border border-rose-500/50 text-rose-500 hover:bg-rose-500/10 text-sm font-medium px-4 py-2 rounded transition-all active:scale-95 ml-auto&quot;&gt;
+                                        Prune
+                                    &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Interactive Column --&gt;
+&lt;div class=&quot;bg-surface-dark border border-border-dark rounded-lg p-6 space-y-6&quot;&gt;
+&lt;h4 class=&quot;text-sm font-bold text-white mb-4 border-b border-white/5 pb-2&quot;&gt;States &amp;amp; Toggles&lt;/h4&gt;
+&lt;!-- Slider --&gt;
+&lt;div class=&quot;space-y-3&quot;&gt;
+&lt;div class=&quot;flex justify-between items-center&quot;&gt;
+&lt;label class=&quot;text-xs text-slate-400 font-medium&quot;&gt;Confidence Threshold&lt;/label&gt;
+&lt;span class=&quot;text-xs font-mono text-primary bg-primary/10 px-1.5 py-0.5 rounded&quot;&gt;0.85&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;relative w-full h-1 bg-slate-700 rounded-full&quot;&gt;
+&lt;div class=&quot;absolute h-full bg-primary rounded-full&quot; style=&quot;width: 85%&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow cursor-pointer hover:scale-110 transition-transform&quot; style=&quot;left: 85%; margin-left: -8px;&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between text-[10px] text-slate-600 font-mono&quot;&gt;
+&lt;span&gt;0.0&lt;/span&gt;
+&lt;span&gt;0.5&lt;/span&gt;
+&lt;span&gt;1.0&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Toggles --&gt;
+&lt;div class=&quot;space-y-4&quot;&gt;
+&lt;!-- Toggle Active --&gt;
+&lt;div class=&quot;flex items-center justify-between&quot;&gt;
+&lt;div class=&quot;flex flex-col&quot;&gt;
+&lt;span class=&quot;text-sm text-white&quot;&gt;Auto-Correction&lt;/span&gt;
+&lt;span class=&quot;text-[10px] text-slate-500&quot;&gt;Apply Bayesian updates&lt;/span&gt;
+&lt;/div&gt;
+&lt;button class=&quot;w-10 h-5 bg-primary rounded-full relative transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-dark focus:ring-primary&quot;&gt;
+&lt;span class=&quot;absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform&quot;&gt;&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;!-- Toggle Inactive --&gt;
+&lt;div class=&quot;flex items-center justify-between&quot;&gt;
+&lt;div class=&quot;flex flex-col&quot;&gt;
+&lt;span class=&quot;text-sm text-slate-400&quot;&gt;Deep Scan&lt;/span&gt;
+&lt;span class=&quot;text-[10px] text-slate-600&quot;&gt;Resource intensive&lt;/span&gt;
+&lt;/div&gt;
+&lt;button class=&quot;w-10 h-5 bg-slate-700 rounded-full relative transition-colors focus:outline-none&quot;&gt;
+&lt;span class=&quot;absolute left-0.5 top-0.5 w-4 h-4 bg-slate-400 rounded-full shadow-sm transition-transform&quot;&gt;&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- Section: Stepper --&gt;
+&lt;section class=&quot;space-y-4&quot;&gt;
+&lt;h3 class=&quot;text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;w-2 h-2 bg-slate-500 rounded-full&quot;&gt;&lt;/span&gt;
+                            Process Stepper
+                        &lt;/h3&gt;
+&lt;div class=&quot;bg-surface-dark border border-border-dark rounded-lg p-6 overflow-x-auto&quot;&gt;
+&lt;div class=&quot;flex items-center min-w-[500px]&quot;&gt;
+&lt;!-- Step 1: Complete --&gt;
+&lt;div class=&quot;flex flex-col items-center relative z-10&quot;&gt;
+&lt;div class=&quot;w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500 text-emerald-500 flex items-center justify-center font-bold text-sm&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-base&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;text-xs font-medium text-emerald-500 mt-2&quot;&gt;Draft&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 h-0.5 bg-emerald-500/30 mx-2 -mt-6&quot;&gt;&lt;/div&gt;
+&lt;!-- Step 2: Active --&gt;
+&lt;div class=&quot;flex flex-col items-center relative z-10&quot;&gt;
+&lt;div class=&quot;w-8 h-8 rounded-full bg-primary text-white shadow-[0_0_15px_rgba(19,127,236,0.5)] flex items-center justify-center font-bold text-sm border border-white/20&quot;&gt;
+                                        2
+                                    &lt;/div&gt;
+&lt;span class=&quot;text-xs font-bold text-white mt-2&quot;&gt;Verify&lt;/span&gt;
+&lt;span class=&quot;text-[10px] text-primary absolute -bottom-4 animate-pulse&quot;&gt;Running...&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 h-0.5 bg-slate-700 mx-2 -mt-6&quot;&gt;&lt;/div&gt;
+&lt;!-- Step 3: Pending --&gt;
+&lt;div class=&quot;flex flex-col items-center relative z-10&quot;&gt;
+&lt;div class=&quot;w-8 h-8 rounded-full bg-slate-800 border border-slate-600 text-slate-500 flex items-center justify-center font-bold text-sm&quot;&gt;
+                                        3
+                                    &lt;/div&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-500 mt-2&quot;&gt;Review&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 h-0.5 bg-slate-700 mx-2 -mt-6&quot;&gt;&lt;/div&gt;
+&lt;!-- Step 4: Pending --&gt;
+&lt;div class=&quot;flex flex-col items-center relative z-10&quot;&gt;
+&lt;div class=&quot;w-8 h-8 rounded-full bg-slate-800 border border-slate-600 text-slate-500 flex items-center justify-center font-bold text-sm&quot;&gt;
+                                        4
+                                    &lt;/div&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-500 mt-2&quot;&gt;Publish&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- Section: Data Table --&gt;
+&lt;section class=&quot;space-y-4&quot;&gt;
+&lt;h3 class=&quot;text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;w-2 h-2 bg-slate-500 rounded-full&quot;&gt;&lt;/span&gt;
+                            Tabular Data
+                        &lt;/h3&gt;
+&lt;div class=&quot;bg-surface-dark border border-border-dark rounded-lg overflow-hidden&quot;&gt;
+&lt;div class=&quot;overflow-x-auto&quot;&gt;
+&lt;table class=&quot;w-full text-left border-collapse&quot;&gt;
+&lt;thead&gt;
+&lt;tr class=&quot;bg-slate-800/50 border-b border-border-dark text-xs text-slate-400 uppercase tracking-wider font-mono&quot;&gt;
+&lt;th class=&quot;px-4 py-3 font-medium&quot;&gt;
+&lt;div class=&quot;flex items-center gap-1 cursor-pointer hover:text-white&quot;&gt;
+                                                    Metric
+                                                    &lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;sort&lt;/span&gt;
+&lt;/div&gt;
+&lt;/th&gt;
+&lt;th class=&quot;px-4 py-3 font-medium text-right&quot;&gt;Value&lt;/th&gt;
+&lt;th class=&quot;px-4 py-3 font-medium text-right&quot;&gt;p-value&lt;/th&gt;
+&lt;th class=&quot;px-4 py-3 font-medium&quot;&gt;Status&lt;/th&gt;
+&lt;th class=&quot;px-4 py-3 font-medium text-center&quot;&gt;Actions&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody class=&quot;divide-y divide-border-dark text-sm&quot;&gt;
+&lt;!-- Row 1 --&gt;
+&lt;tr class=&quot;hover:bg-white/5 transition-colors group&quot;&gt;
+&lt;td class=&quot;px-4 py-3 font-medium text-white flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-slate-500 text-sm&quot;&gt;science&lt;/span&gt;
+                                                Accuracy
+                                            &lt;/td&gt;
+&lt;td class=&quot;px-4 py-3 text-right text-slate-300 font-mono&quot;&gt;0.923&lt;/td&gt;
+&lt;td class=&quot;px-4 py-3 text-right text-slate-300 font-mono&quot;&gt;0.004&lt;/td&gt;
+&lt;td class=&quot;px-4 py-3&quot;&gt;
+&lt;span class=&quot;inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20&quot;&gt;
+                                                    REPLICATED
+                                                &lt;/span&gt;
+&lt;/td&gt;
+&lt;td class=&quot;px-4 py-3 text-center&quot;&gt;
+&lt;button class=&quot;text-slate-500 hover:text-white transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-lg&quot;&gt;more_horiz&lt;/span&gt;
+&lt;/button&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;!-- Row 2 (Expanded) --&gt;
+&lt;tr class=&quot;bg-primary/5 border-l-2 border-l-primary group&quot;&gt;
+&lt;td class=&quot;px-4 py-3 font-medium text-white flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-primary text-sm&quot;&gt;expand_more&lt;/span&gt;
+                                                Recall
+                                            &lt;/td&gt;
+&lt;td class=&quot;px-4 py-3 text-right text-white font-bold font-mono&quot;&gt;0.881&lt;/td&gt;
+&lt;td class=&quot;px-4 py-3 text-right text-slate-300 font-mono&quot;&gt;0.120&lt;/td&gt;
+&lt;td class=&quot;px-4 py-3&quot;&gt;
+&lt;span class=&quot;inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20&quot;&gt;
+                                                    UNCERTAIN
+                                                &lt;/span&gt;
+&lt;/td&gt;
+&lt;td class=&quot;px-4 py-3 text-center&quot;&gt;
+&lt;button class=&quot;text-slate-500 hover:text-white transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-lg&quot;&gt;more_horiz&lt;/span&gt;
+&lt;/button&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;!-- Row 2 Details (Expanded Content) --&gt;
+&lt;tr class=&quot;bg-primary/5&quot;&gt;
+&lt;td class=&quot;px-4 pb-4 pt-1&quot; colspan=&quot;5&quot;&gt;
+&lt;div class=&quot;pl-7 grid grid-cols-2 gap-4 text-xs&quot;&gt;
+&lt;div class=&quot;bg-background-dark/50 p-3 rounded border border-border-dark/50&quot;&gt;
+&lt;span class=&quot;text-slate-500 block mb-1&quot;&gt;Standard Deviation&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-200&quot;&gt;σ = 2.45&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;bg-background-dark/50 p-3 rounded border border-border-dark/50&quot;&gt;
+&lt;span class=&quot;text-slate-500 block mb-1&quot;&gt;Sample Size&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-200&quot;&gt;n = 12,400&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;!-- Row 3 --&gt;
+&lt;tr class=&quot;hover:bg-white/5 transition-colors group&quot;&gt;
+&lt;td class=&quot;px-4 py-3 font-medium text-white flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-slate-500 text-sm&quot;&gt;chevron_right&lt;/span&gt;
+                                                F1 Score
+                                            &lt;/td&gt;
+&lt;td class=&quot;px-4 py-3 text-right text-slate-300 font-mono&quot;&gt;0.899&lt;/td&gt;
+&lt;td class=&quot;px-4 py-3 text-right text-slate-300 font-mono&quot;&gt;0.010&lt;/td&gt;
+&lt;td class=&quot;px-4 py-3&quot;&gt;
+&lt;span class=&quot;inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-slate-700/50 text-slate-300 border border-slate-600/50&quot;&gt;
+                                                    PENDING
+                                                &lt;/span&gt;
+&lt;/td&gt;
+&lt;td class=&quot;px-4 py-3 text-center&quot;&gt;
+&lt;button class=&quot;text-slate-500 hover:text-white transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-lg&quot;&gt;more_horiz&lt;/span&gt;
+&lt;/button&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;px-4 py-3 border-t border-border-dark flex items-center justify-between text-xs text-slate-500&quot;&gt;
+&lt;span&gt;Showing 1-3 of 42 results&lt;/span&gt;
+&lt;div class=&quot;flex gap-2&quot;&gt;
+&lt;button class=&quot;hover:text-white disabled:opacity-50&quot; disabled=&quot;&quot;&gt;Previous&lt;/button&gt;
+&lt;button class=&quot;hover:text-white&quot;&gt;Next&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- Feedback Elements Visualization --&gt;
+&lt;section class=&quot;grid grid-cols-1 md:grid-cols-2 gap-6 pb-8&quot;&gt;
+&lt;!-- Toast Static --&gt;
+&lt;div class=&quot;space-y-2&quot;&gt;
+&lt;h3 class=&quot;text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2 mb-4&quot;&gt;
+&lt;span class=&quot;w-2 h-2 bg-slate-500 rounded-full&quot;&gt;&lt;/span&gt;
+                                Feedback Toast
+                            &lt;/h3&gt;
+&lt;div class=&quot;bg-surface-dark border border-border-dark rounded-lg p-6 flex flex-col items-center justify-center min-h-[140px] bg-[url(&#x27;https://www.transparenttextures.com/patterns/carbon-fibre.png&#x27;)]&quot;&gt;
+&lt;div class=&quot;bg-background-dark border border-slate-700 shadow-xl rounded px-4 py-3 flex items-center gap-3 max-w-sm w-full animate-bounce&quot; style=&quot;animation-duration: 3s;&quot;&gt;
+&lt;div class=&quot;bg-emerald-500/20 text-emerald-500 rounded-full p-1&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;check&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1&quot;&gt;
+&lt;p class=&quot;text-sm font-medium text-white&quot;&gt;Model Updated&lt;/p&gt;
+&lt;p class=&quot;text-xs text-slate-400&quot;&gt;Bayesian priors adjusted successfully.&lt;/p&gt;
+&lt;/div&gt;
+&lt;button class=&quot;text-slate-500 hover:text-white&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-sm&quot;&gt;close&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Modal Static --&gt;
+&lt;div class=&quot;space-y-2&quot;&gt;
+&lt;h3 class=&quot;text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2 mb-4&quot;&gt;
+&lt;span class=&quot;w-2 h-2 bg-slate-500 rounded-full&quot;&gt;&lt;/span&gt;
+                                Modal Shell
+                            &lt;/h3&gt;
+&lt;div class=&quot;bg-surface-dark border border-border-dark rounded-lg p-6 flex items-center justify-center min-h-[140px] relative overflow-hidden&quot;&gt;
+&lt;!-- Backdrop simulation --&gt;
+&lt;div class=&quot;absolute inset-0 bg-black/40 backdrop-blur-sm z-0&quot;&gt;&lt;/div&gt;
+&lt;!-- Modal --&gt;
+&lt;div class=&quot;bg-background-dark border border-slate-700 shadow-2xl rounded-lg w-full max-w-[280px] relative z-10 overflow-hidden&quot;&gt;
+&lt;div class=&quot;p-4 border-b border-border-dark flex justify-between items-center&quot;&gt;
+&lt;h4 class=&quot;text-sm font-bold text-white&quot;&gt;Confirm Pruning&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div class=&quot;p-4&quot;&gt;
+&lt;p class=&quot;text-xs text-slate-400 leading-relaxed&quot;&gt;
+                                            This will remove 12 low-confidence nodes from the graph. This action cannot be undone.
+                                        &lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;p-3 bg-surface-dark flex justify-end gap-2&quot;&gt;
+&lt;button class=&quot;px-3 py-1.5 text-xs text-slate-300 hover:text-white&quot;&gt;Cancel&lt;/button&gt;
+&lt;button class=&quot;px-3 py-1.5 bg-rose-500/10 border border-rose-500/50 text-rose-500 text-xs rounded hover:bg-rose-500 hover:text-white transition-colors&quot;&gt;Prune&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;/div&gt;
+&lt;/main&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;" class="h-[1100px] w-full" sandbox="allow-scripts allow-same-origin"></iframe></div></main><footer class="border-t border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-5 text-sm text-gray-600 md:flex-row md:items-center md:justify-between"><span>Confidence range, assumptions, provenance, and sensitivity first.</span><div class="flex flex-wrap gap-3"><a class="hover:text-blue-700" href="/docs">Docs</a><a class="hover:text-blue-700" href="/features">Features</a><a class="hover:text-blue-700" href="/cli">CLI</a><a class="hover:text-blue-700" href="/changelog">Changelog</a><a class="hover:text-blue-700" href="/status">Status</a><a class="hover:text-blue-700" href="/legal/privacy">Privacy</a><a class="hover:text-blue-700" href="/legal/terms">Terms</a><a class="hover:text-blue-700" href="/stitch">Stitch</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="hover:text-blue-700">GitHub</a></div></div></footer></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-573fdd58969ad59e.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-17b4afe27e88d3cd.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/bc06321d88be975e.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"8ZfsPSrfgPx8SRye8yuF4\",\"c\":[\"\",\"stitch\",\"stitch-oss-governance-dashboard-zeo-research-console-ui-kit\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"stitch\",{\"children\":[[\"slug\",\"stitch-oss-governance-dashboard-zeo-research-console-ui-kit\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/bc06321d88be975e.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:I[785,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"PublicShell\"]\n10:T6cea,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eZeo Research Console UI Kit\u003c/title\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003cscript id=\"tailwind-config\"\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        \"primary\": \"#137fec\",\n                        \"background-light\": \"#f6f7f8\",\n                        \"background-dark\": \"#0f172a\",\n                        \"surface-dark\": \"#1e293b\",\n                        \"surface-dark-hover\": \"#334155\",\n                        \"border-dark\": \"#334155\",\n                    },\n                    fontFamily: {\n                        \"display\": [\"Space Grotesk\", \"sans-serif\"]\n                    },\n                    borderRadius: {\"DEFAULT\": \"0.125rem\", \"lg\": \"0.25rem\", \"xl\": \"0.5rem\", \"full\": \"0.75rem\"},\n                },\n            },\n        }\n    \u003c/script\u003e\n\u003cstyle\u003e\n        /* Custom scrollbar for high-density technical look */\n        ::-webkit-scrollbar {\n            width: 6px;\n            height: 6px;\n        }\n        ::-webkit-scrollbar-track {\n            background: #0f172a; \n        }\n        ::-webkit-scrollbar-thumb {\n            background: #334155; \n            border-radius: 2px;\n        }\n        ::-webkit-scrollbar-thumb:hover {\n            background: #475569; \n        }\n        body {\n            font-family: 'Space Grotesk', sans-serif;\n        }\n        .technical-grid {\n            background-size: 20px 20px;\n            background-image:\n                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),\n                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen flex flex-col overflow-hidden\"\u003e\n\u003c!-- App Shell Container --\u003e\n\u003cdiv class=\"flex flex-1 h-screen overflow-hidden\"\u003e\n\u003c!-- Technical Sidebar (Collapsed Rail) --\u003e\n\u003caside class=\"w-16 bg-surface-dark border-r border-border-dark flex-col items-center py-4 hidden sm:flex z-20\"\u003e\n\u003cdiv class=\"mb-8 text-primary\"\u003e\n\u003cspan class=\"material-symbols-outlined text-3xl\"\u003etoken\u003c/span\u003e\n\u003c/div\u003e\n\u003cnav class=\"flex flex-col gap-6 w-full items-center\"\u003e\n\u003cbutton class=\"text-primary bg-primary/10 p-2 rounded hover:bg-primary/20 transition-colors w-10 h-10 flex items-center justify-center\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003edashboard\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"text-slate-400 hover:text-white p-2 rounded hover:bg-white/5 transition-colors w-10 h-10 flex items-center justify-center\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003escience\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"text-slate-400 hover:text-white p-2 rounded hover:bg-white/5 transition-colors w-10 h-10 flex items-center justify-center\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003edataset\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"text-slate-400 hover:text-white p-2 rounded hover:bg-white/5 transition-colors w-10 h-10 flex items-center justify-center\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003esettings_suggest\u003c/span\u003e\n\u003c/button\u003e\n\u003c/nav\u003e\n\u003cdiv class=\"mt-auto flex flex-col gap-4\"\u003e\n\u003cdiv class=\"w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/aside\u003e\n\u003c!-- Main Content Area --\u003e\n\u003cdiv class=\"flex-1 flex flex-col h-full relative\"\u003e\n\u003c!-- Topbar --\u003e\n\u003cheader class=\"h-14 bg-background-dark/95 backdrop-blur border-b border-border-dark flex items-center justify-between px-4 sticky top-0 z-10\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cbutton class=\"sm:hidden text-slate-400\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003emenu\u003c/span\u003e\n\u003c/button\u003e\n\u003cdiv class=\"flex items-center text-sm font-medium text-slate-400\"\u003e\n\u003cspan class=\"hover:text-white cursor-pointer transition-colors\"\u003eProject Zeo\u003c/span\u003e\n\u003cspan class=\"material-symbols-outlined text-base mx-1\"\u003echevron_right\u003c/span\u003e\n\u003cspan class=\"hover:text-white cursor-pointer transition-colors\"\u003eSystem\u003c/span\u003e\n\u003cspan class=\"material-symbols-outlined text-base mx-1\"\u003echevron_right\u003c/span\u003e\n\u003cspan class=\"text-white\"\u003eUI Kit v1.0\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cdiv class=\"relative hidden md:block\"\u003e\n\u003cspan class=\"material-symbols-outlined absolute left-2 top-1.5 text-slate-500 text-lg\"\u003esearch\u003c/span\u003e\n\u003cinput class=\"bg-surface-dark border border-border-dark rounded text-xs pl-8 pr-3 py-1.5 w-64 text-white placeholder-slate-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all\" placeholder=\"Search tokens...\" type=\"text\"/\u003e\n\u003c/div\u003e\n\u003cbutton class=\"text-slate-400 hover:text-white\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003enotifications\u003c/span\u003e\n\u003c/button\u003e\n\u003cdiv class=\"w-6 h-6 rounded-full bg-gradient-to-br from-primary to-purple-600 border border-white/10\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/header\u003e\n\u003c!-- Scrollable Content --\u003e\n\u003cmain class=\"flex-1 overflow-y-auto technical-grid p-4 sm:p-6 pb-24\"\u003e\n\u003cdiv class=\"max-w-4xl mx-auto space-y-8\"\u003e\n\u003c!-- Header --\u003e\n\u003cdiv class=\"flex flex-col gap-2 border-b border-border-dark pb-6\"\u003e\n\u003cdiv class=\"flex items-center justify-between\"\u003e\n\u003ch1 class=\"text-3xl font-bold tracking-tight text-white\"\u003eZeo Component System\u003c/h1\u003e\n\u003cspan class=\"px-2 py-0.5 rounded text-[10px] font-mono bg-primary/20 text-primary border border-primary/30 uppercase tracking-wider\"\u003ev1.0.4-beta\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-slate-400 text-sm max-w-2xl\"\u003e\n                            A high-density component library designed for epistemic clarity. Optimized for technical data entry, uncertainty visualization, and research workflows.\n                        \u003c/p\u003e\n\u003c/div\u003e\n\u003c!-- Section: Design Tokens --\u003e\n\u003csection class=\"space-y-4\"\u003e\n\u003ch3 class=\"text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2\"\u003e\n\u003cspan class=\"w-2 h-2 bg-slate-500 rounded-full\"\u003e\u003c/span\u003e\n                            Design Tokens\n                        \u003c/h3\u003e\n\u003cdiv class=\"bg-surface-dark border border-border-dark rounded-lg p-4 grid grid-cols-1 md:grid-cols-2 gap-6\"\u003e\n\u003c!-- Colors --\u003e\n\u003cdiv\u003e\n\u003ch4 class=\"text-sm font-medium text-white mb-3\"\u003ePalette\u003c/h4\u003e\n\u003cdiv class=\"flex flex-wrap gap-3\"\u003e\n\u003cdiv class=\"group relative\"\u003e\n\u003cdiv class=\"w-10 h-10 rounded bg-primary border border-white/10 shadow-lg shadow-primary/20\"\u003e\u003c/div\u003e\n\u003cspan class=\"text-[10px] text-slate-400 mt-1 block font-mono\"\u003ePri\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"group relative\"\u003e\n\u003cdiv class=\"w-10 h-10 rounded bg-emerald-500 border border-white/10\"\u003e\u003c/div\u003e\n\u003cspan class=\"text-[10px] text-slate-400 mt-1 block font-mono\"\u003eSuc\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"group relative\"\u003e\n\u003cdiv class=\"w-10 h-10 rounded bg-amber-500 border border-white/10\"\u003e\u003c/div\u003e\n\u003cspan class=\"text-[10px] text-slate-400 mt-1 block font-mono\"\u003eWarn\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"group relative\"\u003e\n\u003cdiv class=\"w-10 h-10 rounded bg-rose-500 border border-white/10\"\u003e\u003c/div\u003e\n\u003cspan class=\"text-[10px] text-slate-400 mt-1 block font-mono\"\u003eErr\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"group relative\"\u003e\n\u003cdiv class=\"w-10 h-10 rounded bg-[#0f172a] border border-border-dark\"\u003e\u003c/div\u003e\n\u003cspan class=\"text-[10px] text-slate-400 mt-1 block font-mono\"\u003eBg\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Typography --\u003e\n\u003cdiv\u003e\n\u003ch4 class=\"text-sm font-medium text-white mb-3\"\u003eTypography (Space Grotesk)\u003c/h4\u003e\n\u003cdiv class=\"space-y-2\"\u003e\n\u003cdiv class=\"flex items-baseline justify-between border-b border-white/5 pb-1\"\u003e\n\u003cspan class=\"text-2xl font-bold text-white\"\u003eAa\u003c/span\u003e\n\u003cspan class=\"text-xs font-mono text-slate-500\"\u003eBold 700\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-baseline justify-between border-b border-white/5 pb-1\"\u003e\n\u003cspan class=\"text-xl font-medium text-white\"\u003eAa\u003c/span\u003e\n\u003cspan class=\"text-xs font-mono text-slate-500\"\u003eMedium 500\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-baseline justify-between\"\u003e\n\u003cspan class=\"text-lg font-normal text-white\"\u003eAa\u003c/span\u003e\n\u003cspan class=\"text-xs font-mono text-slate-500\"\u003eRegular 400\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c!-- Section: KPI Cards --\u003e\n\u003csection class=\"space-y-4\"\u003e\n\u003ch3 class=\"text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2\"\u003e\n\u003cspan class=\"w-2 h-2 bg-slate-500 rounded-full\"\u003e\u003c/span\u003e\n                            Epistemic Indicators\n                        \u003c/h3\u003e\n\u003cdiv class=\"grid grid-cols-1 md:grid-cols-3 gap-4\"\u003e\n\u003c!-- Card 1 --\u003e\n\u003cdiv class=\"bg-surface-dark border border-border-dark hover:border-primary/50 transition-colors rounded-lg p-4 relative group\"\u003e\n\u003cdiv class=\"flex justify-between items-start mb-2\"\u003e\n\u003cspan class=\"text-xs text-slate-400 uppercase font-medium tracking-wide\"\u003eP(Success)\u003c/span\u003e\n\u003cspan class=\"material-symbols-outlined text-slate-600 group-hover:text-primary transition-colors text-lg\"\u003etimeline\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-baseline gap-2\"\u003e\n\u003cspan class=\"text-3xl font-bold text-white tabular-nums\"\u003e87.4%\u003c/span\u003e\n\u003cspan class=\"text-xs font-mono text-emerald-400 bg-emerald-400/10 px-1.5 py-0.5 rounded border border-emerald-400/20\"\u003e▲ 2.1%\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"mt-3 flex items-center gap-2\"\u003e\n\u003cspan class=\"w-2 h-2 rounded-full bg-amber-500\"\u003e\u003c/span\u003e\n\u003cspan class=\"text-xs text-amber-500/80 font-mono\"\u003eUncertainty: High (±12%)\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Card 2 --\u003e\n\u003cdiv class=\"bg-surface-dark border border-border-dark hover:border-primary/50 transition-colors rounded-lg p-4 relative group\"\u003e\n\u003cdiv class=\"flex justify-between items-start mb-2\"\u003e\n\u003cspan class=\"text-xs text-slate-400 uppercase font-medium tracking-wide\"\u003eCandidates\u003c/span\u003e\n\u003cspan class=\"material-symbols-outlined text-slate-600 group-hover:text-primary transition-colors text-lg\"\u003egroup_work\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-baseline gap-2\"\u003e\n\u003cspan class=\"text-3xl font-bold text-white tabular-nums\"\u003e1,024\u003c/span\u003e\n\u003cspan class=\"text-xs text-slate-500\"\u003etotal\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"mt-3 w-full bg-slate-800 h-1.5 rounded-full overflow-hidden\"\u003e\n\u003cdiv class=\"bg-primary h-full w-3/4 rounded-full\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"mt-1 flex justify-between text-[10px] text-slate-500 font-mono\"\u003e\n\u003cspan\u003eProcessed: 768\u003c/span\u003e\n\u003cspan\u003eRemaining: 256\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Card 3 --\u003e\n\u003cdiv class=\"bg-surface-dark border border-border-dark hover:border-primary/50 transition-colors rounded-lg p-4 relative group\"\u003e\n\u003cdiv class=\"flex justify-between items-start mb-2\"\u003e\n\u003cspan class=\"text-xs text-slate-400 uppercase font-medium tracking-wide\"\u003eError Rate\u003c/span\u003e\n\u003cspan class=\"material-symbols-outlined text-slate-600 group-hover:text-primary transition-colors text-lg\"\u003ewarning\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex items-baseline gap-2\"\u003e\n\u003cspan class=\"text-3xl font-bold text-white tabular-nums\"\u003e0.04\u003c/span\u003e\n\u003cspan class=\"text-xs font-mono text-slate-500\"\u003ep-value\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"mt-3 flex flex-wrap gap-2\"\u003e\n\u003cspan class=\"px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 font-mono\"\u003eCI: 95%\u003c/span\u003e\n\u003cspan class=\"px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 font-mono\"\u003eN: 500\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c!-- Section: Badges \u0026 Status --\u003e\n\u003csection class=\"space-y-4\"\u003e\n\u003ch3 class=\"text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2\"\u003e\n\u003cspan class=\"w-2 h-2 bg-slate-500 rounded-full\"\u003e\u003c/span\u003e\n                            Semantic Badges\n                        \u003c/h3\u003e\n\u003cdiv class=\"bg-surface-dark border border-border-dark rounded-lg p-6 flex flex-wrap gap-4 items-center\"\u003e\n\u003c!-- Success --\u003e\n\u003cdiv class=\"flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium uppercase tracking-wide\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm\"\u003echeck_circle\u003c/span\u003e\n                                High Confidence\n                            \u003c/div\u003e\n\u003c!-- Warning --\u003e\n\u003cdiv class=\"flex items-center gap-1.5 px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium uppercase tracking-wide\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm\"\u003ehelp\u003c/span\u003e\n                                Estimate\n                            \u003c/div\u003e\n\u003c!-- Error --\u003e\n\u003cdiv class=\"flex items-center gap-1.5 px-2.5 py-1 rounded bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-medium uppercase tracking-wide\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm\"\u003ecancel\u003c/span\u003e\n                                Refuted\n                            \u003c/div\u003e\n\u003c!-- Neutral --\u003e\n\u003cdiv class=\"flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-700/30 border border-slate-600 text-slate-300 text-xs font-medium uppercase tracking-wide\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm\"\u003einfo\u003c/span\u003e\n                                Candidate\n                            \u003c/div\u003e\n\u003c!-- Outline Variant --\u003e\n\u003cdiv class=\"flex items-center gap-1.5 px-2 py-0.5 rounded border border-dashed border-slate-500 text-slate-400 text-xs font-mono\"\u003e\n                                Pending Peer Review\n                            \u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c!-- Section: Interactive Controls --\u003e\n\u003csection class=\"space-y-4\"\u003e\n\u003ch3 class=\"text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2\"\u003e\n\u003cspan class=\"w-2 h-2 bg-slate-500 rounded-full\"\u003e\u003c/span\u003e\n                            Inputs \u0026amp; Controls\n                        \u003c/h3\u003e\n\u003cdiv class=\"grid grid-cols-1 md:grid-cols-2 gap-6\"\u003e\n\u003c!-- Input Column --\u003e\n\u003cdiv class=\"bg-surface-dark border border-border-dark rounded-lg p-6 space-y-5\"\u003e\n\u003ch4 class=\"text-sm font-bold text-white mb-4 border-b border-white/5 pb-2\"\u003eForm Elements\u003c/h4\u003e\n\u003c!-- Text Input --\u003e\n\u003cdiv class=\"space-y-1.5\"\u003e\n\u003clabel class=\"text-xs text-slate-400 font-medium ml-1\"\u003eExperiment ID\u003c/label\u003e\n\u003cdiv class=\"relative\"\u003e\n\u003cinput class=\"w-full bg-background-dark border border-border-dark rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-mono transition-all\" type=\"text\" value=\"EXP-2023-A99\"/\u003e\n\u003cspan class=\"material-symbols-outlined absolute right-3 top-2.5 text-slate-500 text-sm\"\u003efingerprint\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Input with Dropdown (Epistemic Status) --\u003e\n\u003cdiv class=\"space-y-1.5\"\u003e\n\u003clabel class=\"text-xs text-slate-400 font-medium ml-1\"\u003eHypothesis Claim\u003c/label\u003e\n\u003cdiv class=\"flex rounded border border-border-dark overflow-hidden focus-within:ring-1 focus-within:ring-primary focus-within:border-primary\"\u003e\n\u003cselect class=\"bg-background-dark text-xs text-amber-500 font-medium px-2 py-2 border-r border-border-dark focus:outline-none appearance-none cursor-pointer\"\u003e\n\u003coption\u003eSuspected\u003c/option\u003e\n\u003coption\u003eConfirmed\u003c/option\u003e\n\u003coption\u003eUnlikely\u003c/option\u003e\n\u003c/select\u003e\n\u003cinput class=\"flex-1 bg-background-dark border-none px-3 py-2 text-sm text-white focus:outline-none focus:ring-0\" placeholder=\"Enter claim...\" type=\"text\"/\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Buttons --\u003e\n\u003cdiv class=\"flex flex-wrap gap-3 pt-2\"\u003e\n\u003cbutton class=\"bg-primary hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded shadow-lg shadow-blue-500/20 transition-all active:scale-95 flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-base\"\u003eplay_arrow\u003c/span\u003e\n                                        Run Sim\n                                    \u003c/button\u003e\n\u003cbutton class=\"bg-surface-dark-hover hover:bg-slate-600 border border-slate-600 text-white text-sm font-medium px-4 py-2 rounded transition-all active:scale-95\"\u003e\n                                        Cancel\n                                    \u003c/button\u003e\n\u003cbutton class=\"bg-transparent border border-rose-500/50 text-rose-500 hover:bg-rose-500/10 text-sm font-medium px-4 py-2 rounded transition-all active:scale-95 ml-auto\"\u003e\n                                        Prune\n                                    \u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Interactive Column --\u003e\n\u003cdiv class=\"bg-surface-dark border border-border-dark rounded-lg p-6 space-y-6\"\u003e\n\u003ch4 class=\"text-sm font-bold text-white mb-4 border-b border-white/5 pb-2\"\u003eStates \u0026amp; Toggles\u003c/h4\u003e\n\u003c!-- Slider --\u003e\n\u003cdiv class=\"space-y-3\"\u003e\n\u003cdiv class=\"flex justify-between items-center\"\u003e\n\u003clabel class=\"text-xs text-slate-400 font-medium\"\u003eConfidence Threshold\u003c/label\u003e\n\u003cspan class=\"text-xs font-mono text-primary bg-primary/10 px-1.5 py-0.5 rounded\"\u003e0.85\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"relative w-full h-1 bg-slate-700 rounded-full\"\u003e\n\u003cdiv class=\"absolute h-full bg-primary rounded-full\" style=\"width: 85%\"\u003e\u003c/div\u003e\n\u003cdiv class=\"absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow cursor-pointer hover:scale-110 transition-transform\" style=\"left: 85%; margin-left: -8px;\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between text-[10px] text-slate-600 font-mono\"\u003e\n\u003cspan\u003e0.0\u003c/span\u003e\n\u003cspan\u003e0.5\u003c/span\u003e\n\u003cspan\u003e1.0\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Toggles --\u003e\n\u003cdiv class=\"space-y-4\"\u003e\n\u003c!-- Toggle Active --\u003e\n\u003cdiv class=\"flex items-center justify-between\"\u003e\n\u003cdiv class=\"flex flex-col\"\u003e\n\u003cspan class=\"text-sm text-white\"\u003eAuto-Correction\u003c/span\u003e\n\u003cspan class=\"text-[10px] text-slate-500\"\u003eApply Bayesian updates\u003c/span\u003e\n\u003c/div\u003e\n\u003cbutton class=\"w-10 h-5 bg-primary rounded-full relative transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-dark focus:ring-primary\"\u003e\n\u003cspan class=\"absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform\"\u003e\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c!-- Toggle Inactive --\u003e\n\u003cdiv class=\"flex items-center justify-between\"\u003e\n\u003cdiv class=\"flex flex-col\"\u003e\n\u003cspan class=\"text-sm text-slate-400\"\u003eDeep Scan\u003c/span\u003e\n\u003cspan class=\"text-[10px] text-slate-600\"\u003eResource intensive\u003c/span\u003e\n\u003c/div\u003e\n\u003cbutton class=\"w-10 h-5 bg-slate-700 rounded-full relative transition-colors focus:outline-none\"\u003e\n\u003cspan class=\"absolute left-0.5 top-0.5 w-4 h-4 bg-slate-400 rounded-full shadow-sm transition-transform\"\u003e\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c!-- Section: Stepper --\u003e\n\u003csection class=\"space-y-4\"\u003e\n\u003ch3 class=\"text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2\"\u003e\n\u003cspan class=\"w-2 h-2 bg-slate-500 rounded-full\"\u003e\u003c/span\u003e\n                            Process Stepper\n                        \u003c/h3\u003e\n\u003cdiv class=\"bg-surface-dark border border-border-dark rounded-lg p-6 overflow-x-auto\"\u003e\n\u003cdiv class=\"flex items-center min-w-[500px]\"\u003e\n\u003c!-- Step 1: Complete --\u003e\n\u003cdiv class=\"flex flex-col items-center relative z-10\"\u003e\n\u003cdiv class=\"w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500 text-emerald-500 flex items-center justify-center font-bold text-sm\"\u003e\n\u003cspan class=\"material-symbols-outlined text-base\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"text-xs font-medium text-emerald-500 mt-2\"\u003eDraft\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 h-0.5 bg-emerald-500/30 mx-2 -mt-6\"\u003e\u003c/div\u003e\n\u003c!-- Step 2: Active --\u003e\n\u003cdiv class=\"flex flex-col items-center relative z-10\"\u003e\n\u003cdiv class=\"w-8 h-8 rounded-full bg-primary text-white shadow-[0_0_15px_rgba(19,127,236,0.5)] flex items-center justify-center font-bold text-sm border border-white/20\"\u003e\n                                        2\n                                    \u003c/div\u003e\n\u003cspan class=\"text-xs font-bold text-white mt-2\"\u003eVerify\u003c/span\u003e\n\u003cspan class=\"text-[10px] text-primary absolute -bottom-4 animate-pulse\"\u003eRunning...\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 h-0.5 bg-slate-700 mx-2 -mt-6\"\u003e\u003c/div\u003e\n\u003c!-- Step 3: Pending --\u003e\n\u003cdiv class=\"flex flex-col items-center relative z-10\"\u003e\n\u003cdiv class=\"w-8 h-8 rounded-full bg-slate-800 border border-slate-600 text-slate-500 flex items-center justify-center font-bold text-sm\"\u003e\n                                        3\n                                    \u003c/div\u003e\n\u003cspan class=\"text-xs font-medium text-slate-500 mt-2\"\u003eReview\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 h-0.5 bg-slate-700 mx-2 -mt-6\"\u003e\u003c/div\u003e\n\u003c!-- Step 4: Pending --\u003e\n\u003cdiv class=\"flex flex-col items-center relative z-10\"\u003e\n\u003cdiv class=\"w-8 h-8 rounded-full bg-slate-800 border border-slate-600 text-slate-500 flex items-center justify-center font-bold text-sm\"\u003e\n                                        4\n                                    \u003c/div\u003e\n\u003cspan class=\"text-xs font-medium text-slate-500 mt-2\"\u003ePublish\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c!-- Section: Data Table --\u003e\n\u003csection class=\"space-y-4\"\u003e\n\u003ch3 class=\"text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2\"\u003e\n\u003cspan class=\"w-2 h-2 bg-slate-500 rounded-full\"\u003e\u003c/span\u003e\n                            Tabular Data\n                        \u003c/h3\u003e\n\u003cdiv class=\"bg-surface-dark border border-border-dark rounded-lg overflow-hidden\"\u003e\n\u003cdiv class=\"overflow-x-auto\"\u003e\n\u003ctable class=\"w-full text-left border-collapse\"\u003e\n\u003cthead\u003e\n\u003ctr class=\"bg-slate-800/50 border-b border-border-dark text-xs text-slate-400 uppercase tracking-wider font-mono\"\u003e\n\u003cth class=\"px-4 py-3 font-medium\"\u003e\n\u003cdiv class=\"flex items-center gap-1 cursor-pointer hover:text-white\"\u003e\n                                                    Metric\n                                                    \u003cspan class=\"material-symbols-outlined text-sm\"\u003esort\u003c/span\u003e\n\u003c/div\u003e\n\u003c/th\u003e\n\u003cth class=\"px-4 py-3 font-medium text-right\"\u003eValue\u003c/th\u003e\n\u003cth class=\"px-4 py-3 font-medium text-right\"\u003ep-value\u003c/th\u003e\n\u003cth class=\"px-4 py-3 font-medium\"\u003eStatus\u003c/th\u003e\n\u003cth class=\"px-4 py-3 font-medium text-center\"\u003eActions\u003c/th\u003e\n\u003c/tr\u003e\n\u003c/thead\u003e\n\u003ctbody class=\"divide-y divide-border-dark text-sm\"\u003e\n\u003c!-- Row 1 --\u003e\n\u003ctr class=\"hover:bg-white/5 transition-colors group\"\u003e\n\u003ctd class=\"px-4 py-3 font-medium text-white flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-slate-500 text-sm\"\u003escience\u003c/span\u003e\n                                                Accuracy\n                                            \u003c/td\u003e\n\u003ctd class=\"px-4 py-3 text-right text-slate-300 font-mono\"\u003e0.923\u003c/td\u003e\n\u003ctd class=\"px-4 py-3 text-right text-slate-300 font-mono\"\u003e0.004\u003c/td\u003e\n\u003ctd class=\"px-4 py-3\"\u003e\n\u003cspan class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20\"\u003e\n                                                    REPLICATED\n                                                \u003c/span\u003e\n\u003c/td\u003e\n\u003ctd class=\"px-4 py-3 text-center\"\u003e\n\u003cbutton class=\"text-slate-500 hover:text-white transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-lg\"\u003emore_horiz\u003c/span\u003e\n\u003c/button\u003e\n\u003c/td\u003e\n\u003c/tr\u003e\n\u003c!-- Row 2 (Expanded) --\u003e\n\u003ctr class=\"bg-primary/5 border-l-2 border-l-primary group\"\u003e\n\u003ctd class=\"px-4 py-3 font-medium text-white flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-primary text-sm\"\u003eexpand_more\u003c/span\u003e\n                                                Recall\n                                            \u003c/td\u003e\n\u003ctd class=\"px-4 py-3 text-right text-white font-bold font-mono\"\u003e0.881\u003c/td\u003e\n\u003ctd class=\"px-4 py-3 text-right text-slate-300 font-mono\"\u003e0.120\u003c/td\u003e\n\u003ctd class=\"px-4 py-3\"\u003e\n\u003cspan class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20\"\u003e\n                                                    UNCERTAIN\n                                                \u003c/span\u003e\n\u003c/td\u003e\n\u003ctd class=\"px-4 py-3 text-center\"\u003e\n\u003cbutton class=\"text-slate-500 hover:text-white transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-lg\"\u003emore_horiz\u003c/span\u003e\n\u003c/button\u003e\n\u003c/td\u003e\n\u003c/tr\u003e\n\u003c!-- Row 2 Details (Expanded Content) --\u003e\n\u003ctr class=\"bg-primary/5\"\u003e\n\u003ctd class=\"px-4 pb-4 pt-1\" colspan=\"5\"\u003e\n\u003cdiv class=\"pl-7 grid grid-cols-2 gap-4 text-xs\"\u003e\n\u003cdiv class=\"bg-background-dark/50 p-3 rounded border border-border-dark/50\"\u003e\n\u003cspan class=\"text-slate-500 block mb-1\"\u003eStandard Deviation\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-200\"\u003eσ = 2.45\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"bg-background-dark/50 p-3 rounded border border-border-dark/50\"\u003e\n\u003cspan class=\"text-slate-500 block mb-1\"\u003eSample Size\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-200\"\u003en = 12,400\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/td\u003e\n\u003c/tr\u003e\n\u003c!-- Row 3 --\u003e\n\u003ctr class=\"hover:bg-white/5 transition-colors group\"\u003e\n\u003ctd class=\"px-4 py-3 font-medium text-white flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-slate-500 text-sm\"\u003echevron_right\u003c/span\u003e\n                                                F1 Score\n                                            \u003c/td\u003e\n\u003ctd class=\"px-4 py-3 text-right text-slate-300 font-mono\"\u003e0.899\u003c/td\u003e\n\u003ctd class=\"px-4 py-3 text-right text-slate-300 font-mono\"\u003e0.010\u003c/td\u003e\n\u003ctd class=\"px-4 py-3\"\u003e\n\u003cspan class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-slate-700/50 text-slate-300 border border-slate-600/50\"\u003e\n                                                    PENDING\n                                                \u003c/span\u003e\n\u003c/td\u003e\n\u003ctd class=\"px-4 py-3 text-center\"\u003e\n\u003cbutton class=\"text-slate-500 hover:text-white transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-lg\"\u003emore_horiz\u003c/span\u003e\n\u003c/button\u003e\n\u003c/td\u003e\n\u003c/tr\u003e\n\u003c/tbody\u003e\n\u003c/table\u003e\n\u003c/div\u003e\n\u003cdiv class=\"px-4 py-3 border-t border-border-dark flex items-center justify-between text-xs text-slate-500\"\u003e\n\u003cspan\u003eShowing 1-3 of 42 results\u003c/span\u003e\n\u003cdiv class=\"flex gap-2\"\u003e\n\u003cbutton class=\"hover:text-white disabled:opacity-50\" disabled=\"\"\u003ePrevious\u003c/button\u003e\n\u003cbutton class=\"hover:text-white\"\u003eNext\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c!-- Feedback Elements Visualization --\u003e\n\u003csection class=\"grid grid-cols-1 md:grid-cols-2 gap-6 pb-8\"\u003e\n\u003c!-- Toast Static --\u003e\n\u003cdiv class=\"space-y-2\"\u003e\n\u003ch3 class=\"text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2 mb-4\"\u003e\n\u003cspan class=\"w-2 h-2 bg-slate-500 rounded-full\"\u003e\u003c/span\u003e\n                                Feedback Toast\n                            \u003c/h3\u003e\n\u003cdiv class=\"bg-surface-dark border border-border-dark rounded-lg p-6 flex flex-col items-center justify-center min-h-[140px] bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]\"\u003e\n\u003cdiv class=\"bg-background-dark border border-slate-700 shadow-xl rounded px-4 py-3 flex items-center gap-3 max-w-sm w-full animate-bounce\" style=\"animation-duration: 3s;\"\u003e\n\u003cdiv class=\"bg-emerald-500/20 text-emerald-500 rounded-full p-1\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm\"\u003echeck\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1\"\u003e\n\u003cp class=\"text-sm font-medium text-white\"\u003eModel Updated\u003c/p\u003e\n\u003cp class=\"text-xs text-slate-400\"\u003eBayesian priors adjusted successfully.\u003c/p\u003e\n\u003c/div\u003e\n\u003cbutton class=\"text-slate-500 hover:text-white\"\u003e\n\u003cspan class=\"material-symbols-outlined text-sm\"\u003eclose\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Modal Static --\u003e\n\u003cdiv class=\"space-y-2\"\u003e\n\u003ch3 class=\"text-xs font-mono uppercase tracking-widest text-slate-500 flex items-center gap-2 mb-4\"\u003e\n\u003cspan class=\"w-2 h-2 bg-slate-500 rounded-full\"\u003e\u003c/span\u003e\n                                Modal Shell\n                            \u003c/h3\u003e\n\u003cdiv class=\"bg-surface-dark border border-border-dark rounded-lg p-6 flex items-center justify-center min-h-[140px] relative overflow-hidden\"\u003e\n\u003c!-- Backdrop simulation --\u003e\n\u003cdiv class=\"absolute inset-0 bg-black/40 backdrop-blur-sm z-0\"\u003e\u003c/div\u003e\n\u003c!-- Modal --\u003e\n\u003cdiv class=\"bg-background-dark border border-slate-700 shadow-2xl rounded-lg w-full max-w-[280px] relative z-10 overflow-hidden\"\u003e\n\u003cdiv class=\"p-4 border-b border-border-dark flex justify-between items-center\"\u003e\n\u003ch4 class=\"text-sm font-bold text-white\"\u003eConfirm Pruning\u003c/h4\u003e\n\u003c/div\u003e\n\u003cdiv class=\"p-4\"\u003e\n\u003cp class=\"text-xs text-slate-400 leading-relaxed\"\u003e\n                                            This will remove 12 low-confidence nodes from the graph. This action cannot be undone.\n                                        \u003c/p\u003e\n\u003c/div\u003e\n\u003cdiv class=\"p-3 bg-surface-dark flex justify-end gap-2\"\u003e\n\u003cbutton class=\"px-3 py-1.5 text-xs text-slate-300 hover:text-white\"\u003eCancel\u003c/button\u003e\n\u003cbutton class=\"px-3 py-1.5 bg-rose-500/10 border border-rose-500/50 text-rose-500 text-xs rounded hover:bg-rose-500 hover:text-white transition-colors\"\u003ePrune\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c/div\u003e\n\u003c/main\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"$Lf\",null,{\"title\":\"Zeo Research Console Ui Kit\",\"children\":[[\"$\",\"div\",null,{\"className\":\"mb-3 text-sm text-gray-500\",\"children\":[\"Category: \",\"Governance \u0026 Compliance\"]}],[\"$\",\"div\",null,{\"className\":\"overflow-hidden rounded border border-gray-200 bg-white\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Zeo Research Console Ui Kit\",\"srcDoc\":\"$10\",\"className\":\"h-[1100px] w-full\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]]}]\n"])</script></body></html>

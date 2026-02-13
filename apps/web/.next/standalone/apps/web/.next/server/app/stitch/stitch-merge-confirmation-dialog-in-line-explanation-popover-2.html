@@ -1,0 +1,298 @@
+<!DOCTYPE html><!--8ZfsPSrfgPx8SRye8yuF4--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/bc06321d88be975e.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-573fdd58969ad59e.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-baa4ef70fea4d55f.js" async=""></script><script src="/_next/static/chunks/app/error-17b4afe27e88d3cd.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50 text-gray-900"><header class="sticky top-0 z-10 border-b border-gray-200 bg-white/95 backdrop-blur"><div class="mx-auto w-full max-w-6xl px-6 py-4"><div class="flex items-center justify-between"><a class="text-lg font-semibold text-blue-700" href="/">Zeo</a><button type="button" class="rounded border border-gray-300 px-3 py-1 text-sm md:hidden">Menu</button><nav class="hidden items-center gap-4 md:flex"><a class="text-sm transition-colors text-blue-700 font-semibold" href="/">Home</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/features">Features</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/cli">CLI</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/docs">Docs</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/pricing">Pricing</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/about">About</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/stitch">Stitch</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/dashboard">Dashboard</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="text-sm text-gray-700 hover:text-blue-700">GitHub</a><a class="text-sm text-gray-700 hover:text-blue-700" href="/signin">Sign In</a><a class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700" href="/docs/quickstart">Get Started</a></nav></div></div></header><main class="mx-auto w-full max-w-6xl px-6 py-10"><h1 class="mb-6 text-3xl font-semibold">In Line Explanation Popover 2</h1><div class="mb-3 text-sm text-gray-500">Category: <!-- -->Action Guard</div><div class="overflow-hidden rounded border border-gray-200 bg-white"><iframe title="In Line Explanation Popover 2" srcDoc="&lt;!DOCTYPE html&gt;
+
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Zeo - In-Line Explanation Popover&lt;/title&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script id=&quot;tailwind-config&quot;&gt;
+      tailwind.config = {
+        darkMode: &quot;class&quot;,
+        theme: {
+          extend: {
+            colors: {
+              &quot;primary&quot;: &quot;#135bec&quot;,
+              &quot;background-light&quot;: &quot;#f6f6f8&quot;,
+              &quot;background-dark&quot;: &quot;#101622&quot;,
+              &quot;code-bg&quot;: &quot;#111318&quot;,
+              &quot;code-gutter&quot;: &quot;#1e2229&quot;,
+              &quot;popover-bg&quot;: &quot;rgba(30, 34, 41, 0.95)&quot;,
+            },
+            fontFamily: {
+              &quot;display&quot;: [&quot;Inter&quot;, &quot;sans-serif&quot;],
+              &quot;mono&quot;: [&quot;ui-monospace&quot;, &quot;SFMono-Regular&quot;, &quot;Menlo&quot;, &quot;Monaco&quot;, &quot;Consolas&quot;, &quot;Liberation Mono&quot;, &quot;Courier New&quot;, &quot;monospace&quot;],
+            },
+            borderRadius: {&quot;DEFAULT&quot;: &quot;0.25rem&quot;, &quot;lg&quot;: &quot;0.5rem&quot;, &quot;xl&quot;: &quot;0.75rem&quot;, &quot;2xl&quot;: &quot;1rem&quot;, &quot;full&quot;: &quot;9999px&quot;},
+            backdropBlur: {
+              xs: &#x27;2px&#x27;,
+            }
+          },
+        },
+      }
+    &lt;/script&gt;
+&lt;style&gt;
+        body {
+            font-family: &#x27;Inter&#x27;, sans-serif;
+        }
+        .code-line {
+            counter-increment: line;
+        }
+        .code-line::before {
+            content: counter(line);
+            display: inline-block;
+            width: 2rem;
+            margin-right: 1rem;
+            text-align: right;
+            color: #6b7280;
+            font-size: 0.75rem;
+            font-family: &#x27;ui-monospace&#x27;, monospace;
+        }
+        .sh-keyword { color: #c678dd; } /* Purple */
+        .sh-function { color: #61afef; } /* Blue */
+        .sh-string { color: #98c379; } /* Green */
+        .sh-number { color: #d19a66; } /* Orange */
+        .sh-comment { color: #5c6370; font-style: italic; } /* Grey */
+        .sh-class { color: #e5c07b; } /* Yellow */
+        
+        /* Custom scrollbar for code block */
+        .code-scroll::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .code-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .code-scroll::-webkit-scrollbar-thumb {
+            background: #282e39;
+            border-radius: 4px;
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark min-h-screen flex justify-center items-center overflow-hidden&quot;&gt;
+&lt;!-- Mobile Device Simulator --&gt;
+&lt;div class=&quot;relative w-full max-w-md h-screen max-h-[900px] bg-code-bg overflow-hidden shadow-2xl flex flex-col font-display&quot;&gt;
+&lt;!-- Status Bar Area (Mock) --&gt;
+&lt;div class=&quot;h-12 w-full bg-code-bg flex items-center justify-between px-6 pt-2 z-20&quot;&gt;
+&lt;span class=&quot;text-white text-xs font-medium&quot;&gt;9:41&lt;/span&gt;
+&lt;div class=&quot;flex gap-1.5&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-white text-[16px]&quot;&gt;signal_cellular_alt&lt;/span&gt;
+&lt;span class=&quot;material-symbols-outlined text-white text-[16px]&quot;&gt;wifi&lt;/span&gt;
+&lt;span class=&quot;material-symbols-outlined text-white text-[16px]&quot;&gt;battery_full&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Top App Bar --&gt;
+&lt;div class=&quot;flex items-center bg-code-bg px-4 pb-2 justify-between z-20 border-b border-white/5&quot;&gt;
+&lt;div class=&quot;text-white flex size-10 shrink-0 items-center justify-center cursor-pointer hover:bg-white/5 rounded-full transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;arrow_back_ios_new&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col items-center&quot;&gt;
+&lt;h2 class=&quot;text-white text-base font-bold leading-tight tracking-tight&quot;&gt;NetworkUtils.swift&lt;/h2&gt;
+&lt;span class=&quot;text-gray-400 text-xs&quot;&gt;Edited 2m ago&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex w-10 items-center justify-end&quot;&gt;
+&lt;button class=&quot;flex items-center justify-center rounded-lg size-10 text-white hover:bg-white/5 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;more_horiz&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Code Editor Area --&gt;
+&lt;div class=&quot;flex-1 relative overflow-y-auto code-scroll bg-code-bg pt-4 pb-32&quot;&gt;
+&lt;!-- Line 1 --&gt;
+&lt;div class=&quot;flex items-start px-2 min-h-[28px] group hover:bg-white/5&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none&quot;&gt;1&lt;/div&gt;
+&lt;div class=&quot;w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white&quot;&gt;add&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5&quot;&gt;
+&lt;span class=&quot;sh-keyword&quot;&gt;import&lt;/span&gt; Foundation
+                &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Line 2 --&gt;
+&lt;div class=&quot;flex items-start px-2 min-h-[28px] group hover:bg-white/5&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none&quot;&gt;2&lt;/div&gt;
+&lt;div class=&quot;w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white&quot;&gt;add&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5&quot;&gt;
+&lt;span class=&quot;sh-keyword&quot;&gt;import&lt;/span&gt; Combine
+                &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Line 3 --&gt;
+&lt;div class=&quot;flex items-start px-2 min-h-[28px] group hover:bg-white/5&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none&quot;&gt;3&lt;/div&gt;
+&lt;div class=&quot;w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white&quot;&gt;add&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Line 4 --&gt;
+&lt;div class=&quot;flex items-start px-2 min-h-[28px] group hover:bg-white/5&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none&quot;&gt;4&lt;/div&gt;
+&lt;div class=&quot;w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white&quot;&gt;add&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5&quot;&gt;
+&lt;span class=&quot;sh-class&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;sh-class&quot;&gt;NetworkManager&lt;/span&gt; {
+                &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Line 5 --&gt;
+&lt;div class=&quot;flex items-start px-2 min-h-[28px] group hover:bg-white/5&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none&quot;&gt;5&lt;/div&gt;
+&lt;div class=&quot;w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white&quot;&gt;add&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5&quot;&gt;
+                      &lt;span class=&quot;sh-keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;sh-keyword&quot;&gt;let&lt;/span&gt; shared = &lt;span class=&quot;sh-class&quot;&gt;NetworkManager&lt;/span&gt;()
+                &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Line 6 (Active) --&gt;
+&lt;div class=&quot;flex items-start px-2 min-h-[28px] bg-primary/10 border-l-2 border-primary relative&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-400 font-mono text-xs pt-1 select-none font-bold&quot;&gt;6&lt;/div&gt;
+&lt;div class=&quot;w-8 flex justify-center items-center&quot;&gt;
+&lt;!-- Active Gutter Icon --&gt;
+&lt;div class=&quot;size-6 rounded-md bg-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/30 transition-colors animate-pulse&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-primary text-[16px]&quot;&gt;spark&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 font-mono text-sm pl-2 text-gray-100 whitespace-nowrap pt-0.5 overflow-x-auto&quot;&gt;
+                      &lt;span class=&quot;sh-keyword&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;sh-function&quot;&gt;retryConnection&lt;/span&gt;(url: &lt;span class=&quot;sh-class&quot;&gt;String&lt;/span&gt;) {
+                &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Line 7 --&gt;
+&lt;div class=&quot;flex items-start px-2 min-h-[28px] group hover:bg-white/5&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none&quot;&gt;7&lt;/div&gt;
+&lt;div class=&quot;w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white&quot;&gt;add&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5&quot;&gt;
+                        &lt;span class=&quot;sh-keyword&quot;&gt;guard&lt;/span&gt; attempts &amp;lt; &lt;span class=&quot;sh-number&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;sh-keyword&quot;&gt;else&lt;/span&gt; { &lt;span class=&quot;sh-keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;sh-class&quot;&gt;Timeout&lt;/span&gt; }
+                &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Line 8 --&gt;
+&lt;div class=&quot;flex items-start px-2 min-h-[28px] group hover:bg-white/5&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none&quot;&gt;8&lt;/div&gt;
+&lt;div class=&quot;w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white&quot;&gt;add&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5&quot;&gt;
+                         &lt;span class=&quot;sh-function&quot;&gt;connect&lt;/span&gt;(url, attempts + &lt;span class=&quot;sh-number&quot;&gt;1&lt;/span&gt;)
+                &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Line 9 --&gt;
+&lt;div class=&quot;flex items-start px-2 min-h-[28px] group hover:bg-white/5&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none&quot;&gt;9&lt;/div&gt;
+&lt;div class=&quot;w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white&quot;&gt;add&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5&quot;&gt;
+                       }
+                &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Popover Overlay --&gt;
+&lt;!-- Positioned absolute relative to the code area, specifically targeting below line 6 --&gt;
+&lt;div class=&quot;absolute left-4 right-4 top-[180px] z-30&quot;&gt;
+&lt;!-- Pointer/Arrow --&gt;
+&lt;div class=&quot;absolute -top-2 left-12 w-4 h-4 bg-[#1e2229] border-t border-l border-white/10 transform rotate-45 z-40&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;bg-[#1e2229]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl p-0 overflow-hidden ring-1 ring-black/50&quot;&gt;
+&lt;!-- Header --&gt;
+&lt;div class=&quot;px-4 py-3 border-b border-white/10 flex items-center justify-between bg-white/5&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-primary text-xl&quot;&gt;bolt&lt;/span&gt;
+&lt;h3 class=&quot;text-white text-sm font-semibold tracking-wide&quot;&gt;Zeo Insight&lt;/h3&gt;
+&lt;/div&gt;
+&lt;button class=&quot;text-gray-400 hover:text-white transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-lg&quot;&gt;close&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;!-- Content --&gt;
+&lt;div class=&quot;p-4 space-y-5&quot;&gt;
+&lt;!-- Plain Language Summary --&gt;
+&lt;div&gt;
+&lt;p class=&quot;text-gray-200 text-sm leading-relaxed&quot;&gt;
+                                This function recursively retries the API connection with &lt;span class=&quot;text-primary font-medium&quot;&gt;exponential backoff&lt;/span&gt;. It safeguards against infinite loops by limiting attempts to 5 before throwing a timeout error.
+                            &lt;/p&gt;
+&lt;/div&gt;
+&lt;!-- How to Test --&gt;
+&lt;div class=&quot;bg-black/30 rounded-lg p-3 border border-white/5&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2 mb-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-purple-400 text-sm&quot;&gt;science&lt;/span&gt;
+&lt;span class=&quot;text-xs font-bold text-purple-200 uppercase tracking-wider&quot;&gt;How to Test&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-gray-300 font-mono leading-relaxed&quot;&gt;
+                                Mock a network failure 4 times to verify the retry logic triggers, then return success on the 5th attempt to ensure it resolves.
+                            &lt;/p&gt;
+&lt;/div&gt;
+&lt;!-- Actions &amp; Links --&gt;
+&lt;div class=&quot;flex items-center justify-between pt-1&quot;&gt;
+&lt;button class=&quot;flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary transition-colors border border-primary/20 group&quot;&gt;
+&lt;span class=&quot;text-xs font-semibold&quot;&gt;View Docs&lt;/span&gt;
+&lt;span class=&quot;material-symbols-outlined text-[14px] group-hover:translate-x-0.5 transition-transform&quot;&gt;arrow_forward&lt;/span&gt;
+&lt;/button&gt;
+&lt;div class=&quot;flex items-center gap-1&quot;&gt;
+&lt;button class=&quot;p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-white/10 transition-colors&quot; title=&quot;Copy Explanation&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;content_copy&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-white/10 transition-colors&quot; title=&quot;Regenerate&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;refresh&lt;/span&gt;
+&lt;/button&gt;
+&lt;div class=&quot;w-px h-4 bg-white/10 mx-1&quot;&gt;&lt;/div&gt;
+&lt;button class=&quot;p-1.5 rounded-md text-gray-400 hover:text-green-400 hover:bg-white/10 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;thumb_up&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;p-1.5 rounded-md text-gray-400 hover:text-red-400 hover:bg-white/10 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;thumb_down&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Bottom Gradient Line --&gt;
+&lt;div class=&quot;h-0.5 w-full bg-gradient-to-r from-transparent via-primary to-transparent opacity-50&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- More Code Context (Blurred slightly to emphasize popover focus visually, though requested design says transparent over code) --&gt;
+&lt;!-- Line 10 --&gt;
+&lt;div class=&quot;flex items-start px-2 min-h-[28px] group hover:bg-white/5 opacity-50&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none&quot;&gt;10&lt;/div&gt;
+&lt;div class=&quot;w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white&quot;&gt;add&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Line 11 --&gt;
+&lt;div class=&quot;flex items-start px-2 min-h-[28px] group hover:bg-white/5 opacity-50&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none&quot;&gt;11&lt;/div&gt;
+&lt;div class=&quot;w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white&quot;&gt;add&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5&quot;&gt;
+                      &lt;span class=&quot;sh-keyword&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;sh-function&quot;&gt;connect&lt;/span&gt;(_ url: &lt;span class=&quot;sh-class&quot;&gt;String&lt;/span&gt;, _ attempts: &lt;span class=&quot;sh-class&quot;&gt;Int&lt;/span&gt;) {
+                &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Line 12 --&gt;
+&lt;div class=&quot;flex items-start px-2 min-h-[28px] group hover:bg-white/5 opacity-50&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none&quot;&gt;12&lt;/div&gt;
+&lt;div class=&quot;w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white&quot;&gt;add&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5&quot;&gt;
+                        &lt;span class=&quot;sh-comment&quot;&gt;// Implementation details...&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Floating Action Button (Contextual) --&gt;
+&lt;div class=&quot;absolute bottom-6 right-6 z-20&quot;&gt;
+&lt;button class=&quot;bg-primary hover:bg-blue-600 text-white p-3 rounded-full shadow-lg shadow-blue-900/50 transition-all active:scale-95 flex items-center justify-center&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;smart_toy&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;" class="h-[1100px] w-full" sandbox="allow-scripts allow-same-origin"></iframe></div></main><footer class="border-t border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-5 text-sm text-gray-600 md:flex-row md:items-center md:justify-between"><span>Confidence range, assumptions, provenance, and sensitivity first.</span><div class="flex flex-wrap gap-3"><a class="hover:text-blue-700" href="/docs">Docs</a><a class="hover:text-blue-700" href="/features">Features</a><a class="hover:text-blue-700" href="/cli">CLI</a><a class="hover:text-blue-700" href="/changelog">Changelog</a><a class="hover:text-blue-700" href="/status">Status</a><a class="hover:text-blue-700" href="/legal/privacy">Privacy</a><a class="hover:text-blue-700" href="/legal/terms">Terms</a><a class="hover:text-blue-700" href="/stitch">Stitch</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="hover:text-blue-700">GitHub</a></div></div></footer></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-573fdd58969ad59e.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-17b4afe27e88d3cd.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/bc06321d88be975e.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"8ZfsPSrfgPx8SRye8yuF4\",\"c\":[\"\",\"stitch\",\"stitch-merge-confirmation-dialog-in-line-explanation-popover-2\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"stitch\",{\"children\":[[\"slug\",\"stitch-merge-confirmation-dialog-in-line-explanation-popover-2\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/bc06321d88be975e.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:I[785,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"PublicShell\"]\n10:T3d1c,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eZeo - In-Line Explanation Popover\u003c/title\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003cscript id=\"tailwind-config\"\u003e\n      tailwind.config = {\n        darkMode: \"class\",\n        theme: {\n          extend: {\n            colors: {\n              \"primary\": \"#135bec\",\n              \"background-light\": \"#f6f6f8\",\n              \"background-dark\": \"#101622\",\n              \"code-bg\": \"#111318\",\n              \"code-gutter\": \"#1e2229\",\n              \"popover-bg\": \"rgba(30, 34, 41, 0.95)\",\n            },\n            fontFamily: {\n              \"display\": [\"Inter\", \"sans-serif\"],\n              \"mono\": [\"ui-monospace\", \"SFMono-Regular\", \"Menlo\", \"Monaco\", \"Consolas\", \"Liberation Mono\", \"Courier New\", \"monospace\"],\n            },\n            borderRadius: {\"DEFAULT\": \"0.25rem\", \"lg\": \"0.5rem\", \"xl\": \"0.75rem\", \"2xl\": \"1rem\", \"full\": \"9999px\"},\n            backdropBlur: {\n              xs: '2px',\n            }\n          },\n        },\n      }\n    \u003c/script\u003e\n\u003cstyle\u003e\n        body {\n            font-family: 'Inter', sans-serif;\n        }\n        .code-line {\n            counter-increment: line;\n        }\n        .code-line::before {\n            content: counter(line);\n            display: inline-block;\n            width: 2rem;\n            margin-right: 1rem;\n            text-align: right;\n            color: #6b7280;\n            font-size: 0.75rem;\n            font-family: 'ui-monospace', monospace;\n        }\n        .sh-keyword { color: #c678dd; } /* Purple */\n        .sh-function { color: #61afef; } /* Blue */\n        .sh-string { color: #98c379; } /* Green */\n        .sh-number { color: #d19a66; } /* Orange */\n        .sh-comment { color: #5c6370; font-style: italic; } /* Grey */\n        .sh-class { color: #e5c07b; } /* Yellow */\n        \n        /* Custom scrollbar for code block */\n        .code-scroll::-webkit-scrollbar {\n            width: 4px;\n            height: 4px;\n        }\n        .code-scroll::-webkit-scrollbar-track {\n            background: transparent;\n        }\n        .code-scroll::-webkit-scrollbar-thumb {\n            background: #282e39;\n            border-radius: 4px;\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark min-h-screen flex justify-center items-center overflow-hidden\"\u003e\n\u003c!-- Mobile Device Simulator --\u003e\n\u003cdiv class=\"relative w-full max-w-md h-screen max-h-[900px] bg-code-bg overflow-hidden shadow-2xl flex flex-col font-display\"\u003e\n\u003c!-- Status Bar Area (Mock) --\u003e\n\u003cdiv class=\"h-12 w-full bg-code-bg flex items-center justify-between px-6 pt-2 z-20\"\u003e\n\u003cspan class=\"text-white text-xs font-medium\"\u003e9:41\u003c/span\u003e\n\u003cdiv class=\"flex gap-1.5\"\u003e\n\u003cspan class=\"material-symbols-outlined text-white text-[16px]\"\u003esignal_cellular_alt\u003c/span\u003e\n\u003cspan class=\"material-symbols-outlined text-white text-[16px]\"\u003ewifi\u003c/span\u003e\n\u003cspan class=\"material-symbols-outlined text-white text-[16px]\"\u003ebattery_full\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Top App Bar --\u003e\n\u003cdiv class=\"flex items-center bg-code-bg px-4 pb-2 justify-between z-20 border-b border-white/5\"\u003e\n\u003cdiv class=\"text-white flex size-10 shrink-0 items-center justify-center cursor-pointer hover:bg-white/5 rounded-full transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003earrow_back_ios_new\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col items-center\"\u003e\n\u003ch2 class=\"text-white text-base font-bold leading-tight tracking-tight\"\u003eNetworkUtils.swift\u003c/h2\u003e\n\u003cspan class=\"text-gray-400 text-xs\"\u003eEdited 2m ago\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex w-10 items-center justify-end\"\u003e\n\u003cbutton class=\"flex items-center justify-center rounded-lg size-10 text-white hover:bg-white/5 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003emore_horiz\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Code Editor Area --\u003e\n\u003cdiv class=\"flex-1 relative overflow-y-auto code-scroll bg-code-bg pt-4 pb-32\"\u003e\n\u003c!-- Line 1 --\u003e\n\u003cdiv class=\"flex items-start px-2 min-h-[28px] group hover:bg-white/5\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none\"\u003e1\u003c/div\u003e\n\u003cdiv class=\"w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white\"\u003eadd\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5\"\u003e\n\u003cspan class=\"sh-keyword\"\u003eimport\u003c/span\u003e Foundation\n                \u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Line 2 --\u003e\n\u003cdiv class=\"flex items-start px-2 min-h-[28px] group hover:bg-white/5\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none\"\u003e2\u003c/div\u003e\n\u003cdiv class=\"w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white\"\u003eadd\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5\"\u003e\n\u003cspan class=\"sh-keyword\"\u003eimport\u003c/span\u003e Combine\n                \u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Line 3 --\u003e\n\u003cdiv class=\"flex items-start px-2 min-h-[28px] group hover:bg-white/5\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none\"\u003e3\u003c/div\u003e\n\u003cdiv class=\"w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white\"\u003eadd\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Line 4 --\u003e\n\u003cdiv class=\"flex items-start px-2 min-h-[28px] group hover:bg-white/5\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none\"\u003e4\u003c/div\u003e\n\u003cdiv class=\"w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white\"\u003eadd\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5\"\u003e\n\u003cspan class=\"sh-class\"\u003eclass\u003c/span\u003e \u003cspan class=\"sh-class\"\u003eNetworkManager\u003c/span\u003e {\n                \u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Line 5 --\u003e\n\u003cdiv class=\"flex items-start px-2 min-h-[28px] group hover:bg-white/5\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none\"\u003e5\u003c/div\u003e\n\u003cdiv class=\"w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white\"\u003eadd\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5\"\u003e\n                      \u003cspan class=\"sh-keyword\"\u003estatic\u003c/span\u003e \u003cspan class=\"sh-keyword\"\u003elet\u003c/span\u003e shared = \u003cspan class=\"sh-class\"\u003eNetworkManager\u003c/span\u003e()\n                \u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Line 6 (Active) --\u003e\n\u003cdiv class=\"flex items-start px-2 min-h-[28px] bg-primary/10 border-l-2 border-primary relative\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-400 font-mono text-xs pt-1 select-none font-bold\"\u003e6\u003c/div\u003e\n\u003cdiv class=\"w-8 flex justify-center items-center\"\u003e\n\u003c!-- Active Gutter Icon --\u003e\n\u003cdiv class=\"size-6 rounded-md bg-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/30 transition-colors animate-pulse\"\u003e\n\u003cspan class=\"material-symbols-outlined text-primary text-[16px]\"\u003espark\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 font-mono text-sm pl-2 text-gray-100 whitespace-nowrap pt-0.5 overflow-x-auto\"\u003e\n                      \u003cspan class=\"sh-keyword\"\u003efunc\u003c/span\u003e \u003cspan class=\"sh-function\"\u003eretryConnection\u003c/span\u003e(url: \u003cspan class=\"sh-class\"\u003eString\u003c/span\u003e) {\n                \u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Line 7 --\u003e\n\u003cdiv class=\"flex items-start px-2 min-h-[28px] group hover:bg-white/5\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none\"\u003e7\u003c/div\u003e\n\u003cdiv class=\"w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white\"\u003eadd\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5\"\u003e\n                        \u003cspan class=\"sh-keyword\"\u003eguard\u003c/span\u003e attempts \u0026lt; \u003cspan class=\"sh-number\"\u003e5\u003c/span\u003e \u003cspan class=\"sh-keyword\"\u003eelse\u003c/span\u003e { \u003cspan class=\"sh-keyword\"\u003ethrow\u003c/span\u003e \u003cspan class=\"sh-class\"\u003eTimeout\u003c/span\u003e }\n                \u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Line 8 --\u003e\n\u003cdiv class=\"flex items-start px-2 min-h-[28px] group hover:bg-white/5\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none\"\u003e8\u003c/div\u003e\n\u003cdiv class=\"w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white\"\u003eadd\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5\"\u003e\n                         \u003cspan class=\"sh-function\"\u003econnect\u003c/span\u003e(url, attempts + \u003cspan class=\"sh-number\"\u003e1\u003c/span\u003e)\n                \u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Line 9 --\u003e\n\u003cdiv class=\"flex items-start px-2 min-h-[28px] group hover:bg-white/5\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none\"\u003e9\u003c/div\u003e\n\u003cdiv class=\"w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white\"\u003eadd\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5\"\u003e\n                       }\n                \u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Popover Overlay --\u003e\n\u003c!-- Positioned absolute relative to the code area, specifically targeting below line 6 --\u003e\n\u003cdiv class=\"absolute left-4 right-4 top-[180px] z-30\"\u003e\n\u003c!-- Pointer/Arrow --\u003e\n\u003cdiv class=\"absolute -top-2 left-12 w-4 h-4 bg-[#1e2229] border-t border-l border-white/10 transform rotate-45 z-40\"\u003e\u003c/div\u003e\n\u003cdiv class=\"bg-[#1e2229]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl p-0 overflow-hidden ring-1 ring-black/50\"\u003e\n\u003c!-- Header --\u003e\n\u003cdiv class=\"px-4 py-3 border-b border-white/10 flex items-center justify-between bg-white/5\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-primary text-xl\"\u003ebolt\u003c/span\u003e\n\u003ch3 class=\"text-white text-sm font-semibold tracking-wide\"\u003eZeo Insight\u003c/h3\u003e\n\u003c/div\u003e\n\u003cbutton class=\"text-gray-400 hover:text-white transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-lg\"\u003eclose\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c!-- Content --\u003e\n\u003cdiv class=\"p-4 space-y-5\"\u003e\n\u003c!-- Plain Language Summary --\u003e\n\u003cdiv\u003e\n\u003cp class=\"text-gray-200 text-sm leading-relaxed\"\u003e\n                                This function recursively retries the API connection with \u003cspan class=\"text-primary font-medium\"\u003eexponential backoff\u003c/span\u003e. It safeguards against infinite loops by limiting attempts to 5 before throwing a timeout error.\n                            \u003c/p\u003e\n\u003c/div\u003e\n\u003c!-- How to Test --\u003e\n\u003cdiv class=\"bg-black/30 rounded-lg p-3 border border-white/5\"\u003e\n\u003cdiv class=\"flex items-center gap-2 mb-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-purple-400 text-sm\"\u003escience\u003c/span\u003e\n\u003cspan class=\"text-xs font-bold text-purple-200 uppercase tracking-wider\"\u003eHow to Test\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-gray-300 font-mono leading-relaxed\"\u003e\n                                Mock a network failure 4 times to verify the retry logic triggers, then return success on the 5th attempt to ensure it resolves.\n                            \u003c/p\u003e\n\u003c/div\u003e\n\u003c!-- Actions \u0026 Links --\u003e\n\u003cdiv class=\"flex items-center justify-between pt-1\"\u003e\n\u003cbutton class=\"flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary transition-colors border border-primary/20 group\"\u003e\n\u003cspan class=\"text-xs font-semibold\"\u003eView Docs\u003c/span\u003e\n\u003cspan class=\"material-symbols-outlined text-[14px] group-hover:translate-x-0.5 transition-transform\"\u003earrow_forward\u003c/span\u003e\n\u003c/button\u003e\n\u003cdiv class=\"flex items-center gap-1\"\u003e\n\u003cbutton class=\"p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-white/10 transition-colors\" title=\"Copy Explanation\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003econtent_copy\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"p-1.5 rounded-md text-gray-400 hover:text-white hover:bg-white/10 transition-colors\" title=\"Regenerate\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003erefresh\u003c/span\u003e\n\u003c/button\u003e\n\u003cdiv class=\"w-px h-4 bg-white/10 mx-1\"\u003e\u003c/div\u003e\n\u003cbutton class=\"p-1.5 rounded-md text-gray-400 hover:text-green-400 hover:bg-white/10 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003ethumb_up\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"p-1.5 rounded-md text-gray-400 hover:text-red-400 hover:bg-white/10 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003ethumb_down\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Bottom Gradient Line --\u003e\n\u003cdiv class=\"h-0.5 w-full bg-gradient-to-r from-transparent via-primary to-transparent opacity-50\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- More Code Context (Blurred slightly to emphasize popover focus visually, though requested design says transparent over code) --\u003e\n\u003c!-- Line 10 --\u003e\n\u003cdiv class=\"flex items-start px-2 min-h-[28px] group hover:bg-white/5 opacity-50\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none\"\u003e10\u003c/div\u003e\n\u003cdiv class=\"w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white\"\u003eadd\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5\"\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Line 11 --\u003e\n\u003cdiv class=\"flex items-start px-2 min-h-[28px] group hover:bg-white/5 opacity-50\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none\"\u003e11\u003c/div\u003e\n\u003cdiv class=\"w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white\"\u003eadd\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5\"\u003e\n                      \u003cspan class=\"sh-keyword\"\u003efunc\u003c/span\u003e \u003cspan class=\"sh-function\"\u003econnect\u003c/span\u003e(_ url: \u003cspan class=\"sh-class\"\u003eString\u003c/span\u003e, _ attempts: \u003cspan class=\"sh-class\"\u003eInt\u003c/span\u003e) {\n                \u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Line 12 --\u003e\n\u003cdiv class=\"flex items-start px-2 min-h-[28px] group hover:bg-white/5 opacity-50\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1 select-none\"\u003e12\u003c/div\u003e\n\u003cdiv class=\"w-8 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-500 text-[14px] cursor-pointer hover:text-white\"\u003eadd\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 font-mono text-sm pl-2 text-gray-300 whitespace-nowrap pt-0.5\"\u003e\n                        \u003cspan class=\"sh-comment\"\u003e// Implementation details...\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Floating Action Button (Contextual) --\u003e\n\u003cdiv class=\"absolute bottom-6 right-6 z-20\"\u003e\n\u003cbutton class=\"bg-primary hover:bg-blue-600 text-white p-3 rounded-full shadow-lg shadow-blue-900/50 transition-all active:scale-95 flex items-center justify-center\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003esmart_toy\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"$Lf\",null,{\"title\":\"In Line Explanation Popover 2\",\"children\":[[\"$\",\"div\",null,{\"className\":\"mb-3 text-sm text-gray-500\",\"children\":[\"Category: \",\"Action Guard\"]}],[\"$\",\"div\",null,{\"className\":\"overflow-hidden rounded border border-gray-200 bg-white\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"In Line Explanation Popover 2\",\"srcDoc\":\"$10\",\"className\":\"h-[1100px] w-full\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]]}]\n"])</script></body></html>

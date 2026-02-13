@@ -1,0 +1,185 @@
+<!DOCTYPE html><!--8ZfsPSrfgPx8SRye8yuF4--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/bc06321d88be975e.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-573fdd58969ad59e.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-baa4ef70fea4d55f.js" async=""></script><script src="/_next/static/chunks/app/error-17b4afe27e88d3cd.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50 text-gray-900"><header class="sticky top-0 z-10 border-b border-gray-200 bg-white/95 backdrop-blur"><div class="mx-auto w-full max-w-6xl px-6 py-4"><div class="flex items-center justify-between"><a class="text-lg font-semibold text-blue-700" href="/">Zeo</a><button type="button" class="rounded border border-gray-300 px-3 py-1 text-sm md:hidden">Menu</button><nav class="hidden items-center gap-4 md:flex"><a class="text-sm transition-colors text-blue-700 font-semibold" href="/">Home</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/features">Features</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/cli">CLI</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/docs">Docs</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/pricing">Pricing</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/about">About</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/stitch">Stitch</a><a class="text-sm transition-colors text-gray-700 hover:text-blue-700" href="/dashboard">Dashboard</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="text-sm text-gray-700 hover:text-blue-700">GitHub</a><a class="text-sm text-gray-700 hover:text-blue-700" href="/signin">Sign In</a><a class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700" href="/docs/quickstart">Get Started</a></nav></div></div></header><main class="mx-auto w-full max-w-6xl px-6 py-10"><h1 class="mb-6 text-3xl font-semibold">Explainability Viewer Panel</h1><div class="mb-3 text-sm text-gray-500">Category: <!-- -->Decision Intelligence</div><div class="overflow-hidden rounded border border-gray-200 bg-white"><iframe title="Explainability Viewer Panel" srcDoc="&lt;!DOCTYPE html&gt;
+
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Zeo Explainability Viewer&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;amp;family=JetBrains+Mono:wght@400;500&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;script id=&quot;tailwind-config&quot;&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        &quot;primary&quot;: &quot;#135bec&quot;,
+                        &quot;background-light&quot;: &quot;#f6f6f8&quot;,
+                        &quot;background-dark&quot;: &quot;#101622&quot;,
+                        &quot;surface-dark&quot;: &quot;#1a2333&quot;, // Slightly lighter than background-dark for cards
+                        &quot;surface-light&quot;: &quot;#ffffff&quot;, // White for cards in light mode
+                        &quot;border-dark&quot;: &quot;#2a3649&quot;,
+                        &quot;border-light&quot;: &quot;#e2e4e9&quot;,
+                    },
+                    fontFamily: {
+                        &quot;display&quot;: [&quot;Inter&quot;, &quot;sans-serif&quot;],
+                        &quot;mono&quot;: [&quot;JetBrains Mono&quot;, &quot;monospace&quot;],
+                    },
+                    borderRadius: {&quot;DEFAULT&quot;: &quot;0.25rem&quot;, &quot;lg&quot;: &quot;0.5rem&quot;, &quot;xl&quot;: &quot;0.75rem&quot;, &quot;2xl&quot;: &quot;1rem&quot;, &quot;full&quot;: &quot;9999px&quot;},
+                },
+            },
+        }
+    &lt;/script&gt;
+&lt;style&gt;
+        /* Custom scrollbar for code blocks */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #3f4c63;
+            border-radius: 20px;
+        }
+        
+        /* Details summary marker hidden */
+        details &gt; summary {
+            list-style: none;
+        }
+        details &gt; summary::-webkit-details-marker {
+            display: none;
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark font-display antialiased text-gray-900 dark:text-gray-100 min-h-screen flex flex-col overflow-hidden&quot;&gt;
+&lt;!-- Top App Bar --&gt;
+&lt;header class=&quot;flex items-center justify-between px-4 py-3 bg-background-light dark:bg-background-dark sticky top-0 z-10 border-b border-border-light dark:border-border-dark shrink-0&quot;&gt;
+&lt;div class=&quot;size-10 flex items-center justify-center opacity-0 pointer-events-none&quot;&gt;
+&lt;!-- Placeholder for balance --&gt;
+&lt;/div&gt;
+&lt;h1 class=&quot;text-base font-semibold tracking-tight&quot;&gt;Explainability Viewer&lt;/h1&gt;
+&lt;button class=&quot;size-10 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-gray-500 dark:text-gray-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined !text-[24px]&quot;&gt;close&lt;/span&gt;
+&lt;/button&gt;
+&lt;/header&gt;
+&lt;!-- Scrollable Content Area --&gt;
+&lt;main class=&quot;flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-24&quot;&gt;
+&lt;!-- Narrative Section --&gt;
+&lt;section class=&quot;p-5&quot;&gt;
+&lt;h2 class=&quot;text-xl font-bold tracking-tight mb-3 text-gray-900 dark:text-white&quot;&gt;Decision Logic&lt;/h2&gt;
+&lt;div class=&quot;prose prose-sm dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed space-y-4&quot;&gt;
+&lt;p&gt;
+                    Based on the input parameters, &lt;span class=&quot;font-semibold text-primary&quot;&gt;Model v4.2&lt;/span&gt; prioritized &lt;span class=&quot;font-medium text-gray-900 dark:text-white&quot;&gt;revenue stability&lt;/span&gt; over growth velocity. The confidence interval is &lt;span class=&quot;bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded text-xs font-mono font-medium&quot;&gt;94%&lt;/span&gt; due to strong historical correlation in Q3.
+                &lt;/p&gt;
+&lt;p&gt;
+                    The logic tree identified that reduced volatility in supply chain inputs outweighs the potential 15% upside from aggressive expansion strategies. This decision path aligns with the &quot;Conservative Growth&quot; profile selected in user settings.
+                &lt;/p&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- Deep Dive Data Section --&gt;
+&lt;section class=&quot;px-5 pb-5&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2 mb-4&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined !text-[20px] text-primary&quot;&gt;terminal&lt;/span&gt;
+&lt;h3 class=&quot;text-lg font-bold tracking-tight text-gray-900 dark:text-white&quot;&gt;Deep Dive Data&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-3&quot;&gt;
+&lt;!-- Accordion 1: Assumptions Used --&gt;
+&lt;details class=&quot;group rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden transition-all duration-300&quot; open=&quot;&quot;&gt;
+&lt;summary class=&quot;flex cursor-pointer items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors select-none&quot;&gt;
+&lt;span class=&quot;text-sm font-semibold text-gray-700 dark:text-gray-200&quot;&gt;Assumptions Used&lt;/span&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400 transition-transform duration-300 group-open:rotate-180&quot;&gt;expand_more&lt;/span&gt;
+&lt;/summary&gt;
+&lt;div class=&quot;px-4 pb-4 pt-0&quot;&gt;
+&lt;div class=&quot;relative mt-2 rounded-lg bg-gray-50 dark:bg-[#0d1117] border border-border-light dark:border-border-dark overflow-hidden&quot;&gt;
+&lt;div class=&quot;absolute right-2 top-2&quot;&gt;
+&lt;button class=&quot;p-1.5 rounded-md hover:bg-gray-200 dark:hover:bg-white/10 text-gray-400 hover:text-primary transition-colors&quot; title=&quot;Copy JSON&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined !text-[16px]&quot;&gt;content_copy&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;pre class=&quot;font-mono text-xs text-gray-700 dark:text-gray-300 p-4 overflow-x-auto custom-scrollbar&quot;&gt;{
+  &lt;span class=&quot;text-purple-600 dark:text-purple-400&quot;&gt;&quot;risk_tolerance&quot;&lt;/span&gt;: &lt;span class=&quot;text-green-600 dark:text-green-400&quot;&gt;&quot;low&quot;&lt;/span&gt;,
+  &lt;span class=&quot;text-purple-600 dark:text-purple-400&quot;&gt;&quot;inflation_adj&quot;&lt;/span&gt;: &lt;span class=&quot;text-blue-600 dark:text-blue-400&quot;&gt;true&lt;/span&gt;,
+  &lt;span class=&quot;text-purple-600 dark:text-purple-400&quot;&gt;&quot;weights&quot;&lt;/span&gt;: [
+    0.4,
+    0.1,
+    0.5
+  ],
+  &lt;span class=&quot;text-purple-600 dark:text-purple-400&quot;&gt;&quot;model_id&quot;&lt;/span&gt;: &lt;span class=&quot;text-green-600 dark:text-green-400&quot;&gt;&quot;v4.2-stable&quot;&lt;/span&gt;
+}&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;!-- Accordion 2: Dominant Branches --&gt;
+&lt;details class=&quot;group rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden transition-all duration-300&quot;&gt;
+&lt;summary class=&quot;flex cursor-pointer items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors select-none&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;text-sm font-semibold text-gray-700 dark:text-gray-200&quot;&gt;Dominant Branches&lt;/span&gt;
+&lt;span class=&quot;bg-primary/10 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider&quot;&gt;Top 1&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400 transition-transform duration-300 group-open:rotate-180&quot;&gt;expand_more&lt;/span&gt;
+&lt;/summary&gt;
+&lt;div class=&quot;px-4 pb-4 pt-0&quot;&gt;
+&lt;div class=&quot;relative mt-2 rounded-lg bg-gray-50 dark:bg-[#0d1117] border border-border-light dark:border-border-dark overflow-hidden&quot;&gt;
+&lt;div class=&quot;absolute right-2 top-2&quot;&gt;
+&lt;button class=&quot;p-1.5 rounded-md hover:bg-gray-200 dark:hover:bg-white/10 text-gray-400 hover:text-primary transition-colors&quot; title=&quot;Copy JSON&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined !text-[16px]&quot;&gt;content_copy&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;pre class=&quot;font-mono text-xs text-gray-700 dark:text-gray-300 p-4 overflow-x-auto custom-scrollbar&quot;&gt;{
+  &lt;span class=&quot;text-purple-600 dark:text-purple-400&quot;&gt;&quot;path_id&quot;&lt;/span&gt;: &lt;span class=&quot;text-green-600 dark:text-green-400&quot;&gt;&quot;b-209&quot;&lt;/span&gt;,
+  &lt;span class=&quot;text-purple-600 dark:text-purple-400&quot;&gt;&quot;robustness_score&quot;&lt;/span&gt;: &lt;span class=&quot;text-blue-600 dark:text-blue-400&quot;&gt;0.98&lt;/span&gt;,
+  &lt;span class=&quot;text-purple-600 dark:text-purple-400&quot;&gt;&quot;features&quot;&lt;/span&gt;: [
+    &lt;span class=&quot;text-green-600 dark:text-green-400&quot;&gt;&quot;revenue_stability&quot;&lt;/span&gt;,
+    &lt;span class=&quot;text-green-600 dark:text-green-400&quot;&gt;&quot;supply_chain_idx&quot;&lt;/span&gt;
+  ]
+}&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;!-- Accordion 3: Next-best Evidence --&gt;
+&lt;details class=&quot;group rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden transition-all duration-300&quot;&gt;
+&lt;summary class=&quot;flex cursor-pointer items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors select-none&quot;&gt;
+&lt;span class=&quot;text-sm font-semibold text-gray-700 dark:text-gray-200&quot;&gt;Next-best Evidence&lt;/span&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400 transition-transform duration-300 group-open:rotate-180&quot;&gt;expand_more&lt;/span&gt;
+&lt;/summary&gt;
+&lt;div class=&quot;px-4 pb-4 pt-0&quot;&gt;
+&lt;div class=&quot;relative mt-2 rounded-lg bg-gray-50 dark:bg-[#0d1117] border border-border-light dark:border-border-dark overflow-hidden&quot;&gt;
+&lt;div class=&quot;absolute right-2 top-2&quot;&gt;
+&lt;button class=&quot;p-1.5 rounded-md hover:bg-gray-200 dark:hover:bg-white/10 text-gray-400 hover:text-primary transition-colors&quot; title=&quot;Copy JSON&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined !text-[16px]&quot;&gt;content_copy&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;pre class=&quot;font-mono text-xs text-gray-700 dark:text-gray-300 p-4 overflow-x-auto custom-scrollbar&quot;&gt;{
+  &lt;span class=&quot;text-purple-600 dark:text-purple-400&quot;&gt;&quot;suggested_query&quot;&lt;/span&gt;: &lt;span class=&quot;text-green-600 dark:text-green-400&quot;&gt;&quot;competitor_pricing_q4&quot;&lt;/span&gt;,
+  &lt;span class=&quot;text-purple-600 dark:text-purple-400&quot;&gt;&quot;uncertainty_reduction&quot;&lt;/span&gt;: &lt;span class=&quot;text-green-600 dark:text-green-400&quot;&gt;&quot;12%&quot;&lt;/span&gt;,
+  &lt;span class=&quot;text-purple-600 dark:text-purple-400&quot;&gt;&quot;cost_estimate&quot;&lt;/span&gt;: &lt;span class=&quot;text-green-600 dark:text-green-400&quot;&gt;&quot;low&quot;&lt;/span&gt;
+}&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- Divider --&gt;
+&lt;div class=&quot;mx-5 h-px bg-border-light dark:bg-border-dark mb-5&quot;&gt;&lt;/div&gt;
+&lt;!-- Metadata Footer --&gt;
+&lt;div class=&quot;px-5 pb-8 text-center&quot;&gt;
+&lt;p class=&quot;text-[10px] text-gray-400 uppercase tracking-widest font-medium mb-1&quot;&gt;Generated by Zeo Engine&lt;/p&gt;
+&lt;p class=&quot;text-xs text-gray-500 font-mono&quot;&gt;Session ID: 8f92a-2039x-22&lt;/p&gt;
+&lt;/div&gt;
+&lt;/main&gt;
+&lt;!-- Sticky Footer Action --&gt;
+&lt;div class=&quot;fixed bottom-0 left-0 right-0 p-4 bg-background-light dark:bg-background-dark border-t border-border-light dark:border-border-dark z-20 backdrop-blur-md bg-opacity-90 dark:bg-opacity-90&quot;&gt;
+&lt;button class=&quot;w-full flex items-center justify-center gap-2 rounded-lg border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark px-4 py-3.5 text-sm font-semibold text-gray-900 dark:text-white shadow-sm hover:bg-gray-50 dark:hover:bg-white/5 active:scale-[0.98] transition-all&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined !text-[20px]&quot;&gt;ios_share&lt;/span&gt;
+            Export Analysis
+        &lt;/button&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;" class="h-[1100px] w-full" sandbox="allow-scripts allow-same-origin"></iframe></div></main><footer class="border-t border-gray-200 bg-white"><div class="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-5 text-sm text-gray-600 md:flex-row md:items-center md:justify-between"><span>Confidence range, assumptions, provenance, and sensitivity first.</span><div class="flex flex-wrap gap-3"><a class="hover:text-blue-700" href="/docs">Docs</a><a class="hover:text-blue-700" href="/features">Features</a><a class="hover:text-blue-700" href="/cli">CLI</a><a class="hover:text-blue-700" href="/changelog">Changelog</a><a class="hover:text-blue-700" href="/status">Status</a><a class="hover:text-blue-700" href="/legal/privacy">Privacy</a><a class="hover:text-blue-700" href="/legal/terms">Terms</a><a class="hover:text-blue-700" href="/stitch">Stitch</a><a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" class="hover:text-blue-700">GitHub</a></div></div></footer></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-573fdd58969ad59e.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-17b4afe27e88d3cd.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/bc06321d88be975e.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"8ZfsPSrfgPx8SRye8yuF4\",\"c\":[\"\",\"stitch\",\"stitch-decision-branching-view-explainability-viewer-panel\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"stitch\",{\"children\":[[\"slug\",\"stitch-decision-branching-view-explainability-viewer-panel\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/bc06321d88be975e.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:I[785,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"2706\",\"static/chunks/app/stitch/%5Bslug%5D/page-eeaefdb5c8c8cd5f.js\"],\"PublicShell\"]\n10:T2a7c,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eZeo Explainability Viewer\u003c/title\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700\u0026amp;family=JetBrains+Mono:wght@400;500\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003cscript id=\"tailwind-config\"\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        \"primary\": \"#135bec\",\n                        \"background-light\": \"#f6f6f8\",\n                        \"background-dark\": \"#101622\",\n                        \"surface-dark\": \"#1a2333\", // Slightly lighter than background-dark for cards\n                        \"surface-light\": \"#ffffff\", // White for cards in light mode\n                        \"border-dark\": \"#2a3649\",\n                        \"border-light\": \"#e2e4e9\",\n                    },\n                    fontFamily: {\n                        \"display\": [\"Inter\", \"sans-serif\"],\n                        \"mono\": [\"JetBrains Mono\", \"monospace\"],\n                    },\n                    borderRadius: {\"DEFAULT\": \"0.25rem\", \"lg\": \"0.5rem\", \"xl\": \"0.75rem\", \"2xl\": \"1rem\", \"full\": \"9999px\"},\n                },\n            },\n        }\n    \u003c/script\u003e\n\u003cstyle\u003e\n        /* Custom scrollbar for code blocks */\n        .custom-scrollbar::-webkit-scrollbar {\n            height: 6px;\n            width: 6px;\n        }\n        .custom-scrollbar::-webkit-scrollbar-track {\n            background: transparent;\n        }\n        .custom-scrollbar::-webkit-scrollbar-thumb {\n            background-color: #3f4c63;\n            border-radius: 20px;\n        }\n        \n        /* Details summary marker hidden */\n        details \u003e summary {\n            list-style: none;\n        }\n        details \u003e summary::-webkit-details-marker {\n            display: none;\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark font-display antialiased text-gray-900 dark:text-gray-100 min-h-screen flex flex-col overflow-hidden\"\u003e\n\u003c!-- Top App Bar --\u003e\n\u003cheader class=\"flex items-center justify-between px-4 py-3 bg-background-light dark:bg-background-dark sticky top-0 z-10 border-b border-border-light dark:border-border-dark shrink-0\"\u003e\n\u003cdiv class=\"size-10 flex items-center justify-center opacity-0 pointer-events-none\"\u003e\n\u003c!-- Placeholder for balance --\u003e\n\u003c/div\u003e\n\u003ch1 class=\"text-base font-semibold tracking-tight\"\u003eExplainability Viewer\u003c/h1\u003e\n\u003cbutton class=\"size-10 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-gray-500 dark:text-gray-400\"\u003e\n\u003cspan class=\"material-symbols-outlined !text-[24px]\"\u003eclose\u003c/span\u003e\n\u003c/button\u003e\n\u003c/header\u003e\n\u003c!-- Scrollable Content Area --\u003e\n\u003cmain class=\"flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-24\"\u003e\n\u003c!-- Narrative Section --\u003e\n\u003csection class=\"p-5\"\u003e\n\u003ch2 class=\"text-xl font-bold tracking-tight mb-3 text-gray-900 dark:text-white\"\u003eDecision Logic\u003c/h2\u003e\n\u003cdiv class=\"prose prose-sm dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed space-y-4\"\u003e\n\u003cp\u003e\n                    Based on the input parameters, \u003cspan class=\"font-semibold text-primary\"\u003eModel v4.2\u003c/span\u003e prioritized \u003cspan class=\"font-medium text-gray-900 dark:text-white\"\u003erevenue stability\u003c/span\u003e over growth velocity. The confidence interval is \u003cspan class=\"bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded text-xs font-mono font-medium\"\u003e94%\u003c/span\u003e due to strong historical correlation in Q3.\n                \u003c/p\u003e\n\u003cp\u003e\n                    The logic tree identified that reduced volatility in supply chain inputs outweighs the potential 15% upside from aggressive expansion strategies. This decision path aligns with the \"Conservative Growth\" profile selected in user settings.\n                \u003c/p\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c!-- Deep Dive Data Section --\u003e\n\u003csection class=\"px-5 pb-5\"\u003e\n\u003cdiv class=\"flex items-center gap-2 mb-4\"\u003e\n\u003cspan class=\"material-symbols-outlined !text-[20px] text-primary\"\u003eterminal\u003c/span\u003e\n\u003ch3 class=\"text-lg font-bold tracking-tight text-gray-900 dark:text-white\"\u003eDeep Dive Data\u003c/h3\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-3\"\u003e\n\u003c!-- Accordion 1: Assumptions Used --\u003e\n\u003cdetails class=\"group rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden transition-all duration-300\" open=\"\"\u003e\n\u003csummary class=\"flex cursor-pointer items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors select-none\"\u003e\n\u003cspan class=\"text-sm font-semibold text-gray-700 dark:text-gray-200\"\u003eAssumptions Used\u003c/span\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400 transition-transform duration-300 group-open:rotate-180\"\u003eexpand_more\u003c/span\u003e\n\u003c/summary\u003e\n\u003cdiv class=\"px-4 pb-4 pt-0\"\u003e\n\u003cdiv class=\"relative mt-2 rounded-lg bg-gray-50 dark:bg-[#0d1117] border border-border-light dark:border-border-dark overflow-hidden\"\u003e\n\u003cdiv class=\"absolute right-2 top-2\"\u003e\n\u003cbutton class=\"p-1.5 rounded-md hover:bg-gray-200 dark:hover:bg-white/10 text-gray-400 hover:text-primary transition-colors\" title=\"Copy JSON\"\u003e\n\u003cspan class=\"material-symbols-outlined !text-[16px]\"\u003econtent_copy\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003cpre class=\"font-mono text-xs text-gray-700 dark:text-gray-300 p-4 overflow-x-auto custom-scrollbar\"\u003e{\n  \u003cspan class=\"text-purple-600 dark:text-purple-400\"\u003e\"risk_tolerance\"\u003c/span\u003e: \u003cspan class=\"text-green-600 dark:text-green-400\"\u003e\"low\"\u003c/span\u003e,\n  \u003cspan class=\"text-purple-600 dark:text-purple-400\"\u003e\"inflation_adj\"\u003c/span\u003e: \u003cspan class=\"text-blue-600 dark:text-blue-400\"\u003etrue\u003c/span\u003e,\n  \u003cspan class=\"text-purple-600 dark:text-purple-400\"\u003e\"weights\"\u003c/span\u003e: [\n    0.4,\n    0.1,\n    0.5\n  ],\n  \u003cspan class=\"text-purple-600 dark:text-purple-400\"\u003e\"model_id\"\u003c/span\u003e: \u003cspan class=\"text-green-600 dark:text-green-400\"\u003e\"v4.2-stable\"\u003c/span\u003e\n}\u003c/pre\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/details\u003e\n\u003c!-- Accordion 2: Dominant Branches --\u003e\n\u003cdetails class=\"group rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden transition-all duration-300\"\u003e\n\u003csummary class=\"flex cursor-pointer items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors select-none\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"text-sm font-semibold text-gray-700 dark:text-gray-200\"\u003eDominant Branches\u003c/span\u003e\n\u003cspan class=\"bg-primary/10 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider\"\u003eTop 1\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400 transition-transform duration-300 group-open:rotate-180\"\u003eexpand_more\u003c/span\u003e\n\u003c/summary\u003e\n\u003cdiv class=\"px-4 pb-4 pt-0\"\u003e\n\u003cdiv class=\"relative mt-2 rounded-lg bg-gray-50 dark:bg-[#0d1117] border border-border-light dark:border-border-dark overflow-hidden\"\u003e\n\u003cdiv class=\"absolute right-2 top-2\"\u003e\n\u003cbutton class=\"p-1.5 rounded-md hover:bg-gray-200 dark:hover:bg-white/10 text-gray-400 hover:text-primary transition-colors\" title=\"Copy JSON\"\u003e\n\u003cspan class=\"material-symbols-outlined !text-[16px]\"\u003econtent_copy\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003cpre class=\"font-mono text-xs text-gray-700 dark:text-gray-300 p-4 overflow-x-auto custom-scrollbar\"\u003e{\n  \u003cspan class=\"text-purple-600 dark:text-purple-400\"\u003e\"path_id\"\u003c/span\u003e: \u003cspan class=\"text-green-600 dark:text-green-400\"\u003e\"b-209\"\u003c/span\u003e,\n  \u003cspan class=\"text-purple-600 dark:text-purple-400\"\u003e\"robustness_score\"\u003c/span\u003e: \u003cspan class=\"text-blue-600 dark:text-blue-400\"\u003e0.98\u003c/span\u003e,\n  \u003cspan class=\"text-purple-600 dark:text-purple-400\"\u003e\"features\"\u003c/span\u003e: [\n    \u003cspan class=\"text-green-600 dark:text-green-400\"\u003e\"revenue_stability\"\u003c/span\u003e,\n    \u003cspan class=\"text-green-600 dark:text-green-400\"\u003e\"supply_chain_idx\"\u003c/span\u003e\n  ]\n}\u003c/pre\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/details\u003e\n\u003c!-- Accordion 3: Next-best Evidence --\u003e\n\u003cdetails class=\"group rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden transition-all duration-300\"\u003e\n\u003csummary class=\"flex cursor-pointer items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors select-none\"\u003e\n\u003cspan class=\"text-sm font-semibold text-gray-700 dark:text-gray-200\"\u003eNext-best Evidence\u003c/span\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400 transition-transform duration-300 group-open:rotate-180\"\u003eexpand_more\u003c/span\u003e\n\u003c/summary\u003e\n\u003cdiv class=\"px-4 pb-4 pt-0\"\u003e\n\u003cdiv class=\"relative mt-2 rounded-lg bg-gray-50 dark:bg-[#0d1117] border border-border-light dark:border-border-dark overflow-hidden\"\u003e\n\u003cdiv class=\"absolute right-2 top-2\"\u003e\n\u003cbutton class=\"p-1.5 rounded-md hover:bg-gray-200 dark:hover:bg-white/10 text-gray-400 hover:text-primary transition-colors\" title=\"Copy JSON\"\u003e\n\u003cspan class=\"material-symbols-outlined !text-[16px]\"\u003econtent_copy\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003cpre class=\"font-mono text-xs text-gray-700 dark:text-gray-300 p-4 overflow-x-auto custom-scrollbar\"\u003e{\n  \u003cspan class=\"text-purple-600 dark:text-purple-400\"\u003e\"suggested_query\"\u003c/span\u003e: \u003cspan class=\"text-green-600 dark:text-green-400\"\u003e\"competitor_pricing_q4\"\u003c/span\u003e,\n  \u003cspan class=\"text-purple-600 dark:text-purple-400\"\u003e\"uncertainty_reduction\"\u003c/span\u003e: \u003cspan class=\"text-green-600 dark:text-green-400\"\u003e\"12%\"\u003c/span\u003e,\n  \u003cspan class=\"text-purple-600 dark:text-purple-400\"\u003e\"cost_estimate\"\u003c/span\u003e: \u003cspan class=\"text-green-600 dark:text-green-400\"\u003e\"low\"\u003c/span\u003e\n}\u003c/pre\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/details\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c!-- Divider --\u003e\n\u003cdiv class=\"mx-5 h-px bg-border-light dark:bg-border-dark mb-5\"\u003e\u003c/div\u003e\n\u003c!-- Metadata Footer --\u003e\n\u003cdiv class=\"px-5 pb-8 text-center\"\u003e\n\u003cp class=\"text-[10px] text-gray-400 uppercase tracking-widest font-medium mb-1\"\u003eGenerated by Zeo Engine\u003c/p\u003e\n\u003cp class=\"text-xs text-gray-500 font-mono\"\u003eSession ID: 8f92a-2039x-22\u003c/p\u003e\n\u003c/div\u003e\n\u003c/main\u003e\n\u003c!-- Sticky Footer Action --\u003e\n\u003cdiv class=\"fixed bottom-0 left-0 right-0 p-4 bg-background-light dark:bg-background-dark border-t border-border-light dark:border-border-dark z-20 backdrop-blur-md bg-opacity-90 dark:bg-opacity-90\"\u003e\n\u003cbutton class=\"w-full flex items-center justify-center gap-2 rounded-lg border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark px-4 py-3.5 text-sm font-semibold text-gray-900 dark:text-white shadow-sm hover:bg-gray-50 dark:hover:bg-white/5 active:scale-[0.98] transition-all\"\u003e\n\u003cspan class=\"material-symbols-outlined !text-[20px]\"\u003eios_share\u003c/span\u003e\n            Export Analysis\n        \u003c/button\u003e\n\u003c/div\u003e\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"$Lf\",null,{\"title\":\"Explainability Viewer Panel\",\"children\":[[\"$\",\"div\",null,{\"className\":\"mb-3 text-sm text-gray-500\",\"children\":[\"Category: \",\"Decision Intelligence\"]}],[\"$\",\"div\",null,{\"className\":\"overflow-hidden rounded border border-gray-200 bg-white\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Explainability Viewer Panel\",\"srcDoc\":\"$10\",\"className\":\"h-[1100px] w-full\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]]}]\n"])</script></body></html>
