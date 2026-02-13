@@ -10,7 +10,7 @@
     "dev": "tsc --watch",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
-    "lint": "pnpm -C /workspace/Zeo exec eslint --max-warnings=0 vendor/controlplane/packages/create-runner/templates/queue-worker/src",
+    "lint": "pnpm -C \"$(git rev-parse --show-toplevel)\" exec eslint --max-warnings=0 vendor/controlplane/packages/create-runner/templates/queue-worker/src",
     "test": "vitest run",
     "test:watch": "vitest",
     "contract:test": "vitest run --testNamePattern='Contract'",

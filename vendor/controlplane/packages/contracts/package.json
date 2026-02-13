@@ -32,7 +32,7 @@
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
     "typecheck": "tsc --noEmit",
-    "lint": "pnpm -C /workspace/Zeo exec eslint --max-warnings=0 vendor/controlplane/packages/contracts/src",
+    "lint": "pnpm -C \"$(git rev-parse --show-toplevel)\" exec eslint --max-warnings=0 vendor/controlplane/packages/contracts/src",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
     "prepublishOnly": "npm run build"

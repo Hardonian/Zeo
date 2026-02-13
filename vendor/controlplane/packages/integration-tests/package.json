@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
-    "lint": "pnpm -C /workspace/Zeo exec eslint --max-warnings=0 vendor/controlplane/tests/integration",
+    "lint": "pnpm -C \"$(git rev-parse --show-toplevel)\" exec eslint --max-warnings=0 vendor/controlplane/tests/integration",
     "test": "vitest run --config ./vitest.config.ts"
   },
   "dependencies": {

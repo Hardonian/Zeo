@@ -28,7 +28,7 @@
     "dev": "tsc --watch",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "pnpm -C /workspace/Zeo exec eslint --max-warnings=0 vendor/controlplane/packages/optimization-utils/src",
+    "lint": "pnpm -C \"$(git rev-parse --show-toplevel)\" exec eslint --max-warnings=0 vendor/controlplane/packages/optimization-utils/src",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
