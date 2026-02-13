@@ -28,15 +28,15 @@ import strategyLensManifest from './builtin/strategy-lens/manifest';
 import timeDecayInspectorManifest from './builtin/time-decay-inspector/manifest';
 import valueProfileViewerManifest from './builtin/value-profile-viewer/manifest';
 
-import stitchDecisionComposerManifest from './stitch/stitch_decision_branching_view/decision_composer_panel/manifest';
-import stitchBranchExplorerManifest from './stitch/stitch_decision_branching_view/branch_explorer_panel/manifest';
-import stitchEvidenceInboxManifest from './stitch/stitch_decision_branching_view/evidence_inbox_panel_1/manifest';
-import stitchSignalsManifest from './stitch/stitch_decision_branching_view/signals_strip_panel/manifest';
-import stitchDecisionDashboardManifest from './stitch/stitch_decision_branching_view/zeo_decision_dashboard/manifest';
-import stitchDecisionBranchingManifest from './stitch/stitch_decision_branching_view/decision_branching_view_1/manifest';
-import stitchEvidenceLedgerManifest from './stitch/stitch_decision_branching_view/evidence_&_inputs_ledger/manifest';
-import stitchSensitivityManifest from './stitch/stitch_decision_branching_view/sensitivity_&_flip-thresholds_panel/manifest';
-import stitchBiasInspectorManifest from './stitch/stitch_decision_branching_view/bias_inspector_&_counterweights/manifest';
+import fundamentalDecisionComposerManifest from './capabilities/stitch_decision_branching_view/decision_composer_panel/manifest';
+import fundamentalBranchExplorerManifest from './capabilities/stitch_decision_branching_view/branch_explorer_panel/manifest';
+import fundamentalEvidenceInboxManifest from './capabilities/stitch_decision_branching_view/evidence_inbox_panel_1/manifest';
+import fundamentalSignalsManifest from './capabilities/stitch_decision_branching_view/signals_strip_panel/manifest';
+import fundamentalDecisionDashboardManifest from './capabilities/stitch_decision_branching_view/zeo_decision_dashboard/manifest';
+import fundamentalDecisionBranchingManifest from './capabilities/stitch_decision_branching_view/decision_branching_view_1/manifest';
+import fundamentalEvidenceLedgerManifest from './capabilities/stitch_decision_branching_view/evidence_&_inputs_ledger/manifest';
+import fundamentalSensitivityManifest from './capabilities/stitch_decision_branching_view/sensitivity_&_flip-thresholds_panel/manifest';
+import fundamentalBiasInspectorManifest from './capabilities/stitch_decision_branching_view/bias_inspector_&_counterweights/manifest';
 
 const BUILTIN_MANIFESTS: UiPanelManifest[] = [
   decisionComposerManifest as UiPanelManifest,
@@ -67,19 +67,19 @@ const BUILTIN_MANIFESTS: UiPanelManifest[] = [
   policyStatusManifest as UiPanelManifest,
 ];
 
-const STITCH_MANIFESTS: UiPanelManifest[] = [
-  stitchDecisionComposerManifest as UiPanelManifest,
-  stitchBranchExplorerManifest as UiPanelManifest,
-  stitchEvidenceInboxManifest as UiPanelManifest,
-  stitchSignalsManifest as UiPanelManifest,
-  stitchDecisionDashboardManifest as UiPanelManifest,
-  stitchDecisionBranchingManifest as UiPanelManifest,
-  stitchEvidenceLedgerManifest as UiPanelManifest,
-  stitchSensitivityManifest as UiPanelManifest,
-  stitchBiasInspectorManifest as UiPanelManifest,
+const FUNDAMENTAL_MANIFESTS: UiPanelManifest[] = [
+  fundamentalDecisionComposerManifest as UiPanelManifest,
+  fundamentalBranchExplorerManifest as UiPanelManifest,
+  fundamentalEvidenceInboxManifest as UiPanelManifest,
+  fundamentalSignalsManifest as UiPanelManifest,
+  fundamentalDecisionDashboardManifest as UiPanelManifest,
+  fundamentalDecisionBranchingManifest as UiPanelManifest,
+  fundamentalEvidenceLedgerManifest as UiPanelManifest,
+  fundamentalSensitivityManifest as UiPanelManifest,
+  fundamentalBiasInspectorManifest as UiPanelManifest,
 ];
 
-export const ALL_PANELS = [...BUILTIN_MANIFESTS, ...STITCH_MANIFESTS];
+export const ALL_PANELS = [...BUILTIN_MANIFESTS, ...FUNDAMENTAL_MANIFESTS];
 
 const _validatedPanels: Map<string, UiPanelManifest> = new Map();
 
@@ -113,14 +113,14 @@ export function getBuiltinPanels(): UiPanelManifest[] {
   return BUILTIN_MANIFESTS;
 }
 
-export function getStitchPanels(): UiPanelManifest[] {
-  return STITCH_MANIFESTS;
+export function getFundamentalPanels(): UiPanelManifest[] {
+  return FUNDAMENTAL_MANIFESTS;
 }
 
 export function isBuiltinPanel(id: string): boolean {
   return BUILTIN_MANIFESTS.some((p) => p.id === id);
 }
 
-export function isStitchPanel(id: string): boolean {
-  return STITCH_MANIFESTS.some((p) => p.id === id);
+export function isFundamentalPanel(id: string): boolean {
+  return FUNDAMENTAL_MANIFESTS.some((p) => p.id === id);
 }

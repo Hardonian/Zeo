@@ -1,0 +1,338 @@
+<!DOCTYPE html><!--J_kVknmu6GSF5qixhc85u--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/37847ea80569b263.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-e3a36c2da9ea350c.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-3b36e40479e50727.js" async=""></script><script src="/_next/static/chunks/app/error-e24765025faea277.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/capabilities/%5Bslug%5D/page-b735324e90a667f4.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50"><header class="bg-white border-b border-gray-200 py-4 px-6 md:px-8 sticky top-0 z-20"><div class="max-w-7xl mx-auto flex items-center justify-between"><div class="flex items-center gap-4"><a class="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors" href="/capabilities"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></a><div><h1 class="text-lg font-bold text-gray-900 tracking-tight">Contribution &amp; Epistemic Leaderboard</h1><p class="text-xs text-blue-600 font-medium uppercase tracking-widest">Decision Intelligence</p></div></div><div class="flex gap-3"><div class="hidden sm:flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-100"><span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>Live Preview</div></div></div></header><main class="w-full"><div class="bg-white rounded-none shadow-none overflow-hidden"><iframe title="Contribution &amp; Epistemic Leaderboard" srcDoc="&lt;!DOCTYPE html&gt;
+
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Zeo - Epistemic Leaderboard&lt;/title&gt;
+&lt;!-- Google Fonts --&gt;
+&lt;link href=&quot;https://fonts.googleapis.com&quot; rel=&quot;preconnect&quot;/&gt;
+&lt;link crossorigin=&quot;&quot; href=&quot;https://fonts.gstatic.com&quot; rel=&quot;preconnect&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;amp;family=JetBrains+Mono:wght@400;500;700&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;!-- Material Symbols --&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;!-- Tailwind CSS --&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;script id=&quot;tailwind-config&quot;&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        &quot;primary&quot;: &quot;#f4c025&quot;,
+                        &quot;primary-dim&quot;: &quot;#b38b1d&quot;,
+                        &quot;background-light&quot;: &quot;#f8f8f5&quot;,
+                        &quot;background-dark&quot;: &quot;#1a1b1e&quot;, // Deep slate
+                        &quot;surface-dark&quot;: &quot;#25262b&quot;, // Lighter slate for cards
+                        &quot;surface-dark-highlight&quot;: &quot;#2c2e33&quot;,
+                        &quot;text-dim&quot;: &quot;#909296&quot;,
+                    },
+                    fontFamily: {
+                        &quot;display&quot;: [&quot;Space Grotesk&quot;, &quot;sans-serif&quot;],
+                        &quot;mono&quot;: [&quot;JetBrains Mono&quot;, &quot;monospace&quot;],
+                    },
+                    boxShadow: {
+                        &#x27;glow&#x27;: &#x27;0 0 15px -3px rgba(244, 192, 37, 0.3)&#x27;,
+                    }
+                },
+            },
+        }
+    &lt;/script&gt;
+&lt;style&gt;
+        body {
+            font-family: &#x27;Space Grotesk&#x27;, sans-serif;
+        }
+        .stats-font {
+            font-family: &#x27;JetBrains Mono&#x27;, monospace;
+        }
+        /* Custom Scrollbar for horizontal lists */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark text-slate-800 dark:text-gray-100 min-h-screen flex flex-col antialiased selection:bg-primary selection:text-background-dark&quot;&gt;
+&lt;!-- Header Area --&gt;
+&lt;header class=&quot;sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-4 pt-4 pb-2&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between mb-4&quot;&gt;
+&lt;button class=&quot;p-2 rounded-full hover:bg-gray-200 dark:hover:bg-surface-dark transition-colors text-gray-600 dark:text-gray-300&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;arrow_back&lt;/span&gt;
+&lt;/button&gt;
+&lt;h1 class=&quot;text-xl font-bold tracking-tight&quot;&gt;Epistemic Rankings&lt;/h1&gt;
+&lt;button class=&quot;p-2 rounded-full hover:bg-gray-200 dark:hover:bg-surface-dark transition-colors text-gray-600 dark:text-gray-300&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;filter_list&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;!-- Global Toggle --&gt;
+&lt;div class=&quot;bg-gray-200 dark:bg-surface-dark p-1 rounded-xl flex relative mb-2&quot;&gt;
+&lt;button class=&quot;flex-1 py-2 px-4 rounded-lg bg-white dark:bg-primary shadow-sm text-sm font-bold text-slate-900 dark:text-background-dark transition-all&quot;&gt;
+                Global
+            &lt;/button&gt;
+&lt;button class=&quot;flex-1 py-2 px-4 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all&quot;&gt;
+                Per-Scenario
+            &lt;/button&gt;
+&lt;/div&gt;
+&lt;/header&gt;
+&lt;!-- Main Content --&gt;
+&lt;main class=&quot;flex-1 px-4 py-4 flex flex-col gap-6 pb-24&quot;&gt;
+&lt;!-- Top Podium --&gt;
+&lt;section class=&quot;grid grid-cols-3 gap-3 items-end mb-2&quot;&gt;
+&lt;!-- Rank 2 --&gt;
+&lt;div class=&quot;flex flex-col items-center&quot;&gt;
+&lt;div class=&quot;relative mb-2&quot;&gt;
+&lt;div class=&quot;w-16 h-16 rounded-full border-2 border-slate-300 dark:border-slate-600 overflow-hidden&quot; data-alt=&quot;Portrait of David K&quot;&gt;
+&lt;img alt=&quot;David K.&quot; class=&quot;w-full h-full object-cover&quot; src=&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAVu_SyPWJx1BIMDXVhx-bshSDo7b4qFIXxOliymclb3UWEmxgjZ17wyBeen9jm-I239OTXSRFUJE-qbiDrovkfyxmfEuIgjuSVEjOBZSa19jgxxAjYTj3ZobRmC_e6IdFzI6xbiwiz_EKH9CA6liXD1-09VdfCpeu4nnlAoG_RmIJGRUPslnPIWkr6Po5ixoF3FXn3I40W80KmTEb69fkLl3uqXYecjdbqJCWacZng5PmkAPn0j7S-ll53NXhxQ6jAlAvbYwqPos8&quot;/&gt;
+&lt;/div&gt;
+&lt;div class=&quot;absolute -bottom-2 left-1/2 -translate-x-1/2 bg-slate-600 text-white text-xs font-bold px-2 py-0.5 rounded-full border border-background-dark&quot;&gt;
+                        #2
+                    &lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-sm font-bold text-center truncate w-full&quot;&gt;David K.&lt;/p&gt;
+&lt;p class=&quot;stats-font text-xs text-primary font-bold&quot;&gt;94.2 EV&lt;/p&gt;
+&lt;div class=&quot;h-16 w-full bg-surface-dark/50 mt-2 rounded-t-lg mx-auto bg-gradient-to-t from-surface-dark to-transparent&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Rank 1 --&gt;
+&lt;div class=&quot;flex flex-col items-center z-10&quot;&gt;
+&lt;div class=&quot;relative mb-2&quot;&gt;
+&lt;div class=&quot;absolute -top-6 text-primary animate-bounce&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined fill-1&quot;&gt;crown&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;w-20 h-20 rounded-full border-4 border-primary shadow-glow overflow-hidden&quot; data-alt=&quot;Portrait of Sarah C&quot;&gt;
+&lt;img alt=&quot;Sarah C.&quot; class=&quot;w-full h-full object-cover&quot; src=&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCDCZY-vEpd-NhJ_Myw-hyTPPTZ8X1wvT0yvDgQwiIwl8AxPTGQrNJafSrLEoX0Jk22U1x1SRPoAOBq813oh09dv43K5rsZCWj9UsmuEFtBCnwjFLZTb-MVt43Njeisonc-bioBWi5sLKQbSL8RiKoLQyq6_dtoY2uSFQSDwhfZ1gpIxoPRzkEFrwsjiDkH8qy7g1lKshaiTWHR_Bq_szj4Osx1ZOcQh5UEz6Ff0ZDK0MtKyIIIzJQ4VwURjLVcJTmtCxGpaQuoL4s&quot;/&gt;
+&lt;/div&gt;
+&lt;div class=&quot;absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary text-background-dark text-sm font-bold px-2.5 py-0.5 rounded-full border-2 border-background-dark&quot;&gt;
+                        #1
+                    &lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-base font-bold text-center truncate w-full text-primary&quot;&gt;Sarah C.&lt;/p&gt;
+&lt;p class=&quot;stats-font text-sm text-white font-bold&quot;&gt;98.4 EV&lt;/p&gt;
+&lt;div class=&quot;h-24 w-full bg-surface-dark mt-2 rounded-t-lg mx-auto bg-gradient-to-t from-surface-dark to-primary/10 border-t border-primary/20&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Rank 3 --&gt;
+&lt;div class=&quot;flex flex-col items-center&quot;&gt;
+&lt;div class=&quot;relative mb-2&quot;&gt;
+&lt;div class=&quot;w-16 h-16 rounded-full border-2 border-[#cd7f32] overflow-hidden&quot; data-alt=&quot;Portrait of Elena R&quot;&gt;
+&lt;img alt=&quot;Elena R.&quot; class=&quot;w-full h-full object-cover&quot; src=&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBwnMVwPdpEJP3UvHdEzm2dDKSINZninGy59zJrOnIyhoQXkcJeK4_eQiSiB3aAputo7ickOJ5TrpLrRaNTuZezSNFAdotG6XeKYt1s1ad-d3BrJ_exn5TgkFIDBbJAqnzO0Oj-Tfu7ei226ItNHFNbuo-cK7oOexGDT-s4PjxwHZxlmam35PYhBavCsKVv68TL0f2q0BWZ9zXxHGipUFTKMxIH9hq5Yx3LVagxNh_TsNcxi4U_9rmAxph0zEkICma1v1cjU5GXHzM&quot;/&gt;
+&lt;/div&gt;
+&lt;div class=&quot;absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#cd7f32] text-white text-xs font-bold px-2 py-0.5 rounded-full border border-background-dark&quot;&gt;
+                        #3
+                    &lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-sm font-bold text-center truncate w-full&quot;&gt;Elena R.&lt;/p&gt;
+&lt;p class=&quot;stats-font text-xs text-[#cd7f32] font-bold&quot;&gt;91.8 EV&lt;/p&gt;
+&lt;div class=&quot;h-12 w-full bg-surface-dark/50 mt-2 rounded-t-lg mx-auto bg-gradient-to-t from-surface-dark to-transparent&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- Filters --&gt;
+&lt;div class=&quot;flex gap-2 overflow-x-auto hide-scrollbar pb-1&quot;&gt;
+&lt;button class=&quot;whitespace-nowrap px-4 py-1.5 rounded-full bg-primary/20 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider&quot;&gt;
+                Top Contributors
+            &lt;/button&gt;
+&lt;button class=&quot;whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-dark border border-gray-700 text-text-dim text-xs font-bold uppercase tracking-wider hover:bg-gray-700 transition-colors&quot;&gt;
+                Most Improved
+            &lt;/button&gt;
+&lt;button class=&quot;whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-dark border border-gray-700 text-text-dim text-xs font-bold uppercase tracking-wider hover:bg-gray-700 transition-colors&quot;&gt;
+                This Week
+            &lt;/button&gt;
+&lt;/div&gt;
+&lt;!-- Leaderboard List --&gt;
+&lt;div class=&quot;flex flex-col gap-3&quot;&gt;
+&lt;!-- List Header (Legend) --&gt;
+&lt;div class=&quot;flex px-4 text-[10px] uppercase tracking-wider text-text-dim font-bold justify-between items-center&quot;&gt;
+&lt;div class=&quot;w-8 text-center&quot;&gt;Rnk&lt;/div&gt;
+&lt;div class=&quot;flex-1 pl-2&quot;&gt;Analyst&lt;/div&gt;
+&lt;div class=&quot;w-20 text-right&quot;&gt;Epistemic Val&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Rank 1 Card (Detailed) --&gt;
+&lt;div class=&quot;bg-surface-dark rounded-xl p-4 border border-primary/20 shadow-lg relative overflow-hidden group&quot;&gt;
+&lt;!-- Highlight Decoration --&gt;
+&lt;div class=&quot;absolute top-0 left-0 w-1 h-full bg-primary&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex items-center gap-4 mb-4&quot;&gt;
+&lt;div class=&quot;flex flex-col items-center justify-center w-8 shrink-0&quot;&gt;
+&lt;span class=&quot;text-2xl font-bold text-primary stats-font&quot;&gt;01&lt;/span&gt;
+&lt;span class=&quot;material-symbols-outlined text-green-500 text-sm mt-1&quot;&gt;arrow_drop_up&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;relative shrink-0&quot;&gt;
+&lt;div class=&quot;w-12 h-12 rounded-full overflow-hidden border-2 border-primary/50&quot; data-alt=&quot;Portrait of Sarah Chen&quot;&gt;
+&lt;img alt=&quot;Sarah Chen&quot; class=&quot;w-full h-full object-cover&quot; src=&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAoY1FxasS9vApgftIF633y1SD3v0BLuT1DjZWEEZ_j5GYduk0sZ725Mv5mPVhrkVt9ds1qeiLxFs4rDL1fSKQTnqUTC9Vp1ZAZtKmwlLfXM5fQGuJDv0zU2Ye0LrMBjMEZQ-nkk-N1orIznbnQgz9CJ2Ukp-Fj3Pl0fuB7jyGPD2FZXHi3-OUeSHWFauyeVK6i1RZN_GDmidTsZG4FpbRtERliQbiKtF0XMDGd9Ea4_fuwjZz3WEQwmGJU6QojX99J1lf5gX3E3TU&quot;/&gt;
+&lt;/div&gt;
+&lt;div class=&quot;absolute -bottom-1 -right-1 bg-background-dark rounded-full p-0.5 border border-gray-700&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-blue-400 text-[14px] bg-blue-400/10 rounded-full p-0.5&quot; title=&quot;Verified Expert&quot;&gt;verified&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 min-w-0&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;h3 class=&quot;font-bold text-white text-lg truncate&quot;&gt;Sarah Chen&lt;/h3&gt;
+&lt;span class=&quot;px-1.5 py-0.5 rounded bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-wider border border-primary/10&quot;&gt;PRO&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex gap-2 mt-1&quot;&gt;
+&lt;span class=&quot;inline-flex items-center gap-1 bg-surface-dark-highlight px-2 py-0.5 rounded text-[10px] text-gray-300 border border-gray-700/50&quot; title=&quot;Provenance Master&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[12px] text-purple-400&quot;&gt;history_edu&lt;/span&gt; Prov. Master
+                            &lt;/span&gt;
+&lt;span class=&quot;inline-flex items-center gap-1 bg-surface-dark-highlight px-2 py-0.5 rounded text-[10px] text-gray-300 border border-gray-700/50&quot; title=&quot;High Impact&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[12px] text-red-400&quot;&gt;bolt&lt;/span&gt; High Impact
+                            &lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-right&quot;&gt;
+&lt;div class=&quot;text-2xl font-bold text-primary stats-font tracking-tight&quot;&gt;98.4&lt;/div&gt;
+&lt;div class=&quot;text-[10px] text-text-dim uppercase tracking-wider&quot;&gt;Score&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Stats Grid --&gt;
+&lt;div class=&quot;grid grid-cols-3 gap-2 bg-background-dark/50 rounded-lg p-2 border border-gray-800&quot;&gt;
+&lt;div class=&quot;flex flex-col items-center border-r border-gray-800 pr-2&quot;&gt;
+&lt;span class=&quot;text-[10px] text-text-dim uppercase mb-0.5&quot;&gt;Verified Facts&lt;/span&gt;
+&lt;div class=&quot;flex items-center gap-1 text-white&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-green-400 text-sm&quot;&gt;check_circle&lt;/span&gt;
+&lt;span class=&quot;font-bold stats-font text-sm&quot;&gt;142&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col items-center border-r border-gray-800 px-2&quot;&gt;
+&lt;span class=&quot;text-[10px] text-text-dim uppercase mb-0.5&quot;&gt;Calibration&lt;/span&gt;
+&lt;div class=&quot;flex items-center gap-1 text-white w-full justify-center&quot;&gt;
+&lt;div class=&quot;h-1.5 w-8 bg-gray-700 rounded-full overflow-hidden&quot;&gt;
+&lt;div class=&quot;h-full bg-primary w-[99%]&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;font-bold stats-font text-sm&quot;&gt;99%&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col items-center pl-2&quot;&gt;
+&lt;span class=&quot;text-[10px] text-text-dim uppercase mb-0.5&quot;&gt;Impact Wgt&lt;/span&gt;
+&lt;div class=&quot;flex items-center gap-1 text-white&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-orange-400 text-sm&quot;&gt;trending_up&lt;/span&gt;
+&lt;span class=&quot;font-bold stats-font text-sm&quot;&gt;4.5x&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Rank 2 Card (Collapsed view concept) --&gt;
+&lt;div class=&quot;bg-surface-dark rounded-xl p-3 border border-gray-800 hover:border-gray-700 transition-all flex items-center gap-3 group cursor-pointer&quot;&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-lg font-bold text-gray-400 stats-font&quot;&gt;02&lt;/div&gt;
+&lt;div class=&quot;relative shrink-0&quot;&gt;
+&lt;div class=&quot;w-10 h-10 rounded-full overflow-hidden bg-gray-700&quot; data-alt=&quot;Portrait of David Kim&quot;&gt;
+&lt;img alt=&quot;David Kim&quot; class=&quot;w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all&quot; src=&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBRNGyD-ze6Mjz_xYKg0oql49M9dzYFWgvhpmuCwe5jweILDPxyZU5p78Hbo9_VcvYyRpHqTG6Za9R-iAOQ1dZ54YSigccrOypShLbW42bTOO2KGv48EX7f0ASXNa_ZmZsszqbmUiaDsXH9fl7eGZTWp1rQ3GNQj5IWPC3MjX6a-ImjZM6-Ws-61Qiz0216lwyMIagXXOVKwyKbRJJFwtXjxaPLk3YMCYjmV-4gERuE3bmA6nuE7MnzOHePTfy5-meVZ_4qMHa4q0E&quot;/&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 min-w-0 flex flex-col justify-center&quot;&gt;
+&lt;h3 class=&quot;font-bold text-gray-200 text-base&quot;&gt;David Kim&lt;/h3&gt;
+&lt;div class=&quot;flex items-center gap-3 text-xs text-text-dim mt-0.5&quot;&gt;
+&lt;span class=&quot;flex items-center gap-1&quot;&gt;&lt;span class=&quot;material-symbols-outlined text-[10px]&quot;&gt;fact_check&lt;/span&gt; &lt;span class=&quot;stats-font&quot;&gt;118&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;flex items-center gap-1&quot;&gt;&lt;span class=&quot;material-symbols-outlined text-[10px]&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;stats-font&quot;&gt;94%&lt;/span&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-right shrink-0&quot;&gt;
+&lt;div class=&quot;text-lg font-bold text-white stats-font&quot;&gt;94.2&lt;/div&gt;
+&lt;div class=&quot;flex justify-end gap-1 mt-1&quot;&gt;
+&lt;span class=&quot;w-2 h-2 rounded-full bg-blue-500&quot; title=&quot;Bias Filter Badge&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;w-2 h-2 rounded-full bg-purple-500&quot; title=&quot;Top Writer Badge&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Rank 3 Card --&gt;
+&lt;div class=&quot;bg-surface-dark rounded-xl p-3 border border-gray-800 hover:border-gray-700 transition-all flex items-center gap-3 group cursor-pointer&quot;&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-lg font-bold text-[#cd7f32] stats-font&quot;&gt;03&lt;/div&gt;
+&lt;div class=&quot;relative shrink-0&quot;&gt;
+&lt;div class=&quot;w-10 h-10 rounded-full overflow-hidden bg-gray-700&quot; data-alt=&quot;Portrait of Elena Rodriguez&quot;&gt;
+&lt;img alt=&quot;Elena Rodriguez&quot; class=&quot;w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all&quot; src=&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDUZ6KQImLDg94mFo4g_An-JwWTtCKvtDiGi8ZdyuW2ys0qjnaphZrV0s7m5OHlYoa1_X_Saf8LLD3RX085gQlH3vHLyZEKvcUuNeaJuxK33n1Fu6R9aVtU443OrGg7bzPJd1fXqyhwHuBLrvThG57LJ3_Z878WpHUdxMIPjIdjPteixjvAYTTGuX3Evbhhj72L1_VMsalpOEDEaYHHTDv6XHP7sSTrwwTAcRt8DkQC66pyUgsswUtsZyBb5MLeJfXtYKwlBWdf8zc&quot;/&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 min-w-0 flex flex-col justify-center&quot;&gt;
+&lt;h3 class=&quot;font-bold text-gray-200 text-base&quot;&gt;Elena Rodriguez&lt;/h3&gt;
+&lt;div class=&quot;flex items-center gap-3 text-xs text-text-dim mt-0.5&quot;&gt;
+&lt;span class=&quot;flex items-center gap-1&quot;&gt;&lt;span class=&quot;material-symbols-outlined text-[10px]&quot;&gt;fact_check&lt;/span&gt; &lt;span class=&quot;stats-font&quot;&gt;98&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;flex items-center gap-1&quot;&gt;&lt;span class=&quot;material-symbols-outlined text-[10px]&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;stats-font&quot;&gt;96%&lt;/span&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-right shrink-0&quot;&gt;
+&lt;div class=&quot;text-lg font-bold text-white stats-font&quot;&gt;91.8&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Rank 4 Card --&gt;
+&lt;div class=&quot;bg-surface-dark/50 rounded-xl p-3 border border-gray-800/50 hover:border-gray-700 transition-all flex items-center gap-3 group cursor-pointer&quot;&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-base font-medium text-gray-500 stats-font&quot;&gt;04&lt;/div&gt;
+&lt;div class=&quot;relative shrink-0&quot;&gt;
+&lt;div class=&quot;w-10 h-10 rounded-full overflow-hidden bg-gray-700&quot; data-alt=&quot;Portrait of Marcus J&quot;&gt;
+&lt;img alt=&quot;Marcus J&quot; class=&quot;w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all&quot; src=&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuB6kwKfCK54AoNXSyWD3NzsJN23QYWvTaoFDK8D4TmpDw_6isQCNN2n-YNfJoyB1zua3qkzC6vHvIXpwmRjxnrXwSDhgfJLt6p4qweA7r2luJIsITYgOx_cp9bvFxDvxEee_P-QwOiLconfwr0ASfmq1Vgv6-sBfiZETITL30xYPb9VoLUMLfjqTZ0-nc2nIRN1zVJK2huW-6wV7khMGFeXmQUF6OiEg6_mQgvZ7f699YLH056rGj7uzk9y2PdXFbySdtEnORXLdgw&quot;/&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 min-w-0 flex flex-col justify-center&quot;&gt;
+&lt;h3 class=&quot;font-bold text-gray-300 text-base&quot;&gt;Marcus J.&lt;/h3&gt;
+&lt;div class=&quot;flex items-center gap-3 text-xs text-text-dim mt-0.5&quot;&gt;
+&lt;span class=&quot;flex items-center gap-1&quot;&gt;&lt;span class=&quot;material-symbols-outlined text-[10px]&quot;&gt;fact_check&lt;/span&gt; &lt;span class=&quot;stats-font&quot;&gt;82&lt;/span&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-right shrink-0&quot;&gt;
+&lt;div class=&quot;text-lg font-bold text-gray-300 stats-font&quot;&gt;88.4&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Rank 5 Card --&gt;
+&lt;div class=&quot;bg-surface-dark/50 rounded-xl p-3 border border-gray-800/50 hover:border-gray-700 transition-all flex items-center gap-3 group cursor-pointer&quot;&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-base font-medium text-gray-500 stats-font&quot;&gt;05&lt;/div&gt;
+&lt;div class=&quot;relative shrink-0&quot;&gt;
+&lt;div class=&quot;w-10 h-10 rounded-full overflow-hidden bg-gray-700&quot; data-alt=&quot;Portrait of Aisha T&quot;&gt;
+&lt;img alt=&quot;Aisha T&quot; class=&quot;w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all&quot; src=&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBl_sM3HJD8Bsaxte5Hg7xRDJ1jynOYvzB8scbamytXpeIEwqziyFK0SHA4a2wGoaKsnftj1x_Q277bLSSltEIVTVq295dNCgzvk04-LDXGY8IIr3SmRJjZVkCBISTv7e5mfYYYhrBbNtYwgsNlIGGSogBdNaenGLOyP1PK4Z_rrSfbFsPhokozNvhLQyWVyKo9UvsIQhqWQcu66eIYJGAr5Cm5xVMPYbdlVvt0Kz1DdZ5kSMkeAHtsgXIb8U6LllBjhyC-WlcurlA&quot;/&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 min-w-0 flex flex-col justify-center&quot;&gt;
+&lt;h3 class=&quot;font-bold text-gray-300 text-base&quot;&gt;Aisha T.&lt;/h3&gt;
+&lt;div class=&quot;flex items-center gap-3 text-xs text-text-dim mt-0.5&quot;&gt;
+&lt;span class=&quot;flex items-center gap-1&quot;&gt;&lt;span class=&quot;material-symbols-outlined text-[10px]&quot;&gt;fact_check&lt;/span&gt; &lt;span class=&quot;stats-font&quot;&gt;76&lt;/span&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-right shrink-0&quot;&gt;
+&lt;div class=&quot;text-lg font-bold text-gray-300 stats-font&quot;&gt;86.1&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- User&#x27;s Own Rank (Fixed at bottom or in list) --&gt;
+&lt;div class=&quot;mt-4 border-t border-gray-800 pt-4&quot;&gt;
+&lt;div class=&quot;text-[10px] text-text-dim uppercase tracking-wider mb-2 px-2 font-bold&quot;&gt;Your Ranking&lt;/div&gt;
+&lt;div class=&quot;bg-primary/10 rounded-xl p-3 border border-primary/30 flex items-center gap-3&quot;&gt;
+&lt;div class=&quot;w-8 shrink-0 text-center text-lg font-bold text-primary stats-font&quot;&gt;12&lt;/div&gt;
+&lt;div class=&quot;relative shrink-0&quot;&gt;
+&lt;div class=&quot;w-10 h-10 rounded-full overflow-hidden bg-gray-700 border border-primary/50&quot; data-alt=&quot;User Avatar&quot;&gt;
+&lt;img alt=&quot;My Avatar&quot; class=&quot;w-full h-full object-cover&quot; src=&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBHBxgVeTyHjzXw-Pp2R68sDndLoB-vo2r9HflvxMC1XtX8W17nU9whYkYRE280nvACnHLHecqeT0HdauEvIDFlcH4iprwoZu5Ptie1echlbm-WcqfgRNlqQk0teWvBxg480k5MRVUs5vqVI5vga2VWHLdfAIwJOD4I1y660m5oCZq4YzNRBomKqphsOyyNEbtQDtq7mye-8F5EPpEMbM3F6_kwaUWswN6Lu4FKPj9eBhAN6pKoxGZGxl4P5Sop-8XExk_ax8J47l4&quot;/&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 min-w-0 flex flex-col justify-center&quot;&gt;
+&lt;h3 class=&quot;font-bold text-white text-base&quot;&gt;Alex Morgan&lt;/h3&gt;
+&lt;div class=&quot;flex items-center gap-3 text-xs text-primary/80 mt-0.5&quot;&gt;
+&lt;span class=&quot;flex items-center gap-1&quot;&gt;&lt;span class=&quot;material-symbols-outlined text-[10px]&quot;&gt;trending_up&lt;/span&gt; &lt;span class=&quot;stats-font&quot;&gt;+2 this week&lt;/span&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-right shrink-0&quot;&gt;
+&lt;div class=&quot;text-lg font-bold text-primary stats-font&quot;&gt;74.5&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/main&gt;
+&lt;!-- Navigation --&gt;
+&lt;nav class=&quot;fixed bottom-0 w-full bg-background-light dark:bg-background-dark border-t border-gray-200 dark:border-gray-800 flex justify-around py-3 pb-6 z-50 shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.1)]&quot;&gt;
+&lt;button class=&quot;flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;dashboard&lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-medium&quot;&gt;Dashboard&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;flex flex-col items-center gap-1 text-primary&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined fill-1&quot;&gt;leaderboard&lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-medium&quot;&gt;Rankings&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;psychology&lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-medium&quot;&gt;Intel&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;person&lt;/span&gt;
+&lt;span class=&quot;text-[10px] font-medium&quot;&gt;Profile&lt;/span&gt;
+&lt;/button&gt;
+&lt;/nav&gt;
+&lt;/body&gt;&lt;/html&gt;" class="w-full h-[calc(100vh-65px)] border-none" sandbox="allow-scripts allow-same-origin"></iframe></div></main></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-e3a36c2da9ea350c.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-e24765025faea277.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"9019\",\"static/chunks/app/capabilities/%5Bslug%5D/page-b735324e90a667f4.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/37847ea80569b263.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"J_kVknmu6GSF5qixhc85u\",\"c\":[\"\",\"capabilities\",\"stitch-decision-branching-view-contribution-and-epistemic-leaderboard\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"capabilities\",{\"children\":[[\"slug\",\"stitch-decision-branching-view-contribution-and-epistemic-leaderboard\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/37847ea80569b263.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:T5010,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eZeo - Epistemic Leaderboard\u003c/title\u003e\n\u003c!-- Google Fonts --\u003e\n\u003clink href=\"https://fonts.googleapis.com\" rel=\"preconnect\"/\u003e\n\u003clink crossorigin=\"\" href=\"https://fonts.gstatic.com\" rel=\"preconnect\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700\u0026amp;family=JetBrains+Mono:wght@400;500;700\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003c!-- Material Symbols --\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003c!-- Tailwind CSS --\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003cscript id=\"tailwind-config\"\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        \"primary\": \"#f4c025\",\n                        \"primary-dim\": \"#b38b1d\",\n                        \"background-light\": \"#f8f8f5\",\n                        \"background-dark\": \"#1a1b1e\", // Deep slate\n                        \"surface-dark\": \"#25262b\", // Lighter slate for cards\n                        \"surface-dark-highlight\": \"#2c2e33\",\n                        \"text-dim\": \"#909296\",\n                    },\n                    fontFamily: {\n                        \"display\": [\"Space Grotesk\", \"sans-serif\"],\n                        \"mono\": [\"JetBrains Mono\", \"monospace\"],\n                    },\n                    boxShadow: {\n                        'glow': '0 0 15px -3px rgba(244, 192, 37, 0.3)',\n                    }\n                },\n            },\n        }\n    \u003c/script\u003e\n\u003cstyle\u003e\n        body {\n            font-family: 'Space Grotesk', sans-serif;\n        }\n        .stats-font {\n            font-family: 'JetBrains Mono', monospace;\n        }\n        /* Custom Scrollbar for horizontal lists */\n        .hide-scrollbar::-webkit-scrollbar {\n            display: none;\n        }\n        .hide-scrollbar {\n            -ms-overflow-style: none;\n            scrollbar-width: none;\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark text-slate-800 dark:text-gray-100 min-h-screen flex flex-col antialiased selection:bg-primary selection:text-background-dark\"\u003e\n\u003c!-- Header Area --\u003e\n\u003cheader class=\"sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-4 pt-4 pb-2\"\u003e\n\u003cdiv class=\"flex items-center justify-between mb-4\"\u003e\n\u003cbutton class=\"p-2 rounded-full hover:bg-gray-200 dark:hover:bg-surface-dark transition-colors text-gray-600 dark:text-gray-300\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003earrow_back\u003c/span\u003e\n\u003c/button\u003e\n\u003ch1 class=\"text-xl font-bold tracking-tight\"\u003eEpistemic Rankings\u003c/h1\u003e\n\u003cbutton class=\"p-2 rounded-full hover:bg-gray-200 dark:hover:bg-surface-dark transition-colors text-gray-600 dark:text-gray-300\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003efilter_list\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c!-- Global Toggle --\u003e\n\u003cdiv class=\"bg-gray-200 dark:bg-surface-dark p-1 rounded-xl flex relative mb-2\"\u003e\n\u003cbutton class=\"flex-1 py-2 px-4 rounded-lg bg-white dark:bg-primary shadow-sm text-sm font-bold text-slate-900 dark:text-background-dark transition-all\"\u003e\n                Global\n            \u003c/button\u003e\n\u003cbutton class=\"flex-1 py-2 px-4 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all\"\u003e\n                Per-Scenario\n            \u003c/button\u003e\n\u003c/div\u003e\n\u003c/header\u003e\n\u003c!-- Main Content --\u003e\n\u003cmain class=\"flex-1 px-4 py-4 flex flex-col gap-6 pb-24\"\u003e\n\u003c!-- Top Podium --\u003e\n\u003csection class=\"grid grid-cols-3 gap-3 items-end mb-2\"\u003e\n\u003c!-- Rank 2 --\u003e\n\u003cdiv class=\"flex flex-col items-center\"\u003e\n\u003cdiv class=\"relative mb-2\"\u003e\n\u003cdiv class=\"w-16 h-16 rounded-full border-2 border-slate-300 dark:border-slate-600 overflow-hidden\" data-alt=\"Portrait of David K\"\u003e\n\u003cimg alt=\"David K.\" class=\"w-full h-full object-cover\" src=\"https://lh3.googleusercontent.com/aida-public/AB6AXuAVu_SyPWJx1BIMDXVhx-bshSDo7b4qFIXxOliymclb3UWEmxgjZ17wyBeen9jm-I239OTXSRFUJE-qbiDrovkfyxmfEuIgjuSVEjOBZSa19jgxxAjYTj3ZobRmC_e6IdFzI6xbiwiz_EKH9CA6liXD1-09VdfCpeu4nnlAoG_RmIJGRUPslnPIWkr6Po5ixoF3FXn3I40W80KmTEb69fkLl3uqXYecjdbqJCWacZng5PmkAPn0j7S-ll53NXhxQ6jAlAvbYwqPos8\"/\u003e\n\u003c/div\u003e\n\u003cdiv class=\"absolute -bottom-2 left-1/2 -translate-x-1/2 bg-slate-600 text-white text-xs font-bold px-2 py-0.5 rounded-full border border-background-dark\"\u003e\n                        #2\n                    \u003c/div\u003e\n\u003c/div\u003e\n\u003cp class=\"text-sm font-bold text-center truncate w-full\"\u003eDavid K.\u003c/p\u003e\n\u003cp class=\"stats-font text-xs text-primary font-bold\"\u003e94.2 EV\u003c/p\u003e\n\u003cdiv class=\"h-16 w-full bg-surface-dark/50 mt-2 rounded-t-lg mx-auto bg-gradient-to-t from-surface-dark to-transparent\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Rank 1 --\u003e\n\u003cdiv class=\"flex flex-col items-center z-10\"\u003e\n\u003cdiv class=\"relative mb-2\"\u003e\n\u003cdiv class=\"absolute -top-6 text-primary animate-bounce\"\u003e\n\u003cspan class=\"material-symbols-outlined fill-1\"\u003ecrown\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"w-20 h-20 rounded-full border-4 border-primary shadow-glow overflow-hidden\" data-alt=\"Portrait of Sarah C\"\u003e\n\u003cimg alt=\"Sarah C.\" class=\"w-full h-full object-cover\" src=\"https://lh3.googleusercontent.com/aida-public/AB6AXuCDCZY-vEpd-NhJ_Myw-hyTPPTZ8X1wvT0yvDgQwiIwl8AxPTGQrNJafSrLEoX0Jk22U1x1SRPoAOBq813oh09dv43K5rsZCWj9UsmuEFtBCnwjFLZTb-MVt43Njeisonc-bioBWi5sLKQbSL8RiKoLQyq6_dtoY2uSFQSDwhfZ1gpIxoPRzkEFrwsjiDkH8qy7g1lKshaiTWHR_Bq_szj4Osx1ZOcQh5UEz6Ff0ZDK0MtKyIIIzJQ4VwURjLVcJTmtCxGpaQuoL4s\"/\u003e\n\u003c/div\u003e\n\u003cdiv class=\"absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary text-background-dark text-sm font-bold px-2.5 py-0.5 rounded-full border-2 border-background-dark\"\u003e\n                        #1\n                    \u003c/div\u003e\n\u003c/div\u003e\n\u003cp class=\"text-base font-bold text-center truncate w-full text-primary\"\u003eSarah C.\u003c/p\u003e\n\u003cp class=\"stats-font text-sm text-white font-bold\"\u003e98.4 EV\u003c/p\u003e\n\u003cdiv class=\"h-24 w-full bg-surface-dark mt-2 rounded-t-lg mx-auto bg-gradient-to-t from-surface-dark to-primary/10 border-t border-primary/20\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Rank 3 --\u003e\n\u003cdiv class=\"flex flex-col items-center\"\u003e\n\u003cdiv class=\"relative mb-2\"\u003e\n\u003cdiv class=\"w-16 h-16 rounded-full border-2 border-[#cd7f32] overflow-hidden\" data-alt=\"Portrait of Elena R\"\u003e\n\u003cimg alt=\"Elena R.\" class=\"w-full h-full object-cover\" src=\"https://lh3.googleusercontent.com/aida-public/AB6AXuBwnMVwPdpEJP3UvHdEzm2dDKSINZninGy59zJrOnIyhoQXkcJeK4_eQiSiB3aAputo7ickOJ5TrpLrRaNTuZezSNFAdotG6XeKYt1s1ad-d3BrJ_exn5TgkFIDBbJAqnzO0Oj-Tfu7ei226ItNHFNbuo-cK7oOexGDT-s4PjxwHZxlmam35PYhBavCsKVv68TL0f2q0BWZ9zXxHGipUFTKMxIH9hq5Yx3LVagxNh_TsNcxi4U_9rmAxph0zEkICma1v1cjU5GXHzM\"/\u003e\n\u003c/div\u003e\n\u003cdiv class=\"absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#cd7f32] text-white text-xs font-bold px-2 py-0.5 rounded-full border border-background-dark\"\u003e\n                        #3\n                    \u003c/div\u003e\n\u003c/div\u003e\n\u003cp class=\"text-sm font-bold text-center truncate w-full\"\u003eElena R.\u003c/p\u003e\n\u003cp class=\"stats-font text-xs text-[#cd7f32] font-bold\"\u003e91.8 EV\u003c/p\u003e\n\u003cdiv class=\"h-12 w-full bg-surface-dark/50 mt-2 rounded-t-lg mx-auto bg-gradient-to-t from-surface-dark to-transparent\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c!-- Filters --\u003e\n\u003cdiv class=\"flex gap-2 overflow-x-auto hide-scrollbar pb-1\"\u003e\n\u003cbutton class=\"whitespace-nowrap px-4 py-1.5 rounded-full bg-primary/20 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider\"\u003e\n                Top Contributors\n            \u003c/button\u003e\n\u003cbutton class=\"whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-dark border border-gray-700 text-text-dim text-xs font-bold uppercase tracking-wider hover:bg-gray-700 transition-colors\"\u003e\n                Most Improved\n            \u003c/button\u003e\n\u003cbutton class=\"whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-dark border border-gray-700 text-text-dim text-xs font-bold uppercase tracking-wider hover:bg-gray-700 transition-colors\"\u003e\n                This Week\n            \u003c/button\u003e\n\u003c/div\u003e\n\u003c!-- Leaderboard List --\u003e\n\u003cdiv class=\"flex flex-col gap-3\"\u003e\n\u003c!-- List Header (Legend) --\u003e\n\u003cdiv class=\"flex px-4 text-[10px] uppercase tracking-wider text-text-dim font-bold justify-between items-center\"\u003e\n\u003cdiv class=\"w-8 text-center\"\u003eRnk\u003c/div\u003e\n\u003cdiv class=\"flex-1 pl-2\"\u003eAnalyst\u003c/div\u003e\n\u003cdiv class=\"w-20 text-right\"\u003eEpistemic Val\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Rank 1 Card (Detailed) --\u003e\n\u003cdiv class=\"bg-surface-dark rounded-xl p-4 border border-primary/20 shadow-lg relative overflow-hidden group\"\u003e\n\u003c!-- Highlight Decoration --\u003e\n\u003cdiv class=\"absolute top-0 left-0 w-1 h-full bg-primary\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex items-center gap-4 mb-4\"\u003e\n\u003cdiv class=\"flex flex-col items-center justify-center w-8 shrink-0\"\u003e\n\u003cspan class=\"text-2xl font-bold text-primary stats-font\"\u003e01\u003c/span\u003e\n\u003cspan class=\"material-symbols-outlined text-green-500 text-sm mt-1\"\u003earrow_drop_up\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"relative shrink-0\"\u003e\n\u003cdiv class=\"w-12 h-12 rounded-full overflow-hidden border-2 border-primary/50\" data-alt=\"Portrait of Sarah Chen\"\u003e\n\u003cimg alt=\"Sarah Chen\" class=\"w-full h-full object-cover\" src=\"https://lh3.googleusercontent.com/aida-public/AB6AXuAoY1FxasS9vApgftIF633y1SD3v0BLuT1DjZWEEZ_j5GYduk0sZ725Mv5mPVhrkVt9ds1qeiLxFs4rDL1fSKQTnqUTC9Vp1ZAZtKmwlLfXM5fQGuJDv0zU2Ye0LrMBjMEZQ-nkk-N1orIznbnQgz9CJ2Ukp-Fj3Pl0fuB7jyGPD2FZXHi3-OUeSHWFauyeVK6i1RZN_GDmidTsZG4FpbRtERliQbiKtF0XMDGd9Ea4_fuwjZz3WEQwmGJU6QojX99J1lf5gX3E3TU\"/\u003e\n\u003c/div\u003e\n\u003cdiv class=\"absolute -bottom-1 -right-1 bg-background-dark rounded-full p-0.5 border border-gray-700\"\u003e\n\u003cspan class=\"material-symbols-outlined text-blue-400 text-[14px] bg-blue-400/10 rounded-full p-0.5\" title=\"Verified Expert\"\u003everified\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 min-w-0\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003ch3 class=\"font-bold text-white text-lg truncate\"\u003eSarah Chen\u003c/h3\u003e\n\u003cspan class=\"px-1.5 py-0.5 rounded bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-wider border border-primary/10\"\u003ePRO\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex gap-2 mt-1\"\u003e\n\u003cspan class=\"inline-flex items-center gap-1 bg-surface-dark-highlight px-2 py-0.5 rounded text-[10px] text-gray-300 border border-gray-700/50\" title=\"Provenance Master\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[12px] text-purple-400\"\u003ehistory_edu\u003c/span\u003e Prov. Master\n                            \u003c/span\u003e\n\u003cspan class=\"inline-flex items-center gap-1 bg-surface-dark-highlight px-2 py-0.5 rounded text-[10px] text-gray-300 border border-gray-700/50\" title=\"High Impact\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[12px] text-red-400\"\u003ebolt\u003c/span\u003e High Impact\n                            \u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-right\"\u003e\n\u003cdiv class=\"text-2xl font-bold text-primary stats-font tracking-tight\"\u003e98.4\u003c/div\u003e\n\u003cdiv class=\"text-[10px] text-text-dim uppercase tracking-wider\"\u003eScore\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Stats Grid --\u003e\n\u003cdiv class=\"grid grid-cols-3 gap-2 bg-background-dark/50 rounded-lg p-2 border border-gray-800\"\u003e\n\u003cdiv class=\"flex flex-col items-center border-r border-gray-800 pr-2\"\u003e\n\u003cspan class=\"text-[10px] text-text-dim uppercase mb-0.5\"\u003eVerified Facts\u003c/span\u003e\n\u003cdiv class=\"flex items-center gap-1 text-white\"\u003e\n\u003cspan class=\"material-symbols-outlined text-green-400 text-sm\"\u003echeck_circle\u003c/span\u003e\n\u003cspan class=\"font-bold stats-font text-sm\"\u003e142\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col items-center border-r border-gray-800 px-2\"\u003e\n\u003cspan class=\"text-[10px] text-text-dim uppercase mb-0.5\"\u003eCalibration\u003c/span\u003e\n\u003cdiv class=\"flex items-center gap-1 text-white w-full justify-center\"\u003e\n\u003cdiv class=\"h-1.5 w-8 bg-gray-700 rounded-full overflow-hidden\"\u003e\n\u003cdiv class=\"h-full bg-primary w-[99%]\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"font-bold stats-font text-sm\"\u003e99%\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col items-center pl-2\"\u003e\n\u003cspan class=\"text-[10px] text-text-dim uppercase mb-0.5\"\u003eImpact Wgt\u003c/span\u003e\n\u003cdiv class=\"flex items-center gap-1 text-white\"\u003e\n\u003cspan class=\"material-symbols-outlined text-orange-400 text-sm\"\u003etrending_up\u003c/span\u003e\n\u003cspan class=\"font-bold stats-font text-sm\"\u003e4.5x\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Rank 2 Card (Collapsed view concept) --\u003e\n\u003cdiv class=\"bg-surface-dark rounded-xl p-3 border border-gray-800 hover:border-gray-700 transition-all flex items-center gap-3 group cursor-pointer\"\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-lg font-bold text-gray-400 stats-font\"\u003e02\u003c/div\u003e\n\u003cdiv class=\"relative shrink-0\"\u003e\n\u003cdiv class=\"w-10 h-10 rounded-full overflow-hidden bg-gray-700\" data-alt=\"Portrait of David Kim\"\u003e\n\u003cimg alt=\"David Kim\" class=\"w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all\" src=\"https://lh3.googleusercontent.com/aida-public/AB6AXuBRNGyD-ze6Mjz_xYKg0oql49M9dzYFWgvhpmuCwe5jweILDPxyZU5p78Hbo9_VcvYyRpHqTG6Za9R-iAOQ1dZ54YSigccrOypShLbW42bTOO2KGv48EX7f0ASXNa_ZmZsszqbmUiaDsXH9fl7eGZTWp1rQ3GNQj5IWPC3MjX6a-ImjZM6-Ws-61Qiz0216lwyMIagXXOVKwyKbRJJFwtXjxaPLk3YMCYjmV-4gERuE3bmA6nuE7MnzOHePTfy5-meVZ_4qMHa4q0E\"/\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 min-w-0 flex flex-col justify-center\"\u003e\n\u003ch3 class=\"font-bold text-gray-200 text-base\"\u003eDavid Kim\u003c/h3\u003e\n\u003cdiv class=\"flex items-center gap-3 text-xs text-text-dim mt-0.5\"\u003e\n\u003cspan class=\"flex items-center gap-1\"\u003e\u003cspan class=\"material-symbols-outlined text-[10px]\"\u003efact_check\u003c/span\u003e \u003cspan class=\"stats-font\"\u003e118\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\"flex items-center gap-1\"\u003e\u003cspan class=\"material-symbols-outlined text-[10px]\"\u003etarget\u003c/span\u003e \u003cspan class=\"stats-font\"\u003e94%\u003c/span\u003e\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-right shrink-0\"\u003e\n\u003cdiv class=\"text-lg font-bold text-white stats-font\"\u003e94.2\u003c/div\u003e\n\u003cdiv class=\"flex justify-end gap-1 mt-1\"\u003e\n\u003cspan class=\"w-2 h-2 rounded-full bg-blue-500\" title=\"Bias Filter Badge\"\u003e\u003c/span\u003e\n\u003cspan class=\"w-2 h-2 rounded-full bg-purple-500\" title=\"Top Writer Badge\"\u003e\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Rank 3 Card --\u003e\n\u003cdiv class=\"bg-surface-dark rounded-xl p-3 border border-gray-800 hover:border-gray-700 transition-all flex items-center gap-3 group cursor-pointer\"\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-lg font-bold text-[#cd7f32] stats-font\"\u003e03\u003c/div\u003e\n\u003cdiv class=\"relative shrink-0\"\u003e\n\u003cdiv class=\"w-10 h-10 rounded-full overflow-hidden bg-gray-700\" data-alt=\"Portrait of Elena Rodriguez\"\u003e\n\u003cimg alt=\"Elena Rodriguez\" class=\"w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all\" src=\"https://lh3.googleusercontent.com/aida-public/AB6AXuDUZ6KQImLDg94mFo4g_An-JwWTtCKvtDiGi8ZdyuW2ys0qjnaphZrV0s7m5OHlYoa1_X_Saf8LLD3RX085gQlH3vHLyZEKvcUuNeaJuxK33n1Fu6R9aVtU443OrGg7bzPJd1fXqyhwHuBLrvThG57LJ3_Z878WpHUdxMIPjIdjPteixjvAYTTGuX3Evbhhj72L1_VMsalpOEDEaYHHTDv6XHP7sSTrwwTAcRt8DkQC66pyUgsswUtsZyBb5MLeJfXtYKwlBWdf8zc\"/\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 min-w-0 flex flex-col justify-center\"\u003e\n\u003ch3 class=\"font-bold text-gray-200 text-base\"\u003eElena Rodriguez\u003c/h3\u003e\n\u003cdiv class=\"flex items-center gap-3 text-xs text-text-dim mt-0.5\"\u003e\n\u003cspan class=\"flex items-center gap-1\"\u003e\u003cspan class=\"material-symbols-outlined text-[10px]\"\u003efact_check\u003c/span\u003e \u003cspan class=\"stats-font\"\u003e98\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\"flex items-center gap-1\"\u003e\u003cspan class=\"material-symbols-outlined text-[10px]\"\u003etarget\u003c/span\u003e \u003cspan class=\"stats-font\"\u003e96%\u003c/span\u003e\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-right shrink-0\"\u003e\n\u003cdiv class=\"text-lg font-bold text-white stats-font\"\u003e91.8\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Rank 4 Card --\u003e\n\u003cdiv class=\"bg-surface-dark/50 rounded-xl p-3 border border-gray-800/50 hover:border-gray-700 transition-all flex items-center gap-3 group cursor-pointer\"\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-base font-medium text-gray-500 stats-font\"\u003e04\u003c/div\u003e\n\u003cdiv class=\"relative shrink-0\"\u003e\n\u003cdiv class=\"w-10 h-10 rounded-full overflow-hidden bg-gray-700\" data-alt=\"Portrait of Marcus J\"\u003e\n\u003cimg alt=\"Marcus J\" class=\"w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all\" src=\"https://lh3.googleusercontent.com/aida-public/AB6AXuB6kwKfCK54AoNXSyWD3NzsJN23QYWvTaoFDK8D4TmpDw_6isQCNN2n-YNfJoyB1zua3qkzC6vHvIXpwmRjxnrXwSDhgfJLt6p4qweA7r2luJIsITYgOx_cp9bvFxDvxEee_P-QwOiLconfwr0ASfmq1Vgv6-sBfiZETITL30xYPb9VoLUMLfjqTZ0-nc2nIRN1zVJK2huW-6wV7khMGFeXmQUF6OiEg6_mQgvZ7f699YLH056rGj7uzk9y2PdXFbySdtEnORXLdgw\"/\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 min-w-0 flex flex-col justify-center\"\u003e\n\u003ch3 class=\"font-bold text-gray-300 text-base\"\u003eMarcus J.\u003c/h3\u003e\n\u003cdiv class=\"flex items-center gap-3 text-xs text-text-dim mt-0.5\"\u003e\n\u003cspan class=\"flex items-center gap-1\"\u003e\u003cspan class=\"material-symbols-outlined text-[10px]\"\u003efact_check\u003c/span\u003e \u003cspan class=\"stats-font\"\u003e82\u003c/span\u003e\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-right shrink-0\"\u003e\n\u003cdiv class=\"text-lg font-bold text-gray-300 stats-font\"\u003e88.4\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Rank 5 Card --\u003e\n\u003cdiv class=\"bg-surface-dark/50 rounded-xl p-3 border border-gray-800/50 hover:border-gray-700 transition-all flex items-center gap-3 group cursor-pointer\"\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-base font-medium text-gray-500 stats-font\"\u003e05\u003c/div\u003e\n\u003cdiv class=\"relative shrink-0\"\u003e\n\u003cdiv class=\"w-10 h-10 rounded-full overflow-hidden bg-gray-700\" data-alt=\"Portrait of Aisha T\"\u003e\n\u003cimg alt=\"Aisha T\" class=\"w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all\" src=\"https://lh3.googleusercontent.com/aida-public/AB6AXuBl_sM3HJD8Bsaxte5Hg7xRDJ1jynOYvzB8scbamytXpeIEwqziyFK0SHA4a2wGoaKsnftj1x_Q277bLSSltEIVTVq295dNCgzvk04-LDXGY8IIr3SmRJjZVkCBISTv7e5mfYYYhrBbNtYwgsNlIGGSogBdNaenGLOyP1PK4Z_rrSfbFsPhokozNvhLQyWVyKo9UvsIQhqWQcu66eIYJGAr5Cm5xVMPYbdlVvt0Kz1DdZ5kSMkeAHtsgXIb8U6LllBjhyC-WlcurlA\"/\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 min-w-0 flex flex-col justify-center\"\u003e\n\u003ch3 class=\"font-bold text-gray-300 text-base\"\u003eAisha T.\u003c/h3\u003e\n\u003cdiv class=\"flex items-center gap-3 text-xs text-text-dim mt-0.5\"\u003e\n\u003cspan class=\"flex items-center gap-1\"\u003e\u003cspan class=\"material-symbols-outlined text-[10px]\"\u003efact_check\u003c/span\u003e \u003cspan class=\"stats-font\"\u003e76\u003c/span\u003e\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-right shrink-0\"\u003e\n\u003cdiv class=\"text-lg font-bold text-gray-300 stats-font\"\u003e86.1\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- User's Own Rank (Fixed at bottom or in list) --\u003e\n\u003cdiv class=\"mt-4 border-t border-gray-800 pt-4\"\u003e\n\u003cdiv class=\"text-[10px] text-text-dim uppercase tracking-wider mb-2 px-2 font-bold\"\u003eYour Ranking\u003c/div\u003e\n\u003cdiv class=\"bg-primary/10 rounded-xl p-3 border border-primary/30 flex items-center gap-3\"\u003e\n\u003cdiv class=\"w-8 shrink-0 text-center text-lg font-bold text-primary stats-font\"\u003e12\u003c/div\u003e\n\u003cdiv class=\"relative shrink-0\"\u003e\n\u003cdiv class=\"w-10 h-10 rounded-full overflow-hidden bg-gray-700 border border-primary/50\" data-alt=\"User Avatar\"\u003e\n\u003cimg alt=\"My Avatar\" class=\"w-full h-full object-cover\" src=\"https://lh3.googleusercontent.com/aida-public/AB6AXuBHBxgVeTyHjzXw-Pp2R68sDndLoB-vo2r9HflvxMC1XtX8W17nU9whYkYRE280nvACnHLHecqeT0HdauEvIDFlcH4iprwoZu5Ptie1echlbm-WcqfgRNlqQk0teWvBxg480k5MRVUs5vqVI5vga2VWHLdfAIwJOD4I1y660m5oCZq4YzNRBomKqphsOyyNEbtQDtq7mye-8F5EPpEMbM3F6_kwaUWswN6Lu4FKPj9eBhAN6pKoxGZGxl4P5Sop-8XExk_ax8J47l4\"/\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 min-w-0 flex flex-col justify-center\"\u003e\n\u003ch3 class=\"font-bold text-white text-base\"\u003eAlex Morgan\u003c/h3\u003e\n\u003cdiv class=\"flex items-center gap-3 text-xs text-primary/80 mt-0.5\"\u003e\n\u003cspan class=\"flex items-center gap-1\"\u003e\u003cspan class=\"material-symbols-outlined text-[10px]\"\u003etrending_up\u003c/span\u003e \u003cspan class=\"stats-font\"\u003e+2 this week\u003c/span\u003e\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-right shrink-0\"\u003e\n\u003cdiv class=\"text-lg font-bold text-primary stats-font\"\u003e74.5\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/main\u003e\n\u003c!-- Navigation --\u003e\n\u003cnav class=\"fixed bottom-0 w-full bg-background-light dark:bg-background-dark border-t border-gray-200 dark:border-gray-800 flex justify-around py-3 pb-6 z-50 shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.1)]\"\u003e\n\u003cbutton class=\"flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003edashboard\u003c/span\u003e\n\u003cspan class=\"text-[10px] font-medium\"\u003eDashboard\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"flex flex-col items-center gap-1 text-primary\"\u003e\n\u003cspan class=\"material-symbols-outlined fill-1\"\u003eleaderboard\u003c/span\u003e\n\u003cspan class=\"text-[10px] font-medium\"\u003eRankings\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003epsychology\u003c/span\u003e\n\u003cspan class=\"text-[10px] font-medium\"\u003eIntel\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003eperson\u003c/span\u003e\n\u003cspan class=\"text-[10px] font-medium\"\u003eProfile\u003c/span\u003e\n\u003c/button\u003e\n\u003c/nav\u003e\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"div\",null,{\"className\":\"min-h-screen bg-gray-50\",\"children\":[[\"$\",\"header\",null,{\"className\":\"bg-white border-b border-gray-200 py-4 px-6 md:px-8 sticky top-0 z-20\",\"children\":[\"$\",\"div\",null,{\"className\":\"max-w-7xl mx-auto flex items-center justify-between\",\"children\":[[\"$\",\"div\",null,{\"className\":\"flex items-center gap-4\",\"children\":[[\"$\",\"$L5\",null,{\"href\":\"/capabilities\",\"className\":\"p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors\",\"children\":[\"$\",\"svg\",null,{\"className\":\"w-5 h-5\",\"fill\":\"none\",\"viewBox\":\"0 0 24 24\",\"stroke\":\"currentColor\",\"children\":[\"$\",\"path\",null,{\"strokeLinecap\":\"round\",\"strokeLinejoin\":\"round\",\"strokeWidth\":2,\"d\":\"M10 19l-7-7m0 0l7-7m-7 7h18\"}]}]}],[\"$\",\"div\",null,{\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-lg font-bold text-gray-900 tracking-tight\",\"children\":\"Contribution \u0026 Epistemic Leaderboard\"}],[\"$\",\"p\",null,{\"className\":\"text-xs text-blue-600 font-medium uppercase tracking-widest\",\"children\":\"Decision Intelligence\"}]]}]]}],[\"$\",\"div\",null,{\"className\":\"flex gap-3\",\"children\":[\"$\",\"div\",null,{\"className\":\"hidden sm:flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-100\",\"children\":[[\"$\",\"span\",null,{\"className\":\"w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse\"}],\"Live Preview\"]}]}]]}]}],[\"$\",\"main\",null,{\"className\":\"w-full\",\"children\":[\"$\",\"div\",null,{\"className\":\"bg-white rounded-none shadow-none overflow-hidden\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Contribution \u0026 Epistemic Leaderboard\",\"srcDoc\":\"$f\",\"className\":\"w-full h-[calc(100vh-65px)] border-none\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]}]]}]\n"])</script></body></html>

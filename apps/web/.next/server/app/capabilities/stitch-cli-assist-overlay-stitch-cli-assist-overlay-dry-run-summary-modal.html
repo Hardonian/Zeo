@@ -1,0 +1,219 @@
+<!DOCTYPE html><!--J_kVknmu6GSF5qixhc85u--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/37847ea80569b263.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-e3a36c2da9ea350c.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-3b36e40479e50727.js" async=""></script><script src="/_next/static/chunks/app/error-e24765025faea277.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/capabilities/%5Bslug%5D/page-b735324e90a667f4.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50"><header class="bg-white border-b border-gray-200 py-4 px-6 md:px-8 sticky top-0 z-20"><div class="max-w-7xl mx-auto flex items-center justify-between"><div class="flex items-center gap-4"><a class="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors" href="/capabilities"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></a><div><h1 class="text-lg font-bold text-gray-900 tracking-tight">Dry Run Summary Modal</h1><p class="text-xs text-blue-600 font-medium uppercase tracking-widest">CLI &amp; Automation</p></div></div><div class="flex gap-3"><div class="hidden sm:flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-100"><span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>Live Preview</div></div></div></header><main class="w-full"><div class="bg-white rounded-none shadow-none overflow-hidden"><iframe title="Dry Run Summary Modal" srcDoc="&lt;!DOCTYPE html&gt;
+
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Dry Run Summary Modal&lt;/title&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script id=&quot;tailwind-config&quot;&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        &quot;primary&quot;: &quot;#13ec13&quot;,
+                        &quot;background-light&quot;: &quot;#f6f8f6&quot;,
+                        &quot;background-dark&quot;: &quot;#102210&quot;,
+                        &quot;surface-dark&quot;: &quot;#1a2e1a&quot;,
+                    },
+                    fontFamily: {
+                        &quot;display&quot;: [&quot;Space Grotesk&quot;, &quot;sans-serif&quot;],
+                        &quot;mono&quot;: [&quot;JetBrains Mono&quot;, &quot;monospace&quot;],
+                    },
+                    borderRadius: {&quot;DEFAULT&quot;: &quot;0.25rem&quot;, &quot;lg&quot;: &quot;0.5rem&quot;, &quot;xl&quot;: &quot;0.75rem&quot;, &quot;2xl&quot;: &quot;1rem&quot;, &quot;full&quot;: &quot;9999px&quot;},
+                },
+            },
+        }
+    &lt;/script&gt;
+&lt;style&gt;
+        /* Custom scrollbar for code block */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display min-h-screen flex items-center justify-center overflow-hidden relative&quot;&gt;
+&lt;!-- Simulated Jupyter Notebook Background Context --&gt;
+&lt;div aria-hidden=&quot;true&quot; class=&quot;absolute inset-0 z-0 flex flex-col opacity-30 dark:opacity-20 pointer-events-none blur-[2px] overflow-hidden&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2 p-4 border-b border-gray-700/50 bg-[#1e1e1e]&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-gray-400&quot;&gt;menu&lt;/span&gt;
+&lt;div class=&quot;h-4 w-32 bg-gray-600 rounded&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 p-4 space-y-6&quot;&gt;
+&lt;div class=&quot;flex gap-2&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1&quot;&gt;[1]:&lt;/div&gt;
+&lt;div class=&quot;flex-1 bg-[#1e1e1e] border border-gray-700 p-3 rounded font-mono text-sm text-gray-300&quot;&gt;
+&lt;span class=&quot;text-blue-400&quot;&gt;import&lt;/span&gt; keys &lt;span class=&quot;text-blue-400&quot;&gt;as&lt;/span&gt; k&lt;br/&gt;
+                    k.deploy(&lt;span class=&quot;text-green-400&quot;&gt;&quot;edge-cluster-01&quot;&lt;/span&gt;)
+                &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex gap-2&quot;&gt;
+&lt;div class=&quot;w-8 text-right text-gray-500 font-mono text-xs pt-1&quot;&gt;[2]:&lt;/div&gt;
+&lt;div class=&quot;flex-1 bg-[#1e1e1e] border border-gray-700 p-3 rounded font-mono text-sm text-gray-300&quot;&gt;
+&lt;span class=&quot;text-gray-500&quot;&gt;# Initializing dry run...&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;h-64 bg-black/20 rounded&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Overlay Backdrop --&gt;
+&lt;div class=&quot;absolute inset-0 bg-black/60 z-10 backdrop-blur-sm&quot;&gt;&lt;/div&gt;
+&lt;!-- Main Modal --&gt;
+&lt;div class=&quot;relative z-20 w-full max-w-[90%] sm:max-w-md bg-white dark:bg-[#152615] rounded-2xl shadow-2xl border border-white/10 dark:border-white/5 flex flex-col max-h-[85vh] overflow-hidden animate-fade-in-up&quot;&gt;
+&lt;!-- Header --&gt;
+&lt;div class=&quot;p-6 pb-2 border-b border-gray-200 dark:border-white/5 bg-gradient-to-b from-transparent to-black/5 dark:to-white/5&quot;&gt;
+&lt;div class=&quot;flex items-start justify-between&quot;&gt;
+&lt;div&gt;
+&lt;div class=&quot;flex items-center gap-2 mb-1&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-primary text-[20px]&quot;&gt;security&lt;/span&gt;
+&lt;p class=&quot;text-xs uppercase tracking-wider font-bold text-primary&quot;&gt;Safety Check&lt;/p&gt;
+&lt;/div&gt;
+&lt;h1 class=&quot;text-2xl font-bold tracking-tight text-gray-900 dark:text-white&quot;&gt;Dry Run Summary&lt;/h1&gt;
+&lt;p class=&quot;text-sm text-gray-500 dark:text-gray-400 mt-1 font-medium&quot;&gt;Operation: Deploy Edge Cluster&lt;/p&gt;
+&lt;/div&gt;
+&lt;!-- Close Button (Ghost) --&gt;
+&lt;button class=&quot;text-gray-400 hover:text-white transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;close&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Scrollable Content --&gt;
+&lt;div class=&quot;flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6&quot;&gt;
+&lt;!-- Side Effects Section --&gt;
+&lt;section&gt;
+&lt;h2 class=&quot;text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2&quot;&gt;
+                    Expected Side Effects
+                    &lt;span class=&quot;bg-gray-200 dark:bg-white/10 text-xs px-1.5 py-0.5 rounded text-gray-600 dark:text-gray-300&quot;&gt;3&lt;/span&gt;
+&lt;/h2&gt;
+&lt;div class=&quot;space-y-3&quot;&gt;
+&lt;!-- Item 1: Warning --&gt;
+&lt;div class=&quot;flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-[#1c301c] border border-orange-500/30&quot;&gt;
+&lt;div class=&quot;mt-0.5 p-1.5 rounded bg-orange-500/10 text-orange-500&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[20px]&quot;&gt;warning&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 min-w-0&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between mb-0.5&quot;&gt;
+&lt;p class=&quot;text-sm font-semibold text-gray-900 dark:text-white truncate&quot;&gt;Write to AWS&lt;/p&gt;
+&lt;span class=&quot;shrink-0 text-[10px] font-bold uppercase tracking-wider text-orange-400 bg-orange-400/10 px-2 py-0.5 rounded-full border border-orange-400/20&quot;&gt;Warning&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-gray-500 dark:text-gray-400&quot;&gt;EKS Cluster Creation (t3.medium)&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Item 2: Safe --&gt;
+&lt;div class=&quot;flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-[#1c301c] border border-gray-200 dark:border-white/5&quot;&gt;
+&lt;div class=&quot;mt-0.5 p-1.5 rounded bg-primary/10 text-primary&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[20px]&quot;&gt;terminal&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 min-w-0&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between mb-0.5&quot;&gt;
+&lt;p class=&quot;text-sm font-semibold text-gray-900 dark:text-white truncate&quot;&gt;Modify Local Config&lt;/p&gt;
+&lt;span class=&quot;shrink-0 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20&quot;&gt;Safe&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-gray-500 dark:text-gray-400&quot;&gt;Updates ~/.kube/config context&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Item 3: Safe --&gt;
+&lt;div class=&quot;flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-[#1c301c] border border-gray-200 dark:border-white/5&quot;&gt;
+&lt;div class=&quot;mt-0.5 p-1.5 rounded bg-primary/10 text-primary&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[20px]&quot;&gt;webhook&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex-1 min-w-0&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between mb-0.5&quot;&gt;
+&lt;p class=&quot;text-sm font-semibold text-gray-900 dark:text-white truncate&quot;&gt;Notify Slack&lt;/p&gt;
+&lt;span class=&quot;shrink-0 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20&quot;&gt;Safe&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-gray-500 dark:text-gray-400&quot;&gt;POST request to #devops-alerts&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- Plan / Diff View --&gt;
+&lt;section&gt;
+&lt;div class=&quot;flex items-center justify-between mb-3&quot;&gt;
+&lt;h2 class=&quot;text-sm font-bold text-gray-400 uppercase tracking-widest&quot;&gt;Plan Preview&lt;/h2&gt;
+&lt;span class=&quot;text-xs font-mono text-gray-500 dark:text-gray-500&quot;&gt;terraform plan&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;bg-[#0d1117] dark:bg-black rounded-lg border border-gray-800 p-4 font-mono text-xs overflow-x-auto custom-scrollbar shadow-inner&quot;&gt;
+&lt;div class=&quot;flex flex-col gap-1 min-w-[300px]&quot;&gt;
+&lt;!-- Line 1 --&gt;
+&lt;div class=&quot;flex text-gray-500&quot;&gt;
+&lt;span class=&quot;mr-3 select-none opacity-50&quot;&gt;1&lt;/span&gt;
+&lt;span&gt;# aws_eks_cluster.main will be created&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Line 2 --&gt;
+&lt;div class=&quot;flex text-green-400 bg-green-900/10 -mx-4 px-4 border-l-2 border-green-500/50&quot;&gt;
+&lt;span class=&quot;mr-3 select-none opacity-50 text-gray-500&quot;&gt;2&lt;/span&gt;
+&lt;span&gt;+ resource &quot;aws_eks_cluster&quot; &quot;main&quot; {&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Line 3 --&gt;
+&lt;div class=&quot;flex text-green-400 bg-green-900/10 -mx-4 px-4 border-l-2 border-green-500/50&quot;&gt;
+&lt;span class=&quot;mr-3 select-none opacity-50 text-gray-500&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;pl-4&quot;&gt;+ name     = &quot;edge-cluster-01&quot;&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Line 4 --&gt;
+&lt;div class=&quot;flex text-green-400 bg-green-900/10 -mx-4 px-4 border-l-2 border-green-500/50&quot;&gt;
+&lt;span class=&quot;mr-3 select-none opacity-50 text-gray-500&quot;&gt;4&lt;/span&gt;
+&lt;span class=&quot;pl-4&quot;&gt;+ role_arn = &quot;arn:aws:iam::...&quot;&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Line 5 --&gt;
+&lt;div class=&quot;flex text-green-400 bg-green-900/10 -mx-4 px-4 border-l-2 border-green-500/50&quot;&gt;
+&lt;span class=&quot;mr-3 select-none opacity-50 text-gray-500&quot;&gt;5&lt;/span&gt;
+&lt;span class=&quot;pl-4&quot;&gt;+ version  = &quot;1.27&quot;&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Line 6 --&gt;
+&lt;div class=&quot;flex text-green-400 bg-green-900/10 -mx-4 px-4 border-l-2 border-green-500/50&quot;&gt;
+&lt;span class=&quot;mr-3 select-none opacity-50 text-gray-500&quot;&gt;6&lt;/span&gt;
+&lt;span&gt;+ }&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Line 7 --&gt;
+&lt;div class=&quot;flex text-gray-500&quot;&gt;
+&lt;span class=&quot;mr-3 select-none opacity-50&quot;&gt;7&lt;/span&gt;
+&lt;span&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;!-- Line 8 --&gt;
+&lt;div class=&quot;flex text-gray-500&quot;&gt;
+&lt;span class=&quot;mr-3 select-none opacity-50&quot;&gt;8&lt;/span&gt;
+&lt;span&gt;Plan: 1 to add, 0 to change, 0 to destroy.&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;/div&gt;
+&lt;!-- Sticky Footer Actions --&gt;
+&lt;div class=&quot;p-6 pt-4 border-t border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-[#152615]&quot;&gt;
+&lt;div class=&quot;flex flex-col gap-3&quot;&gt;
+&lt;button class=&quot;w-full bg-primary hover:bg-green-400 text-black font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(19,236,19,0.2)] hover:shadow-[0_0_20px_rgba(19,236,19,0.4)] group&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform&quot;&gt;play_arrow&lt;/span&gt;
+                    Proceed with Run
+                &lt;/button&gt;
+&lt;button class=&quot;w-full bg-transparent hover:bg-gray-200 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium py-3 px-4 rounded-xl transition-colors&quot;&gt;
+                    Cancel Operation
+                &lt;/button&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-center text-[10px] text-gray-400 mt-4 opacity-60&quot;&gt;
+                Authorized by user: devops_lead • ID: #Run-8921
+            &lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;" class="w-full h-[calc(100vh-65px)] border-none" sandbox="allow-scripts allow-same-origin"></iframe></div></main></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-e3a36c2da9ea350c.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-e24765025faea277.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"9019\",\"static/chunks/app/capabilities/%5Bslug%5D/page-b735324e90a667f4.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/37847ea80569b263.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"J_kVknmu6GSF5qixhc85u\",\"c\":[\"\",\"capabilities\",\"stitch-cli-assist-overlay-stitch-cli-assist-overlay-dry-run-summary-modal\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"capabilities\",{\"children\":[[\"slug\",\"stitch-cli-assist-overlay-stitch-cli-assist-overlay-dry-run-summary-modal\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/37847ea80569b263.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:T28d2,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eDry Run Summary Modal\u003c/title\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003cscript id=\"tailwind-config\"\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        \"primary\": \"#13ec13\",\n                        \"background-light\": \"#f6f8f6\",\n                        \"background-dark\": \"#102210\",\n                        \"surface-dark\": \"#1a2e1a\",\n                    },\n                    fontFamily: {\n                        \"display\": [\"Space Grotesk\", \"sans-serif\"],\n                        \"mono\": [\"JetBrains Mono\", \"monospace\"],\n                    },\n                    borderRadius: {\"DEFAULT\": \"0.25rem\", \"lg\": \"0.5rem\", \"xl\": \"0.75rem\", \"2xl\": \"1rem\", \"full\": \"9999px\"},\n                },\n            },\n        }\n    \u003c/script\u003e\n\u003cstyle\u003e\n        /* Custom scrollbar for code block */\n        .custom-scrollbar::-webkit-scrollbar {\n            height: 6px;\n            width: 6px;\n        }\n        .custom-scrollbar::-webkit-scrollbar-track {\n            background: rgba(255, 255, 255, 0.05);\n            border-radius: 4px;\n        }\n        .custom-scrollbar::-webkit-scrollbar-thumb {\n            background: rgba(255, 255, 255, 0.2);\n            border-radius: 4px;\n        }\n        .custom-scrollbar::-webkit-scrollbar-thumb:hover {\n            background: rgba(255, 255, 255, 0.3);\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display min-h-screen flex items-center justify-center overflow-hidden relative\"\u003e\n\u003c!-- Simulated Jupyter Notebook Background Context --\u003e\n\u003cdiv aria-hidden=\"true\" class=\"absolute inset-0 z-0 flex flex-col opacity-30 dark:opacity-20 pointer-events-none blur-[2px] overflow-hidden\"\u003e\n\u003cdiv class=\"flex items-center gap-2 p-4 border-b border-gray-700/50 bg-[#1e1e1e]\"\u003e\n\u003cspan class=\"material-symbols-outlined text-gray-400\"\u003emenu\u003c/span\u003e\n\u003cdiv class=\"h-4 w-32 bg-gray-600 rounded\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 p-4 space-y-6\"\u003e\n\u003cdiv class=\"flex gap-2\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1\"\u003e[1]:\u003c/div\u003e\n\u003cdiv class=\"flex-1 bg-[#1e1e1e] border border-gray-700 p-3 rounded font-mono text-sm text-gray-300\"\u003e\n\u003cspan class=\"text-blue-400\"\u003eimport\u003c/span\u003e keys \u003cspan class=\"text-blue-400\"\u003eas\u003c/span\u003e k\u003cbr/\u003e\n                    k.deploy(\u003cspan class=\"text-green-400\"\u003e\"edge-cluster-01\"\u003c/span\u003e)\n                \u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex gap-2\"\u003e\n\u003cdiv class=\"w-8 text-right text-gray-500 font-mono text-xs pt-1\"\u003e[2]:\u003c/div\u003e\n\u003cdiv class=\"flex-1 bg-[#1e1e1e] border border-gray-700 p-3 rounded font-mono text-sm text-gray-300\"\u003e\n\u003cspan class=\"text-gray-500\"\u003e# Initializing dry run...\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"h-64 bg-black/20 rounded\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Overlay Backdrop --\u003e\n\u003cdiv class=\"absolute inset-0 bg-black/60 z-10 backdrop-blur-sm\"\u003e\u003c/div\u003e\n\u003c!-- Main Modal --\u003e\n\u003cdiv class=\"relative z-20 w-full max-w-[90%] sm:max-w-md bg-white dark:bg-[#152615] rounded-2xl shadow-2xl border border-white/10 dark:border-white/5 flex flex-col max-h-[85vh] overflow-hidden animate-fade-in-up\"\u003e\n\u003c!-- Header --\u003e\n\u003cdiv class=\"p-6 pb-2 border-b border-gray-200 dark:border-white/5 bg-gradient-to-b from-transparent to-black/5 dark:to-white/5\"\u003e\n\u003cdiv class=\"flex items-start justify-between\"\u003e\n\u003cdiv\u003e\n\u003cdiv class=\"flex items-center gap-2 mb-1\"\u003e\n\u003cspan class=\"material-symbols-outlined text-primary text-[20px]\"\u003esecurity\u003c/span\u003e\n\u003cp class=\"text-xs uppercase tracking-wider font-bold text-primary\"\u003eSafety Check\u003c/p\u003e\n\u003c/div\u003e\n\u003ch1 class=\"text-2xl font-bold tracking-tight text-gray-900 dark:text-white\"\u003eDry Run Summary\u003c/h1\u003e\n\u003cp class=\"text-sm text-gray-500 dark:text-gray-400 mt-1 font-medium\"\u003eOperation: Deploy Edge Cluster\u003c/p\u003e\n\u003c/div\u003e\n\u003c!-- Close Button (Ghost) --\u003e\n\u003cbutton class=\"text-gray-400 hover:text-white transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003eclose\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Scrollable Content --\u003e\n\u003cdiv class=\"flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6\"\u003e\n\u003c!-- Side Effects Section --\u003e\n\u003csection\u003e\n\u003ch2 class=\"text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2\"\u003e\n                    Expected Side Effects\n                    \u003cspan class=\"bg-gray-200 dark:bg-white/10 text-xs px-1.5 py-0.5 rounded text-gray-600 dark:text-gray-300\"\u003e3\u003c/span\u003e\n\u003c/h2\u003e\n\u003cdiv class=\"space-y-3\"\u003e\n\u003c!-- Item 1: Warning --\u003e\n\u003cdiv class=\"flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-[#1c301c] border border-orange-500/30\"\u003e\n\u003cdiv class=\"mt-0.5 p-1.5 rounded bg-orange-500/10 text-orange-500\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[20px]\"\u003ewarning\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 min-w-0\"\u003e\n\u003cdiv class=\"flex items-center justify-between mb-0.5\"\u003e\n\u003cp class=\"text-sm font-semibold text-gray-900 dark:text-white truncate\"\u003eWrite to AWS\u003c/p\u003e\n\u003cspan class=\"shrink-0 text-[10px] font-bold uppercase tracking-wider text-orange-400 bg-orange-400/10 px-2 py-0.5 rounded-full border border-orange-400/20\"\u003eWarning\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-gray-500 dark:text-gray-400\"\u003eEKS Cluster Creation (t3.medium)\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Item 2: Safe --\u003e\n\u003cdiv class=\"flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-[#1c301c] border border-gray-200 dark:border-white/5\"\u003e\n\u003cdiv class=\"mt-0.5 p-1.5 rounded bg-primary/10 text-primary\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[20px]\"\u003eterminal\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 min-w-0\"\u003e\n\u003cdiv class=\"flex items-center justify-between mb-0.5\"\u003e\n\u003cp class=\"text-sm font-semibold text-gray-900 dark:text-white truncate\"\u003eModify Local Config\u003c/p\u003e\n\u003cspan class=\"shrink-0 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20\"\u003eSafe\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-gray-500 dark:text-gray-400\"\u003eUpdates ~/.kube/config context\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Item 3: Safe --\u003e\n\u003cdiv class=\"flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-[#1c301c] border border-gray-200 dark:border-white/5\"\u003e\n\u003cdiv class=\"mt-0.5 p-1.5 rounded bg-primary/10 text-primary\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[20px]\"\u003ewebhook\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex-1 min-w-0\"\u003e\n\u003cdiv class=\"flex items-center justify-between mb-0.5\"\u003e\n\u003cp class=\"text-sm font-semibold text-gray-900 dark:text-white truncate\"\u003eNotify Slack\u003c/p\u003e\n\u003cspan class=\"shrink-0 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20\"\u003eSafe\u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-gray-500 dark:text-gray-400\"\u003ePOST request to #devops-alerts\u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c!-- Plan / Diff View --\u003e\n\u003csection\u003e\n\u003cdiv class=\"flex items-center justify-between mb-3\"\u003e\n\u003ch2 class=\"text-sm font-bold text-gray-400 uppercase tracking-widest\"\u003ePlan Preview\u003c/h2\u003e\n\u003cspan class=\"text-xs font-mono text-gray-500 dark:text-gray-500\"\u003eterraform plan\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"bg-[#0d1117] dark:bg-black rounded-lg border border-gray-800 p-4 font-mono text-xs overflow-x-auto custom-scrollbar shadow-inner\"\u003e\n\u003cdiv class=\"flex flex-col gap-1 min-w-[300px]\"\u003e\n\u003c!-- Line 1 --\u003e\n\u003cdiv class=\"flex text-gray-500\"\u003e\n\u003cspan class=\"mr-3 select-none opacity-50\"\u003e1\u003c/span\u003e\n\u003cspan\u003e# aws_eks_cluster.main will be created\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Line 2 --\u003e\n\u003cdiv class=\"flex text-green-400 bg-green-900/10 -mx-4 px-4 border-l-2 border-green-500/50\"\u003e\n\u003cspan class=\"mr-3 select-none opacity-50 text-gray-500\"\u003e2\u003c/span\u003e\n\u003cspan\u003e+ resource \"aws_eks_cluster\" \"main\" {\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Line 3 --\u003e\n\u003cdiv class=\"flex text-green-400 bg-green-900/10 -mx-4 px-4 border-l-2 border-green-500/50\"\u003e\n\u003cspan class=\"mr-3 select-none opacity-50 text-gray-500\"\u003e3\u003c/span\u003e\n\u003cspan class=\"pl-4\"\u003e+ name     = \"edge-cluster-01\"\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Line 4 --\u003e\n\u003cdiv class=\"flex text-green-400 bg-green-900/10 -mx-4 px-4 border-l-2 border-green-500/50\"\u003e\n\u003cspan class=\"mr-3 select-none opacity-50 text-gray-500\"\u003e4\u003c/span\u003e\n\u003cspan class=\"pl-4\"\u003e+ role_arn = \"arn:aws:iam::...\"\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Line 5 --\u003e\n\u003cdiv class=\"flex text-green-400 bg-green-900/10 -mx-4 px-4 border-l-2 border-green-500/50\"\u003e\n\u003cspan class=\"mr-3 select-none opacity-50 text-gray-500\"\u003e5\u003c/span\u003e\n\u003cspan class=\"pl-4\"\u003e+ version  = \"1.27\"\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Line 6 --\u003e\n\u003cdiv class=\"flex text-green-400 bg-green-900/10 -mx-4 px-4 border-l-2 border-green-500/50\"\u003e\n\u003cspan class=\"mr-3 select-none opacity-50 text-gray-500\"\u003e6\u003c/span\u003e\n\u003cspan\u003e+ }\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Line 7 --\u003e\n\u003cdiv class=\"flex text-gray-500\"\u003e\n\u003cspan class=\"mr-3 select-none opacity-50\"\u003e7\u003c/span\u003e\n\u003cspan\u003e\u003c/span\u003e\n\u003c/div\u003e\n\u003c!-- Line 8 --\u003e\n\u003cdiv class=\"flex text-gray-500\"\u003e\n\u003cspan class=\"mr-3 select-none opacity-50\"\u003e8\u003c/span\u003e\n\u003cspan\u003ePlan: 1 to add, 0 to change, 0 to destroy.\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/section\u003e\n\u003c/div\u003e\n\u003c!-- Sticky Footer Actions --\u003e\n\u003cdiv class=\"p-6 pt-4 border-t border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-[#152615]\"\u003e\n\u003cdiv class=\"flex flex-col gap-3\"\u003e\n\u003cbutton class=\"w-full bg-primary hover:bg-green-400 text-black font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(19,236,19,0.2)] hover:shadow-[0_0_20px_rgba(19,236,19,0.4)] group\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform\"\u003eplay_arrow\u003c/span\u003e\n                    Proceed with Run\n                \u003c/button\u003e\n\u003cbutton class=\"w-full bg-transparent hover:bg-gray-200 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium py-3 px-4 rounded-xl transition-colors\"\u003e\n                    Cancel Operation\n                \u003c/button\u003e\n\u003c/div\u003e\n\u003cp class=\"text-center text-[10px] text-gray-400 mt-4 opacity-60\"\u003e\n                Authorized by user: devops_lead • ID: #Run-8921\n            \u003c/p\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"div\",null,{\"className\":\"min-h-screen bg-gray-50\",\"children\":[[\"$\",\"header\",null,{\"className\":\"bg-white border-b border-gray-200 py-4 px-6 md:px-8 sticky top-0 z-20\",\"children\":[\"$\",\"div\",null,{\"className\":\"max-w-7xl mx-auto flex items-center justify-between\",\"children\":[[\"$\",\"div\",null,{\"className\":\"flex items-center gap-4\",\"children\":[[\"$\",\"$L5\",null,{\"href\":\"/capabilities\",\"className\":\"p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors\",\"children\":[\"$\",\"svg\",null,{\"className\":\"w-5 h-5\",\"fill\":\"none\",\"viewBox\":\"0 0 24 24\",\"stroke\":\"currentColor\",\"children\":[\"$\",\"path\",null,{\"strokeLinecap\":\"round\",\"strokeLinejoin\":\"round\",\"strokeWidth\":2,\"d\":\"M10 19l-7-7m0 0l7-7m-7 7h18\"}]}]}],[\"$\",\"div\",null,{\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-lg font-bold text-gray-900 tracking-tight\",\"children\":\"Dry Run Summary Modal\"}],[\"$\",\"p\",null,{\"className\":\"text-xs text-blue-600 font-medium uppercase tracking-widest\",\"children\":\"CLI \u0026 Automation\"}]]}]]}],[\"$\",\"div\",null,{\"className\":\"flex gap-3\",\"children\":[\"$\",\"div\",null,{\"className\":\"hidden sm:flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-100\",\"children\":[[\"$\",\"span\",null,{\"className\":\"w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse\"}],\"Live Preview\"]}]}]]}]}],[\"$\",\"main\",null,{\"className\":\"w-full\",\"children\":[\"$\",\"div\",null,{\"className\":\"bg-white rounded-none shadow-none overflow-hidden\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Dry Run Summary Modal\",\"srcDoc\":\"$f\",\"className\":\"w-full h-[calc(100vh-65px)] border-none\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]}]]}]\n"])</script></body></html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html><!--J_kVknmu6GSF5qixhc85u--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/37847ea80569b263.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-e3a36c2da9ea350c.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-3b36e40479e50727.js" async=""></script><script src="/_next/static/chunks/app/error-e24765025faea277.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/capabilities/%5Bslug%5D/page-b735324e90a667f4.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50"><header class="bg-white border-b border-gray-200 py-4 px-6 md:px-8 sticky top-0 z-20"><div class="max-w-7xl mx-auto flex items-center justify-between"><div class="flex items-center gap-4"><a class="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors" href="/capabilities"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></a><div><h1 class="text-lg font-bold text-gray-900 tracking-tight">Option Value Inspector</h1><p class="text-xs text-blue-600 font-medium uppercase tracking-widest">Decision Intelligence</p></div></div><div class="flex gap-3"><div class="hidden sm:flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-100"><span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>Live Preview</div></div></div></header><main class="w-full"><div class="bg-white rounded-none shadow-none overflow-hidden"><iframe title="Option Value Inspector" srcDoc="&lt;!DOCTYPE html&gt;
+
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Zeo - Option Value Inspector&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        &quot;primary&quot;: &quot;#1258e2&quot;,
+                        &quot;background-light&quot;: &quot;#f6f6f8&quot;,
+                        &quot;background-dark&quot;: &quot;#101622&quot;,
+                        &quot;surface-dark&quot;: &quot;#1a2130&quot;,
+                        &quot;surface-light&quot;: &quot;#ffffff&quot;,
+                    },
+                    fontFamily: {
+                        &quot;display&quot;: [&quot;Inter&quot;, &quot;sans-serif&quot;]
+                    },
+                    borderRadius: {&quot;DEFAULT&quot;: &quot;0.25rem&quot;, &quot;lg&quot;: &quot;0.5rem&quot;, &quot;xl&quot;: &quot;0.75rem&quot;, &quot;full&quot;: &quot;9999px&quot;},
+                },
+            },
+        }
+    &lt;/script&gt;
+&lt;style&gt;
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark font-display min-h-screen flex justify-center text-slate-900 dark:text-white selection:bg-primary/30&quot;&gt;
+&lt;!-- Mobile Container --&gt;
+&lt;div class=&quot;w-full max-w-md bg-background-light dark:bg-background-dark min-h-screen relative flex flex-col shadow-2xl overflow-hidden&quot;&gt;
+&lt;!-- Top App Bar --&gt;
+&lt;header class=&quot;sticky top-0 z-20 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-300&quot;&gt;
+&lt;div class=&quot;flex items-center justify-between p-4 pb-2&quot;&gt;
+&lt;button class=&quot;flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;arrow_back&lt;/span&gt;
+&lt;/button&gt;
+&lt;div class=&quot;flex flex-col items-center&quot;&gt;
+&lt;h2 class=&quot;text-base font-bold leading-tight tracking-tight&quot;&gt;Option Value Inspector&lt;/h2&gt;
+&lt;span class=&quot;text-[10px] uppercase tracking-wider text-slate-500 font-semibold&quot;&gt;Project Alpha Launch&lt;/span&gt;
+&lt;/div&gt;
+&lt;button class=&quot;flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;tune&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;!-- Filters/Tabs --&gt;
+&lt;div class=&quot;px-4 pb-3 pt-1&quot;&gt;
+&lt;div class=&quot;flex gap-2 overflow-x-auto no-scrollbar pb-1&quot;&gt;
+&lt;button class=&quot;flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary text-white px-4 shadow-lg shadow-primary/20 transition-all hover:brightness-110&quot;&gt;
+&lt;span class=&quot;text-xs font-semibold&quot;&gt;All Actions&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-slate-200 dark:bg-surface-dark border border-transparent dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 px-4 text-slate-600 dark:text-slate-300 transition-all&quot;&gt;
+&lt;span class=&quot;text-xs font-medium&quot;&gt;High Reversibility&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-slate-200 dark:bg-surface-dark border border-transparent dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 px-4 text-slate-600 dark:text-slate-300 transition-all&quot;&gt;
+&lt;span class=&quot;text-xs font-medium&quot;&gt;Max Info Gain&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/header&gt;
+&lt;!-- Main Content --&gt;
+&lt;main class=&quot;flex-1 flex flex-col gap-6 p-4 overflow-y-auto&quot;&gt;
+&lt;!-- Metric Summary Card --&gt;
+&lt;div class=&quot;grid grid-cols-2 gap-3&quot;&gt;
+&lt;div class=&quot;col-span-2 bg-surface-light dark:bg-surface-dark rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 relative overflow-hidden group&quot;&gt;
+&lt;div class=&quot;absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-primary/5 to-transparent&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;relative z-10 flex justify-between items-end&quot;&gt;
+&lt;div&gt;
+&lt;p class=&quot;text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider mb-1&quot;&gt;Avg Lock-in Risk&lt;/p&gt;
+&lt;div class=&quot;flex items-baseline gap-2&quot;&gt;
+&lt;span class=&quot;text-3xl font-bold tracking-tight text-slate-900 dark:text-white&quot;&gt;42&lt;span class=&quot;text-lg text-slate-400 font-medium&quot;&gt;/100&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;flex items-center text-emerald-500 text-xs font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[14px] mr-0.5&quot;&gt;trending_down&lt;/span&gt;
+                                    12%
+                                &lt;/span&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-xs text-slate-400 mt-2&quot;&gt;Currently optimizing for optionality.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;h-10 w-24&quot;&gt;
+&lt;!-- Simple Sparkline SVG representation --&gt;
+&lt;svg class=&quot;w-full h-full stroke-primary fill-none stroke-2 overflow-visible&quot; viewbox=&quot;0 0 100 40&quot;&gt;
+&lt;path d=&quot;M0,35 C10,35 20,20 30,25 C40,30 50,10 60,15 C70,20 80,5 100,2&quot;&gt;&lt;/path&gt;
+&lt;defs&gt;
+&lt;lineargradient id=&quot;gradient&quot; x1=&quot;0%&quot; x2=&quot;0%&quot; y1=&quot;0%&quot; y2=&quot;100%&quot;&gt;
+&lt;stop offset=&quot;0%&quot; style=&quot;stop-color:#1258e2;stop-opacity:0.2&quot;&gt;&lt;/stop&gt;
+&lt;stop offset=&quot;100%&quot; style=&quot;stop-color:#1258e2;stop-opacity:0&quot;&gt;&lt;/stop&gt;
+&lt;/lineargradient&gt;
+&lt;/defs&gt;
+&lt;path class=&quot;stroke-none fill-[url(#gradient)]&quot; d=&quot;M0,35 C10,35 20,20 30,25 C40,30 50,10 60,15 C70,20 80,5 100,2 V40 H0 Z&quot;&gt;&lt;/path&gt;
+&lt;/svg&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- List Header --&gt;
+&lt;div class=&quot;flex items-center justify-between mt-2&quot;&gt;
+&lt;h3 class=&quot;text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400&quot;&gt;Ranked Actions&lt;/h3&gt;
+&lt;button class=&quot;text-primary text-xs font-semibold hover:underline&quot;&gt;View All (5)&lt;/button&gt;
+&lt;/div&gt;
+&lt;!-- Action Cards --&gt;
+&lt;div class=&quot;flex flex-col gap-3&quot;&gt;
+&lt;!-- Card 1: High Value --&gt;
+&lt;div class=&quot;group relative bg-surface-light dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start mb-3&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;div class=&quot;flex size-10 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-primary&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;rocket_launch&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;h4 class=&quot;text-base font-bold text-slate-900 dark:text-white leading-tight&quot;&gt;Pilot Program Launch&lt;/h4&gt;
+&lt;span class=&quot;text-xs text-slate-500&quot;&gt;Duration: 3 Weeks&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-right&quot;&gt;
+&lt;div class=&quot;flex flex-col items-end&quot;&gt;
+&lt;span class=&quot;text-[10px] uppercase font-bold text-slate-400 mb-0.5&quot;&gt;Lock-in&lt;/span&gt;
+&lt;span class=&quot;text-xl font-bold text-slate-900 dark:text-white&quot;&gt;12&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Metrics Grid --&gt;
+&lt;div class=&quot;grid grid-cols-2 gap-4 mt-4 bg-slate-50 dark:bg-[#151b26] rounded-lg p-3&quot;&gt;
+&lt;!-- Reversibility --&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;span class=&quot;text-[10px] font-medium text-slate-500 uppercase&quot;&gt;Reversibility&lt;/span&gt;
+&lt;div class=&quot;flex items-center gap-1.5&quot;&gt;
+&lt;span class=&quot;size-2 rounded-full bg-emerald-500&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;text-sm font-semibold text-slate-700 dark:text-slate-200&quot;&gt;High&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Info Gain --&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;span class=&quot;text-[10px] font-medium text-slate-500 uppercase&quot;&gt;Info Gain&lt;/span&gt;
+&lt;div class=&quot;w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-1.5&quot;&gt;
+&lt;div class=&quot;bg-primary h-1.5 rounded-full&quot; style=&quot;width: 85%&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;text-[10px] text-right text-slate-400 mt-0.5&quot;&gt;85% Evidence&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Sparkline Footer --&gt;
+&lt;div class=&quot;mt-3 flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/50&quot;&gt;
+&lt;span class=&quot;text-[10px] text-slate-400 font-medium&quot;&gt;Regret Surface Analysis&lt;/span&gt;
+&lt;div class=&quot;h-6 w-20&quot;&gt;
+&lt;svg class=&quot;w-full h-full stroke-slate-400 dark:stroke-slate-500 fill-none stroke-[1.5px]&quot; viewbox=&quot;0 0 80 24&quot;&gt;
+&lt;path d=&quot;M0,20 Q20,20 40,15 T80,5&quot;&gt;&lt;/path&gt;
+&lt;/svg&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Card 2: Medium Value --&gt;
+&lt;div class=&quot;group relative bg-surface-light dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer&quot;&gt;
+&lt;div class=&quot;flex justify-between items-start mb-3&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3&quot;&gt;
+&lt;div class=&quot;flex size-10 shrink-0 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;query_stats&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;h4 class=&quot;text-base font-bold text-slate-900 dark:text-white leading-tight&quot;&gt;Wait for Q3 Report&lt;/h4&gt;
+&lt;span class=&quot;text-xs text-slate-500&quot;&gt;Passive Action&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-right&quot;&gt;
+&lt;div class=&quot;flex flex-col items-end&quot;&gt;
+&lt;span class=&quot;text-[10px] uppercase font-bold text-slate-400 mb-0.5&quot;&gt;Lock-in&lt;/span&gt;
+&lt;span class=&quot;text-xl font-bold text-emerald-500&quot;&gt;5&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;grid grid-cols-2 gap-4 mt-4 bg-slate-50 dark:bg-[#151b26] rounded-lg p-3&quot;&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;span class=&quot;text-[10px] font-medium text-slate-500 uppercase&quot;&gt;Reversibility&lt;/span&gt;
+&lt;div class=&quot;flex items-center gap-1.5&quot;&gt;
+&lt;span class=&quot;size-2 rounded-full bg-emerald-500&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;text-sm font-semibold text-slate-700 dark:text-slate-200&quot;&gt;High&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;span class=&quot;text-[10px] font-medium text-slate-500 uppercase&quot;&gt;Info Gain&lt;/span&gt;
+&lt;div class=&quot;w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-1.5&quot;&gt;
+&lt;div class=&quot;bg-primary/70 h-1.5 rounded-full&quot; style=&quot;width: 40%&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;text-[10px] text-right text-slate-400 mt-0.5&quot;&gt;40% Evidence&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mt-3 flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/50&quot;&gt;
+&lt;span class=&quot;text-[10px] text-slate-400 font-medium&quot;&gt;Regret Surface Analysis&lt;/span&gt;
+&lt;div class=&quot;h-6 w-20&quot;&gt;
+&lt;svg class=&quot;w-full h-full stroke-slate-400 dark:stroke-slate-500 fill-none stroke-[1.5px]&quot; viewbox=&quot;0 0 80 24&quot;&gt;
+&lt;path d=&quot;M0,22 L20,22 L40,22 L80,22&quot; stroke-dasharray=&quot;2 2&quot;&gt;&lt;/path&gt;
+&lt;/svg&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Card 3: High Risk --&gt;
+&lt;div class=&quot;group relative bg-surface-light dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer opacity-90 hover:opacity-100&quot;&gt;
+&lt;div class=&quot;absolute -left-[1px] top-4 bottom-4 w-1 bg-amber-500 rounded-r-sm&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex justify-between items-start mb-3&quot;&gt;
+&lt;div class=&quot;flex items-center gap-3 pl-2&quot;&gt;
+&lt;div class=&quot;flex size-10 shrink-0 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900/20 text-amber-600 dark:text-amber-500&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;handshake&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;h4 class=&quot;text-base font-bold text-slate-900 dark:text-white leading-tight&quot;&gt;5-Year Vendor Contract&lt;/h4&gt;
+&lt;span class=&quot;text-xs text-slate-500&quot;&gt;Binding Agreement&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;text-right&quot;&gt;
+&lt;div class=&quot;flex flex-col items-end&quot;&gt;
+&lt;span class=&quot;text-[10px] uppercase font-bold text-slate-400 mb-0.5&quot;&gt;Lock-in&lt;/span&gt;
+&lt;span class=&quot;text-xl font-bold text-amber-500&quot;&gt;92&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;grid grid-cols-2 gap-4 mt-4 bg-slate-50 dark:bg-[#151b26] rounded-lg p-3&quot;&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;span class=&quot;text-[10px] font-medium text-slate-500 uppercase&quot;&gt;Reversibility&lt;/span&gt;
+&lt;div class=&quot;flex items-center gap-1.5&quot;&gt;
+&lt;span class=&quot;size-2 rounded-full bg-amber-500&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;text-sm font-semibold text-slate-700 dark:text-slate-200&quot;&gt;Low&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;span class=&quot;text-[10px] font-medium text-slate-500 uppercase&quot;&gt;Info Gain&lt;/span&gt;
+&lt;div class=&quot;w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-1.5&quot;&gt;
+&lt;div class=&quot;bg-primary/40 h-1.5 rounded-full&quot; style=&quot;width: 10%&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;text-[10px] text-right text-slate-400 mt-0.5&quot;&gt;10% Evidence&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mt-3 flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/50&quot;&gt;
+&lt;span class=&quot;text-[10px] text-slate-400 font-medium&quot;&gt;Regret Surface Analysis&lt;/span&gt;
+&lt;div class=&quot;h-6 w-20&quot;&gt;
+&lt;svg class=&quot;w-full h-full stroke-amber-500/70 fill-none stroke-[1.5px]&quot; viewbox=&quot;0 0 80 24&quot;&gt;
+&lt;path d=&quot;M0,20 C20,15 40,10 60,5 L80,2&quot;&gt;&lt;/path&gt;
+&lt;/svg&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/main&gt;
+&lt;!-- Bottom Action Bar (Simulated Fab/Action) --&gt;
+&lt;div class=&quot;p-4 bg-background-light dark:bg-background-dark border-t border-slate-200 dark:border-slate-800&quot;&gt;
+&lt;button class=&quot;w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white font-bold py-3.5 px-4 rounded-lg shadow-lg shadow-blue-900/20 transition-all active:scale-[0.98]&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined&quot;&gt;add_chart&lt;/span&gt;
+&lt;span&gt;Analyze New Option&lt;/span&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;" class="w-full h-[calc(100vh-65px)] border-none" sandbox="allow-scripts allow-same-origin"></iframe></div></main></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-e3a36c2da9ea350c.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-e24765025faea277.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"9019\",\"static/chunks/app/capabilities/%5Bslug%5D/page-b735324e90a667f4.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/37847ea80569b263.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"J_kVknmu6GSF5qixhc85u\",\"c\":[\"\",\"capabilities\",\"stitch-decision-branching-view-option-value-inspector\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"capabilities\",{\"children\":[[\"slug\",\"stitch-decision-branching-view-option-value-inspector\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/37847ea80569b263.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:T33b7,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eZeo - Option Value Inspector\u003c/title\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003cscript\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        \"primary\": \"#1258e2\",\n                        \"background-light\": \"#f6f6f8\",\n                        \"background-dark\": \"#101622\",\n                        \"surface-dark\": \"#1a2130\",\n                        \"surface-light\": \"#ffffff\",\n                    },\n                    fontFamily: {\n                        \"display\": [\"Inter\", \"sans-serif\"]\n                    },\n                    borderRadius: {\"DEFAULT\": \"0.25rem\", \"lg\": \"0.5rem\", \"xl\": \"0.75rem\", \"full\": \"9999px\"},\n                },\n            },\n        }\n    \u003c/script\u003e\n\u003cstyle\u003e\n        .no-scrollbar::-webkit-scrollbar {\n            display: none;\n        }\n        .no-scrollbar {\n            -ms-overflow-style: none;\n            scrollbar-width: none;\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark font-display min-h-screen flex justify-center text-slate-900 dark:text-white selection:bg-primary/30\"\u003e\n\u003c!-- Mobile Container --\u003e\n\u003cdiv class=\"w-full max-w-md bg-background-light dark:bg-background-dark min-h-screen relative flex flex-col shadow-2xl overflow-hidden\"\u003e\n\u003c!-- Top App Bar --\u003e\n\u003cheader class=\"sticky top-0 z-20 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-300\"\u003e\n\u003cdiv class=\"flex items-center justify-between p-4 pb-2\"\u003e\n\u003cbutton class=\"flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003earrow_back\u003c/span\u003e\n\u003c/button\u003e\n\u003cdiv class=\"flex flex-col items-center\"\u003e\n\u003ch2 class=\"text-base font-bold leading-tight tracking-tight\"\u003eOption Value Inspector\u003c/h2\u003e\n\u003cspan class=\"text-[10px] uppercase tracking-wider text-slate-500 font-semibold\"\u003eProject Alpha Launch\u003c/span\u003e\n\u003c/div\u003e\n\u003cbutton class=\"flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003etune\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c!-- Filters/Tabs --\u003e\n\u003cdiv class=\"px-4 pb-3 pt-1\"\u003e\n\u003cdiv class=\"flex gap-2 overflow-x-auto no-scrollbar pb-1\"\u003e\n\u003cbutton class=\"flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary text-white px-4 shadow-lg shadow-primary/20 transition-all hover:brightness-110\"\u003e\n\u003cspan class=\"text-xs font-semibold\"\u003eAll Actions\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-slate-200 dark:bg-surface-dark border border-transparent dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 px-4 text-slate-600 dark:text-slate-300 transition-all\"\u003e\n\u003cspan class=\"text-xs font-medium\"\u003eHigh Reversibility\u003c/span\u003e\n\u003c/button\u003e\n\u003cbutton class=\"flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-slate-200 dark:bg-surface-dark border border-transparent dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 px-4 text-slate-600 dark:text-slate-300 transition-all\"\u003e\n\u003cspan class=\"text-xs font-medium\"\u003eMax Info Gain\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/header\u003e\n\u003c!-- Main Content --\u003e\n\u003cmain class=\"flex-1 flex flex-col gap-6 p-4 overflow-y-auto\"\u003e\n\u003c!-- Metric Summary Card --\u003e\n\u003cdiv class=\"grid grid-cols-2 gap-3\"\u003e\n\u003cdiv class=\"col-span-2 bg-surface-light dark:bg-surface-dark rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 relative overflow-hidden group\"\u003e\n\u003cdiv class=\"absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-primary/5 to-transparent\"\u003e\u003c/div\u003e\n\u003cdiv class=\"relative z-10 flex justify-between items-end\"\u003e\n\u003cdiv\u003e\n\u003cp class=\"text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider mb-1\"\u003eAvg Lock-in Risk\u003c/p\u003e\n\u003cdiv class=\"flex items-baseline gap-2\"\u003e\n\u003cspan class=\"text-3xl font-bold tracking-tight text-slate-900 dark:text-white\"\u003e42\u003cspan class=\"text-lg text-slate-400 font-medium\"\u003e/100\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\"flex items-center text-emerald-500 text-xs font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[14px] mr-0.5\"\u003etrending_down\u003c/span\u003e\n                                    12%\n                                \u003c/span\u003e\n\u003c/div\u003e\n\u003cp class=\"text-xs text-slate-400 mt-2\"\u003eCurrently optimizing for optionality.\u003c/p\u003e\n\u003c/div\u003e\n\u003cdiv class=\"h-10 w-24\"\u003e\n\u003c!-- Simple Sparkline SVG representation --\u003e\n\u003csvg class=\"w-full h-full stroke-primary fill-none stroke-2 overflow-visible\" viewbox=\"0 0 100 40\"\u003e\n\u003cpath d=\"M0,35 C10,35 20,20 30,25 C40,30 50,10 60,15 C70,20 80,5 100,2\"\u003e\u003c/path\u003e\n\u003cdefs\u003e\n\u003clineargradient id=\"gradient\" x1=\"0%\" x2=\"0%\" y1=\"0%\" y2=\"100%\"\u003e\n\u003cstop offset=\"0%\" style=\"stop-color:#1258e2;stop-opacity:0.2\"\u003e\u003c/stop\u003e\n\u003cstop offset=\"100%\" style=\"stop-color:#1258e2;stop-opacity:0\"\u003e\u003c/stop\u003e\n\u003c/lineargradient\u003e\n\u003c/defs\u003e\n\u003cpath class=\"stroke-none fill-[url(#gradient)]\" d=\"M0,35 C10,35 20,20 30,25 C40,30 50,10 60,15 C70,20 80,5 100,2 V40 H0 Z\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- List Header --\u003e\n\u003cdiv class=\"flex items-center justify-between mt-2\"\u003e\n\u003ch3 class=\"text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400\"\u003eRanked Actions\u003c/h3\u003e\n\u003cbutton class=\"text-primary text-xs font-semibold hover:underline\"\u003eView All (5)\u003c/button\u003e\n\u003c/div\u003e\n\u003c!-- Action Cards --\u003e\n\u003cdiv class=\"flex flex-col gap-3\"\u003e\n\u003c!-- Card 1: High Value --\u003e\n\u003cdiv class=\"group relative bg-surface-light dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer\"\u003e\n\u003cdiv class=\"flex justify-between items-start mb-3\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cdiv class=\"flex size-10 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-primary\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003erocket_launch\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003ch4 class=\"text-base font-bold text-slate-900 dark:text-white leading-tight\"\u003ePilot Program Launch\u003c/h4\u003e\n\u003cspan class=\"text-xs text-slate-500\"\u003eDuration: 3 Weeks\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-right\"\u003e\n\u003cdiv class=\"flex flex-col items-end\"\u003e\n\u003cspan class=\"text-[10px] uppercase font-bold text-slate-400 mb-0.5\"\u003eLock-in\u003c/span\u003e\n\u003cspan class=\"text-xl font-bold text-slate-900 dark:text-white\"\u003e12\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Metrics Grid --\u003e\n\u003cdiv class=\"grid grid-cols-2 gap-4 mt-4 bg-slate-50 dark:bg-[#151b26] rounded-lg p-3\"\u003e\n\u003c!-- Reversibility --\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cspan class=\"text-[10px] font-medium text-slate-500 uppercase\"\u003eReversibility\u003c/span\u003e\n\u003cdiv class=\"flex items-center gap-1.5\"\u003e\n\u003cspan class=\"size-2 rounded-full bg-emerald-500\"\u003e\u003c/span\u003e\n\u003cspan class=\"text-sm font-semibold text-slate-700 dark:text-slate-200\"\u003eHigh\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Info Gain --\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cspan class=\"text-[10px] font-medium text-slate-500 uppercase\"\u003eInfo Gain\u003c/span\u003e\n\u003cdiv class=\"w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-1.5\"\u003e\n\u003cdiv class=\"bg-primary h-1.5 rounded-full\" style=\"width: 85%\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"text-[10px] text-right text-slate-400 mt-0.5\"\u003e85% Evidence\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Sparkline Footer --\u003e\n\u003cdiv class=\"mt-3 flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/50\"\u003e\n\u003cspan class=\"text-[10px] text-slate-400 font-medium\"\u003eRegret Surface Analysis\u003c/span\u003e\n\u003cdiv class=\"h-6 w-20\"\u003e\n\u003csvg class=\"w-full h-full stroke-slate-400 dark:stroke-slate-500 fill-none stroke-[1.5px]\" viewbox=\"0 0 80 24\"\u003e\n\u003cpath d=\"M0,20 Q20,20 40,15 T80,5\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Card 2: Medium Value --\u003e\n\u003cdiv class=\"group relative bg-surface-light dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer\"\u003e\n\u003cdiv class=\"flex justify-between items-start mb-3\"\u003e\n\u003cdiv class=\"flex items-center gap-3\"\u003e\n\u003cdiv class=\"flex size-10 shrink-0 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003equery_stats\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003ch4 class=\"text-base font-bold text-slate-900 dark:text-white leading-tight\"\u003eWait for Q3 Report\u003c/h4\u003e\n\u003cspan class=\"text-xs text-slate-500\"\u003ePassive Action\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-right\"\u003e\n\u003cdiv class=\"flex flex-col items-end\"\u003e\n\u003cspan class=\"text-[10px] uppercase font-bold text-slate-400 mb-0.5\"\u003eLock-in\u003c/span\u003e\n\u003cspan class=\"text-xl font-bold text-emerald-500\"\u003e5\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"grid grid-cols-2 gap-4 mt-4 bg-slate-50 dark:bg-[#151b26] rounded-lg p-3\"\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cspan class=\"text-[10px] font-medium text-slate-500 uppercase\"\u003eReversibility\u003c/span\u003e\n\u003cdiv class=\"flex items-center gap-1.5\"\u003e\n\u003cspan class=\"size-2 rounded-full bg-emerald-500\"\u003e\u003c/span\u003e\n\u003cspan class=\"text-sm font-semibold text-slate-700 dark:text-slate-200\"\u003eHigh\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cspan class=\"text-[10px] font-medium text-slate-500 uppercase\"\u003eInfo Gain\u003c/span\u003e\n\u003cdiv class=\"w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-1.5\"\u003e\n\u003cdiv class=\"bg-primary/70 h-1.5 rounded-full\" style=\"width: 40%\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"text-[10px] text-right text-slate-400 mt-0.5\"\u003e40% Evidence\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"mt-3 flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/50\"\u003e\n\u003cspan class=\"text-[10px] text-slate-400 font-medium\"\u003eRegret Surface Analysis\u003c/span\u003e\n\u003cdiv class=\"h-6 w-20\"\u003e\n\u003csvg class=\"w-full h-full stroke-slate-400 dark:stroke-slate-500 fill-none stroke-[1.5px]\" viewbox=\"0 0 80 24\"\u003e\n\u003cpath d=\"M0,22 L20,22 L40,22 L80,22\" stroke-dasharray=\"2 2\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c!-- Card 3: High Risk --\u003e\n\u003cdiv class=\"group relative bg-surface-light dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer opacity-90 hover:opacity-100\"\u003e\n\u003cdiv class=\"absolute -left-[1px] top-4 bottom-4 w-1 bg-amber-500 rounded-r-sm\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex justify-between items-start mb-3\"\u003e\n\u003cdiv class=\"flex items-center gap-3 pl-2\"\u003e\n\u003cdiv class=\"flex size-10 shrink-0 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900/20 text-amber-600 dark:text-amber-500\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003ehandshake\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv\u003e\n\u003ch4 class=\"text-base font-bold text-slate-900 dark:text-white leading-tight\"\u003e5-Year Vendor Contract\u003c/h4\u003e\n\u003cspan class=\"text-xs text-slate-500\"\u003eBinding Agreement\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"text-right\"\u003e\n\u003cdiv class=\"flex flex-col items-end\"\u003e\n\u003cspan class=\"text-[10px] uppercase font-bold text-slate-400 mb-0.5\"\u003eLock-in\u003c/span\u003e\n\u003cspan class=\"text-xl font-bold text-amber-500\"\u003e92\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"grid grid-cols-2 gap-4 mt-4 bg-slate-50 dark:bg-[#151b26] rounded-lg p-3\"\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cspan class=\"text-[10px] font-medium text-slate-500 uppercase\"\u003eReversibility\u003c/span\u003e\n\u003cdiv class=\"flex items-center gap-1.5\"\u003e\n\u003cspan class=\"size-2 rounded-full bg-amber-500\"\u003e\u003c/span\u003e\n\u003cspan class=\"text-sm font-semibold text-slate-700 dark:text-slate-200\"\u003eLow\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cspan class=\"text-[10px] font-medium text-slate-500 uppercase\"\u003eInfo Gain\u003c/span\u003e\n\u003cdiv class=\"w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-1.5\"\u003e\n\u003cdiv class=\"bg-primary/40 h-1.5 rounded-full\" style=\"width: 10%\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"text-[10px] text-right text-slate-400 mt-0.5\"\u003e10% Evidence\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"mt-3 flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/50\"\u003e\n\u003cspan class=\"text-[10px] text-slate-400 font-medium\"\u003eRegret Surface Analysis\u003c/span\u003e\n\u003cdiv class=\"h-6 w-20\"\u003e\n\u003csvg class=\"w-full h-full stroke-amber-500/70 fill-none stroke-[1.5px]\" viewbox=\"0 0 80 24\"\u003e\n\u003cpath d=\"M0,20 C20,15 40,10 60,5 L80,2\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/main\u003e\n\u003c!-- Bottom Action Bar (Simulated Fab/Action) --\u003e\n\u003cdiv class=\"p-4 bg-background-light dark:bg-background-dark border-t border-slate-200 dark:border-slate-800\"\u003e\n\u003cbutton class=\"w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white font-bold py-3.5 px-4 rounded-lg shadow-lg shadow-blue-900/20 transition-all active:scale-[0.98]\"\u003e\n\u003cspan class=\"material-symbols-outlined\"\u003eadd_chart\u003c/span\u003e\n\u003cspan\u003eAnalyze New Option\u003c/span\u003e\n\u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"div\",null,{\"className\":\"min-h-screen bg-gray-50\",\"children\":[[\"$\",\"header\",null,{\"className\":\"bg-white border-b border-gray-200 py-4 px-6 md:px-8 sticky top-0 z-20\",\"children\":[\"$\",\"div\",null,{\"className\":\"max-w-7xl mx-auto flex items-center justify-between\",\"children\":[[\"$\",\"div\",null,{\"className\":\"flex items-center gap-4\",\"children\":[[\"$\",\"$L5\",null,{\"href\":\"/capabilities\",\"className\":\"p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors\",\"children\":[\"$\",\"svg\",null,{\"className\":\"w-5 h-5\",\"fill\":\"none\",\"viewBox\":\"0 0 24 24\",\"stroke\":\"currentColor\",\"children\":[\"$\",\"path\",null,{\"strokeLinecap\":\"round\",\"strokeLinejoin\":\"round\",\"strokeWidth\":2,\"d\":\"M10 19l-7-7m0 0l7-7m-7 7h18\"}]}]}],[\"$\",\"div\",null,{\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-lg font-bold text-gray-900 tracking-tight\",\"children\":\"Option Value Inspector\"}],[\"$\",\"p\",null,{\"className\":\"text-xs text-blue-600 font-medium uppercase tracking-widest\",\"children\":\"Decision Intelligence\"}]]}]]}],[\"$\",\"div\",null,{\"className\":\"flex gap-3\",\"children\":[\"$\",\"div\",null,{\"className\":\"hidden sm:flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-100\",\"children\":[[\"$\",\"span\",null,{\"className\":\"w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse\"}],\"Live Preview\"]}]}]]}]}],[\"$\",\"main\",null,{\"className\":\"w-full\",\"children\":[\"$\",\"div\",null,{\"className\":\"bg-white rounded-none shadow-none overflow-hidden\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Option Value Inspector\",\"srcDoc\":\"$f\",\"className\":\"w-full h-[calc(100vh-65px)] border-none\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]}]]}]\n"])</script></body></html>

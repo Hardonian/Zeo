@@ -16,3 +16,10 @@ yarn-error.log*
 
 .zeo/config.local.json
 .zeo/agents/
+
+# Next.js
+.next/
+out/
+
+# Logs
+*.log

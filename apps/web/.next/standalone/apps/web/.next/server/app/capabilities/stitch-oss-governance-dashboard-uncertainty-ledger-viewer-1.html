@@ -1,0 +1,358 @@
+<!DOCTYPE html><!--J_kVknmu6GSF5qixhc85u--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/37847ea80569b263.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-e3a36c2da9ea350c.js"/><script src="/_next/static/chunks/32eb06e0-298ad7751d055eeb.js" async=""></script><script src="/_next/static/chunks/3242-8c30e31cb8a0ff9d.js" async=""></script><script src="/_next/static/chunks/main-app-3b36e40479e50727.js" async=""></script><script src="/_next/static/chunks/app/error-e24765025faea277.js" async=""></script><script src="/_next/static/chunks/3180-49ca78bebb59785c.js" async=""></script><script src="/_next/static/chunks/app/capabilities/%5Bslug%5D/page-b735324e90a667f4.js" async=""></script><title>Zeo</title><meta name="description" content="Static-first Zeo site for marketing, docs, onboarding, and support."/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="antialiased bg-gray-50 text-gray-900"><div hidden=""><!--$--><!--/$--></div><div class="min-h-screen bg-gray-50"><header class="bg-white border-b border-gray-200 py-4 px-6 md:px-8 sticky top-0 z-20"><div class="max-w-7xl mx-auto flex items-center justify-between"><div class="flex items-center gap-4"><a class="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors" href="/capabilities"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg></a><div><h1 class="text-lg font-bold text-gray-900 tracking-tight">Uncertainty Ledger Viewer 1</h1><p class="text-xs text-blue-600 font-medium uppercase tracking-widest">Governance &amp; Compliance</p></div></div><div class="flex gap-3"><div class="hidden sm:flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-100"><span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>Live Preview</div></div></div></header><main class="w-full"><div class="bg-white rounded-none shadow-none overflow-hidden"><iframe title="Uncertainty Ledger Viewer 1" srcDoc="&lt;!DOCTYPE html&gt;
+&lt;html class=&quot;dark&quot; lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;/&gt;
+&lt;meta content=&quot;width=device-width, initial-scale=1.0&quot; name=&quot;viewport&quot;/&gt;
+&lt;title&gt;Uncertainty Ledger Viewer&lt;/title&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;amp;family=JetBrains+Mono:wght@400;500&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;/&gt;
+&lt;script&gt;
+        tailwind.config = {
+            darkMode: &quot;class&quot;,
+            theme: {
+                extend: {
+                    colors: {
+                        &quot;primary&quot;: &quot;#137fec&quot;,
+                        &quot;background-light&quot;: &quot;#f6f7f8&quot;,
+                        &quot;background-dark&quot;: &quot;#101922&quot;,
+                        &quot;card-dark&quot;: &quot;#1a2632&quot;,
+                        &quot;card-light&quot;: &quot;#ffffff&quot;,
+                    },
+                    fontFamily: {
+                        &quot;display&quot;: [&quot;Inter&quot;, &quot;sans-serif&quot;],
+                        &quot;mono&quot;: [&quot;JetBrains Mono&quot;, &quot;monospace&quot;],
+                    },
+                    borderRadius: {&quot;DEFAULT&quot;: &quot;0.25rem&quot;, &quot;lg&quot;: &quot;0.5rem&quot;, &quot;xl&quot;: &quot;0.75rem&quot;, &quot;full&quot;: &quot;9999px&quot;},
+                },
+            },
+        }
+    &lt;/script&gt;
+&lt;style&gt;::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 2px;
+        }#plain-language-toggle:checked ~ main .technical-term {
+            display: none;
+        }
+        #plain-language-toggle:not(:checked) ~ main .plain-term {
+            display: none;
+        }
+        #plain-language-toggle:checked ~ header label .toggle-dot {
+            transform: translateX(100%);
+            background-color: white;
+        }
+        #plain-language-toggle:checked ~ header label .toggle-bg {
+            background-color: #137fec;}
+    &lt;/style&gt;
+&lt;style&gt;
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    &lt;/style&gt;
+&lt;style&gt;
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  &lt;/style&gt;
+  &lt;/head&gt;
+&lt;body class=&quot;bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased selection:bg-primary/30&quot;&gt;
+&lt;div class=&quot;relative mx-auto flex h-full min-h-screen w-full max-w-md flex-col overflow-hidden bg-background-light dark:bg-background-dark shadow-2xl&quot;&gt;
+&lt;input class=&quot;peer hidden&quot; id=&quot;plain-language-toggle&quot; type=&quot;checkbox&quot;/&gt;
+&lt;header class=&quot;sticky top-0 z-50 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-background-light/80 dark:bg-background-dark/80 px-4 py-3 backdrop-blur-md&quot;&gt;
+&lt;button class=&quot;flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-slate-600 dark:text-slate-400&quot;&gt;arrow_back&lt;/span&gt;
+&lt;/button&gt;
+&lt;div class=&quot;flex flex-col items-center&quot;&gt;
+&lt;h1 class=&quot;text-xs font-semibold tracking-wide uppercase text-slate-500 dark:text-slate-400&quot;&gt;Research Console&lt;/h1&gt;
+&lt;h2 class=&quot;text-sm font-bold leading-tight text-slate-900 dark:text-white technical-term&quot;&gt;Uncertainty Ledger&lt;/h2&gt;
+&lt;h2 class=&quot;hidden text-sm font-bold leading-tight text-slate-900 dark:text-white plain-term&quot;&gt;Risk Overview&lt;/h2&gt;
+&lt;/div&gt;
+&lt;label class=&quot;flex flex-col items-center gap-1 cursor-pointer group&quot; for=&quot;plain-language-toggle&quot;&gt;
+&lt;div class=&quot;relative h-6 w-11 rounded-full bg-slate-200 dark:bg-slate-700 transition-colors toggle-bg&quot;&gt;
+&lt;div class=&quot;absolute left-1 top-1 h-4 w-4 rounded-full bg-slate-400 dark:bg-slate-400 transition-transform toggle-dot shadow-sm&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;span class=&quot;text-[9px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 group-hover:text-primary transition-colors&quot;&gt;Plain Lang&lt;/span&gt;
+&lt;/label&gt;
+&lt;/header&gt;
+&lt;main class=&quot;flex-1 overflow-y-auto pb-24&quot;&gt;
+&lt;div class=&quot;px-4 pt-6 pb-2&quot;&gt;
+&lt;div class=&quot;flex flex-col items-start gap-1&quot;&gt;
+&lt;span class=&quot;text-xs font-medium uppercase tracking-wider text-primary technical-term&quot;&gt;System Confidence&lt;/span&gt;
+&lt;span class=&quot;hidden text-xs font-medium uppercase tracking-wider text-primary plain-term&quot;&gt;Reliability Score&lt;/span&gt;
+&lt;div class=&quot;flex w-full items-baseline justify-between&quot;&gt;
+&lt;h2 class=&quot;font-mono text-4xl font-bold tracking-tighter text-slate-900 dark:text-white&quot;&gt;84.2&lt;span class=&quot;text-2xl text-slate-400&quot;&gt;%&lt;/span&gt;&lt;/h2&gt;
+&lt;div class=&quot;flex items-center gap-1 rounded bg-green-500/10 px-2 py-1 text-xs font-medium text-green-600 dark:text-green-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[14px]&quot;&gt;trending_up&lt;/span&gt;
+&lt;span&gt;+2.4%&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p class=&quot;text-sm text-slate-500 dark:text-slate-400 technical-term&quot;&gt;Confidence interval: 95% (±2.4%)&lt;/p&gt;
+&lt;p class=&quot;hidden text-sm text-slate-500 dark:text-slate-400 plain-term&quot;&gt;High certainty. Results are consistent within expected ranges.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mt-6 grid grid-cols-2 gap-3&quot;&gt;
+&lt;div class=&quot;flex flex-col gap-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-card-light dark:bg-card-dark p-3 shadow-sm&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[16px] text-slate-400&quot;&gt;blur_on&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-500 dark:text-slate-400 technical-term&quot;&gt;Total Variance&lt;/span&gt;
+&lt;span class=&quot;hidden text-xs font-medium text-slate-500 dark:text-slate-400 plain-term&quot;&gt;Data Spread&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;font-mono text-lg font-semibold text-slate-900 dark:text-white technical-term&quot;&gt;σ: 0.04&lt;/span&gt;
+&lt;span class=&quot;hidden font-mono text-sm font-semibold text-slate-900 dark:text-white plain-term leading-7&quot;&gt;Very Low&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-card-light dark:bg-card-dark p-3 shadow-sm&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[16px] text-slate-400&quot;&gt;ssid_chart&lt;/span&gt;
+&lt;span class=&quot;text-xs font-medium text-slate-500 dark:text-slate-400 technical-term&quot;&gt;Drift Rate&lt;/span&gt;
+&lt;span class=&quot;hidden text-xs font-medium text-slate-500 dark:text-slate-400 plain-term&quot;&gt;Change Over Time&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;font-mono text-lg font-semibold text-slate-900 dark:text-white technical-term&quot;&gt;1.2e-4&lt;/span&gt;
+&lt;span class=&quot;hidden font-mono text-sm font-semibold text-slate-900 dark:text-white plain-term leading-7&quot;&gt;Stable&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mt-6&quot;&gt;
+&lt;div class=&quot;mb-3 flex items-center justify-between px-4&quot;&gt;
+&lt;h3 class=&quot;text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 technical-term&quot;&gt;Ledger Entries&lt;/h3&gt;
+&lt;h3 class=&quot;hidden text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 plain-term&quot;&gt;Risk Factors&lt;/h3&gt;
+&lt;button class=&quot;text-xs font-medium text-primary hover:underline&quot;&gt;View Log&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex flex-col divide-y divide-slate-200 dark:divide-slate-800 border-t border-b border-slate-200 dark:border-slate-800 bg-card-light dark:bg-card-dark&quot;&gt;
+&lt;div class=&quot;group relative flex flex-col gap-3 p-4 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors&quot;&gt;
+&lt;div class=&quot;absolute left-0 top-0 h-full w-1 bg-slate-300 dark:bg-slate-700 group-hover:bg-primary transition-colors&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex items-start justify-between&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;flex size-6 items-center justify-center rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[16px]&quot;&gt;sensors&lt;/span&gt;
+&lt;/span&gt;
+&lt;span class=&quot;font-semibold text-slate-900 dark:text-white technical-term&quot;&gt;Measurement Noise&lt;/span&gt;
+&lt;span class=&quot;hidden font-semibold text-slate-900 dark:text-white plain-term&quot;&gt;Sensor Quality Issues&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;font-mono text-sm font-bold text-slate-900 dark:text-white&quot;&gt;12%&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;grid grid-cols-2 gap-x-4 gap-y-2 text-xs technical-term&quot;&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Sensor var&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;12.4ms&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;SNR&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;88dB&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Calibration&lt;/span&gt;
+&lt;span class=&quot;font-mono text-green-600 dark:text-green-400&quot;&gt;OK&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Latency&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;4ms&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;hidden text-xs text-slate-600 dark:text-slate-300 plain-term leading-relaxed&quot;&gt;
+                            Minor fluctuations in data input. Sensors are calibrated correctly, but there is slight delay (4ms) affecting real-time precision.
+                        &lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;div class=&quot;flex justify-between text-[10px] uppercase text-slate-400&quot;&gt;
+&lt;span&gt;Impact Contribution&lt;/span&gt;
+&lt;span&gt;Low&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800&quot;&gt;
+&lt;div class=&quot;h-full w-[12%] rounded-full bg-slate-400 dark:bg-slate-500&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;group relative flex flex-col gap-3 p-4 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors&quot;&gt;
+&lt;div class=&quot;absolute left-0 top-0 h-full w-1 bg-slate-300 dark:bg-slate-700 group-hover:bg-primary transition-colors&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex items-start justify-between&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;flex size-6 items-center justify-center rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[16px]&quot;&gt;model_training&lt;/span&gt;
+&lt;/span&gt;
+&lt;span class=&quot;font-semibold text-slate-900 dark:text-white technical-term&quot;&gt;Model Variance&lt;/span&gt;
+&lt;span class=&quot;hidden font-semibold text-slate-900 dark:text-white plain-term&quot;&gt;Prediction Uncertainty&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;font-mono text-sm font-bold text-slate-900 dark:text-white&quot;&gt;28%&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;grid grid-cols-2 gap-x-4 gap-y-2 text-xs technical-term&quot;&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Overfitting&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;0.02&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Param Drift&lt;/span&gt;
+&lt;span class=&quot;font-mono text-orange-500&quot;&gt;High&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Epoch&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;#942&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Loss&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;0.14&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;hidden text-xs text-slate-600 dark:text-slate-300 plain-term leading-relaxed&quot;&gt;
+                            The AI model is adjusting to new patterns. While accuracy is generally good, recent parameters have shifted more than expected.
+                        &lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;div class=&quot;flex justify-between text-[10px] uppercase text-slate-400&quot;&gt;
+&lt;span&gt;Impact Contribution&lt;/span&gt;
+&lt;span&gt;Med&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800&quot;&gt;
+&lt;div class=&quot;h-full w-[28%] rounded-full bg-primary/70&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;group relative flex flex-col gap-3 bg-primary/[0.03] p-4 hover:bg-primary/[0.06] transition-colors&quot;&gt;
+&lt;div class=&quot;absolute left-0 top-0 h-full w-1 bg-primary&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex items-start justify-between&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;flex size-6 items-center justify-center rounded bg-primary/20 text-primary&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[16px]&quot;&gt;area_chart&lt;/span&gt;
+&lt;/span&gt;
+&lt;span class=&quot;font-semibold text-primary technical-term&quot;&gt;Regime Shift&lt;/span&gt;
+&lt;span class=&quot;hidden font-semibold text-primary plain-term&quot;&gt;Market Environment Change&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;font-mono text-sm font-bold text-primary&quot;&gt;45%&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;grid grid-cols-2 gap-x-4 gap-y-2 text-xs technical-term&quot;&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500 dark:text-slate-400&quot;&gt;Volatility&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-white&quot;&gt;82.4&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500 dark:text-slate-400&quot;&gt;Hist Corr&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-white&quot;&gt;-0.41&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500 dark:text-slate-400&quot;&gt;State&lt;/span&gt;
+&lt;span class=&quot;font-mono text-red-500&quot;&gt;Unstable&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500 dark:text-slate-400&quot;&gt;Delta&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-white&quot;&gt;Δ 4.2&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;hidden text-xs text-slate-700 dark:text-slate-200 plain-term leading-relaxed&quot;&gt;
+                             Significant change in the underlying environment. Current conditions are unstable and deviate sharply from historical trends (high volatility).
+                        &lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;div class=&quot;flex justify-between text-[10px] uppercase text-primary/70&quot;&gt;
+&lt;span&gt;Impact Contribution&lt;/span&gt;
+&lt;span&gt;Critical&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800&quot;&gt;
+&lt;div class=&quot;h-full w-[45%] rounded-full bg-primary&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;group relative flex flex-col gap-3 p-4 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors&quot;&gt;
+&lt;div class=&quot;absolute left-0 top-0 h-full w-1 bg-slate-300 dark:bg-slate-700 group-hover:bg-primary transition-colors&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex items-start justify-between&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;flex size-6 items-center justify-center rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[16px]&quot;&gt;security&lt;/span&gt;
+&lt;/span&gt;
+&lt;span class=&quot;font-semibold text-slate-900 dark:text-white technical-term&quot;&gt;Adversarial Input&lt;/span&gt;
+&lt;span class=&quot;hidden font-semibold text-slate-900 dark:text-white plain-term&quot;&gt;Security Threats&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;font-mono text-sm font-bold text-slate-900 dark:text-white&quot;&gt;8%&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;grid grid-cols-2 gap-x-4 gap-y-2 text-xs technical-term&quot;&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Vector Prob&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;1.2%&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Robustness&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;0.98&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Attempts&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;0&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Filter&lt;/span&gt;
+&lt;span class=&quot;font-mono text-green-600 dark:text-green-400&quot;&gt;Active&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;hidden text-xs text-slate-600 dark:text-slate-300 plain-term leading-relaxed&quot;&gt;
+                            System is actively filtering potential malicious inputs. No successful attempts recorded. Defenses are robust.
+                        &lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;div class=&quot;flex justify-between text-[10px] uppercase text-slate-400&quot;&gt;
+&lt;span&gt;Impact Contribution&lt;/span&gt;
+&lt;span&gt;Minimal&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800&quot;&gt;
+&lt;div class=&quot;h-full w-[8%] rounded-full bg-slate-400 dark:bg-slate-500&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;group relative flex flex-col gap-3 p-4 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors&quot;&gt;
+&lt;div class=&quot;absolute left-0 top-0 h-full w-1 bg-slate-300 dark:bg-slate-700 group-hover:bg-primary transition-colors&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;flex items-start justify-between&quot;&gt;
+&lt;div class=&quot;flex items-center gap-2&quot;&gt;
+&lt;span class=&quot;flex size-6 items-center justify-center rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[16px]&quot;&gt;smart_toy&lt;/span&gt;
+&lt;/span&gt;
+&lt;span class=&quot;font-semibold text-slate-900 dark:text-white technical-term&quot;&gt;AI-Proposal&lt;/span&gt;
+&lt;span class=&quot;hidden font-semibold text-slate-900 dark:text-white plain-term&quot;&gt;Information Gaps&lt;/span&gt;
+&lt;/div&gt;
+&lt;span class=&quot;font-mono text-sm font-bold text-slate-900 dark:text-white&quot;&gt;7%&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;grid grid-cols-2 gap-x-4 gap-y-2 text-xs technical-term&quot;&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Hallucination&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;0.5%&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Log-prob&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;-2.4&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Tokens&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;420&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;flex justify-between&quot;&gt;
+&lt;span class=&quot;text-slate-500&quot;&gt;Temp&lt;/span&gt;
+&lt;span class=&quot;font-mono text-slate-900 dark:text-slate-300&quot;&gt;0.7&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;hidden text-xs text-slate-600 dark:text-slate-300 plain-term leading-relaxed&quot;&gt;
+                            The AI generated proposal contains small uncertainties or potential &quot;hallucinations&quot; (0.5% risk), but remains within safe operational limits.
+                        &lt;/div&gt;
+&lt;div class=&quot;flex flex-col gap-1&quot;&gt;
+&lt;div class=&quot;flex justify-between text-[10px] uppercase text-slate-400&quot;&gt;
+&lt;span&gt;Impact Contribution&lt;/span&gt;
+&lt;span&gt;Minimal&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800&quot;&gt;
+&lt;div class=&quot;h-full w-[7%] rounded-full bg-slate-400 dark:bg-slate-500&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;h-24&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/main&gt;
+&lt;div class=&quot;absolute bottom-0 z-50 w-full border-t border-slate-200 dark:border-slate-800 bg-background-light/90 dark:bg-background-dark/90 px-4 py-4 backdrop-blur-md&quot;&gt;
+&lt;div class=&quot;flex gap-3&quot;&gt;
+&lt;button class=&quot;flex flex-1 items-center justify-center gap-2 rounded-lg bg-slate-200 dark:bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white transition-transform active:scale-95&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;tune&lt;/span&gt;
+                    Normalize
+                &lt;/button&gt;
+&lt;button class=&quot;flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/20 transition-transform active:scale-95&quot;&gt;
+&lt;span class=&quot;material-symbols-outlined text-[18px]&quot;&gt;download&lt;/span&gt;
+                    Export Log
+                &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;&lt;/html&gt;" class="w-full h-[calc(100vh-65px)] border-none" sandbox="allow-scripts allow-same-origin"></iframe></div></main></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-e3a36c2da9ea350c.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[9065,[],\"\"]\n3:I[6815,[\"8039\",\"static/chunks/app/error-e24765025faea277.js\"],\"default\"]\n4:I[3613,[],\"\"]\n5:I[3180,[\"3180\",\"static/chunks/3180-49ca78bebb59785c.js\",\"9019\",\"static/chunks/app/capabilities/%5Bslug%5D/page-b735324e90a667f4.js\"],\"\"]\n7:I[8028,[],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\na:I[8028,[],\"ViewportBoundary\"]\nc:I[8028,[],\"MetadataBoundary\"]\ne:I[7211,[],\"\"]\n:HL[\"/_next/static/css/37847ea80569b263.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"J_kVknmu6GSF5qixhc85u\",\"c\":[\"\",\"capabilities\",\"stitch-oss-governance-dashboard-uncertainty-ledger-viewer-1\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"capabilities\",{\"children\":[[\"slug\",\"stitch-oss-governance-dashboard-uncertainty-ledger-viewer-1\",\"d\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/37847ea80569b263.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"className\":\"antialiased bg-gray-50 text-gray-900\",\"children\":[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$3\",\"errorStyles\":[],\"errorScripts\":[],\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[\"$\",\"main\",null,{\"className\":\"mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 text-center\",\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-3xl font-semibold\",\"children\":\"Page not found\"}],[\"$\",\"p\",null,{\"className\":\"mt-3 text-gray-600\",\"children\":\"The page you requested could not be found.\"}],[\"$\",\"$L5\",null,{\"href\":\"/\",\"className\":\"mt-6 rounded border border-gray-300 px-4 py-2 hover:bg-gray-100\",\"children\":\"Return home\"}]]}],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L2\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",null,[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"9:null\nd:[[\"$\",\"title\",\"0\",{\"children\":\"Zeo\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Static-first Zeo site for marketing, docs, onboarding, and support.\"}]]\n"])</script><script>self.__next_f.push([1,"f:T48e4,"])</script><script>self.__next_f.push([1,"\u003c!DOCTYPE html\u003e\n\u003chtml class=\"dark\" lang=\"en\"\u003e\u003chead\u003e\n\u003cmeta charset=\"utf-8\"/\u003e\n\u003cmeta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\"/\u003e\n\u003ctitle\u003eUncertainty Ledger Viewer\u003c/title\u003e\n\u003cscript src=\"https://cdn.tailwindcss.com?plugins=forms,container-queries\"\u003e\u003c/script\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003clink href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700\u0026amp;family=JetBrains+Mono:wght@400;500\u0026amp;display=swap\" rel=\"stylesheet\"/\u003e\n\u003cscript\u003e\n        tailwind.config = {\n            darkMode: \"class\",\n            theme: {\n                extend: {\n                    colors: {\n                        \"primary\": \"#137fec\",\n                        \"background-light\": \"#f6f7f8\",\n                        \"background-dark\": \"#101922\",\n                        \"card-dark\": \"#1a2632\",\n                        \"card-light\": \"#ffffff\",\n                    },\n                    fontFamily: {\n                        \"display\": [\"Inter\", \"sans-serif\"],\n                        \"mono\": [\"JetBrains Mono\", \"monospace\"],\n                    },\n                    borderRadius: {\"DEFAULT\": \"0.25rem\", \"lg\": \"0.5rem\", \"xl\": \"0.75rem\", \"full\": \"9999px\"},\n                },\n            },\n        }\n    \u003c/script\u003e\n\u003cstyle\u003e::-webkit-scrollbar {\n            width: 4px;\n        }\n        ::-webkit-scrollbar-track {\n            background: transparent;\n        }\n        ::-webkit-scrollbar-thumb {\n            background: #334155;\n            border-radius: 2px;\n        }#plain-language-toggle:checked ~ main .technical-term {\n            display: none;\n        }\n        #plain-language-toggle:not(:checked) ~ main .plain-term {\n            display: none;\n        }\n        #plain-language-toggle:checked ~ header label .toggle-dot {\n            transform: translateX(100%);\n            background-color: white;\n        }\n        #plain-language-toggle:checked ~ header label .toggle-bg {\n            background-color: #137fec;}\n    \u003c/style\u003e\n\u003cstyle\u003e\n        body {\n            min-height: max(884px, 100dvh);\n        }\n    \u003c/style\u003e\n\u003cstyle\u003e\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  \u003c/style\u003e\n  \u003c/head\u003e\n\u003cbody class=\"bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased selection:bg-primary/30\"\u003e\n\u003cdiv class=\"relative mx-auto flex h-full min-h-screen w-full max-w-md flex-col overflow-hidden bg-background-light dark:bg-background-dark shadow-2xl\"\u003e\n\u003cinput class=\"peer hidden\" id=\"plain-language-toggle\" type=\"checkbox\"/\u003e\n\u003cheader class=\"sticky top-0 z-50 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-background-light/80 dark:bg-background-dark/80 px-4 py-3 backdrop-blur-md\"\u003e\n\u003cbutton class=\"flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors\"\u003e\n\u003cspan class=\"material-symbols-outlined text-slate-600 dark:text-slate-400\"\u003earrow_back\u003c/span\u003e\n\u003c/button\u003e\n\u003cdiv class=\"flex flex-col items-center\"\u003e\n\u003ch1 class=\"text-xs font-semibold tracking-wide uppercase text-slate-500 dark:text-slate-400\"\u003eResearch Console\u003c/h1\u003e\n\u003ch2 class=\"text-sm font-bold leading-tight text-slate-900 dark:text-white technical-term\"\u003eUncertainty Ledger\u003c/h2\u003e\n\u003ch2 class=\"hidden text-sm font-bold leading-tight text-slate-900 dark:text-white plain-term\"\u003eRisk Overview\u003c/h2\u003e\n\u003c/div\u003e\n\u003clabel class=\"flex flex-col items-center gap-1 cursor-pointer group\" for=\"plain-language-toggle\"\u003e\n\u003cdiv class=\"relative h-6 w-11 rounded-full bg-slate-200 dark:bg-slate-700 transition-colors toggle-bg\"\u003e\n\u003cdiv class=\"absolute left-1 top-1 h-4 w-4 rounded-full bg-slate-400 dark:bg-slate-400 transition-transform toggle-dot shadow-sm\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003cspan class=\"text-[9px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 group-hover:text-primary transition-colors\"\u003ePlain Lang\u003c/span\u003e\n\u003c/label\u003e\n\u003c/header\u003e\n\u003cmain class=\"flex-1 overflow-y-auto pb-24\"\u003e\n\u003cdiv class=\"px-4 pt-6 pb-2\"\u003e\n\u003cdiv class=\"flex flex-col items-start gap-1\"\u003e\n\u003cspan class=\"text-xs font-medium uppercase tracking-wider text-primary technical-term\"\u003eSystem Confidence\u003c/span\u003e\n\u003cspan class=\"hidden text-xs font-medium uppercase tracking-wider text-primary plain-term\"\u003eReliability Score\u003c/span\u003e\n\u003cdiv class=\"flex w-full items-baseline justify-between\"\u003e\n\u003ch2 class=\"font-mono text-4xl font-bold tracking-tighter text-slate-900 dark:text-white\"\u003e84.2\u003cspan class=\"text-2xl text-slate-400\"\u003e%\u003c/span\u003e\u003c/h2\u003e\n\u003cdiv class=\"flex items-center gap-1 rounded bg-green-500/10 px-2 py-1 text-xs font-medium text-green-600 dark:text-green-400\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[14px]\"\u003etrending_up\u003c/span\u003e\n\u003cspan\u003e+2.4%\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cp class=\"text-sm text-slate-500 dark:text-slate-400 technical-term\"\u003eConfidence interval: 95% (±2.4%)\u003c/p\u003e\n\u003cp class=\"hidden text-sm text-slate-500 dark:text-slate-400 plain-term\"\u003eHigh certainty. Results are consistent within expected ranges.\u003c/p\u003e\n\u003c/div\u003e\n\u003cdiv class=\"mt-6 grid grid-cols-2 gap-3\"\u003e\n\u003cdiv class=\"flex flex-col gap-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-card-light dark:bg-card-dark p-3 shadow-sm\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[16px] text-slate-400\"\u003eblur_on\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium text-slate-500 dark:text-slate-400 technical-term\"\u003eTotal Variance\u003c/span\u003e\n\u003cspan class=\"hidden text-xs font-medium text-slate-500 dark:text-slate-400 plain-term\"\u003eData Spread\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"font-mono text-lg font-semibold text-slate-900 dark:text-white technical-term\"\u003eσ: 0.04\u003c/span\u003e\n\u003cspan class=\"hidden font-mono text-sm font-semibold text-slate-900 dark:text-white plain-term leading-7\"\u003eVery Low\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-card-light dark:bg-card-dark p-3 shadow-sm\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[16px] text-slate-400\"\u003essid_chart\u003c/span\u003e\n\u003cspan class=\"text-xs font-medium text-slate-500 dark:text-slate-400 technical-term\"\u003eDrift Rate\u003c/span\u003e\n\u003cspan class=\"hidden text-xs font-medium text-slate-500 dark:text-slate-400 plain-term\"\u003eChange Over Time\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"font-mono text-lg font-semibold text-slate-900 dark:text-white technical-term\"\u003e1.2e-4\u003c/span\u003e\n\u003cspan class=\"hidden font-mono text-sm font-semibold text-slate-900 dark:text-white plain-term leading-7\"\u003eStable\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"mt-6\"\u003e\n\u003cdiv class=\"mb-3 flex items-center justify-between px-4\"\u003e\n\u003ch3 class=\"text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 technical-term\"\u003eLedger Entries\u003c/h3\u003e\n\u003ch3 class=\"hidden text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 plain-term\"\u003eRisk Factors\u003c/h3\u003e\n\u003cbutton class=\"text-xs font-medium text-primary hover:underline\"\u003eView Log\u003c/button\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex flex-col divide-y divide-slate-200 dark:divide-slate-800 border-t border-b border-slate-200 dark:border-slate-800 bg-card-light dark:bg-card-dark\"\u003e\n\u003cdiv class=\"group relative flex flex-col gap-3 p-4 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors\"\u003e\n\u003cdiv class=\"absolute left-0 top-0 h-full w-1 bg-slate-300 dark:bg-slate-700 group-hover:bg-primary transition-colors\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex items-start justify-between\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"flex size-6 items-center justify-center rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[16px]\"\u003esensors\u003c/span\u003e\n\u003c/span\u003e\n\u003cspan class=\"font-semibold text-slate-900 dark:text-white technical-term\"\u003eMeasurement Noise\u003c/span\u003e\n\u003cspan class=\"hidden font-semibold text-slate-900 dark:text-white plain-term\"\u003eSensor Quality Issues\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"font-mono text-sm font-bold text-slate-900 dark:text-white\"\u003e12%\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"grid grid-cols-2 gap-x-4 gap-y-2 text-xs technical-term\"\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eSensor var\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e12.4ms\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eSNR\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e88dB\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eCalibration\u003c/span\u003e\n\u003cspan class=\"font-mono text-green-600 dark:text-green-400\"\u003eOK\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eLatency\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e4ms\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"hidden text-xs text-slate-600 dark:text-slate-300 plain-term leading-relaxed\"\u003e\n                            Minor fluctuations in data input. Sensors are calibrated correctly, but there is slight delay (4ms) affecting real-time precision.\n                        \u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cdiv class=\"flex justify-between text-[10px] uppercase text-slate-400\"\u003e\n\u003cspan\u003eImpact Contribution\u003c/span\u003e\n\u003cspan\u003eLow\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800\"\u003e\n\u003cdiv class=\"h-full w-[12%] rounded-full bg-slate-400 dark:bg-slate-500\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"group relative flex flex-col gap-3 p-4 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors\"\u003e\n\u003cdiv class=\"absolute left-0 top-0 h-full w-1 bg-slate-300 dark:bg-slate-700 group-hover:bg-primary transition-colors\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex items-start justify-between\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"flex size-6 items-center justify-center rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[16px]\"\u003emodel_training\u003c/span\u003e\n\u003c/span\u003e\n\u003cspan class=\"font-semibold text-slate-900 dark:text-white technical-term\"\u003eModel Variance\u003c/span\u003e\n\u003cspan class=\"hidden font-semibold text-slate-900 dark:text-white plain-term\"\u003ePrediction Uncertainty\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"font-mono text-sm font-bold text-slate-900 dark:text-white\"\u003e28%\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"grid grid-cols-2 gap-x-4 gap-y-2 text-xs technical-term\"\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eOverfitting\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e0.02\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eParam Drift\u003c/span\u003e\n\u003cspan class=\"font-mono text-orange-500\"\u003eHigh\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eEpoch\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e#942\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eLoss\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e0.14\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"hidden text-xs text-slate-600 dark:text-slate-300 plain-term leading-relaxed\"\u003e\n                            The AI model is adjusting to new patterns. While accuracy is generally good, recent parameters have shifted more than expected.\n                        \u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cdiv class=\"flex justify-between text-[10px] uppercase text-slate-400\"\u003e\n\u003cspan\u003eImpact Contribution\u003c/span\u003e\n\u003cspan\u003eMed\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800\"\u003e\n\u003cdiv class=\"h-full w-[28%] rounded-full bg-primary/70\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"group relative flex flex-col gap-3 bg-primary/[0.03] p-4 hover:bg-primary/[0.06] transition-colors\"\u003e\n\u003cdiv class=\"absolute left-0 top-0 h-full w-1 bg-primary\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex items-start justify-between\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"flex size-6 items-center justify-center rounded bg-primary/20 text-primary\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[16px]\"\u003earea_chart\u003c/span\u003e\n\u003c/span\u003e\n\u003cspan class=\"font-semibold text-primary technical-term\"\u003eRegime Shift\u003c/span\u003e\n\u003cspan class=\"hidden font-semibold text-primary plain-term\"\u003eMarket Environment Change\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"font-mono text-sm font-bold text-primary\"\u003e45%\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"grid grid-cols-2 gap-x-4 gap-y-2 text-xs technical-term\"\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500 dark:text-slate-400\"\u003eVolatility\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-white\"\u003e82.4\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500 dark:text-slate-400\"\u003eHist Corr\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-white\"\u003e-0.41\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500 dark:text-slate-400\"\u003eState\u003c/span\u003e\n\u003cspan class=\"font-mono text-red-500\"\u003eUnstable\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500 dark:text-slate-400\"\u003eDelta\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-white\"\u003eΔ 4.2\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"hidden text-xs text-slate-700 dark:text-slate-200 plain-term leading-relaxed\"\u003e\n                             Significant change in the underlying environment. Current conditions are unstable and deviate sharply from historical trends (high volatility).\n                        \u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cdiv class=\"flex justify-between text-[10px] uppercase text-primary/70\"\u003e\n\u003cspan\u003eImpact Contribution\u003c/span\u003e\n\u003cspan\u003eCritical\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800\"\u003e\n\u003cdiv class=\"h-full w-[45%] rounded-full bg-primary\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"group relative flex flex-col gap-3 p-4 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors\"\u003e\n\u003cdiv class=\"absolute left-0 top-0 h-full w-1 bg-slate-300 dark:bg-slate-700 group-hover:bg-primary transition-colors\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex items-start justify-between\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"flex size-6 items-center justify-center rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[16px]\"\u003esecurity\u003c/span\u003e\n\u003c/span\u003e\n\u003cspan class=\"font-semibold text-slate-900 dark:text-white technical-term\"\u003eAdversarial Input\u003c/span\u003e\n\u003cspan class=\"hidden font-semibold text-slate-900 dark:text-white plain-term\"\u003eSecurity Threats\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"font-mono text-sm font-bold text-slate-900 dark:text-white\"\u003e8%\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"grid grid-cols-2 gap-x-4 gap-y-2 text-xs technical-term\"\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eVector Prob\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e1.2%\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eRobustness\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e0.98\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eAttempts\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e0\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eFilter\u003c/span\u003e\n\u003cspan class=\"font-mono text-green-600 dark:text-green-400\"\u003eActive\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"hidden text-xs text-slate-600 dark:text-slate-300 plain-term leading-relaxed\"\u003e\n                            System is actively filtering potential malicious inputs. No successful attempts recorded. Defenses are robust.\n                        \u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cdiv class=\"flex justify-between text-[10px] uppercase text-slate-400\"\u003e\n\u003cspan\u003eImpact Contribution\u003c/span\u003e\n\u003cspan\u003eMinimal\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800\"\u003e\n\u003cdiv class=\"h-full w-[8%] rounded-full bg-slate-400 dark:bg-slate-500\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"group relative flex flex-col gap-3 p-4 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors\"\u003e\n\u003cdiv class=\"absolute left-0 top-0 h-full w-1 bg-slate-300 dark:bg-slate-700 group-hover:bg-primary transition-colors\"\u003e\u003c/div\u003e\n\u003cdiv class=\"flex items-start justify-between\"\u003e\n\u003cdiv class=\"flex items-center gap-2\"\u003e\n\u003cspan class=\"flex size-6 items-center justify-center rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[16px]\"\u003esmart_toy\u003c/span\u003e\n\u003c/span\u003e\n\u003cspan class=\"font-semibold text-slate-900 dark:text-white technical-term\"\u003eAI-Proposal\u003c/span\u003e\n\u003cspan class=\"hidden font-semibold text-slate-900 dark:text-white plain-term\"\u003eInformation Gaps\u003c/span\u003e\n\u003c/div\u003e\n\u003cspan class=\"font-mono text-sm font-bold text-slate-900 dark:text-white\"\u003e7%\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"grid grid-cols-2 gap-x-4 gap-y-2 text-xs technical-term\"\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eHallucination\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e0.5%\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eLog-prob\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e-2.4\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eTokens\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e420\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"flex justify-between\"\u003e\n\u003cspan class=\"text-slate-500\"\u003eTemp\u003c/span\u003e\n\u003cspan class=\"font-mono text-slate-900 dark:text-slate-300\"\u003e0.7\u003c/span\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"hidden text-xs text-slate-600 dark:text-slate-300 plain-term leading-relaxed\"\u003e\n                            The AI generated proposal contains small uncertainties or potential \"hallucinations\" (0.5% risk), but remains within safe operational limits.\n                        \u003c/div\u003e\n\u003cdiv class=\"flex flex-col gap-1\"\u003e\n\u003cdiv class=\"flex justify-between text-[10px] uppercase text-slate-400\"\u003e\n\u003cspan\u003eImpact Contribution\u003c/span\u003e\n\u003cspan\u003eMinimal\u003c/span\u003e\n\u003c/div\u003e\n\u003cdiv class=\"h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800\"\u003e\n\u003cdiv class=\"h-full w-[7%] rounded-full bg-slate-400 dark:bg-slate-500\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003cdiv class=\"h-24\"\u003e\u003c/div\u003e\n\u003c/div\u003e\n\u003c/main\u003e\n\u003cdiv class=\"absolute bottom-0 z-50 w-full border-t border-slate-200 dark:border-slate-800 bg-background-light/90 dark:bg-background-dark/90 px-4 py-4 backdrop-blur-md\"\u003e\n\u003cdiv class=\"flex gap-3\"\u003e\n\u003cbutton class=\"flex flex-1 items-center justify-center gap-2 rounded-lg bg-slate-200 dark:bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white transition-transform active:scale-95\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003etune\u003c/span\u003e\n                    Normalize\n                \u003c/button\u003e\n\u003cbutton class=\"flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/20 transition-transform active:scale-95\"\u003e\n\u003cspan class=\"material-symbols-outlined text-[18px]\"\u003edownload\u003c/span\u003e\n                    Export Log\n                \u003c/button\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\u003c/div\u003e\n\n\u003c/body\u003e\u003c/html\u003e"])</script><script>self.__next_f.push([1,"6:[\"$\",\"div\",null,{\"className\":\"min-h-screen bg-gray-50\",\"children\":[[\"$\",\"header\",null,{\"className\":\"bg-white border-b border-gray-200 py-4 px-6 md:px-8 sticky top-0 z-20\",\"children\":[\"$\",\"div\",null,{\"className\":\"max-w-7xl mx-auto flex items-center justify-between\",\"children\":[[\"$\",\"div\",null,{\"className\":\"flex items-center gap-4\",\"children\":[[\"$\",\"$L5\",null,{\"href\":\"/capabilities\",\"className\":\"p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors\",\"children\":[\"$\",\"svg\",null,{\"className\":\"w-5 h-5\",\"fill\":\"none\",\"viewBox\":\"0 0 24 24\",\"stroke\":\"currentColor\",\"children\":[\"$\",\"path\",null,{\"strokeLinecap\":\"round\",\"strokeLinejoin\":\"round\",\"strokeWidth\":2,\"d\":\"M10 19l-7-7m0 0l7-7m-7 7h18\"}]}]}],[\"$\",\"div\",null,{\"children\":[[\"$\",\"h1\",null,{\"className\":\"text-lg font-bold text-gray-900 tracking-tight\",\"children\":\"Uncertainty Ledger Viewer 1\"}],[\"$\",\"p\",null,{\"className\":\"text-xs text-blue-600 font-medium uppercase tracking-widest\",\"children\":\"Governance \u0026 Compliance\"}]]}]]}],[\"$\",\"div\",null,{\"className\":\"flex gap-3\",\"children\":[\"$\",\"div\",null,{\"className\":\"hidden sm:flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium border border-yellow-100\",\"children\":[[\"$\",\"span\",null,{\"className\":\"w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse\"}],\"Live Preview\"]}]}]]}]}],[\"$\",\"main\",null,{\"className\":\"w-full\",\"children\":[\"$\",\"div\",null,{\"className\":\"bg-white rounded-none shadow-none overflow-hidden\",\"children\":[\"$\",\"iframe\",null,{\"title\":\"Uncertainty Ledger Viewer 1\",\"srcDoc\":\"$f\",\"className\":\"w-full h-[calc(100vh-65px)] border-none\",\"sandbox\":\"allow-scripts allow-same-origin\"}]}]}]]}]\n"])</script></body></html>

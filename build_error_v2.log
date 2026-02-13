@@ -1,0 +1,87 @@
+
+> @zeo/web@1.0.0 build
+> next build --webpack
+
+Γû▓ Next.js 16.1.6 (webpack)
+- Experiments (use with caution):
+  ┬╖ serverActions
+
+  Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: EPERM: operation not permitted, rename 'C:\Users\scott\Documents\GitHub\Zeo\apps\web\.next\cache\webpack\server-production\0.pack_' -> 'C:\Users\scott\Documents\GitHub\Zeo\apps\web\.next\cache\webpack\server-production\0.pack'
+Γ£ô Compiled successfully in 5.7s
+  Running TypeScript ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/214) ...
+(node:21088) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+  Generating static pages using 15 workers (53/214) 
+  Generating static pages using 15 workers (106/214) 
+(node:5304) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+  Generating static pages using 15 workers (160/214) 
+Γ£ô Generating static pages using 15 workers (214/214) in 7.8s
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+Γöî Γùï /
+Γö£ Γùï /_not-found
+Γö£ Γùï /about
+Γö£ ╞Æ /api/auth/signin
+Γö£ ╞Æ /api/auth/signout
+Γö£ ╞Æ /api/dashboard/[id]
+Γö£ ╞Æ /api/evidence/v1/runs/[runId]/attestation
+Γö£ ╞Æ /api/evidence/v1/runs/[runId]/export
+Γö£ ╞Æ /api/evidence/v1/verify
+Γö£ ╞Æ /api/health
+Γö£ ╞Æ /api/policy-packs/v1
+Γö£ ╞Æ /api/policy-packs/v1/assign
+Γö£ ╞Æ /api/regimes
+Γö£ ╞Æ /api/runs/[runId]/repro-pack
+Γö£ ╞Æ /api/webhooks/github
+Γö£ ╞Æ /api/worker/heartbeat
+Γö£ Γùï /audit
+Γö£ Γùï /capabilities
+Γö£ ΓùÅ /capabilities/[slug]
+Γöé Γö£ /capabilities/stitch-cli-assist-overlay-stitch-cli-assist-overlay-cli-assist-overlay
+Γöé Γö£ /capabilities/stitch-cli-assist-overlay-stitch-cli-assist-overlay-dry-run-summary-modal
+Γöé Γö£ /capabilities/stitch-cli-assist-overlay-stitch-cli-assist-overlay-enterprise-execution-history
+Γöé Γöö [+168 more paths]
+Γö£ Γùï /changelog
+Γö£ Γùï /compare
+Γö£ Γùï /contact
+Γö£ Γùï /controlplane
+Γö£ Γùï /dashboard
+Γö£ Γùï /demo
+Γö£ Γùï /docs
+Γö£ Γùï /docs/github
+Γö£ Γùï /docs/install
+Γö£ Γùï /docs/quickstart
+Γö£ Γùï /faq
+Γö£ Γùï /inbox
+Γö£ Γùï /intake
+Γö£ Γùï /legal/privacy
+Γö£ Γùï /legal/terms
+Γö£ Γùï /platform
+Γö£ ╞Æ /platform/assets/[...path]
+Γö£ Γùï /policy-packs
+Γö£ Γùï /pricing
+Γö£ Γùï /privacy
+Γö£ Γùï /quickstart
+Γö£ Γùï /regimes
+Γö£ Γùï /replay
+Γö£ Γùï /robots.txt
+Γö£ ╞Æ /signin
+Γö£ Γùï /signup
+Γö£ Γùï /sitemap.xml
+Γö£ Γùï /status
+Γö£ Γùï /terms
+Γöö ╞Æ /view/[id]
+
+
+╞Æ Proxy (Middleware)
+
+Γùï  (Static)   prerendered as static content
+ΓùÅ  (SSG)      prerendered as static HTML (uses generateStaticParams)
+╞Æ  (Dynamic)  server-rendered on demand
+
