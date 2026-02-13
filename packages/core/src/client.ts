@@ -244,14 +244,14 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
       lens: 'robustness' as const,
       summary: 'Robustness analysis completed',
       robustActions: spec.actions.slice(0, 2).map(a => a.id),
-      fragileAssumptions: [],
-      dominatedActions: [],
+      fragileAssumptions: [] as string[],
+      dominatedActions: [] as string[],
     },
     {
       lens: 'expected_utility' as const,
       summary: 'Expected utility analysis completed',
       robustActions: spec.actions.slice(0, 1).map(a => a.id),
-      fragileAssumptions: [],
+      fragileAssumptions: [] as string[],
       dominatedActions: spec.actions.slice(2).map(a => a.id),
     },
   ];
@@ -301,14 +301,14 @@ export function makeNegotiationExample(): DecisionSpec {
       text: "Counterparty is more sensitive to timeline than to price.",
       status: "assumption" as const,
       confidence: "medium" as const,
-      tags: [],
+      tags: [] as string[],
     },
     {
       id: generateId(),
       text: "Internal legal can review within 48 hours if escalated.",
       status: "assumption" as const,
       confidence: "medium" as const,
-      tags: [],
+      tags: [] as string[],
     },
   ];
 
@@ -346,14 +346,14 @@ export function makeOpsExample(): DecisionSpec {
       text: "Current error rate is within acceptable threshold.",
       status: "assumption" as const,
       confidence: "medium" as const,
-      tags: [],
+      tags: [] as string[],
     },
     {
       id: generateId(),
       text: "Rollback can complete within 5 minutes.",
       status: "assumption" as const,
       confidence: "high" as const,
-      tags: [],
+      tags: [] as string[],
     },
   ];
 

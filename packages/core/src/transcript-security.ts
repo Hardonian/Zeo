@@ -126,9 +126,6 @@ export function canonicalTranscriptBytes(input: Record<string, unknown>): Uint8A
   return encodeCanonicalJson(input);
 }
 
-// export const computeTranscriptHash = computeHashImpl; // Internal use only
-const computeTranscriptHash = computeHashImpl;
-
 function signingPayload(transcriptHash: string, envelopeVersion: string, signingContext: string): Buffer {
   return Buffer.from(`${signingContext}\n${envelopeVersion}\n${transcriptHash}`, "utf8");
 }
