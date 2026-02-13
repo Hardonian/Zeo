@@ -18,7 +18,7 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint --max-warnings=0 src --ext .ts",
+    "lint": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/lint-target.mjs\" vendor/controlplane/packages/contract-kit/src",
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {},
