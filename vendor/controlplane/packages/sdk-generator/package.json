@@ -22,7 +22,7 @@
     "build": "tsup src/index.ts src/cli.ts --format esm",
     "dev": "tsup src/index.ts src/cli.ts --format esm --watch",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint --max-warnings=0 src --ext .ts",
+    "lint": "pnpm -C /workspace/Zeo exec eslint --max-warnings=0 vendor/controlplane/packages/sdk-generator/src",
     "test": "vitest run",
     "generate": "node ./dist/cli.js",
     "validate": "node ./dist/cli.js --validate",

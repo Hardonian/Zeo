@@ -18,7 +18,7 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint --max-warnings=0 src --ext .ts",
+    "lint": "pnpm -C /workspace/Zeo exec eslint --max-warnings=0 vendor/controlplane/packages/contract-kit/src",
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {},
