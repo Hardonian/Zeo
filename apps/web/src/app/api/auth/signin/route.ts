@@ -1,39 +1,25 @@
-import { createHash } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
-
-function normalizeNext(raw: string | null): string {
-  if (!raw || !raw.startsWith('/')) {
-    return '/dashboard';
-  }
-
-  return raw;
-}
+import { getPublicEnv } from '@/lib/env';
 
 export async function POST(request: NextRequest) {
-  const formData = await request.formData();
-  const email = String(formData.get('email') || '').trim().toLowerCase();
-  const accessKey = String(formData.get('accessKey') || '');
-  const requiredAccessKey = process.env.ZEO_SITE_ACCESS_KEY;
-  const nextPath = normalizeNext(String(formData.get('next') || '/dashboard'));
+  try {
+    const { email, password } = await request.json();
+    const env = getPublicEnv();
+    const response = await fetch(`${env.supabaseUrl}/auth/v1/token?grant_type=password`, {
+      method: 'POST',
+      headers: { apikey: env.supabaseAnonKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await response.json();
+    if (!response.ok || !data.access_token) {
+      return NextResponse.json({ error: data.error_description ?? 'Invalid credentials' }, { status: 400 });
+    }
 
-  if (!email || !email.includes('@')) {
-    return NextResponse.redirect(new URL('/signin?error=invalid_email', request.url));
+    const next = NextResponse.json({ ok: true });
+    next.cookies.set('zeo_access_token', data.access_token, { httpOnly: true, sameSite: 'lax', path: '/', secure: request.nextUrl.protocol === 'https:', maxAge: data.expires_in ?? 3600 });
+    next.cookies.set('zeo_session', 'active', { httpOnly: true, sameSite: 'lax', path: '/', secure: request.nextUrl.protocol === 'https:', maxAge: data.expires_in ?? 3600 });
+    return next;
+  } catch {
+    return NextResponse.json({ error: 'Sign in failed' }, { status: 400 });
   }
-
-  if (requiredAccessKey && accessKey !== requiredAccessKey) {
-    return NextResponse.redirect(new URL('/signin?error=invalid_access_key', request.url));
-  }
-
-  const response = NextResponse.redirect(new URL(nextPath, request.url));
-  const token = createHash('sha256').update(`${email}:${Date.now().toString()}`).digest('hex');
-
-  response.cookies.set('zeo_session', token, {
-    httpOnly: true,
-    sameSite: 'lax',
-    path: '/',
-    secure: request.nextUrl.protocol === 'https:',
-    maxAge: 60 * 60 * 8,
-  });
-
-  return response;
 }

@@ -8,11 +8,12 @@ const HEADER_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/docs', label: 'Docs' },
   { href: '/pricing', label: 'Pricing' },
-  { href: '/faq', label: 'FAQ' },
+  { href: '/features', label: 'Features' },
+  { href: '/security', label: 'Security' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
   { href: '/stitch', label: 'Stitch' },
-  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/app', label: 'Console' },
 ];
 
 const FOOTER_LINKS = [
@@ -23,7 +24,7 @@ const FOOTER_LINKS = [
   { href: '/legal/terms', label: 'Terms' },
   { href: '/contact', label: 'Contact' },
   { href: '/stitch', label: 'Stitch' },
-  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/app', label: 'Console' },
 ];
 
 function isActive(pathname: string, href: string): boolean {
@@ -66,7 +67,7 @@ export function PublicShell({ title, children }: { title: string; children: Reac
                 <NavLink key={link.href} href={link.href} label={link.label} pathname={pathname} />
               ))}
               <a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" className="text-sm text-gray-700 hover:text-blue-700">GitHub</a>
-              <Link href="/signin" className="text-sm text-gray-700 hover:text-blue-700">Sign In</Link>
+              <Link href="/login" className="text-sm text-gray-700 hover:text-blue-700">Sign In</Link>
               <Link href="/docs/quickstart" className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700">
                 Get Started
               </Link>
@@ -80,7 +81,7 @@ export function PublicShell({ title, children }: { title: string; children: Reac
               <a href="https://github.com/scott/zeo" target="_blank" rel="noreferrer" className="text-sm text-gray-700 hover:text-blue-700">
                 GitHub
               </a>
-              <Link href="/signin" className="text-sm text-gray-700 hover:text-blue-700">Sign In</Link>
+              <Link href="/login" className="text-sm text-gray-700 hover:text-blue-700">Sign In</Link>
               <Link href="/docs/quickstart" className="rounded bg-blue-600 px-3 py-1.5 text-center text-sm font-medium text-white hover:bg-blue-700">
                 Get Started
               </Link>
