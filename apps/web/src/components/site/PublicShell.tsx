@@ -6,24 +6,24 @@ import { useEffect, useState } from 'react';
 
 const HEADER_LINKS = [
   { href: '/', label: 'Home' },
+  { href: '/features', label: 'Features' },
+  { href: '/cli', label: 'CLI' },
   { href: '/docs', label: 'Docs' },
   { href: '/pricing', label: 'Pricing' },
-  { href: '/faq', label: 'FAQ' },
   { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
   { href: '/stitch', label: 'Stitch' },
   { href: '/dashboard', label: 'Dashboard' },
 ];
 
 const FOOTER_LINKS = [
   { href: '/docs', label: 'Docs' },
+  { href: '/features', label: 'Features' },
+  { href: '/cli', label: 'CLI' },
   { href: '/changelog', label: 'Changelog' },
   { href: '/status', label: 'Status' },
   { href: '/legal/privacy', label: 'Privacy' },
   { href: '/legal/terms', label: 'Terms' },
-  { href: '/contact', label: 'Contact' },
   { href: '/stitch', label: 'Stitch' },
-  { href: '/dashboard', label: 'Dashboard' },
 ];
 
 function isActive(pathname: string, href: string): boolean {

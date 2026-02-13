@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Runner Status: Paused</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#136dec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101822",
+              "surface-dark": "#1a2430",
+              "status-paused": "#fbbf24", // Amber/Yellow
+              "text-muted": "#92a9c9",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "sm": "0.125rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "2xl": "1rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-slate-900 dark:text-white h-screen overflow-hidden flex flex-col justify-end">
+<!-- Backdrop (Simulating a modal overlay) -->
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-0"></div>
+<!-- Bottom Sheet Container -->
+<div class="relative z-10 w-full bg-white dark:bg-[#111822] rounded-t-2xl shadow-2xl border-t border-slate-200 dark:border-[#1e2a3b] flex flex-col max-h-[90vh] pb-8 animate-in slide-in-from-bottom duration-300">
+<!-- Drag Handle -->
+<div class="w-full flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing">
+<div class="h-1.5 w-12 rounded-full bg-slate-300 dark:bg-[#324867]"></div>
+</div>
+<!-- Header / Status Block -->
+<div class="flex flex-col items-center px-6 py-6 gap-4">
+<!-- Icon & Status -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-20 h-20 rounded-full bg-status-paused/10 flex items-center justify-center border border-status-paused/20 shadow-[0_0_30px_-10px_rgba(251,191,36,0.3)]">
+<span class="material-symbols-outlined text-status-paused text-5xl">pause_circle</span>
+</div>
+<div class="text-center">
+<h2 class="text-2xl font-bold tracking-tight dark:text-white text-slate-900">Runner Paused</h2>
+<p class="text-text-muted text-sm font-medium mt-1 font-mono tracking-wide bg-surface-dark/50 px-2 py-0.5 rounded border border-[#1e2a3b] inline-block">ID: run-8392</p>
+</div>
+</div>
+</div>
+<!-- Content Area -->
+<div class="flex-1 overflow-y-auto px-6">
+<!-- Context Message -->
+<div class="mb-8 text-center px-4">
+<p class="text-slate-600 dark:text-slate-300 text-base leading-relaxed">
+                    Waiting for manual intervention to proceed to deployment stage. Please review logs before resuming.
+                </p>
+</div>
+<!-- Metadata Grid -->
+<div class="grid grid-cols-2 gap-3 mb-6">
+<!-- Duration Card -->
+<div class="bg-slate-50 dark:bg-surface-dark p-4 rounded-lg border border-slate-200 dark:border-[#2a384b] flex flex-col items-center justify-center gap-1 group transition-colors hover:border-status-paused/30">
+<span class="material-symbols-outlined text-text-muted text-xl mb-1">timer</span>
+<p class="text-text-muted text-xs uppercase tracking-wider font-semibold">Duration</p>
+<p class="text-slate-900 dark:text-white text-lg font-bold font-mono">00:14:23</p>
+</div>
+<!-- User Card -->
+<div class="bg-slate-50 dark:bg-surface-dark p-4 rounded-lg border border-slate-200 dark:border-[#2a384b] flex flex-col items-center justify-center gap-1 group transition-colors hover:border-primary/30">
+<div class="w-6 h-6 rounded-full bg-cover bg-center mb-1 ring-2 ring-primary/20" data-alt="User avatar for Sarah J" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBrojCyoU70HaObRsx5T4RoBhhfv0p8CsQMi7gUYPgDnxi1g4JycK23ElBmxm589DX2PV17JrKXKnNoYp1ZE4yrsRYUdYAYtrZ-_q8toy08FnsQC7JUCe_J9d59fOJbP11ShQLYpjkpJQ96K1RVClNQzeLvHBWcpHM5-ziYz5ZCf11gSjk4aQUJg_rAiXXKfpN4xgC_1V2klz-GDVaOBbnfvGj2HC2JZ8Uc-8jyqKAopO9eBTWWdd9qQmMTBWsrifueSzmZAxxc9lg');"></div>
+<p class="text-text-muted text-xs uppercase tracking-wider font-semibold">Paused By</p>
+<p class="text-slate-900 dark:text-white text-sm font-bold truncate max-w-full">@dev_ops</p>
+</div>
+</div>
+<!-- Additional Details List -->
+<div class="rounded-lg border border-slate-200 dark:border-[#2a384b] divide-y divide-slate-200 dark:divide-[#2a384b] bg-slate-50 dark:bg-surface-dark/50 mb-6">
+<div class="flex items-center justify-between p-3">
+<span class="text-text-muted text-sm">Job Context</span>
+<span class="text-slate-900 dark:text-white text-sm font-medium">build-deploy-prod</span>
+</div>
+<div class="flex items-center justify-between p-3">
+<span class="text-text-muted text-sm">Environment</span>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-slate-900 dark:text-white text-sm font-medium">Production</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3">
+<span class="text-text-muted text-sm">Blocked Step</span>
+<span class="text-status-paused text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">warning</span>
+                        Manual Gate
+                    </span>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Actions -->
+<div class="px-6 pt-2 pb-6 flex flex-col gap-3">
+<!-- Primary Action -->
+<button class="w-full bg-primary hover:bg-primary/90 active:scale-[0.98] transition-all text-white h-14 rounded-lg flex items-center justify-center gap-2 shadow-lg shadow-primary/25 font-bold text-lg">
+<span class="material-symbols-outlined filled">play_arrow</span>
+                Resume Job
+            </button>
+<!-- Secondary Actions Row -->
+<div class="grid grid-cols-2 gap-3">
+<button class="w-full bg-slate-100 dark:bg-[#233348] hover:bg-slate-200 dark:hover:bg-[#2a3e59] active:scale-[0.98] transition-all text-slate-700 dark:text-white h-12 rounded-lg flex items-center justify-center gap-2 text-sm font-medium border border-transparent dark:border-[#324867]">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+                    Rerun
+                </button>
+<button class="w-full bg-slate-100 dark:bg-[#233348] hover:bg-slate-200 dark:hover:bg-[#2a3e59] active:scale-[0.98] transition-all text-slate-700 dark:text-white h-12 rounded-lg flex items-center justify-center gap-2 text-sm font-medium border border-transparent dark:border-[#324867]">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+                    View Logs
+                </button>
+</div>
+</div>
+</div>
+</body></html>

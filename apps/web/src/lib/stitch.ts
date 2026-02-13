@@ -13,6 +13,9 @@ const STITCH_ROOT = path.join(process.cwd(), 'src/panels/stitch');
 const PANEL_CATEGORIES: Record<string, string> = {
   stitch_decision_branching_view: 'Decision Intelligence',
   stitch_oss_governance_dashboard: 'Governance & Compliance',
+  stitch_cli_assist_overlay: 'CLI Assist',
+  stitch_merge_confirmation_dialog: 'Action Guard',
+  stitch_runner_status_popover: 'Runtime Status',
 };
 
 function slugify(name: string): string {
