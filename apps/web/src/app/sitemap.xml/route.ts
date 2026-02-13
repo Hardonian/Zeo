@@ -1,5 +1,11 @@
+import { headers } from 'next/headers';
+
 const PUBLIC_ROUTES = [
   '/',
+  '/platform',
+  '/install',
+  '/github',
+  '/support',
   '/docs',
   '/docs/install',
   '/docs/quickstart',
@@ -10,17 +16,21 @@ const PUBLIC_ROUTES = [
   '/about',
   '/faq',
   '/contact',
-  '/login',
-  '/signup',
+  '/privacy',
+  '/terms',
   '/legal/privacy',
   '/legal/terms',
   '/status',
   '/changelog',
 ];
 
-export function GET() {
+export async function GET() {
+  const requestHeaders = await headers();
+  const host = requestHeaders.get('x-forwarded-host') ?? requestHeaders.get('host') ?? 'localhost:3000';
+  const protocol = requestHeaders.get('x-forwarded-proto') ?? (host.includes('localhost') ? 'http' : 'https');
+  const baseUrl = `${protocol}://${host}`;
   const now = new Date().toISOString();
-  const urls = PUBLIC_ROUTES.map((route) => `\n  <url><loc>http://localhost:3000${route}</loc><lastmod>${now}</lastmod></url>`).join('');
+  const urls = PUBLIC_ROUTES.map((route) => `\n  <url><loc>${baseUrl}${route}</loc><lastmod>${now}</lastmod></url>`).join('');
   const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}\n</urlset>`;
   return new Response(body, {
     headers: {

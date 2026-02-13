@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc --noEmit",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint --max-warnings=0 ../../tests/integration --ext .ts",
+    "build": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/build-target.mjs\" @controlplane/controlplane -- tsc --noEmit",
+    "typecheck": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/typecheck-target.mjs\" @controlplane/controlplane",
+    "lint": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/lint-target.mjs\" vendor/controlplane/tests/integration",
     "test": "vitest run --config ./vitest.config.ts"
   },
   "dependencies": {

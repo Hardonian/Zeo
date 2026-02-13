@@ -28,7 +28,7 @@
     "dev": "tsc --watch",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint --max-warnings=0 src/**/*.ts",
+    "lint": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/lint-target.mjs\" vendor/controlplane/packages/optimization-utils/src",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
