@@ -10,7 +10,7 @@
     "dev": "tsc --watch",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src --ext .ts",
+    "lint": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/lint-target.mjs\" vendor/controlplane/packages/create-runner/templates/queue-worker/src",
     "test": "vitest run",
     "test:watch": "vitest",
     "contract:test": "vitest run --testNamePattern='Contract'",

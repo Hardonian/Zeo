@@ -6,25 +6,26 @@ import { useEffect, useState } from 'react';
 
 const HEADER_LINKS = [
   { href: '/', label: 'Home' },
-  { href: '/docs', label: 'Docs' },
+  { href: '/platform', label: 'Product' },
   { href: '/pricing', label: 'Pricing' },
-  { href: '/features', label: 'Features' },
-  { href: '/security', label: 'Security' },
+  { href: '/install', label: 'Install' },
+  { href: '/github', label: 'GitHub Connect' },
+  { href: '/docs', label: 'Docs' },
   { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-  { href: '/capabilities', label: 'Capabilities' },
-  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/support', label: 'Support' },
 ];
 
 const FOOTER_LINKS = [
   { href: '/docs', label: 'Docs' },
+  { href: '/platform', label: 'Product' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/install', label: 'Install' },
+  { href: '/github', label: 'GitHub Connect' },
   { href: '/changelog', label: 'Changelog' },
   { href: '/status', label: 'Status' },
   { href: '/legal/privacy', label: 'Privacy' },
   { href: '/legal/terms', label: 'Terms' },
-  { href: '/contact', label: 'Contact' },
-  { href: '/capabilities', label: 'Capabilities' },
-  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/support', label: 'Support' },
 ];
 
 function isActive(pathname: string, href: string): boolean {
@@ -47,7 +48,7 @@ function NavLink({ href, label, pathname }: { href: string; label: string; pathn
 
 export function PublicShell({ title, children }: { title: string; children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [pathname, setPathname] = useState('/');
+  const [pathname, setPathname] = useState('');
 
   useEffect(() => {
     setPathname(window.location.pathname || '/');
@@ -55,11 +56,14 @@ export function PublicShell({ title, children }: { title: string; children: Reac
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-blue-700 focus:shadow">
+        Skip to content
+      </a>
       <header className="sticky top-0 z-10 border-b border-gray-200 bg-white/95 backdrop-blur">
         <div className="mx-auto w-full max-w-6xl px-6 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="text-lg font-semibold text-blue-700">Zeo</Link>
-            <button type="button" className="rounded border border-gray-300 px-3 py-1 text-sm md:hidden" onClick={() => setMobileOpen((open) => !open)}>
+            <button type="button" aria-expanded={mobileOpen} aria-controls="mobile-nav" className="rounded border border-gray-300 px-3 py-1 text-sm md:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600" onClick={() => setMobileOpen((open) => !open)}>
               Menu
             </button>
             <nav className="hidden items-center gap-4 md:flex">
@@ -74,7 +78,7 @@ export function PublicShell({ title, children }: { title: string; children: Reac
             </nav>
           </div>
           {mobileOpen ? (
-            <nav className="mt-3 flex flex-col gap-3 border-t border-gray-100 pt-3 md:hidden">
+            <nav id="mobile-nav" className="mt-3 flex flex-col gap-3 border-t border-gray-100 pt-3 md:hidden">
               {HEADER_LINKS.map((link) => (
                 <NavLink key={link.href} href={link.href} label={link.label} pathname={pathname} />
               ))}
@@ -89,7 +93,7 @@ export function PublicShell({ title, children }: { title: string; children: Reac
           ) : null}
         </div>
       </header>
-      <main className="mx-auto w-full max-w-6xl px-6 py-10">
+      <main id="main-content" className="mx-auto w-full max-w-6xl px-6 py-10">
         <h1 className="mb-6 text-3xl font-semibold">{title}</h1>
         {children}
       </main>
