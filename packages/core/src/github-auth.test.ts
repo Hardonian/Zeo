@@ -1,6 +1,6 @@
 import { createPublicKey, createVerify, generateKeyPairSync } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { generateGitHubAppJwt } from "./github-auth.ts";
+import { generateGitHubAppJwt } from "./github-auth.js";
 
 function decodeBase64Url(segment: string): string {
   const pad = (4 - (segment.length % 4)) % 4;

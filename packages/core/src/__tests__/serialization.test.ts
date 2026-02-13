@@ -13,7 +13,7 @@ describe("Contract Serialization Round-trip", () => {
             data: {
                 value: 42,
                 active: true,
-                nothing: null,
+                nothing: null as null,
             }
         };
 

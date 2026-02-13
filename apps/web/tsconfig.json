@@ -81,6 +81,9 @@
       "@zeo/timeseries": [
         "../../packages/timeseries/src/index.ts"
       ],
+      "@zeo/policy-types": [
+        "../../packages/policy-types/src/index.ts"
+      ],
       "@zeo/trust": [
         "../../packages/trust/src/index.ts"
       ],

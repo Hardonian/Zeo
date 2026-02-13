@@ -273,10 +273,9 @@ async function runSignalsCommand(inputPath: string, catalogDir: string | undefin
 
 async function main(): Promise<void> {
   const startedMs = performance.now();
-  const run = createRunContext();
   const argv = process.argv.slice(2);
-  log({ level: "info", msg: "cli start", run_id: run.run_id, trace_id: run.trace_id, cmd: argv[0] ?? "default", action: "start" });
 
+  // Fast-exit paths: skip run context and logging overhead
   if (argv.includes("--help") || argv.includes("-h")) {
     printHelp();
     reportPerf(startedMs, "help");
@@ -287,11 +286,13 @@ async function main(): Promise<void> {
     reportPerf(startedMs, "version");
     process.exit(0);
   }
-
   if (argv[0] === "help" && argv[1] === "start") {
     printHelpStart();
     process.exit(0);
   }
+
+  const run = createRunContext();
+  log({ level: "info", msg: "cli start", run_id: run.run_id, trace_id: run.trace_id, cmd: argv[0] ?? "default", action: "start" });
 
   if (argv[0] === "view") {
     const legacyLens = new Set(["executive", "engineering", "legal", "personal"]);
