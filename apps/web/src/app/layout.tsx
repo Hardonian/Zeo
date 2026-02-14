@@ -5,9 +5,6 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Zeo',
   description: 'Static-first Zeo site for marketing, docs, onboarding, and support.',
-  icons: {
-    icon: '/favicon.svg',
-  },
 };
 
 export default function RootLayout({
@@ -17,6 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+      </head>
       <body className="antialiased bg-gray-50 text-gray-900">{children}</body>
     </html>
   );
