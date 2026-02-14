@@ -42,3 +42,25 @@ export const troubleshooting = [
     resolution: 'Re-run install, confirm write access in your workspace, and execute pnpm doctor for targeted diagnostics.',
   },
 ];
+
+
+export const oauthEnvGuide = [
+  {
+    key: 'NEXT_PUBLIC_OAUTH_CONSENT_URL',
+    required: 'Optional',
+    defaultValue: '/oauth/consent',
+    purpose: 'Public route used by Sign In links before handing off to Supabase hosted OAuth.',
+  },
+  {
+    key: 'NEXT_PUBLIC_OAUTH_PROVIDER',
+    required: 'Optional',
+    defaultValue: 'github',
+    purpose: 'OAuth provider name passed to Supabase /auth/v1/authorize (for example: github, google).',
+  },
+  {
+    key: 'NEXT_PUBLIC_OAUTH_REDIRECT_TO',
+    required: 'Optional',
+    defaultValue: '/app',
+    purpose: 'Post-auth redirect target sent with the Supabase authorize request.',
+  },
+];

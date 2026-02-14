@@ -36,6 +36,12 @@ jobs:
         run: pnpm test
       - name: Build
         run: pnpm build
+      - name: Install web coverage provider
+        run: pnpm -C apps/web add -D @vitest/coverage-v8@^2.1.9 --no-frozen-lockfile
+      - name: Web coverage gate
+        run: pnpm -C apps/web test:coverage
+      - name: Runtime public-route link crawl
+        run: pnpm -C apps/web test:links:runtime
       - name: MCP smoke (local)
         run: pnpm mcp:smoke
 
