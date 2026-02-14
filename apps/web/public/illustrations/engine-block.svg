@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 120" width="440" height="120" role="img" aria-label="Deterministic pipeline diagram">
+  <title>Deterministic Engine Pipeline</title>
+  <rect width="440" height="120" fill="#f8fafc"/>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arr-blue" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <polygon points="0,0 7,3.5 0,7" fill="#2563eb"/>
+    </marker>
+    <marker id="arr-green" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <polygon points="0,0 7,3.5 0,7" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <!-- Stage 1: Inputs -->
+  <rect x="10" y="35" width="80" height="50" rx="4" fill="white" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="50" y="57" font-family="ui-monospace, monospace" font-size="9" fill="#374151" text-anchor="middle">Inputs</text>
+  <text x="50" y="70" font-family="ui-monospace, monospace" font-size="7" fill="#9ca3af" text-anchor="middle">facts · beliefs</text>
+  <text x="50" y="100" font-family="ui-monospace, monospace" font-size="6" fill="#d1d5db" text-anchor="middle">· OCR · audio · API</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="90" y1="60" x2="128" y2="60" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+  <!-- Stage 2: Model -->
+  <rect x="130" y="35" width="80" height="50" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="170" y="57" font-family="ui-monospace, monospace" font-size="9" fill="#1d4ed8" text-anchor="middle">Model</text>
+  <text x="170" y="70" font-family="ui-monospace, monospace" font-size="7" fill="#6b7280" text-anchor="middle">deterministic</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="210" y1="60" x2="248" y2="60" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+  <!-- Stage 3: Evidence Ranking -->
+  <rect x="250" y="35" width="80" height="50" rx="4" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="290" y="54" font-family="ui-monospace, monospace" font-size="9" fill="#1d4ed8" text-anchor="middle">Evidence</text>
+  <text x="290" y="67" font-family="ui-monospace, monospace" font-size="9" fill="#1d4ed8" text-anchor="middle">Ranking</text>
+  <text x="290" y="80" font-family="ui-monospace, monospace" font-size="7" fill="#6b7280" text-anchor="middle">by VOI</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="330" y1="60" x2="368" y2="60" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arr-green)"/>
+
+  <!-- Stage 4: Plan Output -->
+  <rect x="370" y="35" width="60" height="50" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="400" y="57" font-family="ui-monospace, monospace" font-size="9" fill="#15803d" text-anchor="middle">Plan</text>
+  <text x="400" y="70" font-family="ui-monospace, monospace" font-size="9" fill="#15803d" text-anchor="middle">Output</text>
+
+  <!-- Signed bundle note -->
+  <circle cx="400" cy="100" r="3" fill="#16a34a" opacity="0.6"/>
+  <text x="407" y="104" font-family="ui-monospace, monospace" font-size="6.5" fill="#6b7280">signed bundle</text>
+</svg>

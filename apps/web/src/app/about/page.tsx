@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { PublicShell } from '@/components/site/PublicShell';
 
 export const metadata = {
@@ -42,9 +43,22 @@ export default function AboutPage() {
             <div className="border-l-4 border-blue-500 pl-4">
               <h3 className="font-medium">Robustness Over Recommendation</h3>
               <p className="text-sm text-gray-600 mt-1">
-                Prefer outputs that are robust across assumptions rather than a single 
+                Prefer outputs that are robust across assumptions rather than a single
                 &quot;best choice.&quot; Sensitivity analysis shows what would change the answer.
               </p>
+              <figure className="mt-3">
+                <img
+                  src="/illustrations/regret-envelope.svg"
+                  alt="Outcome envelope showing robust central path between worst-case and best-case bounds"
+                  width={300}
+                  height={160}
+                  loading="lazy"
+                  className="opacity-90"
+                />
+                <figcaption className="text-xs text-gray-400 mt-1">
+                  Minimax regret envelope — the robust path stays inside plausible bounds.
+                </figcaption>
+              </figure>
             </div>
             <div className="border-l-4 border-blue-500 pl-4">
               <h3 className="font-medium">Privacy-First Defaults</h3>
@@ -81,6 +95,16 @@ export default function AboutPage() {
               <span><strong>Governance Dashboards:</strong> OSS governance, KPI monitoring, and audit trails.</span>
             </li>
           </ul>
+          <div className="mt-4 rounded border border-gray-100 overflow-hidden">
+            <Image
+              src="/panels/audit_packet_builder/screen.png"
+              alt="Audit packet builder showing signed evidence bundles with provenance metadata"
+              width={800}
+              height={500}
+              className="w-full h-auto"
+              loading="lazy"
+            />
+          </div>
         </section>
 
         {/* Explore */}
