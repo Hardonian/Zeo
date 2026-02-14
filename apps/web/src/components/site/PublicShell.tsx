@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { ZeoMark, IconGitHub } from '@/components/icons/ZeoIcons';
+import { GITHUB_REPO_URL, OAUTH_CONSENT_URL } from '@/content/site';
 
 const HEADER_LINKS = [
   { href: '/', label: 'Home' },
@@ -76,10 +77,10 @@ export function PublicShell({ title, children, hero }: { title: string; children
               {HEADER_LINKS.map((link) => (
                 <NavLink key={link.href} href={link.href} label={link.label} pathname={pathname} />
               ))}
-              <a href="https://github.com/scott/zeo" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-900 transition-colors" aria-label="GitHub">
+              <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-900 transition-colors" aria-label="GitHub">
                 <IconGitHub className="h-5 w-5" />
               </a>
-              <Link href="/signin" className="text-sm text-gray-600 hover:text-blue-700">Sign In</Link>
+              <a href={OAUTH_CONSENT_URL} className="text-sm text-gray-600 hover:text-blue-700">Sign In</a>
               <Link href="/docs/quickstart" className="rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm hover:shadow-md transition-all hover:from-blue-700 hover:to-indigo-700">
                 Get Started
               </Link>
@@ -90,11 +91,11 @@ export function PublicShell({ title, children, hero }: { title: string; children
               {HEADER_LINKS.map((link) => (
                 <NavLink key={link.href} href={link.href} label={link.label} pathname={pathname} />
               ))}
-              <a href="https://github.com/scott/zeo" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-700">
+              <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-700">
                 <IconGitHub className="h-4 w-4" />
                 GitHub
               </a>
-              <Link href="/login" className="text-sm text-gray-600 hover:text-blue-700">Sign In</Link>
+              <a href={OAUTH_CONSENT_URL} className="text-sm text-gray-600 hover:text-blue-700">Sign In</a>
               <Link href="/docs/quickstart" className="rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-1.5 text-center text-sm font-medium text-white">
                 Get Started
               </Link>
@@ -128,7 +129,7 @@ export function PublicShell({ title, children, hero }: { title: string; children
               {FOOTER_LINKS.map((link) => (
                 <Link key={link.href} href={link.href} className="hover:text-blue-700 transition-colors">{link.label}</Link>
               ))}
-              <a href="https://github.com/scott/zeo" target="_blank" rel="noopener noreferrer" className="hover:text-blue-700 transition-colors">GitHub</a>
+              <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" className="hover:text-blue-700 transition-colors">GitHub</a>
             </div>
           </div>
           <div className="mt-6 border-t border-gray-100 pt-4 text-xs text-gray-400">

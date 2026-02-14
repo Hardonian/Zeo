@@ -10,7 +10,9 @@
     "lint": "echo 'skipped'",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:links:runtime": "node ./scripts/runtime-link-crawl.mjs",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@zeo/analysis": "workspace:*",
