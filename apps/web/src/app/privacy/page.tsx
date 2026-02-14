@@ -1,5 +1,10 @@
 import { PublicShell } from '@/components/site/PublicShell';
 
+export const metadata = {
+  title: 'Privacy | Zeo',
+  description: 'Zeo privacy practices: edge-first processing and minimal storage of sensitive artifacts.',
+};
+
 export default function PrivacyPage() {
   return (
     <PublicShell title="Privacy">

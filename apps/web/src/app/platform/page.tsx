@@ -16,8 +16,7 @@ export const metadata = {
   description: 'Explore Zeo platform capabilities including governance dashboards, decision branching, uncertainty tracking, and epistemic tooling.',
 };
 
-export default function PlatformPage() {
-  const capabilities = [
+const capabilities = [
     {
       title: 'Decision Branching',
       description: 'Explore complex decisions with branching analysis, sensitivity thresholds, and flip-point detection.',
@@ -72,7 +71,34 @@ export default function PlatformPage() {
       illustrationW: 280,
       illustrationH: 180,
     },
-  ];
+];
+
+const techFeatures = [
+  {
+    title: 'Deterministic Execution',
+    description: 'Every analysis run is reproducible. Same inputs produce identical outputs, enabling reliable auditing.',
+  },
+  {
+    title: 'Signed Evidence Bundles',
+    description: 'Cryptographic signatures on evidence bundles create tamper-proof audit trails for compliance.',
+  },
+  {
+    title: 'Confidence Intervals',
+    description: 'All estimates carry explicit uncertainty ranges — never false precision on inherently uncertain data.',
+  },
+  {
+    title: 'Policy-as-Code',
+    description: 'Governance rules expressed as deterministic policy packs that gate decisions at CI time.',
+  },
+  {
+    title: 'Provenance Tracking',
+    description: 'Every fact records its source, retrieval timestamp, and integrity checksum for full traceability.',
+  },
+  {
+    title: 'Replay & Audit',
+    description: 'Re-run any past analysis with original inputs to verify conclusions and satisfy auditors.',
+  },
+];
 
 export default function PlatformPage() {
   return (

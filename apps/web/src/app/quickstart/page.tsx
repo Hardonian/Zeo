@@ -1,6 +1,11 @@
 import Link from 'next/link';
 import { PublicShell } from '@/components/site/PublicShell';
 
+export const metadata = {
+  title: 'Quickstart | Zeo',
+  description: 'Get started with Zeo quickly. Follow the canonical quickstart guide.',
+};
+
 export default function QuickStartPage() {
   return (
     <PublicShell title="Quickstart">
