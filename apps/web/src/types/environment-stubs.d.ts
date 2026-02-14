@@ -2,6 +2,24 @@ declare module 'next' {
   export interface Metadata {
     title?: string;
     description?: string;
+    metadataBase?: URL;
+    openGraph?: {
+      type?: string;
+      siteName?: string;
+      title?: string;
+      description?: string;
+      images?: Array<{ url: string; width?: number; height?: number; alt?: string }>;
+    };
+    twitter?: {
+      card?: string;
+      title?: string;
+      description?: string;
+      images?: string[];
+    };
+    robots?: {
+      index?: boolean;
+      follow?: boolean;
+    };
   }
 }
 
@@ -18,6 +36,7 @@ declare module 'next/server' {
 
   export class NextResponse extends Response {
     constructor(body?: BodyInit | null, init?: ResponseInit);
+    headers: Headers;
     cookies: { set: (name: string, value: string, options?: Record<string, unknown>) => void };
     static json(body: unknown, init?: { status?: number; headers?: Record<string, string> }): NextResponse;
     static next(init?: { request?: { headers?: Headers } }): NextResponse;

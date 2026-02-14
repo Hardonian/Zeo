@@ -1,6 +1,11 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 
+export const metadata = {
+  title: 'Control Plane | Zeo',
+  description: 'Local-first deterministic status surface for modules, governance, tooling, and artifacts.',
+};
+
 type Tool = { name: string; enabled: boolean; scope: string; requireConfirmation: boolean };
 
 type Status = {
@@ -31,29 +36,39 @@ function parseMcpTools(root: string): Tool[] {
 }
 
 function collectStatus(): Status {
-  const root = resolve(process.cwd(), "..");
-  const agentsDir = join(root, "agents");
-  const pluginsDir = join(root, "plugins");
-  const logs = ["test_failure.log", "build_error.log", "debug.log"].map((name) => join(root, name));
-  const policyViolations24h = logs
-    .filter((file) => existsSync(file) && statSync(file).mtimeMs >= Date.now() - 24 * 60 * 60 * 1000)
-    .reduce((sum, file) => sum + (readFileSync(file, "utf8").toLowerCase().includes("policy") ? 1 : 0), 0);
+  try {
+    const root = resolve(process.cwd(), "..");
+    const agentsDir = join(root, "agents");
+    const pluginsDir = join(root, "plugins");
+    const logs = ["test_failure.log", "build_error.log", "debug.log"].map((name) => join(root, name));
+    const policyViolations24h = logs
+      .filter((file) => existsSync(file) && statSync(file).mtimeMs >= Date.now() - 24 * 60 * 60 * 1000)
+      .reduce((sum, file) => sum + (readFileSync(file, "utf8").toLowerCase().includes("policy") ? 1 : 0), 0);
 
-  const agents = existsSync(agentsDir)
-    ? readdirSync(agentsDir, { withFileTypes: true }).filter((entry) => entry.isDirectory()).length
-    : 0;
+    const agents = existsSync(agentsDir)
+      ? readdirSync(agentsDir, { withFileTypes: true }).filter((entry) => entry.isDirectory()).length
+      : 0;
 
-  const runners = existsSync(pluginsDir)
-    ? readdirSync(pluginsDir, { withFileTypes: true }).filter((entry) => entry.isDirectory()).length
-    : 0;
+    const runners = existsSync(pluginsDir)
+      ? readdirSync(pluginsDir, { withFileTypes: true }).filter((entry) => entry.isDirectory()).length
+      : 0;
 
-  return {
-    generatedAt: new Date().toISOString(),
-    agents,
-    runners,
-    policyViolations24h,
-    tools: parseMcpTools(root),
-  };
+    return {
+      generatedAt: new Date().toISOString(),
+      agents,
+      runners,
+      policyViolations24h,
+      tools: parseMcpTools(root),
+    };
+  } catch {
+    return {
+      generatedAt: new Date().toISOString(),
+      agents: 0,
+      runners: 0,
+      policyViolations24h: 0,
+      tools: [],
+    };
+  }
 }
 
 export default function ControlPlanePage(): JSX.Element {
