@@ -1,5 +1,65 @@
 import Image from 'next/image';
 import { PublicShell } from '@/components/site/PublicShell';
+import {
+  IconBranching,
+  IconShield,
+  IconProvenance,
+  IconUncertainty,
+  IconSensitivity,
+  IconAudit,
+  IconTerminal,
+  IconArrowRight,
+} from '@/components/icons/ZeoIcons';
+
+export const metadata = {
+  title: 'Features | Zeo',
+  description: 'Explore Zeo features: decision branching, policy enforcement, evidence provenance, uncertainty tracking, and deterministic audit trails.',
+};
+
+const features = [
+  {
+    icon: IconBranching,
+    title: 'Decision Branching Engine',
+    description: 'Explore multi-step decision trees with probability intervals, dependency tracking, and flip-point detection. Branches expand 2-3 steps deep by default and are expandable on demand.',
+    details: ['Probability intervals on every branch', 'Dependency tracking between assumptions', 'Flip-point detection for sensitivity', 'Expandable depth with pruning controls'],
+    color: 'from-blue-500 to-indigo-500',
+  },
+  {
+    icon: IconShield,
+    title: 'Policy Enforcement',
+    description: 'Hierarchical policy packs gate PRs based on organization-wide security and quality standards. Policies support inheritance from global to repository level.',
+    details: ['Block, warn, or allow per finding severity', 'Global, team, and repository inheritance', 'Evidence bundles for every evaluation', 'GitHub App integration for status checks'],
+    color: 'from-violet-500 to-purple-500',
+  },
+  {
+    icon: IconProvenance,
+    title: 'Evidence Provenance',
+    description: 'Every fact carries its source, timestamp, and checksum. Without provenance, claims are automatically downgraded to assumptions or beliefs.',
+    details: ['SHA-256 checksums on all evidence', 'Source pointer and timestamp tracking', 'Automatic downgrade without provenance', 'Immutable decision records'],
+    color: 'from-emerald-500 to-teal-500',
+  },
+  {
+    icon: IconUncertainty,
+    title: 'Uncertainty Ledger',
+    description: 'Track confidence ranges and how they evolve with new evidence. Intervals widen under uncertainty and never produce false precision.',
+    details: ['Widen-only calibration rule', 'Epistemic vs aleatoric decomposition', 'Brier score and interval scoring', 'Domain-specific calibration profiles'],
+    color: 'from-amber-500 to-orange-500',
+  },
+  {
+    icon: IconSensitivity,
+    title: 'Sensitivity Analysis',
+    description: 'Surface fragile dependencies and flip thresholds. Know what would change the answer before it matters with counterfactual analysis.',
+    details: ['Counterfactual engine for "what flips"', 'Value of Information prioritization', 'Fragile dependency detection', 'Robustness scoring across assumptions'],
+    color: 'from-rose-500 to-pink-500',
+  },
+  {
+    icon: IconAudit,
+    title: 'Deterministic Audit Trail',
+    description: 'Cryptographically signed evidence bundles create an unbreakable audit trail. Same inputs always produce same outputs for reproducible analysis.',
+    details: ['SHA-256 content addressing', 'Canonical JSON serialization', 'Explicit seed parameter for randomness', 'Replay and verification commands'],
+    color: 'from-cyan-500 to-blue-500',
+  },
+];
 
 export const metadata = {
   title: 'Features | Zeo',

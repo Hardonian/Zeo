@@ -1,90 +1,102 @@
 import Link from 'next/link';
 import { PublicShell } from '@/components/site/PublicShell';
+import { IconCheck } from '@/components/icons/ZeoIcons';
 
 export const metadata = {
   title: 'Pricing | Zeo',
   description: 'Zeo pricing tiers — Community edition for open-source usage and Enterprise for policy packs, governance integrations, and audit support.',
 };
 
+const communityFeatures = [
+  'Local deployment',
+  'Self-managed provenance storage',
+  'Core decision branching tools',
+  'Basic governance dashboards',
+  'Community support',
+  'MIT licensed',
+];
+
+const enterpriseFeatures = [
+  'Everything in Community, plus:',
+  'Policy packs and custom rules',
+  'GitHub App integration',
+  'Audit-focused rollout support',
+  'SSO and team management',
+  'Priority support',
+  'Custom integrations',
+];
+
+const faqs = [
+  {
+    q: "What's included in the Community edition?",
+    a: 'The Community edition includes all core decision intelligence tools, governance dashboards, and epistemic tooling. It is designed for individual users and small teams who can self-host and manage their own infrastructure.',
+  },
+  {
+    q: 'When should I consider Enterprise?',
+    a: 'Enterprise is recommended for teams that need policy enforcement across repositories, GitHub integration for PR governance, SSO for team management, or audit support for compliance requirements.',
+  },
+  {
+    q: 'Is Zeo open source?',
+    a: 'Yes. The core Zeo platform is open source under the MIT license. Enterprise features are offered as a hosted service with additional support and integrations.',
+  },
+];
+
 export default function PricingPage() {
   return (
     <PublicShell title="Pricing">
-      <div className="max-w-4xl space-y-8">
+      <div className="max-w-4xl space-y-12">
+        <p className="text-gray-600 max-w-2xl">
+          Start free with the full open-source platform. Upgrade to Enterprise when your team needs governance integrations and dedicated support.
+        </p>
+
         {/* Pricing Cards */}
         <div className="grid gap-6 md:grid-cols-2">
           {/* Community */}
-          <div className="rounded-lg border border-gray-200 bg-white p-6">
-            <div className="mb-4">
-              <h2 className="text-xl font-semibold">Community</h2>
-              <p className="text-gray-600 mt-1">Open-source usage</p>
-              <p className="text-2xl font-bold mt-3">Free</p>
+          <div className="rounded-2xl border border-gray-200 bg-white p-7 flex flex-col">
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-gray-900">Community</h2>
+              <p className="text-gray-500 mt-1 text-sm">Open-source, self-hosted</p>
+              <p className="text-4xl font-bold mt-4 text-gray-900">Free</p>
+              <p className="text-xs text-gray-400 mt-1">Forever</p>
             </div>
-            <ul className="space-y-2 text-sm text-gray-700">
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                Local deployment
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                Self-managed provenance storage
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                Core decision branching tools
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                Basic governance dashboards
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                Community support
-              </li>
+            <ul className="space-y-3 text-sm text-gray-700 flex-1">
+              {communityFeatures.map((f) => (
+                <li key={f} className="flex items-center gap-2.5">
+                  <IconCheck className="h-4 w-4 text-emerald-500 shrink-0" />
+                  {f}
+                </li>
+              ))}
             </ul>
-            <Link 
-              href="/quickstart" 
-              className="mt-6 block w-full rounded border border-gray-300 px-4 py-2 text-center hover:bg-gray-50 transition-colors"
+            <Link
+              href="/quickstart"
+              className="mt-8 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
             >
               Get Started
             </Link>
           </div>
 
           {/* Enterprise */}
-          <div className="rounded-lg border-2 border-blue-200 bg-blue-50/50 p-6">
-            <div className="mb-4">
-              <h2 className="text-xl font-semibold">Enterprise</h2>
-              <p className="text-gray-600 mt-1">For teams that need governance</p>
-              <p className="text-2xl font-bold mt-3">Contact Us</p>
+          <div className="relative rounded-2xl border-2 border-blue-200 bg-gradient-to-b from-blue-50/80 to-white p-7 flex flex-col">
+            <div className="absolute -top-3 right-6 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-0.5 text-xs font-semibold text-white">
+              Recommended
             </div>
-            <ul className="space-y-2 text-sm text-gray-700">
-              <li className="flex items-center gap-2">
-                <span className="text-blue-600">✓</span>
-                Everything in Community, plus:
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-blue-600">✓</span>
-                Policy packs and custom rules
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-blue-600">✓</span>
-                GitHub App integration
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-blue-600">✓</span>
-                Audit-focused rollout support
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-blue-600">✓</span>
-                SSO and team management
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-blue-600">✓</span>
-                Priority support
-              </li>
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-gray-900">Enterprise</h2>
+              <p className="text-gray-500 mt-1 text-sm">For teams that need governance</p>
+              <p className="text-4xl font-bold mt-4 text-gray-900">Custom</p>
+              <p className="text-xs text-gray-400 mt-1">Contact for pricing</p>
+            </div>
+            <ul className="space-y-3 text-sm text-gray-700 flex-1">
+              {enterpriseFeatures.map((f) => (
+                <li key={f} className="flex items-center gap-2.5">
+                  <IconCheck className="h-4 w-4 text-blue-500 shrink-0" />
+                  {f}
+                </li>
+              ))}
             </ul>
-            <Link 
-              href="/contact" 
-              className="mt-6 block w-full rounded bg-blue-600 px-4 py-2 text-center text-white hover:bg-blue-700 transition-colors"
+            <Link
+              href="/contact"
+              className="mt-8 block w-full rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:shadow-md transition-all"
             >
               Contact Sales
             </Link>
@@ -93,31 +105,19 @@ export default function PricingPage() {
 
         {/* FAQ */}
         <section>
-          <h2 className="text-lg font-semibold mb-4">Frequently Asked Questions</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
           <div className="space-y-4">
-            <div className="rounded-lg border border-gray-200 bg-white p-4">
-              <h3 className="font-medium">What&apos;s included in the Community edition?</h3>
-              <p className="text-sm text-gray-600 mt-2">
-                The Community edition includes all core decision intelligence tools, governance 
-                dashboards, and epistemic tooling. It&apos;s designed for individual users and small 
-                teams who can self-host and manage their own infrastructure.
-              </p>
-            </div>
-            <div className="rounded-lg border border-gray-200 bg-white p-4">
-              <h3 className="font-medium">When should I consider Enterprise?</h3>
-              <p className="text-sm text-gray-600 mt-2">
-                Enterprise is recommended for teams that need policy enforcement across repositories, 
-                GitHub integration for PR governance, SSO for team management, or audit support for 
-                compliance requirements.
-              </p>
-            </div>
-            <div className="rounded-lg border border-gray-200 bg-white p-4">
-              <h3 className="font-medium">Is Zeo open source?</h3>
-              <p className="text-sm text-gray-600 mt-2">
-                Yes. The core Zeo platform is open source under the MIT license. Enterprise features 
-                are offered as a hosted service with additional support and integrations.
-              </p>
-            </div>
+            {faqs.map((faq) => (
+              <details key={faq.q} className="group rounded-xl border border-gray-200 bg-white">
+                <summary className="cursor-pointer p-5 font-medium text-gray-900 flex items-center justify-between">
+                  {faq.q}
+                  <span className="ml-4 text-gray-400 group-open:rotate-180 transition-transform text-sm">&#9660;</span>
+                </summary>
+                <div className="px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                  {faq.a}
+                </div>
+              </details>
+            ))}
           </div>
         </section>
       </div>

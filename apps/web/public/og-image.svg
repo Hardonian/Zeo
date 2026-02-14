@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="og-bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="og-accent" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#og-bg)"/>
+  <!-- Grid pattern -->
+  <g opacity="0.05" stroke="#94A3B8" stroke-width="1">
+    <line x1="0" y1="0" x2="0" y2="630"/><line x1="60" y1="0" x2="60" y2="630"/>
+    <line x1="120" y1="0" x2="120" y2="630"/><line x1="180" y1="0" x2="180" y2="630"/>
+    <line x1="240" y1="0" x2="240" y2="630"/><line x1="300" y1="0" x2="300" y2="630"/>
+    <line x1="0" y1="0" x2="1200" y2="0"/><line x1="0" y1="60" x2="1200" y2="60"/>
+    <line x1="0" y1="120" x2="1200" y2="120"/><line x1="0" y1="180" x2="1200" y2="180"/>
+  </g>
+  <!-- Logo mark -->
+  <rect x="80" y="220" width="80" height="80" rx="20" fill="url(#og-accent)"/>
+  <path d="M100 240h40l-25 40h35" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="140" cy="240" r="4" fill="#A5B4FC"/>
+  <circle cx="100" cy="275" r="4" fill="#A5B4FC"/>
+  <!-- Text -->
+  <text x="180" y="275" font-family="system-ui,-apple-system,sans-serif" font-size="56" font-weight="700" fill="#F8FAFC" letter-spacing="-1">Zeo</text>
+  <text x="80" y="360" font-family="system-ui,-apple-system,sans-serif" font-size="28" fill="#94A3B8" letter-spacing="-0.5">Governance &amp; Evidence for Uncertain Decisions</text>
+  <!-- Decorative branching lines -->
+  <g stroke="#2563EB" stroke-width="2" opacity="0.3">
+    <line x1="800" y1="150" x2="950" y2="250"/>
+    <line x1="950" y1="250" x2="1050" y2="200"/>
+    <line x1="950" y1="250" x2="1050" y2="350"/>
+    <line x1="1050" y1="350" x2="1100" y2="300"/>
+    <line x1="1050" y1="350" x2="1100" y2="420"/>
+    <circle cx="800" cy="150" r="6" fill="#2563EB"/>
+    <circle cx="950" cy="250" r="6" fill="#7C3AED"/>
+    <circle cx="1050" cy="200" r="4" fill="#2563EB"/>
+    <circle cx="1050" cy="350" r="6" fill="#7C3AED"/>
+    <circle cx="1100" cy="300" r="4" fill="#2563EB"/>
+    <circle cx="1100" cy="420" r="4" fill="#2563EB"/>
+  </g>
+  <!-- Bottom bar -->
+  <rect x="0" y="610" width="1200" height="20" fill="url(#og-accent)"/>
+</svg>

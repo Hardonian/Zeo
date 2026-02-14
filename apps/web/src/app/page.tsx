@@ -1,6 +1,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { PublicShell } from '@/components/site/PublicShell';
+import {
+  IconBranching,
+  IconShield,
+  IconProvenance,
+  IconUncertainty,
+  IconSensitivity,
+  IconAudit,
+  IconTerminal,
+  IconArrowRight,
+} from '@/components/icons/ZeoIcons';
 
 export const metadata = {
   title: 'Zeo — Governance and Evidence for Uncertain Decisions',
@@ -11,19 +21,63 @@ export const metadata = {
   },
 };
 
-const features = [
-  'Deterministic policy checks for code review and governance workflows.',
-  'Evidence bundles with provenance metadata and audit-ready change history.',
-  'CLI and web interfaces for local diagnostics, dashboards, and replay analysis.',
+const capabilities = [
+  {
+    icon: IconBranching,
+    title: 'Decision Branching',
+    description: 'Explore multi-step decision trees with probability intervals, dependency tracking, and flip-point detection.',
+    color: 'text-blue-600 bg-blue-50',
+  },
+  {
+    icon: IconShield,
+    title: 'Policy Enforcement',
+    description: 'Hierarchical policy packs gate PRs based on organization-wide security and quality standards.',
+    color: 'text-violet-600 bg-violet-50',
+  },
+  {
+    icon: IconProvenance,
+    title: 'Evidence Provenance',
+    description: 'Every fact carries its source, timestamp, and checksum. Without provenance, claims stay as assumptions.',
+    color: 'text-emerald-600 bg-emerald-50',
+  },
+  {
+    icon: IconUncertainty,
+    title: 'Uncertainty Ledger',
+    description: 'Track confidence ranges and how they evolve. Intervals widen under uncertainty — never false precision.',
+    color: 'text-amber-600 bg-amber-50',
+  },
+  {
+    icon: IconSensitivity,
+    title: 'Sensitivity Analysis',
+    description: 'Surface fragile dependencies and flip thresholds. Know what would change the answer before it matters.',
+    color: 'text-rose-600 bg-rose-50',
+  },
+  {
+    icon: IconAudit,
+    title: 'Deterministic Audit',
+    description: 'Cryptographically signed evidence bundles create an unbreakable audit trail for compliance.',
+    color: 'text-cyan-600 bg-cyan-50',
+  },
 ];
 
 export default function Home() {
   return (
-    <PublicShell title="Decision intelligence under uncertainty">
-      <div className="max-w-4xl space-y-8">
-        <section className="space-y-3">
-          <p className="text-lg text-gray-700">
-            Zeo helps teams evaluate decisions with confidence ranges, assumptions, provenance, and sensitivity tracking. The CLI drives local workflows, while this static site provides onboarding, docs, and support.
+    <PublicShell title="Decision intelligence under uncertainty" hero>
+      {/* Hero Section */}
+      <section className="relative -mx-6 -mt-10 overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 px-6 py-20 md:py-28 bg-grid">
+        <div className="relative mx-auto max-w-4xl text-center">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800/60 px-4 py-1.5 text-xs font-medium text-slate-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Open source &middot; MIT License
+          </div>
+          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+            Governance &amp; evidence for{' '}
+            <span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+              uncertain decisions
+            </span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400 leading-relaxed">
+            Zeo helps teams evaluate decisions with confidence ranges, assumptions, provenance, and sensitivity tracking. Deterministic policy checks and signed evidence bundles create audit-ready governance.
           </p>
           <div className="mt-4">
             <img

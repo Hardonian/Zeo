@@ -1,6 +1,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { PublicShell } from '@/components/site/PublicShell';
+import {
+  IconBranching,
+  IconUncertainty,
+  IconShield,
+  IconAudit,
+  IconSensitivity,
+  IconProvenance,
+  IconArrowRight,
+} from '@/components/icons/ZeoIcons';
 
 export const metadata = {
   title: 'Platform | Zeo',
@@ -65,14 +74,15 @@ export default function PlatformPage() {
     },
   ];
 
+export default function PlatformPage() {
   return (
     <PublicShell title="Platform">
-      <div className="max-w-4xl space-y-8">
+      <div className="max-w-5xl space-y-14">
         {/* Overview */}
-        <section>
-          <p className="text-gray-700 leading-relaxed">
-            Zeo provides a comprehensive workspace for decision intelligence under uncertainty. 
-            The platform combines governance dashboards, decision branching tools, and epistemic 
+        <section className="max-w-3xl">
+          <p className="text-lg text-gray-700 leading-relaxed">
+            Zeo provides a comprehensive workspace for decision intelligence under uncertainty.
+            The platform combines governance dashboards, decision branching tools, and epistemic
             infrastructure to help teams make better decisions with full transparency.
           </p>
         </section>
@@ -142,26 +152,14 @@ export default function PlatformPage() {
 
         {/* Technical Features */}
         <section>
-          <h2 className="text-lg font-semibold mb-4">Technical Features</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Technical Features</h2>
           <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-lg border border-gray-200 bg-white p-4">
-              <h3 className="font-medium">Static-First</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Marketing pages render without backend dependencies. No auth gating on public routes.
-              </p>
-            </div>
-            <div className="rounded-lg border border-gray-200 bg-white p-4">
-              <h3 className="font-medium">Deterministic</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Evidence contracts produce cryptographically signed bundles for audit trails.
-              </p>
-            </div>
-            <div className="rounded-lg border border-gray-200 bg-white p-4">
-              <h3 className="font-medium">Composable</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Vendor APIs are behind adapters. Core engine never depends on specific vendors.
-              </p>
-            </div>
+            {techFeatures.map((f) => (
+              <div key={f.title} className="rounded-xl border border-gray-200 bg-white p-5">
+                <h3 className="font-semibold text-gray-900 mb-2">{f.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{f.description}</p>
+              </div>
+            ))}
           </div>
           <div className="mt-5 flex justify-center">
             <img
@@ -209,12 +207,12 @@ export default function PlatformPage() {
 
         {/* Browse All */}
         <section>
-          <Link 
-            href="/stitch" 
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-3 hover:border-blue-300 transition-colors"
+          <Link
+            href="/stitch"
+            className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-all"
           >
-            <span className="font-medium">Browse All Panels</span>
-            <span>→</span>
+            Browse All Panels
+            <IconArrowRight className="h-4 w-4" />
           </Link>
         </section>
       </div>
