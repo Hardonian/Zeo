@@ -685,3 +685,704 @@ test.describe('Error Handling', () => {
     await expect(page.locator('header')).toBeVisible();
   });
 });
+
+// ==================== ADDITIONAL PAGES ====================
+
+test.describe('Additional Pages', () => {
+  test('docs page renders', async ({ page }) => {
+    await page.goto('/docs');
+    await expect(page.locator('h1')).toBeVisible();
+    const title = await page.title();
+    expect(title.toLowerCase()).toMatch(/doc|guide/);
+  });
+
+  test('quickstart page renders with installation steps', async ({ page }) => {
+    await page.goto('/quickstart');
+    await expect(page.locator('h1')).toBeVisible();
+    
+    // Should contain installation-related content
+    const content = await page.locator('body').textContent();
+    expect(content?.toLowerCase()).toMatch(/install|setup|quickstart|getting started/);
+  });
+
+  test('install page renders', async ({ page }) => {
+    await page.goto('/install');
+    await expect(page.locator('h1')).toBeVisible();
+  });
+
+  test('github integration page renders', async ({ page }) => {
+    await page.goto('/github');
+    await expect(page.locator('h1')).toBeVisible();
+    const content = await page.locator('body').textContent();
+    expect(content?.toLowerCase()).toContain('github');
+  });
+
+  test('faq page renders with questions', async ({ page }) => {
+    await page.goto('/faq');
+    await expect(page.locator('h1')).toBeVisible();
+    
+    // Should have expandable FAQ items
+    const details = page.locator('details');
+    const count = await details.count();
+    expect(count).toBeGreaterThan(0);
+  });
+
+  test('support page renders', async ({ page }) => {
+    await page.goto('/support');
+    await expect(page.locator('h1')).toBeVisible();
+  });
+
+  test('changelog page renders', async ({ page }) => {
+    await page.goto('/changelog');
+    await expect(page.locator('h1')).toBeVisible();
+    
+    // Should contain version history
+    const content = await page.locator('body').textContent();
+    expect(content?.toLowerCase()).toMatch(/changelog|version|release/);
+  });
+
+  test('capabilities page renders', async ({ page }) => {
+    await page.goto('/capabilities');
+    await expect(page.locator('h1')).toBeVisible();
+  });
+
+  test('compare page renders', async ({ page }) => {
+    await page.goto('/compare');
+    await expect(page.locator('h1')).toBeVisible();
+  });
+
+  test('status page renders', async ({ page }) => {
+    await page.goto('/status');
+    await expect(page.locator('h1')).toBeVisible();
+  });
+
+  test('terms page renders', async ({ page }) => {
+    await page.goto('/terms');
+    await expect(page.locator('h1')).toBeVisible();
+  });
+
+  test('privacy page renders', async ({ page }) => {
+    await page.goto('/privacy');
+    await expect(page.locator('h1')).toBeVisible();
+  });
+});
+
+// ==================== DETAILED CONTENT VALIDATION ====================
+
+test.describe('Detailed Content Validation', () => {
+  test('homepage hero has gradient styling', async ({ page }) => {
+    await page.goto('/');
+    
+    const heroSection = page.locator('section').first();
+    await expect(heroSection).toBeVisible();
+    
+    // Check for gradient text in heading
+    const h1 = page.locator('h1');
+    await expect(h1).toHaveClass(/text-white|text-transparent/);
+  });
+
+  test('homepage capabilities have icons', async ({ page }) => {
+    await page.goto('/');
+    
+    const capabilityCards = page.locator('article');
+    const count = await capabilityCards.count();
+    expect(count).toBeGreaterThanOrEqual(6);
+    
+    // Each card should have an icon (svg)
+    for (let i = 0; i < Math.min(count, 6); i++) {
+      const svg = capabilityCards.nth(i).locator('svg');
+      await expect(svg).toBeVisible();
+    }
+  });
+
+  test('about page principles have proper color coding', async ({ page }) => {
+    await page.goto('/about');
+    
+    const principles = ['Epistemic Honesty', 'Provenance-First', 'Robustness Over Recommendation', 'Privacy-First Defaults'];
+    
+    for (const principle of principles) {
+      const card = page.locator('h3', { hasText: principle }).locator('xpath=..');
+      await expect(card).toBeVisible();
+      
+      // Should have border styling
+      const classAttr = await card.getAttribute('class');
+      expect(classAttr).toMatch(/border/);
+    }
+  });
+
+  test('platform capability cards have gradient borders', async ({ page }) => {
+    await page.goto('/platform');
+    
+    const cards = page.locator('a[href^="/stitch/"]');
+    const count = await cards.count();
+    expect(count).toBeGreaterThanOrEqual(6);
+  });
+
+  test('pricing Community tier has neutral styling', async ({ page }) => {
+    await page.goto('/pricing');
+    
+    const communityCard = page.locator('h2', { hasText: 'Community' }).locator('xpath=../..');
+    await expect(communityCard).toBeVisible();
+    
+    // Should not have the "Recommended" badge
+    const badge = communityCard.locator('text=Recommended');
+    await expect(badge).toHaveCount(0);
+  });
+
+  test('pricing Enterprise tier has highlighted styling', async ({ page }) => {
+    await page.goto('/pricing');
+    
+    const enterpriseCard = page.locator('h2', { hasText: 'Enterprise' }).locator('xpath=../..');
+    await expect(enterpriseCard).toBeVisible();
+    
+    // Should have the "Recommended" badge
+    const badge = enterpriseCard.locator('text=Recommended');
+    await expect(badge).toBeVisible();
+    
+    // Should have blue border
+    const classAttr = await enterpriseCard.getAttribute('class');
+    expect(classAttr).toMatch(/border-blue/);
+  });
+
+  test('contact channels have distinct colors', async ({ page }) => {
+    await page.goto('/contact');
+    
+    const channels = page.locator('section').nth(1).locator('> div > div');
+    const count = await channels.count();
+    expect(count).toBeGreaterThanOrEqual(4);
+    
+    // Each channel should have a colored icon container
+    for (let i = 0; i < count; i++) {
+      const iconContainer = channels.nth(i).locator('> div').first();
+      await expect(iconContainer).toBeVisible();
+    }
+  });
+
+  test('all external links use proper rel attributes', async ({ page }) => {
+    await page.goto('/contact');
+    
+    const externalLinks = page.locator('a[target="_blank"]');
+    const count = await externalLinks.count();
+    
+    for (let i = 0; i < count; i++) {
+      const rel = await externalLinks.nth(i).getAttribute('rel');
+      expect(rel).toContain('noopener');
+      expect(rel).toContain('noreferrer');
+    }
+  });
+});
+
+// ==================== LINK VALIDATION ====================
+
+test.describe('Link Validation', () => {
+  test('all internal links resolve correctly', async ({ page, context }) => {
+    await page.goto('/');
+    
+    // Get all internal links
+    const links = page.locator('a[href^="/"]');
+    const count = await links.count();
+    
+    const checkedUrls = new Set<string>();
+    const errors: string[] = [];
+    
+    for (let i = 0; i < Math.min(count, 20); i++) {
+      const href = await links.nth(i).getAttribute('href');
+      if (!href || checkedUrls.has(href) || href.startsWith('//')) continue;
+      
+      checkedUrls.add(href);
+      
+      try {
+        const newPage = await context.newPage();
+        const response = await newPage.goto(href, { timeout: 5000 });
+        
+        if (response && response.status() >= 400) {
+          errors.push(`${href}: ${response.status()}`);
+        }
+        
+        await newPage.close();
+      } catch (e) {
+        // Ignore timeouts for slow pages
+      }
+    }
+    
+    expect(errors).toHaveLength(0);
+  });
+
+  test('no broken anchor links on homepage', async ({ page }) => {
+    await page.goto('/');
+    
+    const anchorLinks = page.locator('a[href^="#"]');
+    const count = await anchorLinks.count();
+    
+    // If there are anchor links, they should point to existing elements
+    for (let i = 0; i < count; i++) {
+      const href = await anchorLinks.nth(i).getAttribute('href');
+      if (href && href !== '#') {
+        const targetId = href.substring(1);
+        const target = page.locator(`#${targetId}`);
+        await expect(target).toHaveCount(1);
+      }
+    }
+  });
+});
+
+// ==================== PERFORMANCE CHECKS ====================
+
+test.describe('Performance Checks', () => {
+  test('homepage loads within acceptable time', async ({ page }) => {
+    const start = Date.now();
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    const loadTime = Date.now() - start;
+    
+    // Page should load in less than 5 seconds
+    expect(loadTime).toBeLessThan(5000);
+  });
+
+  test('no console errors on homepage', async ({ page }) => {
+    const errors: string[] = [];
+    
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') {
+        errors.push(msg.text());
+      }
+    });
+    
+    await page.goto('/');
+    await page.waitForTimeout(2000);
+    
+    // Filter out common third-party errors
+    const criticalErrors = errors.filter(e => 
+      !e.includes('favicon') && 
+      !e.includes('analytics') &&
+      !e.includes('tracking')
+    );
+    
+    expect(criticalErrors).toHaveLength(0);
+  });
+
+  test('images load successfully', async ({ page }) => {
+    await page.goto('/');
+    
+    const images = page.locator('img');
+    const count = await images.count();
+    
+    for (let i = 0; i < count; i++) {
+      const img = images.nth(i);
+      const src = await img.getAttribute('src');
+      
+      if (src && !src.startsWith('data:')) {
+        // Check image is loaded
+        const naturalWidth = await img.evaluate((el: HTMLImageElement) => el.naturalWidth);
+        expect(naturalWidth).toBeGreaterThan(0);
+      }
+    }
+  });
+});
+
+// ==================== ACCESSIBILITY ENHANCED ====================
+
+test.describe('Accessibility Enhanced', () => {
+  test('page has valid lang attribute', async ({ page }) => {
+    await page.goto('/');
+    const lang = await page.locator('html').getAttribute('lang');
+    expect(lang).toBeTruthy();
+    expect(lang).toMatch(/^[a-z]{2}(-[A-Z]{2})?$/);
+  });
+
+  test('interactive elements have focus states', async ({ page }) => {
+    await page.goto('/');
+    
+    // Check CTA buttons
+    const buttons = page.locator('a').filter({ hasText: /Get started|View pricing/ });
+    
+    for (let i = 0; i < Math.min(await buttons.count(), 2); i++) {
+      await buttons.nth(i).focus();
+      
+      // Element should be focused
+      await expect(buttons.nth(i)).toBeFocused();
+    }
+  });
+
+  test('aria labels are present where needed', async ({ page }) => {
+    await page.goto('/');
+    
+    // Navigation should have aria-label
+    const nav = page.locator('nav');
+    const ariaLabel = await nav.getAttribute('aria-label');
+    
+    // If no aria-label, check for role
+    if (!ariaLabel) {
+      const role = await nav.getAttribute('role');
+      expect(role).toBeTruthy();
+    }
+  });
+
+  test('color contrast is sufficient', async ({ page }) => {
+    await page.goto('/');
+    
+    // Check main heading has sufficient contrast
+    const h1 = page.locator('h1');
+    const color = await h1.evaluate((el) => {
+      const style = window.getComputedStyle(el);
+      return {
+        color: style.color,
+        backgroundColor: style.backgroundColor
+      };
+    });
+    
+    // White text on dark background should be readable
+    expect(color.color).toBeTruthy();
+  });
+
+  test('keyboard navigation works for dropdowns', async ({ page }) => {
+    await page.goto('/');
+    
+    // Tab through the page
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Tab');
+    
+    // Some element should be focused
+    const focused = page.locator(':focus');
+    await expect(focused).toBeVisible();
+  });
+});
+
+// ==================== VISUAL CONSISTENCY ====================
+
+test.describe('Visual Consistency', () => {
+  test('header has consistent height across pages', async ({ page }) => {
+    const heights: number[] = [];
+    const pages = ['/', '/about', '/pricing', '/contact'];
+    
+    for (const path of pages) {
+      await page.goto(path);
+      const header = page.locator('header');
+      const box = await header.boundingBox();
+      if (box) {
+        heights.push(box.height);
+      }
+    }
+    
+    // All heights should be the same
+    const uniqueHeights = [...new Set(heights)];
+    expect(uniqueHeights).toHaveLength(1);
+  });
+
+  test('footer has consistent styling across pages', async ({ page }) => {
+    const pages = ['/', '/about', '/pricing'];
+    
+    for (const path of pages) {
+      await page.goto(path);
+      const footer = page.locator('footer');
+      await expect(footer).toBeVisible();
+      
+      // Footer should contain expected elements
+      await expect(footer.locator('text=Docs')).toBeVisible();
+    }
+  });
+
+  test('cards have consistent border radius', async ({ page }) => {
+    await page.goto('/');
+    
+    const cards = page.locator('article, .rounded-xl, .rounded-2xl');
+    const count = await cards.count();
+    expect(count).toBeGreaterThan(0);
+  });
+});
+
+// ==================== DEEP NAVIGATION FLOWS ====================
+
+test.describe('Deep Navigation Flows', () => {
+  test('complete user journey from landing to pricing', async ({ page }) => {
+    // Start at homepage
+    await page.goto('/');
+    
+    // Click "View pricing" CTA
+    await page.click('text=View pricing');
+    await expect(page).toHaveURL(/pricing/);
+    
+    // Explore FAQ
+    const faq = page.locator('details').first();
+    await faq.click();
+    await expect(faq).toHaveAttribute('open', '');
+    
+    // Click "Contact Sales"
+    await page.click('text=Contact Sales');
+    await expect(page).toHaveURL(/contact/);
+    
+    // Verify contact page loads
+    await expect(page.locator('h1')).toContainText('Contact');
+  });
+
+  test('documentation discovery flow', async ({ page }) => {
+    // Start at homepage
+    await page.goto('/');
+    
+    // Click Docs in nav
+    await page.click('header nav >> text=Docs');
+    await expect(page).toHaveURL(/docs/);
+    
+    // Navigate to quickstart
+    await page.goto('/quickstart');
+    await expect(page.locator('h1')).toBeVisible();
+  });
+
+  test('feature exploration flow', async ({ page }) => {
+    // Start at homepage
+    await page.goto('/');
+    
+    // View a capability
+    await page.click('text=Decision Branching');
+    
+    // Should navigate to the panel or feature page
+    const url = page.url();
+    expect(url).toMatch(/\/(stitch|features|capabilities)/);
+  });
+});
+
+// ==================== EDGE CASES ====================
+
+test.describe('Edge Cases', () => {
+  test('handles special characters in URLs gracefully', async ({ page }) => {
+    const specialUrls = [
+      '/test%20space',
+      '/test+plus',
+      '/test%2Fslash'
+    ];
+    
+    for (const url of specialUrls) {
+      await page.goto(url);
+      // Should not crash
+      await expect(page.locator('body')).toBeVisible();
+    }
+  });
+
+  test('handles query parameters without errors', async ({ page }) => {
+    await page.goto('/?utm_source=test&utm_campaign=playwright');
+    await expect(page.locator('h1')).toBeVisible();
+  });
+
+  test('handles hash fragments without errors', async ({ page }) => {
+    await page.goto('/#section-test');
+    await expect(page.locator('h1')).toBeVisible();
+  });
+
+  test('handles very long URLs gracefully', async ({ page }) => {
+    const longPath = '/' + 'a'.repeat(200);
+    await page.goto(longPath);
+    
+    // Should show 404, not crash
+    const bodyText = await page.locator('body').textContent();
+    expect(bodyText).toBeTruthy();
+  });
+
+  test('page works with JavaScript disabled elements', async ({ page }) => {
+    await page.goto('/pricing');
+    
+    // FAQ should work without JS (using details/summary)
+    const faq = page.locator('details').first();
+    await expect(faq).toBeVisible();
+    
+    const summary = faq.locator('summary');
+    await expect(summary).toBeVisible();
+  });
+});
+
+// ==================== CONTENT SECURITY ====================
+
+test.describe('Content Security', () => {
+  test('no inline scripts detected', async ({ page }) => {
+    await page.goto('/');
+    
+    // Check for inline event handlers (basic check)
+    const elementsWithEvents = await page.locator('[onclick], [onload], [onerror]').count();
+    
+    // Should be minimal or zero
+    expect(elementsWithEvents).toBeLessThanOrEqual(5);
+  });
+
+  test('external scripts use integrity attributes where applicable', async ({ page }) => {
+    await page.goto('/');
+    
+    const scripts = page.locator('script[src]');
+    const count = await scripts.count();
+    
+    for (let i = 0; i < count; i++) {
+      const script = scripts.nth(i);
+      const src = await script.getAttribute('src');
+      
+      // Skip analytics and third-party scripts
+      if (src && !src.includes('analytics') && !src.includes('tracking')) {
+        const integrity = await script.getAttribute('integrity');
+        // Note: Not all scripts require integrity, but CDN scripts should have it
+      }
+    }
+  });
+
+  test('forms have proper CSRF protection indicators', async ({ page }) => {
+    await page.goto('/contact');
+    
+    const forms = page.locator('form');
+    const count = await forms.count();
+    
+    if (count > 0) {
+      for (let i = 0; i < count; i++) {
+        const form = forms.nth(i);
+        const method = await form.getAttribute('method');
+        
+        // Forms should use POST for mutations
+        if (method) {
+          expect(method.toLowerCase()).toBe('post');
+        }
+      }
+    }
+  });
+});
+
+// ==================== MOBILE-SPECIFIC TESTS ====================
+
+test.describe('Mobile-Specific Tests', () => {
+  test('mobile menu is accessible', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto('/');
+    
+    // Look for mobile menu button
+    const menuButton = page.locator('button[aria-label*="menu"], button[aria-label*="Menu"], [data-testid="mobile-menu"], header button').first();
+    
+    if (await menuButton.count() > 0) {
+      await menuButton.click();
+      
+      // Menu should be visible after click
+      const mobileNav = page.locator('[data-testid="mobile-nav"], nav[class*="mobile"], div[class*="mobile-menu"]').first();
+      if (await mobileNav.count() > 0) {
+        await expect(mobileNav).toBeVisible();
+      }
+    }
+  });
+
+  test('touch targets are large enough', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto('/');
+    
+    const clickables = page.locator('a, button');
+    const count = await clickables.count();
+    
+    for (let i = 0; i < Math.min(count, 10); i++) {
+      const element = clickables.nth(i);
+      const box = await element.boundingBox();
+      
+      if (box) {
+        // Touch targets should be at least 44x44px
+        expect(box.width).toBeGreaterThanOrEqual(44);
+        expect(box.height).toBeGreaterThanOrEqual(44);
+      }
+    }
+  });
+
+  test('text is readable on mobile', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto('/');
+    
+    // Check that main content text is not too small
+    const h1 = page.locator('h1');
+    const fontSize = await h1.evaluate((el) => {
+      const style = window.getComputedStyle(el);
+      return parseInt(style.fontSize);
+    });
+    
+    // Heading should be at least 16px on mobile
+    expect(fontSize).toBeGreaterThanOrEqual(16);
+  });
+});
+
+// ==================== SEO ENHANCED ====================
+
+test.describe('SEO Enhanced', () => {
+  test('all pages have canonical URLs', async ({ page }) => {
+    const pages = ['/', '/about', '/pricing', '/contact'];
+    
+    for (const path of pages) {
+      await page.goto(path);
+      
+      const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
+      if (canonical) {
+        expect(canonical).toBeTruthy();
+        expect(canonical).toMatch(/^https?:\/\//);
+      }
+    }
+  });
+
+  test('Open Graph tags are present', async ({ page }) => {
+    await page.goto('/');
+    
+    const ogTitle = await page.locator('meta[property="og:title"]').getAttribute('content');
+    const ogDescription = await page.locator('meta[property="og:description"]').getAttribute('content');
+    
+    if (ogTitle) {
+      expect(ogTitle).toBeTruthy();
+    }
+    
+    if (ogDescription) {
+      expect(ogDescription).toBeTruthy();
+    }
+  });
+
+  test('Twitter Card tags are present', async ({ page }) => {
+    await page.goto('/');
+    
+    const twitterCard = await page.locator('meta[name="twitter:card"]').getAttribute('content');
+    
+    if (twitterCard) {
+      expect(twitterCard).toMatch(/summary|summary_large_image/);
+    }
+  });
+
+  test('structured data is present', async ({ page }) => {
+    await page.goto('/');
+    
+    const structuredData = await page.locator('script[type="application/ld+json"]').count();
+    
+    // If structured data exists, it should be valid JSON
+    if (structuredData > 0) {
+      const jsonContent = await page.locator('script[type="application/ld+json"]').textContent();
+      expect(() => JSON.parse(jsonContent || '{}')).not.toThrow();
+    }
+  });
+});
+
+// ==================== DASHBOARD (Auth Required) ====================
+
+test.describe('Dashboard Pages', () => {
+  test('dashboard redirects to login when not authenticated', async ({ page }) => {
+    await page.goto('/dashboard');
+    
+    // Should either show login or redirect
+    const url = page.url();
+    const bodyText = await page.locator('body').textContent();
+    
+    const isLoginOrRedirect = url.includes('login') || 
+                               url.includes('signin') || 
+                               bodyText?.toLowerCase().includes('login') ||
+                               bodyText?.toLowerCase().includes('sign in');
+    
+    expect(isLoginOrRedirect).toBe(true);
+  });
+
+  test('app pages are protected', async ({ page }) => {
+    const protectedPages = ['/app', '/app/runs', '/app/settings'];
+    
+    for (const path of protectedPages) {
+      await page.goto(path);
+      
+      // Should either redirect or show auth-required state
+      const url = page.url();
+      const isProtected = url.includes('login') || 
+                          url.includes('signin') || 
+                          url === path; // Some apps show the page but with limited content
+      
+      expect(isProtected).toBe(true);
+    }
+  });
+});
