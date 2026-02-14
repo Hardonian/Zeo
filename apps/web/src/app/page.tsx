@@ -46,13 +46,17 @@ export default function Home() {
             <Link href="/platform" className="rounded border border-slate-500 px-4 py-2 text-slate-100 hover:bg-slate-700/40">View product</Link>
           </div>
         </div>
-      </section>
+        </section>
 
       <div className="space-y-8 py-8">
         <section className="grid gap-4 md:grid-cols-3">
-          {highlights.map((item) => (
-            <article key={item} className="rounded-lg border border-gray-200 bg-white p-5">
-              <p className="text-sm text-gray-700">{item}</p>
+          {capabilities.map((cap) => (
+            <article key={cap.title} className="rounded-lg border border-gray-200 bg-white p-5">
+              <div className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg ${cap.color}`}>
+                <cap.icon className="h-5 w-5" />
+              </div>
+              <h3 className="font-semibold text-gray-900">{cap.title}</h3>
+              <p className="text-sm text-gray-700 mt-1">{cap.description}</p>
             </article>
           ))}
         </section>
@@ -71,7 +75,6 @@ export default function Home() {
             />
           </div>
         </section>
-      </div>
     </PublicShell>
   );
 }

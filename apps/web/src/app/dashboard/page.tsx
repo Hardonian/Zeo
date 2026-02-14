@@ -1,5 +1,10 @@
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'Dashboard | Zeo',
+  description: 'Access the Zeo authenticated workspace for governance dashboards and decision analysis.',
+};
+
 export default function DashboardPage() {
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col items-center justify-center px-6 text-center">

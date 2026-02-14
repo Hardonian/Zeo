@@ -1,11 +1,6 @@
 import Image from 'next/image';
 import { PublicShell } from '@/components/site/PublicShell';
 
-export const metadata = {
-  title: 'Features | Zeo',
-  description: 'Zeo features: decision branching, flip-point detection, value of information, regret analysis, and provenance-first evidence tracking.',
-};
-
 export default function FeaturesPage() {
   return (
     <PublicShell title="Features">

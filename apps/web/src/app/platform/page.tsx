@@ -8,42 +8,87 @@ export const metadata = {
 };
 
 const capabilities = [
-  {
-    title: 'Decision Branching',
-    description: 'Explore complex decisions with branching analysis, sensitivity thresholds, and flip-point detection.',
-    href: '/stitch/decision-branching-view-1',
-  },
-  {
-    title: 'Uncertainty Ledger',
-    description: 'Track confidence ranges and belief states with full provenance and audit trails.',
-    href: '/stitch/uncertainty-ledger-viewer-1',
-  },
-  {
-    title: 'Epistemic Translator',
-    description: 'Translate between different reasoning frameworks and align team mental models.',
-    href: '/stitch/epistemic-translator-panel-1',
-  },
-  {
-    title: 'OSS Governance',
-    description: 'Monitor policy compliance, drift detection, and governance health dashboards.',
-    href: '/stitch/oss-governance-dashboard',
-  },
-  {
-    title: 'KPI Health Monitoring',
-    description: 'Track key performance indicators with uncertainty bands and health scoring.',
-    href: '/stitch/kpi-health-monitor-1',
-  },
-  {
-    title: 'Evidence Planning',
-    description: 'Plan evidence collection and track research queues with value-of-information analysis.',
-    href: '/stitch/evidence-planner',
-  },
+    {
+      title: 'Decision Branching',
+      description: 'Explore complex decisions with branching analysis, sensitivity thresholds, and flip-point detection.',
+      href: '/stitch/decision-branching-view-1',
+      illustration: '/illustrations/counterfactual-graph.svg',
+      illustrationAlt: 'Node graph showing current decision path highlighted with faint counterfactual branches and flip-distance annotation',
+      illustrationW: 320,
+      illustrationH: 200,
+    },
+    {
+      title: 'Uncertainty Ledger',
+      description: 'Track confidence ranges and belief states with full provenance and audit trails.',
+      href: '/stitch/uncertainty-ledger-viewer-1',
+      illustration: null,
+      illustrationAlt: '',
+      illustrationW: 0,
+      illustrationH: 0,
+    },
+    {
+      title: 'Epistemic Translator',
+      description: 'Translate between different reasoning frameworks and align team mental models.',
+      href: '/stitch/epistemic-translator-panel-1',
+      illustration: null,
+      illustrationAlt: '',
+      illustrationW: 0,
+      illustrationH: 0,
+    },
+    {
+      title: 'OSS Governance',
+      description: 'Monitor policy compliance, drift detection, and governance health dashboards.',
+      href: '/stitch/oss-governance-dashboard',
+      illustration: '/illustrations/value-policy.svg',
+      illustrationAlt: 'Policy document with compliance checkmarks representing governance enforcement',
+      illustrationW: 120,
+      illustrationH: 90,
+    },
+    {
+      title: 'KPI Health Monitoring',
+      description: 'Track key performance indicators with uncertainty bands and health scoring.',
+      href: '/stitch/kpi-health-monitor-1',
+      illustration: '/illustrations/regret-envelope.svg',
+      illustrationAlt: 'Outcome envelope showing best-case and worst-case bounds with a robust central path',
+      illustrationW: 300,
+      illustrationH: 160,
+    },
+    {
+      title: 'Evidence Planning',
+      description: 'Plan evidence collection and track research queues with value-of-information analysis.',
+      href: '/stitch/evidence-planner',
+      illustration: '/illustrations/voi-diagram.svg',
+      illustrationAlt: 'Decision node with evidence source arrows flowing in and confidence delta bracket showing posterior narrowing',
+      illustrationW: 280,
+      illustrationH: 180,
+    },
 ];
 
 const techFeatures = [
-  { title: 'Static-first marketing routes', description: 'Public pages ship as static assets and avoid runtime database dependencies.' },
-  { title: 'Capability iframe isolation', description: 'Panel exports render in sandboxed iframes for predictable behavior and containment.' },
-  { title: 'CLI-first workflows', description: 'Each panel route includes deterministic command workflows aligned with the install docs format.' },
+  {
+    title: 'Deterministic Execution',
+    description: 'Every analysis run is reproducible. Same inputs produce identical outputs, enabling reliable auditing.',
+  },
+  {
+    title: 'Signed Evidence Bundles',
+    description: 'Cryptographic signatures on evidence bundles create tamper-proof audit trails for compliance.',
+  },
+  {
+    title: 'Confidence Intervals',
+    description: 'All estimates carry explicit uncertainty ranges — never false precision on inherently uncertain data.',
+  },
+  {
+    title: 'Policy-as-Code',
+    description: 'Governance rules expressed as deterministic policy packs that gate decisions at CI time.',
+  },
+  {
+    title: 'Provenance Tracking',
+    description: 'Every fact records its source, retrieval timestamp, and integrity checksum for full traceability.',
+  },
+  {
+    title: 'Replay & Audit',
+    description: 'Re-run any past analysis with original inputs to verify conclusions and satisfy auditors.',
+  },
 ];
 
 export default function PlatformPage() {
