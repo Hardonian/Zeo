@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { PublicShell } from '@/components/site/PublicShell';
+import { IconBranching, IconShield, IconProvenance } from '@/components/icons/ZeoIcons';
 
 export const metadata = {
   title: 'Zeo — Governance and Evidence for Uncertain Decisions',
@@ -11,6 +12,12 @@ const highlights = [
   'Branch decisions with confidence ranges and explicit assumptions.',
   'Attach provenance pointers to every evidence-backed fact.',
   'Track sensitivity and flip thresholds before shipping critical changes.',
+];
+
+const capabilities = [
+  { title: 'Decision Branching', description: 'Explore decisions with sensitivity thresholds and flip-point detection.', icon: IconBranching, color: 'bg-blue-100 text-blue-700' },
+  { title: 'Governance', description: 'Policy compliance, drift detection, and health dashboards.', icon: IconShield, color: 'bg-green-100 text-green-700' },
+  { title: 'Evidence Provenance', description: 'Full audit trails with source tracking and integrity checksums.', icon: IconProvenance, color: 'bg-violet-100 text-violet-700' },
 ];
 
 export default function Home() {
@@ -75,6 +82,7 @@ export default function Home() {
             />
           </div>
         </section>
+      </div>
     </PublicShell>
   );
 }
