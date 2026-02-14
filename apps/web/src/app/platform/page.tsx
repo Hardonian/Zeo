@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { PublicShell } from '@/components/site/PublicShell';
-import { IconArrowRight } from '@/components/icons/ZeoIcons';
+import { IconArrowRight, IconTerminal } from '@/components/icons/ZeoIcons';
 
 export const metadata = {
   title: 'Platform | Zeo',
@@ -11,7 +11,7 @@ const capabilities = [
     {
       title: 'Decision Branching',
       description: 'Explore complex decisions with branching analysis, sensitivity thresholds, and flip-point detection.',
-      href: '/stitch/decision-branching-view-1',
+      href: '/product/counterfactual-lab/demo',
       illustration: '/illustrations/counterfactual-graph.svg',
       illustrationAlt: 'Node graph showing current decision path highlighted with faint counterfactual branches and flip-distance annotation',
       illustrationW: 320,
@@ -20,7 +20,7 @@ const capabilities = [
     {
       title: 'Uncertainty Ledger',
       description: 'Track confidence ranges and belief states with full provenance and audit trails.',
-      href: '/stitch/uncertainty-ledger-viewer-1',
+      href: '/product/counterfactual-lab/demo',
       illustration: null,
       illustrationAlt: '',
       illustrationW: 0,
@@ -29,7 +29,7 @@ const capabilities = [
     {
       title: 'Epistemic Translator',
       description: 'Translate between different reasoning frameworks and align team mental models.',
-      href: '/stitch/epistemic-translator-panel-1',
+      href: '/product/evidence-planner/demo',
       illustration: null,
       illustrationAlt: '',
       illustrationW: 0,
@@ -38,7 +38,7 @@ const capabilities = [
     {
       title: 'OSS Governance',
       description: 'Monitor policy compliance, drift detection, and governance health dashboards.',
-      href: '/stitch/oss-governance-dashboard',
+      href: '/product/evidence-planner/demo',
       illustration: '/illustrations/value-policy.svg',
       illustrationAlt: 'Policy document with compliance checkmarks representing governance enforcement',
       illustrationW: 120,
@@ -47,7 +47,7 @@ const capabilities = [
     {
       title: 'KPI Health Monitoring',
       description: 'Track key performance indicators with uncertainty bands and health scoring.',
-      href: '/stitch/kpi-health-monitor-1',
+      href: '/product/decision-graph/demo',
       illustration: '/illustrations/regret-envelope.svg',
       illustrationAlt: 'Outcome envelope showing best-case and worst-case bounds with a robust central path',
       illustrationW: 300,
@@ -56,12 +56,18 @@ const capabilities = [
     {
       title: 'Evidence Planning',
       description: 'Plan evidence collection and track research queues with value-of-information analysis.',
-      href: '/stitch/evidence-planner',
+      href: '/product/evidence-planner/demo',
       illustration: '/illustrations/voi-diagram.svg',
       illustrationAlt: 'Decision node with evidence source arrows flowing in and confidence delta bracket showing posterior narrowing',
       illustrationW: 280,
       illustrationH: 180,
     },
+];
+
+const cliDemos = [
+  { title: 'Counterfactual Lab', slug: 'counterfactual-lab', description: 'Flip-distance analysis and counterfactual exploration' },
+  { title: 'Evidence Planner', slug: 'evidence-planner', description: 'Value-of-information ranking and collection planning' },
+  { title: 'Decision Graph', slug: 'decision-graph', description: 'Graph simulation and path explanation' },
 ];
 
 const techFeatures = [
@@ -108,7 +114,10 @@ export default function PlatformPage() {
               <Link key={capability.title} href={capability.href} className="rounded-lg border border-gray-200 bg-white p-5 transition-all hover:border-blue-300 hover:shadow-sm">
                 <h3 className="font-semibold text-blue-700">{capability.title}</h3>
                 <p className="mt-2 text-sm text-gray-600">{capability.description}</p>
-                <span className="mt-3 inline-block text-sm text-blue-600">View panel →</span>
+                <span className="mt-3 inline-flex items-center gap-1.5 text-sm text-blue-600">
+                  <IconTerminal className="h-3.5 w-3.5" />
+                  Try the CLI Live
+                </span>
               </Link>
             ))}
           </div>
@@ -122,6 +131,26 @@ export default function PlatformPage() {
                 <h3 className="font-semibold text-gray-900">{feature.title}</h3>
                 <p className="mt-2 text-sm text-gray-600">{feature.description}</p>
               </article>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="mb-4 text-lg font-semibold">Interactive CLI demos</h2>
+          <p className="mb-4 text-sm text-gray-600">Try Zeo commands directly in your browser. Deterministic output, no backend required.</p>
+          <div className="grid gap-4 md:grid-cols-3">
+            {cliDemos.map((demo) => (
+              <Link key={demo.slug} href={`/product/${demo.slug}/demo`} className="rounded-lg border border-gray-200 bg-gray-950 p-5 transition-all hover:border-blue-500 hover:shadow-md">
+                <div className="flex items-center gap-2">
+                  <IconTerminal className="h-5 w-5 text-green-400" />
+                  <h3 className="font-semibold text-white">{demo.title}</h3>
+                </div>
+                <p className="mt-2 text-sm text-gray-400">{demo.description}</p>
+                <span className="mt-3 inline-flex items-center gap-1 text-sm text-blue-400">
+                  Launch demo
+                  <IconArrowRight className="h-3.5 w-3.5" />
+                </span>
+              </Link>
             ))}
           </div>
         </section>
