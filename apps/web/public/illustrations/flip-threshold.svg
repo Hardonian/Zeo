@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 140" width="280" height="140" role="img" aria-label="Flip threshold visualization">
+  <title>Flip Threshold: parameter axis showing current estimate distance to the flip point separating Option A and Option B</title>
+  <rect width="280" height="140" fill="#f8fafc"/>
+
+  <!-- === OUTCOME ZONES === -->
+  <!-- Zone A: left of threshold (blue tint, Option A wins) -->
+  <rect x="20" y="62" width="100" height="16" rx="2" fill="#eff6ff"/>
+  <!-- Zone B: right of threshold (green tint, Option B wins) -->
+  <rect x="120" y="62" width="140" height="16" fill="#f0fdf4"/>
+
+  <!-- Zone border top/bottom -->
+  <line x1="20" y1="62" x2="260" y2="62" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="20" y1="78" x2="260" y2="78" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- === FLIP THRESHOLD LINE === -->
+  <line x1="120" y1="20" x2="120" y2="118" stroke="#2563eb" stroke-width="2"/>
+  <!-- Downward triangle at top of threshold line -->
+  <polygon points="116,18 124,18 120,25" fill="#2563eb"/>
+  <!-- Label above -->
+  <text x="120" y="14" font-family="ui-monospace, monospace" font-size="8" fill="#2563eb" text-anchor="middle">flip threshold</text>
+
+  <!-- Zone labels above bar -->
+  <text x="70" y="57" font-family="ui-monospace, monospace" font-size="8" fill="#1d4ed8" text-anchor="middle">Option A</text>
+  <text x="190" y="57" font-family="ui-monospace, monospace" font-size="8" fill="#15803d" text-anchor="middle">Option B</text>
+
+  <!-- === CURRENT ESTIMATE MARKER === -->
+  <circle cx="78" cy="70" r="5" fill="#2563eb"/>
+  <!-- Dashed drop line above -->
+  <line x1="78" y1="46" x2="78" y2="62" stroke="#2563eb" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="78" y="43" font-family="ui-monospace, monospace" font-size="7" fill="#6b7280" text-anchor="middle">current</text>
+
+  <!-- === FLIP DISTANCE ANNOTATION === -->
+  <!-- Double-headed arrow from x=78 to x=120 at y=33 -->
+  <line x1="82" y1="33" x2="116" y2="33" stroke="#6b7280" stroke-width="1"/>
+  <!-- Left arrowhead -->
+  <polygon points="86,30 82,33 86,36" fill="#6b7280"/>
+  <!-- Right arrowhead -->
+  <polygon points="112,30 116,33 112,36" fill="#6b7280"/>
+  <text x="99" y="29" font-family="ui-monospace, monospace" font-size="7" fill="#6b7280" text-anchor="middle">flip dist = 0.4σ</text>
+
+  <!-- === AXIS === -->
+  <!-- Axis end markers -->
+  <text x="20" y="93" font-family="ui-monospace, monospace" font-size="7" fill="#9ca3af" text-anchor="middle">min</text>
+  <text x="260" y="93" font-family="ui-monospace, monospace" font-size="7" fill="#9ca3af" text-anchor="middle">max</text>
+  <!-- Axis label -->
+  <text x="140" y="108" font-family="ui-monospace, monospace" font-size="7.5" fill="#6b7280" text-anchor="middle">assumption value →</text>
+  <!-- Axis tick marks -->
+  <line x1="20" y1="78" x2="20" y2="84" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="260" y1="78" x2="260" y2="84" stroke="#d1d5db" stroke-width="1"/>
+</svg>

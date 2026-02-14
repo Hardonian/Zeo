@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="320" height="200" role="img" aria-label="Counterfactual decision graph">
+  <title>Counterfactual Graph: current path highlighted, alternative branches faint, flip-distance annotated</title>
+  <rect width="320" height="200" fill="#f8fafc"/>
+
+  <!-- Defs: arrowheads -->
+  <defs>
+    <marker id="cg-blue" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#2563eb"/>
+    </marker>
+    <marker id="cg-green" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <!-- === EDGES === -->
+  <!-- Root → Decision A (active, solid blue) -->
+  <line x1="50" y1="100" x2="130" y2="63" stroke="#2563eb" stroke-width="1.5" marker-end="url(#cg-blue)"/>
+  <!-- Root → Decision B (faint, dashed) -->
+  <line x1="50" y1="100" x2="132" y2="138" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- Root → Decision C (very faint) -->
+  <line x1="50" y1="100" x2="134" y2="176" stroke="#d1d5db" stroke-width="1" stroke-dasharray="3,4" opacity="0.6"/>
+
+  <!-- A → Outcome A1 (active) -->
+  <line x1="150" y1="60" x2="232" y2="42" stroke="#2563eb" stroke-width="1.5" marker-end="url(#cg-blue)"/>
+  <!-- A → Outcome A2 (active) -->
+  <line x1="150" y1="62" x2="232" y2="78" stroke="#2563eb" stroke-width="1.5" marker-end="url(#cg-blue)"/>
+  <!-- B → Outcome B1 (faint) -->
+  <line x1="150" y1="140" x2="233" y2="140" stroke="#d1d5db" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <!-- A1 → Terminal 1 -->
+  <line x1="248" y1="40" x2="293" y2="40" stroke="#16a34a" stroke-width="1.5" marker-end="url(#cg-green)"/>
+  <!-- A2 → Terminal 2 -->
+  <line x1="248" y1="80" x2="293" y2="80" stroke="#2563eb" stroke-width="1.5" marker-end="url(#cg-blue)"/>
+
+  <!-- === NODES === -->
+  <!-- Root node -->
+  <circle cx="40" cy="100" r="10" fill="#2563eb" fill-opacity="0.15" stroke="#2563eb" stroke-width="1.5"/>
+  <circle cx="40" cy="100" r="4" fill="#2563eb"/>
+
+  <!-- Decision A (active) -->
+  <circle cx="140" cy="60" r="10" fill="#2563eb" fill-opacity="0.2" stroke="#2563eb" stroke-width="2"/>
+
+  <!-- Decision B (faint) -->
+  <circle cx="140" cy="140" r="8" fill="none" stroke="#9ca3af" stroke-width="1.5"/>
+
+  <!-- Decision C (very faint) -->
+  <circle cx="140" cy="178" r="6" fill="none" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Outcome A1 (green tint - best outcome) -->
+  <circle cx="240" cy="40" r="8" fill="#16a34a" fill-opacity="0.15" stroke="#16a34a" stroke-width="1.5"/>
+
+  <!-- Outcome A2 (blue tint) -->
+  <circle cx="240" cy="80" r="8" fill="#2563eb" fill-opacity="0.10" stroke="#2563eb" stroke-width="1.5"/>
+
+  <!-- Outcome B1 (faint) -->
+  <circle cx="240" cy="140" r="7" fill="none" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Terminal T1 -->
+  <circle cx="298" cy="40" r="5" fill="#16a34a"/>
+
+  <!-- Terminal T2 -->
+  <circle cx="298" cy="80" r="5" fill="#2563eb"/>
+
+  <!-- === FLIP DISTANCE BRACKET === -->
+  <!-- Vertical bracket from A (y=65) to B (y=135) on x=155 -->
+  <line x1="155" y1="65" x2="163" y2="65" stroke="#6b7280" stroke-width="1"/>
+  <line x1="155" y1="135" x2="163" y2="135" stroke="#6b7280" stroke-width="1"/>
+  <line x1="163" y1="65" x2="163" y2="135" stroke="#6b7280" stroke-width="1" stroke-dasharray="2,2"/>
+
+  <!-- Flip dist label -->
+  <text x="169" y="104" font-family="ui-monospace, monospace" font-size="8" fill="#6b7280">flip</text>
+  <text x="169" y="114" font-family="ui-monospace, monospace" font-size="8" fill="#6b7280">dist</text>
+
+  <!-- === LEGEND === -->
+  <circle cx="16" cy="16" r="5" fill="#2563eb" fill-opacity="0.8"/>
+  <text x="24" y="20" font-family="ui-monospace, monospace" font-size="8" fill="#6b7280">current path</text>
+
+  <line x1="12" y1="30" x2="22" y2="30" stroke="#9ca3af" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="24" y="34" font-family="ui-monospace, monospace" font-size="8" fill="#9ca3af">counterfactual</text>
+</svg>
