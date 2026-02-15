@@ -44,6 +44,12 @@ jobs:
         run: pnpm test:a11y
       - name: Security guardrails
         run: pnpm test:security
+      - name: Headers guardrails
+        run: pnpm test:headers
+      - name: Golden eval guardrails
+        run: pnpm test:eval
+      - name: RLS index audit
+        run: pnpm rls:index-audit
       - name: Performance guardrails
         run: pnpm test:perf
       - name: Database guardrails

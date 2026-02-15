@@ -35,6 +35,8 @@ import {
     validateToolInputAgainstSchema,
     enforcePayloadSize,
     sanitizeToolOutput,
+    validateObjectDepth,
+    detectSuspiciousOutput,
 } from "./security.js";
 import { mcpPolicyEngine } from "./policy.js";
 import { MetricsRegistry, StructuredLogger, Tracer } from "./observability.js";
@@ -183,7 +185,7 @@ export function createMcpServer(config: McpConfig): McpServer {
         t => config.tools.allowlist[t.definition.name]?.enabled !== false
     );
     const internalToolNames = new Set(enabledTools.map((t) => t.definition.name));
-    const quarantineByTool = new Map<string, { failures: number; quarantinedUntil?: number; reason?: string }>();
+    const quarantineByTool = new Map<string, { failures: number; quarantinedUntil?: number; reason?: string; lastEvent?: string }>();
 
     function getToolDefinitions(): McpToolDefinition[] {
         return enabledTools.map(t => t.definition);
@@ -207,7 +209,8 @@ export function createMcpServer(config: McpConfig): McpServer {
         const next = { ...state, failures, reason };
         if (failures >= config.security.quarantineFailureThreshold) {
             next.quarantinedUntil = Date.now() + config.security.quarantineWindowMs;
-            logger.log({ level: "warn", msg: "tool quarantined", run_id: "system", action: "tools/call", tool_name: name, reason, failures, quarantined_until: next.quarantinedUntil });
+            next.lastEvent = new Date().toISOString();
+            logger.log({ level: "warn", msg: "tool quarantined", run_id: "system", action: "tools/call", tool_name: name, reason, failures, quarantined_until: next.quarantinedUntil, decision_trace: ["tool_quarantine"] });
             metrics.inc("tool_quarantine");
         }
         quarantineByTool.set(name, next);
@@ -367,6 +370,19 @@ export function createMcpServer(config: McpConfig): McpServer {
         }
 
         const trustTier = trustTierForTool(params.name);
+        if (trustTier === "external" && !config.tools.externalAllowlist.includes(params.name)) {
+            metrics.inc("tool_denied_external_allowlist");
+            return {
+                jsonrpc: "2.0",
+                id: request.id,
+                error: {
+                    code: -32600,
+                    message: `External tool denied by default: ${params.name}`,
+                    data: { run_id: runId, trust_tier: trustTier, error_code: "EXTERNAL_TOOL_NOT_ALLOWLISTED" },
+                },
+            };
+        }
+
         const quarantineState = getQuarantineState(params.name);
         if (quarantineState.quarantinedUntil && quarantineState.quarantinedUntil > Date.now()) {
             metrics.inc("tool_denied_quarantine");
@@ -427,6 +443,19 @@ export function createMcpServer(config: McpConfig): McpServer {
 
         // Policy check (v0.7.0)
         const toolArgs = (params.arguments ?? {}) as Record<string, unknown>;
+        const depthErrors = validateObjectDepth(toolArgs, config.security.maxArgumentDepth);
+        if (depthErrors.length > 0) {
+            noteToolFailure(params.name, depthErrors[0]);
+            return {
+                jsonrpc: "2.0",
+                id: request.id,
+                error: {
+                    code: -32602,
+                    message: `Schema validation failed: ${depthErrors.join("; ")}`,
+                    data: { run_id: runId, trust_tier: trustTier, error_code: "ARGUMENT_DEPTH_EXCEEDED" },
+                },
+            };
+        }
         const violations = mcpPolicyEngine.validate({
             toolName: params.name,
             arguments: toolArgs,
@@ -502,6 +531,20 @@ export function createMcpServer(config: McpConfig): McpServer {
                 auditBridge,
                 config.warehouse.basePath
             );
+
+            const suspiciousPatterns = detectSuspiciousOutput(result);
+            if (trustTier === "external" && suspiciousPatterns.length > 0) {
+                noteToolFailure(params.name, `suspicious output: ${suspiciousPatterns.join(",")}`);
+                return {
+                    jsonrpc: "2.0",
+                    id: request.id,
+                    error: {
+                        code: -32603,
+                        message: `External tool output blocked by safety filters: ${params.name}`,
+                        data: { run_id: runId, trust_tier: trustTier, suspicious_patterns: suspiciousPatterns, decision_trace: ["external_tool_suspicious_output"] },
+                    },
+                };
+            }
 
             const sanitizedResult = sanitizeToolOutput(result) as McpToolResult;
             const resultSizeError = enforcePayloadSize(config.security.maxToolResultBytes, sanitizedResult, "Tool result");

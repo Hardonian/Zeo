@@ -17,6 +17,14 @@ const SECRET_PATTERNS = [
     /auth/i,
     /bearer/i,
     /credential/i,
+    /sk-[a-z0-9]{16,}/i,
+];
+
+const SUSPICIOUS_OUTPUT_PATTERNS = [
+    /<script\b/i,
+    /ignore\s+previous\s+instructions/i,
+    /begin\s+(rsa\s+)?private\s+key/i,
+    /api[_-]?key\s*[:=]/i,
 ];
 
 function stripControlChars(input: string): string {
@@ -27,6 +35,11 @@ function stripControlChars(input: string): string {
         if (!isControl) out += input[i];
     }
     return out;
+}
+
+export function detectSuspiciousOutput(value: unknown): string[] {
+    const text = JSON.stringify(value ?? {}).slice(0, 64_000);
+    return SUSPICIOUS_OUTPUT_PATTERNS.filter((pattern) => pattern.test(text)).map((pattern) => pattern.source);
 }
 
 /**
@@ -62,13 +75,27 @@ export function validateRequestSize(
     return null;
 }
 
+export function validateObjectDepth(value: unknown, maxDepth: number, path = "arguments", depth = 0): string[] {
+    if (depth > maxDepth) return [`${path} exceeds max depth ${maxDepth}`];
+    if (!value || typeof value !== "object") return [];
+    const record = value as Record<string, unknown>;
+    const entries = Array.isArray(value) ? Object.entries(value) : Object.entries(record);
+    return entries.flatMap(([key, child]) => validateObjectDepth(child, maxDepth, `${path}.${key}`, depth + 1));
+}
+
 /**
  * Redact secrets from a value before logging.
  * Replaces values whose keys match secret patterns with "[REDACTED]".
  */
 export function redactSecrets(value: unknown): unknown {
     if (value === null || value === undefined) return value;
-    if (typeof value === "string") return value;
+    if (typeof value === "string") {
+        let sanitized = value;
+        for (const pattern of SECRET_PATTERNS) {
+            sanitized = sanitized.replace(pattern, "[REDACTED]");
+        }
+        return sanitized;
+    }
     if (typeof value === "number" || typeof value === "boolean") return value;
 
     if (Array.isArray(value)) {
@@ -98,14 +125,19 @@ function validateByProperty(path: string, value: unknown, property: SchemaProper
         if (property.enum && typeof value === "string" && !property.enum.includes(value)) {
             errors.push(`${path} must be one of: ${property.enum.join(", ")}`);
         }
+        if (typeof value === "string" && property.minLength !== undefined && value.length < property.minLength) {
+            errors.push(`${path} length must be >= ${property.minLength}`);
+        }
+        if (typeof value === "string" && property.maxLength !== undefined && value.length > property.maxLength) {
+            errors.push(`${path} length must be <= ${property.maxLength}`);
+        }
         return errors;
     }
-    if (propType === "number") {
-        if (typeof value !== "number" || Number.isNaN(value)) errors.push(`${path} must be a number`);
-        return errors;
-    }
-    if (propType === "integer") {
-        if (typeof value !== "number" || !Number.isInteger(value)) errors.push(`${path} must be an integer`);
+    if (propType === "number" || propType === "integer") {
+        if (typeof value !== "number" || Number.isNaN(value)) errors.push(`${path} must be a ${propType}`);
+        if (propType === "integer" && typeof value === "number" && !Number.isInteger(value)) errors.push(`${path} must be an integer`);
+        if (typeof value === "number" && property.minimum !== undefined && value < property.minimum) errors.push(`${path} must be >= ${property.minimum}`);
+        if (typeof value === "number" && property.maximum !== undefined && value > property.maximum) errors.push(`${path} must be <= ${property.maximum}`);
         return errors;
     }
     if (propType === "boolean") {
@@ -117,6 +149,8 @@ function validateByProperty(path: string, value: unknown, property: SchemaProper
             errors.push(`${path} must be an array`);
             return errors;
         }
+        if (property.minItems !== undefined && value.length < property.minItems) errors.push(`${path} length must be >= ${property.minItems}`);
+        if (property.maxItems !== undefined && value.length > property.maxItems) errors.push(`${path} length must be <= ${property.maxItems}`);
         if (property.items) {
             value.forEach((item, idx) => {
                 errors.push(...validateByProperty(`${path}[${idx}]`, item, property.items as SchemaProperty));
@@ -132,6 +166,10 @@ function validateByProperty(path: string, value: unknown, property: SchemaProper
         const obj = value as Record<string, unknown>;
         const childProperties = property.properties ?? {};
         const required = property.required ?? [];
+
+        if (Object.keys(childProperties).length === 0) {
+            return errors;
+        }
 
         for (const req of required) {
             if (obj[req] === undefined || obj[req] === null) {
@@ -152,12 +190,6 @@ function validateByProperty(path: string, value: unknown, property: SchemaProper
     return errors;
 }
 
-/**
- * Strict schema validation:
- * - required fields are present
- * - unknown fields are rejected
- * - types and enums are enforced
- */
 export function validateToolInputAgainstSchema(
     params: Record<string, unknown> | undefined,
     schema: { properties: Record<string, SchemaProperty>; required?: string[] }
@@ -184,9 +216,6 @@ export function validateToolInputAgainstSchema(
     return errors;
 }
 
-/**
- * Backward compatible required-field validation for existing tools.
- */
 export function validateToolInput(
     params: Record<string, unknown> | undefined,
     required: string[]
@@ -220,7 +249,8 @@ export function enforcePayloadSize(limit: number, value: unknown, label: string)
 export function sanitizeToolOutput(value: unknown): unknown {
     if (typeof value === "string") {
         const cleaned = stripControlChars(value).replace(/```[\s\S]*?```/g, "[BLOCK_REDACTED]");
-        return cleaned.length > 8000 ? `${cleaned.slice(0, 8000)}…` : cleaned;
+        const redacted = redactSecrets(cleaned);
+        return typeof redacted === "string" && redacted.length > 8000 ? `${redacted.slice(0, 8000)}…` : redacted;
     }
     if (Array.isArray(value)) {
         return value.map(sanitizeToolOutput);
