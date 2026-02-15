@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import { PublicShell } from '@/components/site/PublicShell';
+import { buildMetadata } from '@/lib/seo/metadata';
 import { IconArrowRight, IconTerminal } from '@/components/icons/ZeoIcons';
 import { getAllPanelConfigs } from '@/lib/panel-config';
 import type { PanelConfig } from '@/lib/panel-config';
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: 'Platform | Zeo',
   description: 'Explore Zeo platform capabilities including governance dashboards, decision branching, uncertainty tracking, and epistemic tooling.',
-};
+  canonicalPath: '/platform',
+});
 
 interface Capability {
   title: string;

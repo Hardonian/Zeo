@@ -1,12 +1,16 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { PublicShell } from '@/components/site/PublicShell';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { buildMetadata } from '@/lib/seo/metadata';
 import { IconBranching, IconShield, IconProvenance } from '@/components/icons/ZeoIcons';
 import { DecisionHeroLoader } from '@/components/hero/DecisionHeroLoader';
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: 'Zeo — Decision Intelligence Under Pressure',
   description: 'Simulate outcomes, measure stability, improve confidence — with full traceability. Enterprise-grade decision governance.',
-};
+  canonicalPath: '/',
+});
 
 const capabilities = [
   { title: 'Decision Branching', description: 'Explore decisions with sensitivity thresholds and flip-point detection.', icon: IconBranching, color: 'bg-blue-100 text-blue-700' },
@@ -14,10 +18,31 @@ const capabilities = [
   { title: 'Evidence Provenance', description: 'Full audit trails with source tracking and integrity checksums.', icon: IconProvenance, color: 'bg-violet-100 text-violet-700' },
 ];
 
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Zeo',
+    url: 'https://zeo.dev',
+    logo: 'https://zeo.dev/favicon.svg',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Zeo',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    url: 'https://zeo.dev',
+  },
+];
+
 export default function Home() {
   return (
     <PublicShell title="Decision intelligence under uncertainty" hero>
-      {/* Hero — client-rendered via loader to avoid hydration mismatch */}
+      <JsonLd data={jsonLd} />
+      <h1 className="sr-only">Decision intelligence under uncertainty</h1>
+
       <section className="relative -mx-6 -mt-10 overflow-hidden" style={{ minHeight: '600px' }}>
         <DecisionHeroLoader />
       </section>
@@ -29,7 +54,7 @@ export default function Home() {
               <div className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg ${cap.color}`}>
                 <cap.icon className="h-5 w-5" />
               </div>
-              <h3 className="font-semibold text-gray-900">{cap.title}</h3>
+              <h2 className="font-semibold text-gray-900">{cap.title}</h2>
               <p className="text-sm text-gray-700 mt-1">{cap.description}</p>
             </article>
           ))}
@@ -47,6 +72,10 @@ export default function Home() {
               className="h-auto w-full"
               loading="lazy"
             />
+          </div>
+          <div className="mt-5 flex flex-wrap gap-3 text-sm">
+            <Link href="/docs" className="rounded border border-gray-300 px-3 py-1.5 hover:bg-gray-50">Read docs</Link>
+            <Link href="/studio" className="rounded bg-blue-600 px-3 py-1.5 text-white hover:bg-blue-700">Next step: Open studio</Link>
           </div>
         </section>
       </div>

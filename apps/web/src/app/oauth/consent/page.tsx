@@ -1,11 +1,14 @@
 import Link from 'next/link';
+import { buildMetadata } from '@/lib/seo/metadata';
 import { PublicShell } from '@/components/site/PublicShell';
 import { OAUTH_DEFAULT_PROVIDER, OAUTH_REDIRECT_TO } from '@/content/site';
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: 'OAuth Consent | Zeo',
   description: 'Sign in with Supabase-hosted OAuth consent for Zeo.',
-};
+  canonicalPath: '/oauth/consent',
+  noindex: true,
+});
 
 function getAuthorizeUrl(): string | null {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();

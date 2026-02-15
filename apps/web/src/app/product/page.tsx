@@ -1,13 +1,25 @@
 import Link from 'next/link';
 import { PublicShell } from '@/components/site/PublicShell';
+import { buildMetadata } from '@/lib/seo/metadata';
 import { IconTerminal, IconArrowRight } from '@/components/icons/ZeoIcons';
 import { getAllPanelConfigs } from '@/lib/panel-config';
 import { WORKFLOWS, getHumanPanelsByWorkflow } from '@/lib/human-panels';
+import { JsonLd } from '@/components/seo/JsonLd';
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: 'Product | Zeo',
   description: 'Zeo Decision Intelligence — natural language analysis and CLI demos. Deterministic output, no backend required.',
+  canonicalPath: '/product',
+});
+const productJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Zeo Decision Intelligence',
+  description: 'Deterministic decision intelligence with provenance-first governance and evidence mapping.',
+  brand: { '@type': 'Brand', name: 'Zeo' },
+  url: 'https://zeo.dev/product',
 };
+
 
 /** Map panel slugs to studio intent params. */
 const SLUG_TO_INTENT: Record<string, string> = {
@@ -26,6 +38,7 @@ export default function ProductPage() {
 
   return (
     <PublicShell title="Product">
+      <JsonLd data={productJsonLd} />
       <div className="max-w-4xl space-y-10">
         {/* Decision Studio CTA */}
         <div className="rounded-xl border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 shadow-sm">

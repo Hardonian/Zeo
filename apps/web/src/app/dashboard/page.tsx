@@ -1,9 +1,12 @@
 import Link from 'next/link';
+import { buildMetadata } from '@/lib/seo/metadata';
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: 'Dashboard | Zeo',
   description: 'Access the Zeo authenticated workspace for governance dashboards and decision analysis.',
-};
+  canonicalPath: '/dashboard',
+  noindex: true,
+});
 
 export default function DashboardPage() {
   return (

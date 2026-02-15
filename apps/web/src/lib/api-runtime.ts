@@ -20,6 +20,10 @@ export function unauthorized() {
 }
 
 export function apiError(error: unknown, status = 400) {
+  const isProd = process.env.NODE_ENV === 'production';
   const message = error instanceof Error ? error.message : 'Request failed';
-  return NextResponse.json({ ok: false, error: message }, { status });
+  return NextResponse.json(
+    { ok: false, error: isProd ? 'Request failed.' : message },
+    { status },
+  );
 }
