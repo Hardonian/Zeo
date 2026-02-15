@@ -1,32 +1,27 @@
-import Link from 'next/link';
-import { hasPublicSupabaseEnv } from '@/lib/env';
-import { getCurrentOrgId, listUserOrgs } from '@/lib/console-data';
-import { OrgSwitcher } from '@/components/console/OrgSwitcher';
+'use client';
 
-export const dynamic = 'force-dynamic';
+import { useState } from 'react';
+import { AppSidebar } from '@/components/dashboard/AppSidebar';
+import { AppHeader } from '@/components/dashboard/AppHeader';
+import { StatusBar } from '@/components/dashboard/StatusBar';
 
-const links = ['','/orgs','/projects','/repos','/runs','/keys','/settings'];
-
-export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  if (!hasPublicSupabaseEnv()) {
-    return <div className="p-8">Console unavailable: Supabase environment variables are not configured.</div>;
-  }
-
-  const orgs = await listUserOrgs();
-  const currentOrgId = await getCurrentOrgId();
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">Zeo Console</h1>
-          <OrgSwitcher orgs={orgs.map((o) => ({ orgId: o.orgId, name: o.org?.name ?? o.orgId }))} currentOrgId={currentOrgId} />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <AppSidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
+      <AppHeader sidebarCollapsed={collapsed} />
+      <main
+        className={`pt-14 pb-8 transition-[margin-left] duration-200 ${
+          collapsed ? 'ml-16' : 'ml-64'
+        }`}
+      >
+        <div className="mx-auto max-w-7xl px-6 py-6">
+          {children}
         </div>
-        <nav className="mb-6 flex flex-wrap gap-4">
-          {links.map((link) => <Link className="text-sm text-blue-700 hover:underline" key={link || 'root'} href={`/app${link}`}>{link === '' ? 'dashboard' : link.slice(1)}</Link>)}
-        </nav>
-        {children}
-      </div>
+      </main>
+      <StatusBar sidebarCollapsed={collapsed} />
     </div>
   );
 }

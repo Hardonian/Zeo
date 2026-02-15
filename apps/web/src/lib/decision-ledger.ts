@@ -87,6 +87,7 @@ export interface ReplayResult {
 const DB_NAME = 'zeo-decision-ledger';
 const DB_VERSION = 1;
 const STORE_NAME = 'records';
+const LS_KEY = 'zeo-decision-ledger';
 const ENGINE_VERSION = '2.0.0';
 const CURRENT_SCHEMA_VERSION: LedgerSchemaVersion = 'ledger_v2';
 
