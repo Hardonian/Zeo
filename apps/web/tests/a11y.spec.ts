@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const KEY_ROUTES = ['/', '/product', '/studio', '/app/jobs', '/app/approvals'];
+const KEY_ROUTES = ['/', '/product', '/docs', '/pricing', '/studio', '/app/jobs', '/app/approvals'];
 
 for (const route of KEY_ROUTES) {
   test(`${route} has core accessibility affordances`, async ({ page }) => {
@@ -14,5 +14,8 @@ for (const route of KEY_ROUTES) {
     expect(headings).toBeGreaterThan(0);
 
     await expect(page.locator('main').first()).toBeVisible();
+
+    const landmarkCount = await page.locator('header, main, footer, nav').count();
+    expect(landmarkCount).toBeGreaterThan(1);
   });
 }

@@ -36,6 +36,18 @@ jobs:
         run: pnpm test
       - name: Build
         run: pnpm build
+      - name: SEO guardrails
+        run: pnpm test:seo
+      - name: Install Playwright browser
+        run: pnpm -C apps/web exec playwright install --with-deps chromium
+      - name: Accessibility guardrails
+        run: pnpm test:a11y
+      - name: Security guardrails
+        run: pnpm test:security
+      - name: Performance guardrails
+        run: pnpm test:perf
+      - name: Database guardrails
+        run: pnpm test:db
       - name: Eval
         run: pnpm eval
       - name: Install web coverage provider
