@@ -2,7 +2,7 @@
   "name": "zeo",
   "private": true,
   "version": "1.0.0",
-  "description": "Zeo — Decision intelligence under uncertainty",
+  "description": "Zeo \u2014 Decision intelligence under uncertainty",
   "license": "MIT",
   "packageManager": "pnpm@9.15.5",
   "engines": {
@@ -24,7 +24,7 @@
     "test": "NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --workspace-concurrency=1 test",
     "test:ci": "echo 'Running fast tests...' && NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --filter !@zeo/core --filter !@zeo/warehouse --filter !@zeo/repro-pack test && echo 'Running heavy tests sequentially...' && NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --filter @zeo/core --filter @zeo/warehouse --filter @zeo/repro-pack --workspace-concurrency=1 test",
     "lint": "pnpm -r lint",
-    "verify": "node scripts/verify.mjs",
+    "verify": "pnpm lint && pnpm typecheck && pnpm build && pnpm test:seo && pnpm test:a11y && pnpm test:security && pnpm test:perf && pnpm test:db",
     "verify:fast": "pnpm run doctor && pnpm run typecheck && pnpm run test && pnpm run lint",
     "verify:full": "pnpm install --frozen-lockfile && pnpm run build && pnpm run verify && pnpm audit && pnpm doctor:secrets",
     "audit": "pnpm audit --audit-level=moderate",
@@ -50,7 +50,12 @@
     "ci:install": "pnpm install --frozen-lockfile",
     "docker:smoke": "node scripts/docker-smoke.mjs",
     "mcp:smoke:docker": "node scripts/mcp-smoke-docker.mjs",
-    "docker:size:assert": "node scripts/docker-size-assert.mjs"
+    "docker:size:assert": "node scripts/docker-size-assert.mjs",
+    "test:seo": "node scripts/with-web-server.mjs node scripts/seo-audit.mjs",
+    "test:a11y": "pnpm -C apps/web test:a11y",
+    "test:security": "node scripts/with-web-server.mjs node scripts/security-audit.mjs",
+    "test:perf": "node scripts/perf-web-budget.mjs",
+    "test:db": "node scripts/db-guardrails.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",
