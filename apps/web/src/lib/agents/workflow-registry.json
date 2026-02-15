@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "workflows": [
+    {
+      "name": "UNDERSTAND_PLUS",
+      "label": "Understand+",
+      "steps": [
+        { "role": "ANALYST", "intent": "GRAPH_SIMULATE" },
+        { "role": "SCRIBE", "intent": "GRAPH_EXPLAIN" },
+        { "role": "GOVERNANCE_AUDITOR", "intent": "COUNTERFACTUAL_RUN" }
+      ]
+    }
+  ]
+}

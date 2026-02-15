@@ -1,6 +1,12 @@
 import { validateCommand } from '@/lib/allowed-commands';
 import type { CLIResult } from '@/lib/cli-engine';
 import { executeCommand, parseCommand } from '@/lib/cli-engine';
+import type { CheckpointEvent, PolicyDecision, ToolTrace } from '@/lib/decision-ledger';
+import { planExecution } from '@/lib/execution-planner';
+import { IntentKey, classifyIntent } from '@/lib/intent-router';
+import { formatNarrative } from '@/lib/narrative-formatter';
+import type { WorkflowSpec } from './types';
+import { AgentRole } from './types';
 import { planExecution } from '@/lib/execution-planner';
 import { IntentKey, classifyIntent } from '@/lib/intent-router';
 import { formatNarrative } from '@/lib/narrative-formatter';

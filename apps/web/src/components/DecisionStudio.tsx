@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { classifyIntent, intentLabel, getExamplePrompts, IntentKey } from '@/lib/intent-router';
+import { runWorkflow } from '@/lib/agents/orchestrator';
+import { getWorkflowOptions, resolveWorkflowSpec } from '@/lib/agents/workflow-registry';
 import { DEFAULT_WORKFLOWS, runWorkflow } from '@/lib/agents/orchestrator';
 import { getLLMAdapter } from '@/lib/llm-adapter';
 import { planExecution } from '@/lib/execution-planner';
@@ -61,6 +63,7 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
   const hasAutoRun = useRef(false);
 
   const examplePrompts = getExamplePrompts();
+  const workflowOptions = getWorkflowOptions();
 
   const runAnalysis = useCallback((query: string) => {
     const trimmed = query.trim();
@@ -72,6 +75,27 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
     const classified = classifyIntent(trimmed);
 
     if (mode !== 'SINGLE') {
+      const workflowSpec = resolveWorkflowSpec(mode);
+      if (!workflowSpec) {
+        setResult({
+          input: trimmed,
+          intent: classified.intent,
+          intentLabel: intentLabel(classified.intent),
+          confidence: classified.confidence,
+          commands: [],
+          cliResults: [],
+          narrative: {
+            summary: `Workflow "${mode}" is not available in the local registry.`,
+            keyDrivers: [],
+            recommendedAction: 'Switch to Single Analysis or register a valid plugin workflow manifest.',
+            confidenceNote: 'Confidence range is unavailable for this run because no workflow executed.',
+          },
+          error: 'Invalid workflow selection',
+        });
+        setIsRunning(false);
+        return;
+      }
+
       const workflowSpec = mode === 'AUTO'
         ? { name: 'AUTO' as const, steps: [] }
         : DEFAULT_WORKFLOWS[mode as 'UNDERSTAND' | 'STRESS_TEST' | 'IMPROVE'];
@@ -249,6 +273,11 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
               className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700"
             >
               <option value="SINGLE">Single Analysis</option>
+              {workflowOptions.map((workflow) => (
+                <option key={workflow.key} value={workflow.key}>
+                  {workflow.label}{workflow.source === 'plugin' ? ' (plugin)' : ''}
+                </option>
+              ))}
               <option value="UNDERSTAND">Understand</option>
               <option value="STRESS_TEST">Stress Test</option>
               <option value="IMPROVE">Improve</option>
