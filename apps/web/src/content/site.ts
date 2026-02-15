@@ -1,4 +1,4 @@
-export const GITHUB_REPO_URL = process.env.NEXT_PUBLIC_GITHUB_REPO_URL || 'https://github.com/scott/zeo';
+export const GITHUB_REPO_URL = process.env.NEXT_PUBLIC_GITHUB_REPO_URL || 'https://github.com/Hardonian/Zeo';
 
 export const OAUTH_CONSENT_URL = process.env.NEXT_PUBLIC_OAUTH_CONSENT_URL || '/oauth/consent';
 
