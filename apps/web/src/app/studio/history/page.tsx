@@ -16,7 +16,9 @@ export default function HistoryPage() {
   const [engineFilter, setEngineFilter] = useState('all');
   const [workflowFilter, setWorkflowFilter] = useState('all');
   const [driftFilter, setDriftFilter] = useState('all');
-
+  const [roleFilter, setRoleFilter] = useState('all');
+  const [toolCountFilter, setToolCountFilter] = useState('all');
+  const [approvalFilter, setApprovalFilter] = useState('all');
 
   useEffect(() => {
     listRecords()
@@ -35,24 +37,60 @@ export default function HistoryPage() {
     );
   }
 
+  function handleExportAuditPack(record: DecisionRecord) {
+    const auditPack = {
+      version: '1.0.0',
+      exportedAt: new Date().toISOString(),
+      record,
+      workflow: record.workflow ?? null,
+      policyDecisions: record.policyDecisions ?? [],
+      toolTraces: record.toolTraces ?? [],
+      checkpoints: record.checkpoints ?? [],
+    };
+    const json = JSON.stringify(auditPack, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `zeo-audit-pack-${record.id}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
 
   const filteredRecords = useMemo(() => {
     const lowered = queryFilter.trim().toLowerCase();
     return records.filter((record) => {
       const workflowName = record.workflow?.name ?? 'SINGLE';
+      const agentRoles = record.workflow?.agentRoles ?? [];
+      const toolCount = record.toolTraces?.length ?? 0;
+      const hasApprovals = (record.policyDecisions ?? []).length > 0;
       const textMatch = !lowered || record.naturalLanguageQuery.toLowerCase().includes(lowered) || (record.promptContext?.userQuery ?? '').toLowerCase().includes(lowered);
       const intentMatch = intentFilter === 'all' || record.intent === intentFilter;
       const engineMatch = engineFilter === 'all' || record.engineVersion === engineFilter;
       const workflowMatch = workflowFilter === 'all' || workflowName === workflowFilter;
       const hasDrift = record.engineVersion !== '2.0.0';
       const driftMatch = driftFilter === 'all' || (driftFilter === 'drift' ? hasDrift : !hasDrift);
-      return textMatch && intentMatch && engineMatch && workflowMatch && driftMatch;
+      const roleMatch = roleFilter === 'all' || agentRoles.includes(roleFilter);
+      const toolCountMatch = toolCountFilter === 'all' ||
+        (toolCountFilter === '0' ? toolCount === 0 : toolCountFilter === '1-5' ? toolCount >= 1 && toolCount <= 5 : toolCount > 5);
+      const approvalMatch = approvalFilter === 'all' ||
+        (approvalFilter === 'yes' ? hasApprovals : !hasApprovals);
+      return textMatch && intentMatch && engineMatch && workflowMatch && driftMatch && roleMatch && toolCountMatch && approvalMatch;
     });
-  }, [records, queryFilter, intentFilter, engineFilter, workflowFilter, driftFilter]);
+  }, [records, queryFilter, intentFilter, engineFilter, workflowFilter, driftFilter, roleFilter, toolCountFilter, approvalFilter]);
 
   const intentOptions = useMemo(() => ['all', ...Array.from(new Set(records.map((r) => r.intent))).sort()], [records]);
   const engineOptions = useMemo(() => ['all', ...Array.from(new Set(records.map((r) => r.engineVersion))).sort()], [records]);
   const workflowOptions = useMemo(() => ['all', ...Array.from(new Set(records.map((r) => r.workflow?.name ?? 'SINGLE'))).sort()], [records]);
+  const roleOptions = useMemo(() => {
+    const roles = new Set<string>();
+    for (const r of records) {
+      for (const role of r.workflow?.agentRoles ?? []) roles.add(role);
+    }
+    return ['all', ...Array.from(roles).sort()];
+  }, [records]);
 
   const compareReady = compareIds.length === 2;
   const recordA = compareReady ? records.find((r) => r.id === compareIds[0]) : null;
@@ -76,28 +114,44 @@ export default function HistoryPage() {
           </Link>
         </div>
 
-
-        <div className="grid gap-3 rounded-lg border border-gray-200 bg-white p-4 md:grid-cols-5">
-          <input
-            value={queryFilter}
-            onChange={(e) => setQueryFilter(e.target.value)}
-            placeholder="Search query keywords"
-            className="rounded border border-gray-300 px-3 py-2 text-sm"
-          />
-          <select value={intentFilter} onChange={(e) => setIntentFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
-            {intentOptions.map((opt) => <option key={opt} value={opt}>{opt === 'all' ? 'All intents' : opt}</option>)}
-          </select>
-          <select value={engineFilter} onChange={(e) => setEngineFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
-            {engineOptions.map((opt) => <option key={opt} value={opt}>{opt === 'all' ? 'All engines' : `Engine ${opt}`}</option>)}
-          </select>
-          <select value={workflowFilter} onChange={(e) => setWorkflowFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
-            {workflowOptions.map((opt) => <option key={opt} value={opt}>{opt === 'all' ? 'All workflows' : opt}</option>)}
-          </select>
-          <select value={driftFilter} onChange={(e) => setDriftFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
-            <option value="all">All drift states</option>
-            <option value="drift">Drift detected</option>
-            <option value="no_drift">No drift</option>
-          </select>
+        {/* Filters */}
+        <div className="rounded-lg border border-gray-200 bg-white p-4">
+          <div className="grid gap-3 md:grid-cols-4 lg:grid-cols-8">
+            <input
+              value={queryFilter}
+              onChange={(e) => setQueryFilter(e.target.value)}
+              placeholder="Search keywords"
+              className="rounded border border-gray-300 px-3 py-2 text-sm"
+            />
+            <select value={intentFilter} onChange={(e) => setIntentFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
+              {intentOptions.map((opt) => <option key={opt} value={opt}>{opt === 'all' ? 'All intents' : opt}</option>)}
+            </select>
+            <select value={engineFilter} onChange={(e) => setEngineFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
+              {engineOptions.map((opt) => <option key={opt} value={opt}>{opt === 'all' ? 'All engines' : `Engine ${opt}`}</option>)}
+            </select>
+            <select value={workflowFilter} onChange={(e) => setWorkflowFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
+              {workflowOptions.map((opt) => <option key={opt} value={opt}>{opt === 'all' ? 'All workflows' : opt}</option>)}
+            </select>
+            <select value={driftFilter} onChange={(e) => setDriftFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
+              <option value="all">All drift states</option>
+              <option value="drift">Drift detected</option>
+              <option value="no_drift">No drift</option>
+            </select>
+            <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
+              {roleOptions.map((opt) => <option key={opt} value={opt}>{opt === 'all' ? 'All roles' : opt}</option>)}
+            </select>
+            <select value={toolCountFilter} onChange={(e) => setToolCountFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
+              <option value="all">All tool counts</option>
+              <option value="0">No tools</option>
+              <option value="1-5">1-5 tools</option>
+              <option value="6+">6+ tools</option>
+            </select>
+            <select value={approvalFilter} onChange={(e) => setApprovalFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
+              <option value="all">All approvals</option>
+              <option value="yes">Has approvals</option>
+              <option value="no">No approvals</option>
+            </select>
+          </div>
         </div>
 
         {/* Compare Banner */}
@@ -141,103 +195,103 @@ export default function HistoryPage() {
           </div>
         ) : (
           <div className="space-y-3">
-            {filteredRecords.map((record) => (
-              <div
-                key={record.id}
-                className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-colors hover:border-gray-300"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-3">
+            {filteredRecords.map((record) => {
+              const toolCount = record.toolTraces?.length ?? 0;
+              const policyCount = record.policyDecisions?.length ?? 0;
+              const hasDrift = record.engineVersion !== '2.0.0';
+              return (
+                <div
+                  key={record.id}
+                  className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-colors hover:border-gray-300"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-3">
+                        <Link
+                          href={`/studio/history/${record.id}`}
+                          className="truncate font-medium text-gray-900 hover:text-blue-600"
+                        >
+                          {record.naturalLanguageQuery}
+                        </Link>
+                        <span className="badge-deterministic shrink-0">{record.intent}</span>
+                        {hasDrift && <span className="badge-drift shrink-0">Drift</span>}
+                      </div>
+                      <p className="mt-1 line-clamp-2 text-sm text-gray-500">
+                        {record.narrativeSummary}
+                      </p>
+                      <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-gray-400">
+                        <span>{new Date(record.timestamp).toLocaleString()}</span>
+                        <span>Engine v{record.engineVersion}</span>
+                        <span>{record.workflow?.name ?? 'SINGLE'}</span>
+                        {record.workflow?.agentRoles && record.workflow.agentRoles.length > 0 && (
+                          <span className="badge-neutral text-[10px]">
+                            {record.workflow.agentRoles.length} roles
+                          </span>
+                        )}
+                        {toolCount > 0 && (
+                          <span className="badge-neutral text-[10px]">{toolCount} tools</span>
+                        )}
+                        {policyCount > 0 && (
+                          <span className="badge-allow text-[10px]">{policyCount} policy</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-shrink-0 flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => toggleCompare(record.id)}
+                        className={`rounded border px-2.5 py-1 text-xs font-medium transition-colors ${
+                          compareIds.includes(record.id)
+                            ? 'border-blue-400 bg-blue-50 text-blue-700'
+                            : 'border-gray-200 text-gray-500 hover:border-blue-300 hover:text-blue-600'
+                        }`}
+                      >
+                        Compare
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => exportJSON(record)}
+                        className="rounded border border-gray-200 px-2.5 py-1 text-xs font-medium text-gray-500 transition-colors hover:border-gray-300 hover:text-gray-700"
+                      >
+                        JSON
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => exportPDF(record)}
+                        className="rounded border border-gray-200 px-2.5 py-1 text-xs font-medium text-gray-500 transition-colors hover:border-gray-300 hover:text-gray-700"
+                      >
+                        PDF
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleExportAuditPack(record)}
+                        className="rounded border border-indigo-200 px-2.5 py-1 text-xs font-medium text-indigo-600 transition-colors hover:border-indigo-300 hover:bg-indigo-50"
+                      >
+                        Audit Pack
+                      </button>
                       <Link
                         href={`/studio/history/${record.id}`}
-                        className="truncate font-medium text-gray-900 hover:text-blue-600"
+                        className="rounded border border-gray-200 px-2.5 py-1 text-xs font-medium text-gray-500 transition-colors hover:border-gray-300 hover:text-gray-700"
                       >
-                        {record.naturalLanguageQuery}
+                        View
                       </Link>
-                      <span className="flex-shrink-0 rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
-                        {record.intent}
-                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(record.id)}
+                        className="rounded border border-gray-200 px-2.5 py-1 text-xs font-medium text-red-400 transition-colors hover:border-red-300 hover:bg-red-50 hover:text-red-600"
+                      >
+                        Delete
+                      </button>
                     </div>
-                    <p className="mt-1 line-clamp-2 text-sm text-gray-500">
-                      {record.narrativeSummary}
-                    </p>
-                    <div className="mt-2 flex items-center gap-4 text-xs text-gray-400">
-                      <span>{new Date(record.timestamp).toLocaleString()}</span>
-                      <span>Engine v{record.engineVersion}</span>
-                      <span>{record.workflow?.name ?? 'SINGLE'}</span>
-                      <span className="font-mono">{record.id}</span>
-                    </div>
-                    <p className="mt-2 text-xs text-gray-500">
-                      Similar decisions: {records
-                        .filter((candidate) => candidate.id !== record.id)
-                        .map((candidate) => ({
-                          id: candidate.id,
-                          score: similarityScore(record.naturalLanguageQuery, candidate.naturalLanguageQuery),
-                        }))
-                        .filter((entry) => entry.score > 0)
-                        .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id))
-                        .slice(0, 2)
-                        .map((entry) => entry.id)
-                        .join(', ') || 'None'}
-                    </p>
-                  </div>
-                  <div className="flex flex-shrink-0 items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => toggleCompare(record.id)}
-                      className={`rounded border px-2.5 py-1 text-xs font-medium transition-colors ${
-                        compareIds.includes(record.id)
-                          ? 'border-blue-400 bg-blue-50 text-blue-700'
-                          : 'border-gray-200 text-gray-500 hover:border-blue-300 hover:text-blue-600'
-                      }`}
-                    >
-                      Compare
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => exportJSON(record)}
-                      className="rounded border border-gray-200 px-2.5 py-1 text-xs font-medium text-gray-500 transition-colors hover:border-gray-300 hover:text-gray-700"
-                    >
-                      JSON
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => exportPDF(record)}
-                      className="rounded border border-gray-200 px-2.5 py-1 text-xs font-medium text-gray-500 transition-colors hover:border-gray-300 hover:text-gray-700"
-                    >
-                      PDF
-                    </button>
-                    <Link
-                      href={`/studio/history/${record.id}`}
-                      className="rounded border border-gray-200 px-2.5 py-1 text-xs font-medium text-gray-500 transition-colors hover:border-gray-300 hover:text-gray-700"
-                    >
-                      View
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(record.id)}
-                      className="rounded border border-gray-200 px-2.5 py-1 text-xs font-medium text-red-400 transition-colors hover:border-red-300 hover:bg-red-50 hover:text-red-600"
-                    >
-                      Delete
-                    </button>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
     </PublicShell>
   );
-}
-
-function similarityScore(a: string, b: string): number {
-  const tokensA = Array.from(new Set(a.toLowerCase().split(/\W+/).filter(Boolean)));
-  const tokensB = Array.from(new Set(b.toLowerCase().split(/\W+/).filter(Boolean)));
-  if (tokensA.length === 0 || tokensB.length === 0) return 0;
-  const overlap = tokensA.filter((token) => tokensB.includes(token)).length;
-  return overlap / Math.max(tokensA.length, tokensB.length);
 }
 
 /* ------------------------------------------------------------------ */
@@ -254,6 +308,10 @@ function CompareView({ a, b }: { a: DecisionRecord; b: DecisionRecord }) {
     { label: 'Output Hash', changed: a.cliOutputHash !== b.cliOutputHash, valA: a.cliOutputHash, valB: b.cliOutputHash },
     { label: 'Dataset Hash', changed: a.datasetHash !== b.datasetHash, valA: a.datasetHash, valB: b.datasetHash },
     { label: 'Engine Version', changed: a.engineVersion !== b.engineVersion, valA: a.engineVersion, valB: b.engineVersion },
+    { label: 'Workflow', changed: (a.workflow?.name ?? '') !== (b.workflow?.name ?? ''), valA: a.workflow?.name ?? 'SINGLE', valB: b.workflow?.name ?? 'SINGLE' },
+    { label: 'Agent Roles', changed: JSON.stringify(a.workflow?.agentRoles ?? []) !== JSON.stringify(b.workflow?.agentRoles ?? []), valA: (a.workflow?.agentRoles ?? []).join(', ') || 'none', valB: (b.workflow?.agentRoles ?? []).join(', ') || 'none' },
+    { label: 'Tool Calls', changed: (a.toolTraces?.length ?? 0) !== (b.toolTraces?.length ?? 0), valA: String(a.toolTraces?.length ?? 0), valB: String(b.toolTraces?.length ?? 0) },
+    { label: 'Policy Decisions', changed: (a.policyDecisions?.length ?? 0) !== (b.policyDecisions?.length ?? 0), valA: String(a.policyDecisions?.length ?? 0), valB: String(b.policyDecisions?.length ?? 0) },
   ];
 
   if (!open) {
@@ -298,13 +356,9 @@ function CompareView({ a, b }: { a: DecisionRecord; b: DecisionRecord }) {
                 <td className="max-w-[200px] truncate py-2 text-gray-600">{d.valB}</td>
                 <td className="py-2">
                   {d.changed ? (
-                    <span className="rounded bg-yellow-50 px-2 py-0.5 text-xs font-medium text-yellow-700">
-                      Changed
-                    </span>
+                    <span className="badge-pending">Changed</span>
                   ) : (
-                    <span className="rounded bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
-                      Match
-                    </span>
+                    <span className="badge-allow">Match</span>
                   )}
                 </td>
               </tr>

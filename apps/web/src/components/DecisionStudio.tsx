@@ -3,9 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { classifyIntent, intentLabel, getExamplePrompts, IntentKey } from '@/lib/intent-router';
-import { runWorkflow } from '@/lib/agents/orchestrator';
-import { getWorkflowOptions, resolveWorkflowSpec } from '@/lib/agents/workflow-registry';
 import { DEFAULT_WORKFLOWS, runWorkflow } from '@/lib/agents/orchestrator';
+import { getWorkflowOptions, resolveWorkflowSpec } from '@/lib/agents/workflow-registry';
 import { getLLMAdapter } from '@/lib/llm-adapter';
 import { planExecution } from '@/lib/execution-planner';
 import { parseCommand, executeCommand } from '@/lib/cli-engine';
@@ -14,11 +13,15 @@ import { formatNarrative } from '@/lib/narrative-formatter';
 import type { NarrativeResult } from '@/lib/narrative-formatter';
 import type { PlannedCommand } from '@/lib/execution-planner';
 import { createRecord, saveRecord } from '@/lib/decision-ledger';
+import { WorkflowGraphView } from '@/components/dashboard/WorkflowGraphView';
+import { TraceViewerPanel } from '@/components/dashboard/TraceViewerPanel';
+import type { TraceEvent } from '@/components/dashboard/TraceViewerPanel';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
+type ExecutionCategory = 'single' | 'workflow' | 'job' | 'mcp';
 type StudioMode = 'SINGLE' | 'UNDERSTAND' | 'STRESS_TEST' | 'IMPROVE' | 'AUTO';
 
 interface AnalysisResult {
@@ -59,6 +62,7 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
   const [isRunning, setIsRunning] = useState(false);
   const [showTechnical, setShowTechnical] = useState(false);
   const [mode, setMode] = useState<StudioMode>('SINGLE');
+  const [executionCategory, setExecutionCategory] = useState<ExecutionCategory>('single');
   const resultRef = useRef<HTMLDivElement>(null);
   const hasAutoRun = useRef(false);
 
@@ -75,7 +79,11 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
     const classified = classifyIntent(trimmed);
 
     if (mode !== 'SINGLE') {
-      const workflowSpec = resolveWorkflowSpec(mode);
+      const pluginSpec = resolveWorkflowSpec(mode);
+      const builtinSpec = mode === 'AUTO'
+        ? { name: 'AUTO' as const, steps: [] }
+        : DEFAULT_WORKFLOWS[mode as 'UNDERSTAND' | 'STRESS_TEST' | 'IMPROVE'];
+      const workflowSpec = pluginSpec ?? builtinSpec;
       if (!workflowSpec) {
         setResult({
           input: trimmed,
@@ -95,11 +103,7 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
         setIsRunning(false);
         return;
       }
-
-      const workflowSpec = mode === 'AUTO'
-        ? { name: 'AUTO' as const, steps: [] }
-        : DEFAULT_WORKFLOWS[mode as 'UNDERSTAND' | 'STRESS_TEST' | 'IMPROVE'];
-      const workflowRun = runWorkflow(workflowSpec, { userQuery: trimmed, engineVersion: '2.0.0' });
+      const workflowRun = runWorkflow(workflowSpec as Parameters<typeof runWorkflow>[0], { userQuery: trimmed, engineVersion: '2.0.0' });
       const workflowNarrative = formatNarrative(workflowRun.intent, workflowRun.cliResults);
       const summary = llm.summarize(workflowRun.combinedNarrative || workflowNarrative.summary);
 
@@ -264,25 +268,68 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
           />
 
 
-          <div className="flex items-center gap-3">
-            <label htmlFor="studio-mode" className="text-sm font-medium text-gray-700">Mode</label>
-            <select
-              id="studio-mode"
-              value={mode}
-              onChange={e => setMode(e.target.value as StudioMode)}
-              className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700"
-            >
-              <option value="SINGLE">Single Analysis</option>
-              {workflowOptions.map((workflow) => (
-                <option key={workflow.key} value={workflow.key}>
-                  {workflow.label}{workflow.source === 'plugin' ? ' (plugin)' : ''}
-                </option>
+          {/* Execution Mode Selector */}
+          <div className="space-y-3">
+            <div className="flex flex-wrap gap-2">
+              <p className="w-full text-xs font-medium uppercase tracking-wider text-gray-400">Execution Mode</p>
+              {([
+                { key: 'single' as const, label: 'Single' },
+                { key: 'workflow' as const, label: 'Workflow' },
+                { key: 'job' as const, label: 'Job' },
+                { key: 'mcp' as const, label: 'MCP Invocation' },
+              ]).map((cat) => (
+                <button
+                  key={cat.key}
+                  type="button"
+                  onClick={() => {
+                    setExecutionCategory(cat.key);
+                    if (cat.key === 'single') setMode('SINGLE');
+                    else if (cat.key === 'workflow') setMode('UNDERSTAND');
+                  }}
+                  className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+                    executionCategory === cat.key
+                      ? 'bg-blue-600 text-white'
+                      : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  {cat.label}
+                </button>
               ))}
-              <option value="UNDERSTAND">Understand</option>
-              <option value="STRESS_TEST">Stress Test</option>
-              <option value="IMPROVE">Improve</option>
-              <option value="AUTO">Auto</option>
-            </select>
+            </div>
+
+            {executionCategory === 'workflow' && (
+              <div className="flex items-center gap-3">
+                <label htmlFor="studio-mode" className="text-sm font-medium text-gray-700">Workflow</label>
+                <select
+                  id="studio-mode"
+                  value={mode}
+                  onChange={e => setMode(e.target.value as StudioMode)}
+                  className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700"
+                >
+                  {workflowOptions.map((workflow) => (
+                    <option key={workflow.key} value={workflow.key}>
+                      {workflow.label}{workflow.source === 'plugin' ? ' (plugin)' : ''}
+                    </option>
+                  ))}
+                  <option value="UNDERSTAND">Understand</option>
+                  <option value="STRESS_TEST">Stress Test</option>
+                  <option value="IMPROVE">Improve</option>
+                  <option value="AUTO">Auto (all steps)</option>
+                </select>
+              </div>
+            )}
+
+            {executionCategory === 'job' && (
+              <p className="text-sm text-gray-500">
+                Run as a background job. The workflow will be queued and executed asynchronously with retry logic.
+              </p>
+            )}
+
+            {executionCategory === 'mcp' && (
+              <p className="text-sm text-gray-500">
+                Invoke via MCP tool protocol. Requires an active MCP connection.
+              </p>
+            )}
           </div>
 
           <div className="flex items-center gap-3">
@@ -398,6 +445,27 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
               {result.narrative.recommendedAction}
             </p>
           </section>
+
+          {/* Workflow Graph View — shown when a workflow mode was used */}
+          {result.workflowName && result.workflowName !== 'SINGLE' && (
+            <WorkflowGraphView workflowName={result.workflowName} />
+          )}
+
+          {/* Trace Viewer Panel — synthetic trace from results */}
+          {result.commands.length > 0 && (
+            <TraceViewerPanel
+              events={result.commands.map((cmd, i): TraceEvent => ({
+                id: `trace-${i}`,
+                orderIndex: i,
+                eventType: 'tool_call',
+                timestamp: new Date().toISOString(),
+                role: result.workflowName !== 'SINGLE' ? ['ANALYST', 'SIMULATOR', 'EVIDENCE_PLANNER', 'SCRIBE', 'GOVERNANCE_AUDITOR'][i % 5] : undefined,
+                toolName: cmd.command.split(' ')[0],
+                scope: 'read',
+                payload: { command: cmd.command, description: cmd.description },
+              }))}
+            />
+          )}
 
           {/* Section D — Technical Details (collapsible) */}
           <section className="rounded-xl border border-gray-200 bg-white shadow-sm">
