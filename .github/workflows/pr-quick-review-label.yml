@@ -1,0 +1,35 @@
+name: PR Quick Review Label
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  quick-review-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label tiny PRs for 2-minute review
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const changedLines = (pr.additions || 0) + (pr.deletions || 0);
+            const label = 'quick-review';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = pr.number;
+
+            const { data: labels } = await github.rest.issues.listLabelsOnIssue({ owner, repo, issue_number });
+            const hasLabel = labels.some((item) => item.name === label);
+
+            if (changedLines < 5 && !hasLabel) {
+              await github.rest.issues.addLabels({ owner, repo, issue_number, labels: [label] });
+            }
+
+            if (changedLines >= 5 && hasLabel) {
+              await github.rest.issues.removeLabel({ owner, repo, issue_number, name: label });
+            }

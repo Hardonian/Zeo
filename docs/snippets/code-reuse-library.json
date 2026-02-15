@@ -1,0 +1,23 @@
+[
+  {
+    "tag": "supabase-auth",
+    "title": "Require signed-in org member",
+    "language": "typescript",
+    "snippet": "const orgId = await getCurrentOrgId();\nif (!orgId) return null;\nconst { supabase, membership } = await requireOrgMembership(orgId);",
+    "usage": "Use in authenticated app routes before querying org-scoped data."
+  },
+  {
+    "tag": "error-fallback",
+    "title": "Graceful UI fallback",
+    "language": "tsx",
+    "snippet": "if (!hasPublicSupabaseEnv()) return <div className=\"rounded border bg-white p-4\">Console unavailable: missing Supabase environment.</div>;",
+    "usage": "Prevent hard-500 errors when env vars are missing."
+  },
+  {
+    "tag": "time-window",
+    "title": "Last N days filter",
+    "language": "typescript",
+    "snippet": "const windowDays = getWindowDays(params.days);\nconst createdAfterIso = getWindowStartIso(windowDays);\nquery.gte('created_at', createdAfterIso);",
+    "usage": "Apply consistent dashboard date-window filtering."
+  }
+]

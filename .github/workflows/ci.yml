@@ -34,6 +34,16 @@ jobs:
         run: pnpm -r --filter @zeo/core^... build
       - name: Test
         run: pnpm test
+      - name: TDD smoke report
+        run: pnpm tdd:smoke
+      - name: Upload TDD smoke artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tdd-smoke-report
+          path: |
+            docs/generated/tdd-smoke-report.json
+            docs/generated/tdd-smoke-vitest.json
       - name: Build
         run: pnpm build
       - name: SEO guardrails
