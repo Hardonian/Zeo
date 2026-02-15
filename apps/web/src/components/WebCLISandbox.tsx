@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { parseCommand, executeCommand } from '@/lib/cli-engine';
 import type { OutputLine, LineStyle } from '@/lib/cli-engine';
-import type { PanelDemo } from '@/lib/panel-config';
+import type { PanelConfig } from '@/lib/panel-config';
 
 /* ------------------------------------------------------------------ */
 /*  Style map                                                          */
@@ -34,7 +34,7 @@ interface HistoryEntry {
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export function WebCLISandbox({ panel, initialCmd }: { panel: PanelDemo; initialCmd?: string }) {
+export function WebCLISandbox({ panel, initialCmd }: { panel: PanelConfig; initialCmd?: string }) {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [input, setInput] = useState('');
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -120,7 +120,7 @@ export function WebCLISandbox({ panel, initialCmd }: { panel: PanelDemo; initial
 
     // Basic auto-suggest
     if (value.length > 2) {
-      const matches = panel.commands.filter(c =>
+      const matches = panel.primaryCommands.filter(c =>
         c.startsWith(value) && c !== value
       );
       setSuggestions(matches.slice(0, 3));
@@ -155,7 +155,7 @@ export function WebCLISandbox({ panel, initialCmd }: { panel: PanelDemo; initial
       {/* Example commands */}
       <div className="flex flex-wrap gap-2">
         <span className="text-sm text-gray-500">Try:</span>
-        {panel.commands.map(cmd => (
+        {panel.primaryCommands.map(cmd => (
           <button
             key={cmd}
             type="button"
