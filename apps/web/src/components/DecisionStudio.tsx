@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { classifyIntent, intentLabel, getExamplePrompts, IntentKey } from '@/lib/intent-router';
 import { runWorkflow } from '@/lib/agents/orchestrator';
 import { getWorkflowOptions, resolveWorkflowSpec } from '@/lib/agents/workflow-registry';
+import { DEFAULT_WORKFLOWS, runWorkflow } from '@/lib/agents/orchestrator';
 import { getLLMAdapter } from '@/lib/llm-adapter';
 import { planExecution } from '@/lib/execution-planner';
 import { parseCommand, executeCommand } from '@/lib/cli-engine';
@@ -18,7 +19,7 @@ import { createRecord, saveRecord } from '@/lib/decision-ledger';
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
-type StudioMode = 'SINGLE' | string;
+type StudioMode = 'SINGLE' | 'UNDERSTAND' | 'STRESS_TEST' | 'IMPROVE' | 'AUTO';
 
 interface AnalysisResult {
   input: string;
@@ -95,6 +96,9 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
         return;
       }
 
+      const workflowSpec = mode === 'AUTO'
+        ? { name: 'AUTO' as const, steps: [] }
+        : DEFAULT_WORKFLOWS[mode as 'UNDERSTAND' | 'STRESS_TEST' | 'IMPROVE'];
       const workflowRun = runWorkflow(workflowSpec, { userQuery: trimmed, engineVersion: '2.0.0' });
       const workflowNarrative = formatNarrative(workflowRun.intent, workflowRun.cliResults);
       const summary = llm.summarize(workflowRun.combinedNarrative || workflowNarrative.summary);
@@ -274,6 +278,10 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
                   {workflow.label}{workflow.source === 'plugin' ? ' (plugin)' : ''}
                 </option>
               ))}
+              <option value="UNDERSTAND">Understand</option>
+              <option value="STRESS_TEST">Stress Test</option>
+              <option value="IMPROVE">Improve</option>
+              <option value="AUTO">Auto</option>
             </select>
           </div>
 

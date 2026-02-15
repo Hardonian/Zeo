@@ -7,6 +7,30 @@ import { IntentKey, classifyIntent } from '@/lib/intent-router';
 import { formatNarrative } from '@/lib/narrative-formatter';
 import type { WorkflowSpec } from './types';
 import { AgentRole } from './types';
+import { planExecution } from '@/lib/execution-planner';
+import { IntentKey, classifyIntent } from '@/lib/intent-router';
+import { formatNarrative } from '@/lib/narrative-formatter';
+import type { CheckpointEvent, PolicyDecision, ToolTrace } from '@/lib/decision-ledger';
+
+export enum AgentRole {
+  ANALYST = 'ANALYST',
+  SIMULATOR = 'SIMULATOR',
+  EVIDENCE_PLANNER = 'EVIDENCE_PLANNER',
+  GOVERNANCE_AUDITOR = 'GOVERNANCE_AUDITOR',
+  SCRIBE = 'SCRIBE',
+}
+
+export interface StepSpec {
+  role: AgentRole;
+  intent: IntentKey;
+  params?: Record<string, string | number | boolean>;
+  commandPlanTemplate?: string[];
+}
+
+export interface WorkflowSpec {
+  name: 'UNDERSTAND' | 'STRESS_TEST' | 'IMPROVE' | 'AUTO';
+  steps: StepSpec[];
+}
 
 export interface WorkflowRunResult {
   intent: IntentKey;

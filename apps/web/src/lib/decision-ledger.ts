@@ -14,6 +14,7 @@
 
 import { sha256, hashDataset, hashObject } from './hash';
 import { sampleA } from './sample-data';
+import { getDecisionStore } from './decision-store';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -86,7 +87,6 @@ export interface ReplayResult {
 const DB_NAME = 'zeo-decision-ledger';
 const DB_VERSION = 1;
 const STORE_NAME = 'records';
-const LS_KEY = 'zeo-decision-ledger-fallback';
 const ENGINE_VERSION = '2.0.0';
 const CURRENT_SCHEMA_VERSION: LedgerSchemaVersion = 'ledger_v2';
 
@@ -119,6 +119,7 @@ function idbAvailable(): boolean {
 /*  localStorage fallback                                              */
 /* ------------------------------------------------------------------ */
 
+const store = getDecisionStore();
 function lsGetAll(): DecisionRecord[] {
   try {
     const raw = localStorage.getItem(LS_KEY);
@@ -154,6 +155,9 @@ export function migrateLedgerRecordV1toV2(record: DecisionRecord): DecisionRecor
  * Generate a unique record ID (timestamp + random suffix).
  */
 export function generateRecordId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
   const ts = Date.now().toString(36);
   const r = Math.floor(Math.random() * 0xffff).toString(36).padStart(3, '0');
   return `dr_${ts}_${r}`;
@@ -163,6 +167,8 @@ export function generateRecordId(): string {
  * Save a decision record to the ledger.
  */
 export async function saveRecord(record: DecisionRecord): Promise<void> {
+  await store.saveRun(record);
+
   const normalized = migrateLedgerRecordV1toV2(record);
   if (idbAvailable()) {
     try {
@@ -191,6 +197,11 @@ export async function saveRecord(record: DecisionRecord): Promise<void> {
  * List all decision records, newest first.
  */
 export async function listRecords(): Promise<DecisionRecord[]> {
+  const remoteOrLocal = await store.listRuns();
+  if (remoteOrLocal.length > 0) {
+    return remoteOrLocal;
+  }
+
   if (idbAvailable()) {
     try {
       const db = await openDB();
@@ -208,13 +219,18 @@ export async function listRecords(): Promise<DecisionRecord[]> {
       // Fall through
     }
   }
-  return lsGetAll().sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+  return [];
 }
 
 /**
  * Get a single record by ID.
  */
 export async function getRecord(id: string): Promise<DecisionRecord | null> {
+  const fromStore = await store.getRun(id);
+  if (fromStore) {
+    return fromStore;
+  }
+
   if (idbAvailable()) {
     try {
       const db = await openDB();
@@ -231,13 +247,15 @@ export async function getRecord(id: string): Promise<DecisionRecord | null> {
       // Fall through
     }
   }
-  return lsGetAll().find((r) => r.id === id) ?? null;
+  return null;
 }
 
 /**
  * Delete a record by ID.
  */
 export async function deleteRecord(id: string): Promise<void> {
+  await store.deleteRun(id);
+
   if (idbAvailable()) {
     try {
       const db = await openDB();
@@ -251,8 +269,6 @@ export async function deleteRecord(id: string): Promise<void> {
       // Fall through
     }
   }
-  const all = lsGetAll().filter((r) => r.id !== id);
-  lsSave(all);
 }
 
 /**
