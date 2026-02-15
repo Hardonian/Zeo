@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { classifyIntent, intentLabel, getExamplePrompts, IntentKey } from '@/lib/intent-router';
 import { planExecution } from '@/lib/execution-planner';
 import { parseCommand, executeCommand } from '@/lib/cli-engine';
@@ -8,6 +9,7 @@ import type { CLIResult, OutputLine, LineStyle } from '@/lib/cli-engine';
 import { formatNarrative } from '@/lib/narrative-formatter';
 import type { NarrativeResult } from '@/lib/narrative-formatter';
 import type { PlannedCommand } from '@/lib/execution-planner';
+import { createRecord, saveRecord } from '@/lib/decision-ledger';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -110,6 +112,20 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
     setIsRunning(false);
     setShowTechnical(false);
 
+    // Save to decision ledger (fire-and-forget)
+    const rawOutput = cliResults.map((r) => r.lines.map((l) => l.text).join('\n')).join('\n---\n');
+    createRecord({
+      query: trimmed,
+      intent: classified.intent,
+      executionPlan: plan.commands,
+      cliOutputRaw: rawOutput,
+      narrativeSummary: narrative.summary,
+      numericBreakdown: narrative.numericBreakdown ?? {},
+      keyDrivers: narrative.keyDrivers,
+      recommendedAction: narrative.recommendedAction,
+      confidenceNote: narrative.confidenceNote,
+    }).then((record) => saveRecord(record));
+
     // Scroll to result
     setTimeout(() => {
       resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -206,6 +222,19 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* History Link */}
+      <div className="flex justify-end">
+        <Link
+          href="/studio/history"
+          className="flex items-center gap-1.5 text-sm text-gray-500 transition-colors hover:text-blue-600"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Decision History
+        </Link>
       </div>
 
       {/* Results Section */}
