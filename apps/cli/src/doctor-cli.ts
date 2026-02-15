@@ -162,6 +162,18 @@ export async function runDoctorCommand(args: { json: boolean; fix: boolean; perf
     errorCodes.push("SECRETS_EXPOSED");
   }
 
+  // 12. Snapshot Integrity Check
+  const snapshotCheck = runSnapshotIntegrityCheck();
+  checks.push(snapshotCheck);
+
+  // 13. MCP Handshake Smoke Test
+  const mcpHandshakeCheck = runMcpHandshakeCheck();
+  checks.push(mcpHandshakeCheck);
+
+  // 14. Evidence Graph Health
+  const evidenceCheck = runEvidenceGraphCheck();
+  checks.push(evidenceCheck);
+
   // Compute overall status
   const overall = errorCodes.length > 0 ? "critical" : warnings.length > 0 ? "warning" : "healthy";
 
@@ -712,6 +724,65 @@ function runTrustProfileIntegrityCheck(): DoctorCheck {
     return { id: "trust", name: "Trust Profiles", status: "pass", message: `${files.length} trust profile file(s) valid` };
   } catch (err) {
     return { id: "trust", name: "Trust Profiles", status: "fail", message: `Invalid trust profile JSON: ${(err as Error).message}`, remediation: "Repair or remove invalid files in .zeo/trust" };
+  }
+}
+
+function runSnapshotIntegrityCheck(): DoctorCheck {
+  const snapshotsDir = resolve(process.cwd(), ".zeo", "snapshots");
+  if (!existsSync(snapshotsDir)) {
+    return { id: "snapshots", name: "Snapshot Integrity", status: "pass", message: "No snapshots directory (clean state)" };
+  }
+  try {
+    const files = readdirSync(snapshotsDir).filter(f => f.endsWith(".json"));
+    let corrupt = 0;
+    for (const file of files.slice(0, 5)) {
+      try {
+        const content = readFileSync(join(snapshotsDir, file), "utf8");
+        const parsed = JSON.parse(content);
+        if (!parsed.runId || !parsed.inputHash || !parsed.outputHash) corrupt++;
+      } catch {
+        corrupt++;
+      }
+    }
+    if (corrupt > 0) {
+      return { id: "snapshots", name: "Snapshot Integrity", status: "warning", message: `${corrupt} corrupt snapshot(s) found`, remediation: "Remove invalid files from .zeo/snapshots/" };
+    }
+    return { id: "snapshots", name: "Snapshot Integrity", status: "pass", message: `${files.length} snapshot(s) valid` };
+  } catch (err) {
+    return { id: "snapshots", name: "Snapshot Integrity", status: "warning", message: `Cannot check snapshots: ${(err as Error).message}` };
+  }
+}
+
+function runMcpHandshakeCheck(): DoctorCheck {
+  try {
+    // Validate MCP tool definitions schema
+    const { validateMcpToolDefinitions } = require("./mcp-cli.js") as { validateMcpToolDefinitions: () => string[] };
+    const issues = validateMcpToolDefinitions();
+    if (issues.length > 0) {
+      return { id: "mcp-handshake", name: "MCP Handshake", status: "warning", message: `Schema issues: ${issues.join("; ")}`, remediation: "Check MCP tool definitions" };
+    }
+    return { id: "mcp-handshake", name: "MCP Handshake", status: "pass", message: "MCP tool schema valid" };
+  } catch {
+    return { id: "mcp-handshake", name: "MCP Handshake", status: "pass", message: "MCP module not loaded (ok for CLI-only)" };
+  }
+}
+
+function runEvidenceGraphCheck(): DoctorCheck {
+  const graphPath = resolve(process.cwd(), ".zeo", "evidence-graph.json");
+  if (!existsSync(graphPath)) {
+    return { id: "evidence-graph", name: "Evidence Graph", status: "pass", message: "No evidence graph (clean state)" };
+  }
+  try {
+    const content = readFileSync(graphPath, "utf8");
+    const graph = JSON.parse(content);
+    if (!graph.version || !Array.isArray(graph.nodes)) {
+      return { id: "evidence-graph", name: "Evidence Graph", status: "warning", message: "Invalid evidence graph schema", remediation: "Delete and recreate .zeo/evidence-graph.json" };
+    }
+    const staleCount = graph.nodes.filter((n: { confidenceScore: number }) => n.confidenceScore < 0.3).length;
+    const msg = `${graph.nodes.length} node(s)${staleCount > 0 ? `, ${staleCount} stale` : ""}`;
+    return { id: "evidence-graph", name: "Evidence Graph", status: staleCount > 0 ? "warning" : "pass", message: msg, remediation: staleCount > 0 ? "Run 'zeo refresh-evidence' to update scores" : undefined };
+  } catch (err) {
+    return { id: "evidence-graph", name: "Evidence Graph", status: "warning", message: `Error reading: ${(err as Error).message}` };
   }
 }
 

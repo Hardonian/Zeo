@@ -1,5 +1,6 @@
 import { generateId } from "./id.js";
 import type { Action, Agent, Claim, DecisionSpec } from "@zeo/contracts";
+import { deterministicNow } from "./deterministic.js";
 
 /**
  * v0.1 decision parser: conservative, deterministic, and explicit.
@@ -9,7 +10,7 @@ import type { Action, Agent, Claim, DecisionSpec } from "@zeo/contracts";
  */
 
 function nowISO(): string {
-  return new Date().toISOString();
+  return deterministicNow();
 }
 
 export function makeNegotiationExample(): DecisionSpec {

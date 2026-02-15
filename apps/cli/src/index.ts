@@ -73,6 +73,15 @@ Commands:
   analyze-pr <target>         Accountability summary for pull-request risk
   plugins <cmd>               Plugin extension commands (list/doctor)
   replay <dataset|example>    Run replay from explicit path or examples/<name>
+  replay <run_id>             Deterministic replay of a snapshot (PASS/DRIFT)
+  diff <runA> <runB>          Diff two runs (assumptions, outputs, confidence)
+  explain <run_id>            Summarized reasoning trace for a run
+  trace <run_id>              Step-by-step structured execution trace
+  snapshots                   List all execution snapshots
+  plan                        Regret-aware evidence planning
+  evidence <cmd>              Evidence graph commands (list/add/mark/drift/regret)
+  refresh-evidence            Recalculate evidence confidence scores
+  tools                       Show agent/tool health status
   init pack <name>            Initialize a policy pack template
   init analyzer <name>        Initialize analyzer plugin template
   doctor                      Environment diagnostics
@@ -103,6 +112,7 @@ Options:
   --audience <role>           Audience for explain/summary (legal|exec|sales|engineer|auditor)
   --type <ENG|OPS|SEC|PROD|MKT|CUST>  Decision type filter
   --mode <internal|customer>  Workspace mode for start
+  --deterministic             Enable deterministic execution mode
   --cache <read|write|off>    Cache mode control
   --no-cache                  Disable cache
   --help, -h                  Show this help message
@@ -165,7 +175,17 @@ async function runDefaultCommand(args: CliArgs, startedMs: number): Promise<numb
   const contracts = await import("@zeo/contracts");
   const models = await import("@zeo/models");
 
+  // Activate deterministic mode if requested
+  const decisionStartMs = performance.now();
+  if (args.deterministic) {
+    const deterSeed = args.seed || `deterministic-${args.example}-${args.depth}`;
+    core.activateDeterministicMode({ seed: deterSeed });
+  }
+
   const spec = args.example === "ops" ? core.makeOpsExample() : core.makeNegotiationExample();
+  // Capture ID counter AFTER spec generation, BEFORE engine execution
+  // This allows replay to restore the counter to the same position
+  const idCounterBeforeEngine = args.deterministic ? core.getDeterministicIdCounter() : 0;
   const errors: Array<InstanceType<typeof contracts.ZeoError>> = [];
   const startedAt = new Date().toISOString();
 
@@ -181,12 +201,37 @@ async function runDefaultCommand(args: CliArgs, startedMs: number): Promise<numb
     }
   } catch (err) {
     if (args.strict) {
+      if (args.deterministic) core.deactivateDeterministicMode();
       const zeError = contracts.ZeoError.from(err);
       printError(zeError.code, zeError.message, zeError.details);
       return 1;
     }
     errors.push(contracts.ZeoError.from(err));
   }
+
+  // Save execution snapshot
+  if (result) {
+    try {
+      const snapshot = core.createSnapshot({
+        spec,
+        opts: { depth: args.depth, example: args.example },
+        result,
+        toolRegistry: core.getDefaultToolRegistry(),
+        durationMs: Math.round(performance.now() - decisionStartMs),
+        deterministic: args.deterministic,
+        seed: args.seed,
+        idCounterOffset: args.deterministic ? idCounterBeforeEngine : undefined,
+      });
+      const snapshotPath = core.saveSnapshot(snapshot);
+      if (!args.jsonOnly) {
+        console.log(`Snapshot: ${snapshot.runId} (${snapshotPath})`);
+      }
+    } catch {
+      // Non-fatal: snapshot save failure shouldn't break CLI
+    }
+  }
+
+  if (args.deterministic) core.deactivateDeterministicMode();
 
   const finishedAt = new Date().toISOString();
   const decisionHash = core.hashDecisionSpec(core.canonicalizeDecisionSpec(spec));
@@ -320,6 +365,42 @@ async function main(): Promise<void> {
     process.exit(await runAuditCommand(argv));
   }
 
+  // v2.0 — Trust Engine commands
+  if (argv[0] === "diff" && argv[1] && argv[2]) {
+    const { runDiffCommand } = await import("./trust-cli.js");
+    process.exit(await runDiffCommand(argv[1], argv[2], argv.includes("--json")));
+  }
+
+  if (argv[0] === "explain" && argv[1]) {
+    const { runExplainCommand } = await import("./trust-cli.js");
+    process.exit(await runExplainCommand(argv[1], argv.includes("--json")));
+  }
+
+  if (argv[0] === "trace" && argv[1]) {
+    const { runTraceCommand } = await import("./trust-cli.js");
+    process.exit(await runTraceCommand(argv[1], argv.includes("--json")));
+  }
+
+  if (argv[0] === "snapshots") {
+    const { runSnapshotsCommand } = await import("./trust-cli.js");
+    process.exit(await runSnapshotsCommand(argv.includes("--json")));
+  }
+
+  if (argv[0] === "tools") {
+    const { runToolsCommand } = await import("./tools-cli.js");
+    process.exit(await runToolsCommand(argv.slice(1)));
+  }
+
+  if (argv[0] === "plan") {
+    const { parsePlanArgs, runPlanCommand } = await import("./plan-cli.js");
+    process.exit(await runPlanCommand(parsePlanArgs(argv.slice(1))));
+  }
+
+  if (argv[0] === "refresh-evidence") {
+    const { parseEvidenceGraphArgs, runEvidenceGraphCommand } = await import("./evidence-graph-cli.js");
+    process.exit(await runEvidenceGraphCommand(parseEvidenceGraphArgs(["refresh", ...argv.slice(1)])));
+  }
+
   const delegatedFlags = [
     ["--warehouse", "./warehouse-cli.js", "parseWarehouseArgs", "runWarehouseCommand"],
     ["--analytics", "./warehouse-cli.js", "parseAnalyticsArgs", "runAnalyticsCommand"],
@@ -390,6 +471,11 @@ async function main(): Promise<void> {
       console.error("Usage: zeo replay <run_id|path|examples/<name>> [--report-out <dir>] [--case <id>]");
       process.exit(1);
     }
+    // v2.0: snapshot-based deterministic replay
+    if (requested.startsWith("run_")) {
+      const { runTrustReplayCommand } = await import("./trust-cli.js");
+      process.exit(await runTrustReplayCommand(requested, argv.includes("--json")));
+    }
     const analyzeManifest = join(process.cwd(), ".zeo", "analyze-pr", requested, "manifest.json");
     if (existsSync(analyzeManifest)) {
       const mod = await import("./analyze-pr-cli.js");
@@ -419,6 +505,12 @@ async function main(): Promise<void> {
   if (argv[0] === "cp" || argv[0] === "artifacts") {
     const mod = await import("./controlplane-cli.js");
     process.exit(await mod.runControlPlaneCommand(argv));
+  }
+
+  // v2.0: Evidence graph commands (list/add/mark/drift/regret)
+  if (argv[0] === "evidence" && argv[1] && ["list", "add", "mark", "drift", "regret", "refresh"].includes(argv[1])) {
+    const { parseEvidenceGraphArgs, runEvidenceGraphCommand } = await import("./evidence-graph-cli.js");
+    process.exit(await runEvidenceGraphCommand(parseEvidenceGraphArgs(argv.slice(1))));
   }
 
   if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "view", "review", "explain", "summary", "decision-health", "drift-report", "roi-report", "verify", "evidence", "help", "examples", "template", "decision"].includes(argv[0] ?? "")) {

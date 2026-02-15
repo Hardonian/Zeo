@@ -81,3 +81,111 @@ export * from "./storage/prisma.js";
 export * from "./storage/sqlite.js";
 export * from "./evidence-signing.js";
 export * from "./github-auth.js";
+
+// v2.0 — Decision Operating System Hardening
+
+// Deterministic execution
+export * from "./deterministic.js";
+
+// Execution snapshots
+export {
+  type ExecutionSnapshot,
+  type ToolRegistryState,
+  createSnapshot,
+  saveSnapshot,
+  loadSnapshot,
+  listSnapshots,
+  computeInputHash,
+  computeOutputHash,
+  computeToolRegistryHash,
+  computeChainHash,
+  getDefaultToolRegistry,
+} from "./snapshot.js";
+
+// Replay engine
+export {
+  type ReplayVerdict,
+  type ReplayResult as ReplayEngineResult,
+  type ReplayDiff,
+  replayRun,
+  replaySnapshot,
+  formatReplayResult,
+} from "./replay-engine.js";
+
+// Structured reasoning logs
+export {
+  type ReasoningStep,
+  type ReasoningLog,
+  ReasoningLogger,
+  formatReasoningTrace,
+  formatReasoningExplain,
+} from "./reasoning-log.js";
+
+// Diff engine
+export {
+  type RunDiff,
+  type AssumptionDiff,
+  type OutputDiff,
+  type ConfidenceDelta as DiffConfidenceDelta,
+  type EvidenceChange,
+  diffRuns,
+  diffSnapshots,
+  formatRunDiff,
+} from "./diff-engine.js";
+
+// Evidence graph
+export {
+  type EvidenceNode,
+  type EvidenceGraph as EvidenceGraphData,
+  type DriftAlert,
+  type OutcomeMarker,
+  loadEvidenceGraph,
+  saveEvidenceGraph,
+  registerClaim,
+  refreshConfidence,
+  detectDrift,
+  markOutcome,
+  filterStale,
+  filterByTag,
+  filterByDecision,
+  filterHighRegret,
+  formatEvidenceList,
+  formatDriftAlerts,
+} from "./evidence-graph.js";
+
+// Agent runtime schema
+export {
+  type AgentCapabilitySchema,
+  type JsonSchema,
+  type CostEstimate,
+  type ResourceBudget,
+  type ResourceUsage,
+  type AgentHealthStatus,
+  type AgentHealth,
+  type ValidationResult,
+  validateAgainstSchema,
+  registerAgent,
+  getAgent,
+  listAgents,
+  clearAgentRegistry,
+  ResourceTracker,
+  executeAgent,
+  checkAgentHealth,
+  formatAgentHealthList,
+} from "./agent-schema.js";
+
+// Planning engine
+export {
+  type FlipDistanceResult,
+  type VoiEstimate,
+  type EvidencePlanStep,
+  type BoundedEvidencePlan,
+  type ConfidenceDeltaProjection,
+  computeFlipDistances,
+  estimateVoi,
+  generateEvidencePlan,
+  projectConfidenceDeltas,
+  formatFlipDistances,
+  formatEvidencePlan,
+  formatConfidenceDeltas,
+} from "./plan-engine.js";

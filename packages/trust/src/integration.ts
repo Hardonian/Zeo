@@ -32,7 +32,7 @@ import {
   updateConsentScope,
   getConsentAuditLog,
   enforceConsentAtEntry,
-} from './consent';
+} from './consent.js';
 
 /**
  * Panel operation types that require consent
