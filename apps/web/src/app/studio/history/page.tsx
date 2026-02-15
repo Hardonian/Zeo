@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { PublicShell } from '@/components/site/PublicShell';
 import { listRecords, deleteRecord } from '@/lib/decision-ledger';
 import type { DecisionRecord } from '@/lib/decision-ledger';
@@ -11,6 +11,12 @@ export default function HistoryPage() {
   const [records, setRecords] = useState<DecisionRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [compareIds, setCompareIds] = useState<string[]>([]);
+  const [queryFilter, setQueryFilter] = useState('');
+  const [intentFilter, setIntentFilter] = useState('all');
+  const [engineFilter, setEngineFilter] = useState('all');
+  const [workflowFilter, setWorkflowFilter] = useState('all');
+  const [driftFilter, setDriftFilter] = useState('all');
+
 
   useEffect(() => {
     listRecords()
@@ -28,6 +34,25 @@ export default function HistoryPage() {
       prev.includes(id) ? prev.filter((x) => x !== id) : prev.length < 2 ? [...prev, id] : prev,
     );
   }
+
+
+  const filteredRecords = useMemo(() => {
+    const lowered = queryFilter.trim().toLowerCase();
+    return records.filter((record) => {
+      const workflowName = record.workflow?.name ?? 'SINGLE';
+      const textMatch = !lowered || record.naturalLanguageQuery.toLowerCase().includes(lowered) || (record.promptContext?.userQuery ?? '').toLowerCase().includes(lowered);
+      const intentMatch = intentFilter === 'all' || record.intent === intentFilter;
+      const engineMatch = engineFilter === 'all' || record.engineVersion === engineFilter;
+      const workflowMatch = workflowFilter === 'all' || workflowName === workflowFilter;
+      const hasDrift = record.engineVersion !== '2.0.0';
+      const driftMatch = driftFilter === 'all' || (driftFilter === 'drift' ? hasDrift : !hasDrift);
+      return textMatch && intentMatch && engineMatch && workflowMatch && driftMatch;
+    });
+  }, [records, queryFilter, intentFilter, engineFilter, workflowFilter, driftFilter]);
+
+  const intentOptions = useMemo(() => ['all', ...Array.from(new Set(records.map((r) => r.intent))).sort()], [records]);
+  const engineOptions = useMemo(() => ['all', ...Array.from(new Set(records.map((r) => r.engineVersion))).sort()], [records]);
+  const workflowOptions = useMemo(() => ['all', ...Array.from(new Set(records.map((r) => r.workflow?.name ?? 'SINGLE'))).sort()], [records]);
 
   const compareReady = compareIds.length === 2;
   const recordA = compareReady ? records.find((r) => r.id === compareIds[0]) : null;
@@ -49,6 +74,30 @@ export default function HistoryPage() {
           >
             Back to Studio
           </Link>
+        </div>
+
+
+        <div className="grid gap-3 rounded-lg border border-gray-200 bg-white p-4 md:grid-cols-5">
+          <input
+            value={queryFilter}
+            onChange={(e) => setQueryFilter(e.target.value)}
+            placeholder="Search query keywords"
+            className="rounded border border-gray-300 px-3 py-2 text-sm"
+          />
+          <select value={intentFilter} onChange={(e) => setIntentFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
+            {intentOptions.map((opt) => <option key={opt} value={opt}>{opt === 'all' ? 'All intents' : opt}</option>)}
+          </select>
+          <select value={engineFilter} onChange={(e) => setEngineFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
+            {engineOptions.map((opt) => <option key={opt} value={opt}>{opt === 'all' ? 'All engines' : `Engine ${opt}`}</option>)}
+          </select>
+          <select value={workflowFilter} onChange={(e) => setWorkflowFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
+            {workflowOptions.map((opt) => <option key={opt} value={opt}>{opt === 'all' ? 'All workflows' : opt}</option>)}
+          </select>
+          <select value={driftFilter} onChange={(e) => setDriftFilter(e.target.value)} className="rounded border border-gray-300 px-3 py-2 text-sm">
+            <option value="all">All drift states</option>
+            <option value="drift">Drift detected</option>
+            <option value="no_drift">No drift</option>
+          </select>
         </div>
 
         {/* Compare Banner */}
@@ -79,7 +128,7 @@ export default function HistoryPage() {
         {/* Records List */}
         {loading ? (
           <div className="py-12 text-center text-gray-400">Loading decision history...</div>
-        ) : records.length === 0 ? (
+        ) : filteredRecords.length === 0 ? (
           <div className="rounded-xl border border-gray-200 bg-white p-12 text-center">
             <p className="text-gray-500">No decision records yet.</p>
             <p className="mt-2 text-sm text-gray-400">
@@ -92,7 +141,7 @@ export default function HistoryPage() {
           </div>
         ) : (
           <div className="space-y-3">
-            {records.map((record) => (
+            {filteredRecords.map((record) => (
               <div
                 key={record.id}
                 className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-colors hover:border-gray-300"
@@ -116,8 +165,22 @@ export default function HistoryPage() {
                     <div className="mt-2 flex items-center gap-4 text-xs text-gray-400">
                       <span>{new Date(record.timestamp).toLocaleString()}</span>
                       <span>Engine v{record.engineVersion}</span>
+                      <span>{record.workflow?.name ?? 'SINGLE'}</span>
                       <span className="font-mono">{record.id}</span>
                     </div>
+                    <p className="mt-2 text-xs text-gray-500">
+                      Similar decisions: {records
+                        .filter((candidate) => candidate.id !== record.id)
+                        .map((candidate) => ({
+                          id: candidate.id,
+                          score: similarityScore(record.naturalLanguageQuery, candidate.naturalLanguageQuery),
+                        }))
+                        .filter((entry) => entry.score > 0)
+                        .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id))
+                        .slice(0, 2)
+                        .map((entry) => entry.id)
+                        .join(', ') || 'None'}
+                    </p>
                   </div>
                   <div className="flex flex-shrink-0 items-center gap-2">
                     <button
@@ -167,6 +230,14 @@ export default function HistoryPage() {
       </div>
     </PublicShell>
   );
+}
+
+function similarityScore(a: string, b: string): number {
+  const tokensA = Array.from(new Set(a.toLowerCase().split(/\W+/).filter(Boolean)));
+  const tokensB = Array.from(new Set(b.toLowerCase().split(/\W+/).filter(Boolean)));
+  if (tokensA.length === 0 || tokensB.length === 0) return 0;
+  const overlap = tokensA.filter((token) => tokensB.includes(token)).length;
+  return overlap / Math.max(tokensA.length, tokensB.length);
 }
 
 /* ------------------------------------------------------------------ */

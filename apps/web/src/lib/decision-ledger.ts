@@ -12,12 +12,39 @@
  * Works entirely client-side in demo mode.
  */
 
-import { sha256, hashDataset } from './hash';
+import { sha256, hashDataset, hashObject } from './hash';
 import { sampleA } from './sample-data';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
+
+export type LedgerSchemaVersion = 'ledger_v1' | 'ledger_v2';
+
+export interface CheckpointEvent {
+  stage: 'start' | 'step_start' | 'step_end' | 'execution' | 'finish';
+  timestamp: string;
+  role?: string;
+  intent?: string;
+  command?: string;
+  note: string;
+}
+
+export interface PolicyDecision {
+  timestamp: string;
+  decision: 'allow' | 'deny';
+  reason: string;
+  command?: string;
+  intent?: string;
+}
+
+export interface ToolTrace {
+  timestamp: string;
+  tool: string;
+  command: string;
+  ok: boolean;
+  outputHash: string;
+}
 
 export interface DecisionRecord {
   id: string;
@@ -34,6 +61,13 @@ export interface DecisionRecord {
   recommendedAction: string;
   confidenceNote: string;
   cliOutputRaw: string;
+  schemaVersion?: LedgerSchemaVersion;
+  checkpoints?: CheckpointEvent[];
+  policyDecisions?: PolicyDecision[];
+  toolTraces?: ToolTrace[];
+  workflow?: { name: string; steps: string[]; agentRoles?: string[] };
+  promptContext?: { userQuery: string; normalizedQuery?: string; extractedParams?: Record<string, string | number | boolean> };
+  traceHash?: string;
 }
 
 export interface ReplayResult {
@@ -54,6 +88,7 @@ const DB_VERSION = 1;
 const STORE_NAME = 'records';
 const LS_KEY = 'zeo-decision-ledger-fallback';
 const ENGINE_VERSION = '2.0.0';
+const CURRENT_SCHEMA_VERSION: LedgerSchemaVersion = 'ledger_v2';
 
 export { ENGINE_VERSION };
 
@@ -87,7 +122,7 @@ function idbAvailable(): boolean {
 function lsGetAll(): DecisionRecord[] {
   try {
     const raw = localStorage.getItem(LS_KEY);
-    return raw ? (JSON.parse(raw) as DecisionRecord[]) : [];
+    return raw ? (JSON.parse(raw) as DecisionRecord[]).map(migrateLedgerRecordV1toV2) : [];
   } catch {
     return [];
   }
@@ -99,6 +134,16 @@ function lsSave(records: DecisionRecord[]): void {
   } catch {
     // Storage full — silently drop oldest
   }
+}
+
+export function migrateLedgerRecordV1toV2(record: DecisionRecord): DecisionRecord {
+  return {
+    ...record,
+    schemaVersion: record.schemaVersion ?? CURRENT_SCHEMA_VERSION,
+    checkpoints: record.checkpoints ?? [],
+    policyDecisions: record.policyDecisions ?? [],
+    toolTraces: record.toolTraces ?? [],
+  };
 }
 
 /* ------------------------------------------------------------------ */
@@ -118,12 +163,13 @@ export function generateRecordId(): string {
  * Save a decision record to the ledger.
  */
 export async function saveRecord(record: DecisionRecord): Promise<void> {
+  const normalized = migrateLedgerRecordV1toV2(record);
   if (idbAvailable()) {
     try {
       const db = await openDB();
       return new Promise((resolve, reject) => {
         const tx = db.transaction(STORE_NAME, 'readwrite');
-        tx.objectStore(STORE_NAME).put(record);
+        tx.objectStore(STORE_NAME).put(normalized);
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
       });
@@ -132,11 +178,11 @@ export async function saveRecord(record: DecisionRecord): Promise<void> {
     }
   }
   const all = lsGetAll();
-  const idx = all.findIndex((r) => r.id === record.id);
+  const idx = all.findIndex((r) => r.id === normalized.id);
   if (idx >= 0) {
-    all[idx] = record;
+    all[idx] = normalized;
   } else {
-    all.push(record);
+    all.push(normalized);
   }
   lsSave(all);
 }
@@ -152,7 +198,7 @@ export async function listRecords(): Promise<DecisionRecord[]> {
         const tx = db.transaction(STORE_NAME, 'readonly');
         const req = tx.objectStore(STORE_NAME).getAll();
         req.onsuccess = () => {
-          const records = req.result as DecisionRecord[];
+          const records = (req.result as DecisionRecord[]).map(migrateLedgerRecordV1toV2);
           records.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
           resolve(records);
         };
@@ -175,7 +221,10 @@ export async function getRecord(id: string): Promise<DecisionRecord | null> {
       return new Promise((resolve, reject) => {
         const tx = db.transaction(STORE_NAME, 'readonly');
         const req = tx.objectStore(STORE_NAME).get(id);
-        req.onsuccess = () => resolve((req.result as DecisionRecord) ?? null);
+        req.onsuccess = () => {
+          const record = (req.result as DecisionRecord | undefined) ?? null;
+          resolve(record ? migrateLedgerRecordV1toV2(record) : null);
+        };
         req.onerror = () => reject(req.error);
       });
     } catch {
@@ -272,9 +321,23 @@ export async function createRecord(params: {
   keyDrivers: string[];
   recommendedAction: string;
   confidenceNote: string;
+  checkpoints?: CheckpointEvent[];
+  policyDecisions?: PolicyDecision[];
+  toolTraces?: ToolTrace[];
+  workflow?: { name: string; steps: string[]; agentRoles?: string[] };
+  promptContext?: { userQuery: string; normalizedQuery?: string; extractedParams?: Record<string, string | number | boolean> };
 }): Promise<DecisionRecord> {
   const datasetHash = await hashDataset(sampleA);
   const cliOutputHash = await sha256(params.cliOutputRaw);
+
+  const tracePayload = {
+    checkpoints: params.checkpoints ?? [],
+    policyDecisions: params.policyDecisions ?? [],
+    toolTraces: params.toolTraces ?? [],
+    workflow: params.workflow,
+    promptContext: params.promptContext,
+  };
+  const hasTrace = tracePayload.checkpoints.length > 0 || tracePayload.policyDecisions.length > 0 || tracePayload.toolTraces.length > 0 || Boolean(tracePayload.workflow) || Boolean(tracePayload.promptContext);
 
   return {
     id: generateRecordId(),
@@ -291,5 +354,12 @@ export async function createRecord(params: {
     confidenceNote: params.confidenceNote,
     engineVersion: ENGINE_VERSION,
     cliOutputRaw: params.cliOutputRaw,
+    schemaVersion: CURRENT_SCHEMA_VERSION,
+    checkpoints: params.checkpoints ?? [],
+    policyDecisions: params.policyDecisions ?? [],
+    toolTraces: params.toolTraces ?? [],
+    workflow: params.workflow,
+    promptContext: params.promptContext,
+    traceHash: hasTrace ? await hashObject(tracePayload) : undefined,
   };
 }
