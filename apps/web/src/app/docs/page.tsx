@@ -1,11 +1,13 @@
 import Link from 'next/link';
 import { PublicShell } from '@/components/site/PublicShell';
+import { buildMetadata } from '@/lib/seo/metadata';
 import { installMethods, troubleshooting } from '@/content/docs';
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: 'Docs | Zeo',
   description: 'Install, quickstart, GitHub integration, and troubleshooting for the Zeo CLI and web workspace.',
-};
+  canonicalPath: '/docs',
+});
 
 export default function DocsIndexPage() {
   return (

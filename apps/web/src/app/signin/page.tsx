@@ -1,8 +1,14 @@
 import Link from 'next/link';
+import { buildMetadata } from '@/lib/seo/metadata';
 import { PublicShell } from '@/components/site/PublicShell';
 import { OAUTH_CONSENT_URL } from '@/content/site';
 
-export const metadata = { title: 'Login | Zeo' };
+export const metadata = buildMetadata({
+  title: 'Sign in | Zeo',
+  description: 'Sign in to access authenticated Zeo governance and decision workspaces.',
+  canonicalPath: '/signin',
+  noindex: true,
+});
 
 export default function SignInPage() {
   return (

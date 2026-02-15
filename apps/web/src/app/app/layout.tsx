@@ -13,6 +13,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <AppSidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
       <AppHeader sidebarCollapsed={collapsed} />
       <main
+        id="main-content"
         className={`pt-14 pb-8 transition-[margin-left] duration-200 ${
           collapsed ? 'ml-16' : 'ml-64'
         }`}

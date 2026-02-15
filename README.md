@@ -72,6 +72,13 @@ Optional but commonly needed:
 - `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` / `OPENROUTER_API_KEY` — enables model-backed CLI flows.
 - `OCR_VENDOR_KEY`, `STT_VENDOR_KEY`, `MARKET_DATA_KEY`, `NEWS_DATA_KEY` — enables external adapters.
 
+
+## Security Hygiene
+
+- Run dependency checks before release: `pnpm audit`.
+- Run secret scanning before commit/push: `pnpm security:secrets`.
+- Keep secrets only in local environment files; never commit real keys.
+
 ## Build + Dev Commands
 
 Core workflows:

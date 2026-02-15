@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import { PublicShell } from '@/components/site/PublicShell';
+import { buildMetadata } from '@/lib/seo/metadata';
 import { IconCheck } from '@/components/icons/ZeoIcons';
+import { JsonLd } from '@/components/seo/JsonLd';
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: 'Pricing | Zeo',
-  description: 'Zeo pricing tiers — Community edition for open-source usage and Enterprise for policy packs, governance integrations, and audit support.',
-};
+  description: 'Compare Zeo Community and Enterprise plans for governance, provenance, and decision-intelligence workflows.',
+  canonicalPath: '/pricing',
+});
 
 const communityFeatures = [
   'Local deployment',
@@ -41,9 +44,25 @@ const faqs = [
   },
 ];
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((entry) => ({
+    '@type': 'Question',
+    name: entry.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: entry.a,
+    },
+  })),
+};
+
+
+
 export default function PricingPage() {
   return (
     <PublicShell title="Pricing">
+      <JsonLd data={faqJsonLd} />
       <div className="max-w-4xl space-y-12">
         <p className="text-gray-600 max-w-2xl">
           Start free with the full open-source platform. Upgrade to Enterprise when your team needs governance integrations and dedicated support.

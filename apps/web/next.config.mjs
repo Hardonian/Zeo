@@ -10,6 +10,55 @@ function resolveWorkspaceEntry(distPath, srcPath) {
   return fs.existsSync(distPath) ? distPath : srcPath;
 }
 
+function buildCspValue() {
+  const mode = process.env.CSP_MODE === 'enforce' ? 'enforce' : 'report-only';
+  const reportUri = process.env.CSP_REPORT_URI?.trim();
+  const isDev = process.env.NODE_ENV !== 'production';
+  const scriptSrc = ["'self'", "'unsafe-inline'"];
+  if (isDev) {
+    scriptSrc.push("'unsafe-eval'");
+  }
+
+  const directives = [
+    "default-src 'self'",
+    `script-src ${scriptSrc.join(' ')}`,
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob: https:",
+    "font-src 'self' data:",
+    "connect-src 'self' https:",
+    "frame-ancestors 'none'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "upgrade-insecure-requests",
+  ];
+
+  if (reportUri) {
+    directives.push(`report-uri ${reportUri}`);
+  }
+
+  return { mode, value: directives.join('; ') };
+}
+
+function buildSecurityHeaders() {
+  const { mode, value } = buildCspValue();
+  const headers = [
+    { key: mode === 'enforce' ? 'Content-Security-Policy' : 'Content-Security-Policy-Report-Only', value },
+    { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+    { key: 'X-Content-Type-Options', value: 'nosniff' },
+    { key: 'X-Frame-Options', value: 'DENY' },
+    { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), accelerometer=(), gyroscope=()' },
+    { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+    { key: 'Cross-Origin-Resource-Policy', value: 'same-site' },
+  ];
+
+  if (process.env.NODE_ENV === 'production') {
+    headers.push({ key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' });
+  }
+
+  return headers;
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -32,6 +81,15 @@ const nextConfig = {
   
   // Generate all static pages - don't bail out to client-side rendering
   staticPageGenerationTimeout: 120,
+
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: buildSecurityHeaders(),
+      },
+    ];
+  },
   
   webpack: (config, { isServer, defaultLoaders, webpack }) => {
     // Use NormalModuleReplacementPlugin to forcibly redirect workspace imports
