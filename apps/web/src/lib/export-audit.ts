@@ -19,12 +19,16 @@ export interface AuditReportJSON {
   version: string;
   exportedAt: string;
   record: DecisionRecord;
+  orgId?: string;
+  projectId?: string;
   replayProof: {
     datasetHash: string;
     outputHash: string;
     engineVersion: string;
     traceChainHash: string | null;
   };
+  auditHash?: string;
+  signature?: string | null;
   reproducibility?: {
     replayMatch: boolean;
     dataDrift: boolean;
@@ -34,20 +38,30 @@ export interface AuditReportJSON {
   };
 }
 
+export interface AuditExportOptions {
+  orgId?: string;
+  projectId?: string;
+  auditHash?: string;
+}
+
 /**
  * Export a decision record as a downloadable JSON file.
  */
-export function exportJSON(record: DecisionRecord, replay?: ReplayResult): void {
+export function exportJSON(record: DecisionRecord, replay?: ReplayResult, options?: AuditExportOptions): void {
   const report: AuditReportJSON = {
-    version: '1.0.0',
+    version: '3.0.0',
     exportedAt: new Date().toISOString(),
     record,
+    orgId: options?.orgId,
+    projectId: options?.projectId,
     replayProof: {
       datasetHash: record.datasetHash,
       outputHash: record.cliOutputHash,
       engineVersion: record.engineVersion,
       traceChainHash: record.traceChainHash ?? null,
     },
+    auditHash: options?.auditHash,
+    signature: null,
   };
 
   if (replay) {

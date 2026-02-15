@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ENGINE_VERSION } from '@/lib/decision-ledger';
 import { getDecisionStore } from '@/lib/decision-store';
+import { OrgSwitcher } from '@/components/platform/OrgSwitcher';
+import { ProjectSelector } from '@/components/platform/ProjectSelector';
 
 type RuntimeMode = 'Deterministic' | 'Agentic' | 'MCP';
 
@@ -16,6 +18,7 @@ const MODE_STYLES: Record<RuntimeMode, string> = {
 export function AppHeader({ sidebarCollapsed }: { sidebarCollapsed: boolean }) {
   const [mode] = useState<RuntimeMode>('Deterministic');
   const [pendingApprovals, setPendingApprovals] = useState(0);
+  const [orgId, setOrgId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -23,6 +26,10 @@ export function AppHeader({ sidebarCollapsed }: { sidebarCollapsed: boolean }) {
     store.listApprovals('pending').then((approvals) => {
       if (!cancelled) setPendingApprovals(approvals.length);
     }).catch(() => {});
+
+    const stored = localStorage.getItem('zeo-current-org');
+    setOrgId(stored);
+
     return () => { cancelled = true; };
   }, []);
 
@@ -32,23 +39,23 @@ export function AppHeader({ sidebarCollapsed }: { sidebarCollapsed: boolean }) {
         sidebarCollapsed ? 'left-16' : 'left-64'
       }`}
     >
-      <div className="flex items-center gap-4">
-        <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${MODE_STYLES[mode]}`}>
-          {mode}
+      <div className="flex items-center gap-3">
+        <OrgSwitcher />
+        <ProjectSelector orgId={orgId} />
+        <span className="hidden sm:inline-flex">
+          <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${MODE_STYLES[mode]}`}>
+            {mode}
+          </span>
         </span>
-        <span className="text-xs text-gray-400 dark:text-gray-500">
+        <span className="hidden text-xs text-gray-400 dark:text-gray-500 md:inline">
           Engine v{ENGINE_VERSION}
         </span>
-        <span className="badge-deterministic text-[10px]">
+        <span className="badge-deterministic hidden text-[10px] md:inline">
           No Drift
         </span>
       </div>
 
       <div className="flex items-center gap-4">
-        <span className="text-xs text-gray-500 dark:text-gray-400">
-          Tenant: default
-        </span>
-
         <Link
           href="/app/approvals"
           className="relative rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
