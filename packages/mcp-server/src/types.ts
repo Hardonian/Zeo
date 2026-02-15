@@ -71,6 +71,8 @@ export interface SchemaProperty {
 export interface McpToolCallParams {
     name: string;
     arguments?: Record<string, unknown>;
+    sessionId?: string;
+    correlationId?: string;
 }
 
 export interface McpToolResult {
@@ -124,11 +126,17 @@ export interface McpConfig {
     security: {
         redactSecrets: boolean;
         maxRequestSizeBytes: number;
+        maxToolArgsBytes: number;
+        maxToolResultBytes: number;
         requestTimeoutMs: number;
         maxInFlightRequests: number;
         rateLimitPerMinute: number;
         cacheMode: "read" | "write" | "off";
         cacheTtlMs: number;
+        quarantineFailureThreshold: number;
+        quarantineWindowMs: number;
+        requireAuthContext: boolean;
+        localMode: boolean;
     };
 }
 

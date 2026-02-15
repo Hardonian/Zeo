@@ -28,7 +28,14 @@ import type {
     McpToolResult,
 } from "./types.js";
 import { createAuditBridge, type AuditBridge } from "./audit-bridge.js";
-import { validateToolPermission, validateRequestSize, redactSecrets } from "./security.js";
+import {
+    validateToolPermission,
+    validateRequestSize,
+    redactSecrets,
+    validateToolInputAgainstSchema,
+    enforcePayloadSize,
+    sanitizeToolOutput,
+} from "./security.js";
 import { mcpPolicyEngine } from "./policy.js";
 import { MetricsRegistry, StructuredLogger, Tracer } from "./observability.js";
 import { DeterministicCache } from "./deterministic-cache.js";
@@ -175,6 +182,8 @@ export function createMcpServer(config: McpConfig): McpServer {
     const enabledTools = TOOL_REGISTRY.filter(
         t => config.tools.allowlist[t.definition.name]?.enabled !== false
     );
+    const internalToolNames = new Set(enabledTools.map((t) => t.definition.name));
+    const quarantineByTool = new Map<string, { failures: number; quarantinedUntil?: number; reason?: string }>();
 
     function getToolDefinitions(): McpToolDefinition[] {
         return enabledTools.map(t => t.definition);
@@ -182,6 +191,31 @@ export function createMcpServer(config: McpConfig): McpServer {
 
     function getAuditBridge(): AuditBridge {
         return auditBridge;
+    }
+
+    function trustTierForTool(name: string): "internal" | "external" {
+        return internalToolNames.has(name) ? "internal" : "external";
+    }
+
+    function getQuarantineState(name: string) {
+        return quarantineByTool.get(name) ?? { failures: 0 };
+    }
+
+    function noteToolFailure(name: string, reason: string): void {
+        const state = getQuarantineState(name);
+        const failures = state.failures + 1;
+        const next = { ...state, failures, reason };
+        if (failures >= config.security.quarantineFailureThreshold) {
+            next.quarantinedUntil = Date.now() + config.security.quarantineWindowMs;
+            logger.log({ level: "warn", msg: "tool quarantined", run_id: "system", action: "tools/call", tool_name: name, reason, failures, quarantined_until: next.quarantinedUntil });
+            metrics.inc("tool_quarantine");
+        }
+        quarantineByTool.set(name, next);
+    }
+
+    function clearToolFailures(name: string): void {
+        if (!quarantineByTool.has(name)) return;
+        quarantineByTool.set(name, { failures: 0 });
     }
 
     async function handleRequest(raw: string): Promise<string | null> {
@@ -332,6 +366,55 @@ export function createMcpServer(config: McpConfig): McpServer {
             };
         }
 
+        const trustTier = trustTierForTool(params.name);
+        const quarantineState = getQuarantineState(params.name);
+        if (quarantineState.quarantinedUntil && quarantineState.quarantinedUntil > Date.now()) {
+            metrics.inc("tool_denied_quarantine");
+            return {
+                jsonrpc: "2.0",
+                id: request.id,
+                error: {
+                    code: -32603,
+                    message: `Tool is quarantined: ${params.name}`,
+                    data: {
+                        run_id: runId,
+                        trust_tier: trustTier,
+                        reason: quarantineState.reason ?? "repeated failures",
+                        quarantined_until: quarantineState.quarantinedUntil,
+                    },
+                },
+            };
+        }
+
+        if (config.security.requireAuthContext && !config.security.localMode) {
+            const sessionId = params.sessionId ?? "";
+            if (!sessionId.trim()) {
+                metrics.inc("auth_denied");
+                return {
+                    jsonrpc: "2.0",
+                    id: request.id,
+                    error: {
+                        code: -32600,
+                        message: "Missing authenticated session context",
+                        data: { run_id: runId, error_code: "AUTH_REQUIRED" },
+                    },
+                };
+            }
+        }
+
+        if (params.arguments && (params.arguments as Record<string, unknown>)["proposedToolCallText"]) {
+            metrics.inc("injection_denied");
+            return {
+                jsonrpc: "2.0",
+                id: request.id,
+                error: {
+                    code: -32602,
+                    message: "Freeform tool call proposals are denied. Use structured arguments only.",
+                    data: { run_id: runId, error_code: "STRUCTURED_PROPOSAL_REQUIRED" },
+                },
+            };
+        }
+
         // Security check
         const permError = validateToolPermission(config, params);
         if (permError) {
@@ -383,6 +466,35 @@ export function createMcpServer(config: McpConfig): McpServer {
         try {
             metrics.inc("model_calls");
             const toolArgs = (params.arguments ?? {}) as Record<string, unknown>;
+            const argsSizeError = enforcePayloadSize(config.security.maxToolArgsBytes, toolArgs, "Tool args");
+            if (argsSizeError) {
+                noteToolFailure(params.name, argsSizeError.message);
+                metrics.inc("schema_rejects");
+                return {
+                    jsonrpc: "2.0",
+                    id: request.id,
+                    error: {
+                        code: argsSizeError.code,
+                        message: argsSizeError.message,
+                        data: { run_id: runId, trust_tier: trustTier },
+                    },
+                };
+            }
+
+            const schemaErrors = validateToolInputAgainstSchema(toolArgs, tool.definition.inputSchema);
+            if (schemaErrors.length > 0) {
+                noteToolFailure(params.name, schemaErrors[0]);
+                metrics.inc("schema_rejects");
+                return {
+                    jsonrpc: "2.0",
+                    id: request.id,
+                    error: {
+                        code: -32602,
+                        message: `Schema validation failed: ${schemaErrors.join("; ")}`,
+                        data: { run_id: runId, trust_tier: trustTier },
+                    },
+                };
+            }
 
             const result = await tool.handler(
                 toolArgs,
@@ -391,22 +503,43 @@ export function createMcpServer(config: McpConfig): McpServer {
                 config.warehouse.basePath
             );
 
+            const sanitizedResult = sanitizeToolOutput(result) as McpToolResult;
+            const resultSizeError = enforcePayloadSize(config.security.maxToolResultBytes, sanitizedResult, "Tool result");
+            if (resultSizeError) {
+                noteToolFailure(params.name, resultSizeError.message);
+                return {
+                    jsonrpc: "2.0",
+                    id: request.id,
+                    error: {
+                        code: resultSizeError.code,
+                        message: resultSizeError.message,
+                        data: { run_id: runId, trust_tier: trustTier },
+                    },
+                };
+            }
+
             const durationMs = Date.now() - startMs;
 
             // Audit log (redact secrets in logged args)
             auditBridge.record(
                 params.name,
                 config.security.redactSecrets ? redactSecrets(toolArgs) : toolArgs,
-                result.isError ? { error: true } : { success: true },
-                !result.isError,
+                sanitizedResult.isError ? { error: true } : { success: true },
+                !sanitizedResult.isError,
                 durationMs
             );
+
+            if (sanitizedResult.isError) {
+                noteToolFailure(params.name, "tool result returned error");
+            } else {
+                clearToolFailures(params.name);
+            }
 
             span.end("ok");
             return {
                 jsonrpc: "2.0",
                 id: request.id,
-                result,
+                result: sanitizedResult,
             };
         } catch (err) {
             const durationMs = Date.now() - startMs;
@@ -422,6 +555,7 @@ export function createMcpServer(config: McpConfig): McpServer {
                 false,
                 durationMs
             );
+            noteToolFailure(params.name, errorMessage);
 
             span.end("error");
             return {

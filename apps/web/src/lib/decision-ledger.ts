@@ -69,6 +69,7 @@ export interface DecisionRecord {
   workflow?: { name: string; steps: string[]; agentRoles?: string[] };
   promptContext?: { userQuery: string; normalizedQuery?: string; extractedParams?: Record<string, string | number | boolean> };
   traceHash?: string;
+  traceChainHash?: string;
 }
 
 export interface ReplayResult {

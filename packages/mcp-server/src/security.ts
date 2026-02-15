@@ -6,7 +6,7 @@
  * Write tools require user confirmation (or config approval).
  */
 
-import type { McpConfig, McpToolCallParams, JsonRpcError } from "./types.js";
+import type { McpConfig, McpToolCallParams, JsonRpcError, SchemaProperty } from "./types.js";
 import { isToolAllowed } from "./config.js";
 
 const SECRET_PATTERNS = [
@@ -18,6 +18,16 @@ const SECRET_PATTERNS = [
     /bearer/i,
     /credential/i,
 ];
+
+function stripControlChars(input: string): string {
+    let out = "";
+    for (let i = 0; i < input.length; i += 1) {
+        const code = input.charCodeAt(i);
+        const isControl = (code >= 0 && code <= 8) || code === 11 || code === 12 || (code >= 14 && code <= 31) || code === 127;
+        if (!isControl) out += input[i];
+    }
+    return out;
+}
 
 /**
  * Validate that a tool call is permitted under the current config.
@@ -80,9 +90,102 @@ export function redactSecrets(value: unknown): unknown {
     return value;
 }
 
+function validateByProperty(path: string, value: unknown, property: SchemaProperty): string[] {
+    const errors: string[] = [];
+    const propType = property.type;
+    if (propType === "string") {
+        if (typeof value !== "string") errors.push(`${path} must be a string`);
+        if (property.enum && typeof value === "string" && !property.enum.includes(value)) {
+            errors.push(`${path} must be one of: ${property.enum.join(", ")}`);
+        }
+        return errors;
+    }
+    if (propType === "number") {
+        if (typeof value !== "number" || Number.isNaN(value)) errors.push(`${path} must be a number`);
+        return errors;
+    }
+    if (propType === "integer") {
+        if (typeof value !== "number" || !Number.isInteger(value)) errors.push(`${path} must be an integer`);
+        return errors;
+    }
+    if (propType === "boolean") {
+        if (typeof value !== "boolean") errors.push(`${path} must be a boolean`);
+        return errors;
+    }
+    if (propType === "array") {
+        if (!Array.isArray(value)) {
+            errors.push(`${path} must be an array`);
+            return errors;
+        }
+        if (property.items) {
+            value.forEach((item, idx) => {
+                errors.push(...validateByProperty(`${path}[${idx}]`, item, property.items as SchemaProperty));
+            });
+        }
+        return errors;
+    }
+    if (propType === "object") {
+        if (!value || typeof value !== "object" || Array.isArray(value)) {
+            errors.push(`${path} must be an object`);
+            return errors;
+        }
+        const obj = value as Record<string, unknown>;
+        const childProperties = property.properties ?? {};
+        const required = property.required ?? [];
+
+        for (const req of required) {
+            if (obj[req] === undefined || obj[req] === null) {
+                errors.push(`${path}.${req} is required`);
+            }
+        }
+
+        for (const key of Object.keys(obj)) {
+            if (!childProperties[key]) {
+                errors.push(`${path}.${key} is not allowed`);
+                continue;
+            }
+            errors.push(...validateByProperty(`${path}.${key}`, obj[key], childProperties[key]));
+        }
+        return errors;
+    }
+
+    return errors;
+}
+
 /**
- * Validate input against a simple schema.
- * Returns a list of validation errors (empty = valid).
+ * Strict schema validation:
+ * - required fields are present
+ * - unknown fields are rejected
+ * - types and enums are enforced
+ */
+export function validateToolInputAgainstSchema(
+    params: Record<string, unknown> | undefined,
+    schema: { properties: Record<string, SchemaProperty>; required?: string[] }
+): string[] {
+    const errors: string[] = [];
+    const required = schema.required ?? [];
+    const safeParams = params ?? {};
+
+    for (const field of required) {
+        if (safeParams[field] === undefined || safeParams[field] === null) {
+            errors.push(`Missing required field: ${field}`);
+        }
+    }
+
+    for (const key of Object.keys(safeParams)) {
+        const property = schema.properties[key];
+        if (!property) {
+            errors.push(`Unknown field: ${key}`);
+            continue;
+        }
+        errors.push(...validateByProperty(key, safeParams[key], property));
+    }
+
+    return errors;
+}
+
+/**
+ * Backward compatible required-field validation for existing tools.
  */
 export function validateToolInput(
     params: Record<string, unknown> | undefined,
@@ -101,4 +204,33 @@ export function validateToolInput(
         }
     }
     return errors;
+}
+
+export function enforcePayloadSize(limit: number, value: unknown, label: string): JsonRpcError | null {
+    const bytes = Buffer.byteLength(JSON.stringify(value ?? {}), "utf-8");
+    if (bytes > limit) {
+        return {
+            code: -32602,
+            message: `${label} payload size ${bytes} exceeds maximum ${limit} bytes`,
+        };
+    }
+    return null;
+}
+
+export function sanitizeToolOutput(value: unknown): unknown {
+    if (typeof value === "string") {
+        const cleaned = stripControlChars(value).replace(/```[\s\S]*?```/g, "[BLOCK_REDACTED]");
+        return cleaned.length > 8000 ? `${cleaned.slice(0, 8000)}…` : cleaned;
+    }
+    if (Array.isArray(value)) {
+        return value.map(sanitizeToolOutput);
+    }
+    if (!value || typeof value !== "object") {
+        return value;
+    }
+    const out: Record<string, unknown> = {};
+    for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+        out[key] = sanitizeToolOutput(child);
+    }
+    return out;
 }

@@ -23,6 +23,7 @@ export function toDbRun(record: DecisionRecord, userId: string) {
       confidenceNote: record.confidenceNote,
       timestamp: record.timestamp,
       cliOutputRaw: record.cliOutputRaw,
+      traceChainHash: record.traceChainHash ?? null,
     },
   };
 }
@@ -44,6 +45,7 @@ export function fromDbRun(row: Record<string, any>): DecisionRecord {
     recommendedAction: String(metadata.recommendedAction ?? ''),
     confidenceNote: String(metadata.confidenceNote ?? ''),
     cliOutputRaw: String(metadata.cliOutputRaw ?? ''),
+    traceChainHash: metadata.traceChainHash ? String(metadata.traceChainHash) : undefined,
   };
 }
 
@@ -58,6 +60,8 @@ export function toDbTrace(runId: string, event: DecisionTraceEvent) {
     tool_name: event.toolName,
     scope: event.scope,
     correlation_id: event.correlationId,
+    prev_event_hash: event.prevEventHash ?? null,
+    event_hash: event.eventHash ?? null,
     payload: event.payload,
   };
 }
@@ -73,6 +77,8 @@ export function fromDbTrace(row: Record<string, any>): DecisionTraceEvent {
     toolName: row.tool_name,
     scope: row.scope,
     correlationId: row.correlation_id,
+    prevEventHash: row.prev_event_hash ?? null,
+    eventHash: row.event_hash ?? null,
     payload: (row.payload ?? {}) as Record<string, unknown>,
   };
 }

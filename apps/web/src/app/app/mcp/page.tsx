@@ -11,6 +11,12 @@ interface McpConnection {
   allowedTools: string[];
   notes: string;
   createdAt?: string;
+  riskTier?: 'internal' | 'untrusted';
+  maxCallsPerMinute?: number;
+  quarantineState?: 'none' | 'quarantined';
+  healthStatus?: 'healthy' | 'degraded' | 'unknown';
+  lastError?: string | null;
+  lastCheckedAt?: string | null;
 }
 
 interface ToolRegistryEntry {
@@ -55,6 +61,12 @@ export default function McpPage() {
             allowedTools: (c.allowed_tools as string[]) ?? [],
             notes: (c.notes as string) ?? '',
             createdAt: c.created_at as string | undefined,
+            riskTier: (c.risk_tier as 'internal' | 'untrusted' | undefined) ?? 'untrusted',
+            maxCallsPerMinute: (c.max_calls_per_minute as number | undefined) ?? 60,
+            quarantineState: (c.quarantine_state as 'none' | 'quarantined' | undefined) ?? 'none',
+            healthStatus: (c.health_status as 'healthy' | 'degraded' | 'unknown' | undefined) ?? 'unknown',
+            lastError: (c.last_error as string | null | undefined) ?? null,
+            lastCheckedAt: (c.last_checked_at as string | null | undefined) ?? null,
           })),
         );
       }
