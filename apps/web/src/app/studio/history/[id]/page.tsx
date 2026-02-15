@@ -17,6 +17,10 @@ export default function RecordDetailPage() {
   const [replay, setReplay] = useState<ReplayResult | null>(null);
   const [replaying, setReplaying] = useState(false);
   const [showRawOutput, setShowRawOutput] = useState(false);
+  const [showWorkflow, setShowWorkflow] = useState(true);
+  const [showPolicy, setShowPolicy] = useState(false);
+  const [showToolTrace, setShowToolTrace] = useState(false);
+  const [showExecutionTrace, setShowExecutionTrace] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -145,6 +149,102 @@ export default function RecordDetailPage() {
           <h3 className="mb-2 text-lg font-semibold text-gray-900">Recommended Action</h3>
           <p className="leading-relaxed text-gray-700">{record.recommendedAction}</p>
         </section>
+
+
+        {record.workflow && (
+          <section className="rounded-xl border border-gray-200 bg-white shadow-sm">
+            <button
+              type="button"
+              onClick={() => setShowWorkflow(!showWorkflow)}
+              className="flex w-full items-center justify-between px-6 py-4 text-left"
+            >
+              <span className="text-sm font-semibold text-gray-700">Workflow / Agents</span>
+              <span className="text-xs text-gray-500">{showWorkflow ? 'Hide' : 'Show'}</span>
+            </button>
+            {showWorkflow && (
+              <div className="border-t border-gray-200 px-6 py-4 text-sm text-gray-700">
+                <p><strong>Name:</strong> {record.workflow.name}</p>
+                <p className="mt-2"><strong>Steps:</strong> {record.workflow.steps.join(' → ')}</p>
+                {record.workflow.agentRoles && record.workflow.agentRoles.length > 0 && (
+                  <p className="mt-2"><strong>Agent roles:</strong> {record.workflow.agentRoles.join(', ')}</p>
+                )}
+              </div>
+            )}
+          </section>
+        )}
+
+        {record.checkpoints && record.checkpoints.length > 0 && (
+          <section className="rounded-xl border border-gray-200 bg-white shadow-sm">
+            <button
+              type="button"
+              onClick={() => setShowExecutionTrace(!showExecutionTrace)}
+              className="flex w-full items-center justify-between px-6 py-4 text-left"
+            >
+              <span className="text-sm font-semibold text-gray-700">Execution Trace</span>
+              <span className="text-xs text-gray-500">{showExecutionTrace ? 'Hide' : 'Show'}</span>
+            </button>
+            {showExecutionTrace && (
+              <div className="border-t border-gray-200 px-6 py-4">
+                <ul className="space-y-2 text-sm text-gray-700">
+                  {record.checkpoints.map((checkpoint, i) => (
+                    <li key={`${checkpoint.timestamp}-${i}`} className="rounded border border-gray-100 bg-gray-50 px-3 py-2">
+                      <span className="font-mono text-xs text-gray-500">{checkpoint.timestamp}</span> · {checkpoint.stage} · {checkpoint.note}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </section>
+        )}
+
+        {record.policyDecisions && record.policyDecisions.length > 0 && (
+          <section className="rounded-xl border border-gray-200 bg-white shadow-sm">
+            <button
+              type="button"
+              onClick={() => setShowPolicy(!showPolicy)}
+              className="flex w-full items-center justify-between px-6 py-4 text-left"
+            >
+              <span className="text-sm font-semibold text-gray-700">Policy Decisions</span>
+              <span className="text-xs text-gray-500">{showPolicy ? 'Hide' : 'Show'}</span>
+            </button>
+            {showPolicy && (
+              <div className="border-t border-gray-200 px-6 py-4">
+                <ul className="space-y-2 text-sm text-gray-700">
+                  {record.policyDecisions.map((decision, i) => (
+                    <li key={`${decision.timestamp}-${i}`} className="rounded border border-gray-100 bg-gray-50 px-3 py-2">
+                      <span className={`mr-2 inline-block rounded px-2 py-0.5 text-xs ${decision.decision === 'allow' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{decision.decision.toUpperCase()}</span>
+                      {decision.reason}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </section>
+        )}
+
+        {record.toolTraces && record.toolTraces.length > 0 && (
+          <section className="rounded-xl border border-gray-200 bg-white shadow-sm">
+            <button
+              type="button"
+              onClick={() => setShowToolTrace(!showToolTrace)}
+              className="flex w-full items-center justify-between px-6 py-4 text-left"
+            >
+              <span className="text-sm font-semibold text-gray-700">Tool Trace</span>
+              <span className="text-xs text-gray-500">{showToolTrace ? 'Hide' : 'Show'}</span>
+            </button>
+            {showToolTrace && (
+              <div className="border-t border-gray-200 px-6 py-4">
+                <ul className="space-y-2 text-sm text-gray-700">
+                  {record.toolTraces.map((trace, i) => (
+                    <li key={`${trace.timestamp}-${i}`} className="rounded border border-gray-100 bg-gray-50 px-3 py-2">
+                      {trace.tool} · {trace.command} · {trace.ok ? 'ok' : 'error'}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </section>
+        )}
 
         {/* Execution Plan */}
         <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">

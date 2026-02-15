@@ -34,6 +34,10 @@ export default function ProductPage() {
             Ask questions in plain language. Zeo translates your query into deterministic analysis
             and explains the results — no CLI knowledge required.
           </p>
+          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-gray-600">
+            <li>Decision Checkpoints: audit-ready, replayable, exportable.</li>
+            <li>Bounded multi-agent workflows with full trace.</li>
+          </ul>
           <Link
             href="/studio"
             className="mt-4 inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:from-blue-700 hover:to-indigo-700 hover:shadow-md"

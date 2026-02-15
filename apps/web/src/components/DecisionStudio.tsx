@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { classifyIntent, intentLabel, getExamplePrompts, IntentKey } from '@/lib/intent-router';
+import { DEFAULT_WORKFLOWS, runWorkflow } from '@/lib/agents/orchestrator';
+import { getLLMAdapter } from '@/lib/llm-adapter';
 import { planExecution } from '@/lib/execution-planner';
 import { parseCommand, executeCommand } from '@/lib/cli-engine';
 import type { CLIResult, OutputLine, LineStyle } from '@/lib/cli-engine';
@@ -15,6 +17,8 @@ import { createRecord, saveRecord } from '@/lib/decision-ledger';
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
+type StudioMode = 'SINGLE' | 'UNDERSTAND' | 'STRESS_TEST' | 'IMPROVE' | 'AUTO';
+
 interface AnalysisResult {
   input: string;
   intent: IntentKey;
@@ -24,6 +28,7 @@ interface AnalysisResult {
   cliResults: CLIResult[];
   narrative: NarrativeResult;
   error?: string;
+  workflowName?: StudioMode;
 }
 
 /* ------------------------------------------------------------------ */
@@ -51,6 +56,7 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const [showTechnical, setShowTechnical] = useState(false);
+  const [mode, setMode] = useState<StudioMode>('SINGLE');
   const resultRef = useRef<HTMLDivElement>(null);
   const hasAutoRun = useRef(false);
 
@@ -62,10 +68,58 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
 
     setIsRunning(true);
 
-    // Step 1: Classify intent
+    const llm = getLLMAdapter('none');
     const classified = classifyIntent(trimmed);
 
-    // Step 2: Plan execution
+    if (mode !== 'SINGLE') {
+      const workflowSpec = mode === 'AUTO'
+        ? { name: 'AUTO' as const, steps: [] }
+        : DEFAULT_WORKFLOWS[mode as 'UNDERSTAND' | 'STRESS_TEST' | 'IMPROVE'];
+      const workflowRun = runWorkflow(workflowSpec, { userQuery: trimmed, engineVersion: '2.0.0' });
+      const workflowNarrative = formatNarrative(workflowRun.intent, workflowRun.cliResults);
+      const summary = llm.summarize(workflowRun.combinedNarrative || workflowNarrative.summary);
+
+      setResult({
+        input: trimmed,
+        intent: workflowRun.intent,
+        intentLabel: intentLabel(workflowRun.intent),
+        confidence: classified.confidence,
+        commands: workflowRun.commands,
+        cliResults: workflowRun.cliResults,
+        narrative: {
+          ...workflowNarrative,
+          summary,
+        },
+        workflowName: mode,
+      });
+
+      setIsRunning(false);
+      setShowTechnical(false);
+
+      const rawOutput = workflowRun.cliResults.map((r) => r.lines.map((l) => l.text).join('\n')).join('\n---\n');
+      createRecord({
+        query: trimmed,
+        intent: workflowRun.intent,
+        executionPlan: workflowRun.commands,
+        cliOutputRaw: rawOutput,
+        narrativeSummary: summary,
+        numericBreakdown: workflowNarrative.numericBreakdown ?? {},
+        keyDrivers: workflowNarrative.keyDrivers,
+        recommendedAction: workflowNarrative.recommendedAction,
+        confidenceNote: workflowNarrative.confidenceNote,
+        checkpoints: workflowRun.checkpoints,
+        policyDecisions: workflowRun.policyDecisions,
+        toolTraces: workflowRun.toolTraces,
+        workflow: workflowRun.workflow,
+        promptContext: workflowRun.promptContext,
+      }).then((record) => saveRecord(record));
+
+      setTimeout(() => {
+        resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+      return;
+    }
+
     const plan = planExecution(classified.intent, trimmed);
 
     if (plan.error) {
@@ -88,7 +142,6 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
       return;
     }
 
-    // Step 3: Execute CLI commands
     const cliResults: CLIResult[] = [];
     for (const planned of plan.commands) {
       const parsed = parseCommand(planned.command);
@@ -96,7 +149,6 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
       cliResults.push(cmdResult);
     }
 
-    // Step 4: Format narrative
     const narrative = formatNarrative(classified.intent, cliResults);
 
     setResult({
@@ -107,12 +159,12 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
       commands: plan.commands,
       cliResults,
       narrative,
+      workflowName: 'SINGLE',
     });
 
     setIsRunning(false);
     setShowTechnical(false);
 
-    // Save to decision ledger (fire-and-forget)
     const rawOutput = cliResults.map((r) => r.lines.map((l) => l.text).join('\n')).join('\n---\n');
     createRecord({
       query: trimmed,
@@ -124,13 +176,17 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
       keyDrivers: narrative.keyDrivers,
       recommendedAction: narrative.recommendedAction,
       confidenceNote: narrative.confidenceNote,
+      promptContext: {
+        userQuery: trimmed,
+        normalizedQuery: trimmed.toLowerCase(),
+        extractedParams: llm.extractParams(trimmed),
+      },
     }).then((record) => saveRecord(record));
 
-    // Scroll to result
     setTimeout(() => {
       resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
-  }, []);
+  }, [mode]);
 
   // Auto-run from URL query parameter
   useEffect(() => {
@@ -182,6 +238,23 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
               }
             }}
           />
+
+
+          <div className="flex items-center gap-3">
+            <label htmlFor="studio-mode" className="text-sm font-medium text-gray-700">Mode</label>
+            <select
+              id="studio-mode"
+              value={mode}
+              onChange={e => setMode(e.target.value as StudioMode)}
+              className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700"
+            >
+              <option value="SINGLE">Single Analysis</option>
+              <option value="UNDERSTAND">Understand</option>
+              <option value="STRESS_TEST">Stress Test</option>
+              <option value="IMPROVE">Improve</option>
+              <option value="AUTO">Auto</option>
+            </select>
+          </div>
 
           <div className="flex items-center gap-3">
             <button
@@ -260,6 +333,9 @@ export function DecisionStudio({ initialQuery }: { initialQuery?: string }) {
             <p className="leading-relaxed text-gray-700">
               {result.narrative.summary}
             </p>
+            {result.workflowName && result.workflowName !== 'SINGLE' && (
+              <p className="mt-3 text-sm text-blue-600">Workflow mode: {result.workflowName}</p>
+            )}
             {result.narrative.confidenceNote && (
               <p className="mt-3 text-sm text-gray-500">
                 {result.narrative.confidenceNote}

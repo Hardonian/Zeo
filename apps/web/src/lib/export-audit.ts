@@ -100,6 +100,28 @@ function buildPDFHTML(record: DecisionRecord, replay?: ReplayResult): string {
     .map((d) => `<li>${escapeHTML(d)}</li>`)
     .join('');
 
+
+  const workflowSection = record.workflow
+    ? `<h2>Workflow / Agents</h2>
+       <table style="font-size:13px">
+         <tr><td style="padding:4px 8px;border:1px solid #e2e8f0;color:#64748b">Workflow</td><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(record.workflow.name)}</td></tr>
+         <tr><td style="padding:4px 8px;border:1px solid #e2e8f0;color:#64748b">Steps</td><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(record.workflow.steps.join(' -> '))}</td></tr>
+         <tr><td style="padding:4px 8px;border:1px solid #e2e8f0;color:#64748b">Agent roles</td><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML((record.workflow.agentRoles ?? []).join(', '))}</td></tr>
+       </table>`
+    : '';
+
+  const executionTraceRows = (record.checkpoints ?? [])
+    .map((checkpoint) => `<tr><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(checkpoint.timestamp)}</td><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(checkpoint.stage)}</td><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(checkpoint.note)}</td></tr>`)
+    .join('');
+
+  const policyRows = (record.policyDecisions ?? [])
+    .map((decision) => `<tr><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(decision.timestamp)}</td><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(decision.decision)}</td><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(decision.reason)}</td></tr>`)
+    .join('');
+
+  const toolRows = (record.toolTraces ?? [])
+    .map((trace) => `<tr><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(trace.timestamp)}</td><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(trace.tool)}</td><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(trace.command)}</td><td style="padding:4px 8px;border:1px solid #e2e8f0">${trace.ok ? 'ok' : 'error'}</td></tr>`)
+    .join('');
+
   let reproSection = '';
   if (replay) {
     const statusColor = replay.match ? '#16a34a' : '#dc2626';
@@ -164,6 +186,29 @@ function buildPDFHTML(record: DecisionRecord, replay?: ReplayResult): string {
     <thead><tr><th>Command</th><th>Description</th></tr></thead>
     <tbody>${planRows}</tbody>
   </table>
+
+  ${workflowSection}
+
+  ${executionTraceRows ? `
+  <h2>Execution Trace</h2>
+  <table>
+    <thead><tr><th>Timestamp</th><th>Stage</th><th>Note</th></tr></thead>
+    <tbody>${executionTraceRows}</tbody>
+  </table>` : ''}
+
+  ${policyRows ? `
+  <h2>Policy Decisions</h2>
+  <table>
+    <thead><tr><th>Timestamp</th><th>Decision</th><th>Reason</th></tr></thead>
+    <tbody>${policyRows}</tbody>
+  </table>` : ''}
+
+  ${toolRows ? `
+  <h2>Tool Trace</h2>
+  <table>
+    <thead><tr><th>Timestamp</th><th>Tool</th><th>Command</th><th>Status</th></tr></thead>
+    <tbody>${toolRows}</tbody>
+  </table>` : ''}
 
   ${numericRows ? `
   <h2>Numeric Breakdown</h2>
