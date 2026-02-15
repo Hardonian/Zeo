@@ -1,0 +1,6 @@
+{
+  "command": "pnpm -C apps/web test -- src/app/public-link-crawl.test.ts",
+  "exitCode": 0,
+  "groupedFailures": {},
+  "stderr": ""
+}

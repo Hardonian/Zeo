@@ -58,7 +58,18 @@
     "test:db": "node scripts/db-guardrails.mjs",
     "test:headers": "node scripts/with-web-server.mjs node scripts/headers-audit.mjs",
     "test:eval": "node scripts/eval-golden.mjs",
-    "rls:index-audit": "node scripts/rls-index-audit.mjs"
+    "rls:index-audit": "node scripts/rls-index-audit.mjs",
+    "deps:update": "node scripts/dependency-update-report.mjs",
+    "workflows": "./scripts/workflows.sh",
+    "cheatsheet:generate": "node scripts/generate-command-cheatsheet.mjs",
+    "tdd:smoke": "node scripts/tdd-smoke-report.mjs",
+    "refactor:board": "node scripts/extract-refactor-todos.mjs",
+    "task:inbox": "node scripts/task-inbox.mjs",
+    "issues:from-meeting": "node scripts/meeting-notes-to-issues.mjs",
+    "docs:api-snippets": "node scripts/generate-api-snippets.mjs",
+    "changelog:generate": "node scripts/generate-changelog-section.mjs",
+    "ai:test-generate": "node scripts/generate-ai-tests.mjs",
+    "hooks:install": "node scripts/setup-git-hooks.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",

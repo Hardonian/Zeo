@@ -1,0 +1,242 @@
+{
+  "coverage": {
+    "totalEndpoints": 26,
+    "endpointsWithRelatedTests": 3
+  },
+  "suggestions": [
+    {
+      "endpoint": "apps/web/src/app/api/evidence/v1/verify/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for evidence/v1/verify covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.732Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/evidence/v1/runs/[runId]/attestation/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for evidence/v1/runs/[runId]/attestation covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/evidence/v1/runs/[runId]/export/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for evidence/v1/runs/[runId]/export covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/dashboard/[id]/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for dashboard/[id] covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/regimes/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for regimes covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/auth/signin/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for auth/signin covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/auth/signout/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for auth/signout covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/auth/signup/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for auth/signup covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/health/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for health covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/decision-runs/[id]/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for decision-runs/[id] covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/jobs/[id]/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for jobs/[id] covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/jobs/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for jobs covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/decision-runs/[id]/trace/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for decision-runs/[id]/trace covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/decision-runs/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for decision-runs covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/approvals/[id]/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for approvals/[id] covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/approvals/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for approvals covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/worker/heartbeat/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for worker/heartbeat covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/app/current-org/route.ts",
+      "coverageStatus": "partial_or_present",
+      "suggestedSpec": "Create tests for app/current-org covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/policy-packs/v1/assign/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for policy-packs/v1/assign covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/policy-packs/v1/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for policy-packs/v1 covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/app/artifacts/signed-url/route.ts",
+      "coverageStatus": "partial_or_present",
+      "suggestedSpec": "Create tests for app/artifacts/signed-url covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/webhooks/github/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for webhooks/github covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/app/keys/route.ts",
+      "coverageStatus": "partial_or_present",
+      "suggestedSpec": "Create tests for app/keys covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/runs/[runId]/repro-pack/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for runs/[runId]/repro-pack covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/mcp-connections/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for mcp-connections covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    },
+    {
+      "endpoint": "apps/web/src/app/api/mcp-connections/[id]/route.ts",
+      "coverageStatus": "missing",
+      "suggestedSpec": "Create tests for mcp-connections/[id] covering success, auth failure, and malformed payload paths.",
+      "provenance": {
+        "generatedAt": "2026-02-15T15:29:32.733Z",
+        "sourcePattern": "apps/web/src/app/api/**/route.ts"
+      }
+    }
+  ]
+}

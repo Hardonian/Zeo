@@ -1,0 +1,14 @@
+# Commit message template
+# Format: <type>(<scope>): <summary>
+#
+# Types: feat, fix, docs, style, refactor, test, chore, ci, perf, build, revert
+# Example: feat(web): add last-90-days dashboard filter
+
+<type>(<scope>): <summary>
+
+# Why:
+#
+# What changed:
+#
+# Validation:
+#

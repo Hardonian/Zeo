@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-02-15T15:31:18.265Z",
+  "issues": [
+    {
+      "title": "Dashboard consistency",
+      "body": "## Context\n- Align all activity views to last 90 days by default.\n- Audit query performance in runs and repos pages.\n\n## Action items\n- [ ] Align all activity views to last 90 days by default.\n- [ ] Audit query performance in runs and repos pages.\n\nSource: docs/meeting-notes.md",
+      "labels": [
+        "meeting-follow-up"
+      ]
+    },
+    {
+      "title": "Automation",
+      "body": "## Context\n- Add quick-review labels for tiny pull requests.\n- Publish dependency update report weekly.\n\n## Action items\n- [ ] Add quick-review labels for tiny pull requests.\n- [ ] Publish dependency update report weekly.\n\nSource: docs/meeting-notes.md",
+      "labels": [
+        "meeting-follow-up"
+      ]
+    }
+  ]
+}

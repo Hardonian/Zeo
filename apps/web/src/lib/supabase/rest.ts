@@ -2,9 +2,10 @@ import { cookies } from 'next/headers';
 import { getPublicEnv, getServerEnv } from '@/lib/env';
 
 type Primitive = string | number | boolean;
+type FilterOperator = 'eq' | 'gte';
 
 class QueryBuilder {
-  filters: Array<[string, Primitive]> = [];
+  filters: Array<[string, FilterOperator, Primitive]> = [];
   orderBy: string | null = null;
   limitCount: number | null = null;
 
@@ -16,14 +17,15 @@ class QueryBuilder {
     readonly schema: string,
   ) {}
 
-  eq(column: string, value: Primitive) { this.filters.push([column, value]); return this; }
+  eq(column: string, value: Primitive) { this.filters.push([column, 'eq', value]); return this; }
+  gte(column: string, value: Primitive) { this.filters.push([column, 'gte', value]); return this; }
   order(column: string, options?: { ascending?: boolean }) { this.orderBy = `${column}.${options?.ascending === false ? 'desc' : 'asc'}`; return this; }
   limit(count: number) { this.limitCount = count; return this; }
 
   buildUrl(select?: string) {
     const url = new URL(`${this.baseUrl}/rest/v1/${this.table}`);
     if (select) url.searchParams.set('select', select);
-    this.filters.forEach(([k, v]) => url.searchParams.set(k, `eq.${v}`));
+    this.filters.forEach(([k, op, v]) => url.searchParams.set(k, `${op}.${v}`));
     if (this.orderBy) url.searchParams.set('order', this.orderBy);
     if (this.limitCount != null) url.searchParams.set('limit', String(this.limitCount));
     return url;
