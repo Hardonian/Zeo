@@ -4,18 +4,18 @@ import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { PublicShell } from '@/components/site/PublicShell';
 import { WebCLISandbox } from '@/components/WebCLISandbox';
-import { getPanelDemo, getAllPanelDemos } from '@/lib/panel-config';
+import { getPanelConfig, getAllPanelConfigs } from '@/lib/panel-config';
 import { IconTerminal } from '@/components/icons/ZeoIcons';
 
 export default function PanelDemoPage() {
   const params = useParams<{ panel: string }>();
   const searchParams = useSearchParams();
   const slug = params.panel;
-  const panel = getPanelDemo(slug);
+  const panel = getPanelConfig(slug);
   const initialCmd = searchParams.get('cmd') || undefined;
 
   if (!panel) {
-    const allPanels = getAllPanelDemos();
+    const allPanels = getAllPanelConfigs();
     return (
       <PublicShell title="Demo Not Found">
         <div className="max-w-2xl">
