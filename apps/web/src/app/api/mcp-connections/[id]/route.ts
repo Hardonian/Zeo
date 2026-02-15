@@ -17,7 +17,7 @@ export async function GET(
       .from('mcp_connections')
       .eq('id', id)
       .eq('user_id', context.userId)
-      .maybeSingle('id,name,transport,endpoint,is_enabled,allowed_tools,notes,created_at');
+      .maybeSingle('id,name,transport,endpoint,is_enabled,allowed_tools,notes,created_at,risk_tier,max_calls_per_minute,quarantine_state,health_status,last_error,last_checked_at');
 
     if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 400 });
     return NextResponse.json({ ok: true, connection: data ?? null });
@@ -43,6 +43,12 @@ export async function POST(
       is_enabled: body?.isEnabled,
       allowed_tools: body?.allowedTools,
       notes: body?.notes,
+      risk_tier: body?.riskTier,
+      max_calls_per_minute: body?.maxCallsPerMinute,
+      quarantine_state: body?.quarantineState,
+      health_status: body?.healthStatus,
+      last_error: body?.lastError,
+      last_checked_at: body?.lastCheckedAt,
     } as Record<string, unknown>;
 
     Object.keys(updates).forEach((key) => {

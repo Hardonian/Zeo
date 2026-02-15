@@ -10,6 +10,8 @@ export interface DecisionTraceEvent {
   toolName?: string | null;
   scope?: string | null;
   correlationId?: string | null;
+  prevEventHash?: string | null;
+  eventHash?: string | null;
   payload: Record<string, unknown>;
 }
 

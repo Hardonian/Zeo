@@ -100,11 +100,17 @@ export function createDefaultConfig(): McpConfig {
         security: {
             redactSecrets: true,
             maxRequestSizeBytes: 10 * 1024 * 1024, // 10 MB
+            maxToolArgsBytes: 256 * 1024,
+            maxToolResultBytes: 512 * 1024,
             requestTimeoutMs: 15_000,
             maxInFlightRequests: 32,
             rateLimitPerMinute: 120,
             cacheMode: "write",
             cacheTtlMs: 60_000,
+            quarantineFailureThreshold: 3,
+            quarantineWindowMs: 15 * 60_000,
+            requireAuthContext: true,
+            localMode: false,
         },
     };
 }
@@ -201,6 +207,24 @@ function applyEnvOverrides(config: McpConfig): McpConfig {
     const cacheMode = process.env["ZEO_MCP_CACHE_MODE"];
     if (cacheMode === "read" || cacheMode === "write" || cacheMode === "off") config.security.cacheMode = cacheMode;
 
+    const argsBytes = process.env["ZEO_MCP_MAX_TOOL_ARGS_BYTES"];
+    if (argsBytes) config.security.maxToolArgsBytes = parseInt(argsBytes, 10);
+
+    const resultBytes = process.env["ZEO_MCP_MAX_TOOL_RESULT_BYTES"];
+    if (resultBytes) config.security.maxToolResultBytes = parseInt(resultBytes, 10);
+
+    const quarantineFailureThreshold = process.env["ZEO_MCP_QUARANTINE_FAILURE_THRESHOLD"];
+    if (quarantineFailureThreshold) config.security.quarantineFailureThreshold = parseInt(quarantineFailureThreshold, 10);
+
+    const quarantineWindowMs = process.env["ZEO_MCP_QUARANTINE_WINDOW_MS"];
+    if (quarantineWindowMs) config.security.quarantineWindowMs = parseInt(quarantineWindowMs, 10);
+
+    const requireAuthContext = process.env["ZEO_MCP_REQUIRE_AUTH_CONTEXT"];
+    if (requireAuthContext) config.security.requireAuthContext = requireAuthContext !== "0";
+
+    const localMode = process.env["ZEO_MCP_LOCAL_MODE"];
+    if (localMode) config.security.localMode = localMode === "1";
+
     return config;
 }
 
@@ -251,6 +275,18 @@ export function validateConfig(config: McpConfig): string[] {
     }
     if (config.security.rateLimitPerMinute < 1 || config.security.rateLimitPerMinute > 100000) {
         issues.push("security.rateLimitPerMinute must be between 1 and 100000");
+    }
+    if (config.security.maxToolArgsBytes < 1024 || config.security.maxToolArgsBytes > 10 * 1024 * 1024) {
+        issues.push("security.maxToolArgsBytes must be between 1KB and 10MB");
+    }
+    if (config.security.maxToolResultBytes < 1024 || config.security.maxToolResultBytes > 10 * 1024 * 1024) {
+        issues.push("security.maxToolResultBytes must be between 1KB and 10MB");
+    }
+    if (config.security.quarantineFailureThreshold < 1 || config.security.quarantineFailureThreshold > 20) {
+        issues.push("security.quarantineFailureThreshold must be between 1 and 20");
+    }
+    if (config.security.quarantineWindowMs < 1_000 || config.security.quarantineWindowMs > 86_400_000) {
+        issues.push("security.quarantineWindowMs must be between 1s and 24h");
     }
 
     return issues;

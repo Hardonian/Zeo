@@ -9,7 +9,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "lint": "eslint .",
-    "eval": "echo 'CLI Eval (placeholder)'"
+    "eval": "node ../../scripts/eval-agentic-runtime.mjs"
   },
   "dependencies": {
     "@zeo/adapters": "workspace:*",

@@ -19,6 +19,12 @@ export interface AuditReportJSON {
   version: string;
   exportedAt: string;
   record: DecisionRecord;
+  replayProof: {
+    datasetHash: string;
+    outputHash: string;
+    engineVersion: string;
+    traceChainHash: string | null;
+  };
   reproducibility?: {
     replayMatch: boolean;
     dataDrift: boolean;
@@ -36,6 +42,12 @@ export function exportJSON(record: DecisionRecord, replay?: ReplayResult): void 
     version: '1.0.0',
     exportedAt: new Date().toISOString(),
     record,
+    replayProof: {
+      datasetHash: record.datasetHash,
+      outputHash: record.cliOutputHash,
+      engineVersion: record.engineVersion,
+      traceChainHash: record.traceChainHash ?? null,
+    },
   };
 
   if (replay) {
@@ -222,6 +234,15 @@ function buildPDFHTML(record: DecisionRecord, replay?: ReplayResult): string {
     <tr><td style="padding:4px 8px;border:1px solid #e2e8f0;color:#64748b">Dataset hash</td><td style="padding:4px 8px;border:1px solid #e2e8f0;font-family:monospace;font-size:11px">${escapeHTML(record.datasetHash)}</td></tr>
     <tr><td style="padding:4px 8px;border:1px solid #e2e8f0;color:#64748b">Output hash</td><td style="padding:4px 8px;border:1px solid #e2e8f0;font-family:monospace;font-size:11px">${escapeHTML(record.cliOutputHash)}</td></tr>
     <tr><td style="padding:4px 8px;border:1px solid #e2e8f0;color:#64748b">Engine version</td><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(record.engineVersion)}</td></tr>
+    <tr><td style="padding:4px 8px;border:1px solid #e2e8f0;color:#64748b">Trace chain hash</td><td style="padding:4px 8px;border:1px solid #e2e8f0;font-family:monospace;font-size:11px">${escapeHTML(record.traceChainHash ?? 'none')}</td></tr>
+  </table>
+
+  <h2>Replay Proof</h2>
+  <table style="font-size:13px">
+    <tr><td style="padding:4px 8px;border:1px solid #e2e8f0;color:#64748b">Dataset hash</td><td style="padding:4px 8px;border:1px solid #e2e8f0;font-family:monospace;font-size:11px">${escapeHTML(record.datasetHash)}</td></tr>
+    <tr><td style="padding:4px 8px;border:1px solid #e2e8f0;color:#64748b">Output hash</td><td style="padding:4px 8px;border:1px solid #e2e8f0;font-family:monospace;font-size:11px">${escapeHTML(record.cliOutputHash)}</td></tr>
+    <tr><td style="padding:4px 8px;border:1px solid #e2e8f0;color:#64748b">Engine version</td><td style="padding:4px 8px;border:1px solid #e2e8f0">${escapeHTML(record.engineVersion)}</td></tr>
+    <tr><td style="padding:4px 8px;border:1px solid #e2e8f0;color:#64748b">Trace chain hash</td><td style="padding:4px 8px;border:1px solid #e2e8f0;font-family:monospace;font-size:11px">${escapeHTML(record.traceChainHash ?? 'none')}</td></tr>
   </table>
 
   ${reproSection}

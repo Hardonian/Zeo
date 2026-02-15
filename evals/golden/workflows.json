@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "goldens": [
+    {
+      "workflow": "UNDERSTAND",
+      "prompt": "Understand concentration risk",
+      "expectedIntent": "GRAPH_SIMULATE",
+      "expectedPlan": ["GRAPH_SIMULATE", "GRAPH_EXPLAIN"]
+    },
+    {
+      "workflow": "STRESS_TEST",
+      "prompt": "Stress test downside",
+      "expectedIntent": "FLIP_DISTANCE",
+      "expectedPlan": ["FLIP_DISTANCE", "COUNTERFACTUAL_RUN"]
+    },
+    {
+      "workflow": "IMPROVE",
+      "prompt": "Improve confidence",
+      "expectedIntent": "EVIDENCE_RANK",
+      "expectedPlan": ["EVIDENCE_RANK", "EVIDENCE_PLAN"]
+    },
+    {
+      "workflow": "AUTO",
+      "prompt": "Run complete cycle",
+      "expectedIntent": "GRAPH_SIMULATE",
+      "expectedPlan": ["GRAPH_SIMULATE", "GRAPH_EXPLAIN", "FLIP_DISTANCE", "COUNTERFACTUAL_RUN", "EVIDENCE_RANK", "EVIDENCE_PLAN"]
+    }
+  ]
+}

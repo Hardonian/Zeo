@@ -1,0 +1,6 @@
+{
+  "prompt": "Understand vendor concentration risk for infra spend with stricter constraints",
+  "workflow": "UNDERSTAND",
+  "expectedIntent": "GRAPH_SIMULATE",
+  "expectedPlan": ["graph.simulate", "graph.explain"]
+}

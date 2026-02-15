@@ -49,6 +49,28 @@ describe("MCP Server", () => {
         config.audit.storageType = "memory";
         // Use a temp directory for warehouse
         config.warehouse.basePath = process.cwd();
+        // Integration tests run in local-mode auth bypass.
+        config.security.localMode = true;
+    });
+
+    it("rejects unknown tool argument fields via strict schema validation", async () => {
+        const server = createMcpServer(config);
+        const response = parseResponse(
+            await server.handleRequest(
+                makeRequest("tools/call", 12, {
+                    name: "notes.ingest",
+                    arguments: {
+                        title: "Test",
+                        body: "Body",
+                        unknownField: "blocked",
+                    },
+                })
+            )
+        );
+
+        expect(response.error).toBeDefined();
+        expect(response.error.message).toContain("Schema validation failed");
+        expect(response.error.message).toContain("Unknown field: unknownField");
     });
 
     describe("Protocol", () => {
