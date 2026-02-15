@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "inputQuery": "Run complete cycle",
+  "expectedIntent": "GRAPH_SIMULATE",
+  "expectedWorkflow": [
+    "GRAPH_SIMULATE",
+    "GRAPH_EXPLAIN",
+    "FLIP_DISTANCE",
+    "COUNTERFACTUAL_RUN",
+    "EVIDENCE_RANK",
+    "EVIDENCE_PLAN"
+  ],
+  "expectedDatasetHash": "db661c46fbed6d9280fa62f430cf73e3716451c98a463deb9d04593a9e6a64fc",
+  "expectedOutputHash": "44ab7c02916761de9feefc333444ffec2d0f161a54ef40d09d9eadd56ad1efd3",
+  "narrativePhrases": [
+    "driftDetected",
+    "workflow"
+  ]
+}

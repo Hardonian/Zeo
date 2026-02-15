@@ -123,3 +123,20 @@ For general security questions, see:
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 - [MITRE ATT&CK](https://attack.mitre.org/)
 - [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
+
+## MCP Trust Model and Quarantine
+
+- **Trust tiers**:
+  - Internal tools (built-in tool registry) are treated as trusted.
+  - External MCP tools are untrusted by default and require explicit `tools.externalAllowlist` entries.
+- **Least privilege defaults**:
+  - Deny-by-default for unknown tools.
+  - Strict input schema validation (required fields, unknown field rejection, enum/range/depth checks).
+  - Tool argument and result payload byte limits.
+- **Quarantine behavior**:
+  - Repeated schema violations, payload violations, tool failures, and suspicious output patterns increase failure counters.
+  - When threshold is crossed, tools are quarantined for a configured window.
+  - Quarantine events are logged with decision trace metadata.
+- **API key scopes**:
+  - Read scopes should map only to read-only tools.
+  - Write scopes must require explicit approval and auditable session context.

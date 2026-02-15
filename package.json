@@ -55,7 +55,10 @@
     "test:a11y": "pnpm -C apps/web test:a11y",
     "test:security": "node scripts/with-web-server.mjs node scripts/security-audit.mjs",
     "test:perf": "node scripts/perf-web-budget.mjs",
-    "test:db": "node scripts/db-guardrails.mjs"
+    "test:db": "node scripts/db-guardrails.mjs",
+    "test:headers": "node scripts/with-web-server.mjs node scripts/headers-audit.mjs",
+    "test:eval": "node scripts/eval-golden.mjs",
+    "rls:index-audit": "node scripts/rls-index-audit.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",

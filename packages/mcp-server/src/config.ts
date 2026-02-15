@@ -89,6 +89,7 @@ export function createDefaultConfig(): McpConfig {
         },
         tools: {
             allowlist: defaultToolPermissions(),
+            externalAllowlist: [],
         },
         warehouse: {
             basePath: process.cwd(),
@@ -111,6 +112,7 @@ export function createDefaultConfig(): McpConfig {
             quarantineWindowMs: 15 * 60_000,
             requireAuthContext: true,
             localMode: false,
+            maxArgumentDepth: 10,
         },
     };
 }
@@ -144,6 +146,9 @@ function mergeConfig(
                     merged.tools.allowlist[name] = { ...existing, ...perm } as ToolPermission;
                 }
             }
+        }
+        if (Array.isArray(tools["externalAllowlist"])) {
+            merged.tools.externalAllowlist = tools["externalAllowlist"].map(String);
         }
     }
     if (partial["warehouse"] && typeof partial["warehouse"] === "object") {
@@ -225,6 +230,9 @@ function applyEnvOverrides(config: McpConfig): McpConfig {
     const localMode = process.env["ZEO_MCP_LOCAL_MODE"];
     if (localMode) config.security.localMode = localMode === "1";
 
+    const maxArgumentDepth = process.env["ZEO_MCP_MAX_ARGUMENT_DEPTH"];
+    if (maxArgumentDepth) config.security.maxArgumentDepth = parseInt(maxArgumentDepth, 10);
+
     return config;
 }
 
@@ -275,6 +283,9 @@ export function validateConfig(config: McpConfig): string[] {
     }
     if (config.security.rateLimitPerMinute < 1 || config.security.rateLimitPerMinute > 100000) {
         issues.push("security.rateLimitPerMinute must be between 1 and 100000");
+    }
+    if (config.security.maxArgumentDepth < 1 || config.security.maxArgumentDepth > 32) {
+        issues.push("security.maxArgumentDepth must be between 1 and 32");
     }
     if (config.security.maxToolArgsBytes < 1024 || config.security.maxToolArgsBytes > 10 * 1024 * 1024) {
         issues.push("security.maxToolArgsBytes must be between 1KB and 10MB");

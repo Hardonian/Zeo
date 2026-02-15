@@ -66,6 +66,12 @@ export interface SchemaProperty {
     properties?: Record<string, SchemaProperty>;
     required?: string[];
     default?: unknown;
+    minimum?: number;
+    maximum?: number;
+    minLength?: number;
+    maxLength?: number;
+    minItems?: number;
+    maxItems?: number;
 }
 
 export interface McpToolCallParams {
@@ -113,6 +119,7 @@ export interface McpConfig {
     };
     tools: {
         allowlist: Record<string, ToolPermission>;
+        externalAllowlist: string[];
     };
     warehouse: {
         basePath: string;
@@ -137,6 +144,7 @@ export interface McpConfig {
         quarantineWindowMs: number;
         requireAuthContext: boolean;
         localMode: boolean;
+        maxArgumentDepth: number;
     };
 }
 
