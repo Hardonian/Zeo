@@ -117,6 +117,7 @@ const nextConfig = {
       { from: /^@zeo\/memory$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/memory/dist/index.js'), path.join(rootDir, 'packages/memory/src/index.ts')) },
       { from: /^@zeo\/eval$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/eval/dist/index.js'), path.join(rootDir, 'packages/eval/src/index.ts')) },
       { from: /^@zeo\/db$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/db/dist/index.js'), path.join(rootDir, 'packages/db/src/index.ts')) },
+      { from: /^@zeo\/env$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/env/dist/index.js'), path.join(rootDir, 'packages/env/src/index.ts')) },
       { from: /^@zeo\/compliance$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/compliance/dist/index.js'), path.join(rootDir, 'packages/compliance/src/index.ts')) },
       { from: /^@zeo\/modules$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/modules/dist/index.js'), path.join(rootDir, 'packages/modules/src/index.ts')) },
       { from: /^@zeo\/observability$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/observability/dist/index.js'), path.join(rootDir, 'packages/observability/src/index.ts')) },
