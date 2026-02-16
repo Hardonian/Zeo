@@ -3,11 +3,26 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
+interface DiffResult {
+  runA: string;
+  runB: string;
+  summary: string;
+  changedAssumptions: Array<{ id: string; text: string; changeType: string; oldValue?: unknown; newValue?: unknown }>;
+  changedOutputs: Array<{ field: string; oldValue: unknown; newValue: unknown }>;
+  confidenceDelta: {
+    robustActionsA: string[];
+    robustActionsB: string[];
+    added: string[];
+    removed: string[];
+  } | null;
+  evidenceChanges: Array<{ type: string; description: string }>;
+}
+
 export default function StudioDiffPage() {
   const [runIdA, setRunIdA] = useState('');
   const [runIdB, setRunIdB] = useState('');
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<Record<string, unknown> | null>(null);
+  const [result, setResult] = useState<DiffResult | null>(null);
   const [error, setError] = useState<{ message: string; hint?: string } | null>(null);
 
   async function handleDiff() {
@@ -116,7 +131,7 @@ export default function StudioDiffPage() {
             )}
 
             {/* Changed Outputs */}
-            {(result.changedOutputs as Array<Record<string, unknown>>)?.length > 0 && (
+            {((result.changedOutputs as Array<Record<string, unknown>>) ?? []).length > 0 ? (
               <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-6">
                 <h3 className="mb-3 text-sm font-medium uppercase tracking-wider text-slate-500">Changed Outputs</h3>
                 <div className="space-y-2">
@@ -131,7 +146,7 @@ export default function StudioDiffPage() {
                   ))}
                 </div>
               </div>
-            )}
+            ) : null}
 
             {/* Confidence Delta */}
             {result.confidenceDelta && (
