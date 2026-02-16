@@ -167,7 +167,7 @@ export async function runDoctorCommand(args: { json: boolean; fix: boolean; perf
   checks.push(snapshotCheck);
 
   // 13. MCP Handshake Smoke Test
-  const mcpHandshakeCheck = runMcpHandshakeCheck();
+  const mcpHandshakeCheck = await runMcpHandshakeCheck();
   checks.push(mcpHandshakeCheck);
 
   // 14. Evidence Graph Health
@@ -400,7 +400,6 @@ function runScenarioStoreCheck(): DoctorCheck {
         };
       }
     }
-
     return {
       id: "scenarios",
       name: "Scenario Store",
@@ -753,10 +752,10 @@ function runSnapshotIntegrityCheck(): DoctorCheck {
   }
 }
 
-function runMcpHandshakeCheck(): DoctorCheck {
+async function runMcpHandshakeCheck(): Promise<DoctorCheck> {
   try {
     // Validate MCP tool definitions schema
-    const { validateMcpToolDefinitions } = require("./mcp-cli.js") as { validateMcpToolDefinitions: () => string[] };
+    const { validateMcpToolDefinitions } = await import("./mcp-cli.js") as unknown as { validateMcpToolDefinitions: () => string[] };
     const issues = validateMcpToolDefinitions();
     if (issues.length > 0) {
       return { id: "mcp-handshake", name: "MCP Handshake", status: "warning", message: `Schema issues: ${issues.join("; ")}`, remediation: "Check MCP tool definitions" };

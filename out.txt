@@ -1,0 +1,11 @@
+
+> @zeo/cli@1.0.0 lint C:\Users\scott\Documents\GitHub\Zeo\apps\cli
+> eslint .
+
+
+C:\Users\scott\Documents\GitHub\Zeo\apps\cli\src\doctor-cli.ts
+  759:44  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+Γ£û 1 problem (1 error, 0 warnings)
+
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
