@@ -34,7 +34,7 @@ try {
 const lint = spawnSync(
   'pnpm',
   ['-C', repoRoot, 'exec', 'eslint', '--max-warnings=0', target],
-  { stdio: 'inherit' }
+  { stdio: 'inherit', shell: true }
 );
 
 if (lint.status !== 0) {
