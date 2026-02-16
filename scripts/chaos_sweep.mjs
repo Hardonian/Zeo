@@ -33,15 +33,17 @@ function runCommand(args, cwd, env = {}) {
 }
 
 function parseJson(output) {
-  try {
-    // Find the last line that looks like JSON or try to parse the whole stdout
-    const lines = output.trim().split('\n');
-    // Try last line first
-    const last = lines[lines.length - 1];
-    return JSON.parse(last);
-  } catch (e) {
-    return null;
+  const lines = output.trim().split('\n').reverse();
+  for (const line of lines) {
+    try {
+      if (line.trim().startsWith('{')) {
+        return JSON.parse(line);
+      }
+    } catch (e) {
+      continue;
+    }
   }
+  return null;
 }
 
 async function phase1_determinism() {
