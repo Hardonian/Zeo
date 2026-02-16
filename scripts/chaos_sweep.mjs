@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { execSync, spawnSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -39,7 +39,7 @@ function parseJson(output) {
       if (line.trim().startsWith('{')) {
         return JSON.parse(line);
       }
-    } catch (e) {
+    } catch {
       continue;
     }
   }
