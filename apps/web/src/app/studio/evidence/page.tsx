@@ -118,8 +118,18 @@ export default function StudioEvidencePage() {
                     <div className="flex items-center gap-1">
                       <div className="h-2 w-16 rounded-full bg-slate-800 overflow-hidden">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 w-[var(--progress-width)]"
-                          style={{ '--progress-width': `${node.confidenceScore * 100}%` } as React.CSSProperties}
+                          className={`h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 ${
+                            node.confidenceScore >= 0.95 ? 'w-full' :
+                            node.confidenceScore >= 0.85 ? 'w-[90%]' :
+                            node.confidenceScore >= 0.75 ? 'w-[80%]' :
+                            node.confidenceScore >= 0.65 ? 'w-[70%]' :
+                            node.confidenceScore >= 0.55 ? 'w-[60%]' :
+                            node.confidenceScore >= 0.45 ? 'w-[50%]' :
+                            node.confidenceScore >= 0.35 ? 'w-[40%]' :
+                            node.confidenceScore >= 0.25 ? 'w-[30%]' :
+                            node.confidenceScore >= 0.15 ? 'w-[20%]' :
+                            node.confidenceScore >= 0.05 ? 'w-[10%]' : 'w-0'
+                          }`}
                         />
                       </div>
                       <span className="text-xs font-medium text-blue-400 w-8 text-right">{(node.confidenceScore * 100).toFixed(0)}%</span>

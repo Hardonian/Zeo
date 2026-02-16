@@ -27,7 +27,8 @@ body {
 
 @layer utilities {
   .text-balance {
-    text-wrap: balance;
+    /* text-wrap is not fully supported in older engines */
+    overflow-wrap: break-word;
   }
 }
 
@@ -51,10 +52,27 @@ body {
   }
 
   /* Badge variants for design consistency */
-  .badge-allow { @apply inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700; }
-  .badge-deny { @apply inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700; }
-  .badge-pending { @apply inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-700; }
-  .badge-drift { @apply inline-flex items-center rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-700; }
-  .badge-deterministic { @apply inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700; }
-  .badge-neutral { @apply inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700; }
+  .badge-allow {
+    @apply inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700;
+  }
+  .badge-deny {
+    @apply inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700;
+  }
+  .badge-pending {
+    @apply inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-700;
+  }
+  .badge-drift {
+    @apply inline-flex items-center rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-700;
+  }
+  .badge-deterministic {
+    @apply inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700;
+  }
+  .badge-neutral {
+    @apply inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700;
+  }
+
+  .progress-fill {
+    @apply h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400;
+    width: var(--progress-width, 0%);
+  }
 }
