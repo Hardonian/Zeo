@@ -18,6 +18,7 @@ yarn-error.log*
 .zeo/agents/
 .zeo/snapshots/
 .zeo/evidence-graph.json
+deterministic-index.json
 
 # Next.js
 **/.next/
