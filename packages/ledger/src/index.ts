@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
-import { writeFileSync, readFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import type { DecisionSpec, DecisionResult } from '@zeo/contracts';
+import type { DecisionSpec, DecisionResult, Action, Claim } from '@zeo/contracts';
 
 export interface DecisionArtifact {
   decision_id: string; // hash of normalized inputs + model config
@@ -9,6 +9,7 @@ export interface DecisionArtifact {
   model_parameters: {
     depth: number;
     useQuantEngine?: boolean;
+    seed?: string;
     [key: string]: any;
   };
   seed?: string;
@@ -32,9 +33,9 @@ function normalizeInput(spec: DecisionSpec, params: any): string {
   return JSON.stringify({
     title: spec.title,
     context: spec.context,
-    actions: spec.actions.map(a => ({ id: a.id, label: a.label, kind: a.kind })),
-    assumptions: spec.assumptions.map(a => ({ id: a.id, text: a.text })),
-    constraints: spec.constraints.map(c => ({ id: c.id, name: c.name, value: c.value })),
+    actions: spec.actions.map((a: Action) => ({ id: a.id, label: a.label, kind: a.kind })),
+    assumptions: spec.assumptions.map((a: Claim) => ({ id: a.id, text: a.text })),
+    constraints: spec.constraints.map((c: any) => ({ id: c.id, name: c.name, value: c.value })),
     params
   });
 }
@@ -49,8 +50,6 @@ export function createDecisionArtifact(
   const inputHash = sha256(normalized);
   const decisionId = inputHash.slice(0, 16);
 
-  const robustness = result.evaluations.find(e => e.lens === 'robustness');
-
   return {
     decision_id: decisionId,
     input_hash: inputHash,
@@ -58,14 +57,14 @@ export function createDecisionArtifact(
     seed: params.seed,
     timestamp: new Date().toISOString(),
     execution_duration_ms: durationMs,
-    assumptions: spec.assumptions.map(a => ({ id: a.id, text: a.text, status: a.status })),
+    assumptions: spec.assumptions.map((a: Claim) => ({ id: a.id, text: a.text, status: a.status })),
     reasoning_summary: result.explanation.why.join(' '),
-    flip_distance_summary: result.explanation.whatWouldChange.map((change, index) => ({
+    flip_distance_summary: result.explanation.whatWouldChange.map((change: any, index: number) => ({
       assumption_id: change.assumptionId,
       distance: `${(index + 1).toFixed(4)}`,
       boundary: change.flipCondition,
     })),
-    confidence_band: (result as any).outcome?.confidence_bounds || { lower: '0.0000', upper: '1.0000', method: 'unknown' },
+    confidence_band: result.outcome?.confidence_bounds || { lower: '0.0000', upper: '1.0000', method: 'unknown' },
     sensitivity_summary: result.explanation.whatWouldChange.length > 0
       ? `Decision sensitive to ${result.explanation.whatWouldChange.length} assumptions.`
       : 'No critical sensitivities identified by current scanners.',
@@ -96,7 +95,7 @@ export function listRecentArtifacts(limit: number = 10, baseDir: string = proces
     .filter(f => f.endsWith('.json'))
     .map(f => ({
       name: f,
-      mtime: existsSync(join(ledgerDir, f)) ? require('node:fs').statSync(join(ledgerDir, f)).mtime.getTime() : 0
+      mtime: statSync(join(ledgerDir, f)).mtime.getTime()
     }))
     .sort((a, b) => b.mtime - a.mtime)
     .slice(0, limit);

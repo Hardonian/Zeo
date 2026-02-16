@@ -5,11 +5,7 @@ import { performance } from "node:perf_hooks";
 import type { WorldModelSpec, EvidenceCandidate, PosteriorState, VoiReport } from "@zeo/contracts";
 import { parseArgs, type CliArgs } from "./args.js";
 import { createRunContext, log } from "./observability.js";
-import dotenv from "dotenv";
-import { checkEnv } from "@zeo/env";
 
-dotenv.config();
-checkEnv();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -81,8 +77,14 @@ Commands:
   replay <run_id>             Deterministic replay of a snapshot (PASS/DRIFT)
   diff <runA> <runB>          Diff two runs (assumptions, outputs, confidence)
   explain <run_id>            Summarized reasoning trace for a run
+  explain <decision_id>      Explain a decision from the ledger
+  list --recent              List recent decisions from the ledger
+  status                     Operator status and health report
+  audit                      Autopilot drift monitor
+  benchmark                  Performance benchmark
   trace <run_id>              Step-by-step structured execution trace
   snapshots                   List all execution snapshots
+
   plan                        Regret-aware evidence planning
   evidence <cmd>              Evidence graph commands (list/add/mark/drift/regret)
   refresh-evidence            Recalculate evidence confidence scores
@@ -216,13 +218,15 @@ async function runDefaultCommand(args: CliArgs, startedMs: number): Promise<numb
 
   let result;
   let transcript;
+  const traceId = (process as any)._zeo_trace_id;
+
   try {
     if (args.emitTranscript) {
-      const executed = core.executeDecision({ spec, opts: { depth: args.depth === 3 ? 3 : 2 }, logicalTimestamp: 0 });
+      const executed = core.executeDecision({ spec, opts: { depth: args.depth === 3 ? 3 : 2, traceId }, logicalTimestamp: 0 });
       result = executed.result;
       transcript = executed.transcript;
     } else {
-      result = core.runDecision(spec, { depth: args.depth === 3 ? 3 : 2 });
+      result = core.runDecision(spec, { depth: args.depth === 3 ? 3 : 2, traceId });
     }
   } catch (err) {
     if (args.strict) {
@@ -251,8 +255,16 @@ async function runDefaultCommand(args: CliArgs, startedMs: number): Promise<numb
       if (!args.jsonOnly) {
         console.log(`Snapshot: ${snapshot.runId} (${snapshotPath})`);
       }
-    } catch {
-      // Non-fatal: snapshot save failure shouldn't break CLI
+
+      // v1.4 Premium: Decision Ledger Persistence
+      const ledger = await import("@zeo/ledger");
+      const artifact = ledger.createDecisionArtifact(spec, result, { depth: args.depth, example: args.example, traceId }, Math.round(performance.now() - decisionStartMs));
+      const artifactPath = ledger.persistArtifact(artifact);
+      if (!args.jsonOnly) {
+        console.log(`Ledger: ${artifact.decision_id} (${artifactPath})`);
+      }
+    } catch (e) {
+      // Non-fatal: snapshot/ledger save failure shouldn't break CLI
     }
   }
 
@@ -345,6 +357,12 @@ async function main(): Promise<void> {
   const startedMs = performance.now();
   const argv = process.argv.slice(2);
 
+  // Lazy env init
+  const dotenv = await import("dotenv");
+  dotenv.config();
+  const { checkEnv } = await import("@zeo/env");
+  checkEnv();
+
   // Fast-exit paths: skip run context and logging overhead
   if (argv.includes("--help") || argv.includes("-h")) {
     printHelp();
@@ -362,7 +380,9 @@ async function main(): Promise<void> {
   }
 
   const run = createRunContext();
+  (process as any)._zeo_trace_id = run.trace_id; // Global trace propagation for CLI context
   log({ level: "info", msg: "cli start", run_id: run.run_id, trace_id: run.trace_id, cmd: argv[0] ?? "default", action: "start" });
+
 
   // Studio commands
   if (argv[0] === "studio") {
@@ -413,8 +433,35 @@ async function main(): Promise<void> {
   }
 
   if (argv[0] === "explain" && argv[1]) {
-    const { runExplainCommand } = await import("./trust-cli.js");
-    process.exit(await runExplainCommand(argv[1], argv.includes("--json")));
+    const id = argv[1];
+    if (id.startsWith("run_")) {
+      const { runExplainCommand } = await import("./trust-cli.js");
+      process.exit(await runExplainCommand(id, argv.includes("--json")));
+    } else {
+      const { loadArtifact } = await import("@zeo/ledger");
+      const artifact = loadArtifact(id);
+      if (!artifact) {
+        console.error(`Decision artifact ${id} not found in ledger.`);
+        process.exit(1);
+      }
+      if (argv.includes("--json")) {
+        console.log(JSON.stringify(artifact, null, 2));
+      } else {
+        console.log(`\n=== Zeo Decision explanation: ${artifact.decision_id} ===`);
+        console.log(`Timestamp: ${artifact.timestamp}`);
+        console.log(`Duration: ${artifact.execution_duration_ms}ms`);
+        console.log(`Confidence: ${artifact.confidence_band.lower} - ${artifact.confidence_band.upper} (${artifact.confidence_band.method})`);
+        console.log(`\nReasoning:\n${artifact.reasoning_summary}`);
+        console.log(`\nSensitivities:\n${artifact.sensitivity_summary}`);
+        if (artifact.flip_distance_summary.length > 0) {
+          console.log(`\nFlip Distances:`);
+          artifact.flip_distance_summary.forEach(fd => {
+            console.log(`- ${fd.assumption_id}: dist=${fd.distance} boundary=${fd.boundary}`);
+          });
+        }
+      }
+      process.exit(0);
+    }
   }
 
   if (argv[0] === "trace" && argv[1]) {
@@ -436,6 +483,32 @@ async function main(): Promise<void> {
     const { parsePlanArgs, runPlanCommand } = await import("./plan-cli.js");
     process.exit(await runPlanCommand(parsePlanArgs(argv.slice(1))));
   }
+
+  if (argv[0] === "status") {
+    const { runStatusCommand } = await import("./status-cli.js");
+    process.exit(await runStatusCommand());
+  }
+
+  if (argv[0] === "audit") {
+    const { runAuditCommand } = await import("./audit-drift-cli.js");
+    process.exit(await runAuditCommand(argv.slice(1)));
+  }
+
+  if (argv[0] === "benchmark") {
+    const { runBenchmarkCommand } = await import("./benchmark-cli.js");
+    process.exit(await runBenchmarkCommand());
+  }
+
+  if (argv[0] === "list" && argv[1] === "--recent") {
+    const { listRecentArtifacts } = await import("@zeo/ledger");
+    const recent = listRecentArtifacts(20);
+    console.log("\n=== Recent Decisions (Ledger) ===");
+    recent.forEach(a => {
+      console.log(`- ${a.decision_id}: ${a.timestamp} [${a.input_hash.slice(0, 8)}]`);
+    });
+    process.exit(0);
+  }
+
 
   if (argv[0] === "refresh-evidence") {
     const { parseEvidenceGraphArgs, runEvidenceGraphCommand } = await import("./evidence-graph-cli.js");

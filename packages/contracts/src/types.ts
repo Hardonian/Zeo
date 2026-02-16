@@ -204,7 +204,9 @@ export type DecisionResult = {
     recommended_action_ids: UUID[];
     confidence_bounds: { lower: string; upper: string; method: string };
   };
+  traceId?: string;
 };
+
 
 export type ZeoStructuredError = {
   code: string;

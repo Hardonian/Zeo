@@ -231,6 +231,7 @@ export type RunDecisionOpts = {
   useQuantEngine?: boolean;
   tracker?: AssumptionTracker;
   budget?: Budget;
+  traceId?: string;
 };
 
 export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): DecisionResult {
