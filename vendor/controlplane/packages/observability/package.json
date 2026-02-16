@@ -35,7 +35,7 @@
     "build": "node ../../scripts/build-target.mjs @controlplane/contracts -- tsc",
     "dev": "tsc --watch",
     "typecheck": "node ../../scripts/typecheck-target.mjs @controlplane/contracts",
-    "lint": "node ../../scripts/lint-target.mjs src",
+    "lint": "node ../../scripts/lint-target.mjs vendor/controlplane/packages/observability/src",
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
