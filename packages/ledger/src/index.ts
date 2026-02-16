@@ -64,7 +64,8 @@ export function createDecisionArtifact(
       distance: `${(index + 1).toFixed(4)}`,
       boundary: change.flipCondition,
     })),
-    confidence_band: result.outcome?.confidence_bounds || { lower: '0.0000', upper: '1.0000', method: 'unknown' },
+    confidence_band: (result as any).outcome?.confidence_bounds || { lower: '0.0000', upper: '1.0000', method: 'unknown' },
+
     sensitivity_summary: result.explanation.whatWouldChange.length > 0
       ? `Decision sensitive to ${result.explanation.whatWouldChange.length} assumptions.`
       : 'No critical sensitivities identified by current scanners.',

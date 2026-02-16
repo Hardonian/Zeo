@@ -222,12 +222,13 @@ async function runDefaultCommand(args: CliArgs, startedMs: number): Promise<numb
 
   try {
     if (args.emitTranscript) {
-      const executed = core.executeDecision({ spec, opts: { depth: args.depth === 3 ? 3 : 2, traceId }, logicalTimestamp: 0 });
+      const executed = core.executeDecision({ spec, opts: { depth: args.depth === 3 ? 3 : 2, traceId } as any, logicalTimestamp: 0 });
       result = executed.result;
       transcript = executed.transcript;
     } else {
-      result = core.runDecision(spec, { depth: args.depth === 3 ? 3 : 2, traceId });
+      result = core.runDecision(spec, { depth: args.depth === 3 ? 3 : 2, traceId } as any);
     }
+
   } catch (err) {
     if (args.strict) {
       if (args.deterministic) core.deactivateDeterministicMode();
@@ -734,8 +735,29 @@ function printVoiReport(report: VoiReport): void {
 
 const isMainModule = process.argv[1] && import.meta.url.replace(/\\/g, "/").endsWith(process.argv[1].replace(/\\/g, "/"));
 if (isMainModule) {
+  process.on("unhandledRejection", (reason) => {
+    const traceId = (process as any)._zeo_trace_id || "unknown";
+    console.error(JSON.stringify({
+      code: "UNHANDLED_REJECTION",
+      message: reason instanceof Error ? reason.message : String(reason),
+      hint: "An asynchronous operation failed without a catch block.",
+      trace_id: traceId
+    }, null, 2));
+    process.exit(1);
+  });
+
   main().catch((err) => {
-    console.error(err instanceof Error ? err.message : String(err));
+    const contracts = (global as any).ZeoContracts; // Try to use global if loaded
+    const traceId = (process as any)._zeo_trace_id || "unknown";
+
+    // Structured error response
+    console.error(JSON.stringify({
+      code: err.code || "FATAL_ERROR",
+      message: err.message || String(err),
+      hint: err.hint || "Check zeo doctor for environment issues.",
+      trace_id: traceId
+    }, null, 2));
     process.exit(1);
   });
 }
+

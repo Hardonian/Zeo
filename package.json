@@ -21,6 +21,7 @@
     "doctor:secrets": "node scripts/doctor.mjs",
     "build": "pnpm -r --workspace-concurrency=3 build",
     "typecheck": "pnpm -r --filter @zeo/contracts build && pnpm -r typecheck && pnpm -C packages/core typecheck:exports",
+    "ci:gate": "pnpm run typecheck && pnpm build && node scripts/startup-profiler.mjs && pnpm zeo benchmark && pnpm zeo audit --dry-run",
     "test": "NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --workspace-concurrency=1 test",
     "test:ci": "echo 'Running fast tests...' && NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --filter !@zeo/core --filter !@zeo/warehouse --filter !@zeo/repro-pack test && echo 'Running heavy tests sequentially...' && NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --filter @zeo/core --filter @zeo/warehouse --filter @zeo/repro-pack --workspace-concurrency=1 test",
     "lint": "pnpm -r lint",
