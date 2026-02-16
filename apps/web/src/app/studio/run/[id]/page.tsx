@@ -141,7 +141,7 @@ export default function RunDetailPage({ params }: { params: Promise<{ id: string
               <p><strong>Context:</strong> {String(spec.context)}</p>
               <p className="mt-2"><strong>Actions:</strong> {String(spec.actionsCount)} | <strong>Assumptions:</strong> {String(spec.assumptionsCount)}</p>
             </div>
-            {spec.assumptions && (
+            {!!spec.assumptions && (
               <div className="mt-4">
                 <h4 className="text-xs font-medium text-slate-500 mb-2">Assumptions</h4>
                 <div className="space-y-1">
