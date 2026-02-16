@@ -41,6 +41,31 @@ Zeo is open source. Contributions are welcome.
    - `explanation.md`
 3. Verify replay with `zeo replay examples/<name>`.
 
+## Decision Kernel Purity Rules
+
+The pure kernel (`packages/core/src/kernel/`) has strict invariants:
+
+1. **No I/O**: No imports of `node:fs`, `node:path`, `node:net`, `node:http`, `node:os`, `node:child_process`.
+2. **No time**: No `Date.now()`, `new Date()`. Clock value comes from `KernelConfig`.
+3. **No randomness**: No `Math.random()`, `crypto.randomUUID()`. Use seeded `createKernelRng()`.
+4. **No global state**: No singletons, no module-level mutable variables.
+5. **No external packages**: No imports from `@zeo/db`, `@zeo/trust`, `@zeo/warehouse`, `@zeo/telemetry`, `@zeo/mcp-server`.
+6. **POJO boundary**: All kernel APIs accept and return plain JSON-serializable objects.
+7. **`node:crypto`**: Allowed (SHA-256 only). Will be polyfilled for WASM.
+
+These rules are enforced by:
+- ESLint `no-restricted-imports` rule for kernel files
+- `forbidden-imports.test.ts` structural scan
+- Property-based tests for determinism
+
+## Decision IR Stability Rules
+
+1. Every IR node MUST have a `version` field matching `IR_VERSION`.
+2. Never remove fields from IR types without a MAJOR version bump.
+3. New optional fields are MINOR version bumps.
+4. IR hashes must remain stable for same logical input.
+5. See `IR_SPEC.md` for full versioning rules.
+
 ## Pull requests
 PRs must include:
 - description of behavior change
