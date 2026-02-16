@@ -106,11 +106,11 @@ export default function StudioDiffPage() {
             </div>
 
             {/* Changed Assumptions */}
-            {(result.changedAssumptions as Array<Record<string, unknown>>)?.length > 0 && (
+            {result.changedAssumptions.length > 0 && (
               <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-6">
                 <h3 className="mb-3 text-sm font-medium uppercase tracking-wider text-slate-500">Changed Assumptions</h3>
                 <div className="space-y-2">
-                  {(result.changedAssumptions as Array<{ id: string; text: string; changeType: string; oldValue?: unknown; newValue?: unknown }>).map((a, i) => (
+                  {result.changedAssumptions.map((a, i) => (
                     <div key={i} className="flex items-start gap-3 rounded-lg bg-slate-800/40 p-3 text-xs">
                       <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase ${
                         a.changeType === 'added' ? 'bg-emerald-500/20 text-emerald-400' :
@@ -131,11 +131,11 @@ export default function StudioDiffPage() {
             )}
 
             {/* Changed Outputs */}
-            {((result.changedOutputs as Array<Record<string, unknown>>) ?? []).length > 0 ? (
+            {result.changedOutputs.length > 0 ? (
               <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-6">
                 <h3 className="mb-3 text-sm font-medium uppercase tracking-wider text-slate-500">Changed Outputs</h3>
                 <div className="space-y-2">
-                  {(result.changedOutputs as Array<{ field: string; oldValue: unknown; newValue: unknown }>).map((o, i) => (
+                  {result.changedOutputs.map((o, i) => (
                     <div key={i} className="rounded-lg bg-slate-800/40 p-3 text-xs">
                       <span className="font-semibold text-white">{o.field}</span>
                       <div className="mt-1 grid grid-cols-2 gap-4">
@@ -155,30 +155,30 @@ export default function StudioDiffPage() {
                 <div className="grid gap-4 sm:grid-cols-2 text-xs">
                   <div>
                     <span className="text-slate-500">Robust Actions (A)</span>
-                    <p className="text-slate-300">{((result.confidenceDelta as Record<string, unknown>).robustActionsA as string[])?.join(', ') || 'none'}</p>
+                    <p className="text-slate-300">{result.confidenceDelta.robustActionsA?.join(', ') || 'none'}</p>
                   </div>
                   <div>
                     <span className="text-slate-500">Robust Actions (B)</span>
-                    <p className="text-slate-300">{((result.confidenceDelta as Record<string, unknown>).robustActionsB as string[])?.join(', ') || 'none'}</p>
+                    <p className="text-slate-300">{result.confidenceDelta.robustActionsB?.join(', ') || 'none'}</p>
                   </div>
                   <div>
                     <span className="text-emerald-500">Added</span>
-                    <p className="text-emerald-300">{((result.confidenceDelta as Record<string, unknown>).added as string[])?.join(', ') || 'none'}</p>
+                    <p className="text-emerald-300">{result.confidenceDelta.added?.join(', ') || 'none'}</p>
                   </div>
                   <div>
                     <span className="text-red-500">Removed</span>
-                    <p className="text-red-300">{((result.confidenceDelta as Record<string, unknown>).removed as string[])?.join(', ') || 'none'}</p>
+                    <p className="text-red-300">{result.confidenceDelta.removed?.join(', ') || 'none'}</p>
                   </div>
                 </div>
               </div>
             )}
 
             {/* Evidence Changes */}
-            {(result.evidenceChanges as Array<Record<string, unknown>>)?.length > 0 && (
+            {result.evidenceChanges.length > 0 && (
               <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-6">
                 <h3 className="mb-3 text-sm font-medium uppercase tracking-wider text-slate-500">Evidence Changes</h3>
                 <div className="space-y-1">
-                  {(result.evidenceChanges as Array<{ type: string; description: string }>).map((e, i) => (
+                  {result.evidenceChanges.map((e, i) => (
                     <p key={i} className="text-xs">
                       <span className={
                         e.type === 'added' ? 'text-emerald-400' :
