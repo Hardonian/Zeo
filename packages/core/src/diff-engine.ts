@@ -10,6 +10,7 @@
  */
 
 import { loadSnapshot, type ExecutionSnapshot } from "./snapshot.js";
+import { validateOutputHash } from "./kernel/determinism-validator.js";
 
 export interface RunDiff {
   runA: string;
@@ -66,12 +67,16 @@ export function diffRuns(runIdA: string, runIdB: string, baseDir?: string): RunD
  * Diff two snapshots directly
  */
 export function diffSnapshots(a: ExecutionSnapshot, b: ExecutionSnapshot): RunDiff {
+  // Determinism validation: structured hash comparison (DETERMINISM_SPEC.md §7)
+  const hashCheck = validateOutputHash(a.outputHash, b.outputHash);
+
   const changedAssumptions = diffAssumptions(a, b);
   const changedOutputs = diffOutputs(a, b);
   const confidenceDelta = diffConfidence(a, b);
   const evidenceChanges = diffEvidence(a, b);
 
   const summaryParts: string[] = [];
+  if (!hashCheck.valid) summaryParts.push("output hash diverged");
   if (changedAssumptions.length > 0) summaryParts.push(`${changedAssumptions.length} assumption change(s)`);
   if (changedOutputs.length > 0) summaryParts.push(`${changedOutputs.length} output change(s)`);
   if (confidenceDelta && (confidenceDelta.added.length > 0 || confidenceDelta.removed.length > 0)) {

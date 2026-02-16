@@ -193,3 +193,23 @@ export {
 // v6.0 — Pure Decision Kernel + Decision IR + State Machine
 export * from "./kernel/index.js";
 export * as kernel from "./kernel/index.js";
+
+// v12 — Policy-as-Constraints Engine
+export {
+  type PolicyConstraint,
+  type PolicyConstraintSet,
+  type ConstraintType,
+  type ConstraintSeverity,
+  type ConstraintEvaluationContext,
+  type ConstraintViolation,
+  type ConstraintEvaluationResult,
+  type ConstraintDiffEntry,
+  type PolicyDiffResult,
+  POLICY_CONSTRAINT_SCHEMA_VERSION,
+  evaluateConstraints,
+  diffPolicies,
+  explainConstraints,
+  simulateConstraints,
+  formatPolicyDiff,
+  tenantPolicyToConstraintSet,
+} from "./policy-constraints.js";
