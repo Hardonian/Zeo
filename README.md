@@ -1,6 +1,6 @@
 # Zeo
 
-Zeo is a production-grade governance platform for automated code review, policy enforcement, and deterministic audit trails. 
+Zeo is a production-grade governance platform for automated code review, policy enforcement, and deterministic audit trails.
 
 ## What Zeo Is
 
@@ -177,7 +177,7 @@ Policies are defined as JSON objects that map analysis findings to enforcement a
 
 ## Evidence Model
 
-Zeo produces signed **Evidence Bundles**. These bundles capture the initial context, findings, active policy, and the deterministic score. 
+Zeo produces signed **Evidence Bundles**. These bundles capture the initial context, findings, active policy, and the deterministic score.
 
 ## Performance & Reliability
 
@@ -244,8 +244,39 @@ zeo plan --budget 5 --flip --voi --deltas
 - **JobForge Integration**: Webhooks are now processed asynchronously with retry logic.
 - **Policy Status UI**: Live dashboard for monitoring PR governance.
 
+## What's New (v3.0 — Governed Multi-Tenancy)
+
+- **Multi-Tenant Isolation**: Strict logical separation of data, policies, and modules per tenant. manage via `zeo tenant <cmd>`.
+- **Module Sandbox**: Capability-gated extension runtime. Modules must declare `read_evidence`, `network_access`, etc.
+- **Simulation Engine**: `zeo simulate what-if` and `zeo simulate forecast` for deterministic future projection without randomness.
+- **Outcome Optimization**: Register actual outcomes and compute regret to tune assumptions automatically.
+- **Compliance Ledger**: Immutable audit log of all policy evaluations and overrides.
+
+### Multi-Tenancy
+
+```bash
+# Create a tenant
+zeo tenant create --name acuity-corp
+
+# Register a module provided by this tenant
+zeo modules register "risk-analyzer" --tenant acuity-corp
+
+# Verify isolation (other tenants cannot see this module)
+zeo modules list --tenant other-corp # -> empty
+```
+
+### Simulation & Forecasting
+
+```bash
+# Run a deterministic what-if scenario
+zeo simulate what-if --decision d-123 --seed sim-seed-1
+
+# Forecast confidence decay over 30 days
+zeo simulate forecast --days 30 --start-date 2025-01-01
+```
+
 ## Roadmap
 
-- [ ] Multi-tenant Enterprise Isolation
 - [ ] OIDC-based Evidence Verification
 - [ ] Advanced Graph-based Conflict Detection
+- [ ] Federation between Zeo instances

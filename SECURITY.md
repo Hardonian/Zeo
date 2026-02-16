@@ -1,44 +1,45 @@
-# Security Policy
+# Security Policy — Zeo Governance Engine
 
-Zeo is designed with a "security-by-default" and "fail-secure" architecture. We take all security reports seriously.
+## Threat Model
 
-## Reporting a Vulnerability
+Zeo operates under an "Assume Breach" model where internal data inputs may be compromised, but the **Policy Enforcement** and **Audit Trail** must remain inviolate.
 
-Please **DO NOT** open a public GitHub issue for security vulnerabilities. Instead:
+**Core Principles:**
+1. **Deterministic Execution**: Given same inputs, outputs MUST never deviate. This prevents covert channels and logic bombs.
+2. **Cryptographic Provenance**: Every policy decision is signed and hashed. Altering a past decision breaks the audit chain.
+3. **Tenant Isolation**: Strict separation of context, memory, and policies between tenants.
+4. **Least Privilege**: Modules run in a capability-gated sandbox (no network/disk access unless explicitly granted).
 
-1.  Email `security@hardonian.com` with a detailed description.
-2.  Include a proof-of-concept (repro) or `zeo doctor` output.
-3.  We will acknowledge your report within 24 hours.
+## Vulnerability Reporting
 
-## Disclosure Process
+Please report security issues privately to security@zeo-project.org. Do not open public GitHub issues for vulnerabilities.
 
-We follow coordinated disclosure:
-1.  Verify the issue.
-2.  Develop a patch.
-3.  Notify affected enterprise customers.
-4.  Publish the fix and a security advisory.
+## Redaction Rules
 
-## Security Controls
+Zeo automatically sanitizes logs and snapshots for common secrets (API keys, tokens, passwords). However, you must ensure custom module inputs do not contain unencrypted secrets.
 
-- **No Placeholders**: We do not use placeholder secrets in production builds.
-- **Redaction**: All static analysis diffs are redacted before being sent to LLM providers.
-- **Verification**: All evidence bundles are cryptographically signed.
-- **Replay Protection**: Webhook signatures are verified with strict timestamp checks.
+**Check for secrets:**
+```bash
+zeo compliance secret-scan "your-input-text-or-file"
+```
 
-## Logging and redaction expectations
+## Audit Log Integrity
 
-- Diagnostics must be actionable but must not include raw secrets, credentials, or tenant-private payloads.
-- CI artifacts should include run metadata and failure context; sensitive values must remain redacted.
-- Any new smoke or harness script must report command context and exit reason without dumping secret-bearing environment variables.
+The `packages/compliance` module maintains a hash-chained ledger of all policy evaluations. This ledger is tamper-evident.
 
-## Secrets policy
+To verify the integrity of the audit log:
+```bash
+zeo compliance audit-chain
+```
 
-- Commit only templates (`.env.example`), never real credentials.
-- Use least privilege for CI tokens and runtime credentials.
-- Treat replay/golden fixtures as test-safe synthetic data only.
+If verification fails, assume the system is compromised and invoke incident response.
 
-## Audit expectations
+## Sandbox Escapes
 
-- CI checks should emit machine-readable artifacts for post-failure triage.
-- MCP checks must log protocol phase failures (`initialize`, `tools/list`, `tools/call`) for auditability.
-- Deterministic harnesses should preserve stable identifiers to support replayability and drift review.
+Modules run in a V8 isolate (or similar construct via `vm` module) with limited globals.
+Usage of `process`, `require`, `eval` is strictly forbidden and blocked by static analysis.
+
+To validate a module manifest and capabilities before deployment:
+```bash
+zeo modules validate <module_id>
+```
