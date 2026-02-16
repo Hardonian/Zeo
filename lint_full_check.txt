@@ -1,0 +1,64 @@
+
+> zeo@1.0.0 lint C:\Users\scott\Documents\GitHub\Zeo
+> pnpm -r lint
+
+Scope: 82 of 83 workspace projects
+packages/env lint$ eslint .
+packages/id lint$ eslint src/**/*.ts
+packages/sdk lint$ eslint src/**/*.ts
+packages/trust lint$ eslint src/**/*.ts
+packages/env lint: Done
+.../controlplane/packages/contract-kit lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/contract-kit/src
+packages/id lint: Done
+vendor/controlplane/packages/contracts lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/contracts/src
+packages/sdk lint: Done
+.../controlplane/packages/create-runner lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/create-runner/src
+packages/trust lint: Done
+.../controlplane/packages/contract-kit lint: Done
+.../controlplane/packages/create-runner lint: Done
+vendor/controlplane/packages/contracts lint: Done
+packages/contracts lint$ eslint .
+.../controlplane/packages/observability lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/observability/src
+.../packages/optimization-utils lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/optimization-utils/src
+packages/contracts lint: Done
+.../controlplane/packages/observability lint: Done
+.../packages/optimization-utils lint: Done
+packages/adapters lint$ eslint .
+packages/audit lint$ eslint src/**/*.ts
+packages/bayes-shrinkage lint$ eslint src
+packages/budgets lint$ eslint src/**/*.ts
+packages/audit lint: Done
+packages/causal lint$ eslint .
+packages/budgets lint: Done
+packages/decision-synthesizer lint$ eslint src
+packages/bayes-shrinkage lint: Done
+packages/explain lint$ eslint .
+packages/adapters lint: Done
+packages/game lint$ eslint .
+packages/decision-synthesizer lint: Done
+packages/info-theory lint$ eslint src
+packages/causal lint: Done
+packages/game lint: Done
+packages/jobs lint$ eslint src/**/*.ts
+packages/ledger lint$ eslint .
+packages/explain lint: Done
+packages/mcp-interop lint$ eslint src
+packages/ledger lint: Done
+packages/memory lint$ eslint src/**/*.ts
+packages/info-theory lint: Done
+packages/perf lint$ echo 'No source files to lint'
+packages/mcp-interop lint: Done
+packages/quant-timeseries lint$ eslint src
+packages/perf lint: 'No source files to lint'
+packages/perf lint: Done
+packages/regimes lint$ eslint src/**/*.ts
+packages/jobs lint: Done
+packages/repro-pack lint$ eslint src/**/*.ts
+packages/quant-timeseries lint: Done
+packages/robustness lint$ eslint src/**/*.ts
+packages/regimes lint: Done
+packages/semantic-clustering lint$ eslint src
+packages/memory lint: Done
+packages/timeseries lint$ eslint .
+packages/repro-pack lint: Done
+packages/warehouse lint$ eslint src/**/*.ts
