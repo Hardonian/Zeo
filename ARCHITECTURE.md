@@ -74,6 +74,103 @@ Regret-aware planning: flip distance (sensitivity ranking), VOI estimation
 (benefit vs cost of information), bounded evidence plans (budget-constrained),
 and confidence delta projections.
 
+## v6.0 — Pure Decision Kernel + Decision IR + State Machine
+
+### Boundary Map
+
+The decision subsystem is split into three layers:
+
+```text
+┌──────────────────────────────────────────────────────────┐
+│                    Pure Kernel                            │
+│  packages/core/src/kernel/                               │
+│                                                          │
+│  computeDecision(KernelInput) → KernelOutput             │
+│  computePlan(KernelInput, budget) → KernelPlanOutput     │
+│  computeDiff(KernelOutput, KernelOutput) → KernelDiff    │
+│  computeDecisionIR(KernelInput) → DecisionIR             │
+│  computePlanIR(KernelInput, budget) → PlanIR             │
+│                                                          │
+│  INVARIANTS:                                             │
+│  • No I/O (no fs, net, process, env)                     │
+│  • No time (clock value in config)                       │
+│  • No randomness (RNG seeded from config.seed)           │
+│  • No global mutable state                               │
+│  • Same input → identical output (by construction)       │
+│  • All inputs/outputs are JSON-serializable POJOs        │
+│  • ESLint rule + forbidden-imports test enforce purity   │
+└──────────────────┬───────────────────────────────────────┘
+                   │ KernelInput / KernelOutput (POJOs)
+┌──────────────────▼───────────────────────────────────────┐
+│               Runtime Adapter (impure boundary)          │
+│  packages/core/src/runner.ts, replay-engine.ts, etc.     │
+│                                                          │
+│  Responsibilities:                                       │
+│  • Activate deterministic mode (seed, clock, ID counter) │
+│  • Load evidence from storage → KernelEvidenceSnapshot   │
+│  • Validate policy → KernelPolicySnapshot                │
+│  • Execute tool calls from IR (policy-gated)             │
+│  • Create/save execution snapshots                       │
+│  • KPI telemetry and warehouse recording                 │
+│  • Trust boundary enforcement                            │
+│                                                          │
+│  State Machine (explicit transitions):                   │
+│  INIT → VALIDATE_CONTEXT → LOAD_EVIDENCE                │
+│  → KERNEL_COMPUTE → EXECUTE_TOOLS → KERNEL_RECOMPUTE    │
+│  → SNAPSHOT_WRITE → COMPLETE                             │
+│                                                          │
+│  Replay mode skips I/O states, re-runs pure states only. │
+└──────────────────┬───────────────────────────────────────┘
+                   │ fs / db / net / env
+┌──────────────────▼───────────────────────────────────────┐
+│               Persistence / I-O                          │
+│  .zeo/snapshots/*.json, .zeo/evidence-graph.json         │
+│  @zeo/db (Prisma), @zeo/warehouse, evidence-storage     │
+│  MCP stdio/HTTP transport, GitHub webhooks               │
+│                                                          │
+│  All I/O is confined to this layer.                      │
+│  Kernel never touches it directly.                       │
+└──────────────────────────────────────────────────────────┘
+```
+
+### Decision IR (Intermediate Representation)
+
+The kernel produces a versioned IR instead of directly executing side effects:
+
+- **DecisionIR v1**: Full decision result + evidence requests + tool call requests
+- **PlanIR v1**: Flip distances + VOI estimates + evidence plan steps
+- **EvidenceQueryIR v1**: Declarative evidence collection requests
+- **ToolCallIR v1**: Declarative tool invocations (not executed by kernel)
+
+See `IR_SPEC.md` for versioning rules, ordering rules, and examples.
+
+### Pure Kernel (`packages/core/src/kernel/`)
+
+| File | Purpose |
+|------|---------|
+| `types.ts` | All kernel data types (POJOs, JSON-serializable) |
+| `ir.ts` | Decision IR types and validators |
+| `compute.ts` | Pure compute functions (decision, plan, diff) |
+| `hash.ts` | Deterministic hashing (canonical JSON + SHA-256) |
+| `rng.ts` | Seeded PRNG (xoshiro128**) |
+| `id.ts` | Deterministic ID generator (seed + counter) |
+| `state-machine.ts` | Execution state machine + replay state machine |
+| `index.ts` | Public API exports |
+
+### Side Effect Inventory
+
+| Side Effect | Location | Kernel Status |
+|-------------|----------|---------------|
+| `node:fs` reads/writes | snapshot.ts, evidence-graph.ts | **Excluded** — runtime adapter only |
+| `process.env` reads | runner.ts, mcp-server | **Excluded** — injected via KernelInput |
+| `process.cwd()` | snapshot.ts, evidence-graph.ts | **Excluded** — runtime adapter only |
+| `Date.now()` / `new Date()` | deterministic.ts, budget.ts | **Excluded** — clock in config |
+| `Math.random()` / `crypto.randomUUID()` | id.ts (non-deterministic path) | **Excluded** — seeded RNG |
+| `createHash("sha256")` (node:crypto) | kernel/hash.ts | **Allowed** — polyfillable for WASM |
+| Tool/MCP calls | mcp-server, runner.ts | **Excluded** — IR declares, adapter executes |
+| Logging/telemetry | telemetry, observability | **Excluded** — runtime adapter only |
+| Global singletons | deterministic.ts (ctx), cache-layer.ts | **Excluded** — kernel has no globals |
+
 ## Governance pipeline
 
 ```text

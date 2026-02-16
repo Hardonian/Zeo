@@ -189,3 +189,6 @@ export {
   formatEvidencePlan,
   formatConfidenceDeltas,
 } from "./plan-engine.js";
+
+// v6.0 — Pure Decision Kernel + Decision IR + State Machine
+export * as kernel from "./kernel/index.js";

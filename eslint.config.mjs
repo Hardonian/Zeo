@@ -64,6 +64,26 @@ export default tseslint.config(
     }
   },
   {
+    files: ["packages/core/src/kernel/**/*.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["node:fs", "node:path", "node:net", "node:http", "node:https", "node:child_process", "node:os"],
+              message: "Kernel must be pure: no I/O, no network, no filesystem, no OS access. Use runtime adapter instead."
+            },
+            {
+              group: ["@zeo/db", "@zeo/mcp-server", "@zeo/trust", "@zeo/warehouse", "@zeo/telemetry"],
+              message: "Kernel must not import impure packages. Inject data via KernelInput."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
     files: ["**/*.js", "**/*.mjs"],
     languageOptions: {
       ecmaVersion: 2022,
