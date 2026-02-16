@@ -29,8 +29,8 @@ function makeMinimalSpec() {
     horizon: "days" as const,
     agents: [{ id: "a1", name: "Self", role: "self" as const }],
     actions: [{ id: "act-1", label: "Go", actorId: "a1", kind: "commit" as const }],
-    constraints: [],
-    assumptions: [],
+    constraints: [] as any[],
+    assumptions: [] as any[],
     objectives: [{ id: "obj-1", metric: "success", weight: 1.0 }],
   };
 }

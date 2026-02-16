@@ -1,0 +1,4 @@
+
+> @zeo/contracts@0.1.0 lint C:\Users\scott\Documents\GitHub\Zeo\packages\contracts
+> eslint .
+
