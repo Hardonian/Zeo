@@ -19,10 +19,10 @@
     "bin"
   ],
   "scripts": {
-    "build": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/build-target.mjs\" @controlplane/contract-kit @controlplane/observability -- tsc",
+    "build": "node ../../scripts/build-target.mjs @controlplane/controlplane -- tsc",
     "dev": "tsc --watch",
-    "typecheck": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/typecheck-target.mjs\" @controlplane/contract-kit @controlplane/observability",
-    "lint": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/lint-target.mjs\" vendor/controlplane/packages/controlplane/src",
+    "typecheck": "tsc --noEmit",
+    "lint": "node ../../scripts/lint-target.mjs vendor/controlplane/packages/controlplane/src",
     "test": "vitest run"
   },
   "dependencies": {
