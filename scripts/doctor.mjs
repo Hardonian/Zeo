@@ -2,9 +2,12 @@
 
 import { execSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
 
-const root = resolve(new URL('..', import.meta.url).pathname);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const root = resolve(__dirname, '..');
 const categories = {
   toolchain: [],
   environment: [],

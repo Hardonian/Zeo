@@ -1,0 +1,45 @@
+
+> zeo@1.0.0 typecheck C:\Users\scott\Documents\GitHub\Zeo
+> pnpm -r --filter @zeo/contracts build && pnpm -r typecheck && pnpm -C packages/core typecheck:exports
+
+
+> @zeo/contracts@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\contracts
+> tsc -p tsconfig.build.json
+
+Scope: 79 of 80 workspace projects
+packages/id typecheck$ tsc -p tsconfig.json --noEmit
+packages/sdk typecheck$ tsc -p tsconfig.json --noEmit
+packages/trust typecheck$ tsc --noEmit
+.../controlplane/packages/contract-kit typecheck$ tsc --noEmit
+.../controlplane/packages/contract-kit typecheck: Done
+vendor/controlplane/packages/contracts typecheck$ tsc --noEmit
+packages/id typecheck: Done
+.../controlplane/packages/create-runner typecheck$ tsc --noEmit
+packages/sdk typecheck: Done
+packages/trust typecheck: Done
+.../controlplane/packages/create-runner typecheck: Done
+vendor/controlplane/packages/contracts typecheck: Done
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+.../controlplane/packages/observability typecheck$ node "$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/typecheck-target.mjs" @controlplane/contracts
+.../packages/optimization-utils typecheck$ tsc --noEmit
+.../controlplane/packages/observability typecheck: node:internal/modules/cjs/loader:1451
+.../controlplane/packages/observability typecheck:   throw err;
+.../controlplane/packages/observability typecheck:   ^
+.../controlplane/packages/observability typecheck: Error: Cannot find module 'C:\Users\scott\Documents\GitHub\Zeo\vendor\controlplane\packages\observability\$(git rev-parse --show-toplevel)\vendor\controlplane\scripts\typecheck-target.mjs'
+.../controlplane/packages/observability typecheck:     at Module._resolveFilename (node:internal/modules/cjs/loader:1448:15)
+.../controlplane/packages/observability typecheck:     at defaultResolveImpl (node:internal/modules/cjs/loader:1059:19)
+.../controlplane/packages/observability typecheck:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1064:22)
+.../controlplane/packages/observability typecheck:     at Module._load (node:internal/modules/cjs/loader:1234:25)
+.../controlplane/packages/observability typecheck:     at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+.../controlplane/packages/observability typecheck:     at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+.../controlplane/packages/observability typecheck:     at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+.../controlplane/packages/observability typecheck:     at node:internal/main/run_main_module:33:47 {
+.../controlplane/packages/observability typecheck:   code: 'MODULE_NOT_FOUND',
+.../controlplane/packages/observability typecheck:   requireStack: []
+.../controlplane/packages/observability typecheck: }
+.../controlplane/packages/observability typecheck: Node.js v24.13.1
+.../controlplane/packages/observability typecheck: Failed
+C:\Users\scott\Documents\GitHub\Zeo\vendor\controlplane\packages\observability:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @controlplane/observability@1.0.0 typecheck: `node "$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/typecheck-target.mjs" @controlplane/contracts`
+Exit status 1
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.

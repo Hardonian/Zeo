@@ -32,10 +32,10 @@
     "README.md"
   ],
   "scripts": {
-    "build": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/build-target.mjs\" @controlplane/contracts -- tsc",
+    "build": "node ../../scripts/build-target.mjs @controlplane/contracts -- tsc",
     "dev": "tsc --watch",
-    "typecheck": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/typecheck-target.mjs\" @controlplane/contracts",
-    "lint": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/lint-target.mjs\" vendor/controlplane/packages/observability/src",
+    "typecheck": "node ../../scripts/typecheck-target.mjs @controlplane/contracts",
+    "lint": "node ../../scripts/lint-target.mjs src",
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
