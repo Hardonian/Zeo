@@ -32,7 +32,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "node ../../scripts/build-target.mjs @controlplane/contracts -- tsc",
+    "build": "tsc",
     "dev": "tsc --watch",
     "typecheck": "tsc --noEmit",
     "lint": "node ../../scripts/lint-target.mjs vendor/controlplane/packages/observability/src",
