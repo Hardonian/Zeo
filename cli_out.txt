@@ -1,0 +1,7 @@
+
+> @zeo/cli@1.0.0 start C:\Users\scott\Documents\GitHub\Zeo\apps\cli
+> node dist/index.js "sign-envelope" "../../test_envelope.json"
+
+[info] cli start run=0491ba74-1d9a-45d8-9aa9-d060599d6551 trace=3032d52a-5a80-4808-a3dd-b47c0fd11c09
+Error: Cannot find package 'C:\Users\scott\Documents\GitHub\Zeo\apps\cli\node_modules\@zeo\mesh\index.js' imported from C:\Users\scott\Documents\GitHub\Zeo\apps\cli\dist\mesh-cli.js
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
