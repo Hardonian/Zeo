@@ -63,22 +63,22 @@ function buildSecurityHeaders() {
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: [],
-  
+
   // Turbopack root configuration to silence workspace root warning
   // NOTE: Webpack is still used due to complex workspace package redirects
   turbopack: {
     root: rootDir,
   },
-  
+
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',
     },
   },
-  
+
   // Ensure all pages are statically generated at build time
   output: 'standalone',
-  
+
   // Generate all static pages - don't bail out to client-side rendering
   staticPageGenerationTimeout: 120,
 
@@ -90,7 +90,7 @@ const nextConfig = {
       },
     ];
   },
-  
+
   webpack: (config, { isServer, defaultLoaders, webpack }) => {
     // Use NormalModuleReplacementPlugin to forcibly redirect workspace imports
     const workspaceRedirects = [
@@ -117,6 +117,13 @@ const nextConfig = {
       { from: /^@zeo\/memory$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/memory/dist/index.js'), path.join(rootDir, 'packages/memory/src/index.ts')) },
       { from: /^@zeo\/eval$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/eval/dist/index.js'), path.join(rootDir, 'packages/eval/src/index.ts')) },
       { from: /^@zeo\/db$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/db/dist/index.js'), path.join(rootDir, 'packages/db/src/index.ts')) },
+      { from: /^@zeo\/compliance$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/compliance/dist/index.js'), path.join(rootDir, 'packages/compliance/src/index.ts')) },
+      { from: /^@zeo\/modules$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/modules/dist/index.js'), path.join(rootDir, 'packages/modules/src/index.ts')) },
+      { from: /^@zeo\/observability$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/observability/dist/index.js'), path.join(rootDir, 'packages/observability/src/index.ts')) },
+      { from: /^@zeo\/optimization$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/optimization/dist/index.js'), path.join(rootDir, 'packages/optimization/src/index.ts')) },
+      { from: /^@zeo\/schema-registry$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/schema-registry/dist/index.js'), path.join(rootDir, 'packages/schema-registry/src/index.ts')) },
+      { from: /^@zeo\/simulation$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/simulation/dist/index.js'), path.join(rootDir, 'packages/simulation/src/index.ts')) },
+      { from: /^@zeo\/tenant$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/tenant/dist/index.js'), path.join(rootDir, 'packages/tenant/src/index.ts')) },
     ];
 
     workspaceRedirects.forEach(({ from, to }) => {
@@ -132,7 +139,13 @@ const nextConfig = {
       const key = from.source.replace(/\$/g, '').replace(/\\/g, '');
       config.resolve.alias[key] = to;
     });
-    
+
+    // Handle ESM imports with .js extension in TS files
+    config.resolve.extensionAlias = {
+      ...config.resolve.extensionAlias,
+      '.js': ['.ts', '.tsx', '.js'],
+    };
+
     // Server-only packages
     if (!isServer) {
       const serverOnlyPackages = [

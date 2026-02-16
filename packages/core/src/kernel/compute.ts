@@ -38,7 +38,7 @@ import type {
 import { KERNEL_VERSION, KERNEL_SCHEMA_VERSION } from "./types.js";
 import { kernelHash, kernelHashRaw } from "./hash.js";
 import { createKernelIdGenerator, type KernelIdGenerator } from "./id.js";
-import type { DecisionIR, PlanIR, EvidenceQueryIR } from "./ir.js";
+import type { DecisionIR, PlanIR, EvidenceQueryIR, ToolCallIR } from "./ir.js";
 import { IR_VERSION } from "./ir.js";
 
 // ─── Internal Helpers ────────────────────────────────────────────────────
@@ -377,11 +377,11 @@ export function computeDecisionIR(input: KernelInput): DecisionIR {
     kind: "evidence_query" as const,
     prompt: e.prompt,
     rationale: e.rationale,
-    targetAssumptions: [],
+    targetAssumptions: [] as string[],
     priority: output.nextBestEvidence.length - i,
   }));
 
-  const toolCallRequests = input.toolResultsSnapshot.tools
+  const toolCallRequests: ToolCallIR[] = input.toolResultsSnapshot.tools
     .filter((t) => t.status === "ready")
     .map((t) => ({
       version: IR_VERSION,
