@@ -322,7 +322,7 @@ function parseDurationToDays(input?: string): number {
 function parseSinceToDate(since?: string): string {
   if (!since) return "1970-01-01";
   const days = parseDurationToDays(since);
-  const now = new Date();
+  const now = new Date(nowIso());
   const from = new Date(now.getTime() - days * 24 * 3600 * 1000);
   return from.toISOString().slice(0, 10);
 }
@@ -1089,7 +1089,7 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
       }
     }
     const result = await runDecisionInWorkspace(ws, args.envelope, asOf, args.dependsOn, args.informs);
-    const replayStable = ws.runs.length === 0 ? true : ws.runs[ws.runs.length - 1].transcriptHash !== result.transcriptHash;
+    const replayStable = ws.runs.length === 0 ? true : ws.runs[ws.runs.length - 1].transcriptHash === result.transcriptHash;
     const health = computeDecisionHealth(ws, replayStable);
     const staleCount = ws.evidence.filter((item) => {
       const status = classifyDecay(item, asOf);

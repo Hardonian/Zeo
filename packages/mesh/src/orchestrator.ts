@@ -23,6 +23,7 @@ import {
   type DeterministicJobConfig,
   type SchemaVersions,
   ENVELOPE_VERSION,
+  redactSecrets,
 } from "./envelope.js";
 import type { WorkerServer } from "./worker.js";
 import type { KernelInput, KernelPolicySnapshot } from "@zeo/core";
@@ -305,9 +306,11 @@ export class MeshOrchestrator {
     }
 
     // Direct kernel invocation
-    const kernelOutput = kernel.computeDecision(envelope.kernel_input);
+    const rawKernelOutput = kernel.computeDecision(envelope.kernel_input);
+    const kernelOutput = redactSecrets(rawKernelOutput);
+
     const irOutput = kernel.computeDecisionIR(envelope.kernel_input);
-    const irHash = computeCanonicalHash(irOutput);
+    const irHash = computeCanonicalHash(redactSecrets(irOutput));
 
     const durationMs = Math.round(performance.now() - startTime);
 
