@@ -16,6 +16,8 @@ yarn-error.log*
 
 .zeo/config.local.json
 .zeo/agents/
+.zeo/snapshots/
+.zeo/evidence-graph.json
 
 # Next.js
 **/.next/

@@ -18,6 +18,7 @@ import type { AssumptionTracker } from "@zeo/repro-pack";
 import { hygiene } from "./hygiene.js";
 import { BudgetManager, BudgetReachedError } from "./budget.js";
 import type { Budget } from "@zeo/contracts";
+import { deterministicNow } from "./deterministic.js";
 
 /**
  * Zeo core engine: branching + evaluation.
@@ -29,7 +30,7 @@ import type { Budget } from "@zeo/contracts";
  */
 
 function nowISO(): string {
-  return new Date().toISOString();
+  return deterministicNow();
 }
 
 function clamp01(x: number): number {
@@ -167,7 +168,8 @@ function evaluateRobustness(spec: DecisionSpec, graph: BranchGraph): LensEvaluat
     actionScores.push({ actionId: a.id, minScore });
   }
 
-  actionScores.sort((a, b) => b.minScore - a.minScore);
+  // Stable sort: tiebreak by actionId for deterministic ordering
+  actionScores.sort((a, b) => b.minScore - a.minScore || a.actionId.localeCompare(b.actionId));
   const best = actionScores.slice(0, Math.max(1, Math.min(2, actionScores.length))).map(s => s.actionId);
 
   // Fragile assumptions (v0.1): any assumptions explicitly listed in the spec are candidates.

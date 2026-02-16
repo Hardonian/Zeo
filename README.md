@@ -189,7 +189,56 @@ Zeo produces signed **Evidence Bundles**. These bundles capture the initial cont
 
 Run `pnpm doctor` for instant diagnostics. For common issues like signature mismatches or job failures, see the [Troubleshooting Guide](./docs/ops/troubleshooting.md).
 
-## What’s New (v1.1.0)
+## What's New (v2.0 — Decision Operating System Hardening)
+
+- **Deterministic Execution Mode**: `--deterministic --seed <s>` ensures same inputs produce identical outputs. Seeded ID generation, injected clock, stable sorts.
+- **Execution Snapshots**: Every run saves a SHA-256 hash-chained snapshot to `.zeo/snapshots/`. View with `zeo snapshots`.
+- **Deterministic Replay**: `zeo replay <run_id>` re-executes and reports PASS or DRIFT with diff summary.
+- **Diff Engine**: `zeo diff <runA> <runB>` compares assumptions, outputs, and confidence deltas between two runs.
+- **Structured Reasoning Traces**: `zeo trace <run_id>` shows step-by-step execution. `zeo explain <run_id>` gives a summary.
+- **Evidence Graph**: Persistent knowledge spine with confidence decay, drift detection, and regret tracking. Manage via `zeo evidence <list|add|mark|drift|regret>`.
+- **Governed Agent Runtime**: Agent capability schemas with input/output validation and resource budgets. View health with `zeo tools`.
+- **Regret-Aware Planning**: `zeo plan --budget <n>` with `--flip`, `--voi`, `--deltas` flags for flip distance, VOI estimation, and confidence projections.
+- **Enhanced Doctor**: `zeo doctor` now checks snapshot integrity, MCP handshake, and evidence graph health.
+
+### Deterministic Mode
+
+```bash
+# Run with deterministic execution
+zeo --deterministic --seed my-seed --json-only
+
+# Replay a run to verify determinism
+zeo replay run_<id>
+
+# Compare two runs
+zeo diff run_<id1> run_<id2>
+```
+
+### Evidence Graph
+
+```bash
+# Register a claim
+zeo evidence add "Market is trending up" --source analyst-report --confidence 0.8
+
+# Detect confidence drift
+zeo evidence drift
+
+# Track outcomes and regret
+zeo evidence mark <node-id> positive
+zeo evidence regret
+```
+
+### Planning Engine
+
+```bash
+# Generate bounded evidence plan
+zeo plan --budget 5
+
+# With flip distance analysis
+zeo plan --budget 5 --flip --voi --deltas
+```
+
+## What's New (v1.1.0)
 
 - **ReadyLayer & ControlPlane Absorption**: Full integration of Policy Engine and Static Analysis.
 - **JobForge Integration**: Webhooks are now processed asynchronously with retry logic.

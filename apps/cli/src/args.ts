@@ -17,6 +17,7 @@ export interface CliArgs {
   verify: boolean;
   emitTranscript: boolean;
   cacheMode: "read" | "write" | "off";
+  deterministic: boolean;
 }
 
 
@@ -40,6 +41,7 @@ export function parseArgs(argv: string[]): CliArgs {
     verify: false,
     emitTranscript: false,
     cacheMode: "write",
+    deterministic: false,
   };
 
   for (let i = 0; i < argv.length; i++) {
@@ -100,6 +102,8 @@ export function parseArgs(argv: string[]): CliArgs {
       i++;
     } else if (arg === "--no-cache") {
       result.cacheMode = "off";
+    } else if (arg === "--deterministic") {
+      result.deterministic = true;
     }
   }
 

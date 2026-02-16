@@ -36,6 +36,44 @@ core       -> (no upward imports)
 - **No policy logic inside webhook handlers**: handlers only validate, dedupe, and enqueue.
 - **No static analysis logic inside controllers**: analysis runs in async jobs/services only.
 
+## v2.0 Decision OS Modules
+
+### Deterministic Execution (`packages/core/src/deterministic.ts`)
+Global singleton context providing seeded PRNG, injected clock, stable sorts, and
+hash-based deterministic ID generation. Activated via `activateDeterministicMode({ seed })`.
+
+### Execution Snapshots (`packages/core/src/snapshot.ts`)
+SHA-256 hash chain: `inputHash + outputHash + toolRegistryHash → chainHash → runId`.
+Snapshots stored as JSON in `.zeo/snapshots/`. Includes ID counter offset for replay.
+
+### Replay Engine (`packages/core/src/replay-engine.ts`)
+Loads snapshot, restores deterministic context (seed + ID counter offset), re-executes
+`runDecision`, compares output hash. Returns PASS or DRIFT with structural diff.
+
+### Reasoning Logs (`packages/core/src/reasoning-log.ts`)
+Structured step-by-step execution traces. Each step records inputs, transformation
+description, output hash, and duration. Supports `trace` (detailed) and `explain`
+(summarized) formatting.
+
+### Diff Engine (`packages/core/src/diff-engine.ts`)
+Compares two execution snapshots: changed assumptions, changed outputs, confidence
+deltas, and evidence changes.
+
+### Evidence Graph (`packages/core/src/evidence-graph.ts`)
+Persistent knowledge spine stored in `.zeo/evidence-graph.json`. Nodes carry claims
+with confidence scores subject to exponential decay. Supports drift detection
+(confidence below threshold), outcome tracking, and regret analysis.
+
+### Agent Schema (`packages/core/src/agent-schema.ts`)
+Agent capability declarations with JSON Schema input/output validation, cost estimates,
+timeout enforcement, and resource budgeting (tokens, time, cost). Global agent registry
+with health checking.
+
+### Plan Engine (`packages/core/src/plan-engine.ts`)
+Regret-aware planning: flip distance (sensitivity ranking), VOI estimation
+(benefit vs cost of information), bounded evidence plans (budget-constrained),
+and confidence delta projections.
+
 ## Governance pipeline
 
 ```text
