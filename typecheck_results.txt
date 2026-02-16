@@ -10,3 +10,14 @@ packages/trust typecheck: Done
 packages/id typecheck: Done
 packages/sdk typecheck: Done
 vendor/controlplane/packages/contracts typecheck: Done
+.../controlplane/packages/create-runner typecheck: Done
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+.../controlplane/packages/observability typecheck$ tsc --noEmit
+.../packages/optimization-utils typecheck$ tsc --noEmit
+.../packages/optimization-utils typecheck: Done
+.../controlplane/packages/observability typecheck: Done
+packages/contracts typecheck: Done
+packages/adapters typecheck$ tsc -p tsconfig.json --noEmit
+packages/audit typecheck$ tsc -p tsconfig.json --noEmit
+packages/budgets typecheck$ tsc --noEmit
+packages/bayes-shrinkage typecheck$ tsc -p tsconfig.json --noEmit
