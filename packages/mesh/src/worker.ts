@@ -25,6 +25,7 @@ import {
   computeCanonicalHash,
   deserializeEnvelope,
   serializeResult,
+  redactSecrets,
 } from "./envelope.js";
 
 // ─── Types ───────────────────────────────────────────────────────────────
@@ -247,24 +248,27 @@ export class WorkerServer {
       }
     }
 
-    // 4. Execute pure kernel with timeout
-    this.activeJobs.add(envelope.job_id);
-    const startTime = performance.now();
-    const startedAt = new Date().toISOString();
+      // 4. Execute pure kernel with timeout
+      this.activeJobs.add(envelope.job_id);
+      const startTime = performance.now();
+      const startedAt = new Date().toISOString();
 
-    try {
-      const kernelOutput = await this.executeWithTimeout(
-        () => kernel.computeDecision(envelope.kernel_input),
-        this.config.executionTimeoutMs,
-        envelope.job_id,
-      );
+      try {
+        const rawKernelOutput = await this.executeWithTimeout(
+          () => kernel.computeDecision(envelope.kernel_input),
+          this.config.executionTimeoutMs,
+          envelope.job_id,
+        );
 
-      const endTime = performance.now();
-      const durationMs = Math.round(endTime - startTime);
+        // Phase 6: Redact secrets from output before signing
+        const kernelOutput = redactSecrets(rawKernelOutput);
 
-      // Compute IR for IR hash
-      const irOutput = kernel.computeDecisionIR(envelope.kernel_input);
-      const irHash = computeCanonicalHash(irOutput);
+        const endTime = performance.now();
+        const durationMs = Math.round(endTime - startTime);
+
+        // Compute IR for IR hash
+        const irOutput = kernel.computeDecisionIR(envelope.kernel_input);
+        const irHash = computeCanonicalHash(redactSecrets(irOutput));
 
       // Build signed result
       const result = createResultEnvelope({

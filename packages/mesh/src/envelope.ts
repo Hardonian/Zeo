@@ -296,6 +296,44 @@ export function verifyResultEnvelope(result: ResultEnvelope): VerifyResult {
   return { valid: errors.length === 0, errors };
 }
 
+// ─── Secret Redaction ────────────────────────────────────────────────────
+
+export const SECRET_PATTERNS = [
+  /FAKE_API_KEY_[A-Z0-9]+/g,
+  /sk-[a-zA-Z0-9]{32,}/g, // OpenAI/Common SKs
+  /ghp_[a-zA-Z0-9]{36}/g, // GitHub Pat
+  /aws_secret_[a-zA-Z0-9]+/gi,
+  /password\s*[:=]\s*\S+/gi,
+];
+
+/**
+ * Redact secrets from a string or object.
+ * Replaces sensitive patterns with [REDACTED].
+ */
+export function redactSecrets<T>(input: T): T {
+  if (typeof input === "string") {
+    let result = input;
+    for (const pattern of SECRET_PATTERNS) {
+      result = result.replace(pattern, "[REDACTED]");
+    }
+    return result as unknown as T;
+  }
+
+  if (Array.isArray(input)) {
+    return input.map(item => redactSecrets(item)) as unknown as T;
+  }
+
+  if (input !== null && typeof input === "object") {
+    const obj = { ...input } as Record<string, unknown>;
+    for (const key of Object.keys(obj)) {
+      obj[key] = redactSecrets(obj[key]);
+    }
+    return obj as unknown as T;
+  }
+
+  return input;
+}
+
 // ─── Serialization helpers ───────────────────────────────────────────────
 
 export function serializeEnvelope(envelope: JobEnvelope): string {
