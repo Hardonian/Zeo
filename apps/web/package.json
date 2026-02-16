@@ -23,6 +23,7 @@
     "@zeo/counterfactuals": "workspace:*",
     "@zeo/db": "workspace:*",
     "@zeo/eval": "workspace:*",
+    "@zeo/env": "workspace:*",
     "@zeo/governance": "workspace:*",
     "@zeo/id": "workspace:*",
     "@zeo/jobs": "workspace:*",

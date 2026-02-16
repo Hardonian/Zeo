@@ -21,6 +21,7 @@
     "@zeo/contracts": "workspace:*",
     "@zeo/core": "workspace:*",
     "@zeo/dataset-builder": "workspace:*",
+    "@zeo/env": "workspace:*",
     "@zeo/eval": "workspace:*",
     "@zeo/jobs": "workspace:*",
     "@zeo/mesh": "workspace:*",

@@ -67,6 +67,9 @@ importers:
       '@zeo/dataset-builder':
         specifier: workspace:*
         version: link:../../packages/dataset-builder
+      '@zeo/env':
+        specifier: workspace:*
+        version: link:../../packages/env
       '@zeo/eval':
         specifier: workspace:*
         version: link:../../packages/eval
@@ -146,6 +149,9 @@ importers:
       '@zeo/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@zeo/env':
+        specifier: workspace:*
+        version: link:../../packages/env
       '@zeo/eval':
         specifier: workspace:*
         version: link:../../packages/eval
@@ -670,6 +676,25 @@ importers:
       vitest:
         specifier: ^2.1.1
         version: 2.1.9(@types/node@25.2.2)(jsdom@28.0.0)
+
+  packages/env:
+    dependencies:
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.6.1
+      zod:
+        specifier: ^3.22.4
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^20.11.0
+        version: 20.19.33
+      tsup:
+        specifier: ^8.0.1
+        version: 8.5.1(jiti@2.6.1)(postcss@8.5.6)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
 
   packages/eval:
     dependencies:

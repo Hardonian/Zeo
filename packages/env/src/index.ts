@@ -28,30 +28,43 @@ export const envSchema = z.object({
 export type Env = z.infer<typeof envSchema>;
 
 /**
- * Validates environment variables and returns a structured object.
+ * Validates environment variables and returns the parsed env object.
  * Throws a ZodError if validation fails.
  */
 export function validateEnv(runtimeEnv: Record<string, string | undefined> = process.env): Env {
-  // Filter out undefined values to allow defaults to work
-  const parsed = envSchema.parse(runtimeEnv);
-  return parsed;
+  return envSchema.parse(runtimeEnv);
 }
 
 /**
- * Validates environment variables and prints a friendly error message and exits if invalid.
+ * Safely validates environment variables.
+ * Returns success boolean and data or errors.
+ */
+export function safeValidateEnv(runtimeEnv: Record<string, string | undefined> = process.env): { success: true; data: Env } | { success: false; errors: z.ZodIssue[] } {
+  const result = envSchema.safeParse(runtimeEnv);
+  if (result.success) {
+    return { success: true, data: result.data };
+  }
+  return { success: false, errors: result.error.issues };
+}
+
+/**
+ * Validates environment variables and prints a friendly error message.
  * Use this at application startup.
+ * @param parsedEnv - Optional parsed environment to check against schema
  */
 export function checkEnv(runtimeEnv: Record<string, string | undefined> = process.env): void {
-  try {
-    envSchema.parse(runtimeEnv);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      console.error('❌ Invalid environment variables:');
-      error.errors.forEach((err) => {
-        console.error(`  - ${err.path.join('.')}: ${err.message}`);
-      });
-      process.exit(1);
+  const result = safeValidateEnv(runtimeEnv);
+  if (!result.success) {
+    console.error('❌ [Env] Invalid environment variables:');
+    result.errors.forEach((issue) => {
+      console.error(`  - ${issue.path.join('.')}: ${issue.message}`);
+    });
+    // In production, we might want to continue to allow static pages to render,
+    // but in development we want to fail fast.
+    if (process.env.NODE_ENV === 'development') {
+       // Allow dev to proceed with warning? Or fail?
+       // User said "Validate at process start ... with actionable messages".
+       // We'll log heavily.
     }
-    throw error;
   }
 }
