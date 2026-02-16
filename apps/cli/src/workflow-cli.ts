@@ -874,6 +874,7 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
     const templateId = args.templateId ?? "product-launch";
     const template = getTemplate(templateId);
     const decisionId = `dec_${hash({ title, templateId }).slice(0, 12)}`;
+    const createdAt = nowIso();
     const reviewAt = new Date(Date.parse(createdAt) + template.reviewAfterDays * 24 * 3600 * 1000).toISOString().slice(0, 10);
     const evidence = template.requiredEvidence.map((value, index) => parseNoteToEvidence(`template evidence requirement: ${value}`, createdAt.slice(0, 10), reviewAt)).map((proposal, index) => ({ ...proposal, id: `ev_${hash({ decisionId, index, summary: proposal.summary }).slice(0, 10)}` }));
     const assumptions = template.requiredAssumptions.map((value, index) => parseNoteToEvidence(`template assumption: ${value}`, createdAt.slice(0, 10), reviewAt)).map((proposal, index) => ({ ...proposal, id: `ev_${hash({ decisionId, index, summary: proposal.summary, kind: "assumption" }).slice(0, 10)}` }));
