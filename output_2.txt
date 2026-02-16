@@ -1,0 +1,29 @@
+
+> zeo@1.0.0 typecheck C:\Users\scott\Documents\GitHub\Zeo
+> pnpm -r --filter @zeo/contracts build && pnpm -r typecheck && pnpm -C packages/core typecheck:exports
+
+
+> @zeo/contracts@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\contracts
+> tsc -p tsconfig.build.json
+
+Scope: 79 of 80 workspace projects
+packages/id typecheck$ tsc -p tsconfig.json --noEmit
+packages/sdk typecheck$ tsc -p tsconfig.json --noEmit
+packages/trust typecheck$ tsc --noEmit
+.../controlplane/packages/contract-kit typecheck$ tsc --noEmit
+.../controlplane/packages/contract-kit typecheck: Done
+vendor/controlplane/packages/contracts typecheck$ tsc --noEmit
+packages/id typecheck: Done
+.../controlplane/packages/create-runner typecheck$ tsc --noEmit
+packages/sdk typecheck: Done
+packages/trust typecheck: Done
+.../controlplane/packages/create-runner typecheck: Done
+vendor/controlplane/packages/contracts typecheck: Done
+.../controlplane/packages/observability typecheck$ node ../../scripts/typecheck-target.mjs @controlplane/contracts
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+.../packages/optimization-utils typecheck$ tsc --noEmit
+.../controlplane/packages/observability typecheck: Failed
+C:\Users\scott\Documents\GitHub\Zeo\vendor\controlplane\packages\observability:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @controlplane/observability@1.0.0 typecheck: `node ../../scripts/typecheck-target.mjs @controlplane/contracts`
+Exit status 1
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
