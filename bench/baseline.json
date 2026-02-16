@@ -1,0 +1,5 @@
+{
+  "cold-start": 2000,
+  "hot-path": 1200,
+  "replay": 8000
+}

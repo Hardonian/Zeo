@@ -1,0 +1,4 @@
+{
+  "id": "negotiation-depth2",
+  "args": ["--example", "negotiation", "--depth", "2", "--deterministic", "--seed", "golden-negotiation-depth2"]
+}

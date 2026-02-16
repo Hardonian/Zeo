@@ -84,3 +84,13 @@ GitHub webhook
   -> policy evaluation
   -> check/evidence publication
 ```
+
+## Verification + adoption pack (non-core, additive)
+
+The repository ships additive verification runways that do not modify core engine internals:
+
+- **Golden harness (`tests/golden/*`, `scripts/golden-harness.mjs`)** validates deterministic CLI output identifiers against committed expectations.
+- **MCP smoke client (`examples/mcp/stdio-smoke-client.mjs`)** verifies stdio protocol readiness and a trivial tool call against a local server entrypoint.
+- **Bench harness (`bench/*`)** records cold start, hot path, and replay timing into artifacts for trend monitoring.
+
+These checks are designed to be robust across ongoing core refactors by validating stable surfaces (CLI and MCP contracts) rather than internal representations.

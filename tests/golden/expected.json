@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "fixtures": {
+    "negotiation-depth2": {
+      "fixtureFile": "01-negotiation-depth2.json",
+      "stableIdentifier": "decisionHashPrefix16",
+      "value": "1c4d661333af6043"
+    },
+    "negotiation-depth3": {
+      "fixtureFile": "02-negotiation-depth3.json",
+      "stableIdentifier": "decisionHashPrefix16",
+      "value": "2a2ea5173a082f60"
+    },
+    "ops-depth2": {
+      "fixtureFile": "03-ops-depth2.json",
+      "stableIdentifier": "decisionHashPrefix16",
+      "value": "92767c824794d5e9"
+    },
+    "ops-depth3": {
+      "fixtureFile": "04-ops-depth3.json",
+      "stableIdentifier": "decisionHashPrefix16",
+      "value": "74362b28cfcf75a9"
+    }
+  }
+}

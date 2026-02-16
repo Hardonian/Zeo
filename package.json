@@ -2,7 +2,7 @@
   "name": "zeo",
   "private": true,
   "version": "1.0.0",
-  "description": "Zeo \u2014 Decision intelligence under uncertainty",
+  "description": "Zeo — Decision intelligence under uncertainty",
   "license": "MIT",
   "packageManager": "pnpm@9.15.5",
   "engines": {
@@ -69,7 +69,12 @@
     "docs:api-snippets": "node scripts/generate-api-snippets.mjs",
     "changelog:generate": "node scripts/generate-changelog-section.mjs",
     "ai:test-generate": "node scripts/generate-ai-tests.mjs",
-    "hooks:install": "node scripts/setup-git-hooks.mjs"
+    "hooks:install": "node scripts/setup-git-hooks.mjs",
+    "test:golden": "node scripts/golden-harness.mjs --lane=main",
+    "test:golden:pr": "node scripts/golden-harness.mjs --lane=pr",
+    "mcp:smoke:example": "node examples/mcp/stdio-smoke-client.mjs",
+    "bench:run": "node bench/run-benchmarks.mjs --lane=main",
+    "bench:run:pr": "node bench/run-benchmarks.mjs --lane=pr"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",
