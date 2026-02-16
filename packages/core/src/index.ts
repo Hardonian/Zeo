@@ -190,6 +190,41 @@ export {
   formatConfidenceDeltas,
 } from "./plan-engine.js";
 
+// Execution Lifecycle Contract
+export {
+  ExecutionStage,
+  STAGE_ORDER,
+  ExecutionContext,
+  runStage,
+  runStageAsync,
+  executeLifecycle,
+  type ExecutionContextConfig,
+  type StageAuditEvent,
+  type StageHandler,
+  type LifecycleHandlers,
+  type LifecycleResult,
+} from "./execution-lifecycle.js";
+
+// Tool Registry (formal contract)
+export {
+  ToolRegistry,
+  ToolRegistryError,
+  validateToolSchema,
+  createDefaultToolRegistry as createFormalToolRegistry,
+  type ToolDefinition,
+  type ToolInvocationRecord,
+  type JsonSchemaDescriptor,
+} from "./tool-registry.js";
+
+// Artifact Emitter
+export {
+  buildExecutionArtifact,
+  formatArtifactSummary,
+  formatArtifactMarkdown,
+  type ExecutionArtifact,
+  type ToolChainEntry,
+} from "./artifact-emitter.js";
+
 // v6.0 — Pure Decision Kernel + Decision IR + State Machine
 export * from "./kernel/index.js";
 export * as kernel from "./kernel/index.js";
