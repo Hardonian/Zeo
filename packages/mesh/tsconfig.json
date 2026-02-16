@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "strictNullChecks": false,
-    "exactOptionalPropertyTypes": false
+    "exactOptionalPropertyTypes": false,
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "src/**/*.ts"
