@@ -985,6 +985,9 @@ importers:
       '@zeo/regimes':
         specifier: workspace:*
         version: link:../regimes
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
     devDependencies:
       '@types/node':
         specifier: ^25.2.1
@@ -4880,6 +4883,9 @@ packages:
   seq-queue@0.0.5:
     resolution: {integrity: sha512-hr3Wtp/GZIc/6DAGPDcV4/9WoZhjrkXsi5B/07QgX8tsdc6ilr7BFM6PM6rbdAX1kFSDYeZGLipIZZKyQP0O5Q==}
 
+  server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
+
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
     engines: {node: '>= 0.4'}
@@ -6560,6 +6566,22 @@ snapshots:
       '@vitest/utils': 2.1.9
       chai: 5.3.3
       tinyrainbow: 1.2.0
+
+  '@vitest/mocker@2.1.9(vite@5.4.21(@types/node@20.19.33))':
+    dependencies:
+      '@vitest/spy': 2.1.9
+      estree-walker: 3.0.3
+      magic-string: 0.30.21
+    optionalDependencies:
+      vite: 5.4.21(@types/node@20.19.33)
+
+  '@vitest/mocker@2.1.9(vite@5.4.21(@types/node@22.19.10))':
+    dependencies:
+      '@vitest/spy': 2.1.9
+      estree-walker: 3.0.3
+      magic-string: 0.30.21
+    optionalDependencies:
+      vite: 5.4.21(@types/node@22.19.10)
 
   '@vitest/mocker@2.1.9(vite@5.4.21(@types/node@25.2.2))':
     dependencies:
@@ -8823,6 +8845,8 @@ snapshots:
 
   seq-queue@0.0.5: {}
 
+  server-only@0.0.1: {}
+
   set-function-length@1.2.2:
     dependencies:
       define-data-property: 1.1.4
@@ -9503,7 +9527,7 @@ snapshots:
   vitest@2.1.9(@types/node@20.19.33)(jsdom@28.0.0):
     dependencies:
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.21(@types/node@25.2.2))
+      '@vitest/mocker': 2.1.9(vite@5.4.21(@types/node@20.19.33))
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
@@ -9539,7 +9563,7 @@ snapshots:
   vitest@2.1.9(@types/node@22.19.10)(jsdom@28.0.0):
     dependencies:
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.21(@types/node@25.2.2))
+      '@vitest/mocker': 2.1.9(vite@5.4.21(@types/node@22.19.10))
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
