@@ -21,21 +21,20 @@ const PYTHON_BRIDGE_PATH = join(__dirname, "..", "python", "bridge.py");
 let persistentProcess: ReturnType<typeof spawn> | null = null;
 const pendingRequests = new Map<string, { resolve: (v: any) => void; reject: (e: any) => void }>();
 
-function getPersistentProcess() {
+function getPersistentProcess(): NonNullable<ReturnType<typeof spawn>> {
   if (persistentProcess) return persistentProcess;
 
-  persistentProcess = spawn("python3", [PYTHON_BRIDGE_PATH], {
+  const cp = spawn("python3", [PYTHON_BRIDGE_PATH], {
     stdio: ["pipe", "pipe", "pipe"],
   });
 
-  if (!persistentProcess.stdout || !persistentProcess.stderr || !persistentProcess.stdin) {
-    if (persistentProcess) persistentProcess.kill();
-    persistentProcess = null;
+  if (!cp.stdout || !cp.stderr || !cp.stdin) {
+    cp.kill();
     throw new Error("Failed to spawn Python bridge: stdio is null");
   }
 
   let buffer = "";
-  persistentProcess.stdout.on("data", (data) => {
+  cp.stdout.on("data", (data) => {
     buffer += data.toString();
     const lines = buffer.split("\n");
     buffer = lines.pop() || "";
@@ -44,8 +43,6 @@ function getPersistentProcess() {
       if (!line.trim()) continue;
       try {
         const response = JSON.parse(line);
-        // In a more complex bridge, we'd use request IDs
-        // For now, since it's sequential JSON-RPC over stdin/stdout:
         const nextReq = Array.from(pendingRequests.keys())[0];
         if (nextReq) {
           const { resolve } = pendingRequests.get(nextReq)!;
@@ -58,17 +55,18 @@ function getPersistentProcess() {
     }
   });
 
-  persistentProcess.stderr.on("data", (data) => {
+  cp.stderr.on("data", (data) => {
     console.error(`Python Inference Bridge stderr: ${data}`);
   });
 
-  persistentProcess.on("exit", () => {
+  cp.on("exit", () => {
     persistentProcess = null;
     pendingRequests.forEach(({ reject }) => reject(new Error("Python bridge exited unexpectedly")));
     pendingRequests.clear();
   });
 
-  return persistentProcess;
+  persistentProcess = cp;
+  return cp;
 }
 
 /**
@@ -80,11 +78,11 @@ export async function runInference(
 ): Promise<InferenceResponse> {
   // Security: strictly validate request against known types to prevent injection
   const requestId = randomUUID();
-  const child = getPersistentProcess();
+  const bridgeProcess = getPersistentProcess();
 
   return new Promise((resolve, reject) => {
     pendingRequests.set(requestId, { resolve, reject });
-    child.stdin!.write(JSON.stringify(request) + "\n");
+    bridgeProcess.stdin!.write(JSON.stringify(request) + "\n");
   });
 }
 
