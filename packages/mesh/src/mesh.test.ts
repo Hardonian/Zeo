@@ -565,8 +565,12 @@ describe("Phase 6: Secret Leak Scan", () => {
 
     try {
       const orch = new MeshOrchestrator({ mode: "local" });
+      const secretTitle = "Decision with secret FAKE_API_KEY_SECRET123";
+      const input = makeTestKernelInput("secret-test");
+      input.spec.title = secretTitle;
+
       const jobs: BatchJob[] = [{
-        kernel_input: makeTestKernelInput("secret-test"),
+        kernel_input: input,
         tenant_id: "tenant_A",
         policy_snapshot: TEST_POLICY_SNAPSHOT,
       }];
