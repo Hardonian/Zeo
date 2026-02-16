@@ -1,0 +1,153 @@
+Scope: 80 of 81 workspace projects
+packages/id typecheck$ tsc -p tsconfig.json --noEmit
+packages/sdk typecheck$ tsc -p tsconfig.json --noEmit
+packages/trust typecheck$ tsc --noEmit
+.../controlplane/packages/contract-kit typecheck$ tsc --noEmit
+.../controlplane/packages/contract-kit typecheck: Done
+vendor/controlplane/packages/contracts typecheck$ tsc --noEmit
+packages/id typecheck: Done
+.../controlplane/packages/create-runner typecheck$ tsc --noEmit
+packages/sdk typecheck: Done
+packages/trust typecheck: Done
+.../controlplane/packages/create-runner typecheck: Done
+vendor/controlplane/packages/contracts typecheck: Done
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+.../controlplane/packages/observability typecheck$ tsc --noEmit
+.../packages/optimization-utils typecheck$ tsc --noEmit
+.../controlplane/packages/observability typecheck: Done
+.../packages/optimization-utils typecheck: Done
+packages/contracts typecheck: Done
+packages/adapters typecheck$ tsc -p tsconfig.json --noEmit
+packages/audit typecheck$ tsc -p tsconfig.json --noEmit
+packages/bayes-shrinkage typecheck$ tsc -p tsconfig.json --noEmit
+packages/budgets typecheck$ tsc --noEmit
+packages/bayes-shrinkage typecheck: Done
+packages/causal typecheck$ tsc -p tsconfig.json --noEmit
+packages/audit typecheck: Done
+packages/compliance typecheck$ tsc -p tsconfig.json --noEmit
+packages/budgets typecheck: Done
+packages/constraints typecheck$ tsc -p tsconfig.json --noEmit
+packages/adapters typecheck: Done
+packages/counterfactuals typecheck$ tsc -p tsconfig.json --noEmit
+packages/causal typecheck: Done
+packages/decision-synthesizer typecheck$ tsc --noEmit
+packages/compliance typecheck: Done
+packages/explain typecheck$ tsc -p tsconfig.json --noEmit
+packages/constraints typecheck: Done
+packages/game typecheck$ tsc -p tsconfig.json --noEmit
+packages/counterfactuals typecheck: Done
+packages/governance typecheck$ tsc -p tsconfig.json --noEmit
+packages/decision-synthesizer typecheck: Done
+packages/info-theory typecheck$ tsc -p tsconfig.json --noEmit
+packages/explain typecheck: Done
+packages/jobs typecheck$ tsc --noEmit
+packages/game typecheck: Done
+packages/lenses typecheck$ tsc -p tsconfig.json --noEmit
+packages/governance typecheck: Done
+packages/mcp-interop typecheck$ tsc -p tsconfig.json --noEmit
+packages/lenses typecheck: Done
+packages/measurement typecheck$ tsc -p tsconfig.json --noEmit
+packages/info-theory typecheck: Done
+packages/memory typecheck$ tsc --noEmit
+packages/jobs typecheck: Done
+packages/modules typecheck$ tsc -p tsconfig.json --noEmit
+packages/mcp-interop typecheck: Done
+packages/nl typecheck$ tsc --noEmit
+packages/memory typecheck: Done
+packages/observability typecheck$ tsc -p tsconfig.json --noEmit
+packages/measurement typecheck: Done
+packages/optimization typecheck$ tsc -p tsconfig.json --noEmit
+packages/modules typecheck: Done
+packages/perf typecheck$ tsc -p tsconfig.json --noEmit
+packages/nl typecheck: Done
+packages/quant-timeseries typecheck$ tsc -p tsconfig.json --noEmit
+packages/observability typecheck: Done
+packages/regimes typecheck$ tsc -p tsconfig.json --noEmit
+packages/optimization typecheck: Done
+packages/repro-pack typecheck$ tsc --noEmit
+packages/quant-timeseries typecheck: Done
+packages/robustness typecheck$ tsc -p tsconfig.json --noEmit
+packages/perf typecheck: Done
+packages/schema-registry typecheck$ tsc -p tsconfig.json --noEmit
+packages/regimes typecheck: Done
+packages/semantic-clustering typecheck$ tsc --noEmit
+packages/repro-pack typecheck: Done
+packages/simulation typecheck$ tsc -p tsconfig.json --noEmit
+packages/robustness typecheck: Done
+packages/strategy typecheck$ tsc -p tsconfig.json --noEmit
+packages/schema-registry typecheck: Done
+packages/telemetry typecheck$ tsc -p tsconfig.json --noEmit
+packages/semantic-clustering typecheck: Done
+packages/tenant typecheck$ tsc -p tsconfig.json --noEmit
+packages/simulation typecheck: Done
+packages/time typecheck$ tsc -p tsconfig.json --noEmit
+packages/telemetry typecheck: Done
+packages/timeseries typecheck$ tsc -p tsconfig.json --noEmit
+packages/strategy typecheck: Done
+packages/warehouse typecheck$ tsc --noEmit
+packages/tenant typecheck: Done
+vendor/controlplane/packages/benchmark typecheck$ tsc --noEmit
+packages/time typecheck: Done
+.../packages/contract-test-kit typecheck$ tsc --noEmit
+packages/timeseries typecheck: Done
+.../controlplane/packages/controlplane typecheck$ tsc --noEmit
+packages/warehouse typecheck: Done
+.../controlplane/packages/sdk-generator typecheck$ tsc --noEmit
+vendor/controlplane/packages/benchmark typecheck: Done
+.../controlplane/packages/controlplane typecheck: Done
+.../packages/contract-test-kit typecheck: Done
+.../controlplane/packages/sdk-generator typecheck: Done
+packages/adapters-runtime typecheck$ tsc --noEmit
+packages/calibration typecheck$ tsc -p tsconfig.json --noEmit
+packages/analytics typecheck$ tsc --noEmit
+packages/dataset-builder typecheck$ tsc -p tsconfig.json --noEmit
+packages/adapters-runtime typecheck: Done
+packages/kpi typecheck$ tsc -p tsconfig.json --noEmit
+packages/calibration typecheck: Done
+packages/meta typecheck$ tsc -p tsconfig.json --noEmit
+packages/analytics typecheck: Done
+packages/models typecheck$ tsc -p tsconfig.json --noEmit
+packages/dataset-builder typecheck: Done
+packages/values typecheck$ tsc -p tsconfig.json --noEmit
+packages/meta typecheck: Done
+.../packages/integration-tests typecheck$ tsc --noEmit
+packages/models typecheck: Done
+packages/values typecheck: Done
+packages/kpi typecheck: Done
+.../packages/integration-tests typecheck: Done
+packages/rsl typecheck$ tsc -p tsconfig.json --noEmit
+packages/causal-skeletons typecheck$ tsc -p tsconfig.json --noEmit
+packages/rsl typecheck: Done
+packages/causal-skeletons typecheck: Done
+packages/worlds typecheck$ tsc -p tsconfig.json --noEmit
+packages/worlds typecheck: Done
+packages/core typecheck$ tsc -p tsconfig.json --noEmit
+packages/core typecheck: Done
+packages/mesh typecheck$ tsc -p tsconfig.json --noEmit
+packages/replay typecheck$ tsc -p tsconfig.json --noEmit
+packages/reality typecheck$ tsc --noEmit
+packages/signal-discovery typecheck$ tsc -p tsconfig.json --noEmit
+packages/replay typecheck: Done
+packages/reality typecheck: Done
+packages/signal-discovery typecheck: Done
+packages/mesh typecheck: Done
+packages/hypothesis-market typecheck$ tsc -p tsconfig.json --noEmit
+packages/mcp-server typecheck$ tsc -p tsconfig.json --noEmit
+packages/radar typecheck$ tsc -p tsconfig.json --noEmit
+packages/tournaments typecheck$ tsc -p tsconfig.json --noEmit
+packages/hypothesis-market typecheck: Done
+packages/tournaments typecheck: Done
+packages/radar typecheck: Done
+packages/mcp-server typecheck: Done
+packages/eval typecheck$ pnpm --filter @zeo/reality build && tsc --noEmit
+packages/eval typecheck: > @zeo/reality@0.7.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\reality
+packages/eval typecheck: > tsc -p tsconfig.build.json
+packages/eval typecheck: Done
+apps/web typecheck$ tsc --noEmit
+apps/cli typecheck$ tsc -p tsconfig.json --noEmit
+apps/cli typecheck: src/mcp-cli.ts(238,11): error TS2339: Property 'runHandshakeTest' does not exist on type '{ default: typeof import("C:/Users/scott/Documents/GitHub/Zeo/packages/mcp-server/dist/index"); createMcpServer: (config: McpConfig) => McpServer; createDefaultConfig: () => McpConfig; loadConfig: (cwd?: string) => Promise<...>; validateConfig: (config: McpConfig) => string[]; isToolAllowed: (config: McpConfig, tool...'.
+apps/cli typecheck: src/mcp-cli.ts(238,29): error TS2339: Property 'formatHandshakeTestResult' does not exist on type '{ default: typeof import("C:/Users/scott/Documents/GitHub/Zeo/packages/mcp-server/dist/index"); createMcpServer: (config: McpConfig) => McpServer; createDefaultConfig: () => McpConfig; loadConfig: (cwd?: string) => Promise<...>; validateConfig: (config: McpConfig) => string[]; isToolAllowed: (config: McpConfig, tool...'.
+apps/cli typecheck: Failed
+C:\Users\scott\Documents\GitHub\Zeo\apps\cli:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @zeo/cli@1.0.0 typecheck: `tsc -p tsconfig.json --noEmit`
+Exit status 2

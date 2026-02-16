@@ -1,0 +1,129 @@
+Scope: 80 of 81 workspace projects
+packages/id lint$ eslint src/**/*.ts
+packages/sdk lint$ eslint src/**/*.ts
+packages/trust lint$ eslint src/**/*.ts
+.../controlplane/packages/contract-kit lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/contract-kit/src
+packages/id lint: Done
+vendor/controlplane/packages/contracts lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/contracts/src
+packages/sdk lint: Done
+.../controlplane/packages/create-runner lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/create-runner/src
+packages/trust lint: Done
+.../controlplane/packages/contract-kit lint: (node:20652) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../controlplane/packages/contract-kit lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../controlplane/packages/contract-kit lint: Done
+.../controlplane/packages/create-runner lint: (node:12028) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../controlplane/packages/create-runner lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../controlplane/packages/create-runner lint: Done
+vendor/controlplane/packages/contracts lint: (node:416) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+vendor/controlplane/packages/contracts lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+vendor/controlplane/packages/contracts lint: Done
+packages/contracts lint$ eslint .
+.../controlplane/packages/observability lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/observability/src
+.../packages/optimization-utils lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/optimization-utils/src
+packages/contracts lint: Done
+.../controlplane/packages/observability lint: (node:6808) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../controlplane/packages/observability lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../controlplane/packages/observability lint: Done
+.../packages/optimization-utils lint: (node:3844) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../packages/optimization-utils lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../packages/optimization-utils lint: Done
+packages/adapters lint$ eslint .
+packages/audit lint$ eslint src/**/*.ts
+packages/bayes-shrinkage lint$ eslint src
+packages/budgets lint$ eslint src/**/*.ts
+packages/budgets lint: Done
+packages/causal lint$ eslint .
+packages/audit lint: Done
+packages/decision-synthesizer lint$ eslint src
+packages/bayes-shrinkage lint: Done
+packages/explain lint$ eslint .
+packages/adapters lint: Done
+packages/game lint$ eslint .
+packages/decision-synthesizer lint: Done
+packages/info-theory lint$ eslint src
+packages/game lint: Done
+packages/jobs lint$ eslint src/**/*.ts
+packages/causal lint: Done
+packages/mcp-interop lint$ eslint src
+packages/explain lint: Done
+packages/memory lint$ eslint src/**/*.ts
+packages/info-theory lint: Done
+packages/perf lint$ echo 'No source files to lint'
+packages/mcp-interop lint: Done
+packages/quant-timeseries lint$ eslint src
+packages/perf lint: 'No source files to lint'
+packages/perf lint: Done
+packages/regimes lint$ eslint src/**/*.ts
+packages/jobs lint: Done
+packages/repro-pack lint$ eslint src/**/*.ts
+packages/memory lint: Done
+packages/robustness lint$ eslint src/**/*.ts
+packages/quant-timeseries lint: Done
+packages/semantic-clustering lint$ eslint src
+packages/regimes lint: Done
+packages/timeseries lint$ eslint .
+packages/repro-pack lint: Done
+packages/warehouse lint$ eslint src/**/*.ts
+packages/robustness lint: Done
+vendor/controlplane/packages/benchmark lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/benchmark/src
+packages/semantic-clustering lint: Done
+.../packages/contract-test-kit lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/contract-test-kit/src
+packages/timeseries lint: Done
+.../controlplane/packages/controlplane lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/controlplane/src
+packages/warehouse lint: Done
+.../controlplane/packages/sdk-generator lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/sdk-generator/src
+vendor/controlplane/packages/benchmark lint: (node:6696) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+vendor/controlplane/packages/benchmark lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+vendor/controlplane/packages/benchmark lint: Done
+.../packages/contract-test-kit lint: (node:16392) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../packages/contract-test-kit lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../packages/contract-test-kit lint: Done
+.../controlplane/packages/controlplane lint: (node:7496) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../controlplane/packages/controlplane lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../controlplane/packages/controlplane lint: Done
+.../controlplane/packages/sdk-generator lint: (node:3524) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../controlplane/packages/sdk-generator lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../controlplane/packages/sdk-generator lint: Done
+packages/adapters-runtime lint$ eslint src/**/*.ts
+packages/analytics lint$ eslint src/**/*.ts
+packages/calibration lint$ eslint .
+packages/dataset-builder lint$ eslint .
+packages/dataset-builder lint: Done
+packages/kpi lint$ eslint src
+packages/analytics lint: Done
+packages/meta lint$ eslint .
+packages/calibration lint: Done
+packages/models lint$ eslint .
+packages/adapters-runtime lint: Done
+.../packages/integration-tests lint$ node ../../scripts/lint-target.mjs vendor/controlplane/tests/integration
+packages/meta lint: Done
+packages/kpi lint: Done
+packages/models lint: Done
+.../packages/integration-tests lint: (node:7016) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../packages/integration-tests lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../packages/integration-tests lint: Done
+packages/causal-skeletons lint$ eslint .
+packages/rsl lint$ eslint .
+packages/causal-skeletons lint: Done
+packages/rsl lint: Done
+packages/worlds lint$ eslint .
+packages/worlds lint: Done
+packages/core lint$ eslint src/**/*.ts
+packages/core lint: Done
+packages/signal-discovery lint$ eslint .
+packages/replay lint$ eslint .
+packages/signal-discovery lint: Done
+packages/replay lint: Done
+packages/hypothesis-market lint$ eslint .
+packages/mcp-server lint$ eslint src
+packages/radar lint$ eslint .
+packages/tournaments lint$ eslint .
+packages/radar lint: Done
+packages/hypothesis-market lint: Done
+packages/tournaments lint: Done
+packages/mcp-server lint: Done
+apps/cli lint$ eslint .
+apps/web lint$ echo 'skipped'
+apps/web lint: 'skipped'
+apps/web lint: Done
+apps/cli lint: Done
