@@ -53,6 +53,9 @@ importers:
       '@zeo/budgets':
         specifier: workspace:*
         version: link:../../packages/budgets
+      '@zeo/compliance':
+        specifier: workspace:*
+        version: link:../../packages/compliance
       '@zeo/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -71,6 +74,15 @@ importers:
       '@zeo/models':
         specifier: workspace:*
         version: link:../../packages/models
+      '@zeo/modules':
+        specifier: workspace:*
+        version: link:../../packages/modules
+      '@zeo/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+      '@zeo/optimization':
+        specifier: workspace:*
+        version: link:../../packages/optimization
       '@zeo/perf':
         specifier: workspace:*
         version: link:../../packages/perf
@@ -83,6 +95,18 @@ importers:
       '@zeo/repro-pack':
         specifier: workspace:*
         version: link:../../packages/repro-pack
+      '@zeo/schema-registry':
+        specifier: workspace:*
+        version: link:../../packages/schema-registry
+      '@zeo/simulation':
+        specifier: workspace:*
+        version: link:../../packages/simulation
+      '@zeo/tenant':
+        specifier: workspace:*
+        version: link:../../packages/tenant
+      '@zeo/trust':
+        specifier: workspace:*
+        version: link:../../packages/trust
       '@zeo/warehouse':
         specifier: workspace:*
         version: link:../../packages/warehouse
@@ -411,6 +435,25 @@ importers:
       '@types/node':
         specifier: ^25.2.1
         version: 25.2.2
+
+  packages/compliance:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      nanoid:
+        specifier: ^5.0.0
+        version: 5.1.6
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.33
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@20.19.33)(jsdom@28.0.0)
 
   packages/constraints:
     dependencies:
@@ -919,6 +962,25 @@ importers:
         specifier: ^25.2.1
         version: 25.2.2
 
+  packages/modules:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      nanoid:
+        specifier: ^5.0.0
+        version: 5.1.6
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.33
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@20.19.33)(jsdom@28.0.0)
+
   packages/nl:
     dependencies:
       '@zeo/contracts':
@@ -931,6 +993,44 @@ importers:
       vitest:
         specifier: ^2.1.1
         version: 2.1.9(@types/node@25.2.2)(jsdom@28.0.0)
+
+  packages/observability:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      nanoid:
+        specifier: ^5.0.0
+        version: 5.1.6
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.33
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@20.19.33)(jsdom@28.0.0)
+
+  packages/optimization:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      nanoid:
+        specifier: ^5.0.0
+        version: 5.1.6
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.33
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@20.19.33)(jsdom@28.0.0)
 
   packages/perf:
     dependencies:
@@ -1140,6 +1240,25 @@ importers:
         specifier: ^25.2.1
         version: 25.2.2
 
+  packages/schema-registry:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      nanoid:
+        specifier: ^5.0.0
+        version: 5.1.6
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.33
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@20.19.33)(jsdom@28.0.0)
+
   packages/sdk:
     devDependencies:
       '@types/node':
@@ -1190,6 +1309,25 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@22.19.10)(jsdom@28.0.0)
 
+  packages/simulation:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      nanoid:
+        specifier: ^5.0.0
+        version: 5.1.6
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.33
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@20.19.33)(jsdom@28.0.0)
+
   packages/strategy:
     dependencies:
       '@zeo/contracts':
@@ -1215,6 +1353,25 @@ importers:
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(@types/node@25.2.2)(jsdom@28.0.0)
+
+  packages/tenant:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      nanoid:
+        specifier: ^5.0.0
+        version: 5.1.6
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.33
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@20.19.33)(jsdom@28.0.0)
 
   packages/time:
     dependencies:

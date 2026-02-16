@@ -34,6 +34,7 @@
     "@zeo/schema-registry": "workspace:*",
     "@zeo/simulation": "workspace:*",
     "@zeo/tenant": "workspace:*",
+    "@zeo/trust": "workspace:*",
     "@zeo/warehouse": "workspace:*",
     "nanoid": "^5.0.7"
   },
