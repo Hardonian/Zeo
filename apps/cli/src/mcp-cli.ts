@@ -17,14 +17,15 @@ interface McpToolDef {
 }
 
 export interface McpCliArgs {
-  command: "serve" | "ping" | "tools" | null;
+  command: "serve" | "ping" | "tools" | "test" | null;
   http: boolean;
+  json: boolean;
 }
 
 export function parseMcpArgs(argv: string[]): McpCliArgs {
   const raw = argv[0];
-  const command = raw === "serve" || raw === "ping" || raw === "tools" ? raw : null;
-  return { command, http: argv.includes("--http") };
+  const command = raw === "serve" || raw === "ping" || raw === "tools" || raw === "test" ? raw : null;
+  return { command, http: argv.includes("--http"), json: argv.includes("--json") };
 }
 
 const SCHEMA_VERSION = "zeo.mcp.v1";
@@ -105,7 +106,7 @@ export function validateMcpToolDefinitions(definitions: McpToolDef[] = TOOL_DEFS
 }
 
 function help(): void {
-  console.log("\nZeo MCP Commands\n\nUsage:\n  zeo mcp serve\n  zeo mcp ping\n  zeo mcp tools\n");
+  console.log("\nZeo MCP Commands\n\nUsage:\n  zeo mcp serve\n  zeo mcp ping\n  zeo mcp tools\n  zeo mcp test [--json]    Run handshake smoke test\n");
 }
 
 function response(id: JsonRpcId, result: unknown): string {
@@ -233,6 +234,17 @@ async function runToolsCommand(): Promise<number> {
   return 0;
 }
 
+async function runTestCommand(args: McpCliArgs): Promise<number> {
+  const { runHandshakeTest, formatHandshakeTestResult } = await import("@zeo/mcp-server");
+  const result = await runHandshakeTest();
+  if (args.json) {
+    process.stdout.write(JSON.stringify(result, null, 2) + "\n");
+  } else {
+    console.log(formatHandshakeTestResult(result));
+  }
+  return result.failed > 0 ? 1 : 0;
+}
+
 export async function runMcpCommand(args: McpCliArgs): Promise<number> {
   if (!args.command) {
     help();
@@ -240,5 +252,6 @@ export async function runMcpCommand(args: McpCliArgs): Promise<number> {
   }
   if (args.command === "serve") return runServeCommand(args);
   if (args.command === "ping") return runPingCommand();
+  if (args.command === "test") return runTestCommand(args);
   return runToolsCommand();
 }
