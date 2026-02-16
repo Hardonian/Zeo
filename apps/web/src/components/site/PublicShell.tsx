@@ -28,6 +28,7 @@ const FOOTER_LINKS = [
   { href: '/legal/privacy', label: 'Privacy' },
   { href: '/legal/terms', label: 'Terms' },
   { href: '/support', label: 'Support' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 function isActive(pathname: string, href: string): boolean {

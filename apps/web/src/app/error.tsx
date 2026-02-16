@@ -9,36 +9,28 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const isProd = process.env.NODE_ENV === 'production';
-
   useEffect(() => {
+    // Log the error to an error reporting service
     console.error(error);
   }, [error]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-8">
-      <div className="max-w-md w-full space-y-4">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900">Something went wrong</h2>
-          <p className="mt-2 text-gray-600">
-            {isProd
-              ? 'The request could not be completed. Please try again.'
-              : 'An error occurred while rendering this page.'}
-          </p>
-        </div>
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-800 font-mono">
-            {isProd ? 'Unexpected application error.' : error.message}
-          </p>
-          {error.digest && <p className="text-xs text-red-600 mt-2">Digest: {error.digest}</p>}
-        </div>
-        <button
-          onClick={reset}
-          className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Try again
-        </button>
-      </div>
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gray-50 px-6 text-center">
+      <h2 className="text-2xl font-bold tracking-tight text-gray-900">Something went wrong</h2>
+      <p className="max-w-md text-gray-500">
+        We encountered an unexpected error. Please try again or contact support if the issue persists.
+      </p>
+      {error.digest && (
+        <code className="rounded bg-gray-200 px-2 py-1 text-xs font-mono text-gray-700">
+          Trace ID: {error.digest}
+        </code>
+      )}
+      <button
+        onClick={reset}
+        className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+      >
+        Try again
+      </button>
     </div>
   );
 }

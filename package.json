@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "description": "Zeo — Decision intelligence under uncertainty",
   "license": "MIT",
-  "packageManager": "pnpm@9.15.5",
+  "packageManager": "pnpm@10.0.0",
   "engines": {
     "node": ">=20.11.0",
-    "pnpm": ">=9.15.5"
+    "pnpm": ">=10.0.0"
   },
   "volta": {
     "node": "20.11.0",
@@ -112,8 +112,5 @@
   "bugs": {
     "url": "https://github.com/scott/zeo/issues"
   },
-  "homepage": "https://github.com/scott/zeo#readme",
-  "dependencies": {
-    "pnpm": "^10.29.3"
-  }
+  "homepage": "https://github.com/scott/zeo#readme"
 }
