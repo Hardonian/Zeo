@@ -1,0 +1,60 @@
+Scope: 80 of 81 workspace projects
+packages/id lint$ eslint src/**/*.ts
+packages/sdk lint$ eslint src/**/*.ts
+packages/trust lint$ eslint src/**/*.ts
+.../controlplane/packages/contract-kit lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/contract-kit/src
+packages/id lint: Done
+vendor/controlplane/packages/contracts lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/contracts/src
+packages/sdk lint: Done
+.../controlplane/packages/create-runner lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/create-runner/src
+packages/trust lint: Done
+.../controlplane/packages/contract-kit lint: (node:7384) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../controlplane/packages/contract-kit lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../controlplane/packages/contract-kit lint: Done
+.../controlplane/packages/create-runner lint: (node:26696) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../controlplane/packages/create-runner lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../controlplane/packages/create-runner lint: Done
+vendor/controlplane/packages/contracts lint: (node:27652) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+vendor/controlplane/packages/contracts lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+vendor/controlplane/packages/contracts lint: Done
+.../controlplane/packages/observability lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/observability/src
+.../packages/optimization-utils lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/optimization-utils/src
+packages/contracts lint$ eslint .
+.../controlplane/packages/observability lint: (node:16088) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../controlplane/packages/observability lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../controlplane/packages/observability lint: Done
+packages/contracts lint: Done
+.../packages/optimization-utils lint: (node:22152) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../packages/optimization-utils lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../packages/optimization-utils lint: Done
+packages/adapters lint$ eslint .
+packages/audit lint$ eslint src/**/*.ts
+packages/bayes-shrinkage lint$ eslint src
+packages/budgets lint$ eslint src/**/*.ts
+packages/audit lint: Done
+packages/causal lint$ eslint .
+packages/budgets lint: Done
+packages/decision-synthesizer lint$ eslint src
+packages/bayes-shrinkage lint: Done
+packages/explain lint$ eslint .
+packages/adapters lint: Done
+packages/game lint$ eslint .
+packages/decision-synthesizer lint: Done
+packages/info-theory lint$ eslint src
+packages/explain lint: Done
+packages/jobs lint$ eslint src/**/*.ts
+packages/causal lint: Done
+packages/mcp-interop lint$ eslint src
+packages/game lint: Done
+packages/memory lint$ eslint src/**/*.ts
+packages/mcp-interop lint: Done
+packages/perf lint$ echo 'No source files to lint'
+packages/perf lint: 'No source files to lint'
+packages/perf lint: Done
+packages/quant-timeseries lint$ eslint src
+packages/info-theory lint: Done
+packages/regimes lint$ eslint src/**/*.ts
+packages/jobs lint: Done
+packages/repro-pack lint$ eslint src/**/*.ts
+packages/memory lint: Done
+packages/robustness lint$ eslint src/**/*.ts
