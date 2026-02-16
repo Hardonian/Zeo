@@ -7,9 +7,9 @@ import { createHash } from 'node:crypto';
 
 // Setup paths
 const ROOT = resolve(process.cwd());
-// Use dist output; assumes pnpm build has run or is running
-const CLI_PATH = join(ROOT, 'apps/cli/dist/index.js');
-const NODE = process.execPath;
+// Use source for immediate feedback (bypass build issues)
+const CLI_PATH = join(ROOT, 'apps/cli/src/index.ts');
+const NODE = 'npx tsx';
 const OUT_DIR = join(ROOT, 'tmp', 'smoke-v3');
 
 // Ensure output dir exists
@@ -47,8 +47,14 @@ function computeHash(content) {
 async function testMcp() {
   console.log('\n[MCP] Testing Stdio Server...');
   return new Promise((resolve, reject) => {
-    const child = spawn(NODE, [CLI_PATH, 'mcp', 'serve'], {
+    // If NODE contains spaces (like 'npx tsx'), we need to split it for spawn
+    const nodeParts = NODE.split(' ');
+    const nodeCmd = nodeParts[0];
+    const nodeArgs = nodeParts.slice(1);
+
+    const child = spawn(nodeCmd, [...nodeArgs, CLI_PATH, 'mcp', 'serve'], {
       cwd: ROOT,
+      shell: process.platform === 'win32', // helper for windows npx
       stdio: ['pipe', 'pipe', 'pipe']
     });
 
