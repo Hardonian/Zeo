@@ -89,6 +89,27 @@
       ],
       "@zeo/warehouse": [
         "../../packages/warehouse/src/index.ts"
+      ],
+      "@zeo/compliance": [
+        "../../packages/compliance/src/index.ts"
+      ],
+      "@zeo/modules": [
+        "../../packages/modules/src/index.ts"
+      ],
+      "@zeo/observability": [
+        "../../packages/observability/src/index.ts"
+      ],
+      "@zeo/optimization": [
+        "../../packages/optimization/src/index.ts"
+      ],
+      "@zeo/schema-registry": [
+        "../../packages/schema-registry/src/index.ts"
+      ],
+      "@zeo/simulation": [
+        "../../packages/simulation/src/index.ts"
+      ],
+      "@zeo/tenant": [
+        "../../packages/tenant/src/index.ts"
       ]
     },
     "target": "ES2017",
