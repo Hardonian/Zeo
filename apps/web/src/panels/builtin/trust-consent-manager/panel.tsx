@@ -1,5 +1,6 @@
 import React from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface TrustConsentManagerProps {
   // Props from context
 }
@@ -8,7 +9,7 @@ export default function TrustConsentManager(_props: TrustConsentManagerProps) {
   return (
     <div className="p-4">
       <h2 className="text-lg font-semibold mb-4">Trust & Consent</h2>
-      
+
       <div className="space-y-3">
         <div className="flex items-center justify-between p-2 bg-green-50 rounded">
           <span className="text-sm">Evidence Upload</span>

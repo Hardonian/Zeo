@@ -1,0 +1,22 @@
+
+> @zeo/web@1.0.0 lint C:\Users\scott\Documents\GitHub\Zeo\apps\web
+> eslint .
+
+
+Oops! Something went wrong! :(
+
+ESLint: 8.57.1
+
+TypeError: Error while loading rule '@typescript-eslint/no-unused-expressions': Cannot read properties of undefined (reading 'allowShortCircuit')
+Occurred while linting C:\Users\scott\Documents\GitHub\Zeo\apps\web\next.config.mjs
+    at Object.create (C:\Users\scott\Documents\GitHub\Zeo\node_modules\.pnpm\eslint@9.39.2_jiti@2.6.1\node_modules\eslint\lib\rules\no-unused-expressions.js:85:5)
+    at create (C:\Users\scott\Documents\GitHub\Zeo\node_modules\.pnpm\@typescript-eslint+eslint-plugin@8.54.0_@typescript-eslint+parser@8.54.0_eslint@9.39.2_jiti@2_ks6lrnsxnx7yfbczfrnp77j3zi\node_modules\@typescript-eslint\eslint-plugin\dist\rules\no-unused-expressions.js:30:32)
+    at Object.create (C:\Users\scott\Documents\GitHub\Zeo\node_modules\.pnpm\@typescript-eslint+utils@8.54.0_eslint@9.39.2_jiti@2.6.1__typescript@5.9.3\node_modules\@typescript-eslint\utils\dist\eslint-utils\RuleCreator.js:34:20)
+    at createRuleListeners (C:\Users\scott\Documents\GitHub\Zeo\node_modules\.pnpm\eslint@8.57.1\node_modules\eslint\lib\linter\linter.js:895:21)
+    at C:\Users\scott\Documents\GitHub\Zeo\node_modules\.pnpm\eslint@8.57.1\node_modules\eslint\lib\linter\linter.js:1066:110
+    at Array.forEach (<anonymous>)
+    at runRules (C:\Users\scott\Documents\GitHub\Zeo\node_modules\.pnpm\eslint@8.57.1\node_modules\eslint\lib\linter\linter.js:1003:34)
+    at Linter._verifyWithFlatConfigArrayAndWithoutProcessors (C:\Users\scott\Documents\GitHub\Zeo\node_modules\.pnpm\eslint@8.57.1\node_modules\eslint\lib\linter\linter.js:1730:31)
+    at Linter._verifyWithFlatConfigArray (C:\Users\scott\Documents\GitHub\Zeo\node_modules\.pnpm\eslint@8.57.1\node_modules\eslint\lib\linter\linter.js:1861:21)
+    at Linter.verify (C:\Users\scott\Documents\GitHub\Zeo\node_modules\.pnpm\eslint@8.57.1\node_modules\eslint\lib\linter\linter.js:1433:65)
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 2.

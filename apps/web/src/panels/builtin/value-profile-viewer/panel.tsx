@@ -1,5 +1,6 @@
 import React from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface ValueProfileViewerProps {
   // Props from context
 }
@@ -8,7 +9,7 @@ export default function ValueProfileViewer(_props: ValueProfileViewerProps) {
   return (
     <div className="p-4">
       <h2 className="text-lg font-semibold mb-4">Value Profile</h2>
-      
+
       <div className="space-y-4">
         <div className="bg-blue-50 p-3 rounded">
           <h3 className="font-medium text-blue-900">Objectives</h3>

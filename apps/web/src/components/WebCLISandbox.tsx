@@ -54,7 +54,6 @@ export function WebCLISandbox({ panel, initialCmd }: { panel: PanelConfig; initi
     if (initialCmd) {
       runCommand(initialCmd);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function runCommand(raw: string) {

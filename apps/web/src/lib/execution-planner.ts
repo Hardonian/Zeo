@@ -22,7 +22,7 @@ export interface ExecutionPlan {
 /** Extract a numeric value from natural language (e.g., "5%" -> 5, "$200" -> 200). */
 function extractNumber(input: string): number | null {
   // Match patterns like: 5%, $200, 100, 0.18
-  const match = input.match(/[\$]?(\d+\.?\d*)%?/);
+  const match = input.match(/[$]?(\d+\.?\d*)%?/);
   if (match) {
     return parseFloat(match[1]);
   }

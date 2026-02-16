@@ -1,0 +1,6 @@
+
+> @zeo/web@1.0.0 lint C:\Users\scott\Documents\GitHub\Zeo\apps\web
+> next lint
+
+Invalid project directory provided, no such directory: C:\Users\scott\Documents\GitHub\Zeo\apps\web\lint
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.

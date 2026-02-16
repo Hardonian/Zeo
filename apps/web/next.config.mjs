@@ -91,7 +91,7 @@ const nextConfig = {
     ];
   },
 
-  webpack: (config, { isServer, defaultLoaders, webpack }) => {
+  webpack: (config, { isServer, webpack }) => {
     // Use NormalModuleReplacementPlugin to forcibly redirect workspace imports
     const workspaceRedirects = [
       { from: /^@zeo\/contracts$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/contracts/dist/index.js'), path.join(rootDir, 'packages/contracts/src/index.ts')) },

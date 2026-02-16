@@ -1,5 +1,6 @@
 import React from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface PatternsDashboardProps {
   // Props from context
 }
@@ -8,7 +9,7 @@ export default function PatternsDashboard(_props: PatternsDashboardProps) {
   return (
     <div className="p-4">
       <h2 className="text-lg font-semibold mb-4">Patterns</h2>
-      
+
       <div className="space-y-3">
         <div className="bg-blue-50 p-3 rounded border-l-4 border-blue-500">
           <h3 className="font-medium text-blue-900 text-sm">Timeline Pressure</h3>

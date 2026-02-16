@@ -1,5 +1,6 @@
 import React from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface StrategyLensProps {
   // Props from context
 }
@@ -8,7 +9,7 @@ export default function StrategyLens(_props: StrategyLensProps) {
   return (
     <div className="p-4">
       <h2 className="text-lg font-semibold mb-4">Strategy Lens</h2>
-      
+
       <div className="space-y-4">
         <div className="bg-amber-50 p-3 rounded">
           <h3 className="font-medium text-amber-900">Adversarial Assumption</h3>
