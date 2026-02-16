@@ -1,0 +1,16 @@
+{
+  "decisionId": "dec_baa325c4f15e",
+  "title": "Determinism",
+  "decisionType": "ENG",
+  "workspaceMode": "customer",
+  "state": "proposed",
+  "createdAt": "2025-01-01T00:00:00.000Z",
+  "evidence": [],
+  "tasks": [],
+  "runs": [],
+  "chain": {},
+  "workspaceId": "default",
+  "reviewAt": "2025-01-31",
+  "driftEvents": [],
+  "healthHistory": []
+}
