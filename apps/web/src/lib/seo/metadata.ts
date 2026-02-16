@@ -1,6 +1,7 @@
 const FALLBACK_SITE_URL = 'https://zeo.dev';
 const SITE_NAME = 'Zeo';
 const DEFAULT_OG_IMAGE = '/brand/zeo/og-image.png';
+const FALLBACK_SITE_URL = 'http://localhost:3000';
 
 function getMetadataBase() {
   const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || FALLBACK_SITE_URL;
