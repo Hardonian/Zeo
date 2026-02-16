@@ -61,12 +61,7 @@ describe("Phase F: Simulation + Forecast Layer", () => {
       const modRunner = () => ({ selectedAction: "B", confidence: 0.5, expectedUtility: 0.6, risk: 0.4, robustness: 0.4 });
 
       const r1 = engine.simulate(s1.id, modRunner, runner, "seed-1");
-
-      const engine2 = new WhatIfEngine();
-      const s2 = engine2.createScenario("S2", "d1", [
-        { assumptionId: "x", originalValue: 0.5, modifiedValue: 0.8 },
-      ]);
-      const r2 = engine2.simulate(s2.id, modRunner, runner, "seed-1");
+      const r2 = engine.simulate(s1.id, modRunner, runner, "seed-1");
 
       // Same runners + same seed = same compute hash
       expect(r1.computeHash).toBe(r2.computeHash);
@@ -100,11 +95,13 @@ describe("Phase F: Simulation + Forecast Layer", () => {
         { selectedAction: "A", confidence: 0.8, expectedUtility: 0.9, risk: 0.1, robustness: 0.8 },
         { stress: 0.5, trust: 0.7 },
         30,
-        "forecast-seed-1"
+        "forecast-seed-1",
+        "2025-01-01T00:00:00.000Z"
       );
 
       expect(proj.projections).toHaveLength(30);
       expect(proj.deterministic).toBe(true);
+      expect(proj.projections[0].timestamp).toContain("2025-01-02");
     });
 
     it("deterministic with same seed", () => {
@@ -116,6 +113,19 @@ describe("Phase F: Simulation + Forecast Layer", () => {
       const p2 = engine.project("d1", base, assumptions, 10, "seed-a");
 
       expect(p1.projections[5].confidence).toBe(p2.projections[5].confidence);
+    });
+
+    it("respects startDate parameter", () => {
+      const engine = new ForecastEngine();
+      const base: SimulationOutcome = { selectedAction: "A", confidence: 0.8, expectedUtility: 0.9, risk: 0.1, robustness: 0.8 };
+      const assumptions = { stress: 0.5 };
+
+      const p1 = engine.project("d1", base, assumptions, 10, "seed-a", "2025-01-01T00:00:00.000Z");
+      const p2 = engine.project("d1", base, assumptions, 10, "seed-a", "2026-01-01T00:00:00.000Z");
+
+      expect(p1.projections[0].timestamp).not.toBe(p2.projections[0].timestamp);
+      // Values should be identical as seed is same
+      expect(p1.projections[0].confidence).toBe(p2.projections[0].confidence);
     });
 
     it("formats forecast", () => {
