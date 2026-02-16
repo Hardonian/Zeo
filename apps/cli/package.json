@@ -22,6 +22,7 @@
     "@zeo/core": "workspace:*",
     "@zeo/dataset-builder": "workspace:*",
     "@zeo/env": "workspace:*",
+    "@zeo/ledger": "workspace:*",
     "@zeo/eval": "workspace:*",
     "@zeo/jobs": "workspace:*",
     "@zeo/mesh": "workspace:*",

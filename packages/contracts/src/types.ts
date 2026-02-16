@@ -200,7 +200,20 @@ export type DecisionResult = {
     cacheHit: boolean;
     stageTimings?: Record<string, number>;
   };
+  outcome?: {
+    recommended_action_ids: UUID[];
+    confidence_bounds: { lower: string; upper: string; method: string };
+  };
 };
+
+export type ZeoStructuredError = {
+  code: string;
+  message: string;
+  hint?: string;
+  trace_id?: string;
+  details?: Record<string, unknown>;
+};
+
 
 export type TranscriptFactTag = "fact" | "belief" | "assumption" | "unknown";
 
