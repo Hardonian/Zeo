@@ -33,17 +33,25 @@ function runCommand(args, cwd, env = {}) {
 }
 
 function parseJson(output) {
-  const lines = output.trim().split('\n').reverse();
-  for (const line of lines) {
+  const trimmed = output.trim();
+  const firstBrace = trimmed.indexOf('{');
+  const lastBrace = trimmed.lastIndexOf('}');
+  if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
     try {
-      if (line.trim().startsWith('{')) {
-        return JSON.parse(line);
-      }
-    } catch {
-      continue;
+      return JSON.parse(trimmed.slice(firstBrace, lastBrace + 1));
+    } catch (e) {
+      // If full extraction fails, try finding the last valid JSON block
+      // This is harder, but maybe we can assume the JSON is at the end?
+      // Let's rely on the first/last brace for now as it covers most CLI cases where JSON is the main output.
+      // If there are multiple JSON objects, this might fail or parse the outer one.
     }
   }
-  return null;
+  // Fallback: try to parse the whole string (sanitized)
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    return null;
+  }
 }
 
 async function phase1_determinism() {
