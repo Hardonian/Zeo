@@ -120,7 +120,7 @@ describe('Deterministic Indexes', () => {
     expect(index.tokenIndex.get('test')).toBeUndefined();
   });
 
-  it('should query by kind using index', () => {
+  it('should query by kind using index', async () => {
     const decision: WarehouseEnvelope<unknown> = {
       id: 'dec-1',
       kind: 'decision',
@@ -150,7 +150,7 @@ describe('Deterministic Indexes', () => {
     expect(result.ids).not.toContain('out-1');
   });
 
-  it('should query by text using token index', () => {
+  it('should query by text using token index', async () => {
     const envelope: WarehouseEnvelope<unknown> = {
       id: 'test-1',
       kind: 'decision',
@@ -165,13 +165,13 @@ describe('Deterministic Indexes', () => {
 
     indexRecord(index, envelope);
 
-    const result = queryUsingIndex(index, { containsText: 'negotiation' }, () => undefined);
+    const result = await queryUsingIndex(index, { containsText: 'negotiation' }, () => undefined);
 
     expect(result.usedIndex).toBe(true);
     expect(result.ids).toContain('test-1');
   });
 
-  it('should query by decisionId using index', () => {
+  it('should query by decisionId using index', async () => {
     const envelope: WarehouseEnvelope<unknown> = {
       id: 'out-1',
       kind: 'outcome-record',
@@ -185,7 +185,7 @@ describe('Deterministic Indexes', () => {
 
     indexRecord(index, envelope);
 
-    const result = queryUsingIndex(index, { decisionIds: ['dec-123'] }, () => undefined);
+    const result = await queryUsingIndex(index, { decisionIds: ['dec-123'] }, () => undefined);
 
     expect(result.usedIndex).toBe(true);
     expect(result.ids).toContain('out-1');
@@ -213,7 +213,7 @@ describe('Deterministic Indexes', () => {
     expect(restored.tokenIndex.get('test')).toContain('test-1');
   });
 
-  it('should handle multiple token search', () => {
+  it('should handle multiple token search', async () => {
     const envelope1: WarehouseEnvelope<unknown> = {
       id: 'test-1',
       kind: 'decision',
@@ -236,7 +236,7 @@ describe('Deterministic Indexes', () => {
     indexRecord(index, envelope1);
     indexRecord(index, envelope2);
 
-    const result = queryUsingIndex(index, { containsText: 'price strategy' }, () => undefined);
+    const result = await queryUsingIndex(index, { containsText: 'price strategy' }, () => undefined);
 
     expect(result.ids).toContain('test-1');
     expect(result.ids).not.toContain('test-2');
@@ -276,7 +276,7 @@ describe('Deterministic Indexes', () => {
 
       const queryVector = [1, 0, 0];
 
-      const result = queryUsingIndex(index, { vector: queryVector }, () => undefined);
+      const result = await queryUsingIndex(index, { vector: queryVector }, () => undefined);
 
       expect(result.usedIndex).toBe(true);
       expect(result.ids).toEqual(['doc-1']); // Only doc-1 has score > 0

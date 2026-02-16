@@ -9,8 +9,9 @@ import type { WarehouseAdapter } from "@zeo/warehouse";
 import { computeContentHash } from "@zeo/warehouse";
 import type { McpToolDefinition, McpToolResult } from "../types";
 import { validateToolInput } from "../security";
+import { SecurityUtils } from "../security-utils";
 import { promises as fs } from "fs";
-import { join } from "path";
+import { join, isAbsolute, normalize } from "path";
 
 export const packetExportDefinition: McpToolDefinition = {
     name: "packet.export",
