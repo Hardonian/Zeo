@@ -19,10 +19,10 @@
     "sdk-gen": "./dist/cli.js"
   },
   "scripts": {
-    "build": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/build-target.mjs\" @controlplane/observability -- tsup src/index.ts src/cli.ts --format esm",
+    "build": "tsup src/index.ts src/cli.ts --format esm",
     "dev": "tsup src/index.ts src/cli.ts --format esm --watch",
-    "typecheck": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/typecheck-target.mjs\" @controlplane/observability",
-    "lint": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/lint-target.mjs\" vendor/controlplane/packages/sdk-generator/src",
+    "typecheck": "tsc --noEmit",
+    "lint": "node ../../scripts/lint-target.mjs vendor/controlplane/packages/sdk-generator/src",
     "test": "vitest run",
     "generate": "node ./dist/cli.js",
     "validate": "node ./dist/cli.js --validate",
