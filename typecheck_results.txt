@@ -1,0 +1,12 @@
+Scope: 80 of 81 workspace projects
+packages/id typecheck$ tsc -p tsconfig.json --noEmit
+packages/sdk typecheck$ tsc -p tsconfig.json --noEmit
+packages/trust typecheck$ tsc --noEmit
+.../controlplane/packages/contract-kit typecheck$ tsc --noEmit
+.../controlplane/packages/contract-kit typecheck: Done
+vendor/controlplane/packages/contracts typecheck$ tsc --noEmit
+packages/trust typecheck: Done
+.../controlplane/packages/create-runner typecheck$ tsc --noEmit
+packages/id typecheck: Done
+packages/sdk typecheck: Done
+vendor/controlplane/packages/contracts typecheck: Done

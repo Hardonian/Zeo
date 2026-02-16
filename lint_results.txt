@@ -1,0 +1,5 @@
+Scope: 80 of 81 workspace projects
+packages/id lint$ eslint src/**/*.ts
+packages/sdk lint$ eslint src/**/*.ts
+packages/trust lint$ eslint src/**/*.ts
+.../controlplane/packages/contract-kit lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/contract-kit/src
