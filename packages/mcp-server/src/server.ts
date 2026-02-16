@@ -39,8 +39,9 @@ import {
     detectSuspiciousOutput,
 } from "./security.js";
 import { mcpPolicyEngine } from "./policy.js";
-import { MetricsRegistry, StructuredLogger, Tracer } from "./observability.js";
+import { StructuredLogger, Tracer, MetricsRegistry } from "./observability.js";
 import { DeterministicCache } from "./deterministic-cache.js";
+import { TokenBucketRateLimiter } from "./rate-limiter.js";
 import { randomUUID, createHash } from "node:crypto";
 
 // Tool implementations
@@ -176,9 +177,13 @@ export function createMcpServer(config: McpConfig): McpServer {
     const metrics = new MetricsRegistry();
     const cache = new DeterministicCache<JsonRpcResponse>(config.server.version, "zeo.cache.v1");
     const singleFlight = new Map<string, Promise<JsonRpcResponse>>();
+
+    // Smooth rate limiting: capacity = 10% of window, refill = target rate
+    const rateLimiter = new TokenBucketRateLimiter(
+        Math.max(5, Math.floor(config.security.rateLimitPerMinute * 0.1)),
+        config.security.rateLimitPerMinute / 60
+    );
     let inFlight = 0;
-    let rateWindowStarted = Date.now();
-    let rateWindowCount = 0;
 
     // Filter tools based on allowlist
     const enabledTools = TOOL_REGISTRY.filter(
@@ -232,15 +237,6 @@ export function createMcpServer(config: McpConfig): McpServer {
             return JSON.stringify({ jsonrpc: "2.0", id: 0, error: { code: -32600, message: sizeError.message, data: { run_id: runId, error_code: "REQUEST_TOO_LARGE" } } });
         }
 
-        if (Date.now() - rateWindowStarted >= 60_000) {
-            rateWindowStarted = Date.now();
-            rateWindowCount = 0;
-        }
-        rateWindowCount += 1;
-        if (rateWindowCount > config.security.rateLimitPerMinute) {
-            return JSON.stringify({ jsonrpc: "2.0", id: 0, error: { code: -32000, message: "Too many requests", data: { run_id: runId, error_code: "RATE_LIMITED" } } });
-        }
-
         let request: JsonRpcRequest;
         try {
             request = JSON.parse(raw);
@@ -249,6 +245,20 @@ export function createMcpServer(config: McpConfig): McpServer {
             parseSpan.end("error");
             metrics.inc("parse_failures");
             return JSON.stringify({ jsonrpc: "2.0", id: 0, error: { code: -32700, message: "Parse error", data: { run_id: runId, error_code: "PARSE_ERROR" } } });
+        }
+
+        const authContext = (request as any).params?.sessionId ?? "default";
+        if (!rateLimiter.consume(authContext)) {
+            metrics.inc("rate_limited");
+            return JSON.stringify({
+                jsonrpc: "2.0",
+                id: request.id ?? 0,
+                error: {
+                    code: -32000,
+                    message: "Rate limit exceeded. Try again in a few seconds.",
+                    data: { run_id: runId, error_code: "RATE_LIMITED", tenant: authContext }
+                }
+            });
         }
 
         if (request.id === undefined || request.id === null) return null;
