@@ -112,5 +112,8 @@
   "bugs": {
     "url": "https://github.com/scott/zeo/issues"
   },
-  "homepage": "https://github.com/scott/zeo#readme"
+  "homepage": "https://github.com/scott/zeo#readme",
+  "dependencies": {
+    "pnpm": "^10.29.3"
+  }
 }
