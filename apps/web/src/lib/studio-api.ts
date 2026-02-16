@@ -262,12 +262,12 @@ export async function getRun(runId: string): Promise<StudioResult<RunDetail>> {
         actionsCount: snapshot.input.spec.actions.length,
         assumptionsCount: snapshot.input.spec.assumptions.length,
         actions: snapshot.input.spec.actions.map((a: { id: string; label: string }) => ({ id: a.id, label: a.label })),
-        assumptions: snapshot.input.spec.assumptions.map((a: { id: string; text: string; status: string; confidence: string }) => ({
+        assumptions: (!!snapshot.input.spec.assumptions && snapshot.input.spec.assumptions.map((a: { id: string; text: string; status: string; confidence: string }) => ({
           id: a.id,
           text: a.text,
           status: a.status,
           confidence: a.confidence,
-        })),
+        }))) || [],
       },
       evaluations: snapshot.output?.evaluations.map((e: { lens: string; summary: string; robustActions: string[]; dominatedActions: string[]; fragileAssumptions: string[] }) => ({
         lens: e.lens,
@@ -528,9 +528,9 @@ export async function complianceReport(_tenant?: string): Promise<StudioResult<C
     const tenantId = _tenant || "default";
 
     // Try to import @zeo/compliance — it may not be available in all configurations
-    let compliance: { generateComplianceReport: (tenantId: string, ledger: unknown) => Record<string, unknown>; complianceLedger: unknown };
+    let compliance: { generateComplianceReport: (tenantId: string, ledger: unknown) => any; complianceLedger: unknown };
     try {
-      compliance = await import(/* webpackIgnore: true */ "@zeo/compliance") as typeof compliance;
+      compliance = await import(/* webpackIgnore: true */ "@zeo/compliance") as any;
     } catch {
       // Graceful fallback when @zeo/compliance is not installed
       const now = new Date().toISOString();
