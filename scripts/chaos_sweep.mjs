@@ -39,7 +39,7 @@ function parseJson(output) {
   if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
     try {
       return JSON.parse(trimmed.slice(firstBrace, lastBrace + 1));
-    } catch (e) {
+    } catch {
       // If full extraction fails, try finding the last valid JSON block
       // This is harder, but maybe we can assume the JSON is at the end?
       // Let's rely on the first/last brace for now as it covers most CLI cases where JSON is the main output.
