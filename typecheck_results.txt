@@ -29,3 +29,102 @@ packages/audit typecheck: Done
 packages/constraints typecheck$ tsc -p tsconfig.json --noEmit
 packages/adapters typecheck: Done
 packages/counterfactuals typecheck$ tsc -p tsconfig.json --noEmit
+packages/causal typecheck: Done
+packages/decision-synthesizer typecheck$ tsc --noEmit
+packages/compliance typecheck: Done
+packages/explain typecheck$ tsc -p tsconfig.json --noEmit
+packages/constraints typecheck: Done
+packages/game typecheck$ tsc -p tsconfig.json --noEmit
+packages/counterfactuals typecheck: Done
+packages/governance typecheck$ tsc -p tsconfig.json --noEmit
+packages/game typecheck: Done
+packages/info-theory typecheck$ tsc -p tsconfig.json --noEmit
+packages/decision-synthesizer typecheck: Done
+packages/jobs typecheck$ tsc --noEmit
+packages/explain typecheck: Done
+packages/lenses typecheck$ tsc -p tsconfig.json --noEmit
+packages/governance typecheck: Done
+packages/mcp-interop typecheck$ tsc -p tsconfig.json --noEmit
+packages/lenses typecheck: Done
+packages/measurement typecheck$ tsc -p tsconfig.json --noEmit
+packages/jobs typecheck: Done
+packages/memory typecheck$ tsc --noEmit
+packages/info-theory typecheck: Done
+packages/modules typecheck$ tsc -p tsconfig.json --noEmit
+packages/mcp-interop typecheck: Done
+packages/nl typecheck$ tsc --noEmit
+packages/measurement typecheck: Done
+packages/observability typecheck$ tsc -p tsconfig.json --noEmit
+packages/memory typecheck: Done
+packages/optimization typecheck$ tsc -p tsconfig.json --noEmit
+packages/modules typecheck: Done
+packages/perf typecheck$ tsc -p tsconfig.json --noEmit
+packages/nl typecheck: Done
+packages/quant-timeseries typecheck$ tsc -p tsconfig.json --noEmit
+packages/observability typecheck: Done
+packages/regimes typecheck$ tsc -p tsconfig.json --noEmit
+packages/optimization typecheck: Done
+packages/repro-pack typecheck$ tsc --noEmit
+packages/quant-timeseries typecheck: Done
+packages/robustness typecheck$ tsc -p tsconfig.json --noEmit
+packages/perf typecheck: Done
+packages/schema-registry typecheck$ tsc -p tsconfig.json --noEmit
+packages/regimes typecheck: Done
+packages/semantic-clustering typecheck$ tsc --noEmit
+packages/repro-pack typecheck: Done
+packages/simulation typecheck$ tsc -p tsconfig.json --noEmit
+packages/schema-registry typecheck: Done
+packages/strategy typecheck$ tsc -p tsconfig.json --noEmit
+packages/robustness typecheck: Done
+packages/telemetry typecheck$ tsc -p tsconfig.json --noEmit
+packages/semantic-clustering typecheck: Done
+packages/tenant typecheck$ tsc -p tsconfig.json --noEmit
+packages/simulation typecheck: Done
+packages/time typecheck$ tsc -p tsconfig.json --noEmit
+packages/telemetry typecheck: Done
+packages/timeseries typecheck$ tsc -p tsconfig.json --noEmit
+packages/strategy typecheck: Done
+packages/warehouse typecheck$ tsc --noEmit
+packages/tenant typecheck: Done
+vendor/controlplane/packages/benchmark typecheck$ tsc --noEmit
+packages/timeseries typecheck: Done
+.../packages/contract-test-kit typecheck$ tsc --noEmit
+packages/time typecheck: Done
+.../controlplane/packages/controlplane typecheck$ tsc --noEmit
+packages/warehouse typecheck: Done
+.../controlplane/packages/sdk-generator typecheck$ tsc --noEmit
+vendor/controlplane/packages/benchmark typecheck: Done
+.../controlplane/packages/controlplane typecheck: Done
+.../packages/contract-test-kit typecheck: Done
+.../controlplane/packages/sdk-generator typecheck: Done
+packages/analytics typecheck$ tsc --noEmit
+packages/adapters-runtime typecheck$ tsc --noEmit
+packages/calibration typecheck$ tsc -p tsconfig.json --noEmit
+packages/dataset-builder typecheck$ tsc -p tsconfig.json --noEmit
+packages/analytics typecheck: Done
+packages/kpi typecheck$ tsc -p tsconfig.json --noEmit
+packages/calibration typecheck: Done
+packages/meta typecheck$ tsc -p tsconfig.json --noEmit
+packages/adapters-runtime typecheck: Done
+packages/models typecheck$ tsc -p tsconfig.json --noEmit
+packages/dataset-builder typecheck: Done
+packages/values typecheck$ tsc -p tsconfig.json --noEmit
+packages/meta typecheck: Done
+.../packages/integration-tests typecheck$ tsc --noEmit
+packages/values typecheck: Done
+packages/models typecheck: Done
+packages/kpi typecheck: Done
+.../packages/integration-tests typecheck: Done
+packages/causal-skeletons typecheck$ tsc -p tsconfig.json --noEmit
+packages/rsl typecheck$ tsc -p tsconfig.json --noEmit
+packages/causal-skeletons typecheck: Done
+packages/rsl typecheck: Done
+packages/worlds typecheck$ tsc -p tsconfig.json --noEmit
+packages/worlds typecheck: Done
+packages/core typecheck$ tsc -p tsconfig.json --noEmit
+packages/core typecheck: src/__tests__/execution-lifecycle.test.ts(32,5): error TS7018: Object literal's property 'constraints' implicitly has an 'any[]' type.
+packages/core typecheck: src/__tests__/execution-lifecycle.test.ts(33,5): error TS7018: Object literal's property 'assumptions' implicitly has an 'any[]' type.
+packages/core typecheck: Failed
+C:\Users\scott\Documents\GitHub\Zeo\packages\core:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @zeo/core@0.3.0 typecheck: `tsc -p tsconfig.json --noEmit`
+Exit status 2

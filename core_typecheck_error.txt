@@ -1,0 +1,9 @@
+
+> @zeo/core@0.3.0 typecheck C:\Users\scott\Documents\GitHub\Zeo\packages\core
+> tsc -p tsconfig.json --noEmit
+
+src/__tests__/execution-lifecycle.test.ts(32,5): error TS7018: Object literal's property 'constraints' implicitly has an 'any[]' type.
+src/__tests__/execution-lifecycle.test.ts(33,5): error TS7018: Object literal's property 'assumptions' implicitly has an 'any[]' type.
+C:\Users\scott\Documents\GitHub\Zeo\packages\core:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @zeo/core@0.3.0 typecheck: `tsc -p tsconfig.json --noEmit`
+Exit status 2
