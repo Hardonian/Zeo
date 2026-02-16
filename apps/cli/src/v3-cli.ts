@@ -298,7 +298,8 @@ async function runModulesCommand(args: V3Args): Promise<number> {
 
   switch (args.subcommand) {
     case "list": {
-      const modules = moduleRegistry.list();
+      const tenantId = args.flags["tenant"] as string | undefined;
+      const modules = tenantId ? moduleRegistry.listByTenant(tenantId) : moduleRegistry.list();
       console.log(formatModuleList(modules));
       return 0;
     }
@@ -323,6 +324,7 @@ async function runModulesCommand(args: V3Args): Promise<number> {
         description: `Module ${name}`,
         deterministic: true,
         hash: "",
+        tenantId: args.flags["tenant"] as string | undefined, // Support tenant isolation
         createdAt: new Date().toISOString(),
       });
       console.log(`Module "${name}" registered.`);
@@ -386,13 +388,15 @@ async function runSimulateCommand(args: V3Args): Promise<number> {
       const baseDecisionId = (args.flags["decision"] as string) ?? "decision-0";
 
       // Create a demo scenario
+      const tenantId = args.flags["tenant"] as string | undefined;
       const scenario = whatIfEngine.createScenario(
         name,
         baseDecisionId,
         [
           { assumptionId: "market_stress", originalValue: 0.5, modifiedValue: 0.8 },
           { assumptionId: "timeline_pressure", originalValue: 0.3, modifiedValue: 0.6 },
-        ]
+        ],
+        { tenantId }
       );
 
       // Simulate with deterministic runners
@@ -423,13 +427,17 @@ async function runSimulateCommand(args: V3Args): Promise<number> {
       const decisionId = (args.flags["decision"] as string) ?? "decision-0";
       const days = parseInt((args.flags["days"] as string) ?? "30", 10);
       const seed = (args.flags["seed"] as string) ?? `forecast-${decisionId}`;
+      // If seeded (deterministic), default to a fixed start date if not provided
+      const defaultDate = args.flags["seed"] ? "2024-01-01T00:00:00.000Z" : undefined;
+      const startDate = (args.flags["start-date"] as string) ?? defaultDate;
 
       const projection = forecastEngine.project(
         decisionId,
         { selectedAction: "action-a", confidence: 0.78, expectedUtility: 0.85, risk: 0.2, robustness: 0.72 },
         { market_stress: 0.5, timeline_pressure: 0.3 },
         days,
-        seed
+        seed,
+        startDate
       );
 
       console.log(formatForecast(projection));

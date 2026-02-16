@@ -243,9 +243,11 @@ export class ForecastEngine {
     currentOutcome: SimulationOutcome,
     assumptions: Record<string, number>,
     timeHorizonDays: number,
-    seed: string
+    seed: string,
+    startDate?: string // ISO string
   ): ForecastProjection {
     const rng = seededRng(seed);
+    const startMs = startDate ? new Date(startDate).getTime() : Date.now();
     const projections: ForecastProjection["projections"] = [];
 
     let currentConfidence = currentOutcome.confidence;
@@ -266,7 +268,7 @@ export class ForecastEngine {
       }
 
       projections.push({
-        timestamp: new Date(Date.now() + day * 86400_000).toISOString(),
+        timestamp: new Date(startMs + day * 86400_000).toISOString(),
         confidence: Math.round(currentConfidence * 1000) / 1000,
         utility: Math.round(currentUtility * 100) / 100,
         assumptions: { ...currentAssumptions },
