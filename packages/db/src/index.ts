@@ -1,7 +1,7 @@
 import { createRequire } from 'module';
-import type { PrismaClient as PrismaClientType } from '@prisma/client';
+import type { PrismaClient as PrismaClientType } from './generated/client';
 const require = createRequire(import.meta.url);
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require('./generated/client');
 
 type PrismaGlobal = typeof globalThis & { prisma?: PrismaClientType | null };
 const runtimeGlobal = globalThis as PrismaGlobal;
