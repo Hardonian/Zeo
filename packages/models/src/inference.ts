@@ -80,11 +80,11 @@ export async function runInference(
 ): Promise<InferenceResponse> {
   // Security: strictly validate request against known types to prevent injection
   const requestId = randomUUID();
-  const process = getPersistentProcess();
+  const child = getPersistentProcess();
 
   return new Promise((resolve, reject) => {
     pendingRequests.set(requestId, { resolve, reject });
-    process.stdin.write(JSON.stringify(request) + "\n");
+    child.stdin!.write(JSON.stringify(request) + "\n");
   });
 }
 
