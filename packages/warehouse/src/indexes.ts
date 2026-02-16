@@ -368,11 +368,11 @@ export function unindexRecord(index: DeterministicIndex, id: string): void {
 }
 
 // Query using indexes
-export function queryUsingIndex(
+export async function queryUsingIndex(
   index: DeterministicIndex,
   query: WarehouseQuery,
   getRecord: (id: string) => WarehouseEnvelope<unknown> | undefined
-): { ids: string[]; usedIndex: boolean } {
+): Promise<{ ids: string[]; usedIndex: boolean }> {
   let candidateIds: Set<string> | null = null;
   let usedIndex = false;
   const scores: Map<string, number> = new Map(); // id -> score
@@ -380,20 +380,30 @@ export function queryUsingIndex(
   // 1. Vector Search (Primary if available)
   if (query.vector && query.vector.length > 0) {
     const vectorCandidates = new Set<string>();
-    // Brute force cosine similarity
-    // MaxSim strategy: Max similarity across all chunks
-    for (const [id, embeddings] of index.embeddingIndex) {
-      if (!embeddings || embeddings.length === 0) continue;
+    const entries = Array.from(index.embeddingIndex.entries());
 
-      let maxScore = 0;
-      for (const embedding of embeddings) {
-        const score = cosineSimilarity(query.vector, embedding);
-        if (score > maxScore) maxScore = score;
+    // Efficiency: Process in batches to avoid blocking the event loop
+    const BATCH_SIZE = 50;
+    for (let i = 0; i < entries.length; i += BATCH_SIZE) {
+      if (i > 0) {
+        // Yield control back to the event loop
+        await new Promise(resolve => setImmediate(resolve));
       }
 
-      if (maxScore > 0.3) { // Threshold
-        vectorCandidates.add(id);
-        scores.set(id, (scores.get(id) || 0) + maxScore);
+      const batch = entries.slice(i, i + BATCH_SIZE);
+      for (const [id, embeddings] of batch) {
+        if (!embeddings || embeddings.length === 0) continue;
+
+        let maxScore = 0;
+        for (const embedding of embeddings) {
+          const score = cosineSimilarity(query.vector, embedding);
+          if (score > maxScore) maxScore = score;
+        }
+
+        if (maxScore > 0.3) { // Threshold
+          vectorCandidates.add(id);
+          scores.set(id, (scores.get(id) || 0) + maxScore);
+        }
       }
     }
 

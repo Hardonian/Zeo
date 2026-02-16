@@ -154,7 +154,7 @@ export class EnhancedIndexedWarehouseAdapter implements WarehouseAdapter {
     }
 
     // Try to use index
-    const { ids, usedIndex } = queryUsingIndex(
+    const { ids, usedIndex } = await queryUsingIndex(
       index,
       query,
       (id) => undefined // We don't have in-memory records, fetch individually

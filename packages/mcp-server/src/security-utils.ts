@@ -51,6 +51,6 @@ export class SecurityUtils {
    * Sanitize filename to prevent Path Traversal.
    */
   static sanitizeFilename(filename: string): string {
-    return filename.replace(/[^a-z0-9_\-\.]/gi, "_").replace(/\.\.+/g, ".");
+    return filename.replace(/[^a-z0-9_\-.]/gi, "_").replace(/\.\.+/g, ".");
   }
 }
