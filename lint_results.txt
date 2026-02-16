@@ -104,3 +104,18 @@ packages/models lint: Done
 .../packages/integration-tests lint: Done
 packages/causal-skeletons lint$ eslint .
 packages/rsl lint$ eslint .
+packages/causal-skeletons lint: Done
+packages/rsl lint: Done
+packages/worlds lint$ eslint .
+packages/worlds lint: Done
+packages/core lint$ eslint src/**/*.ts
+packages/core lint: C:\Users\scott\Documents\GitHub\Zeo\packages\core\src\agent-schema.ts
+packages/core lint:   246:3  error  Unnecessary try/catch wrapper  no-useless-catch
+packages/core lint: C:\Users\scott\Documents\GitHub\Zeo\packages\core\src\kernel\forbidden-imports.test.ts
+packages/core lint:   22:1  error  'node:fs' import is restricted from being used by a pattern. Kernel must be pure: no I/O, no network, no filesystem, no OS access. Use runtime adapter instead    no-restricted-imports
+packages/core lint:   23:1  error  'node:path' import is restricted from being used by a pattern. Kernel must be pure: no I/O, no network, no filesystem, no OS access. Use runtime adapter instead  no-restricted-imports
+packages/core lint: Γ£û 3 problems (3 errors, 0 warnings)
+packages/core lint: Failed
+C:\Users\scott\Documents\GitHub\Zeo\packages\core:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @zeo/core@0.3.0 lint: `eslint src/**/*.ts`
+Exit status 1
