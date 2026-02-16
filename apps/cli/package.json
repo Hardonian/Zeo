@@ -23,6 +23,7 @@
     "@zeo/dataset-builder": "workspace:*",
     "@zeo/eval": "workspace:*",
     "@zeo/jobs": "workspace:*",
+    "@zeo/mesh": "workspace:*",
     "@zeo/models": "workspace:*",
     "@zeo/modules": "workspace:*",
     "@zeo/observability": "workspace:*",

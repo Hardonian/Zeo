@@ -191,4 +191,5 @@ export {
 } from "./plan-engine.js";
 
 // v6.0 — Pure Decision Kernel + Decision IR + State Machine
+export * from "./kernel/index.js";
 export * as kernel from "./kernel/index.js";
