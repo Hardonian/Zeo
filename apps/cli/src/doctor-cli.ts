@@ -15,6 +15,8 @@ import { readFileSync, existsSync, mkdirSync, statSync, readdirSync, writeFileSy
 import { resolve, join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
+import { safeValidateEnv } from "@zeo/env";
+import { execSync } from "node:child_process";
 
 // Try to import VERSION_INFO from @zeo/core, with fallback for dev
 let VERSION_INFO: { version: string; gitSha: string; timestamp: string };
@@ -231,11 +233,17 @@ export async function runDoctorCommand(args: { json: boolean; fix: boolean; perf
     console.log(`Warnings: ${supportPayload.topWarnings.length}`);
     console.log(`Errors: ${supportPayload.errorCodes.length}`);
 
-    // Auto-fix if requested
-    if (args.fix && overall !== "healthy") {
-      console.log("\n=== Running Fixes ===");
-      await runFixes(checks);
-    }
+  // 15. Env Variable Check
+  checks.push(runEnvCheck());
+
+  // 16. Pnpm Version Check
+  checks.push(runPnpmCheck());
+
+  // Auto-fix if requested
+  if (args.fix && overall !== "healthy") {
+    console.log("\n=== Running Fixes ===");
+    await runFixes(checks);
+  }
   }
 
 
@@ -842,4 +850,25 @@ function runSecretScanningCheck(): DoctorCheck {
     status: "pass",
     message: "No unredacted secrets found in tracked configuration files",
   };
+}
+
+function runEnvCheck(): DoctorCheck {
+  const result = safeValidateEnv();
+  if (!result.success) {
+    const issues = result.errors.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ");
+    return { id: "env", name: "Environment Check", status: "fail", message: `Invalid env: ${issues}`, remediation: "Check .env file and required variables" };
+  }
+  return { id: "env", name: "Environment Check", status: "pass", message: "Environment variables valid" };
+}
+
+function runPnpmCheck(): DoctorCheck {
+  try {
+    const output = execSync("pnpm -v", { encoding: "utf8" }).trim();
+    if (output.startsWith("9.")) {
+      return { id: "pnpm", name: "PNPM Version", status: "pass", message: `pnpm version ${output} (aligned)` };
+    }
+    return { id: "pnpm", name: "PNPM Version", status: "warning", message: `pnpm version ${output} (expected 9.x)`, remediation: "Install pnpm@9 via corepack or npm" };
+  } catch {
+    return { id: "pnpm", name: "PNPM Version", status: "fail", message: "pnpm not found", remediation: "Install pnpm globally" };
+  }
 }

@@ -147,7 +147,9 @@ jobs:
         run: pnpm run ci:install
       - name: Doctor
         run: pnpm doctor
-      - name: Build
+      - name: Build Web
+        run: pnpm -C apps/web build
+      - name: Build CLI
         run: pnpm -C apps/cli build
       - name: MCP smoke client example
         run: |
@@ -231,8 +233,8 @@ jobs:
     env:
       ZEO_DOCKER_IMAGE: zeolite:dev
       ZEO_DOCKER_BASELINE_IMAGE: zeolite:baseline
-      ZEO_DOCKER_MAX_COMPRESSED_BYTES: '250000000'
-      ZEO_DOCKER_MAX_DELTA_COMPRESSED_BYTES: '25000000'
+      ZEO_DOCKER_MAX_COMPRESSED_BYTES: "250000000"
+      ZEO_DOCKER_MAX_DELTA_COMPRESSED_BYTES: "25000000"
     steps:
       - uses: actions/checkout@v4
         with:
