@@ -8,76 +8,226 @@ on:
     branches: [main]
   pull_request:
 
+env:
+  NODE_VERSION: 20.11.0
+  PNPM_VERSION: 9.15.5
+
 jobs:
-  verify:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: pnpm/action-setup@v4
         with:
-          version: 9.15.5
+          version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-${{ github.ref_name }}-
+            ${{ runner.os }}-turbo-
+      - name: Install
+        run: pnpm run ci:install
+      - name: Lint
+        run: |
+          set -o pipefail
+          pnpm lint 2>&1 | tee lint.log
+      - name: Upload lint log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-log
+          path: lint.log
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-${{ github.ref_name }}-
+            ${{ runner.os }}-turbo-
+      - name: Install
+        run: pnpm run ci:install
+      - name: Typecheck
+        run: |
+          set -o pipefail
+          pnpm typecheck 2>&1 | tee typecheck.log
+      - name: Upload typecheck log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: typecheck-log
+          path: typecheck.log
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-${{ github.ref_name }}-
+            ${{ runner.os }}-turbo-
+      - name: Install
+        run: pnpm run ci:install
+      - name: Unit tests
+        run: |
+          set -o pipefail
+          pnpm test:ci 2>&1 | tee unit-tests.log
+      - name: Golden tests (PR lane)
+        if: github.event_name == 'pull_request'
+        run: |
+          set -o pipefail
+          pnpm test:golden:pr 2>&1 | tee golden-pr.log
+      - name: Golden tests (main lane)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -o pipefail
+          pnpm test:golden 2>&1 | tee golden-main.log
+      - name: Upload golden artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-artifacts
+          path: tests/golden/artifacts/
+      - name: Upload unit logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-failure-logs
+          path: |
+            unit-tests.log
+            golden-pr.log
+            golden-main.log
+
+  integration-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-${{ github.ref_name }}-
+            ${{ runner.os }}-turbo-
       - name: Install
         run: pnpm run ci:install
       - name: Doctor
         run: pnpm doctor
-      - name: Lint
-        run: pnpm lint
-      - name: Typecheck
-        run: pnpm typecheck
-      - name: Core dependency-edge guard
-        run: pnpm -r --filter @zeo/core^... build
-      - name: Test
-        run: pnpm test
-      - name: TDD smoke report
-        run: pnpm tdd:smoke
-      - name: Upload TDD smoke artifacts
+      - name: Build
+        run: pnpm -C apps/cli build
+      - name: MCP smoke client example
+        run: |
+          set -o pipefail
+          pnpm mcp:smoke:example 2>&1 | tee mcp-smoke.log
+      - name: Smoke checks
+        run: |
+          set -o pipefail
+          pnpm smoke 2>&1 | tee smoke.log
+      - name: Bench harness (warn-only on PR)
+        if: github.event_name == 'pull_request'
+        run: |
+          set -o pipefail
+          pnpm bench:run:pr 2>&1 | tee bench-pr.log
+      - name: Bench harness (enforced on main)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -o pipefail
+          pnpm bench:run 2>&1 | tee bench-main.log
+      - name: Upload integration artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: tdd-smoke-report
+          name: integration-artifacts
           path: |
-            docs/generated/tdd-smoke-report.json
-            docs/generated/tdd-smoke-vitest.json
-      - name: Build
-        run: pnpm build
-      - name: SEO guardrails
-        run: pnpm test:seo
-      - name: Install Playwright browser
-        run: pnpm -C apps/web exec playwright install --with-deps chromium
-      - name: Accessibility guardrails
-        run: pnpm test:a11y
-      - name: Security guardrails
-        run: pnpm test:security
-      - name: Headers guardrails
-        run: pnpm test:headers
-      - name: Golden eval guardrails
-        run: pnpm test:eval
-      - name: RLS index audit
-        run: pnpm rls:index-audit
-      - name: Performance guardrails
-        run: pnpm test:perf
-      - name: Database guardrails
-        run: pnpm test:db
-      - name: Eval
-        run: pnpm eval
-      - name: Install web coverage provider
-        run: pnpm -C apps/web add -D @vitest/coverage-v8@^2.1.9 --no-frozen-lockfile
-      - name: Web coverage gate
-        run: pnpm -C apps/web test:coverage
-      - name: Runtime public-route link crawl
-        run: pnpm -C apps/web test:links:runtime
-      - name: MCP smoke (local)
-        run: pnpm mcp:smoke
+            bench/artifacts/
+            mcp-smoke.log
+            smoke.log
+            bench-pr.log
+            bench-main.log
+
+  full-lane:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck, unit-tests, integration-smoke]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - name: Install
+        run: pnpm run ci:install
+      - name: Full verification suite
+        run: |
+          set -o pipefail
+          pnpm verify 2>&1 | tee full-lane.log
+      - name: Upload full lane log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-lane-log
+          path: full-lane.log
+
+  ci-gate:
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck, unit-tests, integration-smoke, full-lane]
+    if: always()
+    steps:
+      - name: Enforce lane success
+        run: |
+          if [ "${{ needs.lint.result }}" != "success" ] || \
+             [ "${{ needs.typecheck.result }}" != "success" ] || \
+             [ "${{ needs.unit-tests.result }}" != "success" ] || \
+             [ "${{ needs.integration-smoke.result }}" != "success" ]; then
+            echo "PR lane failed"
+            exit 1
+          fi
+          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ] && [ "${{ needs.full-lane.result }}" != "success" ]; then
+            echo "Main full lane failed"
+            exit 1
+          fi
+          echo "CI lanes passed"
 
   docker:
     runs-on: ubuntu-latest
-    needs: verify
+    needs: ci-gate
     env:
       ZEO_DOCKER_IMAGE: zeolite:dev
       ZEO_DOCKER_BASELINE_IMAGE: zeolite:baseline
@@ -89,10 +239,10 @@ jobs:
           fetch-depth: 0
       - uses: pnpm/action-setup@v4
         with:
-          version: 9.15.5
+          version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - name: Install
         run: pnpm run ci:install

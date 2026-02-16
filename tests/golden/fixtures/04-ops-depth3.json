@@ -1,0 +1,4 @@
+{
+  "id": "ops-depth3",
+  "args": ["--example", "ops", "--depth", "3", "--deterministic", "--seed", "golden-ops-depth3"]
+}

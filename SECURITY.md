@@ -24,3 +24,21 @@ We follow coordinated disclosure:
 - **Redaction**: All static analysis diffs are redacted before being sent to LLM providers.
 - **Verification**: All evidence bundles are cryptographically signed.
 - **Replay Protection**: Webhook signatures are verified with strict timestamp checks.
+
+## Logging and redaction expectations
+
+- Diagnostics must be actionable but must not include raw secrets, credentials, or tenant-private payloads.
+- CI artifacts should include run metadata and failure context; sensitive values must remain redacted.
+- Any new smoke or harness script must report command context and exit reason without dumping secret-bearing environment variables.
+
+## Secrets policy
+
+- Commit only templates (`.env.example`), never real credentials.
+- Use least privilege for CI tokens and runtime credentials.
+- Treat replay/golden fixtures as test-safe synthetic data only.
+
+## Audit expectations
+
+- CI checks should emit machine-readable artifacts for post-failure triage.
+- MCP checks must log protocol phase failures (`initialize`, `tools/list`, `tools/call`) for auditability.
+- Deterministic harnesses should preserve stable identifiers to support replayability and drift review.

@@ -47,3 +47,14 @@ PRs must include:
 - new/updated tests if logic changes
 - updated docs if user-facing behavior changes
 - deterministic verification evidence for replayable features
+
+## Adding tools and tests safely
+
+When adding verification or adoption tooling:
+
+1. Prefer additive scripts/tests/docs over core-engine edits.
+2. Keep deterministic checks stable and fixture-driven (`tests/golden/fixtures`).
+3. Ensure failures are actionable (explicit command, phase, and stderr).
+4. Wire new checks into the appropriate CI lane:
+   - PR fast lane: smoke + unit + partial golden + bench warn-only.
+   - main full lane: full verification including full golden and enforced bench threshold.
