@@ -18,6 +18,7 @@
  * - Type-only imports from @zeo/contracts (via kernel-local types)
  */
 
+/* eslint-disable no-restricted-imports */
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";

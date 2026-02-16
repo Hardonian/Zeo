@@ -242,15 +242,11 @@ export async function executeAgent<I, O>(
   const tracker = new ResourceTracker(resolvedBudget);
   tracker.start();
 
-  let output: O;
-  try {
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error(`[TIMEOUT] Agent '${agentName}' exceeded ${resolvedBudget.maxTimeMs}ms`)), resolvedBudget.maxTimeMs);
-    });
-    output = await Promise.race([executeFn(input), timeoutPromise]);
-  } catch (err) {
-    throw err;
-  }
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    setTimeout(() => reject(new Error(`[TIMEOUT] Agent '${agentName}' exceeded ${resolvedBudget.maxTimeMs}ms`)), resolvedBudget.maxTimeMs);
+  });
+  const output: O = await Promise.race([executeFn(input), timeoutPromise]);
+
 
   // Validate output
   const outputValidation = validateAgainstSchema(output, schema.outputSchema);
