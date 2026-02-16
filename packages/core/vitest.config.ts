@@ -9,14 +9,25 @@ const tsconfigBase = JSON.parse(fs.readFileSync(tsconfigBasePath, "utf-8")) as {
   compilerOptions?: { paths?: Record<string, string[]> };
 };
 
-const aliases = Object.entries(tsconfigBase.compilerOptions?.paths ?? {}).map(([key, value]) => {
-  const replacement = Array.isArray(value) ? value[0] : value;
-  const find = new RegExp(`^${key.replace("*", "(.*)")}$`);
-  const resolved = replacement.replace("*", "$1");
-  const withEntry = path.extname(resolved) === "" ? `${resolved}/index.ts` : resolved;
-  const target = path.resolve(__dirname, "../../", withEntry);
-  return { find, replacement: target };
-});
+const aliases = [
+  // Force @zeo/* to resolve to src/index.ts for tests
+  {
+    find: /^@zeo\/(.*)$/,
+    replacement: path.resolve(__dirname, "../../packages/$1/src/index.ts")
+  },
+  // Map other paths from tsconfig (e.g. @prisma/client)
+  ...Object.entries(tsconfigBase.compilerOptions?.paths ?? {})
+    .filter(([key]) => !key.startsWith("@zeo"))
+    .map(([key, value]) => {
+      const paths = Array.isArray(value) ? value : [value];
+      const replacement = paths[0];
+      const find = new RegExp(`^${key.replace("*", "(.*)")}$`);
+      const resolved = replacement.replace("*", "$1");
+      const withEntry = path.extname(resolved) === "" ? `${resolved}/index.ts` : resolved;
+      const target = path.resolve(__dirname, "../../", withEntry);
+      return { find, replacement: target };
+    })
+];
 
 export default defineConfig({
   resolve: {
