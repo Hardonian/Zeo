@@ -53,6 +53,7 @@ export default function StudioRunPage() {
               <select
                 value={example}
                 onChange={e => setExample(e.target.value)}
+                title="Select example"
                 className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
               >
                 <option value="negotiation">Negotiation</option>
@@ -64,6 +65,7 @@ export default function StudioRunPage() {
               <select
                 value={depth}
                 onChange={e => setDepth(Number(e.target.value))}
+                title="Select branching depth"
                 className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
               >
                 <option value={1}>1 (shallow)</option>

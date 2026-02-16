@@ -106,8 +106,8 @@ export default function StudioDiffPage() {
                       </span>
                       <div>
                         <p className="text-slate-200">{a.text}</p>
-                        {a.oldValue && <p className="mt-1 text-red-300">was: {JSON.stringify(a.oldValue)}</p>}
-                        {a.newValue && <p className="text-emerald-300">now: {JSON.stringify(a.newValue)}</p>}
+                        {a.oldValue != null ? <p className="mt-1 text-red-300">was: {JSON.stringify(a.oldValue)}</p> : null}
+                        {a.newValue != null ? <p className="text-emerald-300">now: {JSON.stringify(a.newValue)}</p> : null}
                       </div>
                     </div>
                   ))}
