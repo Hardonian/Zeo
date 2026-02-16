@@ -39,7 +39,10 @@ export function buildMetadata({
 
   return {
     metadataBase: getMetadataBase(),
-    title,
+    title: {
+      default: title,
+      template: `%s | ${SITE_NAME}`,
+    },
     description,
     alternates: {
       canonical,

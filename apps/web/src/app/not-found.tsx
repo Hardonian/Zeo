@@ -3,10 +3,10 @@ import { ZeoMark } from '@/components/icons/ZeoIcons';
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gray-50 px-6 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-6 text-center">
       <ZeoMark className="h-12 w-12 text-gray-400 grayscale" />
-      <h2 className="mt-4 text-2xl font-bold tracking-tight text-gray-900">Page Not Found</h2>
-      <p className="max-w-md text-gray-500">
+      <h2 className="mt-4 text-2xl font-bold tracking-tight text-foreground">Page Not Found</h2>
+      <p className="max-w-md text-muted-foreground">
         Could not find the requested resource. It might have been moved or deleted.
       </p>
       <Link

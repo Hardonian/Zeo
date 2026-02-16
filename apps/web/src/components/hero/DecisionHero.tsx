@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef } from 'react';
-import Link from 'next/link';
+import { ButtonLink } from '@/components/ui';
 import {
   buildHeroState,
   getCurrentStep,
@@ -233,18 +233,12 @@ export function DecisionHero() {
 
         {/* CTAs */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Link
-            href="/studio"
-            className="rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:from-blue-700 hover:to-indigo-700 hover:shadow-md"
-          >
+          <ButtonLink href="/studio" size="lg" className="shadow-sm">
             Open Decision Studio
-          </Link>
-          <Link
-            href="/product"
-            className="rounded-lg border border-slate-600 px-6 py-2.5 text-sm font-medium text-slate-200 transition-all hover:bg-slate-800/60"
-          >
+          </ButtonLink>
+          <ButtonLink href="/product" variant="outline" size="lg" className="border-slate-600 text-slate-200 hover:bg-slate-800/60">
             View Panel Demos
-          </Link>
+          </ButtonLink>
         </div>
       </div>
     </section>

@@ -9,12 +9,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-background">
       <AppSidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
       <AppHeader sidebarCollapsed={collapsed} />
       <main
         id="main-content"
-        className={`pt-14 pb-8 transition-[margin-left] duration-200 ${
+        className={`pt-14 pb-8 text-foreground transition-[margin-left] duration-200 ${
           collapsed ? 'ml-16' : 'ml-64'
         }`}
       >

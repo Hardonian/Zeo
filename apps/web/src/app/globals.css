@@ -3,26 +3,61 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 15, 23, 42;
-  --background-start-rgb: 249, 250, 251;
-  --background-end-rgb: 255, 255, 255;
+  --color-background: 249 250 251;
+  --color-foreground: 15 23 42;
+  --color-surface: 255 255 255;
+  --color-muted: 241 245 249;
+  --color-muted-foreground: 100 116 139;
+  --color-border: 226 232 240;
+  --color-primary: 37 99 235;
+  --color-primary-foreground: 255 255 255;
+  --color-secondary: 226 232 240;
+  --color-secondary-foreground: 15 23 42;
+  --color-accent: 219 234 254;
+  --color-accent-foreground: 30 64 175;
+  --color-destructive: 220 38 38;
+  --color-destructive-foreground: 255 255 255;
+  --color-ring: 59 130 246;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
   --sidebar-width: 16rem;
 }
 
 .dark {
-  --foreground-rgb: 226, 232, 240;
-  --background-start-rgb: 15, 23, 42;
-  --background-end-rgb: 30, 41, 59;
+  --color-background: 15 23 42;
+  --color-foreground: 226 232 240;
+  --color-surface: 30 41 59;
+  --color-muted: 30 41 59;
+  --color-muted-foreground: 148 163 184;
+  --color-border: 51 65 85;
+  --color-primary: 99 102 241;
+  --color-primary-foreground: 15 23 42;
+  --color-secondary: 51 65 85;
+  --color-secondary-foreground: 226 232 240;
+  --color-accent: 51 65 85;
+  --color-accent-foreground: 226 232 240;
+  --color-destructive: 248 113 113;
+  --color-destructive-foreground: 15 23 42;
+  --color-ring: 129 140 248;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: rgb(var(--color-foreground));
+  background-color: rgb(var(--color-background));
+}
+
+@layer base {
+  h1 {
+    @apply text-3xl font-semibold tracking-tight md:text-4xl;
+  }
+  h2 {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+  h3 {
+    @apply text-xl font-semibold;
+  }
 }
 
 @layer utilities {

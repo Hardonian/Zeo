@@ -1,8 +1,9 @@
 import { PublicShell } from '@/components/site/PublicShell';
 import { FaqAccordion } from '@/components/public/FaqAccordion';
+import { PublicShell } from '@/components/site/PublicShell';
 
 export const metadata = {
-  title: 'FAQ | Zeo',
+  title: 'FAQ',
   description: 'Common questions about Zeo setup, governance workflows, and support channels.',
 };
 

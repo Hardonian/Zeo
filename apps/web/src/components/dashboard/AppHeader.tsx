@@ -10,8 +10,8 @@ import { ProjectSelector } from '@/components/platform/ProjectSelector';
 type RuntimeMode = 'Deterministic' | 'Agentic' | 'MCP';
 
 const MODE_STYLES: Record<RuntimeMode, string> = {
-  Deterministic: 'bg-blue-100 text-blue-700',
-  Agentic: 'bg-purple-100 text-purple-700',
+  Deterministic: 'bg-accent text-accent-foreground',
+  Agentic: 'bg-amber-100 text-amber-700',
   MCP: 'bg-indigo-100 text-indigo-700',
 };
 
@@ -35,7 +35,7 @@ export function AppHeader({ sidebarCollapsed }: { sidebarCollapsed: boolean }) {
 
   return (
     <header
-      className={`fixed top-0 right-0 z-20 flex h-14 items-center justify-between border-b border-gray-200 bg-white/95 px-6 backdrop-blur-sm transition-[left] duration-200 dark:border-gray-700 dark:bg-gray-900/95 ${
+      className={`fixed top-0 right-0 z-20 flex h-14 items-center justify-between border-b border-border bg-surface/95 px-6 backdrop-blur-sm transition-[left] duration-200 ${
         sidebarCollapsed ? 'left-16' : 'left-64'
       }`}
     >
@@ -47,7 +47,7 @@ export function AppHeader({ sidebarCollapsed }: { sidebarCollapsed: boolean }) {
             {mode}
           </span>
         </span>
-        <span className="hidden text-xs text-gray-400 dark:text-gray-500 md:inline">
+        <span className="hidden text-xs text-muted-foreground md:inline">
           Engine v{ENGINE_VERSION}
         </span>
         <span className="badge-deterministic hidden text-[10px] md:inline">
@@ -58,7 +58,7 @@ export function AppHeader({ sidebarCollapsed }: { sidebarCollapsed: boolean }) {
       <div className="flex items-center gap-4">
         <Link
           href="/app/approvals"
-          className="relative rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+          className="relative rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted"
           aria-label={`Notifications: ${pendingApprovals} pending approvals`}
         >
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

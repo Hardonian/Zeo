@@ -39,17 +39,17 @@ export function StatusBar({ sidebarCollapsed }: { sidebarCollapsed: boolean }) {
 
   return (
     <footer
-      className={`fixed bottom-0 right-0 z-20 flex h-8 items-center justify-between border-t border-gray-200 bg-gray-50 px-4 text-xs text-gray-500 transition-[left] duration-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 ${
+      className={`fixed bottom-0 right-0 z-20 flex h-8 items-center justify-between border-t border-border bg-muted px-4 text-xs text-muted-foreground transition-[left] duration-200 ${
         sidebarCollapsed ? 'left-16' : 'left-64'
       }`}
     >
       <div className="flex items-center gap-4">
         <span className="flex items-center gap-1.5">
-          <span className={`inline-block h-2 w-2 rounded-full ${counts.activeJobs > 0 ? 'bg-green-500' : 'bg-gray-300'}`} />
+          <span className={`inline-block h-2 w-2 rounded-full ${counts.activeJobs > 0 ? 'bg-emerald-500' : 'bg-muted-foreground/40'}`} />
           Jobs: {counts.activeJobs} active
         </span>
         <span className="flex items-center gap-1.5">
-          <span className={`inline-block h-2 w-2 rounded-full ${counts.pendingApprovals > 0 ? 'bg-yellow-500' : 'bg-gray-300'}`} />
+          <span className={`inline-block h-2 w-2 rounded-full ${counts.pendingApprovals > 0 ? 'bg-amber-500' : 'bg-muted-foreground/40'}`} />
           Approvals: {counts.pendingApprovals} pending
         </span>
       </div>

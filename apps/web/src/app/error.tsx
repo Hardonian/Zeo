@@ -15,13 +15,13 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gray-50 px-6 text-center">
-      <h2 className="text-2xl font-bold tracking-tight text-gray-900">Something went wrong</h2>
-      <p className="max-w-md text-gray-500">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+      <h2 className="text-2xl font-bold tracking-tight text-foreground">Something went wrong</h2>
+      <p className="max-w-md text-muted-foreground">
         We encountered an unexpected error. Please try again or contact support if the issue persists.
       </p>
       {error.digest && (
-        <code className="rounded bg-gray-200 px-2 py-1 text-xs font-mono text-gray-700">
+        <code className="rounded bg-muted px-2 py-1 text-xs font-mono text-foreground">
           Trace ID: {error.digest}
         </code>
       )}

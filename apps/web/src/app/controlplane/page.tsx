@@ -2,7 +2,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 export const metadata = {
-  title: 'Control Plane | Zeo',
+  title: 'Control Plane',
   description: 'Local-first deterministic status surface for modules, governance, tooling, and artifacts.',
 };
 

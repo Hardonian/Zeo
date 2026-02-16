@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 160" width="300" height="160" role="img" aria-label="Regret envelope visualization">
+  <title>Regret Envelope: outcome range band showing worst-case and best-case bounds with robust minimax path</title>
+  <rect width="300" height="160" fill="#f8fafc"/>
+
+  <!-- === AXES === -->
+  <line x1="30" y1="130" x2="280" y2="130" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="30" y1="20" x2="30" y2="130" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- Axis tick marks -->
+  <line x1="80" y1="130" x2="80" y2="134" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="130" y1="130" x2="130" y2="134" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="180" y1="130" x2="180" y2="134" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="230" y1="130" x2="230" y2="134" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Axis labels -->
+  <text x="18" y="80" font-family="ui-monospace, monospace" font-size="7" fill="#9ca3af" text-anchor="middle" transform="rotate(-90 18 80)">outcome</text>
+  <text x="155" y="145" font-family="ui-monospace, monospace" font-size="7" fill="#9ca3af" text-anchor="middle">decisions →</text>
+
+  <!-- === REGRET ENVELOPE BAND === -->
+  <!-- Closed filled polygon (upper bound + lower bound reversed) -->
+  <path d="M80,55 C110,48 150,42 180,38 S240,45 270,50
+           L270,105 S240,100 180,90 C150,88 110,92 80,95 Z"
+        fill="#2563eb" fill-opacity="0.07" stroke="none"/>
+
+  <!-- Upper bound stroke (dashed) -->
+  <path d="M80,55 C110,48 150,42 180,38 S240,45 270,50"
+        fill="none" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Lower bound stroke (dashed) -->
+  <path d="M80,95 C110,92 150,88 180,90 S240,100 270,105"
+        fill="none" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- === ROBUST MINIMAX PATH === -->
+  <path d="M80,75 C110,70 150,65 180,64 S240,72 270,77"
+        fill="none" stroke="#2563eb" stroke-width="2"/>
+
+  <!-- === CURRENT DECISION MARKER === -->
+  <circle cx="130" cy="65" r="4" fill="#2563eb"/>
+  <line x1="130" y1="69" x2="130" y2="129" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="2,2"/>
+
+  <!-- === LABELS at right === -->
+  <text x="272" y="52" font-family="ui-monospace, monospace" font-size="7" fill="#9ca3af">best</text>
+  <text x="272" y="80" font-family="ui-monospace, monospace" font-size="7" fill="#2563eb">robust</text>
+  <text x="272" y="108" font-family="ui-monospace, monospace" font-size="7" fill="#9ca3af">worst</text>
+</svg>

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { PublicShell } from '@/components/site/PublicShell';
+import { ButtonLink, Card } from '@/components/ui';
 import {
   IconBranching,
   IconProvenance,
@@ -10,7 +11,7 @@ import {
 } from '@/components/icons/ZeoIcons';
 
 export const metadata = {
-  title: 'About | Zeo',
+  title: 'About',
   description: 'Learn about Zeo — an evidence-mapping workspace for decisions under uncertainty with provenance tracking and sensitivity analysis.',
 };
 
@@ -57,116 +58,81 @@ export default function AboutPage() {
   return (
     <PublicShell title="About Zeo">
       <div className="max-w-4xl space-y-12">
-        {/* Mission */}
-        <section className="rounded-2xl border border-gray-200 bg-white p-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Mission</h2>
-          <p className="text-gray-700 leading-relaxed text-lg">
+        <Card className="p-8">
+          <h2 className="text-xl font-semibold text-foreground">Mission</h2>
+          <p className="mt-4 text-base text-muted-foreground leading-relaxed">
             Zeo is an evidence-mapping workspace for decisions made under uncertainty.
             Unlike traditional decision tools that optimize for certainty, Zeo makes
             uncertainty a first-class citizen — tracking confidence ranges, assumptions,
             and the sensitivity of conclusions to new evidence.
           </p>
-        </section>
+        </Card>
 
-        {/* Core Principles */}
         <section>
-          <h2 className="text-lg font-semibold mb-3">Core Principles</h2>
-          <div className="space-y-4">
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h3 className="font-medium">Epistemic Honesty</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Never convert uncertainty into false precision. Facts, beliefs, and 
-                assumptions are clearly distinguished.
-              </p>
-            </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h3 className="font-medium">Provenance-First</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Every extracted fact carries its source, timestamp, and confidence. 
-                Without provenance, claims are marked as assumptions or beliefs.
-              </p>
-            </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h3 className="font-medium">Robustness Over Recommendation</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Prefer outputs that are robust across assumptions rather than a single
-                &quot;best choice.&quot; Sensitivity analysis shows what would change the answer.
-              </p>
-              <figure className="mt-3">
-                <img
-                  src="/illustrations/regret-envelope.svg"
-                  alt="Outcome envelope showing robust central path between worst-case and best-case bounds"
-                  width={300}
-                  height={160}
-                  loading="lazy"
-                  className="opacity-90"
-                />
-                <figcaption className="text-xs text-gray-400 mt-1">
-                  Minimax regret envelope — the robust path stays inside plausible bounds.
-                </figcaption>
-              </figure>
-            </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h3 className="font-medium">Privacy-First Defaults</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Edge-first processing when feasible. Raw data is minimized; extracted 
-                artifacts and provenance are stored instead.
-              </p>
-            </div>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Core Principles</h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {principles.map((principle) => (
+              <Card key={principle.title} className="p-5">
+                <div className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-md border ${principle.color}`}>
+                  <principle.icon className={`h-5 w-5 ${principle.iconColor}`} />
+                </div>
+                <h3 className="text-base font-semibold text-foreground">{principle.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{principle.description}</p>
+              </Card>
+            ))}
           </div>
+          <figure className="mt-6">
+            <Image
+              src="/images/illustrations/regret-envelope.svg"
+              alt="Outcome envelope showing robust central path between worst-case and best-case bounds"
+              width={360}
+              height={180}
+              className="opacity-90"
+            />
+            <figcaption className="text-xs text-muted-foreground mt-2">
+              Minimax regret envelope — the robust path stays inside plausible bounds.
+            </figcaption>
+          </figure>
         </section>
 
-        {/* What Zeo Includes */}
         <section>
-          <h2 className="text-lg font-semibold mb-3">What Zeo Includes</h2>
-          <ul className="space-y-2 text-gray-700">
-            <li className="flex items-start gap-2">
-              <span className="text-blue-600 mt-1">•</span>
-              <span><strong>Decision Branching Engine:</strong> Explore decision trees with sensitivity analysis and flip thresholds.</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-blue-600 mt-1">•</span>
-              <span><strong>Evidence Ingestion:</strong> Structured adapters for OCR, audio, and computer vision inputs.</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-blue-600 mt-1">•</span>
-              <span><strong>Uncertainty Ledger:</strong> Track confidence ranges and how they evolve with new evidence.</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-blue-600 mt-1">•</span>
-              <span><strong>Epistemic Translator:</strong> Convert between different reasoning frameworks and vocabularies.</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-blue-600 mt-1">•</span>
-              <span><strong>Governance Dashboards:</strong> OSS governance, KPI monitoring, and audit trails.</span>
-            </li>
-          </ul>
-          <div className="mt-4 rounded border border-gray-100 overflow-hidden">
+          <h2 className="text-lg font-semibold text-foreground mb-4">What Zeo Includes</h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {includes.map((item) => (
+              <Card key={item.label} className="p-4">
+                <div className="flex items-start gap-3">
+                  <item.icon className="mt-1 h-5 w-5 text-primary" />
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{item.label}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">{item.desc}</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+          <div className="mt-4 overflow-hidden rounded-md border border-border">
             <Image
-              src="/panels/audit_packet_builder/screen.png"
+              src="/images/panels/audit-packet-builder.png"
               alt="Audit packet builder showing signed evidence bundles with provenance metadata"
               width={800}
               height={500}
               className="w-full h-auto"
               loading="lazy"
+              sizes="(max-width: 768px) 100vw, 800px"
             />
           </div>
         </section>
 
-        {/* Explore */}
-        <section className="flex flex-wrap gap-4">
-          <Link href="/stitch" className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-blue-700 hover:border-blue-300 hover:bg-blue-50/50 transition-all">
+        <section className="flex flex-wrap gap-3">
+          <ButtonLink href="/stitch" variant="outline">
             Browse Stitch Panels
-            <span aria-hidden="true">&rarr;</span>
-          </Link>
-          <Link href="/platform" className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-blue-700 hover:border-blue-300 hover:bg-blue-50/50 transition-all">
+          </ButtonLink>
+          <ButtonLink href="/platform" variant="outline">
             Platform Overview
-            <span aria-hidden="true">&rarr;</span>
-          </Link>
-          <Link href="/pricing" className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-blue-700 hover:border-blue-300 hover:bg-blue-50/50 transition-all">
+          </ButtonLink>
+          <ButtonLink href="/pricing" variant="outline">
             Pricing
-            <span aria-hidden="true">&rarr;</span>
-          </Link>
+          </ButtonLink>
         </section>
       </div>
     </PublicShell>

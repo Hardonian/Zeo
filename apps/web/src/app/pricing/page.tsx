@@ -2,10 +2,11 @@ import Link from 'next/link';
 import { PublicShell } from '@/components/site/PublicShell';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { IconCheck } from '@/components/icons/ZeoIcons';
+import { Badge, ButtonLink, Card } from '@/components/ui';
 import { JsonLd } from '@/components/seo/JsonLd';
 
 export const metadata = buildMetadata({
-  title: 'Pricing | Zeo',
+  title: 'Pricing',
   description: 'Compare Zeo Community and Enterprise plans for governance, provenance, and decision-intelligence workflows.',
   canonicalPath: '/pricing',
 });
@@ -64,21 +65,19 @@ export default function PricingPage() {
     <PublicShell title="Pricing">
       <JsonLd data={faqJsonLd} />
       <div className="max-w-4xl space-y-12">
-        <p className="text-gray-600 max-w-2xl">
+        <p className="text-muted-foreground max-w-2xl">
           Start free with the full open-source platform. Upgrade to Enterprise when your team needs governance integrations and dedicated support.
         </p>
 
-        {/* Pricing Cards */}
         <div className="grid gap-6 md:grid-cols-2">
-          {/* Community */}
-          <div className="rounded-2xl border border-gray-200 bg-white p-7 flex flex-col">
+          <Card className="p-7 flex flex-col">
             <div className="mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Community</h2>
-              <p className="text-gray-500 mt-1 text-sm">Open-source, self-hosted</p>
-              <p className="text-4xl font-bold mt-4 text-gray-900">Free</p>
-              <p className="text-xs text-gray-400 mt-1">Forever</p>
+              <h2 className="text-xl font-semibold text-foreground">Community</h2>
+              <p className="text-muted-foreground mt-1 text-sm">Open-source, self-hosted</p>
+              <p className="text-4xl font-bold mt-4 text-foreground">Free</p>
+              <p className="text-xs text-muted-foreground mt-1">Forever</p>
             </div>
-            <ul className="space-y-3 text-sm text-gray-700 flex-1">
+            <ul className="space-y-3 text-sm text-muted-foreground flex-1">
               {communityFeatures.map((f) => (
                 <li key={f} className="flex items-center gap-2.5">
                   <IconCheck className="h-4 w-4 text-emerald-500 shrink-0" />
@@ -86,53 +85,45 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
-            <Link
-              href="/quickstart"
-              className="mt-8 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-            >
+            <ButtonLink href="/quickstart" variant="outline" className="mt-8 w-full justify-center">
               Get Started
-            </Link>
-          </div>
+            </ButtonLink>
+          </Card>
 
-          {/* Enterprise */}
-          <div className="relative rounded-2xl border-2 border-blue-200 bg-gradient-to-b from-blue-50/80 to-white p-7 flex flex-col">
-            <div className="absolute -top-3 right-6 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-0.5 text-xs font-semibold text-white">
-              Recommended
+          <Card className="relative border-primary/30 bg-gradient-to-b from-blue-50/60 to-white p-7 flex flex-col">
+            <div className="absolute -top-3 right-6">
+              <Badge variant="primary">Recommended</Badge>
             </div>
             <div className="mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Enterprise</h2>
-              <p className="text-gray-500 mt-1 text-sm">For teams that need governance</p>
-              <p className="text-4xl font-bold mt-4 text-gray-900">Custom</p>
-              <p className="text-xs text-gray-400 mt-1">Contact for pricing</p>
+              <h2 className="text-xl font-semibold text-foreground">Enterprise</h2>
+              <p className="text-muted-foreground mt-1 text-sm">For teams that need governance</p>
+              <p className="text-4xl font-bold mt-4 text-foreground">Custom</p>
+              <p className="text-xs text-muted-foreground mt-1">Contact for pricing</p>
             </div>
-            <ul className="space-y-3 text-sm text-gray-700 flex-1">
+            <ul className="space-y-3 text-sm text-muted-foreground flex-1">
               {enterpriseFeatures.map((f) => (
                 <li key={f} className="flex items-center gap-2.5">
-                  <IconCheck className="h-4 w-4 text-blue-500 shrink-0" />
+                  <IconCheck className="h-4 w-4 text-primary shrink-0" />
                   {f}
                 </li>
               ))}
             </ul>
-            <Link
-              href="/contact"
-              className="mt-8 block w-full rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:shadow-md transition-all"
-            >
+            <ButtonLink href="/contact" className="mt-8 w-full justify-center">
               Contact Sales
-            </Link>
-          </div>
+            </ButtonLink>
+          </Card>
         </div>
 
-        {/* FAQ */}
         <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-6">Frequently Asked Questions</h2>
           <div className="space-y-4">
             {faqs.map((faq) => (
-              <details key={faq.q} className="group rounded-xl border border-gray-200 bg-white">
-                <summary className="cursor-pointer p-5 font-medium text-gray-900 flex items-center justify-between">
+              <details key={faq.q} className="group rounded-lg border border-border bg-surface">
+                <summary className="cursor-pointer p-5 font-medium text-foreground flex items-center justify-between">
                   {faq.q}
-                  <span className="ml-4 text-gray-400 group-open:rotate-180 transition-transform text-sm">&#9660;</span>
+                  <span className="ml-4 text-muted-foreground group-open:rotate-180 transition-transform text-sm">&#9660;</span>
                 </summary>
-                <div className="px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
                   {faq.a}
                 </div>
               </details>

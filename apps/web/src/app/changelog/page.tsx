@@ -1,7 +1,10 @@
 import { PublicShell } from '@/components/site/PublicShell';
 
+import { PublicShell } from '@/components/site/PublicShell';
+import { Card } from '@/components/ui';
+
 export const metadata = {
-  title: 'Changelog | Zeo',
+  title: 'Changelog',
   description: 'Recent Zeo release notes and highlights.',
 };
 
@@ -29,15 +32,15 @@ export default function ChangelogPage() {
     <PublicShell title="Changelog">
       <div className="max-w-4xl space-y-4">
         {CHANGELOG_ITEMS.map((item) => (
-          <article key={item.version} className="rounded-lg border border-gray-200 bg-white p-5">
-            <h2 className="text-lg font-semibold">{item.version}</h2>
-            <p className="text-sm text-gray-500">{item.date}</p>
-            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-gray-700">
+          <Card key={item.version} className="p-5">
+            <h2 className="text-lg font-semibold text-foreground">{item.version}</h2>
+            <p className="text-sm text-muted-foreground">{item.date}</p>
+            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-muted-foreground">
               {item.notes.map((note) => (
                 <li key={note}>{note}</li>
               ))}
             </ul>
-          </article>
+          </Card>
         ))}
       </div>
     </PublicShell>
