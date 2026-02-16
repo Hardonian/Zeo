@@ -25,7 +25,7 @@ function log(msg) {
 function runCommand(args, cwd, env = {}) {
   const result = spawnSync('node', [CLI_ENTRY, ...args], {
     cwd,
-    env: { ...process.env, ...env },
+    env: { ...process.env, ZEO_FIXED_TIME: '2025-01-01T00:00:00.000Z', ...env },
     encoding: 'utf8',
     shell: true // Safe here as we construct args array
   });

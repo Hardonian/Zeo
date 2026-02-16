@@ -4,7 +4,7 @@
   "decisionType": "ENG",
   "workspaceMode": "customer",
   "state": "proposed",
-  "createdAt": "2026-02-16T04:00:34.861Z",
+  "createdAt": "2025-01-01T00:00:00.000Z",
   "evidence": [
     {
       "kind": "note",
@@ -31,7 +31,7 @@
   ],
   "runs": [
     {
-      "transcriptHash": "eb01c35f6f4de070c2e67ce16f0685388b1d0b8e24823fcc2cb42f47047802eb",
+      "transcriptHash": "e973595924f6a9abcfc0dac37f8e0f71afd8ef5832e1f494a78bf481f25ddf36",
       "recommendedAction": "Action(s) act_commit, act_defer are robust.",
       "boundarySummary": "Flip dist Infinity; 1 tasks; decay: 0 issues.",
       "flipDistance": 100,
@@ -72,9 +72,9 @@
       "fullTranscript": {
         "transcript_version": "1.0.0",
         "zeo_version": "1.0.0",
-        "timestamp": 1771214435187,
+        "timestamp": 1735689600000,
         "logical_clock": [
-          1771214435187,
+          1735689600000,
           10,
           9
         ],
@@ -86,11 +86,11 @@
             "id": "dec_baa325c4f15e",
             "title": "Determinism",
             "context": "Determinism",
-            "createdAt": "2026-02-16T04:00:34.861Z",
+            "createdAt": "2025-01-01T00:00:00.000Z",
             "decisionType": "ENG",
             "workspaceMode": "customer",
             "decisionState": "proposed",
-            "reviewAfter": "2026-03-18T00:00:00.000Z",
+            "reviewAfter": "2025-01-31T00:00:00.000Z",
             "expectedSignals": [
               "The"
             ],
@@ -129,7 +129,7 @@
                     "sourceId": "user_note",
                     "offset": 0,
                     "length": 3,
-                    "capturedAt": "2026-02-16T04:00:35.187Z",
+                    "capturedAt": "2026-02-16T04:01:46.967Z",
                     "checksum": "f3425df9b1739a6dd2e1d0ba54c0cc046cd00033c96ed0eb3dc8be0f5e6c65c3"
                   }
                 ],
@@ -250,7 +250,7 @@
         },
         "counterfactuals": [],
         "agents": [],
-        "decision_result_hash": "0be29c18eccc736002793f420a0168b4cc0fe4e5f22147e3fab08160aa0539b2",
+        "decision_result_hash": "4cd30ed66657f15d2fa93daa2f0ee3d804b1186156cba5c2a4bdfdd60d23aabf",
         "invariants": {
           "determinism_checks": [
             "same_inputs_same_transcript",
@@ -263,8 +263,8 @@
             "confidence_bounds_present"
           ]
         },
-        "transcript_hash": "eb01c35f6f4de070c2e67ce16f0685388b1d0b8e24823fcc2cb42f47047802eb",
-        "transcript_id": "tr_eb01c35f6f4de070"
+        "transcript_hash": "e973595924f6a9abcfc0dac37f8e0f71afd8ef5832e1f494a78bf481f25ddf36",
+        "transcript_id": "tr_e973595924f6a9ab"
       },
       "confidence": 0.8,
       "health": {
@@ -274,14 +274,14 @@
         "replayStabilityScore": 100,
         "assumptionVolatilityIndex": 0,
         "riskScore": 53,
-        "createdAt": "2026-02-16T04:00:35.190Z",
-        "updatedAt": "2026-02-16T04:00:35.190Z"
+        "createdAt": "2025-01-01T00:00:00.000Z",
+        "updatedAt": "2025-01-01T00:00:00.000Z"
       }
     }
   ],
   "chain": {},
   "workspaceId": "default",
-  "reviewAt": "2026-03-18",
+  "reviewAt": "2025-01-31",
   "driftEvents": [],
   "healthHistory": [
     {
@@ -291,8 +291,8 @@
       "replayStabilityScore": 100,
       "assumptionVolatilityIndex": 0,
       "riskScore": 53,
-      "createdAt": "2026-02-16T04:00:35.190Z",
-      "updatedAt": "2026-02-16T04:00:35.190Z"
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "updatedAt": "2025-01-01T00:00:00.000Z"
     }
   ]
 }
