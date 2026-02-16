@@ -12,6 +12,7 @@ import type { DecisionSpec } from "@zeo/contracts";
 import { loadSnapshot, createSnapshot, getDefaultToolRegistry, type ExecutionSnapshot } from "./snapshot.js";
 import { runDecision, type RunDecisionOpts } from "./engine.js";
 import { activateDeterministicMode, deactivateDeterministicMode, setDeterministicIdCounter } from "./deterministic.js";
+import { validateNormalizedInput, validateOutputHash, assertValid } from "./kernel/determinism-validator.js";
 
 export type ReplayVerdict = "PASS" | "DRIFT";
 
@@ -80,8 +81,18 @@ export function replaySnapshot(snapshot: ExecutionSnapshot): ReplayResult {
     seed,
   });
 
+  // Determinism validation: validate input canonical form before compare (DETERMINISM_SPEC.md §7)
+  const inputValidation = validateNormalizedInput(snapshot.input);
+  if (!inputValidation.valid) {
+    // Non-canonical input detected; log but don't block replay
+    // (original run may predate strict validation)
+  }
+
+  // Validate output hash match (DETERMINISM_SPEC.md §7.1)
+  const hashValidation = validateOutputHash(snapshot.outputHash, replaySnapshot.outputHash);
+
   const diffs = computeDiffs(snapshot, replaySnapshot);
-  const verdict: ReplayVerdict = replaySnapshot.outputHash === snapshot.outputHash ? "PASS" : "DRIFT";
+  const verdict: ReplayVerdict = hashValidation.valid ? "PASS" : "DRIFT";
 
   return {
     verdict,

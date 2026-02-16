@@ -85,3 +85,18 @@ export {
   ReplayStateMachine,
   formatExecutionTrace,
 } from "./state-machine.js";
+
+// Determinism validator (DETERMINISM_SPEC.md §9)
+export {
+  type DeterminismError,
+  type ValidationResult,
+  DETERMINISM_SPEC_VERSION,
+  validateNormalizedInput,
+  validateStableSerialization,
+  validateIROrdering,
+  validateOutputHash,
+  validateFloatBounds,
+  mergeValidations,
+  assertValid,
+  DeterminismValidationError,
+} from "./determinism-validator.js";

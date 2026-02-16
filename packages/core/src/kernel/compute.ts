@@ -152,6 +152,7 @@ function generateBranchGraph(
 
 // ─── Evaluations ─────────────────────────────────────────────────────────
 
+// DECISION_SEMANTICS.md §2.3: Robustness aggregation — conservative (accLow - rejHigh)
 function evaluateRobustness(spec: KernelDecisionSpec, graph: KernelBranchGraph): KernelLensEvaluation {
   const acceptable = new Set(["Accept", "Counter", "Provides more info"]);
   const actionScores: Array<{ actionId: string; minScore: number }> = [];
@@ -284,12 +285,13 @@ function generateEvidenceCandidates(): KernelEvidenceCandidate[] {
 }
 
 // ─── computeDecision ─────────────────────────────────────────────────────
+// DECISION_SEMANTICS.md §1: D = f(NormalizedInput, EvidenceSnapshot, PolicySnapshot, ToolResultSnapshot) → DecisionOutput
 
 export function computeDecision(input: KernelInput): KernelOutput {
   const { spec, config } = input;
   const idGen = createKernelIdGenerator(config.seed);
 
-  // Use a fixed clock value derived from seed for determinism
+  // DECISION_SEMANTICS.md §7.2: No time dependence — fixed clock
   const clockNow = "2025-01-01T00:00:00.000Z";
 
   // Generate branch graph
@@ -501,6 +503,7 @@ export function computePlanIR(input: KernelInput, budget: number): PlanIR {
 }
 
 // ─── Flip Distances (for plan) ───────────────────────────────────────────
+// DECISION_SEMANTICS.md §5: Flip-distance = minimal change to invert recommended action
 
 function computeFlipDistances(
   spec: KernelDecisionSpec,
@@ -540,6 +543,7 @@ function computeFlipDistances(
 }
 
 // ─── VOI Estimates (for plan) ────────────────────────────────────────────
+// DECISION_SEMANTICS.md §4: VOI(e) = benefitScore / costScore
 
 function computeVoiEstimates(
   spec: KernelDecisionSpec,
