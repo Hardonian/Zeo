@@ -91,3 +91,59 @@ packages/time typecheck: Done
 .../packages/contract-test-kit typecheck$ tsc --noEmit
 packages/timeseries typecheck: Done
 .../controlplane/packages/controlplane typecheck$ tsc --noEmit
+packages/warehouse typecheck: Done
+.../controlplane/packages/sdk-generator typecheck$ tsc --noEmit
+vendor/controlplane/packages/benchmark typecheck: Done
+.../packages/contract-test-kit typecheck: Done
+.../controlplane/packages/controlplane typecheck: Done
+.../controlplane/packages/sdk-generator typecheck: Done
+packages/adapters-runtime typecheck$ tsc --noEmit
+packages/analytics typecheck$ tsc --noEmit
+packages/calibration typecheck$ tsc -p tsconfig.json --noEmit
+packages/dataset-builder typecheck$ tsc -p tsconfig.json --noEmit
+packages/analytics typecheck: Done
+packages/kpi typecheck$ tsc -p tsconfig.json --noEmit
+packages/adapters-runtime typecheck: Done
+packages/meta typecheck$ tsc -p tsconfig.json --noEmit
+packages/calibration typecheck: Done
+packages/models typecheck$ tsc -p tsconfig.json --noEmit
+packages/dataset-builder typecheck: Done
+packages/values typecheck$ tsc -p tsconfig.json --noEmit
+packages/meta typecheck: Done
+.../packages/integration-tests typecheck$ tsc --noEmit
+packages/models typecheck: Done
+packages/kpi typecheck: Done
+packages/values typecheck: Done
+.../packages/integration-tests typecheck: Done
+packages/causal-skeletons typecheck$ tsc -p tsconfig.json --noEmit
+packages/rsl typecheck$ tsc -p tsconfig.json --noEmit
+packages/causal-skeletons typecheck: Done
+packages/rsl typecheck: Done
+packages/worlds typecheck$ tsc -p tsconfig.json --noEmit
+packages/worlds typecheck: Done
+packages/core typecheck$ tsc -p tsconfig.json --noEmit
+packages/core typecheck: Done
+packages/mesh typecheck$ tsc -p tsconfig.json --noEmit
+packages/reality typecheck$ tsc --noEmit
+packages/signal-discovery typecheck$ tsc -p tsconfig.json --noEmit
+packages/replay typecheck$ tsc -p tsconfig.json --noEmit
+packages/signal-discovery typecheck: Done
+packages/reality typecheck: Done
+packages/replay typecheck: Done
+packages/mesh typecheck: Done
+packages/hypothesis-market typecheck$ tsc -p tsconfig.json --noEmit
+packages/mcp-server typecheck$ tsc -p tsconfig.json --noEmit
+packages/tournaments typecheck$ tsc -p tsconfig.json --noEmit
+packages/radar typecheck$ tsc -p tsconfig.json --noEmit
+packages/hypothesis-market typecheck: Done
+packages/tournaments typecheck: Done
+packages/radar typecheck: Done
+packages/mcp-server typecheck: Done
+packages/eval typecheck$ pnpm --filter @zeo/reality build && tsc --noEmit
+packages/eval typecheck: > @zeo/reality@0.7.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\reality
+packages/eval typecheck: > tsc -p tsconfig.build.json
+packages/eval typecheck: Done
+apps/cli typecheck$ tsc -p tsconfig.json --noEmit
+apps/web typecheck$ tsc --noEmit
+apps/cli typecheck: Done
+apps/web typecheck: Done
