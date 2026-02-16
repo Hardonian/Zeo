@@ -21,3 +21,11 @@ packages/adapters typecheck$ tsc -p tsconfig.json --noEmit
 packages/audit typecheck$ tsc -p tsconfig.json --noEmit
 packages/budgets typecheck$ tsc --noEmit
 packages/bayes-shrinkage typecheck$ tsc -p tsconfig.json --noEmit
+packages/bayes-shrinkage typecheck: Done
+packages/causal typecheck$ tsc -p tsconfig.json --noEmit
+packages/budgets typecheck: Done
+packages/compliance typecheck$ tsc -p tsconfig.json --noEmit
+packages/audit typecheck: Done
+packages/constraints typecheck$ tsc -p tsconfig.json --noEmit
+packages/adapters typecheck: Done
+packages/counterfactuals typecheck$ tsc -p tsconfig.json --noEmit
