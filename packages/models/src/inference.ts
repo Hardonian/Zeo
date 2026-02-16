@@ -1,3 +1,4 @@
+import "server-only";
 import type {
   BeliefUpdate,
   InferenceRequest,
@@ -23,7 +24,15 @@ const pendingRequests = new Map<string, { resolve: (v: any) => void; reject: (e:
 function getPersistentProcess() {
   if (persistentProcess) return persistentProcess;
 
-  persistentProcess = spawn("python3", [PYTHON_BRIDGE_PATH]);
+  persistentProcess = spawn("python3", [PYTHON_BRIDGE_PATH], {
+    stdio: ["pipe", "pipe", "pipe"],
+  });
+
+  if (!persistentProcess.stdout || !persistentProcess.stderr || !persistentProcess.stdin) {
+    if (persistentProcess) persistentProcess.kill();
+    persistentProcess = null;
+    throw new Error("Failed to spawn Python bridge: stdio is null");
+  }
 
   let buffer = "";
   persistentProcess.stdout.on("data", (data) => {
