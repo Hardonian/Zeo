@@ -24,7 +24,7 @@ const jsonLd = [
     '@type': 'Organization',
     name: 'Zeo',
     url: 'https://zeo.dev',
-    logo: 'https://zeo.dev/favicon.svg',
+    logo: 'https://zeo.dev/icon.png',
   },
   {
     '@context': 'https://schema.org',
@@ -43,7 +43,7 @@ export default function Home() {
       <JsonLd data={jsonLd} />
       <h1 className="sr-only">Decision intelligence under uncertainty</h1>
 
-      <section className="relative -mx-6 -mt-10 overflow-hidden" style={{ minHeight: '600px' }}>
+      <section className="relative -mx-6 -mt-10 overflow-hidden min-h-[600px]">
         <DecisionHeroLoader />
       </section>
 

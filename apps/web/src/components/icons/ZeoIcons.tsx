@@ -1,7 +1,4 @@
-/**
- * Zeo SVG icon components.
- * Inline SVGs for zero-latency rendering and Tailwind class support.
- */
+import Image from 'next/image';
 
 interface IconProps {
   className?: string;
@@ -10,18 +7,15 @@ interface IconProps {
 /** Zeo logo mark — gradient Z with branching motif */
 export function ZeoMark({ className = 'h-8 w-8' }: IconProps) {
   return (
-    <svg className={className} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <linearGradient id="zm" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#2563EB" />
-          <stop offset="100%" stopColor="#7C3AED" />
-        </linearGradient>
-      </defs>
-      <rect width="32" height="32" rx="8" fill="url(#zm)" />
-      <path d="M8 9h16l-10 14h14" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="24" cy="9" r="2" fill="#A5B4FC" />
-      <circle cx="8" cy="23" r="2" fill="#A5B4FC" />
-    </svg>
+    <div className={`relative ${className}`}>
+      <Image
+        src="/brand/zeo/icon.png"
+        alt="Zeo"
+        fill
+        className="object-contain"
+        sizes="64px"
+      />
+    </div>
   );
 }
 
