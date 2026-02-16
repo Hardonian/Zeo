@@ -97,6 +97,16 @@ Commands:
   keys <cmd>                  Local keyring operations
   trust <cmd>                 Trust profile operations
 
+  --- v3: Governed Multi-Tenant Decision Infrastructure ---
+  tenant <cmd>                Tenant management (create/list/suspend/policy/usage/assign-role)
+  health                      System health check report (replay, schema, policy)
+  drift [clear]               Drift monitor events
+  schemas [validate <name>]   Schema registry listing and validation
+  compliance <cmd>            Compliance (report/audit-chain/secret-scan)
+  modules <cmd>               Module registry (list/register/validate/order)
+  simulate <cmd>              What-if / forecast / confidence / sensitivity
+  outcome <cmd>               Outcome registration / regret analysis / optimization
+
 Options:
   --catalog <dir>             Catalog directory (default: external/catalog)
   --example <name>            Example to run: "negotiation" or "ops" (default: negotiation)
@@ -532,6 +542,13 @@ async function main(): Promise<void> {
   if (["transcript", "keys", "trust", "keygen", "key"].includes(argv[0] ?? "")) {
     const mod = await import("./transcript-cli.js");
     process.exit(await mod.runTranscriptCommand(argv));
+  }
+
+
+  // v3.0: Governed Multi-Tenant Decision Infrastructure
+  if (["tenant", "health", "drift", "schemas", "compliance", "modules", "simulate", "outcome"].includes(argv[0] ?? "")) {
+    const mod = await import("./v3-cli.js");
+    process.exit(await mod.runV3Command(mod.parseV3Args(argv)));
   }
 
   if (argv[0] === "zeolite") {
