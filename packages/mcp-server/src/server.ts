@@ -247,8 +247,22 @@ export function createMcpServer(config: McpConfig): McpServer {
             return JSON.stringify({ jsonrpc: "2.0", id: 0, error: { code: -32700, message: "Parse error", data: { run_id: runId, error_code: "PARSE_ERROR" } } });
         }
 
-        const authContext = (request as any).params?.sessionId ?? "default";
-        if (!rateLimiter.consume(authContext)) {
+        const authContext = (request as any).params?.sessionId;
+        if (config.security.requireAuthContext && !authContext) {
+            metrics.inc("auth_failures");
+            return JSON.stringify({
+                jsonrpc: "2.0",
+                id: request.id ?? 0,
+                error: {
+                    code: -32000,
+                    message: "Authentication context required. Provide sessionId in params.",
+                    data: { run_id: runId, error_code: "AUTH_REQUIRED" }
+                }
+            });
+        }
+
+        const rateLimitKey = authContext ?? "default";
+        if (!rateLimiter.consume(rateLimitKey)) {
             metrics.inc("rate_limited");
             return JSON.stringify({
                 jsonrpc: "2.0",
