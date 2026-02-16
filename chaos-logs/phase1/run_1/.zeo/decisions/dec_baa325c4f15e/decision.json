@@ -31,7 +31,7 @@
   ],
   "runs": [
     {
-      "transcriptHash": "dc3f268140373036c1f7d5cbc16e306acd6aaa0ee27da56e7bede1a582dcf9b1",
+      "transcriptHash": "5b656217f5071c33bdfa3b75fd3997632269d66085b7b8032de5b094ac2668dc",
       "recommendedAction": "Action(s) act_commit, act_defer are robust.",
       "boundarySummary": "Flip dist Infinity; 1 tasks; decay: 0 issues.",
       "flipDistance": 100,
@@ -129,7 +129,7 @@
                     "sourceId": "user_note",
                     "offset": 0,
                     "length": 3,
-                    "capturedAt": "2026-02-16T04:13:26.053Z",
+                    "capturedAt": "2026-02-16T04:16:20.158Z",
                     "checksum": "f3425df9b1739a6dd2e1d0ba54c0cc046cd00033c96ed0eb3dc8be0f5e6c65c3"
                   }
                 ],
@@ -263,8 +263,8 @@
             "confidence_bounds_present"
           ]
         },
-        "transcript_hash": "dc3f268140373036c1f7d5cbc16e306acd6aaa0ee27da56e7bede1a582dcf9b1",
-        "transcript_id": "tr_dc3f268140373036"
+        "transcript_hash": "5b656217f5071c33bdfa3b75fd3997632269d66085b7b8032de5b094ac2668dc",
+        "transcript_id": "tr_5b656217f5071c33"
       },
       "confidence": 0.8,
       "health": {
