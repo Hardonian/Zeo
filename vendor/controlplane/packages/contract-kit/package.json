@@ -18,7 +18,7 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "typecheck": "tsc --noEmit",
-    "lint": "node \"$(git rev-parse --show-toplevel)/vendor/controlplane/scripts/lint-target.mjs\" vendor/controlplane/packages/contract-kit/src",
+    "lint": "node ../../scripts/lint-target.mjs vendor/controlplane/packages/contract-kit/src",
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {},
