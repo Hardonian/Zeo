@@ -143,7 +143,7 @@ describe('Deterministic Indexes', () => {
     indexRecord(index, decision);
     indexRecord(index, outcome);
 
-    const result = queryUsingIndex(index, { kinds: ['decision'] }, () => undefined);
+    const result = await queryUsingIndex(index, { kinds: ['decision'] }, () => undefined);
 
     expect(result.usedIndex).toBe(true);
     expect(result.ids).toContain('dec-1');
