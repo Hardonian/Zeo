@@ -227,7 +227,8 @@ async function cmdMeshStatus(args: MeshCliArgs): Promise<number> {
 
 async function cmdMeshBatch(args: MeshCliArgs): Promise<number> {
   const { MeshOrchestrator, ENVELOPE_VERSION } = await import("@zeo/mesh");
-  const { kernel, KERNEL_SCHEMA_VERSION } = await import("@zeo/core");
+  const core = await import("@zeo/core");
+  const KERNEL_SCHEMA_VERSION = core.kernel.KERNEL_SCHEMA_VERSION;
 
   const mode = (args.mode ?? "local") as any;
   const count = args.count ?? 5;
@@ -256,14 +257,14 @@ async function cmdMeshBatch(args: MeshCliArgs): Promise<number> {
         assumptions: [{ id: "a1", text: "Stable", status: "assumption" as const, confidence: "medium" as const }],
         objectives: [{ metric: "ROI", weight: 1 }],
       },
-      evidenceSnapshot: { version: "1.0.0", nodes: [] },
-      policySnapshot: { policies: [], enforcementStrength: "basic" as const },
-      toolResultsSnapshot: { tools: [] },
+      evidenceSnapshot: { version: "1.0.0", nodes: [] as any[] },
+      policySnapshot: { policies: [] as any[], enforcementStrength: "basic" as const },
+      toolResultsSnapshot: { tools: [] as any[] },
       config: { seed: `batch-${i}`, floatPrecision: 10, maxDepth: 2 as const, maxBranchesPerAction: 4, useQuantEngine: false },
       schemaVersion: KERNEL_SCHEMA_VERSION,
     },
     tenant_id: "tenant_batch",
-    policy_snapshot: { policies: [], enforcementStrength: "basic" as const },
+    policy_snapshot: { policies: [] as any[], enforcementStrength: "basic" as const },
   }));
 
   const start = performance.now();

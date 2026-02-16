@@ -81,6 +81,7 @@ export interface WorkflowArgs {
   evidenceId?: string;
   interactive?: boolean;
   allowCrossWorkspace?: boolean;
+  fixedTime?: string;
 }
 
 interface EvidenceItem {
@@ -823,12 +824,17 @@ export function parseWorkflowArgs(argv: string[]): WorkflowArgs {
     evidenceId: argv[2] && argv[0] === "evidence" && argv[1] === "set-expiry" ? argv[2] : value("--evidence"),
     interactive: argv.includes("--interactive"),
     allowCrossWorkspace: argv.includes("--allow-cross-workspace"),
+    fixedTime: value("--fixed-time"),
   };
 }
 
 export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
   ensureWorkspaceRoot();
   if (!args.command) return 1;
+
+  if (args.fixedTime) {
+    process.env.ZEO_FIXED_TIME = args.fixedTime;
+  }
 
   if (args.command === "help") {
     if (args.subcommand === "start") {
