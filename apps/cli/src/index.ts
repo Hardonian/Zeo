@@ -97,6 +97,11 @@ Commands:
   keys <cmd>                  Local keyring operations
   trust <cmd>                 Trust profile operations
 
+  --- Studio: Local Decision Workbench ---
+  studio                       Launch Zeo Studio (local workbench UI)
+  export-report <run_id>       Generate signed run report (JSON + HTML + SHA-256)
+  verify-report <file>         Verify a signed report's SHA-256 integrity
+
   --- v3: Governed Multi-Tenant Decision Infrastructure ---
   tenant <cmd>                Tenant management (create/list/suspend/policy/usage/assign-role)
   health                      System health check report (replay, schema, policy)
@@ -348,6 +353,22 @@ async function main(): Promise<void> {
 
   const run = createRunContext();
   log({ level: "info", msg: "cli start", run_id: run.run_id, trace_id: run.trace_id, cmd: argv[0] ?? "default", action: "start" });
+
+  // Studio commands
+  if (argv[0] === "studio") {
+    const mod = await import("./studio-cli.js");
+    process.exit(await mod.runStudioCommand(argv.slice(1)));
+  }
+
+  if (argv[0] === "export-report") {
+    const mod = await import("./studio-cli.js");
+    process.exit(await mod.runExportReportCommand(argv.slice(1)));
+  }
+
+  if (argv[0] === "verify-report") {
+    const mod = await import("./studio-cli.js");
+    process.exit(await mod.runVerifyReportCommand(argv.slice(1)));
+  }
 
   if (argv[0] === "view") {
     const legacyLens = new Set(["executive", "engineering", "legal", "personal"]);
