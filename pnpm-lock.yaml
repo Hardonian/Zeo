@@ -71,6 +71,9 @@ importers:
       '@zeo/jobs':
         specifier: workspace:*
         version: link:../../packages/jobs
+      '@zeo/mesh':
+        specifier: workspace:*
+        version: link:../../packages/mesh
       '@zeo/models':
         specifier: workspace:*
         version: link:../../packages/models
@@ -932,6 +935,28 @@ importers:
       vitest:
         specifier: ^2.1.1
         version: 2.1.9(@types/node@20.19.33)(jsdom@28.0.0)
+
+  packages/mesh:
+    dependencies:
+      '@zeo/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@zeo/core':
+        specifier: workspace:*
+        version: link:../core
+      '@zeo/tenant':
+        specifier: workspace:*
+        version: link:../tenant
+      nanoid:
+        specifier: ^5.0.7
+        version: 5.1.6
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.1
+        version: 25.2.2
+      vitest:
+        specifier: ^2.1.1
+        version: 2.1.9(@types/node@25.2.2)(jsdom@28.0.0)
 
   packages/meta:
     dependencies:
