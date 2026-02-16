@@ -6,3 +6,93 @@
 > @zeo/contracts@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\contracts
 > tsc -p tsconfig.build.json
 
+Scope: 79 of 80 workspace projects
+packages/id typecheck$ tsc -p tsconfig.json --noEmit
+packages/sdk typecheck$ tsc -p tsconfig.json --noEmit
+packages/trust typecheck$ tsc --noEmit
+.../controlplane/packages/contract-kit typecheck$ tsc --noEmit
+.../controlplane/packages/contract-kit typecheck: Done
+vendor/controlplane/packages/contracts typecheck$ tsc --noEmit
+packages/id typecheck: Done
+.../controlplane/packages/create-runner typecheck$ tsc --noEmit
+packages/sdk typecheck: Done
+packages/trust typecheck: Done
+.../controlplane/packages/create-runner typecheck: Done
+vendor/controlplane/packages/contracts typecheck: Done
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+.../controlplane/packages/observability typecheck$ node ../../scripts/typecheck-target.mjs @controlplane/contracts
+.../packages/optimization-utils typecheck$ tsc --noEmit
+.../controlplane/packages/observability typecheck: > @controlplane/contracts@1.0.0 build C:\Users\scott\Documents\GitHub\Zeo\vendor\controlplane\packages\contracts
+.../controlplane/packages/observability typecheck: > tsup src/index.ts --format esm,cjs --dts
+.../packages/optimization-utils typecheck: Done
+.../controlplane/packages/observability typecheck: [34mCLI[39m Building entry: src/index.ts
+.../controlplane/packages/observability typecheck: [34mCLI[39m Using tsconfig: tsconfig.json
+.../controlplane/packages/observability typecheck: [34mCLI[39m tsup v8.5.1
+.../controlplane/packages/observability typecheck: [34mCLI[39m Target: es2022
+.../controlplane/packages/observability typecheck: [34mESM[39m Build start
+.../controlplane/packages/observability typecheck: [34mCJS[39m Build start
+.../controlplane/packages/observability typecheck: [32mESM[39m [1mdist\index.js [22m[32m48.61 KB[39m
+.../controlplane/packages/observability typecheck: [32mESM[39m ΓÜí∩╕Å Build success in 40ms
+.../controlplane/packages/observability typecheck: [32mCJS[39m [1mdist\index.cjs [22m[32m62.21 KB[39m
+.../controlplane/packages/observability typecheck: [32mCJS[39m ΓÜí∩╕Å Build success in 41ms
+packages/contracts typecheck: Done
+.../controlplane/packages/observability typecheck: [34mDTS[39m Build start
+.../controlplane/packages/observability typecheck: [32mDTS[39m ΓÜí∩╕Å Build success in 2086ms
+.../controlplane/packages/observability typecheck: [32mDTS[39m [1mdist\index.d.ts  [22m[32m496.46 KB[39m
+.../controlplane/packages/observability typecheck: [32mDTS[39m [1mdist\index.d.cts [22m[32m496.46 KB[39m
+.../controlplane/packages/observability typecheck: (node:19932) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../controlplane/packages/observability typecheck: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../controlplane/packages/observability typecheck: Done
+packages/adapters typecheck$ tsc -p tsconfig.json --noEmit
+packages/audit typecheck$ tsc -p tsconfig.json --noEmit
+packages/bayes-shrinkage typecheck$ tsc -p tsconfig.json --noEmit
+packages/budgets typecheck$ tsc --noEmit
+packages/bayes-shrinkage typecheck: Done
+packages/causal typecheck$ tsc -p tsconfig.json --noEmit
+packages/budgets typecheck: Done
+packages/audit typecheck: Done
+packages/compliance typecheck$ tsc -p tsconfig.json --noEmit
+packages/constraints typecheck$ tsc -p tsconfig.json --noEmit
+packages/adapters typecheck: Done
+packages/counterfactuals typecheck$ tsc -p tsconfig.json --noEmit
+packages/causal typecheck: Done
+packages/decision-synthesizer typecheck$ tsc --noEmit
+packages/compliance typecheck: Done
+packages/explain typecheck$ tsc -p tsconfig.json --noEmit
+packages/constraints typecheck: Done
+packages/game typecheck$ tsc -p tsconfig.json --noEmit
+packages/counterfactuals typecheck: Done
+packages/governance typecheck$ tsc -p tsconfig.json --noEmit
+packages/decision-synthesizer typecheck: Done
+packages/info-theory typecheck$ tsc -p tsconfig.json --noEmit
+packages/explain typecheck: Done
+packages/jobs typecheck$ tsc --noEmit
+packages/game typecheck: Done
+packages/lenses typecheck$ tsc -p tsconfig.json --noEmit
+packages/governance typecheck: Done
+packages/mcp-interop typecheck$ tsc -p tsconfig.json --noEmit
+packages/info-theory typecheck: Done
+packages/measurement typecheck$ tsc -p tsconfig.json --noEmit
+packages/lenses typecheck: Done
+packages/memory typecheck$ tsc --noEmit
+packages/mcp-interop typecheck: Done
+packages/modules typecheck$ tsc -p tsconfig.json --noEmit
+packages/jobs typecheck: Done
+packages/nl typecheck$ tsc --noEmit
+packages/memory typecheck: Done
+packages/observability typecheck$ tsc -p tsconfig.json --noEmit
+packages/measurement typecheck: Done
+packages/optimization typecheck$ tsc -p tsconfig.json --noEmit
+packages/modules typecheck: Done
+packages/perf typecheck$ tsc -p tsconfig.json --noEmit
+packages/nl typecheck: Done
+packages/quant-timeseries typecheck$ tsc -p tsconfig.json --noEmit
+packages/observability typecheck: Done
+packages/regimes typecheck$ tsc -p tsconfig.json --noEmit
+packages/optimization typecheck: src/index.test.ts(168,110): error TS7018: Object literal's property 'basedOnOutcomes' implicitly has an 'any[]' type.
+packages/optimization typecheck: Failed
+C:\Users\scott\Documents\GitHub\Zeo\packages\optimization:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @zeo/optimization@3.0.0 typecheck: `tsc -p tsconfig.json --noEmit`
+Exit status 1
+packages/repro-pack typecheck$ tsc --noEmit
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.

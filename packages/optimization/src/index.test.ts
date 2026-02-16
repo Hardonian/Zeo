@@ -165,7 +165,7 @@ describe("Phase G: Closed-Loop Optimization", () => {
         { decisionId: "d1", selectedAction: "a", selectedUtility: 0.8, bestPossibleAction: "a", bestPossibleUtility: 0.8, regret: 0, regretPercentage: 0, category: "optimal" as const },
       ];
       const adjustments = [
-        { id: "adj1", assumptionId: "x", label: "X", currentValue: 0.5, proposedValue: 0.7, confidence: 0.8, basedOnOutcomes: [], status: "proposed" as const, proposedAt: "", rationale: "test" },
+        { id: "adj1", assumptionId: "x", label: "X", currentValue: 0.5, proposedValue: 0.7, confidence: 0.8, basedOnOutcomes: [] as string[], status: "proposed" as const, proposedAt: "", rationale: "test" },
       ];
 
       const summary = generateOptimizationSummary(outcomes, regrets, adjustments);
