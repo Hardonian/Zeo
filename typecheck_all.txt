@@ -1,0 +1,65 @@
+
+> zeo@1.0.0 typecheck C:\Users\scott\Documents\GitHub\Zeo
+> pnpm -r --filter @zeo/contracts build && pnpm -r typecheck && pnpm -C packages/core typecheck:exports
+
+
+> @zeo/contracts@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\contracts
+> tsc -p tsconfig.build.json
+
+Scope: 82 of 83 workspace projects
+packages/env typecheck$ tsc --noEmit
+packages/id typecheck$ tsc -p tsconfig.json --noEmit
+packages/sdk typecheck$ tsc -p tsconfig.json --noEmit
+packages/trust typecheck$ tsc --noEmit
+packages/id typecheck: Done
+.../controlplane/packages/contract-kit typecheck$ tsc --noEmit
+packages/sdk typecheck: Done
+vendor/controlplane/packages/contracts typecheck$ tsc --noEmit
+packages/env typecheck: Done
+.../controlplane/packages/create-runner typecheck$ tsc --noEmit
+packages/trust typecheck: Done
+.../controlplane/packages/contract-kit typecheck: Done
+.../controlplane/packages/create-runner typecheck: Done
+vendor/controlplane/packages/contracts typecheck: Done
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+.../controlplane/packages/observability typecheck$ tsc --noEmit
+.../packages/optimization-utils typecheck$ tsc --noEmit
+.../packages/optimization-utils typecheck: Done
+.../controlplane/packages/observability typecheck: Done
+packages/contracts typecheck: Done
+packages/audit typecheck$ tsc -p tsconfig.json --noEmit
+packages/adapters typecheck$ tsc -p tsconfig.json --noEmit
+packages/bayes-shrinkage typecheck$ tsc -p tsconfig.json --noEmit
+packages/budgets typecheck$ tsc --noEmit
+packages/bayes-shrinkage typecheck: Done
+packages/causal typecheck$ tsc -p tsconfig.json --noEmit
+packages/audit typecheck: Done
+packages/compliance typecheck$ tsc -p tsconfig.json --noEmit
+packages/budgets typecheck: Done
+packages/constraints typecheck$ tsc -p tsconfig.json --noEmit
+packages/adapters typecheck: Done
+packages/counterfactuals typecheck$ tsc -p tsconfig.json --noEmit
+packages/causal typecheck: Done
+packages/decision-synthesizer typecheck$ tsc --noEmit
+packages/compliance typecheck: Done
+packages/explain typecheck$ tsc -p tsconfig.json --noEmit
+packages/counterfactuals typecheck: Done
+packages/game typecheck$ tsc -p tsconfig.json --noEmit
+packages/constraints typecheck: Done
+packages/governance typecheck$ tsc -p tsconfig.json --noEmit
+packages/decision-synthesizer typecheck: Done
+packages/info-theory typecheck$ tsc -p tsconfig.json --noEmit
+packages/explain typecheck: Done
+packages/jobs typecheck$ tsc --noEmit
+packages/governance typecheck: Done
+packages/ledger typecheck$ tsc --noEmit
+packages/game typecheck: Done
+packages/lenses typecheck$ tsc -p tsconfig.json --noEmit
+packages/info-theory typecheck: Done
+packages/mcp-interop typecheck$ tsc -p tsconfig.json --noEmit
+packages/lenses typecheck: Done
+packages/measurement typecheck$ tsc -p tsconfig.json --noEmit
+packages/ledger typecheck: Done
+packages/memory typecheck$ tsc --noEmit
+packages/jobs typecheck: Done
+packages/modules typecheck$ tsc -p tsconfig.json --noEmit

@@ -1,0 +1,3 @@
+src/doctor-cli.ts(858,27): error TS2339: Property 'errors' does not exist on type '{ success: true; data: { NODE_ENV: "test" | "development" | "production"; NEXT_PUBLIC_SUPABASE_URL: string; NEXT_PUBLIC_SUPABASE_ANON_KEY: string; SUPABASE_SERVICE_ROLE_KEY?: string; ... 10 more ...; NEWS_DATA_KEY?: string; }; } | { ...; }'.
+  Property 'errors' does not exist on type '{ success: true; data: { NODE_ENV: "test" | "development" | "production"; NEXT_PUBLIC_SUPABASE_URL: string; NEXT_PUBLIC_SUPABASE_ANON_KEY: string; SUPABASE_SERVICE_ROLE_KEY?: string; ... 10 more ...; NEWS_DATA_KEY?: string; }; }'.
+src/doctor-cli.ts(858,39): error TS7006: Parameter 'e' implicitly has an 'any' type.
