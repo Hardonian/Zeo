@@ -312,11 +312,11 @@ export const SECRET_PATTERNS = [
  */
 export function redactSecrets<T>(input: T): T {
   if (typeof input === "string") {
-    let result = input;
+    let result: string = input;
     for (const pattern of SECRET_PATTERNS) {
       result = result.replace(pattern, "[REDACTED]");
     }
-    return result as unknown as T;
+    return result as T;
   }
 
   if (Array.isArray(input)) {
