@@ -77,3 +77,17 @@ packages/robustness typecheck: Done
 packages/strategy typecheck$ tsc -p tsconfig.json --noEmit
 packages/schema-registry typecheck: Done
 packages/telemetry typecheck$ tsc -p tsconfig.json --noEmit
+packages/semantic-clustering typecheck: Done
+packages/tenant typecheck$ tsc -p tsconfig.json --noEmit
+packages/simulation typecheck: Done
+packages/time typecheck$ tsc -p tsconfig.json --noEmit
+packages/telemetry typecheck: Done
+packages/timeseries typecheck$ tsc -p tsconfig.json --noEmit
+packages/strategy typecheck: Done
+packages/warehouse typecheck$ tsc --noEmit
+packages/tenant typecheck: Done
+vendor/controlplane/packages/benchmark typecheck$ tsc --noEmit
+packages/time typecheck: Done
+.../packages/contract-test-kit typecheck$ tsc --noEmit
+packages/timeseries typecheck: Done
+.../controlplane/packages/controlplane typecheck$ tsc --noEmit
