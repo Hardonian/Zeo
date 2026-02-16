@@ -526,6 +526,17 @@ async function runDecisionInWorkspace(
   dependsOn: string[],
   informs: string[]
 ): Promise<RunResult> {
+  if (process.env.ZEO_FIXED_TIME) {
+    const seed = createHash("sha256").update(ws.decisionId).digest("hex");
+    core.activateDeterministicMode({
+      seed,
+      clock: {
+        now: () => process.env.ZEO_FIXED_TIME!,
+        timestamp: () => Date.parse(process.env.ZEO_FIXED_TIME!)
+      }
+    });
+  }
+
   const spec = specFromWorkspace(ws);
   const { result, transcript } = core.executeDecision({
     spec,
@@ -537,6 +548,10 @@ async function runDecisionInWorkspace(
     informs,
     logicalTimestamp: process.env.ZEO_FIXED_TIME ? Date.parse(process.env.ZEO_FIXED_TIME) : Date.now()
   });
+
+  if (process.env.ZEO_FIXED_TIME) {
+    core.deactivateDeterministicMode();
+  }
 
   // Signing integration
   const defaultKeyPath = join(zeoRoot(), "keys", "id_ed25519.pem");
