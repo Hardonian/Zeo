@@ -8,6 +8,7 @@
 
 import type { McpConfig, McpToolCallParams, JsonRpcError, SchemaProperty } from "./types.js";
 import { isToolAllowed } from "./config.js";
+import { SecurityUtils } from "./security-utils.js";
 
 const SECRET_PATTERNS = [
     /token/i,
@@ -249,7 +250,9 @@ export function enforcePayloadSize(limit: number, value: unknown, label: string)
 export function sanitizeToolOutput(value: unknown): unknown {
     if (typeof value === "string") {
         const cleaned = stripControlChars(value).replace(/```[\s\S]*?```/g, "[BLOCK_REDACTED]");
-        const redacted = redactSecrets(cleaned);
+        // Defense-in-depth: remove scripts from tool outputs before they reach the client
+        const safeHtml = SecurityUtils.sanitizeHtml(cleaned);
+        const redacted = redactSecrets(safeHtml);
         return typeof redacted === "string" && redacted.length > 8000 ? `${redacted.slice(0, 8000)}…` : redacted;
     }
     if (Array.isArray(value)) {

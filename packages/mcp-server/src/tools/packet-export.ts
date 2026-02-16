@@ -56,9 +56,26 @@ export async function packetExport(
         ? (params["tags"] as string[])
         : undefined;
     const includeDeleted = params["includeDeleted"] === true;
-    const outputDir = params["outputDir"]
-        ? String(params["outputDir"])
-        : join(basePath, "dist", "mcp-export");
+
+    let outputDir: string;
+    if (params["outputDir"]) {
+        const requestedDir = String(params["outputDir"]);
+        // Path Traversal Mitigation: sanitize and force relative to basePath/dist
+        const sanitized = SecurityUtils.sanitizeFilename(requestedDir);
+        outputDir = join(basePath, "dist", "mcp-export", sanitized);
+    } else {
+        outputDir = join(basePath, "dist", "mcp-export");
+    }
+
+    // Double check normalization to prevent escape
+    const normalizedBase = normalize(join(basePath, "dist", "mcp-export"));
+    const normalizedOutput = normalize(outputDir);
+    if (!normalizedOutput.startsWith(normalizedBase)) {
+        return {
+            content: [{ type: "text", text: JSON.stringify({ error: "Invalid output directory: Path traversal detected" }) }],
+            isError: true,
+        };
+    }
 
     try {
         const bundle = await warehouse.exportBundle({

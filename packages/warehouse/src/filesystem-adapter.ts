@@ -35,12 +35,16 @@ export class FilesystemWarehouseAdapter implements WarehouseAdapter {
     this.basePath = join(cwd, WAREHOUSE_DIR);
   }
 
+  private sanitize(input: string): string {
+    return input.replace(/[^a-z0-9_\-.]/gi, "_").replace(/\.\.+/g, ".");
+  }
+
   private getRecordsPath(kind: WarehouseKind): string {
-    return join(this.basePath, RECORDS_DIR, kind);
+    return join(this.basePath, RECORDS_DIR, this.sanitize(kind));
   }
 
   private getRecordPath(kind: WarehouseKind, id: string): string {
-    return join(this.getRecordsPath(kind), `${id}.json`);
+    return join(this.getRecordsPath(kind), `${this.sanitize(id)}.json`);
   }
 
   private getIndexPath(): string {
@@ -59,34 +63,34 @@ export class FilesystemWarehouseAdapter implements WarehouseAdapter {
 
   async put<T>(envelope: WarehouseEnvelope<T>): Promise<WarehouseEnvelope<T>> {
     await this.ensureDir(this.getRecordsPath(envelope.kind));
-    
+
     const now = new Date().toISOString();
     const updatedEnvelope: WarehouseEnvelope<T> = {
       ...envelope,
       updatedAt: now,
     };
-    
+
     // Write record
     const recordPath = this.getRecordPath(envelope.kind, envelope.id);
     await this.atomicWrite(recordPath, JSON.stringify(updatedEnvelope, null, 2));
-    
+
     // Update index
     await this.updateIndex(updatedEnvelope);
-    
+
     return updatedEnvelope;
   }
 
   private async updateIndex<T>(envelope: WarehouseEnvelope<T>): Promise<void> {
     const indexPath = this.getIndexPath();
     let index: Record<string, RecordIndex> = {};
-    
+
     try {
       const indexData = await fs.readFile(indexPath, 'utf-8');
       index = JSON.parse(indexData);
     } catch {
       // Index doesn't exist yet
     }
-    
+
     index[envelope.id] = {
       id: envelope.id,
       kind: envelope.kind,
@@ -97,13 +101,13 @@ export class FilesystemWarehouseAdapter implements WarehouseAdapter {
       ...(envelope.tags ? { tags: envelope.tags } : {}),
       ...(envelope.softDeleted ? { softDeleted: envelope.softDeleted } : {}),
     };
-    
+
     await this.atomicWrite(indexPath, JSON.stringify(index, null, 2));
   }
 
   async get<T>(kind: WarehouseKind, id: string): Promise<WarehouseEnvelope<T> | null> {
     const recordPath = this.getRecordPath(kind, id);
-    
+
     try {
       const data = await fs.readFile(recordPath, 'utf-8');
       return JSON.parse(data) as WarehouseEnvelope<T>;
@@ -115,50 +119,50 @@ export class FilesystemWarehouseAdapter implements WarehouseAdapter {
   async list<T>(query: WarehouseQuery): Promise<WarehouseQueryResult<T>> {
     const indexPath = this.getIndexPath();
     let index: Record<string, RecordIndex> = {};
-    
+
     try {
       const indexData = await fs.readFile(indexPath, 'utf-8');
       index = JSON.parse(indexData);
     } catch {
       return { items: [] };
     }
-    
+
     const results: WarehouseEnvelope<T>[] = [];
-    
+
     for (const indexEntry of Object.values(index)) {
       if (query.kinds && !query.kinds.includes(indexEntry.kind)) {
         continue;
       }
-      
+
       if (!query.includeDeleted && indexEntry.softDeleted) {
         continue;
       }
-      
+
       if (query.timeRange) {
         const createdAt = indexEntry.createdAt;
         if (createdAt < query.timeRange.start || createdAt > query.timeRange.end) {
           continue;
         }
       }
-      
+
       if (query.tags && query.tags.length > 0) {
         const hasTag = query.tags.some((tag: string) => indexEntry.tags?.includes(tag));
         if (!hasTag) continue;
       }
-      
+
       const envelope = await this.get<T>(indexEntry.kind, indexEntry.id);
       if (envelope) {
         results.push(envelope);
       }
     }
-    
+
     return { items: results };
   }
 
   async delete(kind: WarehouseKind, id: string): Promise<boolean> {
     const envelope = await this.get(kind, id);
     if (!envelope) return false;
-    
+
     const now = new Date().toISOString();
     const softDeletedEnvelope = {
       ...envelope,
@@ -166,7 +170,7 @@ export class FilesystemWarehouseAdapter implements WarehouseAdapter {
       deletedAt: now,
       updatedAt: now,
     };
-    
+
     await this.put(softDeletedEnvelope);
     return true;
   }
@@ -179,7 +183,7 @@ export class FilesystemWarehouseAdapter implements WarehouseAdapter {
       ...(options.includeDeleted ? { includeDeleted: options.includeDeleted } : {}),
     };
     const result = await this.list<unknown>(query);
-    
+
     return {
       version: '1.0.0',
       exportedAt: new Date().toISOString(),
@@ -198,31 +202,31 @@ export class FilesystemWarehouseAdapter implements WarehouseAdapter {
     let imported = 0;
     let skipped = 0;
     let conflicts = 0;
-    
+
     for (const record of bundle.records) {
       const existing = await this.get(record.envelope.kind, record.envelope.id);
-      
+
       if (existing) {
         const sameHash = existing.hashes.contentHash === record.envelope.hashes.contentHash;
-        
+
         if (sameHash) {
           if (strategy.sameHashAction === 'skip') {
             skipped++;
             continue;
           }
         }
-        
+
         const shouldReplace = this.shouldReplace(existing, record.envelope, strategy);
         if (!shouldReplace) {
           conflicts++;
           continue;
         }
       }
-      
+
       await this.put(record.envelope);
       imported++;
     }
-    
+
     return { imported, skipped, conflicts };
   }
 
@@ -255,10 +259,15 @@ export class FilesystemBlobStorage implements BlobStorage {
     this.basePath = join(cwd, WAREHOUSE_DIR, BLOBS_DIR);
   }
 
+  private sanitize(input: string): string {
+    return input.replace(/[^a-z0-9_\-.]/gi, "_").replace(/\.\.+/g, ".");
+  }
+
   private getBlobPath(id: string): string {
+    const safeId = this.sanitize(id);
     // Store blobs in subdirectories based on first 2 chars of hash to avoid too many files in one dir
-    const subdir = id.slice(0, 2);
-    return join(this.basePath, subdir, id);
+    const subdir = safeId.slice(0, 2);
+    return join(this.basePath, subdir, safeId);
   }
 
   private async ensureDir(path: string): Promise<void> {
@@ -272,20 +281,20 @@ export class FilesystemBlobStorage implements BlobStorage {
   ): Promise<void> {
     const blobPath = this.getBlobPath(id);
     await this.ensureDir(blobPath);
-    
+
     const entry = {
       id,
       data: Buffer.from(data).toString('base64'),
       ...metadata,
       createdAt: new Date().toISOString(),
     };
-    
+
     await fs.writeFile(blobPath, JSON.stringify(entry), 'utf-8');
   }
 
   async getBlob(id: string): Promise<Uint8Array | null> {
     const blobPath = this.getBlobPath(id);
-    
+
     try {
       const data = await fs.readFile(blobPath, 'utf-8');
       const entry = JSON.parse(data);
@@ -297,7 +306,7 @@ export class FilesystemBlobStorage implements BlobStorage {
 
   async deleteBlob(id: string): Promise<boolean> {
     const blobPath = this.getBlobPath(id);
-    
+
     try {
       await fs.unlink(blobPath);
       return true;
@@ -308,16 +317,16 @@ export class FilesystemBlobStorage implements BlobStorage {
 
   async listBlobs(): Promise<Array<{ id: string; size: number; createdAt: string }>> {
     const results: Array<{ id: string; size: number; createdAt: string }> = [];
-    
+
     try {
       const entries = await fs.readdir(this.basePath, { withFileTypes: true });
-      
+
       for (const entry of entries) {
         if (entry.isDirectory()) {
           const subdir = entry.name;
           const subdirPath = join(this.basePath, subdir);
           const files = await fs.readdir(subdirPath);
-          
+
           for (const file of files) {
             const filePath = join(subdirPath, file);
             try {
@@ -337,7 +346,7 @@ export class FilesystemBlobStorage implements BlobStorage {
     } catch {
       // Directory doesn't exist yet
     }
-    
+
     return results;
   }
 }

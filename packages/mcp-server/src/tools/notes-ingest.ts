@@ -10,6 +10,7 @@ import type { WarehouseEvidenceEvent } from "@zeo/contracts";
 import { computeContentHash, generateStableId } from "@zeo/warehouse";
 import type { McpToolDefinition, McpToolResult } from "../types";
 import { validateToolInput } from "../security";
+import { SecurityUtils } from "../security-utils";
 
 export const notesIngestDefinition: McpToolDefinition = {
     name: "notes.ingest",
@@ -56,8 +57,8 @@ export async function notesIngest(
         };
     }
 
-    const title = String(params["title"]);
-    const body = String(params["body"]);
+    const title = SecurityUtils.sanitizeHtml(String(params["title"]));
+    const body = SecurityUtils.sanitizeHtml(String(params["body"]));
     const tags = Array.isArray(params["tags"])
         ? (params["tags"] as string[])
         : [];

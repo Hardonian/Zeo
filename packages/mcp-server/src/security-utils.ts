@@ -48,6 +48,16 @@ export class SecurityUtils {
   }
 
   /**
+   * Basic HTML/Script sanitizer to prevent XSS-in-reports.
+   */
+  static sanitizeHtml(input: string): string {
+    return input
+      .replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gmi, "")
+      .replace(/on\w+="[^"]*"/gmi, "") // strip event handlers
+      .replace(/javascript:[^"']*/gmi, ""); // strip javascript protocol
+  }
+
+  /**
    * Sanitize filename to prevent Path Traversal.
    */
   static sanitizeFilename(filename: string): string {
