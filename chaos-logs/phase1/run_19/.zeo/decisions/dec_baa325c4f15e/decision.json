@@ -1,0 +1,298 @@
+{
+  "decisionId": "dec_baa325c4f15e",
+  "title": "Determinism",
+  "decisionType": "ENG",
+  "workspaceMode": "customer",
+  "state": "proposed",
+  "createdAt": "2025-01-01T00:00:00.000Z",
+  "evidence": [
+    {
+      "kind": "note",
+      "text": "The",
+      "summary": "The",
+      "provenance": {
+        "source": "user_note",
+        "hash": "f3425df9b1739a6dd2e1d0ba54c0cc046cd00033c96ed0eb3dc8be0f5e6c65c3"
+      },
+      "cost": {
+        "timeMinutes": 5,
+        "risk": "low"
+      },
+      "id": "ev_f3425df9b1"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task_ev_f3425df9b1",
+      "label": "Validate: The",
+      "sourceEvidenceId": "ev_f3425df9b1",
+      "completed": false
+    }
+  ],
+  "runs": [
+    {
+      "transcriptHash": "2add44f76776d2af299e3e6e6249742e6344f5c974860506180c55aa6c9b6ff8",
+      "recommendedAction": "Action(s) act_commit, act_defer are robust.",
+      "boundarySummary": "Flip dist Infinity; 1 tasks; decay: 0 issues.",
+      "flipDistance": 100,
+      "fragility": "Stable",
+      "topEvidence": [
+        {
+          "id": "ev_f3425df9b1",
+          "summary": "The",
+          "cost": {
+            "timeMinutes": 5,
+            "risk": "low"
+          },
+          "decay": "unknown"
+        }
+      ],
+      "plan": {
+        "nextSteps": [
+          "Ask or verify the counterparty's timeline constraints (decision deadline, internal approvals).",
+          "Confirm the non-negotiable constraints (budget, exclusivity, termination terms) with provenance.",
+          "Probe the counterparty's primary objective (speed vs price vs risk) via a targeted question."
+        ],
+        "stopConditions": [
+          "No non-dominated evidence actions remain",
+          "Confidence range is decision-sufficient",
+          "Flip-distance threshold exceeds admissible change"
+        ]
+      },
+      "signatureStatus": "unsigned",
+      "dependsOn": [],
+      "informs": [],
+      "decaySummary": {
+        "fresh": 0,
+        "aging": 0,
+        "stale": 0,
+        "expired": 0,
+        "unknown": 1
+      },
+      "fullTranscript": {
+        "transcript_version": "1.0.0",
+        "zeo_version": "1.0.0",
+        "timestamp": 1735689600000,
+        "logical_clock": [
+          1735689600000,
+          10,
+          9
+        ],
+        "depends_on": [],
+        "informs": [],
+        "inputs": {
+          "initial_context": "Determinism",
+          "decision_spec": {
+            "id": "dec_baa325c4f15e",
+            "title": "Determinism",
+            "context": "Determinism",
+            "createdAt": "2025-01-01T00:00:00.000Z",
+            "decisionType": "ENG",
+            "workspaceMode": "customer",
+            "decisionState": "proposed",
+            "reviewAfter": "2025-01-31T00:00:00.000Z",
+            "expectedSignals": [
+              "The"
+            ],
+            "horizon": "days",
+            "agents": [
+              {
+                "id": "self",
+                "name": "Self",
+                "role": "self"
+              }
+            ],
+            "actions": [
+              {
+                "id": "act_commit",
+                "label": "Commit to Plan",
+                "actorId": "self",
+                "kind": "commit"
+              },
+              {
+                "id": "act_defer",
+                "label": "Gather More Evidence",
+                "actorId": "self",
+                "kind": "delay"
+              }
+            ],
+            "constraints": [],
+            "assumptions": [
+              {
+                "id": "ev_f3425df9b1",
+                "text": "The",
+                "status": "fact",
+                "confidence": "high",
+                "provenance": [
+                  {
+                    "kind": "text",
+                    "sourceId": "user_note",
+                    "offset": 0,
+                    "length": 3,
+                    "capturedAt": "2026-02-16T04:01:55.966Z",
+                    "checksum": "f3425df9b1739a6dd2e1d0ba54c0cc046cd00033c96ed0eb3dc8be0f5e6c65c3"
+                  }
+                ],
+                "tags": []
+              }
+            ],
+            "objectives": [
+              {
+                "id": "obj_robustness",
+                "metric": "robustness",
+                "weight": 1
+              }
+            ]
+          },
+          "assumptions": [
+            {
+              "id": "ev_f3425df9b1",
+              "text": "The",
+              "status": "fact"
+            }
+          ],
+          "constraints": []
+        },
+        "evidence": {
+          "submitted": [],
+          "totals": {
+            "count": 0,
+            "time": "0",
+            "risk": "bounded"
+          }
+        },
+        "analysis": {
+          "flip_distances": [],
+          "decision_boundaries": [
+            {
+              "lens": "robustness",
+              "robust_actions": [
+                "act_commit",
+                "act_defer"
+              ],
+              "fragile_assumptions": []
+            },
+            {
+              "lens": "expected_utility",
+              "robust_actions": [
+                "act_commit"
+              ],
+              "fragile_assumptions": [
+                "ev_f3425df9b1"
+              ]
+            },
+            {
+              "lens": "game_theory",
+              "robust_actions": [
+                "act_defer"
+              ],
+              "fragile_assumptions": [
+                "ev_f3425df9b1"
+              ]
+            },
+            {
+              "lens": "evolutionary",
+              "robust_actions": [],
+              "fragile_assumptions": [
+                "ev_f3425df9b1"
+              ]
+            }
+          ],
+          "voi_rankings": [
+            {
+              "prompt": "Ask or verify the counterparty's timeline constraints (decision deadline, internal approvals).",
+              "rank": 1,
+              "rationale": "Timeline sensitivity often flips whether to press, verify, or concede on secondary terms."
+            },
+            {
+              "prompt": "Confirm the non-negotiable constraints (budget, exclusivity, termination terms) with provenance.",
+              "rank": 2,
+              "rationale": "Hard constraints collapse many branches early and prevent wasted negotiation cycles."
+            },
+            {
+              "prompt": "Probe the counterparty's primary objective (speed vs price vs risk) via a targeted question.",
+              "rank": 3,
+              "rationale": "Objective ordering determines which concessions are high-leverage and which are wasted."
+            }
+          ]
+        },
+        "plan": {
+          "regret_bounded_evidence_plan": [
+            {
+              "prompt": "Ask or verify the counterparty's timeline constraints (decision deadline, internal approvals).",
+              "rationale": "Timeline sensitivity often flips whether to press, verify, or concede on secondary terms."
+            },
+            {
+              "prompt": "Confirm the non-negotiable constraints (budget, exclusivity, termination terms) with provenance.",
+              "rationale": "Hard constraints collapse many branches early and prevent wasted negotiation cycles."
+            },
+            {
+              "prompt": "Probe the counterparty's primary objective (speed vs price vs risk) via a targeted question.",
+              "rationale": "Objective ordering determines which concessions are high-leverage and which are wasted."
+            }
+          ],
+          "stop_conditions": [
+            "No non-dominated evidence actions remain",
+            "Confidence range is decision-sufficient",
+            "Flip-distance threshold exceeds admissible change"
+          ]
+        },
+        "outcome": {
+          "recommended_action_ids": [
+            "act_commit",
+            "act_defer"
+          ],
+          "confidence_bounds": {
+            "lower": "0.0500",
+            "upper": "0.6000",
+            "method": "range_aggregation"
+          }
+        },
+        "counterfactuals": [],
+        "agents": [],
+        "decision_result_hash": "4cd30ed66657f15d2fa93daa2f0ee3d804b1186156cba5c2a4bdfdd60d23aabf",
+        "invariants": {
+          "determinism_checks": [
+            "same_inputs_same_transcript",
+            "append_order_deterministic",
+            "transcript_does_not_mutate_result"
+          ],
+          "validation_assertions": [
+            "boundary_conditions_present",
+            "counterfactuals_present",
+            "confidence_bounds_present"
+          ]
+        },
+        "transcript_hash": "2add44f76776d2af299e3e6e6249742e6344f5c974860506180c55aa6c9b6ff8",
+        "transcript_id": "tr_2add44f76776d2af"
+      },
+      "confidence": 0.8,
+      "health": {
+        "schemaVersion": "1.0.0",
+        "evidenceCompletenessScore": 50,
+        "policyComplianceScore": 0,
+        "replayStabilityScore": 100,
+        "assumptionVolatilityIndex": 0,
+        "riskScore": 53,
+        "createdAt": "2025-01-01T00:00:00.000Z",
+        "updatedAt": "2025-01-01T00:00:00.000Z"
+      }
+    }
+  ],
+  "chain": {},
+  "workspaceId": "default",
+  "reviewAt": "2025-01-31",
+  "driftEvents": [],
+  "healthHistory": [
+    {
+      "schemaVersion": "1.0.0",
+      "evidenceCompletenessScore": 50,
+      "policyComplianceScore": 0,
+      "replayStabilityScore": 100,
+      "assumptionVolatilityIndex": 0,
+      "riskScore": 53,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "updatedAt": "2025-01-01T00:00:00.000Z"
+    }
+  ]
+}
