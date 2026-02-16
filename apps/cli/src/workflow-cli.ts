@@ -300,7 +300,7 @@ function ensureWorkspaceRoot(): void {
 }
 
 function nowIso(): string {
-  return new Date().toISOString();
+  return process.env.ZEO_FIXED_TIME || new Date().toISOString();
 }
 
 function clampScore(value: number): number {
@@ -535,7 +535,7 @@ async function runDecisionInWorkspace(
     // Real evidence events would be separate. For now, we map workspace evidence to assumptions.
     dependsOn,
     informs,
-    logicalTimestamp: Date.now()
+    logicalTimestamp: process.env.ZEO_FIXED_TIME ? Date.parse(process.env.ZEO_FIXED_TIME) : Date.now()
   });
 
   // Signing integration
