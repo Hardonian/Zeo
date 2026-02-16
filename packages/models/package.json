@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@zeo/contracts": "workspace:*",
-    "@zeo/regimes": "workspace:*"
+    "@zeo/regimes": "workspace:*",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@types/node": "^25.2.1"
