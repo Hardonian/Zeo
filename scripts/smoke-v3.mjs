@@ -9,7 +9,8 @@ import { createHash } from 'node:crypto';
 const ROOT = resolve(process.cwd());
 // Use source for immediate feedback (bypass build issues)
 const CLI_PATH = join(ROOT, 'apps/cli/src/index.ts');
-const NODE = 'npx tsx';
+// Force resolution of @zeo/* paths via tsconfig
+const NODE = 'npx tsx -r tsconfig-paths/register';
 const OUT_DIR = join(ROOT, 'tmp', 'smoke-v3');
 
 // Ensure output dir exists
