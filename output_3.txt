@@ -1,0 +1,8 @@
+
+> zeo@1.0.0 typecheck C:\Users\scott\Documents\GitHub\Zeo
+> pnpm -r --filter @zeo/contracts build && pnpm -r typecheck && pnpm -C packages/core typecheck:exports
+
+
+> @zeo/contracts@0.1.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\contracts
+> tsc -p tsconfig.build.json
+
