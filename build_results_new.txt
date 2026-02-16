@@ -1,0 +1,175 @@
+
+> zeo@1.0.0 build C:\Users\scott\Documents\GitHub\Zeo
+> pnpm -r --workspace-concurrency=3 build
+
+Scope: 82 of 83 workspace projects
+packages/analysis build$ tsc
+packages/db build$ tsc && node scripts/copy-client.mjs
+packages/env build$ tsup src/index.ts --format cjs,esm --dts
+packages/env build: [34mCLI[39m Building entry: src/index.ts
+packages/env build: [34mCLI[39m Using tsconfig: tsconfig.json
+packages/env build: [34mCLI[39m tsup v8.5.1
+packages/env build: [34mCLI[39m Target: es2022
+packages/env build: [34mCJS[39m Build start
+packages/env build: [34mESM[39m Build start
+packages/env build: [43m[30m WARN [39m[49m [33mΓû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mThe condition "types" here will never be used as it comes after both "import" and "require"[0m [package.json]
+packages/env build:     package.json:12:6:
+packages/env build: [37m      12 Γöé       [32m"types"[37m: "./dist/index.d.ts"
+packages/env build:          Γò╡       [32m~~~~~~~[0m
+packages/env build:   The "import" condition comes earlier and will be used for all "import" statements:
+packages/env build:     package.json:10:6:
+packages/env build: [37m      10 Γöé       [32m"import"[37m: "./dist/index.mjs",
+packages/env build:          Γò╡       [32m~~~~~~~~[0m
+packages/env build:   The "require" condition comes earlier and will be used for all "require" calls:
+packages/env build:     package.json:11:6:
+packages/env build: [37m      11 Γöé       [32m"require"[37m: "./dist/index.js",
+packages/env build:          Γò╡       [32m~~~~~~~~~[0m
+packages/env build: [43m[30m WARN [39m[49m [33mΓû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mThe condition "types" here will never be used as it comes after both "import" and "require"[0m [package.json]
+packages/env build:     package.json:12:6:
+packages/env build: [37m      12 Γöé       [32m"types"[37m: "./dist/index.d.ts"
+packages/env build:          Γò╡       [32m~~~~~~~[0m
+packages/env build:   The "import" condition comes earlier and will be used for all "import" statements:
+packages/env build:     package.json:10:6:
+packages/env build: [37m      10 Γöé       [32m"import"[37m: "./dist/index.mjs",
+packages/env build:          Γò╡       [32m~~~~~~~~[0m
+packages/env build:   The "require" condition comes earlier and will be used for all "require" calls:
+packages/env build:     package.json:11:6:
+packages/env build: [37m      11 Γöé       [32m"require"[37m: "./dist/index.js",
+packages/env build:          Γò╡       [32m~~~~~~~~~[0m
+packages/env build: [32mESM[39m [1mdist\index.mjs [22m[32m1.90 KB[39m
+packages/env build: [32mESM[39m ΓÜí∩╕Å Build success in 145ms
+packages/env build: [32mCJS[39m [1mdist\index.js [22m[32m3.17 KB[39m
+packages/env build: [32mCJS[39m ΓÜí∩╕Å Build success in 145ms
+packages/db build: Copying Prisma client from C:\Users\scott\Documents\GitHub\Zeo\packages\db\src\generated\client to C:\Users\scott\Documents\GitHub\Zeo\packages\db\dist\generated\client
+packages/db build: Done
+packages/id build$ tsc -p tsconfig.build.json
+packages/analysis build: Done
+packages/policy-types build$ tsc
+packages/env build: [34mDTS[39m Build start
+packages/id build: Done
+packages/sdk build$ tsc -p tsconfig.build.json
+packages/policy-types build: Done
+packages/trust build$ tsc -p tsconfig.build.json
+packages/env build: [32mDTS[39m ΓÜí∩╕Å Build success in 1555ms
+packages/env build: [32mDTS[39m [1mdist\index.d.ts  [22m[32m3.11 KB[39m
+packages/env build: [32mDTS[39m [1mdist\index.d.mts [22m[32m3.11 KB[39m
+packages/env build: Done
+.../controlplane/packages/contract-kit build$ tsc
+packages/sdk build: Done
+vendor/controlplane/packages/contracts build$ tsup src/index.ts --format esm,cjs --dts
+packages/trust build: Done
+.../controlplane/packages/create-runner build$ tsc
+vendor/controlplane/packages/contracts build: [34mCLI[39m Building entry: src/index.ts
+vendor/controlplane/packages/contracts build: [34mCLI[39m Using tsconfig: tsconfig.json
+vendor/controlplane/packages/contracts build: [34mCLI[39m tsup v8.5.1
+vendor/controlplane/packages/contracts build: [34mCLI[39m Target: es2022
+vendor/controlplane/packages/contracts build: [34mESM[39m Build start
+vendor/controlplane/packages/contracts build: [34mCJS[39m Build start
+vendor/controlplane/packages/contracts build: [32mESM[39m [1mdist\index.js [22m[32m48.61 KB[39m
+vendor/controlplane/packages/contracts build: [32mESM[39m ΓÜí∩╕Å Build success in 46ms
+vendor/controlplane/packages/contracts build: [32mCJS[39m [1mdist\index.cjs [22m[32m62.21 KB[39m
+vendor/controlplane/packages/contracts build: [32mCJS[39m ΓÜí∩╕Å Build success in 46ms
+.../controlplane/packages/contract-kit build: Done
+vendor/controlplane/packages/contracts build: [34mDTS[39m Build start
+.../controlplane/packages/create-runner build: Done
+vendor/controlplane/packages/contracts build: [32mDTS[39m ΓÜí∩╕Å Build success in 2625ms
+vendor/controlplane/packages/contracts build: [32mDTS[39m [1mdist\index.d.ts  [22m[32m496.46 KB[39m
+vendor/controlplane/packages/contracts build: [32mDTS[39m [1mdist\index.d.cts [22m[32m496.46 KB[39m
+vendor/controlplane/packages/contracts build: Done
+packages/contracts build$ tsc -p tsconfig.build.json
+packages/policy build$ tsc
+.../controlplane/packages/observability build$ tsc
+.../controlplane/packages/observability build: Done
+.../packages/optimization-utils build$ tsc
+packages/contracts build: Done
+packages/policy build: Done
+.../packages/optimization-utils build: Done
+packages/analysis-planner build$ tsc -p tsconfig.build.json
+packages/adapters build$ tsc -p tsconfig.build.json
+packages/audit build$ tsc -p tsconfig.build.json
+packages/analysis-planner build: Done
+packages/bayes-shrinkage build$ tsc -p tsconfig.build.json
+packages/audit build: Done
+packages/budgets build$ tsc -p tsconfig.build.json
+packages/adapters build: Done
+packages/causal build$ tsc -p tsconfig.build.json
+packages/bayes-shrinkage build: Done
+packages/compliance build$ tsc -p tsconfig.build.json
+packages/causal build: Done
+packages/constraints build$ tsc -p tsconfig.build.json
+packages/budgets build: Done
+packages/counterfactuals build$ tsc -p tsconfig.build.json
+packages/compliance build: Done
+packages/decision-synthesizer build$ tsc -p tsconfig.build.json
+packages/constraints build: Done
+packages/explain build$ tsc -p tsconfig.build.json
+packages/counterfactuals build: Done
+packages/feature-discovery build$ tsc -p tsconfig.build.json
+packages/decision-synthesizer build: Done
+packages/game build$ tsc -p tsconfig.build.json
+packages/explain build: Done
+packages/governance build$ tsc -p tsconfig.build.json
+packages/feature-discovery build: Done
+packages/hypothesis-registry build$ tsc -p tsconfig.build.json
+packages/game build: Done
+packages/info-theory build$ tsc -p tsconfig.build.json
+packages/hypothesis-registry build: Done
+packages/jobs build$ tsc -p tsconfig.build.json
+packages/governance build: Done
+packages/ledger build$ tsup src/index.ts --format cjs,esm --dts
+packages/ledger build: [34mCLI[39m Building entry: src/index.ts
+packages/ledger build: [34mCLI[39m tsup v8.5.1
+packages/ledger build: [34mCLI[39m Target: node16
+packages/ledger build: [34mCJS[39m Build start
+packages/ledger build: [34mESM[39m Build start
+packages/ledger build: [43m[30m WARN [39m[49m [33mΓû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mThe condition "types" here will never be used as it comes after both "import" and "require"[0m [package.json]
+packages/ledger build:     package.json:12:6:
+packages/ledger build: [37m      12 Γöé       [32m"types"[37m: "./dist/index.d.ts"
+packages/ledger build:          Γò╡       [32m~~~~~~~[0m
+packages/ledger build:   The "import" condition comes earlier and will be used for all "import" statements:
+packages/ledger build:     package.json:10:6:
+packages/ledger build: [37m      10 Γöé       [32m"import"[37m: "./dist/index.mjs",
+packages/ledger build:          Γò╡       [32m~~~~~~~~[0m
+packages/ledger build:   The "require" condition comes earlier and will be used for all "require" calls:
+packages/ledger build:     package.json:11:6:
+packages/ledger build: [37m      11 Γöé       [32m"require"[37m: "./dist/index.js",
+packages/ledger build:          Γò╡       [32m~~~~~~~~~[0m
+packages/ledger build: [43m[30m WARN [39m[49m [33mΓû▓ [43;33m[[43;30mWARNING[43;33m][0m [1mThe condition "types" here will never be used as it comes after both "import" and "require"[0m [package.json]
+packages/ledger build:     package.json:12:6:
+packages/ledger build: [37m      12 Γöé       [32m"types"[37m: "./dist/index.d.ts"
+packages/ledger build:          Γò╡       [32m~~~~~~~[0m
+packages/ledger build:   The "import" condition comes earlier and will be used for all "import" statements:
+packages/ledger build:     package.json:10:6:
+packages/ledger build: [37m      10 Γöé       [32m"import"[37m: "./dist/index.mjs",
+packages/ledger build:          Γò╡       [32m~~~~~~~~[0m
+packages/ledger build:   The "require" condition comes earlier and will be used for all "require" calls:
+packages/ledger build:     package.json:11:6:
+packages/ledger build: [37m      11 Γöé       [32m"require"[37m: "./dist/index.js",
+packages/ledger build:          Γò╡       [32m~~~~~~~~~[0m
+packages/ledger build: [32mESM[39m [1mdist\index.mjs [22m[32m2.90 KB[39m
+packages/ledger build: [32mESM[39m ΓÜí∩╕Å Build success in 51ms
+packages/ledger build: [32mCJS[39m [1mdist\index.js [22m[32m4.31 KB[39m
+packages/ledger build: [32mCJS[39m ΓÜí∩╕Å Build success in 52ms
+packages/info-theory build: Done
+packages/lenses build$ tsc -p tsconfig.build.json
+packages/ledger build: [34mDTS[39m Build start
+packages/jobs build: Done
+packages/mcp-interop build$ tsc -p tsconfig.build.json
+packages/lenses build: Done
+packages/measurement build$ tsc -p tsconfig.build.json
+packages/mcp-interop build: Done
+packages/memory build$ tsc -p tsconfig.build.json
+packages/ledger build: src/index.ts(4,66): error TS2792: Cannot find module '@zeo/contracts'. Did you mean to set the 'moduleResolution' option to 'nodenext', or to add aliases to the 'paths' option?
+packages/ledger build: [31mError: error occurred in dts build
+packages/ledger build:     at Worker.<anonymous> (C:\Users\scott\Documents\GitHub\Zeo\node_modules\.pnpm\tsup@8.5.1_jiti@2.6.1_postcss@8.5.6_typescript@5.9.3\node_modules\tsup\dist\index.js:1545:26)
+packages/ledger build:     at Worker.emit (node:events:518:28)
+packages/ledger build:     at MessagePort.<anonymous> (node:internal/worker:263:53)
+packages/ledger build:     at [nodejs.internal.kHybridDispatch] (node:internal/event_target:826:20)
+packages/ledger build:     at exports.emitMessage (node:internal/per_context/messageport:23:28)[39m
+packages/ledger build: [31mDTS[39m [31mBuild error[39m
+packages/ledger build: Failed
+C:\Users\scott\Documents\GitHub\Zeo\packages\ledger:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @zeo/ledger@0.1.0 build: `tsup src/index.ts --format cjs,esm --dts`
+Exit status 1
+packages/modules build$ tsc -p tsconfig.build.json
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
