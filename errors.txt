@@ -1,0 +1,5 @@
+src/app/studio/run/[id]/page.tsx(144,13): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+src/lib/studio-api.ts(533,20): error TS2352: Conversion of type 'typeof import("C:/Users/scott/Documents/GitHub/Zeo/packages/compliance/src/index")' to type '{ generateComplianceReport: (tenantId: string, ledger: unknown) => Record<string, unknown>; complianceLedger: unknown; }' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  The types returned by 'generateComplianceReport(...)' are incompatible between these types.
+    Type 'ComplianceReport' is not comparable to type 'Record<string, unknown>'.
+      Index signature for type 'string' is missing in type 'ComplianceReport'.
