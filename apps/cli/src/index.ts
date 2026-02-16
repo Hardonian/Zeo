@@ -97,6 +97,11 @@ Commands:
   keys <cmd>                  Local keyring operations
   trust <cmd>                 Trust profile operations
 
+  --- v8: Federated Worker Mesh ---
+  mesh <cmd>                  Mesh commands (status/batch/start-worker)
+  sign-envelope <file>        Sign a job envelope
+  verify-envelope <file>      Verify a job/result envelope
+
   --- Studio: Local Decision Workbench ---
   studio                       Launch Zeo Studio (local workbench UI)
   export-report <run_id>       Generate signed run report (JSON + HTML + SHA-256)
@@ -570,6 +575,13 @@ async function main(): Promise<void> {
   if (["tenant", "health", "drift", "schemas", "compliance", "modules", "simulate", "outcome"].includes(argv[0] ?? "")) {
     const mod = await import("./v3-cli.js");
     process.exit(await mod.runV3Command(mod.parseV3Args(argv)));
+  }
+
+  // v8: Federated Worker Mesh commands
+  if (["mesh", "sign-envelope", "verify-envelope"].includes(argv[0] ?? "")) {
+    const mod = await import("./mesh-cli.js");
+    const meshCmd = argv[0] === "mesh" ? "mesh" : argv[0];
+    process.exit(await mod.runMeshCommand(mod.parseMeshArgs(meshCmd === "mesh" ? argv.slice(0) : argv)));
   }
 
   if (argv[0] === "zeolite") {
