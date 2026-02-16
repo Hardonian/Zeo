@@ -7,26 +7,41 @@ const clientSchema = envSchema.pick({
 });
 
 export type PublicEnv = {
-  NEXT_PUBLIC_SUPABASE_URL: string;
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
+  supabaseUrl: string;
+  supabaseAnonKey: string;
 };
 
 export function getPublicEnv(): PublicEnv {
-  // On client, we must construct the object explicitly so Next.js build-time replacement works
   const env = {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   };
-  // Zod will validate URL format etc.
-  return clientSchema.parse(env) as PublicEnv;
+  const parsed = clientSchema.parse(env);
+  return {
+    supabaseUrl: parsed.NEXT_PUBLIC_SUPABASE_URL,
+    supabaseAnonKey: parsed.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  };
 }
 
-export function getServerEnv(): Env {
+export type ServerEnv = PublicEnv & {
+  supabaseServiceRoleKey: string;
+};
+
+export function getServerEnv(): ServerEnv {
   if (typeof window !== 'undefined') {
     throw new Error('getServerEnv called on client');
   }
-  // On server, process.env has everything
-  return envSchema.parse(process.env);
+  const parsed = envSchema.parse(process.env);
+
+  if (!parsed.SUPABASE_SERVICE_ROLE_KEY) {
+      throw new Error('Missing required environment variable: SUPABASE_SERVICE_ROLE_KEY');
+  }
+
+  return {
+    supabaseUrl: parsed.NEXT_PUBLIC_SUPABASE_URL,
+    supabaseAnonKey: parsed.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    supabaseServiceRoleKey: parsed.SUPABASE_SERVICE_ROLE_KEY,
+  };
 }
 
 export function hasPublicSupabaseEnv(): boolean {

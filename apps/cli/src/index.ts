@@ -5,6 +5,11 @@ import { performance } from "node:perf_hooks";
 import type { WorldModelSpec, EvidenceCandidate, PosteriorState, VoiReport } from "@zeo/contracts";
 import { parseArgs, type CliArgs } from "./args.js";
 import { createRunContext, log } from "./observability.js";
+import dotenv from "dotenv";
+import { checkEnv } from "@zeo/env";
+
+dotenv.config();
+checkEnv();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
