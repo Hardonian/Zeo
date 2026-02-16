@@ -227,8 +227,7 @@ async function cmdMeshStatus(args: MeshCliArgs): Promise<number> {
 
 async function cmdMeshBatch(args: MeshCliArgs): Promise<number> {
   const { MeshOrchestrator, ENVELOPE_VERSION } = await import("@zeo/mesh");
-  const core = await import("@zeo/core");
-  const KERNEL_SCHEMA_VERSION = core.kernel.KERNEL_SCHEMA_VERSION;
+  const { KERNEL_SCHEMA_VERSION } = await import("@zeo/core");
 
   const mode = (args.mode ?? "local") as any;
   const count = args.count ?? 5;

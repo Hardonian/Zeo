@@ -12,8 +12,7 @@
 
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from "vitest";
 import { randomUUID } from "node:crypto";
-import { kernel, type KernelInput, type KernelPolicySnapshot } from "@zeo/core";
-import { KERNEL_VERSION, KERNEL_SCHEMA_VERSION } from "@zeo/core";
+import { kernel, type KernelInput, type KernelPolicySnapshot, KERNEL_VERSION, KERNEL_SCHEMA_VERSION } from "@zeo/core";
 import {
   createJobEnvelope,
   createResultEnvelope,
