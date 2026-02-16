@@ -2,19 +2,49 @@
   "envelope_version": "1.0.0",
   "job_id": "test_cli_job",
   "tenant_id": "tenant_cli",
-  "policy_snapshot": { "policies": [], "enforcementStrength": "basic" },
+  "policy_snapshot": {
+    "policies": [],
+    "enforcementStrength": "basic"
+  },
   "kernel_input": {
-    "spec": { "id": "s1", "title": "CLI Test", "horizon": "days" },
-    "evidenceSnapshot": { "version": "1.0.0", "nodes": [] },
-    "policySnapshot": { "policies": [], "enforcementStrength": "basic" },
-    "toolResultsSnapshot": { "tools": [] },
-    "config": { "seed": "cli", "floatPrecision": 10, "maxDepth": 2, "maxBranchesPerAction": 4, "useQuantEngine": false },
+    "spec": {
+      "id": "s1",
+      "title": "CLI Test",
+      "horizon": "days"
+    },
+    "evidenceSnapshot": {
+      "version": "1.0.0",
+      "nodes": []
+    },
+    "policySnapshot": {
+      "policies": [],
+      "enforcementStrength": "basic"
+    },
+    "toolResultsSnapshot": {
+      "tools": []
+    },
+    "config": {
+      "seed": "cli",
+      "floatPrecision": 10,
+      "maxDepth": 2,
+      "maxBranchesPerAction": 4,
+      "useQuantEngine": false
+    },
     "schemaVersion": "1.0.0"
   },
-  "schema_versions": { "envelope": "1.0.0", "kernel": "1.0.0", "ir": "1.0.0", "policy": "1.0.0" },
-  "deterministic_config": { "seed": "cli", "float_precision": 10, "max_depth": 2 },
+  "schema_versions": {
+    "envelope": "1.0.0",
+    "kernel": "1.0.0",
+    "ir": "1.0.0",
+    "policy": "1.0.0"
+  },
+  "deterministic_config": {
+    "seed": "cli",
+    "float_precision": 10,
+    "max_depth": 2
+  },
   "trace_id": "trace123",
   "created_at": "2025-01-01T00:00:00Z",
   "nonce": "nonce123",
-  "signature": ""
+  "signature": "568ba23a475b743d2769477859531d28e633fdf0b0159911e71af6f8a9f4383d"
 }
