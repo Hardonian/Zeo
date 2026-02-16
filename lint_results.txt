@@ -58,3 +58,49 @@ packages/jobs lint: Done
 packages/repro-pack lint$ eslint src/**/*.ts
 packages/memory lint: Done
 packages/robustness lint$ eslint src/**/*.ts
+packages/quant-timeseries lint: Done
+packages/semantic-clustering lint$ eslint src
+packages/regimes lint: Done
+packages/timeseries lint$ eslint .
+packages/repro-pack lint: Done
+packages/warehouse lint$ eslint src/**/*.ts
+packages/robustness lint: Done
+vendor/controlplane/packages/benchmark lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/benchmark/src
+packages/semantic-clustering lint: Done
+.../packages/contract-test-kit lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/contract-test-kit/src
+packages/timeseries lint: Done
+.../controlplane/packages/controlplane lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/controlplane/src
+packages/warehouse lint: Done
+.../controlplane/packages/sdk-generator lint$ node ../../scripts/lint-target.mjs vendor/controlplane/packages/sdk-generator/src
+vendor/controlplane/packages/benchmark lint: (node:16076) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+vendor/controlplane/packages/benchmark lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+vendor/controlplane/packages/benchmark lint: Done
+.../packages/contract-test-kit lint: (node:28408) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../packages/contract-test-kit lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../packages/contract-test-kit lint: Done
+.../controlplane/packages/controlplane lint: (node:23316) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../controlplane/packages/controlplane lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../controlplane/packages/controlplane lint: Done
+.../controlplane/packages/sdk-generator lint: (node:2524) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../controlplane/packages/sdk-generator lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../controlplane/packages/sdk-generator lint: Done
+packages/adapters-runtime lint$ eslint src/**/*.ts
+packages/analytics lint$ eslint src/**/*.ts
+packages/calibration lint$ eslint .
+packages/dataset-builder lint$ eslint .
+packages/dataset-builder lint: Done
+packages/kpi lint$ eslint src
+packages/analytics lint: Done
+packages/meta lint$ eslint .
+packages/calibration lint: Done
+packages/models lint$ eslint .
+packages/adapters-runtime lint: Done
+.../packages/integration-tests lint$ node ../../scripts/lint-target.mjs vendor/controlplane/tests/integration
+packages/meta lint: Done
+packages/kpi lint: Done
+packages/models lint: Done
+.../packages/integration-tests lint: (node:28208) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+.../packages/integration-tests lint: (Use `node --trace-deprecation ...` to show where the warning was created)
+.../packages/integration-tests lint: Done
+packages/causal-skeletons lint$ eslint .
+packages/rsl lint$ eslint .
