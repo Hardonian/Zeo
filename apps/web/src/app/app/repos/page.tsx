@@ -51,8 +51,7 @@ export default async function ReposPage({
         {' · '}
         <Link className={windowDays === 180 ? 'font-semibold text-blue-700 underline' : 'text-blue-700 hover:underline'} href="/app/repos?days=180">Last 180 days</Link>
       </div>
-      {/* @ts-expect-error Server Actions are valid here */}
-      <form action={createRepo} className="rounded border bg-white p-4"><input name="provider" defaultValue="github" className="rounded border px-3 py-2" aria-label="Provider" /><input className="ml-2 rounded border px-3 py-2" name="repo_full_name" placeholder="owner/repo" required aria-label="Repository Name" /><button className="ml-2 rounded bg-blue-600 px-3 py-2 text-white">Save</button></form>
+      <form action={createRepo as unknown as string} className="rounded border bg-white p-4"><input name="provider" defaultValue="github" className="rounded border px-3 py-2" aria-label="Provider" /><input className="ml-2 rounded border px-3 py-2" name="repo_full_name" placeholder="owner/repo" required aria-label="Repository Name" /><button className="ml-2 rounded bg-blue-600 px-3 py-2 text-white">Save</button></form>
       <ul className="rounded border bg-white p-4">{repos.map((r) => <li key={r.id}>{r.provider}: {r.repo_full_name}</li>)}</ul>
     </div>
   );
