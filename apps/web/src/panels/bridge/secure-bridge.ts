@@ -17,15 +17,6 @@ import {
 } from '@/actions/decision';
 import type { RunMeta } from '@zeo/contracts'; // Ensure RunMeta is contracts or check its def
 
-// We use RunMeta from contracts if available, otherwise define local as it was in core/packets
-// Core defines: export type { RunMeta } from "./packets.js";
-// Contracts usually has it? Let's assume contracts has it or we redefined it.
-// Checking previous imports: core exported RunMeta.
-// If contracts doesn't have it, we might need it.
-// Let's define it locally if missing from contracts, or import from contracts if it's there.
-// View file showed: import { type RunMeta } from '@zeo/core';
-// I will check contracts first? No, I'll rely on IDE feedback or define it simple here.
-
 import {
   isValidPermissionRequest,
   createPermissionResponse,
@@ -345,7 +336,6 @@ function validateMessagePayload(
       if (!payload || typeof payload !== 'object') {
         return { valid: false, error: 'Decision payload must be an object' };
       }
-      // Additional validation could be added here
       return { valid: true };
 
     case 'ingest_evidence_note':
