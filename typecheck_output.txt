@@ -85,3 +85,94 @@ packages/regimes typecheck: Done
 packages/semantic-clustering typecheck$ tsc --noEmit
 packages/repro-pack typecheck: Done
 packages/simulation typecheck$ tsc -p tsconfig.json --noEmit
+packages/robustness typecheck: Done
+packages/strategy typecheck$ tsc -p tsconfig.json --noEmit
+packages/schema-registry typecheck: Done
+packages/telemetry typecheck$ tsc -p tsconfig.json --noEmit
+packages/semantic-clustering typecheck: Done
+packages/tenant typecheck$ tsc -p tsconfig.json --noEmit
+packages/simulation typecheck: Done
+packages/time typecheck$ tsc -p tsconfig.json --noEmit
+packages/strategy typecheck: Done
+packages/timeseries typecheck$ tsc -p tsconfig.json --noEmit
+packages/telemetry typecheck: Done
+packages/warehouse typecheck$ tsc --noEmit
+packages/tenant typecheck: Done
+vendor/controlplane/packages/benchmark typecheck$ tsc --noEmit
+packages/time typecheck: Done
+.../packages/contract-test-kit typecheck$ tsc --noEmit
+packages/timeseries typecheck: Done
+.../controlplane/packages/controlplane typecheck$ tsc --noEmit
+packages/warehouse typecheck: Done
+.../controlplane/packages/sdk-generator typecheck$ tsc --noEmit
+vendor/controlplane/packages/benchmark typecheck: Done
+.../packages/contract-test-kit typecheck: Done
+.../controlplane/packages/controlplane typecheck: Done
+.../controlplane/packages/sdk-generator typecheck: Done
+packages/analytics typecheck$ tsc --noEmit
+packages/adapters-runtime typecheck$ tsc --noEmit
+packages/dataset-builder typecheck$ tsc -p tsconfig.json --noEmit
+packages/calibration typecheck$ tsc -p tsconfig.json --noEmit
+packages/adapters-runtime typecheck: Done
+packages/kpi typecheck$ tsc -p tsconfig.json --noEmit
+packages/analytics typecheck: Done
+packages/meta typecheck$ tsc -p tsconfig.json --noEmit
+packages/calibration typecheck: Done
+packages/models typecheck$ tsc -p tsconfig.json --noEmit
+packages/dataset-builder typecheck: Done
+packages/values typecheck$ tsc -p tsconfig.json --noEmit
+packages/meta typecheck: Done
+.../packages/integration-tests typecheck$ tsc --noEmit
+packages/models typecheck: Done
+packages/values typecheck: Done
+packages/kpi typecheck: Done
+.../packages/integration-tests typecheck: Done
+packages/causal-skeletons typecheck$ tsc -p tsconfig.json --noEmit
+packages/rsl typecheck$ tsc -p tsconfig.json --noEmit
+packages/causal-skeletons typecheck: Done
+packages/rsl typecheck: Done
+packages/worlds typecheck$ tsc -p tsconfig.json --noEmit
+packages/worlds typecheck: Done
+packages/core typecheck$ tsc -p tsconfig.json --noEmit
+packages/core typecheck: Done
+packages/mesh typecheck$ tsc -p tsconfig.json --noEmit
+packages/reality typecheck$ tsc --noEmit
+packages/replay typecheck$ tsc -p tsconfig.json --noEmit
+packages/signal-discovery typecheck$ tsc -p tsconfig.json --noEmit
+packages/signal-discovery typecheck: Done
+packages/replay typecheck: Done
+packages/mesh typecheck: Done
+packages/reality typecheck: Done
+packages/hypothesis-market typecheck$ tsc -p tsconfig.json --noEmit
+packages/mcp-server typecheck$ tsc -p tsconfig.json --noEmit
+packages/tournaments typecheck$ tsc -p tsconfig.json --noEmit
+packages/radar typecheck$ tsc -p tsconfig.json --noEmit
+packages/hypothesis-market typecheck: Done
+packages/tournaments typecheck: Done
+packages/radar typecheck: Done
+packages/mcp-server typecheck: Done
+packages/eval typecheck$ pnpm --filter @zeo/reality build && tsc --noEmit
+packages/eval typecheck: > @zeo/reality@0.7.0 build C:\Users\scott\Documents\GitHub\Zeo\packages\reality
+packages/eval typecheck: > tsc -p tsconfig.build.json
+packages/eval typecheck: Done
+apps/cli typecheck$ tsc -p tsconfig.json --noEmit
+apps/web typecheck$ tsc --noEmit
+apps/cli typecheck: Done
+apps/web typecheck: src/app/app/orgs/page.tsx(25,13): error TS2322: Type '(formData: FormData) => Promise<void>' is not assignable to type 'string'.
+apps/web typecheck: src/app/app/projects/page.tsx(53,13): error TS2322: Type '(formData: FormData) => Promise<void>' is not assignable to type 'string'.
+apps/web typecheck: src/app/app/repos/page.tsx(54,13): error TS2322: Type '(formData: FormData) => Promise<void>' is not assignable to type 'string'.
+apps/web typecheck: src/app/app/runs/page.tsx(79,13): error TS2322: Type '(formData: FormData) => Promise<void>' is not assignable to type 'string'.
+apps/web typecheck: src/app/app/runs/page.tsx(80,13): error TS2322: Type '(formData: FormData) => Promise<void>' is not assignable to type 'string'.
+apps/web typecheck: src/app/app/runs/page.tsx(81,13): error TS2322: Type '(formData: FormData) => Promise<void>' is not assignable to type 'string'.
+apps/web typecheck: src/app/app/settings/page.tsx(27,119): error TS2322: Type '(formData: FormData) => Promise<void>' is not assignable to type 'string'.
+apps/web typecheck: src/app/studio/run/[id]/page.tsx(3,31): error TS2305: Module '"react"' has no exported member 'use'.
+apps/web typecheck: src/panels/bridge/bridge.ts(8,3): error TS2724: '"@zeo/core/client"' has no exported member named 'buildEvidencePacketMarkdown'. Did you mean 'buildEvidencePacket'?
+apps/web typecheck: src/panels/bridge/bridge.ts(10,8): error TS2305: Module '"@zeo/core/client"' has no exported member 'RunMeta'.
+apps/web typecheck: src/panels/builtin/scenarios-panel/panel.tsx(6,10): error TS2305: Module '"@zeo/core/client"' has no exported member 'scenarios'.
+apps/web typecheck: src/panels/builtin/scenarios-panel/panel.tsx(6,21): error TS2305: Module '"@zeo/core/client"' has no exported member 'exportScenarioPack'.
+apps/web typecheck: src/panels/builtin/scenarios-panel/panel.tsx(6,41): error TS2305: Module '"@zeo/core/client"' has no exported member 'importScenarioPack'.
+apps/web typecheck: Failed
+C:\Users\scott\Documents\GitHub\Zeo\apps\web:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @zeo/web@1.0.0 typecheck: `tsc --noEmit`
+Exit status 2
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 2.

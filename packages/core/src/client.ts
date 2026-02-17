@@ -38,6 +38,7 @@ export { buildEvidencePacket, buildEvidencePacketMarkdown, type EvidencePacketOp
 
 // Types
 export type {
+  RunMeta,
   DecisionSpec,
   DecisionResult,
   Action,

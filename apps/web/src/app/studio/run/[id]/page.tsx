@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-export default function RunDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default async function RunDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const [run, setRun] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<{ message: string; hint?: string } | null>(null);
