@@ -100,7 +100,7 @@ export default function Home() {
             <p className="text-sm text-gray-600 mb-4">Monitor evidence signals and confidence shifts as new data arrives.</p>
             <div className="overflow-hidden rounded-lg border border-gray-100">
               <Image
-                src="/brand/zeo/signals.png"
+                src="/brand/zeo/governance.png"
                 alt="Zeo signal tracking panel showing evidence confidence over time"
                 width={600}
                 height={400}
