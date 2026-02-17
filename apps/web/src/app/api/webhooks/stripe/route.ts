@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createSupabaseServiceClient } from '@/lib/supabase/service';
+import { enterpriseHostedEnabled } from '@/lib/enterprise';
 
 export const runtime = 'nodejs';
 
@@ -10,6 +10,10 @@ export const runtime = 'nodejs';
  */
 export async function POST(request: NextRequest) {
   try {
+    if (!enterpriseHostedEnabled) {
+      return NextResponse.json({ received: true, mode: 'oss' });
+    }
+
     const rawBody = await request.text();
     const signature = request.headers.get('stripe-signature');
     const secret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -87,6 +91,7 @@ async function verifyStripeSignature(payload: string, header: string, secret: st
 }
 
 async function handleSubscriptionCreated(subscription: Record<string, unknown>) {
+  const { createSupabaseServiceClient } = await import('@/lib/supabase/service');
   const supabase = createSupabaseServiceClient();
   const customerId = subscription.customer as string;
   const subscriptionId = subscription.id as string;
@@ -115,6 +120,7 @@ async function handleSubscriptionCreated(subscription: Record<string, unknown>) 
 }
 
 async function handleSubscriptionUpdated(subscription: Record<string, unknown>) {
+  const { createSupabaseServiceClient } = await import('@/lib/supabase/service');
   const supabase = createSupabaseServiceClient();
   const subscriptionId = subscription.id as string;
   const status = mapStripeStatus(subscription.status as string);
@@ -131,6 +137,7 @@ async function handleSubscriptionUpdated(subscription: Record<string, unknown>) 
 }
 
 async function handleSubscriptionDeleted(subscription: Record<string, unknown>) {
+  const { createSupabaseServiceClient } = await import('@/lib/supabase/service');
   const supabase = createSupabaseServiceClient();
   const subscriptionId = subscription.id as string;
 

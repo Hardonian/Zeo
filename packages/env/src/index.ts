@@ -1,13 +1,22 @@
 import { z } from 'zod';
 
-export const envSchema = z.object({
+const enterpriseToggleSchema = z.enum(['0', '1', 'false', 'true']).optional();
+
+const baseEnvSchema = z.object({
   /* Common */
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 
-  /* Supabase (Required) */
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(), // Optional for client build, required for server runtime
+  /* Enterprise-hosted feature toggle */
+  ENTERPRISE_HOSTED_ENABLED: enterpriseToggleSchema,
+  NEXT_PUBLIC_ENTERPRISE_HOSTED_ENABLED: enterpriseToggleSchema,
+
+  /* Supabase (required only when enterprise-hosted mode is enabled) */
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1).optional(),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(),
+
+  /* Stripe (required only when enterprise-hosted mode is enabled) */
+  STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),
 
   /* GitHub Webhooks (Required for server) */
   GITHUB_WEBHOOK_SECRET: z.string().optional(),
@@ -25,7 +34,28 @@ export const envSchema = z.object({
   NEWS_DATA_KEY: z.string().optional(),
 });
 
+export const envSchema = baseEnvSchema.superRefine((env, ctx) => {
+  if (!isEnterpriseHostedEnabled(env)) {
+    return;
+  }
+
+  if (!env.NEXT_PUBLIC_SUPABASE_URL) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['NEXT_PUBLIC_SUPABASE_URL'], message: 'Required when enterprise-hosted mode is enabled.' });
+  }
+  if (!env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['NEXT_PUBLIC_SUPABASE_ANON_KEY'], message: 'Required when enterprise-hosted mode is enabled.' });
+  }
+});
+
 export type Env = z.infer<typeof envSchema>;
+
+function isEnabledFlag(value: string | undefined): boolean {
+  return value === '1' || value === 'true';
+}
+
+export function isEnterpriseHostedEnabled(runtimeEnv: Record<string, string | undefined> = process.env): boolean {
+  return isEnabledFlag(runtimeEnv.ENTERPRISE_HOSTED_ENABLED) || isEnabledFlag(runtimeEnv.NEXT_PUBLIC_ENTERPRISE_HOSTED_ENABLED);
+}
 
 /**
  * Validates environment variables and returns the parsed env object.
@@ -47,6 +77,17 @@ export function safeValidateEnv(runtimeEnv: Record<string, string | undefined> =
   return { success: false, errors: result.error.issues };
 }
 
+export function assertEnterpriseServerEnv(runtimeEnv: Record<string, string | undefined> = process.env): asserts runtimeEnv is Record<string, string> {
+  if (!isEnterpriseHostedEnabled(runtimeEnv)) {
+    return;
+  }
+
+  const missing = ['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY', 'SUPABASE_SERVICE_ROLE_KEY'].filter((key) => !runtimeEnv[key]);
+  if (missing.length > 0) {
+    throw new Error(`Enterprise-hosted mode requires: ${missing.join(', ')}`);
+  }
+}
+
 
 /**
  * Validates environment variables and prints a friendly error message.
@@ -62,12 +103,10 @@ export function checkEnv(
   const isStrict = runtimeEnv.ZE0_STRICT === '1';
   const result = safeValidateEnv(runtimeEnv);
 
-  if (!result.success && "errors" in result) {
+  if (!result.success && 'errors' in result) {
     console.error(isStrict ? '❌ [Env] Strict Mode Violation:' : '⚠️ [Env] Invalid environment variables:');
 
     result.errors.forEach((issue) => {
-      // Redact sensitive keys from being logged in any detailed error message if we were to expand them
-      // ZodDefault error messages are generally safe, but we emphasize the path.
       console.error(`  - ${issue.path.join('.')}: ${issue.message}`);
     });
 
@@ -75,11 +114,5 @@ export function checkEnv(
       console.error('Refusing to start in strict mode with invalid environment.');
       process.exit(1);
     }
-  } else if (isStrict) {
-    // In strict mode, verify no unsafe defaults are active if possible,
-    // though Zod .default() applies values.
-    // We might want to warn if critical keys are using defaults, but that requires metadata.
-    // For now, valid schema is enough.
   }
 }
-
