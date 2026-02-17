@@ -276,6 +276,7 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
                             }}
                             className="rounded text-blue-600 focus:ring-blue-500"
                             aria-label={`Toggle assumption ${i + 1}`}
+                            title={`Toggle assumption ${i + 1}`}
                           />
                           <span className={`truncate ${a.status === 'dropped' ? 'text-gray-400 line-through' : ''}`}>
                             {a.text || a.label || `Assumption ${i + 1}`}
