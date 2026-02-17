@@ -43,7 +43,7 @@ class DeterministicContext {
   activate(config: DeterministicConfig): void {
     this._active = true;
     this._seed = config.seed;
-    this._rng = createRng(config.seed);
+    this._rng = createKernelRng(config.seed);
     this._idCounter = 0;
     this._floatPrecision = config.floatPrecision ?? 10;
     this._clock = config.clock ?? {
