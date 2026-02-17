@@ -25,6 +25,12 @@
       "@zeo/core": [
         "../../packages/core/src/index.ts"
       ],
+      "@zeo/core/client": [
+        "../../packages/core/src/client.ts"
+      ],
+      "@zeo/core/*": [
+        "../../packages/core/src/*.ts"
+      ],
       "@zeo/counterfactuals": [
         "../../packages/counterfactuals/src/index.ts"
       ],
@@ -111,9 +117,6 @@
       ],
       "@zeo/tenant": [
         "../../packages/tenant/src/index.ts"
-      ],
-      "@zeo/core/*": [
-        "../../packages/core/src/*.ts"
       ]
     },
     "target": "ES2017",
