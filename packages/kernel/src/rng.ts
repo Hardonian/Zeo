@@ -16,7 +16,7 @@ export interface DeterministicRng {
   nextGaussian(mean?: number, stdDev?: number): number;
 }
 
-export interface KernelRng extends DeterministicRng {}
+export type KernelRng = DeterministicRng;
 
 function splitmix32(seed: number): () => number {
   return function () {

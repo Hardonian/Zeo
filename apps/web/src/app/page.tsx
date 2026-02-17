@@ -5,6 +5,7 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { IconBranching, IconShield, IconProvenance } from '@/components/icons/ZeoIcons';
 import { DecisionHeroLoader } from '@/components/hero/DecisionHeroLoader';
+import { CTASection, uiTokens } from '@/components/site/ui-system';
 
 export const metadata = buildMetadata({
   title: 'Zeo — Decision Intelligence Under Pressure',
@@ -48,10 +49,10 @@ export default function Home() {
         <DecisionHeroLoader />
       </section>
 
-      <div className="space-y-10 py-10">
+      <div className={`${uiTokens.pageStack} py-10`}>
         <section className="grid gap-4 md:grid-cols-3">
           {capabilities.map((cap) => (
-            <article key={cap.title} className="rounded-xl border border-gray-200 bg-white p-5 card-hover">
+            <article key={cap.title} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm card-hover">
               <div className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg ${cap.color}`}>
                 <cap.icon className="h-5 w-5" />
               </div>
@@ -61,7 +62,7 @@ export default function Home() {
           ))}
         </section>
 
-        <section className="rounded-xl border border-gray-200 bg-white p-6">
+        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="text-xl font-semibold text-gray-900">In the workspace</h2>
           <p className="mt-2 text-sm text-gray-600">Branching analysis, evidence ledgers, and governance health in one deterministic workspace.</p>
           <div className="mt-4 overflow-hidden rounded-lg border border-gray-100">
@@ -75,13 +76,13 @@ export default function Home() {
             />
           </div>
           <div className="mt-5 flex flex-wrap gap-3 text-sm">
-            <Link href="/docs" className="rounded-lg border border-gray-300 px-4 py-2 font-medium text-gray-700 hover:bg-gray-50 transition-colors">Read docs</Link>
-            <Link href="/studio" className="rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2 font-medium text-white shadow-sm hover:shadow-md transition-all">Open studio</Link>
+            <Link href="/docs" className={uiTokens.buttonSecondary}>Read docs</Link>
+            <Link href="/studio" className={uiTokens.buttonPrimary}>Open studio</Link>
           </div>
         </section>
 
         <section className="grid gap-6 md:grid-cols-2">
-          <div className="rounded-xl border border-gray-200 bg-white p-6">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Governance at a glance</h2>
             <p className="text-sm text-gray-600 mb-4">Policy compliance, drift detection, and health dashboards — all in one view.</p>
             <div className="overflow-hidden rounded-lg border border-gray-100">
@@ -95,7 +96,7 @@ export default function Home() {
               />
             </div>
           </div>
-          <div className="rounded-xl border border-gray-200 bg-white p-6">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Signal tracking</h2>
             <p className="text-sm text-gray-600 mb-4">Monitor evidence signals and confidence shifts as new data arrives.</p>
             <div className="overflow-hidden rounded-lg border border-gray-100">
@@ -110,6 +111,16 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+
+        <CTASection
+          title="Move from exploration to governed execution"
+          description="Use docs and studio together to run deterministic decision workflows with provenance and sensitivity visible end-to-end."
+          primaryHref="/docs/quickstart"
+          primaryLabel="Start quickstart"
+          secondaryHref="/platform"
+          secondaryLabel="View platform"
+        />
       </div>
     </PublicShell>
   );
