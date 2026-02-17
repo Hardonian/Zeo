@@ -11,7 +11,9 @@ const isProduction = env?.NODE_ENV === 'production';
 
 function createPrismaClient(): PrismaClientType | null {
   try {
-    return new PrismaClient();
+    return new PrismaClient({
+      datasourceUrl: env?.DATABASE_URL || 'file:./dev.db'
+    });
   } catch {
     return null;
   }

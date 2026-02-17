@@ -1,0 +1,50 @@
+[
+  {
+    "phase": 1,
+    "name": "Boundary Enforcement",
+    "tasks": [
+      {
+        "id": "BE-01",
+        "title": "Extract Studio API",
+        "description": "Move apps/web/src/lib/studio-api.ts to a new package @zeo/studio-server or @zeo/api-local to break the direct core dependency."
+      },
+      {
+        "id": "BE-02",
+        "title": "Purify Kernel",
+        "description": "Formally split packages/core/src/kernel into a separate package @zeo/kernel to prevent accidental node-only imports."
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "name": "Web Hygiene",
+    "tasks": [
+      {
+        "id": "WH-01",
+        "title": "Remove Core Drift",
+        "description": "Update apps/web/package.json to remove @zeo/core dependency entirely once logic is extracted."
+      },
+      {
+        "id": "WH-02",
+        "title": "Bundle Analysis",
+        "description": "Add @next/bundle-analyzer to detect unintentional heavy imports."
+      }
+    ]
+  },
+  {
+    "phase": 3,
+    "name": "Enterprise Prep",
+    "tasks": [
+      {
+        "id": "EP-01",
+        "title": "WAL Mode",
+        "description": "Enable WAL mode in better-sqlite3 config in @zeo/db."
+      },
+      {
+        "id": "EP-02",
+        "title": "Supabase Mirrors",
+        "description": "Create SQL migrations for Supabase that mirror the Prisma schema."
+      }
+    ]
+  }
+]

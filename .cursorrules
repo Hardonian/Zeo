@@ -1,0 +1,31 @@
+# Zeo Architectural Rules
+
+You are working on the Zeo project in **ANTIGRAVITY** mode.
+This imposes strict constraints on how code is written and structured.
+
+## 1. Runtime Boundaries (NON-NEGOTIABLE)
+
+- **`packages/core/kernel`**: PURE JS ONLY. No `fs`, `path`, or database access.
+- **`apps/web` (Client Components)**: React ONLY. Never import `@zeo/core` directly.
+- **`apps/web` (Server Actions)**: Can import specialized API helpers, but minimal logic.
+- **`apps/cli`**: The primary orchestrator. Full Node.js access.
+
+## 2. Invariants
+
+- **Determinism**: Calls with the same inputs must yield the same outputs.
+- **No Secrets**: Use `redactSecrets()` on all outputs.
+- **Local-First**: The CLI must work offline.
+
+## 3. Preferred Refactoring Patterns
+
+- When logic gets complex in `apps/web`, **EXTRACT** it to `packages/`.
+- When `packages/core` gets too heavy, **SPLIT** the pure logic into `packages/kernel`.
+- **NEVER** use `any` to silence TypeScript. Fix the types.
+
+## 4. Workflows
+
+- Always check `pnpm build` before committing.
+- Always check `pnpm lint` before committing.
+- Use `zeo run --deterministic` to verify logic changes.
+
+Ref: `.zeo/architecture/CONSTITUTION.md`

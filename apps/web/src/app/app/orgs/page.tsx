@@ -22,8 +22,7 @@ export default async function OrgsPage() {
 
   return (
     <div className="space-y-4">
-      {/* @ts-expect-error Server Actions are valid here */}
-      <form action={createOrg} className="rounded border bg-white p-4">
+      <form action={createOrg as unknown as string} className="rounded border bg-white p-4">
         <h2 className="font-medium">Create org</h2>
         <input name="name" className="mt-2 rounded border border-gray-300 px-3 py-2" placeholder="Organization name" required />
         <button className="ml-2 rounded bg-blue-600 px-3 py-2 text-white">Create</button>

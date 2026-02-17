@@ -12,7 +12,7 @@ import type { DecisionSpec } from "@zeo/contracts";
 import { loadSnapshot, createSnapshot, getDefaultToolRegistry, type ExecutionSnapshot } from "./snapshot.js";
 import { runDecision, type RunDecisionOpts } from "./engine.js";
 import { activateDeterministicMode, deactivateDeterministicMode, setDeterministicIdCounter } from "./deterministic.js";
-import { validateNormalizedInput, validateOutputHash, assertValid } from "./kernel/determinism-validator.js";
+import { validateNormalizedInput, validateOutputHash, assertValid } from "@zeo/kernel";
 
 export type ReplayVerdict = "PASS" | "DRIFT";
 
