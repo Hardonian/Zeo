@@ -11,6 +11,7 @@
 // Logic
 export { runDecision, generateBranchGraph, type RunDecisionOpts } from "@zeo/kernel";
 export { scenarios, ScenarioLibrary } from "@zeo/kernel";
+export { policyEngine } from "./policy.js";
 
 // TODO: Implement actual zip handling for browser
 export async function exportScenarioPack(scenarios: any[], options: any): Promise<Uint8Array> {
