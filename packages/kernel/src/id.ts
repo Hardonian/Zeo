@@ -1,7 +1,27 @@
 import { getDeterministicContext } from "./deterministic.js";
 import { customAlphabet } from "nanoid";
+import { kernelHashRaw } from "./hash.js";
 
 const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 10);
+
+export interface KernelIdGenerator {
+  nextId(prefix?: string): string;
+  getCounter(): number;
+}
+
+export function createKernelIdGenerator(seed: string, initialCounter = 0): KernelIdGenerator {
+  let counter = initialCounter;
+  return {
+    nextId(prefix = "id"): string {
+      const hash = kernelHashRaw(`${seed}-${counter++}`);
+      return `${prefix}-${hash.slice(0, 10)}`;
+    },
+    getCounter(): number {
+      return counter;
+    },
+  };
+}
+
 
 export function generateId(prefix = "id"): string {
   const ctx = getDeterministicContext();
