@@ -1,6 +1,5 @@
 'use client';
 
-// @ts-ignore: React 18 types don't include 'use'
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 

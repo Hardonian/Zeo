@@ -3,6 +3,7 @@ import { PublicShell } from '@/components/site/PublicShell';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { IconCheck } from '@/components/icons/ZeoIcons';
 import { JsonLd } from '@/components/seo/JsonLd';
+import { CTASection, uiTokens } from '@/components/site/ui-system';
 
 export const metadata = buildMetadata({
   title: 'Pricing | Zeo',
@@ -63,7 +64,7 @@ export default function PricingPage() {
   return (
     <PublicShell title="Pricing">
       <JsonLd data={faqJsonLd} />
-      <div className="max-w-4xl space-y-12">
+      <div className={`max-w-4xl ${uiTokens.pageStack}`}>
         <p className="text-gray-600 max-w-2xl">
           Start free with the full open-source platform. Upgrade to Enterprise when your team needs governance integrations and dedicated support.
         </p>
@@ -71,7 +72,7 @@ export default function PricingPage() {
         {/* Pricing Cards */}
         <div className="grid gap-6 md:grid-cols-2">
           {/* Community */}
-          <div className="rounded-2xl border border-gray-200 bg-white p-7 flex flex-col">
+          <div className="rounded-2xl border border-slate-200 bg-white p-7 flex flex-col shadow-sm">
             <div className="mb-6">
               <h2 className="text-xl font-bold text-gray-900">Community</h2>
               <p className="text-gray-500 mt-1 text-sm">Open-source, self-hosted</p>
@@ -88,14 +89,14 @@ export default function PricingPage() {
             </ul>
             <Link
               href="/quickstart"
-              className="mt-8 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-center text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              className={`${uiTokens.buttonSecondary} mt-8 w-full`}
             >
               Get Started
             </Link>
           </div>
 
           {/* Enterprise */}
-          <div className="relative rounded-2xl border-2 border-blue-200 bg-gradient-to-b from-blue-50/80 to-white p-7 flex flex-col">
+          <div className="relative rounded-2xl border-2 border-blue-200 bg-gradient-to-b from-blue-50/80 to-white p-7 flex flex-col shadow-sm">
             <div className="absolute -top-3 right-6 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-0.5 text-xs font-semibold text-white">
               Recommended
             </div>
@@ -115,7 +116,7 @@ export default function PricingPage() {
             </ul>
             <Link
               href="/contact"
-              className="mt-8 block w-full rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:shadow-md transition-all"
+              className={`${uiTokens.buttonPrimary} mt-8 w-full`}
             >
               Contact Sales
             </Link>
@@ -139,6 +140,16 @@ export default function PricingPage() {
             ))}
           </div>
         </section>
+
+
+        <CTASection
+          title="Need plan guidance?"
+          description="Choose Community for self-managed workflows, or contact the team for enterprise governance controls and rollout support."
+          primaryHref="/contact"
+          primaryLabel="Talk to sales"
+          secondaryHref="/quickstart"
+          secondaryLabel="Start with Community"
+        />
       </div>
     </PublicShell>
   );

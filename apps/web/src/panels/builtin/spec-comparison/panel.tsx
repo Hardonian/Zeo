@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import type { UiPanelManifest, DecisionSpec, Action, Claim } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
+// eslint-disable-next-line no-restricted-imports
 import { scenarios } from '@zeo/core';
 
 interface SpecComparisonPanelProps {

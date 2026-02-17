@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { PublicShell } from '@/components/site/PublicShell';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { IconArrowRight, IconTerminal } from '@/components/icons/ZeoIcons';
+import { CTASection, Section, uiTokens } from '@/components/site/ui-system';
 import { getAllPanelConfigs } from '@/lib/panel-config';
 import type { PanelConfig } from '@/lib/panel-config';
 
@@ -67,14 +68,14 @@ export default function PlatformPage() {
 
   return (
     <PublicShell title="Platform">
-      <div className="max-w-5xl space-y-12">
-        <section className="max-w-3xl">
+      <div className={`max-w-5xl ${uiTokens.pageStack}`}>
+        <Section className="max-w-3xl">
           <p className="text-lg leading-relaxed text-gray-700">
             Zeo combines governance dashboards, decision branching tools, and provenance-first evidence workflows in one static-safe product surface.
           </p>
-        </section>
+        </Section>
 
-        <section className="overflow-hidden rounded-xl border border-gray-200">
+        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           <Image
             src="/brand/zeo/hero.png"
             alt="Zeo platform overview showing decision intelligence workspace"
@@ -89,7 +90,7 @@ export default function PlatformPage() {
           <h2 className="mb-4 text-lg font-semibold">Product panels</h2>
           <div className="grid gap-4 md:grid-cols-2">
             {capabilities.map((capability) => (
-              <Link key={capability.panelSlug} href={`/product/${capability.panelSlug}/demo`} className="rounded-lg border border-gray-200 bg-white p-5 transition-all hover:border-blue-300 hover:shadow-sm">
+              <Link key={capability.panelSlug} href={`/product/${capability.panelSlug}/demo`} className="rounded-2xl border border-slate-200 bg-white p-5 transition-all hover:border-blue-300 hover:shadow-sm">
                 <h3 className="font-semibold text-blue-700">{capability.title}</h3>
                 <p className="mt-2 text-sm text-gray-600">{capability.description}</p>
                 <span className="mt-3 inline-flex items-center gap-1.5 text-sm text-blue-600">
@@ -105,7 +106,7 @@ export default function PlatformPage() {
           <h2 className="mb-4 text-lg font-semibold">Technical features</h2>
           <div className="grid gap-4 md:grid-cols-3">
             {techFeatures.map((feature) => (
-              <article key={feature.title} className="rounded-xl border border-gray-200 bg-white p-5">
+              <article key={feature.title} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                 <h3 className="font-semibold text-gray-900">{feature.title}</h3>
                 <p className="mt-2 text-sm text-gray-600">{feature.description}</p>
               </article>
@@ -133,12 +134,14 @@ export default function PlatformPage() {
           </div>
         </section>
 
-        <section>
-          <Link href="/stitch" className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:shadow-md">
-            Browse all panels
-            <IconArrowRight className="h-4 w-4" />
-          </Link>
-        </section>
+        <CTASection
+          title="Explore the full panel library"
+          description="Browse stitched panel demos to compare governance, evidence, and decision workflows in one consistent interface."
+          primaryHref="/stitch"
+          primaryLabel="Browse all panels"
+          secondaryHref="/docs"
+          secondaryLabel="Read docs"
+        />
       </div>
     </PublicShell>
   );

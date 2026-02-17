@@ -60,7 +60,7 @@ export function sha256(message: string | Uint8Array): string {
   view.setUint32(padded.length - 4, len, false); // low 32 bits, simpler for < 4GB inputs
 
   const w = new Uint32Array(64);
-  let H = new Uint32Array([
+  const H = new Uint32Array([
     0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
     0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
   ]);
