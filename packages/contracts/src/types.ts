@@ -1048,3 +1048,14 @@ export type DecisionType = "ENG" | "OPS" | "SEC" | "PROD" | "MKT" | "CUST";
 export type WorkspaceMode = "customer" | "internal";
 
 export type DecisionState = "proposed" | "challenged" | "amended" | "finalized";
+
+export type PolicySeverity = "warn" | "block";
+
+export interface PolicyViolation {
+  code: "POLICY_VIOLATION";
+  policyId: string;
+  severity: PolicySeverity;
+  message: string;
+  remediation: string;
+  keys: string[];
+}

@@ -5,7 +5,7 @@ import type { UiPanelManifest, DecisionSpec } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
 // import { exportScenarioPack } from '@zeo/core';
 import { exportScenarioPackAction, runDecisionAction, validatePolicyAction } from '@/actions/decision';
-import type { PolicyViolation } from '@zeo/core';
+import type { PolicyViolation } from '@zeo/contracts';
 import { deepDiff, support } from '@zeo/repro-pack';
 
 interface BranchExplorerProps {

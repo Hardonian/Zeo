@@ -3,18 +3,9 @@ import {
     BudgetConstraints,
     RunData
 } from "@zeo/repro-pack";
-import { DecisionResult, Claim, Uncertainty } from "@zeo/contracts";
+import { DecisionResult, Claim, Uncertainty, PolicyViolation, PolicySeverity } from "@zeo/contracts";
 
-export type PolicySeverity = "warn" | "block";
-
-export interface PolicyViolation {
-    code: "POLICY_VIOLATION";
-    policyId: string;
-    severity: PolicySeverity;
-    message: string;
-    remediation: string;
-    keys: string[];
-}
+export { PolicyViolation, PolicySeverity };
 
 export interface PolicyContext {
     // Inputs
@@ -134,7 +125,7 @@ class UncertaintyHonestyPolicy implements Policy {
                     // This is actually a valid state, but we must ensure it isn't being used to mask a value.
                     // The policy says: if uncertainty.kind="unknown", UI/report must display unknown, never "~0"
                     // Here we assume the engine just flags it if it looks suspicious, but mostly this is a pass-through
-                    // to ensure the UI handles it. 
+                    // to ensure the UI handles it.
                     // However, let's complain if params are provided for unknown.
                     if (uncertaintyValue.params && Object.keys(uncertaintyValue.params).length > 0) {
                         violations.push({
