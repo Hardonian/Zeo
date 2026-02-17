@@ -15,7 +15,7 @@ export function trustShow(params: Record<string, unknown>): McpToolResult {
   const subject = String(params.subject);
   const rootDir = typeof params.rootDir === "string" ? params.rootDir : process.cwd();
   const profiles = compactTrustProfiles(rootDir);
-  const profile = profiles.find(p => `${p.subject_type}:${p.subject_id}` === subject);
+  const profile = profiles.find((p: { subject_type: string; subject_id: string }) => `${p.subject_type}:${p.subject_id}` === subject);
   if (!profile) return { content: [{ type: "text", text: `subject not found: ${subject}` }], isError: true };
   return { content: [{ type: "text", text: JSON.stringify({ ...profile, tier: deriveTrustTier(profile) }, null, 2) }] };
 }
