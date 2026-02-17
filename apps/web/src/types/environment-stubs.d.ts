@@ -126,10 +126,15 @@ declare module '@zeo/core/client' {
   export function buildEvidencePacket(...args: unknown[]): unknown;
   export function buildEvidencePacketMarkdown(...args: unknown[]): string;
   export function computeDeterministicSeed(hash: string, salt?: string, depth?: 2 | 3): string;
-  export const scenarios: any;
+  export const scenarios: {
+    listScenarios(): Scenario[];
+    saveScenario(spec: DecisionSpec, name: string, description?: string): Scenario;
+    createTemplate(name: string, type: "investment" | "hiring" | "crisis"): DecisionSpec;
+  };
   export function exportScenarioPack(scenarios: any[], options: any): Promise<Uint8Array>;
   export function importScenarioPack(buffer: Uint8Array): Promise<any>;
   export const policyEngine: { validate(context: unknown): PolicyViolation[] };
+  export function generateDecisionReport(result: DecisionResult): { markdown: string; sections: Array<{ id: string; title: string; content: string; citations: Array<{ label: string; description: string }> }> };
 
   export type { RunMeta };
 }

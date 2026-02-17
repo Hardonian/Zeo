@@ -11,15 +11,10 @@
 // Logic
 export { runDecision, generateBranchGraph, type RunDecisionOpts } from "@zeo/kernel";
 export { scenarios, ScenarioLibrary } from "@zeo/kernel";
+export { makeNegotiationExample, makeOpsExample } from "./examples.js";
 export { policyEngine } from "./policy.js";
 
-// TODO: Implement actual zip handling for browser
-export async function exportScenarioPack(scenarios: any[], options: any): Promise<Uint8Array> {
-  throw new Error("Export not implemented in client-safe build yet");
-}
-export async function importScenarioPack(buffer: Uint8Array): Promise<{ scenarios: any[], manifest: any }> {
-  throw new Error("Import not implemented in client-safe build yet");
-}
+export { exportScenarioPack, importScenarioPack } from "./scenario-packs.js";
 
 // Hashing & Determinism
 export {
@@ -44,6 +39,7 @@ export {
 
 // Packets
 export { buildEvidencePacket, buildEvidencePacketMarkdown, type EvidencePacketOptions } from "./packets.js";
+export { generateDecisionReport, type DecisionReport } from "./reporting.js";
 
 // Types
 export type {

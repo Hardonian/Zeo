@@ -10,12 +10,13 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@controlplane/contract-kit": ["../contract-kit/dist/index.d.ts"]
+      "@controlplane/contract-kit": ["../contract-kit/dist/index.d.ts"],
+      "@controlplane/observability": ["../observability/dist/index.d.ts"],
+      "@controlplane/contracts": ["../contracts/dist/index.d.ts"]
     },
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
-    "rootDir": "./src",
     "resolveJsonModule": true,
     "isolatedModules": true
   },
