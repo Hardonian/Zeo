@@ -11,3 +11,4 @@ export * from "./rng.js";
 export * from "./canonical-json.js";
 export * from "./quant-engine-interface.js";
 export * from "./utils/sha256.js";
+export * from "./determinism-validator.js";
