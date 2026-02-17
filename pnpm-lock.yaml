@@ -170,6 +170,9 @@ importers:
       '@zeo/jobs':
         specifier: workspace:*
         version: link:../../packages/jobs
+      '@zeo/kernel':
+        specifier: workspace:*
+        version: link:../../packages/kernel
       '@zeo/memory':
         specifier: workspace:*
         version: link:../../packages/memory
@@ -195,7 +198,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/signal-discovery
       '@zeo/studio-server':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/studio-server
       '@zeo/telemetry':
         specifier: workspace:*
