@@ -71,3 +71,17 @@ packages/mcp-interop typecheck: Done
 packages/optimization typecheck$ tsc -p tsconfig.json --noEmit
 packages/modules typecheck: Done
 packages/perf typecheck$ tsc -p tsconfig.json --noEmit
+packages/nl typecheck: Done
+packages/quant-timeseries typecheck$ tsc -p tsconfig.json --noEmit
+packages/observability typecheck: Done
+packages/regimes typecheck$ tsc -p tsconfig.json --noEmit
+packages/optimization typecheck: Done
+packages/repro-pack typecheck$ tsc --noEmit
+packages/perf typecheck: Done
+packages/robustness typecheck$ tsc -p tsconfig.json --noEmit
+packages/quant-timeseries typecheck: Done
+packages/schema-registry typecheck$ tsc -p tsconfig.json --noEmit
+packages/regimes typecheck: Done
+packages/semantic-clustering typecheck$ tsc --noEmit
+packages/repro-pack typecheck: Done
+packages/simulation typecheck$ tsc -p tsconfig.json --noEmit
