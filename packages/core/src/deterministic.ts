@@ -9,7 +9,7 @@
  * - Computes explicit hash of input payload
  */
 
-import { createHash } from "node:crypto";
+import { sha256 } from "./utils/sha256.js";
 import { createRng, type DeterministicRng } from "./rng.js";
 import { encodeCanonicalJson } from "./canonical-json.js";
 
@@ -72,9 +72,7 @@ class DeterministicContext {
 
   nextId(prefix = "id"): string {
     this._idCounter++;
-    const idHash = createHash("sha256")
-      .update(`${this._seed}:id:${this._idCounter}`)
-      .digest("hex")
+    const idHash = sha256(`${this._seed}:id:${this._idCounter}`)
       .slice(0, 12);
     return `${prefix}-${idHash}`;
   }
@@ -168,7 +166,7 @@ export function stableSort<T>(arr: T[], compareFn: (a: T, b: T) => number): T[] 
  */
 export function hashInputPayload(payload: unknown): string {
   const canonical = encodeCanonicalJson(payload);
-  return createHash("sha256").update(canonical).digest("hex");
+  return sha256(canonical);
 }
 
 /**

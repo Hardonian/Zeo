@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "./utils/sha256.js";
 import type { DecisionSpec, Assumption, Claim } from "@zeo/contracts";
 import { encodeCanonicalJson } from "./canonical-json.js";
 
@@ -14,11 +14,11 @@ function sortAssumptions(assumptions: (Assumption | Claim)[]): (Assumption | Cla
 }
 
 /**
- * Computes the SHA-256 hash of a transcript (or any object) using 
+ * Computes the SHA-256 hash of a transcript (or any object) using
  * the rigorous Canonical JSON encoding (RFC 8785 rules + Zeo specifics).
  */
 export function computeTranscriptHash(input: any): string {
-  return createHash("sha256").update(encodeCanonicalJson(input)).digest("hex");
+  return sha256(encodeCanonicalJson(input));
 }
 
 function normalizeDecisionSpec(spec: DecisionSpec): Record<string, unknown> {
@@ -35,7 +35,7 @@ function normalizeDecisionSpec(spec: DecisionSpec): Record<string, unknown> {
 
 export function hashDecisionSpec(spec: DecisionSpec): string {
   const normalized = normalizeDecisionSpec(spec);
-  return createHash("sha256").update(encodeCanonicalJson(normalized)).digest("hex");
+  return sha256(encodeCanonicalJson(normalized));
 }
 
 export function hashAssumptionSet(assumptions: (Assumption | Claim)[]): string {
@@ -52,7 +52,7 @@ export function hashAssumptionSet(assumptions: (Assumption | Claim)[]): string {
     return jsonA.localeCompare(jsonB);
   });
 
-  return createHash("sha256").update(encodeCanonicalJson(sorted)).digest("hex");
+  return sha256(encodeCanonicalJson(sorted));
 }
 
 export function cacheKey(spec: DecisionSpec): string {
