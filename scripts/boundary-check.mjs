@@ -3,6 +3,7 @@ import { join, relative } from 'node:path';
 
 const repoRoot = process.cwd();
 const webRoot = join(repoRoot, 'apps/web/src');
+const cliRoot = join(repoRoot, 'apps/cli/src');
 const contractsRoot = join(repoRoot, 'packages/contracts/src');
 
 const forbiddenNodeInClient = new Set([
@@ -33,6 +34,7 @@ function addViolation(filePath, reason, specifier) {
 function scanFile(filePath) {
   const source = readFileSync(filePath, 'utf8');
   const isWebFile = filePath.startsWith(webRoot);
+  const isCliFile = filePath.startsWith(cliRoot);
   const isContractsFile = filePath.startsWith(contractsRoot) && !filePath.includes('/__tests__/');
 
   const lines = source.split(/\r?\n/);
@@ -53,6 +55,16 @@ function scanFile(filePath) {
       }
       if (specifier === '@zeo/mcp-server' || specifier.startsWith('@zeo/mcp-server/')) {
         addViolation(filePath, 'web-imports-mcp', specifier);
+      }
+    }
+
+
+    if (isCliFile) {
+      if (specifier.startsWith('next') || specifier === 'react' || specifier.startsWith('@/app/') || specifier.startsWith('apps/web/')) {
+        addViolation(filePath, 'cli-imports-web-runtime', specifier);
+      }
+      if (specifier === '@zeo/web' || specifier.startsWith('@zeo/web/')) {
+        addViolation(filePath, 'cli-imports-web-package', specifier);
       }
     }
 
@@ -78,6 +90,7 @@ function scanFile(filePath) {
 }
 
 walk(webRoot);
+walk(cliRoot);
 walk(contractsRoot);
 
 if (violations.length > 0) {

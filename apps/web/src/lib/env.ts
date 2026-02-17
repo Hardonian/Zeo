@@ -1,10 +1,4 @@
-import { envSchema, type Env } from '@zeo/env';
-
-// Define client schema subset (only public vars)
-const clientSchema = envSchema.pick({
-  NEXT_PUBLIC_SUPABASE_URL: true,
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: true,
-});
+import { assertEnterpriseHostedServerReady, enterpriseHostedEnabled } from '@/lib/enterprise';
 
 export type PublicEnv = {
   supabaseUrl: string;
@@ -12,14 +6,16 @@ export type PublicEnv = {
 };
 
 export function getPublicEnv(): PublicEnv {
-  const env = {
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  };
-  const parsed = clientSchema.parse(env);
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Enterprise-hosted mode is enabled but Supabase public environment variables are missing.');
+  }
+
   return {
-    supabaseUrl: parsed.NEXT_PUBLIC_SUPABASE_URL,
-    supabaseAnonKey: parsed.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    supabaseUrl,
+    supabaseAnonKey,
   };
 }
 
@@ -31,24 +27,21 @@ export function getServerEnv(): ServerEnv {
   if (typeof window !== 'undefined') {
     throw new Error('getServerEnv called on client');
   }
-  const parsed = envSchema.parse(process.env);
 
-  if (!parsed.SUPABASE_SERVICE_ROLE_KEY) {
-      throw new Error('Missing required environment variable: SUPABASE_SERVICE_ROLE_KEY');
-  }
+  assertEnterpriseHostedServerReady();
+  const env = getPublicEnv();
 
   return {
-    supabaseUrl: parsed.NEXT_PUBLIC_SUPABASE_URL,
-    supabaseAnonKey: parsed.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    supabaseServiceRoleKey: parsed.SUPABASE_SERVICE_ROLE_KEY,
+    supabaseUrl: env.supabaseUrl,
+    supabaseAnonKey: env.supabaseAnonKey,
+    supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY as string,
   };
 }
 
 export function hasPublicSupabaseEnv(): boolean {
-  try {
-    getPublicEnv();
-    return true;
-  } catch {
+  if (!enterpriseHostedEnabled) {
     return false;
   }
+
+  return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 }

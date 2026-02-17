@@ -13,12 +13,15 @@
     "baseUrl": ".",
     "paths": {
       "@controlplane/contract-kit": [
+        "../contract-kit/src/index.ts",
         "../contract-kit/dist/index.d.ts"
       ],
       "@controlplane/observability": [
+        "../observability/src/index.ts",
         "../observability/dist/index.d.ts"
       ],
       "@controlplane/contracts": [
+        "../contracts/src/index.ts",
         "../contracts/dist/index.d.ts"
       ]
     },
@@ -26,8 +29,7 @@
     "declarationMap": true,
     "outDir": "./dist",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "rootDir": "src"
+    "isolatedModules": true
   },
   "include": [
     "src/**/*"
