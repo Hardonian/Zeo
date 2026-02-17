@@ -1,5 +1,6 @@
 const FALLBACK_SITE_URL = 'https://zeo.dev';
 const SITE_NAME = 'Zeo';
+const DEFAULT_OG_IMAGE = '/brand/zeo/og-image.png';
 
 function getMetadataBase() {
   const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || FALLBACK_SITE_URL;
@@ -47,13 +48,13 @@ export function buildMetadata({
       siteName: SITE_NAME,
       title,
       description,
-      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: `${SITE_NAME} preview` }] } : {}),
+      images: [{ url: ogImage || DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: `${SITE_NAME} preview` }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      ...(ogImage ? { images: [ogImage] } : {}),
+      images: [ogImage || DEFAULT_OG_IMAGE],
     },
     robots: noindex
       ? { index: false, follow: false }

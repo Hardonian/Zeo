@@ -2,6 +2,14 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { buildMetadata } from '@/lib/seo/metadata';
 
+export const icons = {
+  icon: [
+    { url: '/favicon.svg', type: 'image/svg+xml' },
+    { url: '/brand/zeo/favicon.png', type: 'image/png', sizes: '512x512' },
+  ],
+  apple: [{ url: '/brand/zeo/favicon.png', sizes: '512x512' }],
+};
+
 export const metadata: Metadata = buildMetadata({
   title: 'Zeo — Governance and Evidence for Uncertain Decisions',
   description:
@@ -16,7 +24,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head></head>
+      <head>
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="theme-color" content="#4F46E5" />
+      </head>
       <body className="antialiased bg-gray-50 text-gray-900">
         <a
           href="#main-content"

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { PublicShell } from '@/components/site/PublicShell';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { IconArrowRight, IconTerminal } from '@/components/icons/ZeoIcons';
@@ -71,6 +72,17 @@ export default function PlatformPage() {
           <p className="text-lg leading-relaxed text-gray-700">
             Zeo combines governance dashboards, decision branching tools, and provenance-first evidence workflows in one static-safe product surface.
           </p>
+        </section>
+
+        <section className="overflow-hidden rounded-xl border border-gray-200">
+          <Image
+            src="/brand/zeo/hero.png"
+            alt="Zeo platform overview showing decision intelligence workspace"
+            width={1200}
+            height={630}
+            className="h-auto w-full"
+            priority
+          />
         </section>
 
         <section>

@@ -1,10 +1,12 @@
 import { PublicShell } from '@/components/site/PublicShell';
+import { buildMetadata } from '@/lib/seo/metadata';
 import { IconGitHub, IconShield, IconAudit, IconProvenance } from '@/components/icons/ZeoIcons';
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: 'Contact | Zeo',
   description: 'Get in touch with the Zeo team for product questions, security issues, or enterprise inquiries.',
-};
+  canonicalPath: '/contact',
+});
 
 const channels = [
   {
