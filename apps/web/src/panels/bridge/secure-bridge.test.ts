@@ -113,7 +113,7 @@ describe('Secure Bridge', () => {
   });
 
   describe('Rate Limiting', () => {
-    it('should allow requests under rate limit', () => {
+    it('should allow requests under rate limit', async () => {
       const message: UiBridgeMessage = {
         direction: 'panel->host',
         requestId: 'req-1',
@@ -121,7 +121,7 @@ describe('Secure Bridge', () => {
         payload: {},
       };
 
-      const response = handler(message, 'https://example.com');
+      const response = await handler(message, 'https://example.com');
       expect(response.type).not.toBe('error');
     });
 
