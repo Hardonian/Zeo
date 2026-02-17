@@ -248,8 +248,7 @@ export {
   type ToolChainEntry,
 } from "./artifact-emitter.js";
 
-// v6.0 — Pure Decision Kernel + Decision IR + State Machine
-export * from "./kernel/index.js";
+// export * from "./kernel/index.js"; // Conflict with engine.js runDecision
 export * as kernel from "./kernel/index.js";
 
 // v12 — Policy-as-Constraints Engine
