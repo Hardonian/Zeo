@@ -1,0 +1,7 @@
+
+> zeo@1.0.0 test C:\Users\scott\Documents\GitHub\Zeo
+> NODE_OPTIONS=--max-old-space-size=4096 pnpm -r --workspace-concurrency=1 test
+
+'NODE_OPTIONS' is not recognized as an internal or external command,
+operable program or batch file.
+ΓÇëELIFECYCLEΓÇë Test failed. See above for more details.
