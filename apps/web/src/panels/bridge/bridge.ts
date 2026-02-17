@@ -2,12 +2,11 @@ import type { UiBridgeMessage, UiStateSnapshot, ZeoError } from '@zeo/contracts'
 import type { DecisionSpec, DecisionResult } from '@zeo/contracts';
 import {
   runDecision,
-  canonicalizeDecisionSpec,
   hashDecisionSpec,
   buildEvidencePacket,
   buildEvidencePacketMarkdown,
   computeDeterministicSeed
-} from '@zeo/core/client';
+} from '@zeo/core';
 import type { RunMeta } from '@zeo/contracts';
 import { createHash } from 'node:crypto'; // Note: Bridge still uses Node crypto? Should check.
 import { generateId } from '@zeo/id';
@@ -69,7 +68,6 @@ function checkRateLimit(
 }
 
 function hashDecision(decision: DecisionSpec): string {
-  const canonical = canonicalizeDecisionSpec(decision);
   const structural = {
     title: decision.title,
     context: decision.context,

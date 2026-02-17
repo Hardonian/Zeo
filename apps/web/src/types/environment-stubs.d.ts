@@ -117,13 +117,19 @@ declare module 'better-sqlite3' {
 
 
 declare module '@zeo/core/client' {
-  import type { DecisionResult, DecisionSpec } from '@zeo/contracts';
+  import type { DecisionResult, DecisionSpec, PolicyViolation, RunMeta, Scenario } from '@zeo/contracts';
 
   export function makeNegotiationExample(): DecisionSpec;
   export function makeOpsExample(): DecisionSpec;
-  export function runDecision(spec: DecisionSpec, options?: { depth?: number }): DecisionResult;
-  export function canonicalizeDecisionSpec(input: DecisionSpec): DecisionSpec;
-  export function hashDecisionSpec(input: DecisionSpec): Promise<string>;
+  export function runDecision(spec: DecisionSpec, options?: { depth?: 2 | 3 }): DecisionResult;
+  export function hashDecisionSpec(input: DecisionSpec): string;
   export function buildEvidencePacket(...args: unknown[]): unknown;
-  export function computeDeterministicSeed(hash: string, salt?: string, depth?: number): string;
+  export function buildEvidencePacketMarkdown(...args: unknown[]): string;
+  export function computeDeterministicSeed(hash: string, salt?: string, depth?: 2 | 3): string;
+  export const scenarios: any;
+  export function exportScenarioPack(scenarios: any[], options: any): Promise<Uint8Array>;
+  export function importScenarioPack(buffer: Uint8Array): Promise<any>;
+  export const policyEngine: { validate(context: unknown): PolicyViolation[] };
+
+  export type { RunMeta };
 }
