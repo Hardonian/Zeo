@@ -1,0 +1,37 @@
+{
+  "project_name": "Zeo",
+  "architectural_mode": "ANTIGRAVITY",
+  "core_principles": [
+    "Determinism First",
+    "Minimal Diff Discipline",
+    "No Silent Failures",
+    "No UI Drift",
+    "Performance Is a Constraint"
+  ],
+  "runtime_boundaries": {
+    "web_client": {
+      "allowed": ["react", "lucide-react", "@zeo/contracts"],
+      "banned": ["@zeo/core", "@zeo/db", "fs", "path"]
+    },
+    "web_server_actions": {
+      "allowed": ["@zeo/core", "@zeo/db", "zod"],
+      "requires": ["server-only"]
+    },
+    "core_kernel": {
+      "allowed": ["@zeo/contracts"],
+      "banned": ["node:*", "better-sqlite3"]
+    }
+  },
+  "invariant_checks": [
+    {
+      "name": "Check Imports",
+      "command": "pnpm check:imports",
+      "description": "Ensure no boundary violations"
+    },
+    {
+      "name": "Verify Determinism",
+      "command": "zeo run --verify-determinism",
+      "description": "Ensure output hashes are stable"
+    }
+  ]
+}
