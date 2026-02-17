@@ -94,6 +94,22 @@ export default tseslint.config(
     }
   },
   {
+    files: ["apps/web/**/*.ts", "apps/web/**/*.tsx"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "@zeo/core",
+              message: "Web cannot import @zeo/core directly. Use @zeo/core/client or @zeo/contracts."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
     ignores: ["**/dist/**", "**/node_modules/**", "**/.next/**", "**/.turbo/**", "**/out/**", "**/coverage/**"]
   }
 );
