@@ -5,10 +5,8 @@ import {
 } from './canonicalize';
 import {
   hashDecisionSpec,
-} from './hashing';
-import {
   createRng,
-} from './rng';
+} from '@zeo/kernel';
 import { makeNegotiationExample } from './examples';
 import type { ProbabilityInterval, ValueBand } from '@zeo/contracts';
 

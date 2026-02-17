@@ -29,6 +29,27 @@ services   -> core
 core       -> (no upward imports)
 ```
 
+
+## Runtime boundary enforcement
+
+### Allowed directions
+
+- `apps/web` may consume runtime-safe shared packages (for example `@zeo/contracts`, `@zeo/core/client`) and must not import CLI or MCP server modules.
+- `apps/cli` and `packages/mcp-server` are Node-only runtimes and may depend on server-side modules.
+- `packages/contracts` is runtime-neutral shared surface and must not depend on Node built-ins or app runtimes.
+
+### Tooling guards
+
+- ESLint `no-restricted-imports` rules in `eslint.config.mjs` block:
+  - `@zeo/cli` and `@zeo/mcp-server` imports from web sources.
+  - Node built-ins plus CLI/MCP imports from `packages/contracts/src`.
+- `pnpm boundary:check` runs `scripts/boundary-check.mjs`, which scans import specifiers and fails loudly on boundary violations.
+
+### CI behavior
+
+- `.github/workflows/ci.yml` includes a `boundary-check` job that runs `pnpm boundary:check`.
+- `ci-gate` requires `boundary-check` success before downstream lanes proceed.
+
 ## Invariants
 
 - **No circular dependencies**: any cycle across layers is a build/lint violation.

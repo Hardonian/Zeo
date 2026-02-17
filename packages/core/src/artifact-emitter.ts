@@ -78,7 +78,7 @@ export function buildExecutionArtifact(params: {
   stages: StageAuditEvent[];
 }): ExecutionArtifact {
   const outputHash = params.result
-    ? createHash("sha256").update(encodeCanonicalJson(params.result)).digest("hex")
+    ? createHash("sha256").update(Buffer.from(encodeCanonicalJson(params.result))).digest("hex")
     : createHash("sha256").update("null").digest("hex");
 
   const artifact: Omit<ExecutionArtifact, "artifactHash"> = {
@@ -98,7 +98,7 @@ export function buildExecutionArtifact(params: {
   };
 
   const artifactHash = createHash("sha256")
-    .update(encodeCanonicalJson(artifact))
+    .update(Buffer.from(encodeCanonicalJson(artifact)))
     .digest("hex");
 
   return { ...artifact, artifactHash };

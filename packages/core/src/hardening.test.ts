@@ -6,11 +6,9 @@ import {
 } from './canonicalize';
 import {
   hashDecisionSpec,
-} from './hashing';
-import {
   createRng,
   computeDeterministicSeed,
-} from './rng';
+} from '@zeo/kernel';
 import { makeNegotiationExample } from './examples';
 import type { DecisionSpec, ObservationBatch, ProbabilityInterval, ValueBand } from '@zeo/contracts';
 

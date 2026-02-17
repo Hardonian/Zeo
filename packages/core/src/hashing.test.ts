@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { hashDecisionSpec, hashAssumptionSet, cacheKey } from "./hashing.js";
+import { hashDecisionSpec, hashAssumptionSet, cacheKey } from "@zeo/kernel";
 import { makeNegotiationExample, makeOpsExample } from "./examples.js";
 import type { DecisionSpec } from "@zeo/contracts";
 

@@ -5,7 +5,7 @@ import {
 } from "@zeo/repro-pack";
 import { DecisionResult, Claim, Uncertainty, PolicyViolation, PolicySeverity } from "@zeo/contracts";
 
-export { PolicyViolation, PolicySeverity };
+export type { PolicyViolation, PolicySeverity };
 
 export interface PolicyContext {
     // Inputs

@@ -1,5 +1,6 @@
 import { QuantEngine } from "./quant-engine.js";
-import { runDecision as kernelRunDecision } from "@zeo/kernel";
+import { runDecision as kernelRunDecision, generateBranchGraph } from "@zeo/kernel";
+export { generateBranchGraph };
 import type { DecisionSpec, DecisionResult } from "@zeo/contracts";
 import type { RunDecisionOpts } from "@zeo/kernel";
 export type { RunDecisionOpts };

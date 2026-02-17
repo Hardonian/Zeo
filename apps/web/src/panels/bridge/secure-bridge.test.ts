@@ -113,7 +113,7 @@ describe('Secure Bridge', () => {
   });
 
   describe('Rate Limiting', () => {
-    it('should allow requests under rate limit', () => {
+    it('should allow requests under rate limit', async () => {
       const message: UiBridgeMessage = {
         direction: 'panel->host',
         requestId: 'req-1',
@@ -121,11 +121,11 @@ describe('Secure Bridge', () => {
         payload: {},
       };
 
-      const response = handler(message, 'https://example.com');
+      const response = await handler(message, 'https://example.com');
       expect(response.type).not.toBe('error');
     });
 
-    it('should deny requests exceeding global rate limit', () => {
+    it('should deny requests exceeding global rate limit', async () => {
       // Exhaust rate limit
       for (let i = 0; i < 105; i++) {
         const message: UiBridgeMessage = {
@@ -134,7 +134,7 @@ describe('Secure Bridge', () => {
           type: 'ping',
           payload: {},
         };
-        handler(message, 'https://example.com');
+        await handler(message, 'https://example.com');
       }
 
       // Next request should be rate limited
@@ -144,7 +144,7 @@ describe('Secure Bridge', () => {
         type: 'ping',
         payload: {},
       };
-      const response = handler(message, 'https://example.com');
+      const response = await handler(message, 'https://example.com');
 
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string };
@@ -152,7 +152,7 @@ describe('Secure Bridge', () => {
       }
     });
 
-    it('should apply stricter limits for expensive operations', () => {
+    it('should apply stricter limits for expensive operations', async () => {
       // run_decision has 5 per minute limit
       for (let i = 0; i < 7; i++) {
         const message: UiBridgeMessage = {
@@ -165,7 +165,7 @@ describe('Secure Bridge', () => {
         // Grant permission first
         grantPermission(context, 'needsNetwork');
 
-        const response = handler(message, 'https://example.com');
+        const response = await handler(message, 'https://example.com');
 
         if (i >= 5 && response.type === 'error') {
           const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('RATE_LIMIT_EXCEEDED');
@@ -175,7 +175,7 @@ describe('Secure Bridge', () => {
   });
 
   describe('Permission Management', () => {
-    it('should deny capability use without permission grant', () => {
+    it('should deny capability use without permission grant', async () => {
       const message: UiBridgeMessage = {
         direction: 'panel->host',
         requestId: 'req-1',
@@ -183,14 +183,14 @@ describe('Secure Bridge', () => {
         payload: createMockDecisionSpec(),
       };
 
-      const response = handler(message, 'https://example.com');
+      const response = await handler(message, 'https://example.com');
 
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('PERMISSION_DENIED');
       }
     });
 
-    it('should allow capability use with permission grant', () => {
+    it('should allow capability use with permission grant', async () => {
       // Grant permission
       grantPermission(context, 'needsNetwork');
 
@@ -201,7 +201,7 @@ describe('Secure Bridge', () => {
         payload: createMockDecisionSpec(),
       };
 
-      const response = handler(message, 'https://example.com');
+      const response = await handler(message, 'https://example.com');
       expect(response.type).not.toBe('error');
     });
 
@@ -241,7 +241,7 @@ describe('Secure Bridge', () => {
   });
 
   describe('Permission Request Flow', () => {
-    it('should return prompt state for new permission requests', () => {
+    it('should return prompt state for new permission requests', async () => {
       const message: UiBridgeMessage = {
         direction: 'panel->host',
         requestId: 'req-1',
@@ -249,7 +249,7 @@ describe('Secure Bridge', () => {
         payload: { capability: 'needsNetwork', rationale: 'Need to fetch data' },
       };
 
-      const response = handler(message, 'https://example.com');
+      const response = await handler(message, 'https://example.com');
 
       if (response.type === 'request_permission') {
         const permPayload = response.payload as { state: string };
@@ -257,7 +257,7 @@ describe('Secure Bridge', () => {
       }
     });
 
-    it('should deny capability not declared in manifest', () => {
+    it('should deny capability not declared in manifest', async () => {
       const message: UiBridgeMessage = {
         direction: 'panel->host',
         requestId: 'req-1',
@@ -265,7 +265,7 @@ describe('Secure Bridge', () => {
         payload: { capability: 'needsCamera' }, // Not in manifest
       };
 
-      const response = handler(message, 'https://example.com');
+      const response = await handler(message, 'https://example.com');
 
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('CAPABILITY_NOT_DECLARED');
@@ -287,18 +287,19 @@ describe('Secure Bridge', () => {
       expect(grantEvent?.success).toBe(true);
     });
 
-    it('should log bridge errors', () => {
+    it('should log bridge errors', async () => {
       clearAuditLog(context);
+
+      const message: UiBridgeMessage = {
+        direction: 'panel->host',
+        requestId: 'req-rate-limit',
+        type: 'ping',
+        payload: {},
+      };
 
       // Trigger rate limit
       for (let i = 0; i < 110; i++) {
-        const message: UiBridgeMessage = {
-          direction: 'panel->host',
-          requestId: `req-${i}`,
-          type: 'ping',
-          payload: {},
-        };
-        handler(message, 'https://example.com');
+        await handler(message, 'https://example.com');
       }
 
       const auditLog = getAuditLog(context);
@@ -307,7 +308,7 @@ describe('Secure Bridge', () => {
       expect(errorEvent).toBeDefined();
     });
 
-    it('should log origin mismatches', () => {
+    it('should log origin mismatches', async () => {
       clearAuditLog(context);
 
       const message: UiBridgeMessage = {
@@ -317,7 +318,7 @@ describe('Secure Bridge', () => {
         payload: {},
       };
 
-      handler(message, 'https://evil.com');
+      await handler(message, 'https://evil.com');
 
       const auditLog = getAuditLog(context);
       const originEvent = auditLog.find(e => e.eventType === 'origin_mismatch');
@@ -341,7 +342,7 @@ describe('Secure Bridge', () => {
   });
 
   describe('Schema Validation', () => {
-    it('should reject invalid evidence note payload', () => {
+    it('should reject invalid evidence note payload', async () => {
       const message: UiBridgeMessage = {
         direction: 'panel->host',
         requestId: 'req-1',
@@ -349,14 +350,14 @@ describe('Secure Bridge', () => {
         payload: 123, // Should be string
       };
 
-      const response = handler(message, 'https://example.com');
+      const response = await handler(message, 'https://example.com');
 
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('VALIDATION_ERROR');
       }
     });
 
-    it('should reject oversized evidence notes', () => {
+    it('should reject oversized evidence notes', async () => {
       const message: UiBridgeMessage = {
         direction: 'panel->host',
         requestId: 'req-1',
@@ -364,14 +365,14 @@ describe('Secure Bridge', () => {
         payload: 'x'.repeat(10001),
       };
 
-      const response = handler(message, 'https://example.com');
+      const response = await handler(message, 'https://example.com');
 
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('VALIDATION_ERROR');
       }
     });
 
-    it('should reject invalid permission request', () => {
+    it('should reject invalid permission request', async () => {
       const message: UiBridgeMessage = {
         direction: 'panel->host',
         requestId: 'req-1',
@@ -379,7 +380,7 @@ describe('Secure Bridge', () => {
         payload: {}, // Missing capability
       };
 
-      const response = handler(message, 'https://example.com');
+      const response = await handler(message, 'https://example.com');
 
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('VALIDATION_ERROR');
@@ -388,7 +389,7 @@ describe('Secure Bridge', () => {
   });
 
   describe('Error Sanitization', () => {
-    it('should redact potential secrets in error messages', () => {
+    it('should redact potential secrets in error messages', async () => {
       const message: UiBridgeMessage = {
         direction: 'panel->host',
         requestId: 'req-1',
@@ -398,10 +399,10 @@ describe('Secure Bridge', () => {
 
       // Exhaust rate limit to get an error
       for (let i = 0; i < 110; i++) {
-        handler(message, 'https://example.com');
+        await handler(message, 'https://example.com');
       }
 
-      const response = handler(message, 'https://example.com');
+      const response = await handler(message, 'https://example.com');
 
       if (response.type === 'error') {
         // Error message should not contain sensitive info
@@ -624,7 +625,7 @@ describe('Error Sanitization', () => {
 // =============================================================================
 
 describe('Security Invariants', () => {
-  it('invariant: no capability access without permission grant', () => {
+  it('invariant: no capability access without permission grant', async () => {
     const context = createSecureBridgeContext('test-panel', createMockManifest());
     const handler = createSecureBridgeHandler(context);
 
@@ -636,14 +637,14 @@ describe('Security Invariants', () => {
       payload: createMockDecisionSpec(),
     };
 
-    const response = handler(message, 'https://example.com');
+    const response = await handler(message, 'https://example.com');
 
     if (response.type === 'error') {
       const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('PERMISSION_DENIED');
     }
   });
 
-  it('invariant: no cross-origin access without allowedDomains', () => {
+  it('invariant: no cross-origin access without allowedDomains', async () => {
     const context = createSecureBridgeContext('test-panel');
     const handler = createSecureBridgeHandler(context);
 
@@ -654,7 +655,7 @@ describe('Security Invariants', () => {
       payload: {},
     };
 
-    const response = handler(message, 'https://any-origin.com');
+    const response = await handler(message, 'https://any-origin.com');
 
     if (response.type === 'error') {
       const errorPayload = response.payload as { code: string }; expect(errorPayload.code).toBe('ORIGIN_MISMATCH');

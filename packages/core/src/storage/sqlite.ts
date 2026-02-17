@@ -5,7 +5,8 @@ import path from "path";
 import fs from "fs";
 
 export class SqliteStorageProvider implements StorageProvider {
-    private db: Database.Database;
+    private db: any; // Using any to avoid better-sqlite3 type mismatch in v12 for now, or use Database.Database if correct
+
 
     constructor(dbPath: string = "storage/zeo.db") {
         const dir = path.dirname(dbPath);

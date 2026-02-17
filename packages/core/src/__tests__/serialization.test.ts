@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { encodeCanonicalJson } from "../canonical-json.js";
-import { computeTranscriptHash } from "../hashing.js";
+import { encodeCanonicalJson, computeTranscriptHash } from "@zeo/kernel";
 
 describe("Contract Serialization Round-trip", () => {
     it("should maintain structural integrity across canonical JSON encoding", () => {
@@ -18,7 +17,7 @@ describe("Contract Serialization Round-trip", () => {
         };
 
         const encoded = encodeCanonicalJson(complexObject);
-        const decoded = JSON.parse(encoded.toString("utf8"));
+        const decoded = JSON.parse(new TextDecoder().decode(encoded));
 
         // Check that we don't lose information
         expect(decoded.id).toBe(complexObject.id);

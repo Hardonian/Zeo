@@ -13,6 +13,9 @@
       "@zeo/budgets": [
         "../../packages/budgets/src/index.ts"
       ],
+      "@zeo/analysis": [
+        "../../packages/analysis/src/index.ts"
+      ],
       "@zeo/calibration": [
         "../../packages/calibration/src/index.ts"
       ],
@@ -24,6 +27,12 @@
       ],
       "@zeo/core": [
         "../../packages/core/src/index.ts"
+      ],
+      "@zeo/core/client": [
+        "../../packages/core/src/client.ts"
+      ],
+      "@zeo/core/*": [
+        "../../packages/core/src/*.ts"
       ],
       "@zeo/counterfactuals": [
         "../../packages/counterfactuals/src/index.ts"
@@ -70,6 +79,9 @@
       "@zeo/repro-pack": [
         "../../packages/repro-pack/src/index.ts"
       ],
+      "@zeo/kernel": [
+        "../../packages/kernel/src/index.ts"
+      ],
       "@zeo/rsl": [
         "../../packages/rsl/src/index.ts"
       ],
@@ -111,6 +123,10 @@
       ],
       "@zeo/tenant": [
         "../../packages/tenant/src/index.ts"
+      ],
+      "@zeo/*": [
+        "../../packages/*/src/index.ts",
+        "../../packages/*/src"
       ]
     },
     "target": "ES2017",
