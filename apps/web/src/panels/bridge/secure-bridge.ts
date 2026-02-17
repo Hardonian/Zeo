@@ -1,6 +1,6 @@
-import type { 
-  UiBridgeMessage, 
-  UiStateSnapshot, 
+import type {
+  UiBridgeMessage,
+  UiStateSnapshot,
   UiPanelCapability,
   BridgeErrorPayload,
   PermissionGrant,
@@ -10,15 +10,17 @@ import type {
 } from '@zeo/contracts';
 import type { DecisionSpec, DecisionResult } from '@zeo/contracts';
 import {
-  runDecision,
-  canonicalizeDecisionSpec,
-  hashDecisionSpec,
   buildEvidencePacket,
   buildEvidencePacketMarkdown,
-  computeDeterministicSeed,
   type RunMeta,
 } from '@zeo/core';
-import { 
+import {
+  runDecision,
+  // canonicalizeDecisionSpec, // Verify if mapped
+  // hashDecisionSpec, // Verify if mapped
+  // computeDeterministicSeed, // Verify if mapped
+} from '@zeo/kernel';
+import {
   isValidPermissionRequest,
   createPermissionResponse,
   sanitizeErrorMessage,
@@ -164,7 +166,7 @@ function checkRateLimit(
   existing.count++;
   const typeCount = existing.capabilityCounts.get(messageType as UiPanelCapability) ?? 0;
   existing.capabilityCounts.set(messageType as UiPanelCapability, typeCount + 1);
-  
+
   return {
     allowed: true,
     remaining: RATE_LIMIT_MAX_MESSAGES - existing.count,
@@ -191,9 +193,9 @@ function logAuditEvent(
     success: details?.success !== false,
     details,
   };
-  
+
   context.security.auditLog.push(event);
-  
+
   // Keep only last 1000 events
   if (context.security.auditLog.length > 1000) {
     context.security.auditLog = context.security.auditLog.slice(-1000);
@@ -217,7 +219,7 @@ export function checkPermission(
   capability: UiPanelCapability
 ): PermissionGrant {
   const existing = context.security.grantedPermissions.get(capability);
-  
+
   if (!existing) {
     return {
       capability,
@@ -252,20 +254,20 @@ export function grantPermission(
     granted: true,
     grantId: generateId(),
     grantedAt: new Date().toISOString(),
-    expiresAt: durationMinutes 
+    expiresAt: durationMinutes
       ? new Date(Date.now() + durationMinutes * 60000).toISOString()
       : undefined,
   };
-  
+
   context.security.grantedPermissions.set(capability, grant);
-  
-  logAuditEvent(context, 'permission_grant', { 
-    capability, 
+
+  logAuditEvent(context, 'permission_grant', {
+    capability,
     grantId: grant.grantId,
     expiresAt: grant.expiresAt,
     success: true,
   }, capability);
-  
+
   return grant;
 }
 
@@ -275,15 +277,15 @@ export function revokePermission(
 ): boolean {
   const hadPermission = context.security.grantedPermissions.has(capability);
   context.security.grantedPermissions.delete(capability);
-  
+
   if (hadPermission) {
-    logAuditEvent(context, 'permission_denial', { 
-      capability, 
+    logAuditEvent(context, 'permission_denial', {
+      capability,
       reason: 'revoked',
       success: true,
     });
   }
-  
+
   return hadPermission;
 }
 
@@ -340,7 +342,7 @@ function validateMessagePayload(
       }
       // Additional validation could be added here
       return { valid: true };
-      
+
     case 'ingest_evidence_note':
       if (typeof payload !== 'string') {
         return { valid: false, error: 'Evidence note must be a string' };
@@ -349,7 +351,7 @@ function validateMessagePayload(
         return { valid: false, error: 'Evidence note too long (max 10000 chars)' };
       }
       return { valid: true };
-      
+
     case 'check_permission':
     case 'request_permission': {
       const permReq = payload as PermissionRequest;
@@ -361,7 +363,7 @@ function validateMessagePayload(
       }
       return { valid: true };
     }
-      
+
     default:
       return { valid: true };
   }
@@ -402,8 +404,8 @@ export function createSecureBridgeHandler(context: SecureBridgeContext) {
 
     // Validate origin if provided
     if (origin && !validateOrigin(context, origin)) {
-      logAuditEvent(context, 'origin_mismatch', { 
-        origin, 
+      logAuditEvent(context, 'origin_mismatch', {
+        origin,
         allowedOrigins: context.security.allowedOrigins,
         success: false,
       });
@@ -418,7 +420,7 @@ export function createSecureBridgeHandler(context: SecureBridgeContext) {
     // Check rate limits
     const rateLimit = checkRateLimit(context.rateLimits, panelId, message.type);
     if (!rateLimit.allowed) {
-      logAuditEvent(context, 'bridge_error', { 
+      logAuditEvent(context, 'bridge_error', {
         messageType: message.type,
         reason: rateLimit.reason,
         success: false,
@@ -496,7 +498,7 @@ export function createSecureBridgeHandler(context: SecureBridgeContext) {
         // Check if run_decision capability is granted
         const permission = checkPermission(context, 'needsNetwork');
         if (!permission.granted && context.security.manifest?.kind === 'iframe') {
-          logAuditEvent(context, 'capability_use', { 
+          logAuditEvent(context, 'capability_use', {
             capability: 'needsNetwork',
             messageType: 'run_decision',
             success: false,
@@ -520,7 +522,7 @@ export function createSecureBridgeHandler(context: SecureBridgeContext) {
           context.decision.decisionHash = hashDecision(spec);
           context.decision.seed = computeRunSeed(context.decision.decisionHash, depth);
 
-          logAuditEvent(context, 'capability_use', { 
+          logAuditEvent(context, 'capability_use', {
             capability: 'run_decision',
             success: true,
           });
@@ -541,7 +543,7 @@ export function createSecureBridgeHandler(context: SecureBridgeContext) {
           };
         } catch (error) {
           const zeError = error instanceof Error ? error : new Error(String(error));
-          logAuditEvent(context, 'bridge_error', { 
+          logAuditEvent(context, 'bridge_error', {
             messageType: 'run_decision',
             error: zeError.message,
             success: false,
@@ -600,11 +602,11 @@ export function createSecureBridgeHandler(context: SecureBridgeContext) {
 
       case 'request_permission': {
         const request = message.payload as PermissionRequest;
-        
+
         // Validate that capability is declared in manifest
-        if (context.security.manifest && 
+        if (context.security.manifest &&
             !isValidPermissionRequest(context.security.manifest, request.capability)) {
-          logAuditEvent(context, 'permission_denial', { 
+          logAuditEvent(context, 'permission_denial', {
             capability: request.capability,
             reason: 'capability_not_declared',
             success: false,
@@ -634,7 +636,7 @@ export function createSecureBridgeHandler(context: SecureBridgeContext) {
         }
 
         // Log permission request (UI would prompt user here)
-        logAuditEvent(context, 'permission_request', { 
+        logAuditEvent(context, 'permission_request', {
           capability: request.capability,
           rationale: request.rationale,
           success: true,
