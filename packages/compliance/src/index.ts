@@ -391,7 +391,7 @@ export class RetentionPolicyEngine {
     this.policies.set(tenantId, {
       tenantId,
       retentionDays,
-      archiveAfterDays: archiveAfterDays ?? retentionDays * 2,
+      archiveAfterDays: archiveAfterDays ?? retentionDays,
       deleteAfterDays: deleteAfterDays ?? retentionDays * 4,
     });
   }

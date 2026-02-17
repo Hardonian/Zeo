@@ -1,16 +1,16 @@
 {
   "name": "@zeo/kernel",
   "version": "0.0.1",
-  "description": "Pure logic kernel for Zeo — Decision Engine, Probability, and State Machines. Runtime-agnostic.",
+  "description": "Pure logic kernel for Zeo \u2014 Decision Engine, Probability, and State Machines. Runtime-agnostic.",
   "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "scripts": {

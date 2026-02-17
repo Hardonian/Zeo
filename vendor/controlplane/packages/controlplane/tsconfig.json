@@ -3,23 +3,37 @@
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "lib": ["ES2022"],
+    "lib": [
+      "ES2022"
+    ],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@controlplane/contract-kit": ["../contract-kit/src/index.ts"],
-      "@controlplane/observability": ["../observability/src/index.ts"],
-      "@controlplane/contracts": ["../contracts/src/index.ts"]
+      "@controlplane/contract-kit": [
+        "../contract-kit/dist/index.d.ts"
+      ],
+      "@controlplane/observability": [
+        "../observability/dist/index.d.ts"
+      ],
+      "@controlplane/contracts": [
+        "../contracts/dist/index.d.ts"
+      ]
     },
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "rootDir": "src"
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

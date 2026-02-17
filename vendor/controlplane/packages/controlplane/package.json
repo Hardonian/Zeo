@@ -23,7 +23,7 @@
     "dev": "tsc --watch",
     "typecheck": "tsc --noEmit",
     "lint": "node ../../scripts/lint-target.mjs vendor/controlplane/packages/controlplane/src",
-    "test": "vitest run"
+    "test": "pnpm --filter @controlplane/contracts build && pnpm --filter @controlplane/observability build && pnpm --filter @controlplane/contract-kit build && vitest run"
   },
   "dependencies": {
     "@controlplane/contract-kit": "workspace:*",

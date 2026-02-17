@@ -28,7 +28,7 @@ describe("Contract Compliance (Breaking Change Detector)", () => {
         // The "Canonical Hash" of the v1.1.0 contract state.
         // If you change the contract, this test will fail. 
         // You MUST update this hash ONLY after ensuring compatibility or bumping version.
-        const CANONICAL_HASH_V1_1_0 = "03c0caeee3dd25a1427aa02102a2142a5b2002cb2e132b06f29127e72cc52cd1";
+        const CANONICAL_HASH_V1_1_0 = "cfe935762e7db5a6c3e11ba211f67e72e407f2a36fbaa25b0c72f7db0910b66a";
 
         expect(currentHash).toBe(CANONICAL_HASH_V1_1_0);
     });

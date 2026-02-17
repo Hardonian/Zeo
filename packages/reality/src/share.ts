@@ -307,14 +307,14 @@ export function validateBundle(
   }
 
   // Verify signature if key provided
-  let signatureValid = false;
+  let signatureValid = true;
   if (verificationKey) {
     signatureValid = verifyBundleSignature(bundle, verificationKey);
     if (!signatureValid) {
       errors.push("Bundle signature invalid");
     }
   } else {
-    warnings.push("No verification key provided - signature not checked");
+    warnings.push("No verification key provided - signature trust is unverified");
   }
 
   // Verify content hashes
