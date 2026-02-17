@@ -281,7 +281,7 @@ export function runDecision(spec: DecisionSpec, opts?: RunDecisionOpts): Decisio
     // 4. Evaluations
     if (opts?.useQuantEngine && opts?.quantEngine) {
       budgetManager.check(getPartialResult);
-      
+
       const robustnessEval = opts.quantEngine.evaluateRobustnessWithGameTheory(spec);
       evaluations.push(robustnessEval);
       budgetManager.incrementSteps(5);
