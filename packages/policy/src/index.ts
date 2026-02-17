@@ -1,5 +1,4 @@
 import { createHash } from 'crypto';
-import { Issue } from "@zeo/analysis";
 import type { EvidenceBundle, EvidenceInputs, PolicyPack, PolicyRule, Waiver } from "@zeo/policy-types";
 import { trace, context } from "@opentelemetry/api";
 
@@ -17,8 +16,19 @@ interface StorageProvider {
   getEnforcementStrength(organizationId: string): Promise<string>;
 }
 
-export { Issue };
 export type { EvidenceBundle, EvidenceInputs, PolicyPack, PolicyRule, Waiver } from "@zeo/policy-types";
+
+
+export interface Issue {
+  ruleId: string;
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  file: string;
+  line: number;
+  column?: number;
+  message: string;
+  fix?: string;
+  confidence: number;
+}
 
 const tracer = trace.getTracer('zeo-policy-engine');
 

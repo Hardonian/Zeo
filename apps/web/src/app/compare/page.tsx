@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { makeNegotiationExample, runDecision, makeOpsExample, canonicalizeDecisionSpec, hashDecisionSpec, buildEvidencePacket, computeDeterministicSeed } from '@zeo/core/client';
 import type { DecisionResult, DecisionSpec } from '@zeo/contracts';
+import { generateComparisonRunsAction } from '@/actions/decision';
 
 interface RunComparison {
   id: string;
@@ -62,38 +62,30 @@ function ComparePageContent() {
         return;
       }
 
-      // Generate two demo runs with different scenarios
-      const [spec1, spec2] = [makeNegotiationExample(), makeOpsExample()];
-
-      const result1 = runDecision(spec1, { depth: 2 });
-      const result2 = runDecision(spec2, { depth: 2 });
-
-      const hash1 = await hashDecisionSpec(canonicalizeDecisionSpec(spec1));
-      const hash2 = await hashDecisionSpec(canonicalizeDecisionSpec(spec2));
-      const seed1 = computeDeterministicSeed(hash1, undefined, 2);
-      const seed2 = computeDeterministicSeed(hash2, undefined, 2);
+      // Generate two demo runs with different scenarios on the server
+      const [generatedRun1, generatedRun2] = await generateComparisonRunsAction(2);
 
       const timestamp = new Date().toISOString();
 
       const run1: RunComparison = {
         id: `run-${Date.now()}-a`,
-        title: spec1.title,
-        scenario: 'Negotiation Decision',
-        result: result1,
-        spec: spec1,
-        hash: hash1,
-        seed: seed1,
+        title: generatedRun1.title,
+        scenario: generatedRun1.scenario,
+        result: generatedRun1.result,
+        spec: generatedRun1.spec,
+        hash: generatedRun1.hash,
+        seed: generatedRun1.seed,
         timestamp,
       };
 
       const run2: RunComparison = {
         id: `run-${Date.now()}-b`,
-        title: spec2.title,
-        scenario: 'Ops Decision',
-        result: result2,
-        spec: spec2,
-        hash: hash2,
-        seed: seed2,
+        title: generatedRun2.title,
+        scenario: generatedRun2.scenario,
+        result: generatedRun2.result,
+        spec: generatedRun2.spec,
+        hash: generatedRun2.hash,
+        seed: generatedRun2.seed,
         timestamp,
       };
 

@@ -2,8 +2,12 @@
 
 import {
   runDecision,
-  policyEngine
-} from '@zeo/core/client';
+  policyEngine,
+  makeNegotiationExample,
+  makeOpsExample,
+  hashDecisionSpec,
+  computeDeterministicSeed
+} from '@zeo/core';
 import type { PolicyViolation, DecisionResult, DecisionSpec } from '@zeo/contracts';
 import { createHash } from 'node:crypto';
 
@@ -48,6 +52,48 @@ export async function runDecisionAction(spec: DecisionSpec): Promise<DecisionRes
 export async function validatePolicyAction(context: any): Promise<PolicyViolation[]> {
   // Simple wrapper around policy engine
   return policyEngine.validate(context);
+}
+
+
+export interface GeneratedComparisonRun {
+  title: string;
+  scenario: string;
+  result: DecisionResult;
+  spec: DecisionSpec;
+  hash: string;
+  seed: string;
+}
+
+export async function generateComparisonRunsAction(depth: 2 | 3 = 2): Promise<[GeneratedComparisonRun, GeneratedComparisonRun]> {
+  const spec1 = makeNegotiationExample();
+  const spec2 = makeOpsExample();
+
+  const result1 = runDecision(spec1, { depth });
+  const result2 = runDecision(spec2, { depth });
+
+  const hash1 = hashDecisionSpec(spec1);
+  const hash2 = hashDecisionSpec(spec2);
+  const seed1 = computeDeterministicSeed(hash1, undefined, depth);
+  const seed2 = computeDeterministicSeed(hash2, undefined, depth);
+
+  return [
+    {
+      title: spec1.title,
+      scenario: 'Negotiation Decision',
+      result: result1,
+      spec: spec1,
+      hash: hash1,
+      seed: seed1,
+    },
+    {
+      title: spec2.title,
+      scenario: 'Ops Decision',
+      result: result2,
+      spec: spec2,
+      hash: hash2,
+      seed: seed2,
+    },
+  ];
 }
 
 export async function exportScenarioPackAction(scenarios: any[], options: any): Promise<string> {
