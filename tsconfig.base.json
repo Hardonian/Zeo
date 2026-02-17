@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@zeo/*": [
+        "packages/*/src/index.ts",
         "packages/*/src",
         "packages/*/dist"
       ],
