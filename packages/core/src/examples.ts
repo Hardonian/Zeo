@@ -1,6 +1,5 @@
-import { generateId } from "./id.js";
+import { generateId, deterministicNow } from "@zeo/kernel";
 import type { Action, Agent, Claim, DecisionSpec } from "@zeo/contracts";
-import { deterministicNow } from "./deterministic.js";
 
 /**
  * v0.1 decision parser: conservative, deterministic, and explicit.
@@ -112,4 +111,3 @@ export function makeOpsExample(): DecisionSpec {
     objectives: [],
   };
 }
-

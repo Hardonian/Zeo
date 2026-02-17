@@ -20,10 +20,9 @@
  *   5) List/filter/query via `zeo evidence`
  */
 
-import { createHash } from "node:crypto";
+import { sha256, encodeCanonicalJson } from "@zeo/kernel";
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { encodeCanonicalJson } from "./canonical-json.js";
 
 // ─── Data Model ───────────────────────────────────────────────────────────
 
@@ -83,9 +82,7 @@ export function saveEvidenceGraph(graph: EvidenceGraph, baseDir?: string): void 
 // ─── Claim Registration ──────────────────────────────────────────────────
 
 function computeEvidenceId(claim: string, source: string): string {
-  const hash = createHash("sha256")
-    .update(encodeCanonicalJson({ claim, source }))
-    .digest("hex");
+  const hash = sha256(encodeCanonicalJson({ claim, source }));
   return `ev_${hash.slice(0, 16)}`;
 }
 

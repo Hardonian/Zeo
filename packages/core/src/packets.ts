@@ -1,4 +1,3 @@
-
 import type {
   DecisionSpec,
   DecisionResult,
@@ -14,9 +13,9 @@ import type {
 } from "@zeo/contracts";
 
 export type { RunMeta, EvidencePacketJSON };
-import { hashDecisionSpec, hashAssumptionSet } from "./hashing.js";
+import { hashDecisionSpec, hashAssumptionSet } from "@zeo/kernel";
 import { canonicalizeDecisionSpec, canonicalizeObservationBatch, hashObservationBatch } from "./canonicalize.js";
-import { computeDeterministicSeed } from "./rng.js";
+import { computeDeterministicSeed } from "@zeo/kernel";
 
 const ENGINE_VERSION = "0.2.7";
 
@@ -260,4 +259,3 @@ export function buildEvidencePacketMarkdown(packet: EvidencePacketJSON): string 
 }
 
 export { ENGINE_VERSION };
-

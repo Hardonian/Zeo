@@ -1,19 +1,19 @@
 /**
  * Kernel-local deterministic RNG.
- *
  * Pure seeded PRNG (xoshiro128**) with no external state.
- * Mirrors the existing rng.ts logic but is self-contained.
- *
- * Note: Uses node:crypto only for seed initialization (SHA-256).
- * This can be replaced with a pure-JS hash at WASM boundary.
+ * Uses pure JS SHA-256 for seeding.
  */
 
-import { createHash } from "node:crypto";
+import { sha256 } from "./utils/sha256.js";
+import { hashDecisionSpec } from "./hashing.js";
+import type { DecisionSpec } from "@zeo/contracts";
 
-export interface KernelRng {
+export interface DeterministicRng {
   nextFloat(): number;
   nextInt(min: number, max: number): number;
 }
+
+export interface KernelRng extends DeterministicRng {}
 
 function splitmix32(seed: number): () => number {
   return function () {
@@ -44,12 +44,15 @@ function xoshiro128ss(a: number, b: number, c: number, d: number): KernelRng {
   };
 }
 
-export function createKernelRng(seed: string): KernelRng {
-  const hash = createHash("sha256").update(seed).digest();
-  const seed0 = ((hash[0] << 24) | (hash[1] << 16) | (hash[2] << 8) | hash[3]) >>> 0;
-  const seed1 = ((hash[4] << 24) | (hash[5] << 16) | (hash[6] << 8) | hash[7]) >>> 0;
-  const seed2 = ((hash[8] << 24) | (hash[9] << 16) | (hash[10] << 8) | hash[11]) >>> 0;
-  const seed3 = ((hash[12] << 24) | (hash[13] << 16) | (hash[14] << 8) | hash[15]) >>> 0;
+export function createRng(seed: string): KernelRng {
+  // Use pure JS sha256 to hash the seed string
+  const hashHex = sha256(seed);
+
+  // Parse hex string into 4 32-bit integers
+  const seed0 = parseInt(hashHex.slice(0, 8), 16);
+  const seed1 = parseInt(hashHex.slice(8, 16), 16);
+  const seed2 = parseInt(hashHex.slice(16, 24), 16);
+  const seed3 = parseInt(hashHex.slice(24, 32), 16);
 
   const mix0 = splitmix32(seed0);
   const mix1 = splitmix32(seed1);
@@ -62,4 +65,17 @@ export function createKernelRng(seed: string): KernelRng {
   const d = (mix3() * 4294967296) >>> 0;
 
   return xoshiro128ss(a, b, c, d);
+}
+
+export function computeDeterministicSeed(...args: (string | number | undefined | null | object)[]): string {
+  // Simple concatenation of stringified inputs
+  const input = args.map(a => {
+    if (typeof a === 'object' && a !== null) return JSON.stringify(a); // Crude but stable for simple objects
+    return String(a ?? "");
+  }).join(":");
+  return sha256(input);
+}
+
+export function computeRunSeed(spec: DecisionSpec, salt: string = ""): string {
+  return sha256(hashDecisionSpec(spec) + salt);
 }

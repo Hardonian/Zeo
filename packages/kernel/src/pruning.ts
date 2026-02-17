@@ -84,4 +84,3 @@ export function pruneGraph(graph: BranchGraph, config: PruningConfig): BranchGra
     edges,
   };
 }
-

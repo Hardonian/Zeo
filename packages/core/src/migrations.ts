@@ -1,6 +1,6 @@
 import { DecisionTranscript } from "@zeo/contracts";
 import { TranscriptEnvelope } from "./transcript-security.js";
-import { encodeCanonicalJson } from "./canonical-json.js";
+import { encodeCanonicalJson } from "@zeo/kernel";
 import { computeTranscriptHash } from "./transcript.js";
 
 /**

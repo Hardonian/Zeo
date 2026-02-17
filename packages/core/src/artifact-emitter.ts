@@ -15,7 +15,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { encodeCanonicalJson } from "./canonical-json.js";
+import { encodeCanonicalJson } from "@zeo/kernel";
 import type { DecisionResult } from "@zeo/contracts";
 import type { StageAuditEvent } from "./execution-lifecycle.js";
 

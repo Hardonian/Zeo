@@ -1,18 +1,10 @@
-import { Buffer } from "node:buffer";
-
 /**
- * Canonical JSON Encoder v1
- * 
- * Rules:
- * - Object keys matched by sorted order.
- * - Arrays preserve order (unless schema explicitly sorts them before passing here).
- * - Numbers: reject NaN/Infinity, normalize -0 to 0.
- * - Strings: NFC normalization.
- * - Output: UTF-8 bytes.
+ * Canonical JSON Encoder v1 - Pure JS Version
+ * Replaces Buffer with Uint8Array/TextEncoder
  */
 
-export function encodeCanonicalJson(value: unknown): Buffer {
-    return Buffer.from(stringify(value), "utf8");
+export function encodeCanonicalJson(value: unknown): Uint8Array {
+    return new TextEncoder().encode(stringify(value));
 }
 
 function stringify(value: unknown): string {
@@ -47,17 +39,9 @@ function stringify(value: unknown): string {
     }
 
     if (typeof value === "object") {
-        // We can't trust JSON.stringify to sort keys, so we do it manually.
-        // However, some JS engines strictly follow insertion order for non-integer keys.
-        // To be safe, we sort.
         const keys = Object.keys(value as Record<string, unknown>).sort();
         const pairs = keys.map(k => {
             const v = (value as Record<string, unknown>)[k];
-            // Skip undefined properties in objects (mimic JSON.stringify)
-            // BUT strict canonical JSON usually forbids or nulls them.
-            // Requirement says "Canonical JSON bytes v1".
-            // Let's assume we error on undefined if strict, or skip.
-            // Let's matching JSON.stringify behavior: skip.
             if (v === undefined) return null;
             return `${JSON.stringify(k)}:${stringify(v)}`;
         }).filter(x => x !== null);
@@ -65,7 +49,7 @@ function stringify(value: unknown): string {
         return `{${pairs.join(",")}}`;
     }
 
-    // ToJSON support?
+    // ToJSON support
     if (value && typeof (value as any).toJSON === "function") {
         return stringify((value as any).toJSON());
     }

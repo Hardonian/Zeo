@@ -1,5 +1,5 @@
 import { createHash, createHmac, sign, verify } from "crypto";
-import { encodeCanonicalJson } from "./canonical-json.js";
+import { sha256, encodeCanonicalJson } from "@zeo/kernel";
 
 export interface EvidenceFile {
     path: string;
@@ -27,9 +27,7 @@ export interface AttestationResult {
 /**
  * Computes the SHA-256 hash of a buffer or string.
  */
-export function sha256(data: string | Buffer): string {
-    return createHash("sha256").update(data).digest("hex");
-}
+export { sha256 };
 
 /**
  * Normalizes and hashes the manifest.

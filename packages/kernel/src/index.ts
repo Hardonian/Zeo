@@ -1,102 +1,13 @@
-/**
- * Decision Kernel — Public API
- *
- * Pure function pipeline: normalized inputs -> deterministic outputs.
- * No I/O, no time, no random, no global state.
- */
-
-// Core types
-export type {
-  KernelInput,
-  KernelOutput,
-  KernelPlanOutput,
-  KernelDiff,
-  KernelConfig,
-  KernelDecisionSpec,
-  KernelClaim,
-  KernelAgent,
-  KernelAction,
-  KernelConstraint,
-  KernelObjective,
-  KernelProbabilityInterval,
-  KernelBranchGraph,
-  KernelBranchNode,
-  KernelBranchEdge,
-  KernelLensEvaluation,
-  KernelFlipCondition,
-  KernelExplanation,
-  KernelEvidenceCandidate,
-  KernelEvidenceSnapshot,
-  KernelEvidenceNode,
-  KernelPolicySnapshot,
-  KernelToolResult,
-  KernelToolResultsSnapshot,
-  KernelOutputMetadata,
-  KernelFlipDistanceResult,
-  KernelVoiEstimate,
-  KernelEvidencePlanStep,
-  KernelDiffAssumption,
-  KernelDiffOutput,
-  KernelDiffConfidence,
-} from "./types.js";
-export { KERNEL_VERSION, KERNEL_SCHEMA_VERSION } from "./types.js";
-
-// IR types
-export type {
-  DecisionIR,
-  PlanIR,
-  EvidenceQueryIR,
-  ToolCallIR,
-  IRNode,
-} from "./ir.js";
-export {
-  IR_VERSION,
-  validateIRVersion,
-  isDecisionIR,
-  isPlanIR,
-  isEvidenceQueryIR,
-  isToolCallIR,
-} from "./ir.js";
-
-// Compute functions (pure)
-export {
-  computeDecision,
-  computeDecisionIR,
-  computePlan,
-  computePlanIR,
-  computeDiff,
-} from "./compute.js";
-
-// Hashing (pure)
-export { kernelHash, kernelHashRaw } from "./hash.js";
-
-// ID generation (pure, stateful only within returned object)
-export { createKernelIdGenerator, type KernelIdGenerator } from "./id.js";
-
-// RNG (pure, stateful only within returned object)
-export { createKernelRng, type KernelRng } from "./rng.js";
-
-// State machine
-export {
-  type ExecutionState,
-  type StateTransition,
-  type ExecutionTrace,
-  DecisionStateMachine,
-  ReplayStateMachine,
-  formatExecutionTrace,
-} from "./state-machine.js";
-
-// Determinism validator (DETERMINISM_SPEC.md §9)
-export {
-  type DeterminismError,
-  type ValidationResult,
-  DETERMINISM_SPEC_VERSION,
-  validateNormalizedInput,
-  validateStableSerialization,
-  validateIROrdering,
-  validateOutputHash,
-  validateFloatBounds,
-  mergeValidations,
-  assertValid,
-  DeterminismValidationError,
-} from "./determinism-validator.js";
+export * from "./engine.js";
+export * from "./hashing.js";
+export * from "./scenarios.js";
+export * from "./pruning.js";
+export * from "./flip-conditions.js";
+export * from "./budget.js";
+export * from "./hygiene.js";
+export * from "./deterministic.js";
+export * from "./id.js";
+export * from "./rng.js";
+export * from "./canonical-json.js";
+export * from "./quant-engine-interface.js";
+export * from "./utils/sha256.js";

@@ -8,8 +8,7 @@
  * and logs structured audit events. No implicit global state.
  */
 
-import { createHash } from "node:crypto";
-import { encodeCanonicalJson } from "./canonical-json.js";
+import { sha256, encodeCanonicalJson } from "@zeo/kernel";
 import type { DecisionSpec, DecisionResult } from "@zeo/contracts";
 
 // ---------------------------------------------------------------------------
@@ -84,13 +83,8 @@ export class ExecutionContext {
     this.opts = config.opts;
     this._clock = config.clock ?? { now: () => new Date().toISOString(), timestamp: () => Date.now() };
     this.createdAt = this._clock.now();
-    this.inputHash = createHash("sha256")
-      .update(encodeCanonicalJson({ spec: config.spec, opts: config.opts }))
-      .digest("hex");
-    this.runId = `run_${createHash("sha256")
-      .update(`${this.seed}:${this.inputHash}:${this.createdAt}`)
-      .digest("hex")
-      .slice(0, 16)}`;
+    this.inputHash = sha256(encodeCanonicalJson({ spec: config.spec, opts: config.opts }));
+    this.runId = `run_${sha256(`${this.seed}:${this.inputHash}:${this.createdAt}`).slice(0, 16)}`;
   }
 
   get currentStage(): ExecutionStage {

@@ -15,10 +15,6 @@ export type FlipCondition = {
 /**
  * Generate "what would change the answer?" conditions by analyzing
  * which assumptions the robust action set depends on.
- *
- * This is heuristic in v0.1: it examines fragile assumptions from
- * the robustness evaluation and generates threshold descriptions
- * based on probability intervals and confidence bands.
  */
 export function generateFlipConditions(
   spec: DecisionSpec,
@@ -47,8 +43,6 @@ export function generateFlipConditions(
     let reasoning: string;
 
     if (hasProbability && low !== undefined && high !== undefined) {
-      // If the interval midpoint is above 0.5, the flip occurs if actual probability
-      // drops below the lower bound. If below 0.5, the flip occurs if it rises above the upper bound.
       const midpoint = (low + high) / 2;
       if (midpoint >= 0.5) {
         flipThreshold = `Actual probability drops below ${(low * 100).toFixed(0)}%`;
@@ -58,7 +52,6 @@ export function generateFlipConditions(
         reasoning = `Current interval [${(low * 100).toFixed(0)}%-${(high * 100).toFixed(0)}%] centers below 50%. If the true value exceeds the upper bound, the balance of outcomes shifts and the recommended actions may change.`;
       }
     } else {
-      // No probability interval: use confidence band as a qualitative threshold
       flipThreshold = assumption.confidence === "low"
         ? "Obtain evidence that contradicts this assumption"
         : assumption.confidence === "medium"
@@ -78,4 +71,3 @@ export function generateFlipConditions(
 
   return conditions;
 }
-

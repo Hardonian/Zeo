@@ -12,7 +12,7 @@ import { TimeSeriesEngine } from "@zeo/timeseries";
 import { GameEngine } from "@zeo/game";
 import { CausalEngine } from "@zeo/causal";
 import { CalibrationEngine } from "@zeo/calibration";
-import { generateId } from "./id.js";
+import { generateId } from "@zeo/kernel";
 
 /**
  * Quant Engine - Integrated analytical engine combining:
