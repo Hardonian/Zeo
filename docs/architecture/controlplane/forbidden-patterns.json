@@ -1,0 +1,8 @@
+{
+  "forbidden_patterns": [
+    { "pattern": "vendor/controlplane/**/imports/zeo", "reason": "ControlPlane must not depend on Zeo" },
+    { "pattern": "apps/web/**/direct/db/connection", "reason": "Web must not bypass API for ControlPlane data" },
+    { "pattern": "**/*secret*", "in": "vendor/controlplane/packages/contracts", "reason": "Contracts must be public-safe" },
+    { "pattern": "packages/core/kernel/**/imports/fs", "reason": "Kernel must be pure JS" }
+  ]
+}
