@@ -9,7 +9,7 @@
  */
 
 import { createHash } from "node:crypto";
-import type { KernelInput, KernelOutput, KernelPolicySnapshot } from "@zeo/core";
+import type { KernelInput, KernelOutput, KernelPolicySnapshot } from "@zeo/kernel";
 
 // ─── Constants ───────────────────────────────────────────────────────────
 

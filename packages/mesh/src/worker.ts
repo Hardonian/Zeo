@@ -16,7 +16,7 @@
 import { createServer, type Server, type IncomingMessage, type ServerResponse } from "node:http";
 import { createHash, randomUUID } from "node:crypto";
 import { performance } from "node:perf_hooks";
-import { kernel } from "@zeo/core";
+import * as kernel from "@zeo/kernel";
 import {
   type JobEnvelope,
   type ResultEnvelope,
