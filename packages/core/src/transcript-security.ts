@@ -6,11 +6,11 @@ import {
   sign as cryptoSign,
   verify as cryptoVerify,
 } from "node:crypto";
-import { encodeCanonicalJson } from "./canonical-json.js";
+import { encodeCanonicalJson } from "@zeo/kernel";
 // import { computeTranscriptHash as computeHashImpl } from "./hashing.js";
 
 function computeHashImpl(input: any): string {
-  return createHash("sha256").update(encodeCanonicalJson(input)).digest("hex");
+  return createHash("sha256").update(Buffer.from(encodeCanonicalJson(input))).digest("hex");
 }
 import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";

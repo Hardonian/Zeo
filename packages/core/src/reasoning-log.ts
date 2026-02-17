@@ -8,7 +8,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { encodeCanonicalJson } from "./canonical-json.js";
+import { encodeCanonicalJson } from "@zeo/kernel";
 
 export interface ReasoningStep {
   stepId: string;
@@ -30,7 +30,7 @@ export interface ReasoningLog {
 }
 
 function hashOutput(output: unknown): string {
-  return createHash("sha256").update(encodeCanonicalJson(output)).digest("hex");
+  return createHash("sha256").update(Buffer.from(encodeCanonicalJson(output))).digest("hex");
 }
 
 export class ReasoningLogger {

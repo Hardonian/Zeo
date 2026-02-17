@@ -10,7 +10,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { encodeCanonicalJson } from "./canonical-json.js";
+import { encodeCanonicalJson } from "@zeo/kernel";
 
 // ---------------------------------------------------------------------------
 // JSON Schema Subset (for tool input/output validation)
@@ -219,7 +219,7 @@ export class ToolRegistry {
     }
 
     const inputHash = createHash("sha256")
-      .update(encodeCanonicalJson(input))
+      .update(Buffer.from(encodeCanonicalJson(input)))
       .digest("hex");
     const startMs = Date.now();
 
@@ -227,7 +227,7 @@ export class ToolRegistry {
       const output = await tool.handler(input);
       const durationMs = Date.now() - startMs;
       const outputHash = createHash("sha256")
-        .update(encodeCanonicalJson(output))
+        .update(Buffer.from(encodeCanonicalJson(output)))
         .digest("hex");
 
       const record: ToolInvocationRecord = {
@@ -283,7 +283,7 @@ export class ToolRegistry {
       sideEffects: t.sideEffects,
     }));
     return createHash("sha256")
-      .update(encodeCanonicalJson(tools))
+      .update(Buffer.from(encodeCanonicalJson(tools)))
       .digest("hex");
   }
 

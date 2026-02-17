@@ -10,7 +10,7 @@
 import { createHash } from "node:crypto";
 import { writeFileSync, readFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { encodeCanonicalJson } from "./canonical-json.js";
+import { encodeCanonicalJson } from "@zeo/kernel";
 import type { DecisionSpec, DecisionResult } from "@zeo/contracts";
 import { canonicalizeDecisionSpec } from "./canonicalize.js";
 
@@ -48,7 +48,7 @@ function sha256(data: string | Buffer): string {
 }
 
 function canonicalHash(obj: unknown): string {
-  return sha256(encodeCanonicalJson(obj));
+  return sha256(Buffer.from(encodeCanonicalJson(obj)));
 }
 
 /**
