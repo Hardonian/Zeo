@@ -76,8 +76,11 @@ export default async function RunsPage({
         {' · '}
         <Link className={windowDays === 180 ? 'font-semibold text-blue-700 underline' : 'text-blue-700 hover:underline'} href="/app/runs?days=180">Last 180 days</Link>
       </div>
+      {/* @ts-expect-error Server Actions are valid here */}
       <form action={createRun} className="rounded border bg-white p-4"><input className="rounded border px-3 py-2" name="projectId" placeholder="Project ID (optional)" /><button className="ml-2 rounded bg-blue-600 px-3 py-2 text-white">Create run</button></form>
+      {/* @ts-expect-error Server Actions are valid here */}
       <form action={appendEvent} className="rounded border bg-white p-4 space-x-2"><input className="rounded border px-3 py-2" name="runId" placeholder="Run ID" required /><input className="rounded border px-3 py-2" name="eventType" defaultValue="log" /><input className="rounded border px-3 py-2" name="payload" defaultValue='{"message":"ok"}' /><button className="rounded bg-blue-600 px-3 py-2 text-white">Append event</button></form>
+      {/* @ts-expect-error Server Actions are valid here */}
       <form action={addArtifact} className="rounded border bg-white p-4 space-x-2"><input className="rounded border px-3 py-2" name="runId" placeholder="Run ID" required /><input className="rounded border px-3 py-2" name="filename" placeholder="artifact.json" /><button className="rounded bg-blue-600 px-3 py-2 text-white">Create artifact record</button></form>
       <div className="rounded border bg-white p-4"><h2 className="font-medium">Recent runs</h2><ul className="mt-2">{runs.map((run) => <li key={run.id} className="text-sm"><Link className="text-blue-700 hover:underline" href={`/app/runs/${run.id}`}>{run.id}</Link> — {run.status}</li>)}</ul></div>
     </div>

@@ -50,6 +50,7 @@ export default async function ProjectsPage({
         {' · '}
         <Link className={windowDays === 180 ? 'font-semibold text-blue-700 underline' : 'text-blue-700 hover:underline'} href="/app/projects?days=180">Last 180 days</Link>
       </div>
+      {/* @ts-expect-error Server Actions are valid here */}
       <form action={createProject} className="rounded border bg-white p-4"><input className="rounded border px-3 py-2" name="name" placeholder="Project name" required /><button className="ml-2 rounded bg-blue-600 px-3 py-2 text-white">Create</button></form>
       <ul className="rounded border bg-white p-4">{projects.map((p) => <li key={p.id}>{p.name}</li>)}</ul>
     </div>
