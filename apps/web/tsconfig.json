@@ -117,6 +117,16 @@
       ],
       "@zeo/tenant": [
         "../../packages/tenant/src/index.ts"
+      ],
+      "@zeo/core/client": [
+        "../../packages/core/src/client.ts"
+      ],
+      "@zeo/core/*": [
+        "../../packages/core/src/*.ts"
+      ],
+      "@zeo/*": [
+        "../../packages/*/src/index.ts",
+        "../../packages/*/src"
       ]
     },
     "target": "ES2017",

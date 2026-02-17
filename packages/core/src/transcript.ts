@@ -1,8 +1,8 @@
-import { sha256 } from "./utils/sha256.js";
+import { sha256 } from "@zeo/kernel";
 import type { DecisionResult, DecisionSpec, FinalizedDecisionTranscript, LensEvaluation, DecisionTranscript, TranscriptAgentRecord, EvidenceEvent } from "@zeo/contracts";
 import { runDecision, type RunDecisionOpts } from "./engine.js";
 import { VERSION_INFO } from "./version.js";
-import { encodeCanonicalJson } from "./canonical-json.js";
+import { encodeCanonicalJson } from "@zeo/kernel";
 // cleaned up
 
 export type ExecuteDecisionInput = {
