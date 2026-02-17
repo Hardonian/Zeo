@@ -10,9 +10,7 @@
  */
 
 import type { DecisionSpec, DecisionResult, LensEvaluation } from "@zeo/contracts";
-import { createRng } from "./rng.js";
-import { encodeCanonicalJson } from "./canonical-json.js";
-import { createHash } from "node:crypto";
+import { createRng, encodeCanonicalJson, sha256 } from "@zeo/kernel";
 
 // ─── Flip Distance ────────────────────────────────────────────────────────
 
@@ -175,9 +173,7 @@ export function generateEvidencePlan(
     remainingBudget -= stepCost;
   }
 
-  const planHash = createHash("sha256")
-    .update(encodeCanonicalJson({ spec: spec.id, budget, steps: steps.length }))
-    .digest("hex");
+  const planHash = sha256(encodeCanonicalJson({ spec: spec.id, budget, steps: steps.length }));
 
   return {
     planId: `plan_${planHash.slice(0, 12)}`,

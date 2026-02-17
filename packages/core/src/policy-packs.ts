@@ -1,4 +1,4 @@
-import { encodeCanonicalJson } from "./canonical-json.js";
+import { encodeCanonicalJson } from "@zeo/kernel";
 import { sha256 } from "./evidence-attestation.js";
 
 export interface PolicyPackContent {

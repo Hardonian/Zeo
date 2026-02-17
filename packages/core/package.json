@@ -39,6 +39,7 @@
     "@zeo/game": "workspace:*",
     "@zeo/hypothesis-registry": "workspace:*",
     "@zeo/id": "workspace:*",
+    "@zeo/kernel": "workspace:*",
     "@zeo/lenses": "workspace:*",
     "@zeo/measurement": "workspace:*",
     "@zeo/memory": "workspace:*",

@@ -1,4 +1,4 @@
-import { generateId } from "./id.js";
+import { generateId } from "@zeo/kernel";
 import type {
   Claim,
   Constraint,
@@ -134,4 +134,3 @@ export function downgradeTobelief(
     tags: candidate.tags,
   };
 }
-

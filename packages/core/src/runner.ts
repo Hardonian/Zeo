@@ -1,4 +1,4 @@
-import { generateId } from "@zeo/id";
+import { generateId } from "@zeo/kernel";
 
 /**
  * Zeo Runner
@@ -22,7 +22,7 @@ import {
     type KpiIntegrationConfig,
     createKpiIntegration
 } from "./kpi-integration.js";
-import { cacheKey } from "./hashing.js";
+import { cacheKey } from "@zeo/kernel";
 import { globalCache } from "./cache-layer.js";
 import { type EvidenceStorage } from "./evidence-storage.js";
 import { buildReproPackZip, buildReproPackContents } from "@zeo/repro-pack";

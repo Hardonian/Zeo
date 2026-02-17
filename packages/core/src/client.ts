@@ -9,8 +9,8 @@
  */
 
 // Logic
-export { runDecision, generateBranchGraph, type RunDecisionOpts } from "./engine.js";
-export { scenarios, ScenarioLibrary } from "./scenarios.js";
+export { runDecision, generateBranchGraph, type RunDecisionOpts } from "@zeo/kernel";
+export { scenarios, ScenarioLibrary } from "@zeo/kernel";
 
 // TODO: Implement actual zip handling for browser
 export async function exportScenarioPack(scenarios: any[], options: any): Promise<Uint8Array> {
@@ -25,21 +25,21 @@ export {
   hashDecisionSpec,
   hashAssumptionSet,
   computeTranscriptHash
-} from "./hashing.js";
+} from "@zeo/kernel";
 
 export { computeStableHash } from "./transcript.js";
 
 export {
   computeDeterministicSeed,
   computeRunSeed
-} from "./rng.js";
+} from "@zeo/kernel";
 
 export {
   deterministicNow,
   deterministicTimestamp,
   getDeterministicContext,
   withDeterministicMode
-} from "./deterministic.js";
+} from "@zeo/kernel";
 
 // Packets
 export { buildEvidencePacket, buildEvidencePacketMarkdown, type EvidencePacketOptions } from "./packets.js";
@@ -60,5 +60,5 @@ export type {
 } from "@zeo/contracts";
 
 // Primitives
-export { generateId } from "./id.js";
-export { encodeCanonicalJson } from "./canonical-json.js";
+export { generateId } from "@zeo/kernel";
+export { encodeCanonicalJson } from "@zeo/kernel";

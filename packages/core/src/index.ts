@@ -1,14 +1,47 @@
 export * from "./engine.js";
 export * from "./quant-engine.js";
 export * from "./examples.js";
-export * from "./canonicalize.js";
-export * from "./rng.js";
-export * from "./pruning.js";
-export * from "./flip-conditions.js";
+export * from "./canonicalize.js"; // This file seems to use node:crypto, need to check
 export * from "./evidence.js";
 export * from "./packets.js";
 export * from "./regime-integration.js";
-export * from "./scenarios.js";
+
+// Re-exports from Kernel (formerly local files)
+export {
+  createRng,
+  computeDeterministicSeed,
+  computeRunSeed,
+  type KernelRng,
+  generateId,
+  computeTranscriptHash,
+  hashDecisionSpec,
+  hashAssumptionSet,
+  cacheKey,
+  getContractVersionHash,
+  encodeCanonicalJson,
+  pruneGraph,
+  defaultPruningConfig,
+  generateFlipConditions,
+  hygiene,
+  BudgetManager,
+  BudgetReachedError,
+  scenarios,
+  ScenarioLibrary,
+  deterministicNow,
+  deterministicTimestamp,
+  getDeterministicContext,
+  withDeterministicMode,
+  activateDeterministicMode,
+  deactivateDeterministicMode,
+  isDeterministic,
+  getDeterministicIdCounter,
+  setDeterministicIdCounter,
+  normalizeFloat,
+  stableSort,
+  hashInputPayload
+} from "@zeo/kernel";
+
+
 export {
   type ExecuteDecisionInput,
   type ExecuteDecisionOutput,
@@ -22,13 +55,7 @@ export {
 } from "./transcript.js";
 export * from "./graph.js";
 export type { RunMeta } from "./packets.js";
-export {
-  computeTranscriptHash,
-  hashDecisionSpec,
-  hashAssumptionSet,
-  cacheKey,
-  getContractVersionHash,
-} from "./hashing.js";
+
 export type {
   LearningDecisionRunner,
   LearningAwareDecisionOptions,
@@ -37,7 +64,7 @@ export type {
 export {
   evaluateActionsWithPosterior,
   computeVariableSensitivity,
-  computeFlipConditions,
+  computeFlipConditions, // This might clash with kernel's generateFlipConditions? Check names.
   generateEvidenceCandidatesFromFlips,
   type ActionScore,
 } from "./decision-coupling.js";
@@ -45,7 +72,6 @@ export {
 // Capabilities / Permissions
 export * from "./capabilities.js";
 export * from "./limits.js";
-export * from "./canonical-json.js";
 export * from "./agent-manifest.js";
 export * from "./migrations.js";
 
@@ -83,9 +109,6 @@ export * from "./evidence-signing.js";
 export * from "./github-auth.js";
 
 // v2.0 — Decision Operating System Hardening
-
-// Deterministic execution
-export * from "./deterministic.js";
 
 // Execution snapshots
 export {

@@ -1,5 +1,5 @@
 import type { EvidenceBundle } from "@zeo/policy-types";
-import { encodeCanonicalJson } from "./canonical-json.js";
+import { encodeCanonicalJson } from "@zeo/kernel";
 
 /**
  * Sign an evidence bundle using WebCrypto Subtle
