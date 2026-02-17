@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseServiceClient } from '@/lib/supabase/service';
+import { isEnterpriseHostedEnabled } from '@/lib/enterprise-hosted';
 
 export const runtime = 'nodejs';
 
@@ -12,8 +13,12 @@ export async function POST(request: NextRequest) {
   try {
     const rawBody = await request.text();
     const signature = request.headers.get('stripe-signature');
-    const secret = process.env.STRIPE_WEBHOOK_SECRET;
 
+    if (!isEnterpriseHostedEnabled()) {
+      return NextResponse.json({ received: true, mode: 'oss' });
+    }
+
+    const secret = process.env.STRIPE_WEBHOOK_SECRET;
     if (!secret) {
       // Stripe not configured — accept silently in dev, reject in prod
       if (process.env.NODE_ENV === 'production') {
