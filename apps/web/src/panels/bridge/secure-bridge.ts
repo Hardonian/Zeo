@@ -496,7 +496,6 @@ export function createSecureBridgeHandler(context: SecureBridgeContext) {
         }
 
         const spec = message.payload as DecisionSpec;
-        const depth = (message as { payload: { depth?: number } }).payload.depth || 2;
 
         try {
           const result = await runDecisionAction(spec);
@@ -505,8 +504,7 @@ export function createSecureBridgeHandler(context: SecureBridgeContext) {
           context.decision.lastRun = new Date().toISOString();
           const { decisionHash } = await hashDecisionAction(spec);
           context.decision.decisionHash = decisionHash;
-          const seed = await computeRunSeedAction(context.decision.decisionHash, depth);
-          context.decision.seed = seed;
+          context.decision.seed = await computeRunSeedAction(context.decision.decisionHash, 2);
 
           logAuditEvent(context, 'capability_use', {
             capability: 'run_decision',
@@ -652,8 +650,8 @@ export function createSecureBridgeHandler(context: SecureBridgeContext) {
           );
         }
 
-        const runMeta = {
-          seed: context.decision.seed || (await computeRunSeedAction((await hashDecisionAction(spec)).decisionHash, 2)),
+        const runMeta: RunMeta = {
+          seed: context.decision.seed || await computeRunSeedAction((await hashDecisionAction(spec)).decisionHash, 2),
           depth: 2,
           limits: { maxBranches: 100, maxDepth: 2 },
           startedAt: context.decision.lastRun || new Date().toISOString(),
