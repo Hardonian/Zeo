@@ -12,6 +12,14 @@
 export { runDecision, generateBranchGraph, type RunDecisionOpts } from "./engine.js";
 export { scenarios, ScenarioLibrary } from "./scenarios.js";
 
+// TODO: Implement actual zip handling for browser
+export async function exportScenarioPack(scenarios: any[], options: any): Promise<Uint8Array> {
+  throw new Error("Export not implemented in client-safe build yet");
+}
+export async function importScenarioPack(buffer: Uint8Array): Promise<{ scenarios: any[], manifest: any }> {
+  throw new Error("Import not implemented in client-safe build yet");
+}
+
 // Hashing & Determinism
 export {
   hashDecisionSpec,

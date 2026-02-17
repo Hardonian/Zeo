@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+// @ts-ignore: React 18 types don't include 'use'
+import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 
-export default async function RunDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default function RunDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const [run, setRun] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<{ message: string; hint?: string } | null>(null);

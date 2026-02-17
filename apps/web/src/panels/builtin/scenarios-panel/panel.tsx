@@ -113,6 +113,7 @@ export default function ScenariosPanel({ manifest }: ScenariosPanelProps) {
                             onChange={handleFileChange}
                             accept=".zip"
                             className="hidden"
+                            aria-label="Import scenarios"
                         />
                         <button
                             onClick={handleImportClick}
