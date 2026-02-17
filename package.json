@@ -75,7 +75,8 @@
     "test:golden:pr": "node scripts/golden-harness.mjs --lane=pr",
     "mcp:smoke:example": "node examples/mcp/stdio-smoke-client.mjs",
     "bench:run": "node bench/run-benchmarks.mjs --lane=main",
-    "bench:run:pr": "node bench/run-benchmarks.mjs --lane=pr"
+    "bench:run:pr": "node bench/run-benchmarks.mjs --lane=pr",
+    "boundary:check": "node scripts/boundary-check.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",
