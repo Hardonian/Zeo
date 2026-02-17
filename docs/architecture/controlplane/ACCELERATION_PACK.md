@@ -14,7 +14,12 @@
 - [ ] **Contract Version Check:** Ensure vendored contracts match the pinned version in `package.json`.
 - [ ] **Secret Scan:** Ensure no env vars are baked into the build of the Web/CLI components interacting with ControlPlane.
 
-## C. Minimal API Contract Example (Zeo -> TruthCore)
+## C. Recommended Refactor Sequencing Order
+
+1.  **Extract Shared Types:** Migrate local `ControlPlaneStatus` interfaces from `apps/cli` and `apps/web` to `@controlplane/contracts` (requires upstream PR to `Hardonian/ControlPlane`).
+2.  **Unify MCP Config Parsing:** Move `parseMcpTools` logic to a shared library or use `@controlplane/contracts` validation.
+
+## D. Minimal API Contract Example (Zeo -> TruthCore)
 
 ```typescript
 // Defined in @controlplane/contracts
