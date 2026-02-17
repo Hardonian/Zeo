@@ -4,6 +4,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
+      "@zeo/contracts": ["../../packages/contracts/dist/index.d.ts"],
       "@zeo/*": ["../../packages/*/src/index.ts", "../../packages/*/src"]
     }
   },
