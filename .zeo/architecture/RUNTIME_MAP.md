@@ -19,7 +19,7 @@
 | `@zeo/mcp-server` | `env:node` | `env:node` | ✅ Correct. |
 | `@zeo/db` | `env:node` | `env:node` | ✅ Correct (Prisma/SQLite). |
 | `apps/web` | `env:mixed` (Dangerous) | `env:web:public` | 🚨 CRITICAL: Imports `@zeo/core`. |
-| `apps/web/src/lib/studio-api`| `env:web:studio` | `env:node` (Dedicated Pkg) | ⚠️ Logic leak. Should be in `@zeo/studio-server`. |
+| `apps/web/src/lib/studio-api` | `env:web:studio` | `env:node` (Dedicated Pkg) | ⚠️ Logic leak. Should be in `@zeo/studio-server`. |
 
 ## 3. Dependency Graph & Risk Analysis
 
@@ -53,6 +53,7 @@ graph TD
 ```
 
 ### Risk Assessment
+
 - **High**: `apps/web` pulling in `@zeo/core` means `better-sqlite3` is in the dependency tree for the frontend build. This relies entirely on Next.js/Webpack tree-shaking and "server-only" guards, which is fragile.
 - **Medium**: `@zeo/core` exports `client.ts` which throws runtime errors. This is technical debt that confuses consumers.
 - **Low**: CLI/MCP coupling is acceptable as they share the same runtime requirements.
