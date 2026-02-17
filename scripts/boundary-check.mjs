@@ -1,5 +1,5 @@
-import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { join } from 'node:path';
+import { collectBoundaryViolations } from './boundary-check-lib.mjs';
 
 const repoRoot = process.cwd();
 const webRoot = join(repoRoot, 'apps/web/src');
