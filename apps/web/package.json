@@ -35,6 +35,7 @@
     "@zeo/regimes": "workspace:*",
     "@zeo/repro-pack": "workspace:*",
     "@zeo/signal-discovery": "workspace:*",
+    "@zeo/studio-server": "workspace:*",
     "@zeo/telemetry": "workspace:*",
     "@zeo/trust": "workspace:*",
     "idb": "^8.0.0",
