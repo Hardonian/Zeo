@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "./utils/sha256.js";
 
 export interface DeterministicRng {
   nextFloat(): number;
@@ -66,7 +66,11 @@ function splitmix32(seed: number): () => number {
 
 export function createRng(seed: string | number): DeterministicRng {
   const seedStr = typeof seed === "number" ? seed.toString() : seed;
-  const hash = createHash("sha256").update(seedStr).digest();
+  const hashHex = sha256(seedStr);
+
+  // Parse hex to seed bytes
+  const hash = new Uint8Array(hashHex.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16)));
+
   const seed0 = ((hash[0] << 24) | (hash[1] << 16) | (hash[2] << 8) | hash[3]) >>> 0;
   const seed1 = ((hash[4] << 24) | (hash[5] << 16) | (hash[6] << 8) | hash[7]) >>> 0;
   const seed2 = ((hash[8] << 24) | (hash[9] << 16) | (hash[10] << 8) | hash[11]) >>> 0;
@@ -91,7 +95,7 @@ export function computeDeterministicSeed(
   depth: number
 ): string {
   const combined = `${decisionHash}:${observationHash || "no-observations"}:${depth}`;
-  return createHash("sha256").update(combined).digest("hex");
+  return sha256(combined);
 }
 
 export function computeRunSeed(
@@ -107,6 +111,6 @@ export function computeRunSeed(
     maxBranches.toString(),
   ];
   const combined = components.join(":");
-  return createHash("sha256").update(combined).digest("hex");
+  return sha256(combined);
 }
 

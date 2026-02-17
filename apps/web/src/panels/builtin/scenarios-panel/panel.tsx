@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import type { UiPanelManifest, Scenario } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
-import { scenarios, exportScenarioPack, importScenarioPack } from '@zeo/core';
+import { scenarios, exportScenarioPack, importScenarioPack } from '@zeo/core/client';
 
 interface ScenariosPanelProps {
     manifest: UiPanelManifest;

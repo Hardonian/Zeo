@@ -8,8 +8,8 @@ import {
   buildEvidencePacketMarkdown,
   computeDeterministicSeed,
   type RunMeta,
-} from '@zeo/core';
-import { createHash } from 'node:crypto';
+} from '@zeo/core/client';
+import { createHash } from 'node:crypto'; // Note: Bridge still uses Node crypto? Should check.
 import { generateId } from '@zeo/id';
 
 interface RateLimitEntry {
