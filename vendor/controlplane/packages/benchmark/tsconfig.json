@@ -5,8 +5,8 @@
     "moduleResolution": "bundler",
     "baseUrl": ".",
     "paths": {
-      "@controlplane/observability": ["../observability/src/index.ts"],
-      "@controlplane/contracts": ["../contracts/src/index.ts"]
+      "@controlplane/observability": ["../observability/dist/index.d.ts"],
+      "@controlplane/contracts": ["../contracts/dist/index.d.ts"]
     },
     "lib": ["ES2022"],
     "outDir": "./dist",

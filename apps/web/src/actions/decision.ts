@@ -5,11 +5,11 @@ import 'server-only';
 import {
   runDecision,
   policyEngine,
-  makeNegotiationExample,
-  makeOpsExample,
   hashDecisionSpec,
   computeDeterministicSeed
 } from '@zeo/core/client';
+// eslint-disable-next-line no-restricted-imports
+import { makeNegotiationExample, makeOpsExample } from '@zeo/core';
 import type { PolicyViolation, DecisionResult, DecisionSpec } from '@zeo/contracts';
 import { createHash } from 'node:crypto';
 
