@@ -13,6 +13,9 @@
       "@zeo/budgets": [
         "../../packages/budgets/src/index.ts"
       ],
+      "@zeo/analysis": [
+        "../../packages/analysis/src/index.ts"
+      ],
       "@zeo/calibration": [
         "../../packages/calibration/src/index.ts"
       ],
@@ -75,6 +78,9 @@
       ],
       "@zeo/repro-pack": [
         "../../packages/repro-pack/src/index.ts"
+      ],
+      "@zeo/kernel": [
+        "../../packages/kernel/src/index.ts"
       ],
       "@zeo/rsl": [
         "../../packages/rsl/src/index.ts"
