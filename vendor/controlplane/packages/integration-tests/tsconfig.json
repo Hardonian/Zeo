@@ -14,16 +14,16 @@
     "baseUrl": ".",
     "paths": {
       "@controlplane/contract-kit": [
-        "../contract-kit/dist/index.d.ts"
+        "../contract-kit/src/index.ts"
       ],
       "@controlplane/controlplane": [
         "../controlplane/src/index.ts"
       ],
       "@controlplane/observability": [
-        "../observability/dist/index.d.ts"
+        "../observability/src/index.ts"
       ],
       "@controlplane/contracts": [
-        "../contracts/dist/index.d.ts"
+        "../contracts/src/index.ts"
       ]
     }
   },
