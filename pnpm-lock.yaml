@@ -19,9 +19,6 @@ importers:
       '@eslint/js':
         specifier: ^9.10.0
         version: 9.39.2
-      '@prisma/config':
-        specifier: 7.4.0
-        version: 7.4.0
       eslint:
         specifier: ^9.10.0
         version: 9.39.2(jiti@2.6.1)
@@ -31,9 +28,6 @@ importers:
       js-yaml:
         specifier: ^4.1.1
         version: 4.1.1
-      prisma:
-        specifier: ^7.4.0
-        version: 7.4.0(@types/react@18.3.28)(better-sqlite3@12.6.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
