@@ -19,9 +19,6 @@ importers:
       '@eslint/js':
         specifier: ^9.10.0
         version: 9.39.2
-      '@prisma/config':
-        specifier: 7.4.0
-        version: 7.4.0
       eslint:
         specifier: ^9.10.0
         version: 9.39.2(jiti@2.6.1)
@@ -31,9 +28,6 @@ importers:
       js-yaml:
         specifier: ^4.1.1
         version: 4.1.1
-      prisma:
-        specifier: ^7.4.0
-        version: 7.4.0(@types/react@18.3.28)(better-sqlite3@12.6.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
@@ -5792,6 +5786,22 @@ snapshots:
       chai: 5.3.3
       tinyrainbow: 1.2.0
 
+  '@vitest/mocker@2.1.9(vite@5.4.21(@types/node@20.19.33))':
+    dependencies:
+      '@vitest/spy': 2.1.9
+      estree-walker: 3.0.3
+      magic-string: 0.30.21
+    optionalDependencies:
+      vite: 5.4.21(@types/node@20.19.33)
+
+  '@vitest/mocker@2.1.9(vite@5.4.21(@types/node@22.19.10))':
+    dependencies:
+      '@vitest/spy': 2.1.9
+      estree-walker: 3.0.3
+      magic-string: 0.30.21
+    optionalDependencies:
+      vite: 5.4.21(@types/node@22.19.10)
+
   '@vitest/mocker@2.1.9(vite@5.4.21(@types/node@25.2.2))':
     dependencies:
       '@vitest/spy': 2.1.9
@@ -7878,7 +7888,7 @@ snapshots:
   vitest@2.1.9(@types/node@20.19.33)(jsdom@28.0.0):
     dependencies:
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.21(@types/node@25.2.2))
+      '@vitest/mocker': 2.1.9(vite@5.4.21(@types/node@20.19.33))
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
@@ -7914,7 +7924,7 @@ snapshots:
   vitest@2.1.9(@types/node@22.19.10)(jsdom@28.0.0):
     dependencies:
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.21(@types/node@25.2.2))
+      '@vitest/mocker': 2.1.9(vite@5.4.21(@types/node@22.19.10))
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
