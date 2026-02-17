@@ -3,8 +3,7 @@
 import React, { useState } from 'react';
 import type { UiPanelManifest, DecisionSpec, Action, Claim } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
-// eslint-disable-next-line no-restricted-imports
-import { scenarios } from '@zeo/core';
+import { scenarios } from '@zeo/core/client';
 
 interface SpecComparisonPanelProps {
     manifest: UiPanelManifest;
@@ -25,7 +24,7 @@ export default function SpecComparisonPanel({ manifest }: SpecComparisonPanelPro
 
     const handleSelectComparison = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const id = e.target.value;
-        const found = localScenarios.find(s => s.id === id);
+        const found = localScenarios.find((s) => s.id === id);
         if (found) setComparisonDecision(found.spec);
         else setComparisonDecision(null);
     };

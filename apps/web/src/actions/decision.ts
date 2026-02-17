@@ -1,13 +1,15 @@
 'use server';
 
+import 'server-only';
+
 import {
   runDecision,
   policyEngine,
-  makeNegotiationExample,
-  makeOpsExample,
   hashDecisionSpec,
   computeDeterministicSeed
-} from '@zeo/core';
+} from '@zeo/core/client';
+// eslint-disable-next-line no-restricted-imports
+import { makeNegotiationExample, makeOpsExample } from '@zeo/core';
 import type { PolicyViolation, DecisionResult, DecisionSpec } from '@zeo/contracts';
 import { createHash } from 'node:crypto';
 
@@ -98,13 +100,13 @@ export async function generateComparisonRunsAction(depth: 2 | 3 = 2): Promise<[G
 
 export async function exportScenarioPackAction(scenarios: any[], options: any): Promise<string> {
     // Return base64 string of the zip
-    const { exportScenarioPack } = await import('@zeo/core');
+    const { exportScenarioPack } = await import('@zeo/core/client');
     const buffer = await exportScenarioPack(scenarios, options);
     return Buffer.from(buffer).toString('base64');
 }
 
 export async function buildEvidencePacketAction(options: any): Promise<any> {
-    const { buildEvidencePacket, buildEvidencePacketMarkdown } = await import('@zeo/core');
+    const { buildEvidencePacket, buildEvidencePacketMarkdown } = await import('@zeo/core/client');
     const packet = buildEvidencePacket(options);
     const markdown = buildEvidencePacketMarkdown(packet);
     return { packet, markdown };

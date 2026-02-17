@@ -6,7 +6,7 @@ import {
   buildEvidencePacket,
   buildEvidencePacketMarkdown,
   computeDeterministicSeed
-} from '@zeo/core';
+} from '@zeo/core/client';
 import type { RunMeta } from '@zeo/contracts';
 import { createHash } from 'node:crypto'; // Note: Bridge still uses Node crypto? Should check.
 import { generateId } from '@zeo/id';
