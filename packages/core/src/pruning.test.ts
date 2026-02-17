@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { pruneGraph, defaultPruningConfig } from "./pruning.js";
+import { pruneGraph, defaultPruningConfig } from "@zeo/kernel";
 import { generateBranchGraph } from "./engine.js";
 import { makeNegotiationExample } from "./examples.js";
 import type { BranchGraph, BranchNode, BranchEdge } from "@zeo/contracts";

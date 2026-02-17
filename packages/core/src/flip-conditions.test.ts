@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { generateFlipConditions } from "./flip-conditions.js";
+import { generateFlipConditions } from "@zeo/kernel";
 import { runDecision } from "./engine.js";
 import { makeNegotiationExample, makeOpsExample } from "./examples.js";
 

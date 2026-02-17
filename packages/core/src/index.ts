@@ -8,7 +8,7 @@ export * from "./regime-integration.js";
 
 // Re-exports from Kernel (formerly local files)
 export {
-  createRng,
+  createKernelRng,
   computeDeterministicSeed,
   computeRunSeed,
   type KernelRng,

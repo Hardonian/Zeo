@@ -5,7 +5,7 @@ import {
 } from './canonicalize';
 import {
   hashDecisionSpec,
-  createRng,
+  createKernelRng,
 } from '@zeo/kernel';
 import { makeNegotiationExample } from './examples';
 import type { ProbabilityInterval, ValueBand } from '@zeo/contracts';
@@ -182,8 +182,8 @@ describe('Fuzz Tests - Boundary Inputs', () => {
       const sequence1: number[] = [];
       const sequence2: number[] = [];
 
-      const rng1 = createRng(seed);
-      const rng2 = createRng(seed);
+      const rng1 = createKernelRng(seed);
+      const rng2 = createKernelRng(seed);
 
       for (let i = 0; i < iterations; i++) {
         sequence1.push(rng1.nextFloat());
@@ -199,8 +199,8 @@ describe('Fuzz Tests - Boundary Inputs', () => {
       const samples2: number[][] = [];
 
       for (let run = 0; run < 5; run++) {
-        const rng1 = createRng('seed-a-' + run);
-        const rng2 = createRng('seed-b-' + run);
+        const rng1 = createKernelRng('seed-a-' + run);
+        const rng2 = createKernelRng('seed-b-' + run);
         const seq1: number[] = [];
         const seq2: number[] = [];
 
@@ -218,7 +218,7 @@ describe('Fuzz Tests - Boundary Inputs', () => {
     });
 
     it('nextInt produces values in range', () => {
-      const rng = createRng('range-test-' + randomInt(0, 1000));
+      const rng = createKernelRng('range-test-' + randomInt(0, 1000));
       const min = 10;
       const max = 100;
       const iterations = 1000;
@@ -233,7 +233,7 @@ describe('Fuzz Tests - Boundary Inputs', () => {
     });
 
     it('nextBoolean alternates realistically', () => {
-      const rng = createRng('boolean-test-' + randomInt(0, 1000));
+      const rng = createKernelRng('boolean-test-' + randomInt(0, 1000));
       const iterations = 1000;
       const trues = [...Array(iterations)].reduce((acc) => acc + (rng.nextBoolean() ? 1 : 0), 0);
 

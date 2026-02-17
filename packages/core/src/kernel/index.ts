@@ -13,7 +13,7 @@ export {
   computeDeterministicSeed,
   computeRunSeed,
   computeTranscriptHash,
-  createRng,
+  createKernelRng,
   deactivateDeterministicMode,
   defaultPruningConfig,
   deterministicNow,

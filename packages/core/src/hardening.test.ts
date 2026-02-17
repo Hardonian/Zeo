@@ -6,7 +6,7 @@ import {
 } from './canonicalize';
 import {
   hashDecisionSpec,
-  createRng,
+  createKernelRng,
   computeDeterministicSeed,
 } from '@zeo/kernel';
 import { makeNegotiationExample } from './examples';
@@ -145,8 +145,8 @@ describe('Determinism', () => {
 
   describe('Seeded RNG', () => {
     it('same seed => identical outputs', () => {
-      const rng1 = createRng('test-seed');
-      const rng2 = createRng('test-seed');
+      const rng1 = createKernelRng('test-seed');
+      const rng2 = createKernelRng('test-seed');
 
       const values1 = [rng1.nextFloat(), rng1.nextInt(0, 100), rng1.nextBoolean()];
       const values2 = [rng2.nextFloat(), rng2.nextInt(0, 100), rng2.nextBoolean()];
@@ -155,8 +155,8 @@ describe('Determinism', () => {
     });
 
     it('different seeds => different outputs', () => {
-      const rng1 = createRng('seed-1');
-      const rng2 = createRng('seed-2');
+      const rng1 = createKernelRng('seed-1');
+      const rng2 = createKernelRng('seed-2');
 
       const values1 = [rng1.nextFloat(), rng1.nextInt(0, 100), rng1.nextBoolean()];
       const values2 = [rng2.nextFloat(), rng2.nextInt(0, 100), rng2.nextBoolean()];
@@ -165,14 +165,14 @@ describe('Determinism', () => {
     });
 
     it('nextChoice returns valid items', () => {
-      const rng = createRng('test-seed');
+      const rng = createKernelRng('test-seed');
       const items = ['a', 'b', 'c'];
       const chosen = rng.nextChoice(items);
       expect(items).toContain(chosen);
     });
 
     it('nextGaussian produces reasonable values', () => {
-      const rng = createRng('test-seed');
+      const rng = createKernelRng('test-seed');
       const values = Array.from({ length: 1000 }, () => rng.nextGaussian());
       const mean = values.reduce((a, b) => a + b, 0) / values.length;
       expect(mean).toBeGreaterThan(-0.5);

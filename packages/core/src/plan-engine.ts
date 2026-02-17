@@ -10,7 +10,7 @@
  */
 
 import type { DecisionSpec, DecisionResult, LensEvaluation } from "@zeo/contracts";
-import { createRng, encodeCanonicalJson, sha256 } from "@zeo/kernel";
+import { createKernelRng, encodeCanonicalJson, sha256 } from "@zeo/kernel";
 
 // ─── Flip Distance ────────────────────────────────────────────────────────
 
