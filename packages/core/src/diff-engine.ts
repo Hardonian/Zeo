@@ -10,7 +10,7 @@
  */
 
 import { loadSnapshot, type ExecutionSnapshot } from "./snapshot.js";
-import { validateOutputHash } from "./kernel/determinism-validator.js";
+import { validateOutputHash } from "@zeo/kernel";
 
 export interface RunDiff {
   runA: string;
