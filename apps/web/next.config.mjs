@@ -95,6 +95,9 @@ const nextConfig = {
     // Use NormalModuleReplacementPlugin to forcibly redirect workspace imports
     const workspaceRedirects = [
       { from: /^@zeo\/contracts$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/contracts/dist/index.js'), path.join(rootDir, 'packages/contracts/src/index.ts')) },
+      { from: /^@zeo\/kernel$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/kernel/dist/index.js'), path.join(rootDir, 'packages/kernel/src/index.ts')) },
+      { from: /^@zeo\/env$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/env/dist/index.js'), path.join(rootDir, 'packages/env/src/index.ts')) },
+      { from: /^@zeo\/studio-server$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/studio-server/dist/index.js'), path.join(rootDir, 'packages/studio-server/src/index.ts')) },
       { from: /^@zeo\/core$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/core/dist/index.js'), path.join(rootDir, 'packages/core/src/index.ts')) },
       { from: /^@zeo\/core\/client$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/core/dist/client.js'), path.join(rootDir, 'packages/core/src/client.ts')) },
       { from: /^@zeo\/reality$/, to: resolveWorkspaceEntry(path.join(rootDir, 'packages/reality/dist/index.js'), path.join(rootDir, 'packages/reality/src/index.ts')) },

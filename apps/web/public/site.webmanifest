@@ -1,0 +1,21 @@
+{
+  "name": "Zeo",
+  "short_name": "Zeo",
+  "description": "Governance and evidence for uncertain decisions",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F9FAFB",
+  "theme_color": "#4F46E5",
+  "icons": [
+    {
+      "src": "/brand/zeo/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

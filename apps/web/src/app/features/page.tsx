@@ -1,5 +1,12 @@
 import Image from 'next/image';
 import { PublicShell } from '@/components/site/PublicShell';
+import { buildMetadata } from '@/lib/seo/metadata';
+
+export const metadata = buildMetadata({
+  title: 'Features | Zeo',
+  description: 'Explore Zeo features: decision branching, sensitivity analysis, flip thresholds, evidence planning, and provenance tracking.',
+  canonicalPath: '/features',
+});
 
 export default function FeaturesPage() {
   return (
@@ -12,7 +19,7 @@ export default function FeaturesPage() {
           <h2 className="text-lg font-semibold">Decision Branching</h2>
           <div className="flex flex-col md:flex-row gap-6 items-start rounded-lg border border-gray-200 bg-white p-5">
             <div className="flex-shrink-0">
-              <img src="/illustrations/counterfactual-graph.svg" alt="Counterfactual graph: current decision path highlighted, alternative branches shown faint with flip-distance annotation" width={320} height={200} loading="lazy" />
+              <Image src="/illustrations/counterfactual-graph.svg" alt="Counterfactual graph: current decision path highlighted, alternative branches shown faint with flip-distance annotation" width={320} height={200} loading="lazy" />
             </div>
             <div>
               <p className="text-sm text-gray-600">Map decisions as graphs. Each node is a choice; each edge carries a probability weight. Counterfactual branches show what would have happened under alternative assumptions.</p>

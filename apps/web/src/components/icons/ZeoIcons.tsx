@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 interface IconProps {
   className?: string;
 }
@@ -7,15 +5,17 @@ interface IconProps {
 /** Zeo logo mark — gradient Z with branching motif */
 export function ZeoMark({ className = 'h-8 w-8' }: IconProps) {
   return (
-    <div className={`relative ${className}`}>
-      <Image
-        src="/brand/zeo/icon.png"
-        alt="Zeo"
-        fill
-        className="object-contain"
-        sizes="64px"
-      />
-    </div>
+    <svg className={className} viewBox="0 0 32 32" fill="none" aria-label="Zeo">
+      <defs>
+        <linearGradient id="zeo-lg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#4F46E5"/>
+          <stop offset="100%" stopColor="#6366F1"/>
+        </linearGradient>
+      </defs>
+      <rect width="32" height="32" rx="7" fill="url(#zeo-lg)"/>
+      <path d="M8 10h16l-10 12h10" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+      <circle cx="22" cy="16" r="1.5" fill="#A5B4FC"/>
+    </svg>
   );
 }
 

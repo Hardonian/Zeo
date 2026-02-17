@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { PublicShell } from '@/components/site/PublicShell';
+import { buildMetadata } from '@/lib/seo/metadata';
 import {
   IconBranching,
   IconProvenance,
@@ -9,10 +10,11 @@ import {
   IconAudit,
 } from '@/components/icons/ZeoIcons';
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: 'About | Zeo',
   description: 'Learn about Zeo — an evidence-mapping workspace for decisions under uncertainty with provenance tracking and sensitivity analysis.',
-};
+  canonicalPath: '/about',
+});
 
 const principles = [
   {
@@ -93,7 +95,7 @@ export default function AboutPage() {
                 &quot;best choice.&quot; Sensitivity analysis shows what would change the answer.
               </p>
               <figure className="mt-3">
-                <img
+                <Image
                   src="/illustrations/regret-envelope.svg"
                   alt="Outcome envelope showing robust central path between worst-case and best-case bounds"
                   width={300}
