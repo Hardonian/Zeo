@@ -1,4 +1,4 @@
-import pino from 'pino';
+import { pino } from 'pino';
 import { ErrorEnvelope, ErrorCategory } from '@controlplane/contracts';
 
 export interface LoggerOptions {

@@ -3,8 +3,7 @@
 import React from 'react';
 import type { UiPanelManifest } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
-// eslint-disable-next-line no-restricted-imports
-import { generateDecisionReport } from '@zeo/core';
+import { generateDecisionReport } from '@zeo/core/client';
 
 interface ExplanationPanelProps {
     manifest: UiPanelManifest;

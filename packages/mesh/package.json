@@ -11,7 +11,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@zeo/core": "workspace:*",
+    "@zeo/kernel": "workspace:*",
     "@zeo/contracts": "workspace:*",
     "@zeo/tenant": "workspace:*",
     "nanoid": "^5.0.7"

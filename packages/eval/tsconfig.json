@@ -2,12 +2,17 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
     "lib": [
       "ES2022"
     ],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext"
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "paths": {
+      "@zeo/*": [
+        "packages/*/dist/index.d.ts",
+        "packages/*/src/index.ts"
+      ]
+    }
   },
   "include": [
     "src/**/*"

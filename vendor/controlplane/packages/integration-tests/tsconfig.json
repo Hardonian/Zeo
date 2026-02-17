@@ -3,7 +3,9 @@
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "lib": ["ES2022"],
+    "lib": [
+      "ES2022"
+    ],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -11,9 +13,22 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@controlplane/contract-kit": ["../contract-kit/dist/index.d.ts"],
-      "@controlplane/controlplane": ["../controlplane/dist/index.d.ts"]
+      "@controlplane/contract-kit": [
+        "../contract-kit/src/index.ts"
+      ],
+      "@controlplane/controlplane": [
+        "../controlplane/src/index.ts"
+      ],
+      "@controlplane/observability": [
+        "../observability/src/index.ts"
+      ],
+      "@controlplane/contracts": [
+        "../contracts/src/index.ts"
+      ]
     }
   },
-  "include": ["../../tests/integration/**/*.ts", "../../tests/integration/**/*.d.ts"]
+  "include": [
+    "../../tests/integration/**/*.ts",
+    "../../tests/integration/**/*.d.ts"
+  ]
 }

@@ -62,7 +62,7 @@ export function checkEnv(
   const isStrict = runtimeEnv.ZE0_STRICT === '1';
   const result = safeValidateEnv(runtimeEnv);
 
-  if (!result.success) {
+  if (!result.success && "errors" in result) {
     console.error(isStrict ? '❌ [Env] Strict Mode Violation:' : '⚠️ [Env] Invalid environment variables:');
 
     result.errors.forEach((issue) => {

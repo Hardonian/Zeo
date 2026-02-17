@@ -12,7 +12,7 @@
 
 import { randomUUID } from "node:crypto";
 import { performance } from "node:perf_hooks";
-import { kernel } from "@zeo/core";
+import * as kernel from "@zeo/kernel";
 import {
   type JobEnvelope,
   type ResultEnvelope,
@@ -26,7 +26,7 @@ import {
   redactSecrets,
 } from "./envelope.js";
 import type { WorkerServer } from "./worker.js";
-import type { KernelInput, KernelPolicySnapshot } from "@zeo/core";
+import type { KernelInput, KernelPolicySnapshot } from "@zeo/kernel";
 
 // ─── Types ───────────────────────────────────────────────────────────────
 

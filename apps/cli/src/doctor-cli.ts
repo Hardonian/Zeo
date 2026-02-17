@@ -855,7 +855,7 @@ function runSecretScanningCheck(): DoctorCheck {
 function runEnvCheck(): DoctorCheck {
   const result = safeValidateEnv();
   if (!result.success) {
-    const issues = (result as { success: false; errors: import("zod").ZodIssue[] }).errors.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ");
+    const issues = ("errors" in result ? result.errors : []).map((e) => `${e.path.join(".")}: ${e.message}`).join(", ");
     return { id: "env", name: "Environment Check", status: "fail", message: `Invalid env: ${issues}`, remediation: "Check .env file and required variables" };
   }
   return { id: "env", name: "Environment Check", status: "pass", message: "Environment variables valid" };

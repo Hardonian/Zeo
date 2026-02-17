@@ -19,7 +19,7 @@
     "bin"
   ],
   "scripts": {
-    "build": "node ../../scripts/build-target.mjs @controlplane/controlplane -- tsc",
+    "build": "node ../../scripts/build-target.mjs @controlplane/contracts @controlplane/observability @controlplane/contract-kit -- tsc",
     "dev": "tsc --watch",
     "typecheck": "tsc --noEmit",
     "lint": "node ../../scripts/lint-target.mjs vendor/controlplane/packages/controlplane/src",
