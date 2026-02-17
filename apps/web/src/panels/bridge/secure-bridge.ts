@@ -10,16 +10,14 @@ import type {
 } from '@zeo/contracts';
 import type { DecisionSpec, DecisionResult } from '@zeo/contracts';
 import {
+  runDecision,
+  canonicalizeDecisionSpec,
+  hashDecisionSpec,
   buildEvidencePacket,
   buildEvidencePacketMarkdown,
+  computeDeterministicSeed,
   type RunMeta,
 } from '@zeo/core';
-import {
-  runDecision,
-  // canonicalizeDecisionSpec, // Verify if mapped
-  // hashDecisionSpec, // Verify if mapped
-  // computeDeterministicSeed, // Verify if mapped
-} from '@zeo/kernel';
 import {
   isValidPermissionRequest,
   createPermissionResponse,

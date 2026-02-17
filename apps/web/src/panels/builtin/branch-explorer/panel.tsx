@@ -3,8 +3,7 @@
 import React, { useState } from 'react';
 import type { UiPanelManifest, DecisionSpec } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
-import { policyEngine, PolicyViolation, exportScenarioPack } from '@zeo/core';
-import { runDecision } from '@zeo/kernel';
+import { runDecision, policyEngine, PolicyViolation, exportScenarioPack } from '@zeo/core';
 import { deepDiff, support } from '@zeo/repro-pack';
 
 interface BranchExplorerProps {
