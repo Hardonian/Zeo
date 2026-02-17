@@ -11,6 +11,9 @@ import type { DecisionSpec } from "@zeo/contracts";
 export interface DeterministicRng {
   nextFloat(): number;
   nextInt(min: number, max: number): number;
+  nextBoolean(): boolean;
+  nextChoice<T>(items: T[]): T;
+  nextGaussian(mean?: number, stdDev?: number): number;
 }
 
 export interface KernelRng extends DeterministicRng {}
@@ -39,7 +42,21 @@ function xoshiro128ss(a: number, b: number, c: number, d: number): KernelRng {
       return result / 4294967296;
     },
     nextInt(min: number, max: number): number {
-      return min + Math.floor(this.nextFloat() * (max - min + 1));
+      return Math.floor(this.nextFloat() * (max - min + 1)) + min;
+    },
+    nextBoolean(): boolean {
+      return this.nextFloat() >= 0.5;
+    },
+    nextChoice<T>(items: T[]): T {
+      if (items.length === 0) throw new Error("RNG choice from empty array");
+      return items[this.nextInt(0, items.length - 1)];
+    },
+    nextGaussian(mean = 0, stdDev = 1): number {
+      let u = 0, v = 0;
+      while (u === 0) u = this.nextFloat();
+      while (v === 0) v = this.nextFloat();
+      const z0 = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+      return z0 * stdDev + mean;
     },
   };
 }

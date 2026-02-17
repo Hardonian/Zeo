@@ -14,7 +14,7 @@ import {
     PolicyPackContent
 } from "./policy-packs.js";
 import { WebhookSecurity } from "./webhooks-security.js";
-import { encodeCanonicalJson } from "./canonical-json.js";
+import { encodeCanonicalJson } from "@zeo/kernel";
 
 describe("Enterprise Defensibility Trifecta", () => {
 
