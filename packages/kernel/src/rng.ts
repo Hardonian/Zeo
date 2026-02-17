@@ -61,7 +61,7 @@ function xoshiro128ss(a: number, b: number, c: number, d: number): KernelRng {
   };
 }
 
-export function createRng(seed: string): KernelRng {
+export function createKernelRng(seed: string): KernelRng {
   // Use pure JS sha256 to hash the seed string
   const hashHex = sha256(seed);
 

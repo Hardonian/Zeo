@@ -10,7 +10,7 @@
  */
 
 import { sha256 } from "./utils/sha256.js";
-import { createRng, type DeterministicRng } from "./rng.js";
+import { createKernelRng, type DeterministicRng } from "./rng.js";
 import { encodeCanonicalJson } from "./canonical-json.js";
 
 export interface DeterministicClock {
