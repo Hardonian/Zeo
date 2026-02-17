@@ -17,8 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@zeo/*": [
-        "packages/*/dist",
-        "packages/*/src"
+        "packages/*/src",
+        "packages/*/dist"
       ],
       "@prisma/client": [
         "packages/db/src/prisma-client.d.ts"
