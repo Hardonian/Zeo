@@ -24,5 +24,5 @@ export default async function SettingsPage() {
     revalidatePath('/app/settings');
   }
 
-  return <div className="rounded border bg-white p-4"><p className="text-sm">Role: {String(membership.role)}</p>{/* @ts-expect-error Server Actions are valid here */}<form action={renameOrg} className="mt-3"><input name="name" defaultValue={org?.name ?? ''} className="rounded border px-3 py-2" aria-label="Organization Name" /><button className="ml-2 rounded bg-blue-600 px-3 py-2 text-white">Save</button></form></div>;
+  return <div className="rounded border bg-white p-4"><p className="text-sm">Role: {String(membership.role)}</p><form action={renameOrg as unknown as string} className="mt-3"><input name="name" defaultValue={org?.name ?? ''} className="rounded border px-3 py-2" aria-label="Organization Name" /><button className="ml-2 rounded bg-blue-600 px-3 py-2 text-white">Save</button></form></div>;
 }
