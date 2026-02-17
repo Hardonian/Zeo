@@ -125,7 +125,7 @@ describe('Secure Bridge', () => {
       expect(response.type).not.toBe('error');
     });
 
-    it('should deny requests exceeding global rate limit', () => {
+    it('should deny requests exceeding global rate limit', async () => {
       // Exhaust rate limit
       for (let i = 0; i < 105; i++) {
         const message: UiBridgeMessage = {
@@ -134,7 +134,7 @@ describe('Secure Bridge', () => {
           type: 'ping',
           payload: {},
         };
-        handler(message, 'https://example.com');
+        await handler(message, 'https://example.com');
       }
 
       // Next request should be rate limited
@@ -144,7 +144,7 @@ describe('Secure Bridge', () => {
         type: 'ping',
         payload: {},
       };
-      const response = handler(message, 'https://example.com');
+      const response = await handler(message, 'https://example.com');
 
       if (response.type === 'error') {
         const errorPayload = response.payload as { code: string };
