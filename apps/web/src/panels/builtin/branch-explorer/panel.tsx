@@ -3,7 +3,9 @@
 import React, { useState } from 'react';
 import type { UiPanelManifest, DecisionSpec } from '@zeo/contracts';
 import { useDecisionStore } from '@/stores/decisionStore';
-import { runDecision, policyEngine, PolicyViolation, exportScenarioPack } from '@zeo/core';
+// import { exportScenarioPack } from '@zeo/core';
+import { exportScenarioPackAction, runDecisionAction, validatePolicyAction } from '@/actions/decision';
+import type { PolicyViolation } from '@zeo/core';
 import { deepDiff, support } from '@zeo/repro-pack';
 
 interface BranchExplorerProps {
@@ -68,7 +70,7 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
       assumptions: stagedAssumptions
     };
 
-    const policyViolations = policyEngine.validate(context);
+    const policyViolations = await validatePolicyAction(context);
     setViolations(policyViolations);
 
     const hasBlocking = policyViolations.some(v => v.severity === 'block');
@@ -82,10 +84,10 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
     setViolations([]);
 
     try {
-      const res = runDecision(updatedSpec);
+      const res = await runDecisionAction(updatedSpec);
 
       // POST-RUN POLICY CHECK
-      const postViolations = policyEngine.validate({
+      const postViolations = await validatePolicyAction({
         decisionResult: res
       });
       setViolations(prev => [...prev, ...postViolations]);
@@ -165,9 +167,8 @@ export default function BranchExplorer({ manifest }: BranchExplorerProps) {
                     onClick={async () => {
                       if (!decision || !result) return;
                       try {
-                        const pack = await exportScenarioPack([{ id: decision.id, name: decision.title, description: decision.context, spec: decision, version: 1, createdAt: new Date().toISOString() }]);
-                        const bundle = await support.buildBundle(pack, result, { panelStates: {} } as any, { appVersion: '0.6.0', userAgent: navigator.userAgent });
-                        const blob = new Blob([bundle as unknown as BlobPart], { type: 'application/octet-stream' });
+                        const pack = await exportScenarioPackAction([{ id: decision.id, name: decision.title, description: decision.context, spec: decision, version: 1, createdAt: new Date().toISOString() }], { includeEvalFixtures: false });
+                        const blob = await (await fetch(`data:application/zip;base64,${pack}`)).blob();
                         const url = URL.createObjectURL(blob);
                         const a = document.createElement('a');
                         a.href = url;
