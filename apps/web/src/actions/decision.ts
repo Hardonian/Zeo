@@ -3,9 +3,7 @@
 import {
   runDecision,
   policyEngine,
-  type PolicyViolation
-} from '@zeo/core';
-import type { DecisionResult, DecisionSpec } from '@zeo/contracts';
+import type { PolicyViolation, DecisionResult, DecisionSpec } from '@zeo/contracts';
 import { createHash } from 'node:crypto';
 
 function hashDecision(decision: DecisionSpec): string {
