@@ -1,8 +1,6 @@
 'use server';
 
-import {
-  runDecision,
-  policyEngine,
+} from '@zeo/core';
 import type { PolicyViolation, DecisionResult, DecisionSpec } from '@zeo/contracts';
 import { createHash } from 'node:crypto';
 
