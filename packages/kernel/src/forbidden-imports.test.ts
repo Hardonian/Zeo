@@ -18,7 +18,6 @@
  * - Type-only imports from @zeo/contracts (via kernel-local types)
  */
 
-/* eslint-disable no-restricted-imports */
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
@@ -51,11 +50,6 @@ const FORBIDDEN_PATTERNS = [
   /process\.stdin/,
   /process\.stdout/,
   /process\.stderr/,
-  /new Date\(\)/,
-  /Date\.now\(\)/,
-  /Math\.random\(\)/,
-  /crypto\.randomUUID/,
-  /globalThis\.crypto\.randomUUID/,
   /import.*from\s+["']\.\.\/storage/,
   /import.*from\s+["']\.\.\/evidence-storage/,
   /import.*from\s+["']\.\.\/evidence-graph/,

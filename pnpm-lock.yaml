@@ -1024,9 +1024,9 @@ importers:
       '@zeo/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@zeo/core':
+      '@zeo/kernel':
         specifier: workspace:*
-        version: link:../core
+        version: link:../kernel
       '@zeo/tenant':
         specifier: workspace:*
         version: link:../tenant

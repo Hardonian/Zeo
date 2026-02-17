@@ -133,6 +133,7 @@ export const DEFAULT_REDACTION_POLICIES: Record<string, RedactionPolicy> = {
       "remove_provenance_details",
       "remove_evidence",
       "encrypt_blobs",
+      "remove_constraints",
     ],
     preserveStructure: true,
   },

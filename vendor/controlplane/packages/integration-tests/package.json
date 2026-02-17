@@ -7,7 +7,7 @@
     "build": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
     "lint": "node ../../scripts/lint-target.mjs vendor/controlplane/tests/integration",
-    "test": "vitest run --config ./vitest.config.ts"
+    "test": "pnpm --filter @controlplane/controlplane build && vitest run --config ./vitest.config.ts"
   },
   "dependencies": {
     "@controlplane/contract-kit": "workspace:*",
