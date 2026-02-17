@@ -1,0 +1,8 @@
+{
+  "allowed_dependencies": [
+    { "from": "apps/cli", "to": "vendor/controlplane/packages/contracts" },
+    { "from": "apps/cli", "to": "vendor/controlplane/packages/observability" },
+    { "from": "apps/web", "to": "vendor/controlplane/packages/contracts" },
+    { "from": "packages/core", "to": "vendor/controlplane/packages/contracts" }
+  ]
+}

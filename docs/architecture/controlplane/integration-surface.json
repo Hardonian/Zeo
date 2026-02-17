@@ -1,0 +1,39 @@
+{
+  "integration_surfaces": [
+    {
+      "surface": "CLI Commands",
+      "description": "Zeo CLI invokes ControlPlane libraries for status/doctor checks.",
+      "allowed_direction": "Zeo -> ControlPlane",
+      "forbidden_direction": "ControlPlane -> Zeo",
+      "isolation": "Module Import (Vendored)"
+    },
+    {
+      "surface": "Artifact Generation",
+      "description": "Zeo Agents produce evidence; ControlPlane Contracts validate structure.",
+      "allowed_direction": "Zeo -> ControlPlane (Schema Validation)",
+      "forbidden_direction": "ControlPlane -> Zeo (Runtime Logic)",
+      "isolation": "Zod Schema / JSON Contract"
+    },
+    {
+      "surface": "Telemetry/Observability",
+      "description": "Zeo emits logs; ControlPlane defines the log format/envelope.",
+      "allowed_direction": "Zeo -> ControlPlane (Format Compliance)",
+      "forbidden_direction": "ControlPlane -> Zeo (Logger Implementation)",
+      "isolation": "Interface / Type Definition"
+    },
+    {
+      "surface": "Policy Enforcement",
+      "description": "Zeo checks actions against ControlPlane policies before execution.",
+      "allowed_direction": "Zeo -> ControlPlane (Policy Query)",
+      "forbidden_direction": "ControlPlane -> Zeo (Execution Block)",
+      "isolation": "Pure Function (Input -> Decision)"
+    },
+    {
+      "surface": "TruthCore Sync",
+      "description": "Zeo pushes signed artifacts to TruthCore for ledgering.",
+      "allowed_direction": "Zeo -> TruthCore (Push)",
+      "forbidden_direction": "TruthCore -> Zeo (RPC/Control)",
+      "isolation": "Async HTTP / Webhook"
+    }
+  ]
+}

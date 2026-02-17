@@ -1,0 +1,13 @@
+{
+  "protocol": "Airgap-v1",
+  "data_exchange": "Artifact-Only",
+  "database_sharing": "FORBIDDEN",
+  "network_requirement": "Async-Only",
+  "tenant_id_source": "Bearer Token (Header)",
+  "rls_enforcement": "TruthCore-Side",
+  "isolation_rules": [
+      { "resource": "Database", "shared": false, "zeo": "SQLite", "truthcore": "Postgres" },
+      { "resource": "Environment", "shared": false, "zeo": "Local .env", "truthcore": "Cloud Config" },
+      { "resource": "Identity", "shared": false, "zeo": "Local User", "truthcore": "Tenant Token" }
+  ]
+}
