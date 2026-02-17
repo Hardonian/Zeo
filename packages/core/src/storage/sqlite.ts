@@ -13,6 +13,7 @@ export class SqliteStorageProvider implements StorageProvider {
             fs.mkdirSync(dir, { recursive: true });
         }
         this.db = new Database(dbPath);
+        this.db.pragma('journal_mode = WAL');
         this.init();
     }
 
