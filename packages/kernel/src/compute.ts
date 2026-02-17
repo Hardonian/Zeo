@@ -98,7 +98,7 @@ function createEdge(
 
 // ─── Branch Graph Generation ─────────────────────────────────────────────
 
-function generateBranchGraph(
+export function generateBranchGraph(
   idGen: KernelIdGenerator,
   spec: KernelDecisionSpec,
   clockNow: string,
