@@ -35,15 +35,24 @@ core       -> (no upward imports)
 ### Allowed directions
 
 - `apps/web` may consume runtime-safe shared packages (for example `@zeo/contracts`, `@zeo/core/client`) and must not import CLI or MCP server modules.
-- `apps/cli` and `packages/mcp-server` are Node-only runtimes and may depend on server-side modules.
+- `apps/cli` is OSS-first and must not import Next.js/web runtime modules or hosted-only adapters.
+- `packages/mcp-server` is a Node-only runtime and may depend on server-side modules.
 - `packages/contracts` is runtime-neutral shared surface and must not depend on Node built-ins or app runtimes.
+
+
+### OSS vs Enterprise hosted boundary
+
+- `enterpriseHostedEnabled` is an explicit runtime gate derived from `ENTERPRISE_HOSTED_ENABLED` / `NEXT_PUBLIC_ENTERPRISE_HOSTED_ENABLED`.
+- When `enterpriseHostedEnabled=false` (default), hosted adapters (Supabase/Stripe webhook persistence) must not execute and return graceful OSS responses.
+- When `enterpriseHostedEnabled=true`, runtime assertions require hosted environment variables before adapter use (clear actionable errors, no hard-500 import failures).
+- Hosted adapter imports in API handlers should be lazy (`await import(...)`) behind the gate so OSS deployments do not eagerly load enterprise-only modules.
 
 ### Tooling guards
 
 - ESLint `no-restricted-imports` rules in `eslint.config.mjs` block:
   - `@zeo/cli` and `@zeo/mcp-server` imports from web sources.
   - Node built-ins plus CLI/MCP imports from `packages/contracts/src`.
-- `pnpm boundary:check` runs `scripts/boundary-check.mjs`, which scans import specifiers and fails loudly on boundary violations.
+- `pnpm boundary:check` runs `scripts/boundary-check.mjs`, which scans import specifiers and fails loudly on boundary violations, including CLI → web runtime imports.
 
 ### CI behavior
 
