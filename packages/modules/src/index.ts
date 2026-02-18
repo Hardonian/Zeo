@@ -11,6 +11,9 @@
  */
 
 import { createHash } from "node:crypto";
+import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync, rmSync, existsSync, copyFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { basename, dirname, join, resolve } from "node:path";
 import { nanoid } from "nanoid";
 
 // =============================================================================
@@ -71,6 +74,20 @@ export interface ModuleAuditEntry {
 export interface DependencyNode {
   moduleId: string;
   dependencies: string[];
+}
+
+export interface AgentModuleSpec {
+  moduleId: string;
+  version: string;
+  declaredCapabilities: string[];
+  declaredTools: string[];
+  deterministicSupport: boolean;
+  signatureHash: string;
+}
+
+export interface PipelineDefinition {
+  modules: Array<{ moduleId: string; version: string }>;
+  executionOrder: string[];
 }
 
 // =============================================================================
@@ -442,6 +459,154 @@ export function formatExecutionResult(result: ModuleExecutionResult): string {
     }
   }
   return lines.join("\n");
+}
+
+// =============================================================================
+// LOCAL-FIRST MODULE MARKETPLACE
+// =============================================================================
+
+const DEFAULT_MODULES_DIR = resolve(homedir(), ".zeo", "modules");
+
+export function getLocalModulesDir(baseDir = DEFAULT_MODULES_DIR): string {
+  mkdirSync(baseDir, { recursive: true });
+  return baseDir;
+}
+
+export function computeModuleSignature(spec: Omit<AgentModuleSpec, "signatureHash">): string {
+  const canonical = JSON.stringify({
+    moduleId: spec.moduleId,
+    version: spec.version,
+    declaredCapabilities: [...spec.declaredCapabilities].sort(),
+    declaredTools: [...spec.declaredTools].sort(),
+    deterministicSupport: spec.deterministicSupport,
+  });
+  return createHash("sha256").update(canonical).digest("hex");
+}
+
+export function verifyModuleSignature(spec: AgentModuleSpec): boolean {
+  return computeModuleSignature({
+    moduleId: spec.moduleId,
+    version: spec.version,
+    declaredCapabilities: spec.declaredCapabilities,
+    declaredTools: spec.declaredTools,
+    deterministicSupport: spec.deterministicSupport,
+  }) === spec.signatureHash;
+}
+
+function readModuleSpec(modulePath: string): AgentModuleSpec {
+  const resolved = resolve(modulePath);
+  const stats = statSync(resolved);
+  const manifestPath = stats.isDirectory() ? join(resolved, "module.json") : resolved;
+  const parsed = JSON.parse(readFileSync(manifestPath, "utf8")) as AgentModuleSpec;
+  if (!parsed.moduleId || !parsed.version || !parsed.signatureHash) {
+    throw new ModuleError("MODULE_SPEC_INVALID", `Invalid module spec at ${manifestPath}`);
+  }
+  return parsed;
+}
+
+export function addLocalModule(modulePath: string, baseDir = DEFAULT_MODULES_DIR): AgentModuleSpec {
+  const spec = readModuleSpec(modulePath);
+  if (!verifyModuleSignature(spec)) {
+    throw new ModuleError("MODULE_SIGNATURE_INVALID", `Signature mismatch for ${spec.moduleId}@${spec.version}`);
+  }
+
+  const root = getLocalModulesDir(baseDir);
+  const installDir = join(root, spec.moduleId, spec.version);
+  if (existsSync(installDir)) {
+    throw new ModuleError("MODULE_IMMUTABLE", `Module already installed: ${spec.moduleId}@${spec.version}`);
+  }
+  mkdirSync(installDir, { recursive: true });
+  writeFileSync(join(installDir, "module.json"), `${JSON.stringify(spec, null, 2)}\n`, "utf8");
+
+  const resolved = resolve(modulePath);
+  if (statSync(resolved).isFile()) {
+    copyFileSync(resolved, join(installDir, basename(resolved)));
+  }
+
+  return spec;
+}
+
+export function removeLocalModule(moduleId: string, baseDir = DEFAULT_MODULES_DIR): boolean {
+  const target = join(getLocalModulesDir(baseDir), moduleId);
+  if (!existsSync(target)) return false;
+  rmSync(target, { recursive: true, force: true });
+  return true;
+}
+
+export function listLocalModules(baseDir = DEFAULT_MODULES_DIR): AgentModuleSpec[] {
+  const root = getLocalModulesDir(baseDir);
+  const moduleIds = readdirSync(root, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
+  const specs: AgentModuleSpec[] = [];
+  for (const moduleId of moduleIds) {
+    const versions = readdirSync(join(root, moduleId), { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
+    for (const version of versions) {
+      const specPath = join(root, moduleId, version, "module.json");
+      if (existsSync(specPath)) {
+        specs.push(JSON.parse(readFileSync(specPath, "utf8")) as AgentModuleSpec);
+      }
+    }
+  }
+  return specs.sort((a, b) => `${a.moduleId}@${a.version}`.localeCompare(`${b.moduleId}@${b.version}`));
+}
+
+export function parsePipelineDefinition(content: string): PipelineDefinition {
+  try {
+    return JSON.parse(content) as PipelineDefinition;
+  } catch {
+    const modules: Array<{ moduleId: string; version: string }> = [];
+    const executionOrder: string[] = [];
+    let inModules = false;
+    let inOrder = false;
+    for (const rawLine of content.split(/\r?\n/)) {
+      const line = rawLine.trim();
+      if (!line || line.startsWith("#")) continue;
+      if (line === "modules:") {
+        inModules = true;
+        inOrder = false;
+        continue;
+      }
+      if (line === "executionOrder:") {
+        inModules = false;
+        inOrder = true;
+        continue;
+      }
+      if (inModules && line.startsWith("-")) {
+        const body = line.slice(1).trim();
+        const [moduleId, version] = body.split("@");
+        if (moduleId && version) modules.push({ moduleId, version });
+      }
+      if (inOrder && line.startsWith("-")) {
+        executionOrder.push(line.slice(1).trim());
+      }
+    }
+    return { modules, executionOrder };
+  }
+}
+
+export function validatePipelineCompatibility(
+  pipeline: PipelineDefinition,
+  installedModules: AgentModuleSpec[]
+): string[] {
+  const errors: string[] = [];
+  const installed = new Map(installedModules.map((m) => [`${m.moduleId}@${m.version}`, m]));
+  for (const moduleRef of pipeline.modules) {
+    const key = `${moduleRef.moduleId}@${moduleRef.version}`;
+    if (!installed.has(key)) {
+      errors.push(`Module not installed: ${key}`);
+    }
+  }
+  for (const moduleId of pipeline.executionOrder) {
+    if (!pipeline.modules.some((m) => m.moduleId === moduleId)) {
+      errors.push(`Execution order references undeclared module: ${moduleId}`);
+    }
+  }
+  const missingInOrder = pipeline.modules
+    .map((m) => m.moduleId)
+    .filter((moduleId) => !pipeline.executionOrder.includes(moduleId));
+  if (missingInOrder.length > 0) {
+    errors.push(`Execution order missing modules: ${missingInOrder.join(", ")}`);
+  }
+  return errors;
 }
 
 // =============================================================================
