@@ -9,12 +9,14 @@
 
 import { createHash } from "node:crypto";
 import { writeFileSync, readFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
+import { homedir } from "node:os";
 import { join } from "node:path";
 import { encodeCanonicalJson } from "@zeo/kernel";
 import type { DecisionSpec, DecisionResult } from "@zeo/contracts";
 import { canonicalizeDecisionSpec } from "./canonicalize.js";
 
 export interface ExecutionSnapshot {
+  snapshotId: string;
   runId: string;
   createdAt: string;
   inputHash: string;
@@ -32,6 +34,25 @@ export interface ExecutionSnapshot {
   seed?: string;
   /** ID counter offset at time of engine execution (for replay) */
   idCounterOffset?: number;
+  moduleState: {
+    deterministic: boolean;
+    seed?: string;
+    idCounterOffset?: number;
+    environment: SnapshotEnvironment;
+  };
+  toolState: ToolRegistryState;
+  executionPointer: {
+    step: number;
+    phase: string;
+    totalSteps: number;
+  };
+  pipelineHash: string;
+}
+
+export interface SnapshotEnvironment {
+  nodeVersion: string;
+  platform: string;
+  arch: string;
 }
 
 export interface ToolRegistryState {
@@ -43,12 +64,43 @@ export interface ToolRegistryState {
   registryHash: string;
 }
 
+const SNAPSHOT_SCHEMA_VERSION = 1;
+
 function sha256(data: string | Buffer): string {
   return createHash("sha256").update(data).digest("hex");
 }
 
 function canonicalHash(obj: unknown): string {
   return sha256(Buffer.from(encodeCanonicalJson(obj)));
+}
+
+function buildEnvironmentFingerprint(): SnapshotEnvironment {
+  return {
+    nodeVersion: process.version,
+    platform: process.platform,
+    arch: process.arch,
+  };
+}
+
+function getSnapshotDirectory(baseDir?: string): string {
+  if (baseDir) {
+    return join(baseDir, ".zeo", "snapshots");
+  }
+  return join(homedir(), ".zeo", "snapshots");
+}
+
+function buildExecutionPointer(result: DecisionResult | null): ExecutionSnapshot["executionPointer"] {
+  if (!result) {
+    return { step: 1, phase: "initialized", totalSteps: 1 };
+  }
+
+  const evaluationSteps = result.evaluations.length;
+  const totalSteps = 4 + evaluationSteps;
+  return {
+    step: totalSteps,
+    phase: "snapshot_finalized",
+    totalSteps,
+  };
 }
 
 /**
@@ -121,8 +173,26 @@ export function createSnapshot(params: {
   const toolRegistryHash = computeToolRegistryHash(params.toolRegistry.tools);
   const chainHash = computeChainHash(inputHash, outputHash, toolRegistryHash);
   const runId = `run_${chainHash.slice(0, 16)}`;
+  const snapshotId = `snap_${chainHash.slice(0, 16)}`;
+  const environment = buildEnvironmentFingerprint();
+  const executionPointer = buildExecutionPointer(params.result);
+  const moduleState = {
+    deterministic: params.deterministic,
+    seed: params.seed,
+    idCounterOffset: params.idCounterOffset,
+    environment,
+  };
+  const pipelineHash = canonicalHash({
+    schemaVersion: SNAPSHOT_SCHEMA_VERSION,
+    inputHash,
+    outputHash,
+    toolRegistryHash,
+    executionPointer,
+    moduleState,
+  });
 
   return {
+    snapshotId,
     runId,
     createdAt: params.createdAt ?? new Date().toISOString(),
     inputHash,
@@ -139,6 +209,10 @@ export function createSnapshot(params: {
     deterministic: params.deterministic,
     seed: params.seed,
     idCounterOffset: params.idCounterOffset,
+    moduleState,
+    toolState: params.toolRegistry,
+    executionPointer,
+    pipelineHash,
   };
 }
 
@@ -146,10 +220,11 @@ export function createSnapshot(params: {
  * Persist snapshot to local storage (.zeo/snapshots/)
  */
 export function saveSnapshot(snapshot: ExecutionSnapshot, baseDir?: string): string {
-  const dir = join(baseDir ?? process.cwd(), ".zeo", "snapshots");
+  const dir = getSnapshotDirectory(baseDir);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  const filePath = join(dir, `${snapshot.runId}.json`);
-  writeFileSync(filePath, JSON.stringify(snapshot, null, 2), "utf8");
+  const filePath = join(dir, `${snapshot.snapshotId}.json`);
+  const canonical = new TextDecoder().decode(encodeCanonicalJson(snapshot));
+  writeFileSync(filePath, `${canonical}\n`, "utf8");
   return filePath;
 }
 
@@ -157,22 +232,52 @@ export function saveSnapshot(snapshot: ExecutionSnapshot, baseDir?: string): str
  * Load snapshot from local storage
  */
 export function loadSnapshot(runId: string, baseDir?: string): ExecutionSnapshot | null {
-  const dir = join(baseDir ?? process.cwd(), ".zeo", "snapshots");
-  const filePath = join(dir, `${runId}.json`);
-  if (!existsSync(filePath)) return null;
-  return JSON.parse(readFileSync(filePath, "utf8")) as ExecutionSnapshot;
+  const dir = getSnapshotDirectory(baseDir);
+  if (!existsSync(dir)) return null;
+
+  const bySnapshotId = join(dir, `${runId}.json`);
+  if (existsSync(bySnapshotId)) {
+    return JSON.parse(readFileSync(bySnapshotId, "utf8")) as ExecutionSnapshot;
+  }
+
+  const files = readdirSync(dir).filter((file: string) => file.endsWith(".json"));
+  for (const file of files) {
+    const parsed = JSON.parse(readFileSync(join(dir, file), "utf8")) as ExecutionSnapshot;
+    if (parsed.runId === runId || parsed.snapshotId === runId) {
+      return parsed;
+    }
+  }
+
+  return null;
 }
 
 /**
  * List all snapshot run IDs
  */
 export function listSnapshots(baseDir?: string): string[] {
-  const dir = join(baseDir ?? process.cwd(), ".zeo", "snapshots");
+  const dir = getSnapshotDirectory(baseDir);
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
     .filter((f: string) => f.endsWith(".json"))
     .map((f: string) => f.replace(".json", ""))
     .sort();
+}
+
+export function validateSnapshotEnvironment(snapshot: ExecutionSnapshot): { ok: true } | { ok: false; reason: string } {
+  const expected = snapshot.moduleState.environment;
+  const current = buildEnvironmentFingerprint();
+
+  if (expected.nodeVersion !== current.nodeVersion) {
+    return { ok: false, reason: `node mismatch: expected ${expected.nodeVersion}, got ${current.nodeVersion}` };
+  }
+  if (expected.platform !== current.platform) {
+    return { ok: false, reason: `platform mismatch: expected ${expected.platform}, got ${current.platform}` };
+  }
+  if (expected.arch !== current.arch) {
+    return { ok: false, reason: `arch mismatch: expected ${expected.arch}, got ${current.arch}` };
+  }
+
+  return { ok: true };
 }
 
 /**

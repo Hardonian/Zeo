@@ -9,7 +9,13 @@
  */
 
 import type { DecisionSpec } from "@zeo/contracts";
-import { loadSnapshot, createSnapshot, getDefaultToolRegistry, type ExecutionSnapshot } from "./snapshot.js";
+import {
+  loadSnapshot,
+  createSnapshot,
+  getDefaultToolRegistry,
+  validateSnapshotEnvironment,
+  type ExecutionSnapshot,
+} from "./snapshot.js";
 import { runDecision, type RunDecisionOpts } from "./engine.js";
 import { activateDeterministicMode, deactivateDeterministicMode, setDeterministicIdCounter } from "@zeo/kernel";
 import { validateNormalizedInput, validateOutputHash, assertValid } from "@zeo/kernel";
@@ -24,6 +30,7 @@ export interface ReplayResult {
   replayOutputHash: string;
   diffs: ReplayDiff[];
   durationMs: number;
+  fromStep: number;
 }
 
 export interface ReplayDiff {
@@ -35,20 +42,29 @@ export interface ReplayDiff {
 /**
  * Replay a run by ID. Loads the snapshot, re-executes, compares.
  */
-export function replayRun(runId: string, baseDir?: string): ReplayResult {
+export function replayRun(runId: string, baseDir?: string, fromStep = 1): ReplayResult {
   const snapshot = loadSnapshot(runId, baseDir);
   if (!snapshot) {
     throw new Error(`Snapshot not found: ${runId}. Run 'zeo replay' with a valid run_id from .zeo/snapshots/`);
   }
 
-  return replaySnapshot(snapshot);
+  return replaySnapshot(snapshot, fromStep);
 }
 
 /**
  * Replay from a snapshot object directly
  */
-export function replaySnapshot(snapshot: ExecutionSnapshot): ReplayResult {
+export function replaySnapshot(snapshot: ExecutionSnapshot, fromStep = 1): ReplayResult {
   const startMs = Date.now();
+  const environmentValidation = validateSnapshotEnvironment(snapshot);
+  if (environmentValidation.ok === false) {
+    throw new Error(`Replay blocked due to environment mismatch: ${environmentValidation.reason}`);
+  }
+
+  if (fromStep < 1 || fromStep > snapshot.executionPointer.totalSteps) {
+    throw new Error(`Invalid --from-step ${fromStep}. Expected range 1-${snapshot.executionPointer.totalSteps}.`);
+  }
+
   const spec = snapshot.input.spec;
   const opts = snapshot.input.opts as RunDecisionOpts;
 
@@ -102,6 +118,7 @@ export function replaySnapshot(snapshot: ExecutionSnapshot): ReplayResult {
     replayOutputHash: replaySnapshot.outputHash,
     diffs,
     durationMs: Date.now() - startMs,
+    fromStep,
   };
 }
 
@@ -159,6 +176,7 @@ export function formatReplayResult(result: ReplayResult): string {
   lines.push(`  Original: ${result.originalRunId}`);
   lines.push(`  Replay:   ${result.replayRunId}`);
   lines.push(`  Duration: ${result.durationMs}ms`);
+  lines.push(`  From step: ${result.fromStep}`);
 
   if (result.verdict === "DRIFT") {
     lines.push("");
