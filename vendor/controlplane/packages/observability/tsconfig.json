@@ -6,8 +6,8 @@
     "baseUrl": ".",
     "paths": {
       "@controlplane/contracts": [
-        "../contracts/src/index.ts",
-        "../contracts/dist/index.d.ts"
+        "../contracts/dist/index.d.ts",
+        "../contracts/src/index.ts"
       ]
     },
     "lib": [
