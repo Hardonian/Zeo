@@ -1,85 +1,57 @@
-# Contributing
+# Contributing to Zeo
 
-Zeo is open source. Contributions are welcome.
+Thank you for contributing to Zeo.
 
-## Ground rules
-- Preserve epistemic integrity: no false precision; ranges by default.
-- Facts require provenance pointers and checksums.
-- Vendor integrations must go behind adapters.
-- No secrets committed. Use `.env.example` only.
-- All replay artifacts must be deterministic and reproducible.
+Zeo is built for deterministic, local-first decision pipelines with explicit epistemic discipline. Contributions should improve reliability, clarity, and composability.
 
-## Development
-- `pnpm i`
-- `pnpm -r typecheck`
-- `pnpm -r test`
-- `pnpm -C apps/cli start -- --example negotiation`
+## Development workflow
 
-## Plugin creation
-1. Create a folder under `plugins/<plugin-id>`.
-2. Add `plugin.json` with:
-   - `id`, `version`, `apiVersion`
-   - `deterministic: true`
-   - `permissions.network: false` (default)
-   - `capabilities`
-   - `entry`
-3. Verify with `zeo plugins doctor` and `zeo plugins list`.
+1. Fork and create a branch.
+2. Make the smallest safe change.
+3. Run required quality checks.
+4. Open a pull request with clear rationale and verification evidence.
 
-## Pack submission
-1. Create `packs/<pack-id>/pack.json`.
-2. Add `policies/` and `templates/`.
-3. Ensure pack metadata includes version, author, and tags.
-4. Validate with `zeo pack list` and export with `zeo pack export`.
+## Required checks before PR
 
-## Example submission
-1. Add a folder under `examples/<name>`.
-2. Include:
-   - `decision-spec.json`
-   - `evidence.json`
-   - `transcript.json`
-   - `replay.json`
-   - `explanation.md`
-3. Verify replay with `zeo replay examples/<name>`.
+```bash
+pnpm install
+pnpm lint
+pnpm typecheck
+pnpm build
+```
 
-## Decision Kernel Purity Rules
+If your change touches CLI behavior, also run:
 
-The pure kernel (`packages/core/src/kernel/`) has strict invariants:
+```bash
+pnpm -C apps/cli build
+node apps/cli/dist/index.js --help
+```
 
-1. **No I/O**: No imports of `node:fs`, `node:path`, `node:net`, `node:http`, `node:os`, `node:child_process`.
-2. **No time**: No `Date.now()`, `new Date()`. Clock value comes from `KernelConfig`.
-3. **No randomness**: No `Math.random()`, `crypto.randomUUID()`. Use seeded `createKernelRng()`.
-4. **No global state**: No singletons, no module-level mutable variables.
-5. **No external packages**: No imports from `@zeo/db`, `@zeo/trust`, `@zeo/warehouse`, `@zeo/telemetry`, `@zeo/mcp-server`.
-6. **POJO boundary**: All kernel APIs accept and return plain JSON-serializable objects.
-7. **`node:crypto`**: Allowed (SHA-256 only). Will be polyfilled for WASM.
+## Contribution standards
 
-These rules are enforced by:
-- ESLint `no-restricted-imports` rule for kernel files
-- `forbidden-imports.test.ts` structural scan
-- Property-based tests for determinism
+- Keep user-facing behavior deterministic when possible.
+- Preserve provenance in evidence-related flows.
+- Use clear uncertainty framing (Fact / Belief / Assumption / Unknown) when introducing narrative or interpretation.
+- Keep vendor-specific logic behind adapters.
+- Never commit secrets; use local environment files.
+- Avoid breaking public contracts without explicit versioning and migration notes.
 
-## Decision IR Stability Rules
+## Pull request expectations
 
-1. Every IR node MUST have a `version` field matching `IR_VERSION`.
-2. Never remove fields from IR types without a MAJOR version bump.
-3. New optional fields are MINOR version bumps.
-4. IR hashes must remain stable for same logical input.
-5. See `IR_SPEC.md` for full versioning rules.
+Each PR should include:
 
-## Pull requests
-PRs must include:
-- description of behavior change
-- new/updated tests if logic changes
-- updated docs if user-facing behavior changes
-- deterministic verification evidence for replayable features
+- **Problem statement** and root cause.
+- **Change summary** with affected files.
+- **Verification steps** and outcomes.
+- **Risk notes** and rollback guidance when relevant.
 
-## Adding tools and tests safely
+## Reporting issues
 
-When adding verification or adoption tooling:
+- Use GitHub Issues for bugs, docs improvements, and feature proposals.
+- Use `SECURITY.md` for private vulnerability disclosure.
 
-1. Prefer additive scripts/tests/docs over core-engine edits.
-2. Keep deterministic checks stable and fixture-driven (`tests/golden/fixtures`).
-3. Ensure failures are actionable (explicit command, phase, and stderr).
-4. Wire new checks into the appropriate CI lane:
-   - PR fast lane: smoke + unit + partial golden + bench warn-only.
-   - main full lane: full verification including full golden and enforced bench threshold.
+## Communication norms
+
+- Be respectful, specific, and evidence-driven.
+- Prefer actionable feedback over broad criticism.
+- Keep discussions focused on behavior, not individuals.

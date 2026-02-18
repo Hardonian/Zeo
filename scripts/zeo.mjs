@@ -7,6 +7,14 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
+const COMMANDS = {
+  doctor: 'Run environment diagnostics and policy checks.',
+  smoke: 'Run local smoke-test workflow.',
+  benchmark: 'Run benchmark suite for key paths.',
+  'jobs list': 'Show local jobs status summary.',
+  'jobs retry <id>': 'Retry a specific job id (requires management API).',
+};
+
 function runNodeScript(scriptPath) {
   try {
     execSync(`node ${scriptPath}`, { stdio: 'inherit', cwd: root });
@@ -16,8 +24,26 @@ function runNodeScript(scriptPath) {
 }
 
 function printHelp() {
-  console.log('zeo <command>');
-  console.log('Commands: doctor, smoke, benchmark, jobs list, jobs retry <id>');
+  console.log('Zeo wrapper CLI');
+  console.log('Usage: pnpm zeo <command> [options]');
+  console.log('');
+  console.log('Commands:');
+  for (const [command, description] of Object.entries(COMMANDS)) {
+    console.log(`  ${command.padEnd(16)} ${description}`);
+  }
+  console.log('');
+  console.log('Examples:');
+  console.log('  pnpm zeo doctor');
+  console.log('  pnpm zeo smoke');
+  console.log('  pnpm zeo benchmark');
+  console.log('  pnpm zeo jobs list');
+  console.log('  pnpm zeo jobs retry 42');
+}
+
+function printUnknownCommand(commandParts) {
+  const rendered = commandParts.filter(Boolean).join(' ');
+  console.error(`Error: unknown command "${rendered}".`);
+  console.error('Run `pnpm zeo --help` to see supported subcommands.');
 }
 
 const [, , command, subcommand, arg] = process.argv;
@@ -57,12 +83,17 @@ if (command === 'jobs' && subcommand === 'list') {
 }
 
 if (command === 'jobs' && subcommand === 'retry') {
-  console.log(`[Jobs] Attempting to retry job: ${arg ?? '<missing-id>'}`);
+  if (!arg) {
+    console.error('Error: missing required job id.');
+    console.error('Usage: pnpm zeo jobs retry <id>');
+    process.exit(1);
+  }
+  console.log(`[Jobs] Attempting to retry job: ${arg}`);
   console.error('Manual job retry via CLI requires a running management API (not currently targeted for local mock).');
   console.log('Suggestion: Use the Policy Status panel in the Web UI to trigger retries.');
   process.exit(0);
 }
 
-console.error(`Unknown command: ${[command, subcommand].filter(Boolean).join(' ')}`);
+printUnknownCommand([command, subcommand]);
 printHelp();
 process.exit(1);
