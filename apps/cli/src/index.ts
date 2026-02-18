@@ -89,6 +89,9 @@ Commands:
   benchmark                  Performance benchmark
   trace <run_id>              Step-by-step structured execution trace
   snapshots                   List all execution snapshots
+  snapshot create             Create deterministic pipeline snapshot
+  snapshot list               List deterministic pipeline snapshots
+  snapshot restore <id>       Restore deterministic pipeline state pointer
 
   plan                        Regret-aware evidence planning
   evidence <cmd>              Evidence graph commands (list/add/mark/drift/regret)
@@ -480,6 +483,16 @@ async function main(): Promise<void> {
     process.exit(await runSnapshotsCommand(argv.includes("--json")));
   }
 
+
+  if (argv[0] === "snapshot") {
+    const mod = await import("./snapshot-cli.js");
+    if (argv[1] === "create") process.exit(await mod.runSnapshotCreateCommand(argv.includes("--debug")));
+    if (argv[1] === "list") process.exit(await mod.runSnapshotListCommand(argv.includes("--json")));
+    if (argv[1] === "restore" && argv[2]) process.exit(await mod.runSnapshotRestoreCommand(argv[2]));
+    console.error("Usage: zeo snapshot <create|list|restore <id>> [--json] [--debug]");
+    process.exit(1);
+  }
+
   if (argv[0] === "tools") {
     const { runToolsCommand } = await import("./tools-cli.js");
     process.exit(await runToolsCommand(argv.slice(1)));
@@ -604,8 +617,8 @@ async function main(): Promise<void> {
     }
     // v2.0: snapshot-based deterministic replay
     if (requested.startsWith("run_")) {
-      const { runTrustReplayCommand } = await import("./trust-cli.js");
-      process.exit(await runTrustReplayCommand(requested, argv.includes("--json")));
+      const mod = await import("./snapshot-cli.js");
+      process.exit(await mod.runReplayFromStepCommand(requested, argv));
     }
     const analyzeManifest = join(process.cwd(), ".zeo", "analyze-pr", requested, "manifest.json");
     if (existsSync(analyzeManifest)) {
@@ -642,6 +655,11 @@ async function main(): Promise<void> {
   if (argv[0] === "evidence" && argv[1] && ["list", "add", "mark", "drift", "regret", "refresh"].includes(argv[1])) {
     const { parseEvidenceGraphArgs, runEvidenceGraphCommand } = await import("./evidence-graph-cli.js");
     process.exit(await runEvidenceGraphCommand(parseEvidenceGraphArgs(argv.slice(1))));
+  }
+
+  if (argv[0] === "run" && argv.includes("--debug")) {
+    const mod = await import("./snapshot-cli.js");
+    process.exit(await mod.runSnapshotCreateCommand(true));
   }
 
   if (["start", "add-note", "run", "next", "share", "copy", "export", "quests", "done", "streaks", "view", "review", "explain", "summary", "decision-health", "drift-report", "roi-report", "verify", "evidence", "help", "examples", "template", "decision"].includes(argv[0] ?? "")) {

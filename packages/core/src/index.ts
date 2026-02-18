@@ -123,6 +123,7 @@ export {
   computeToolRegistryHash,
   computeChainHash,
   getDefaultToolRegistry,
+  validateSnapshotEnvironment,
 } from "./snapshot.js";
 
 // Replay engine
