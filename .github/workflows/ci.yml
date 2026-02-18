@@ -13,6 +13,22 @@ env:
   PNPM_VERSION: 9.15.5
 
 jobs:
+  controlplane-observability-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - name: Install
+        run: pnpm run ci:install
+      - name: Clean-workspace observability build smoke
+        run: pnpm --filter @controlplane/observability build
+
   lint:
     runs-on: ubuntu-latest
     steps:
