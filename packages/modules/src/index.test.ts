@@ -18,8 +18,11 @@ import {
   formatModuleList,
   computeModuleSignature,
   addLocalModule,
+  isModuleRevoked,
+  listRevokedModules,
   listLocalModules,
   removeLocalModule,
+  revokeModule,
   parsePipelineDefinition,
   validatePipelineCompatibility,
 } from "../src/index.js";
@@ -143,6 +146,82 @@ describe("Phase D: Extension + Module Sandbox", () => {
       );
       expect(result.status).toBe("timeout");
     });
+
+    it("fails safe on undeclared tool access", async () => {
+      registry.register({ ...validManifest, hash: "" });
+      const result = await registry.execute(
+        "mod-1",
+        {
+          moduleId: "mod-1",
+          grantedCapabilities: ["execute_tools"],
+          declaredTools: ["tool.safe"],
+          timeout: 5000,
+          maxMemoryMb: 128,
+        },
+        async (ctx) => {
+          ctx.assertToolAccess("tool.shell");
+          return "unexpected";
+        }
+      );
+      expect(result.status).toBe("error");
+      expect(result.error).toContain("Undeclared tool access denied");
+    });
+
+    it("fails safe on environment access", async () => {
+      registry.register({ ...validManifest, hash: "" });
+      const result = await registry.execute(
+        "mod-1",
+        {
+          moduleId: "mod-1",
+          grantedCapabilities: [],
+          timeout: 5000,
+          maxMemoryMb: 128,
+        },
+        async (ctx) => {
+          ctx.readEnv("SECRET_KEY");
+        }
+      );
+      expect(result.status).toBe("error");
+      expect(result.error).toContain("Environment access is denied");
+    });
+
+    it("fails safe on sandbox path escape", async () => {
+      registry.register({ ...validManifest, hash: "" });
+      const result = await registry.execute(
+        "mod-1",
+        {
+          moduleId: "mod-1",
+          grantedCapabilities: [],
+          timeout: 5000,
+          maxMemoryMb: 128,
+          sandboxRoot: "/tmp/zeo-safe",
+        },
+        async (ctx) => {
+          ctx.assertSandboxPath("../../etc/passwd");
+        }
+      );
+      expect(result.status).toBe("error");
+      expect(result.error).toContain("Path escapes sandbox root");
+    });
+
+    it("fails safe when module mutates global registry", async () => {
+      registry.register({ ...validManifest, hash: "" });
+      const result = await registry.execute(
+        "mod-1",
+        {
+          moduleId: "mod-1",
+          grantedCapabilities: [],
+          timeout: 5000,
+          maxMemoryMb: 128,
+        },
+        async () => {
+          registry.unregister("mod-1");
+          return "mutated";
+        }
+      );
+      expect(result.status).toBe("error");
+      expect(result.error).toContain("Global registry mutation detected");
+    });
   });
 
   describe("Dependency Graph", () => {
@@ -212,6 +291,37 @@ executionOrder:
         },
       ]);
       expect(issues).toHaveLength(0);
+    });
+
+    it("tracks revoked modules", () => {
+      const root = mkdtempSync(join(tmpdir(), "zeo-mods-revoke-"));
+      const registryPath = join(root, "revocations.json");
+
+      expect(revokeModule("demo.mod", registryPath)).toBe(true);
+      expect(revokeModule("demo.mod", registryPath)).toBe(false);
+      expect(isModuleRevoked("demo.mod", registryPath)).toBe(true);
+      expect(listRevokedModules(registryPath)).toEqual(["demo.mod"]);
+
+      rmSync(root, { recursive: true, force: true });
+    });
+
+    it("blocks installation of revoked modules", () => {
+      const root = mkdtempSync(join(tmpdir(), "zeo-mods-revoked-install-"));
+      const specNoSig = {
+        moduleId: "demo.revoked",
+        version: "1.0.0",
+        declaredCapabilities: ["read_evidence"],
+        declaredTools: ["tool.a"],
+        deterministicSupport: true,
+      };
+      const spec = { ...specNoSig, signatureHash: computeModuleSignature(specNoSig) };
+      const src = join(root, "module.json");
+      writeFileSync(src, JSON.stringify(spec), "utf8");
+      revokeModule("demo.revoked", join(root, "revocations.json"));
+
+      expect(() => addLocalModule(src, root)).toThrow(/revoked and cannot be installed/);
+
+      rmSync(root, { recursive: true, force: true });
     });
   });
 

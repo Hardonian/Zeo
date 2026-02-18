@@ -1,16 +1,19 @@
-import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, readdirSync } from "node:fs";
 import { resolve, join, relative } from "node:path";
 import { homedir } from "node:os";
 import { execFileSync } from "node:child_process";
 import {
   addLocalModule,
+  listRevokedModules,
   listLocalModules,
   removeLocalModule,
+  revokeModule,
   parsePipelineDefinition,
   validatePipelineCompatibility,
 } from "@zeo/modules";
 
 const MODULES_ROOT = resolve(homedir(), ".zeo", "modules");
+const REVOCATION_PATH = resolve(MODULES_ROOT, "revocations.json");
 
 export async function runMarketplaceCommand(argv: string[]): Promise<number> {
   const command = argv[0];
@@ -51,6 +54,30 @@ export async function runMarketplaceCommand(argv: string[]): Promise<number> {
     for (const mod of modules) {
       const det = mod.deterministicSupport ? "deterministic" : "nondeterministic";
       console.log(`${mod.moduleId}@${mod.version} [${det}]`);
+    }
+    return 0;
+  }
+
+  if (command === "revoke") {
+    const moduleId = argv[1];
+    if (!moduleId) {
+      console.error("Usage: zeo revoke <moduleId>");
+      return 1;
+    }
+    const changed = revokeModule(moduleId, REVOCATION_PATH);
+    console.log(changed ? `Revoked ${moduleId}` : `Already revoked ${moduleId}`);
+    return 0;
+  }
+
+  if (command === "revocations") {
+    const revoked = listRevokedModules(REVOCATION_PATH);
+    if (revoked.length === 0) {
+      console.log("No revoked modules.");
+      return 0;
+    }
+    console.log("=== Revoked Modules ===");
+    for (const moduleId of revoked) {
+      console.log(`- ${moduleId}`);
     }
     return 0;
   }
@@ -98,6 +125,33 @@ export async function runMarketplaceCommand(argv: string[]): Promise<number> {
     );
     rmSync(stageDir, { recursive: true, force: true });
     console.log(`Deterministic export written: ${absOut}`);
+    return 0;
+  }
+
+  if (command === "verify-export") {
+    const tarPath = argv[1];
+    if (!tarPath) {
+      console.error("Usage: zeo verify-export <tar-path>");
+      return 1;
+    }
+    const absTar = resolve(tarPath);
+    if (!existsSync(absTar)) {
+      console.error(`Export not found: ${absTar}`);
+      return 1;
+    }
+    const listing = execFileSync("tar", ["-tvf", absTar], { encoding: "utf8" });
+    const badLines = listing
+      .split(/\r?\n/)
+      .filter((line) => line.trim().length > 0)
+      .filter((line) => !line.includes(" 1970-01-01 "));
+    if (badLines.length > 0) {
+      console.error("Non-deterministic mtime entries detected:");
+      for (const line of badLines) console.error(`- ${line}`);
+      return 1;
+    }
+    const hash = execFileSync("sha256sum", [absTar], { encoding: "utf8" }).split(/\s+/)[0];
+    console.log(`Export verified: ${absTar}`);
+    console.log(`sha256=${hash}`);
     return 0;
   }
 

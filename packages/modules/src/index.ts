@@ -49,6 +49,8 @@ export interface ModuleExecutionContext {
   moduleId: string;
   tenantId?: string;
   grantedCapabilities: ModuleCapability[];
+  declaredTools?: string[];
+  sandboxRoot?: string;
   timeout: number;
   maxMemoryMb: number;
 }
@@ -69,6 +71,11 @@ export interface ModuleAuditEntry {
   capability: ModuleCapability;
   granted: boolean;
   details?: string;
+}
+
+interface RevocationRegistry {
+  revokedModuleIds: string[];
+  updatedAt: string;
 }
 
 export interface DependencyNode {
@@ -209,7 +216,6 @@ export function computeManifestHash(manifest: ModuleManifest): string {
 
 export class ModuleRegistry {
   private modules = new Map<string, ModuleManifest>();
-  private auditLog: ModuleAuditEntry[] = [];
 
   register(manifest: ModuleManifest): void {
     // Validate manifest
@@ -296,14 +302,30 @@ export class ModuleRegistry {
         error: `Module ${moduleId} not found`,
       };
     }
+    if (isModuleRevoked(moduleId)) {
+      return {
+        moduleId,
+        status: "error",
+        output: null,
+        durationMs: 0,
+        auditTrail: [],
+        error: `Module ${moduleId} is revoked`,
+      };
+    }
 
     const auditTrail: ModuleAuditEntry[] = [];
+    const registrySnapshot = JSON.stringify(this.list());
     const sandboxed = new SandboxedContext(
       execCtx.grantedCapabilities,
-      auditTrail
+      auditTrail,
+      {
+        declaredTools: execCtx.declaredTools ?? [],
+        sandboxRoot: resolve(execCtx.sandboxRoot ?? join(process.cwd(), ".zeo", "sandbox", moduleId)),
+      }
     );
 
     const start = Date.now();
+    const heapAtStart = process.memoryUsage().heapUsed / (1024 * 1024);
     try {
       const result = await Promise.race([
         handler(sandboxed),
@@ -311,6 +333,17 @@ export class ModuleRegistry {
           setTimeout(() => reject(new Error("Module execution timeout")), execCtx.timeout)
         ),
       ]);
+      const heapDeltaMb = process.memoryUsage().heapUsed / (1024 * 1024) - heapAtStart;
+      if (heapDeltaMb > execCtx.maxMemoryMb) {
+        throw new ModuleError(
+          "MEMORY_BUDGET_EXCEEDED",
+          `Execution memory delta ${heapDeltaMb.toFixed(2)}MB exceeded budget ${execCtx.maxMemoryMb}MB`,
+          moduleId
+        );
+      }
+      if (registrySnapshot !== JSON.stringify(this.list())) {
+        throw new ModuleError("EXECUTION_ENVELOPE_BREACH", "Global registry mutation detected during execution", moduleId);
+      }
 
       return {
         moduleId,
@@ -342,7 +375,8 @@ export class ModuleRegistry {
 export class SandboxedContext {
   constructor(
     private capabilities: ModuleCapability[],
-    private auditTrail: ModuleAuditEntry[]
+    private auditTrail: ModuleAuditEntry[],
+    private readonly envelope: { declaredTools: string[]; sandboxRoot: string }
   ) {}
 
   requireCapability(cap: ModuleCapability, action: string): void {
@@ -360,6 +394,25 @@ export class SandboxedContext {
 
   hasCapability(cap: ModuleCapability): boolean {
     return this.capabilities.includes(cap);
+  }
+
+  assertToolAccess(toolName: string): void {
+    this.requireCapability("execute_tools", `access tool ${toolName}`);
+    if (!this.envelope.declaredTools.includes(toolName)) {
+      throw new ModuleError("TOOL_NOT_DECLARED", `Undeclared tool access denied: ${toolName}`);
+    }
+  }
+
+  assertSandboxPath(targetPath: string): string {
+    const resolvedPath = resolve(this.envelope.sandboxRoot, targetPath);
+    if (resolvedPath !== this.envelope.sandboxRoot && !resolvedPath.startsWith(`${this.envelope.sandboxRoot}/`)) {
+      throw new ModuleError("SANDBOX_ESCAPE", `Path escapes sandbox root: ${targetPath}`);
+    }
+    return resolvedPath;
+  }
+
+  readEnv(_key: string): never {
+    throw new ModuleError("ENV_ACCESS_DENIED", "Environment access is denied inside module sandbox");
   }
 }
 
@@ -466,10 +519,53 @@ export function formatExecutionResult(result: ModuleExecutionResult): string {
 // =============================================================================
 
 const DEFAULT_MODULES_DIR = resolve(homedir(), ".zeo", "modules");
+const DEFAULT_REVOCATION_PATH = resolve(DEFAULT_MODULES_DIR, "revocations.json");
 
 export function getLocalModulesDir(baseDir = DEFAULT_MODULES_DIR): string {
   mkdirSync(baseDir, { recursive: true });
   return baseDir;
+}
+
+function readRevocationRegistry(path = DEFAULT_REVOCATION_PATH): RevocationRegistry {
+  if (!existsSync(path)) {
+    return { revokedModuleIds: [], updatedAt: new Date(0).toISOString() };
+  }
+  const parsed = JSON.parse(readFileSync(path, "utf8")) as Partial<RevocationRegistry>;
+  return {
+    revokedModuleIds: Array.isArray(parsed.revokedModuleIds)
+      ? parsed.revokedModuleIds.filter((entry): entry is string => typeof entry === "string")
+      : [],
+    updatedAt: typeof parsed.updatedAt === "string" ? parsed.updatedAt : new Date(0).toISOString(),
+  };
+}
+
+function writeRevocationRegistry(registry: RevocationRegistry, path = DEFAULT_REVOCATION_PATH): void {
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, `${JSON.stringify(registry, null, 2)}\n`, "utf8");
+}
+
+export function revokeModule(moduleId: string, registryPath = DEFAULT_REVOCATION_PATH): boolean {
+  const normalized = moduleId.trim();
+  if (!normalized) {
+    throw new ModuleError("REVOCATION_INVALID_MODULE", "moduleId is required for revocation");
+  }
+  const registry = readRevocationRegistry(registryPath);
+  if (registry.revokedModuleIds.includes(normalized)) {
+    return false;
+  }
+  registry.revokedModuleIds.push(normalized);
+  registry.revokedModuleIds.sort();
+  registry.updatedAt = new Date().toISOString();
+  writeRevocationRegistry(registry, registryPath);
+  return true;
+}
+
+export function isModuleRevoked(moduleId: string, registryPath = DEFAULT_REVOCATION_PATH): boolean {
+  return readRevocationRegistry(registryPath).revokedModuleIds.includes(moduleId);
+}
+
+export function listRevokedModules(registryPath = DEFAULT_REVOCATION_PATH): string[] {
+  return readRevocationRegistry(registryPath).revokedModuleIds;
 }
 
 export function computeModuleSignature(spec: Omit<AgentModuleSpec, "signatureHash">): string {
@@ -506,6 +602,10 @@ function readModuleSpec(modulePath: string): AgentModuleSpec {
 
 export function addLocalModule(modulePath: string, baseDir = DEFAULT_MODULES_DIR): AgentModuleSpec {
   const spec = readModuleSpec(modulePath);
+  const registryPath = join(baseDir, "revocations.json");
+  if (isModuleRevoked(spec.moduleId, registryPath)) {
+    throw new ModuleError("MODULE_REVOKED", `Module ${spec.moduleId} is revoked and cannot be installed`);
+  }
   if (!verifyModuleSignature(spec)) {
     throw new ModuleError("MODULE_SIGNATURE_INVALID", `Signature mismatch for ${spec.moduleId}@${spec.version}`);
   }
