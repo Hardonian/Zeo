@@ -45,6 +45,7 @@ Commands:
   render <id>                Render deterministic output for github/slack/markdown/plain
   demo                       Run offline demo artifact generation
   export <md|ics|bundle>     Offline export commands
+  export --deterministic     Reproducible local module tarball export
   export decision <id>       Portable decision bundle export
   verify <bundle|decision>   Verify exported bundle hashes/proofs
   decision-health <id>       Decision health snapshot
@@ -79,6 +80,10 @@ Commands:
   explain <run_id>            Summarized reasoning trace for a run
   explain <decision_id>      Explain a decision from the ledger
   list --recent              List recent decisions from the ledger
+  list                        List locally installed agent modules
+  add <module>                Install signed module into local registry
+  remove <module>             Remove module from local registry
+  compose <pipeline.yaml>     Validate composed local module pipeline
   status                     Operator status and health report
   audit                      Autopilot drift monitor
   benchmark                  Performance benchmark
@@ -498,6 +503,13 @@ async function main(): Promise<void> {
   if (argv[0] === "benchmark") {
     const { runBenchmarkCommand } = await import("./benchmark-cli.js");
     process.exit(await runBenchmarkCommand());
+  }
+
+
+  if (["add", "remove", "compose"].includes(argv[0] ?? "") || (argv[0] === "list" && argv[1] !== "--recent") || (argv[0] === "export" && argv.includes("--deterministic"))) {
+    const mod = await import("./marketplace-cli.js");
+    const rc = await mod.runMarketplaceCommand(argv);
+    if (rc !== -1) process.exit(rc);
   }
 
   if (argv[0] === "list" && argv[1] === "--recent") {

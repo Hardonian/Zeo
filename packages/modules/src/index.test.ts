@@ -2,6 +2,9 @@
  * @zeo/modules — Phase D Tests
  */
 import { describe, it, expect, beforeEach } from "vitest";
+import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
 import {
   ModuleRegistry,
   validateManifest,
@@ -13,6 +16,12 @@ import {
   CyclicDependencyError,
   SandboxedContext,
   formatModuleList,
+  computeModuleSignature,
+  addLocalModule,
+  listLocalModules,
+  removeLocalModule,
+  parsePipelineDefinition,
+  validatePipelineCompatibility,
 } from "../src/index.js";
 import type { ModuleManifest, DependencyNode } from "../src/index.js";
 
@@ -163,4 +172,47 @@ describe("Phase D: Extension + Module Sandbox", () => {
       expect(output).toContain("test-module");
     });
   });
+
+  describe("Local module marketplace", () => {
+    it("installs, lists, and removes signed modules", () => {
+      const root = mkdtempSync(join(tmpdir(), "zeo-mods-"));
+      const specNoSig = {
+        moduleId: "demo.mod",
+        version: "1.0.0",
+        declaredCapabilities: ["read_evidence"],
+        declaredTools: ["tool.a"],
+        deterministicSupport: true,
+      };
+      const spec = { ...specNoSig, signatureHash: computeModuleSignature(specNoSig) };
+      const src = join(root, "module.json");
+      writeFileSync(src, JSON.stringify(spec), "utf8");
+
+      addLocalModule(src, root);
+      expect(listLocalModules(root)).toHaveLength(1);
+      expect(removeLocalModule("demo.mod", root)).toBe(true);
+      expect(listLocalModules(root)).toHaveLength(0);
+
+      rmSync(root, { recursive: true, force: true });
+    });
+
+    it("validates pipeline compatibility", () => {
+      const pipeline = parsePipelineDefinition(`modules:
+- demo.mod@1.0.0
+executionOrder:
+- demo.mod
+`);
+      const issues = validatePipelineCompatibility(pipeline, [
+        {
+          moduleId: "demo.mod",
+          version: "1.0.0",
+          declaredCapabilities: ["read_evidence"],
+          declaredTools: ["tool.a"],
+          deterministicSupport: true,
+          signatureHash: "abc",
+        },
+      ]);
+      expect(issues).toHaveLength(0);
+    });
+  });
+
 });

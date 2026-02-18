@@ -17,9 +17,6 @@ export async function POST(request: NextRequest) {
     const rawBody = await request.text();
     const signature = request.headers.get('stripe-signature');
 
-    if (!isEnterpriseHostedEnabled()) {
-      return NextResponse.json({ received: true, mode: 'oss' });
-    }
 
     const secret = process.env.STRIPE_WEBHOOK_SECRET;
     if (!secret) {
