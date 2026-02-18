@@ -506,7 +506,11 @@ async function main(): Promise<void> {
   }
 
 
-  if (["add", "remove", "compose"].includes(argv[0] ?? "") || (argv[0] === "list" && argv[1] !== "--recent") || (argv[0] === "export" && argv.includes("--deterministic"))) {
+  if (
+    ["add", "remove", "compose", "revoke", "revocations", "verify-export"].includes(argv[0] ?? "")
+    || (argv[0] === "list" && argv[1] !== "--recent")
+    || (argv[0] === "export" && argv.includes("--deterministic"))
+  ) {
     const mod = await import("./marketplace-cli.js");
     const rc = await mod.runMarketplaceCommand(argv);
     if (rc !== -1) process.exit(rc);
@@ -772,4 +776,3 @@ if (isMainModule) {
     process.exit(1);
   });
 }
-
