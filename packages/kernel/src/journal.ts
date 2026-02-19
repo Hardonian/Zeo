@@ -8,6 +8,7 @@
 import { createHash, randomUUID } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { gzipSync } from "node:zlib";
 import type { ZeoJournalEntry, ZeoJournalConfig, ZeoExecutionEnvelope } from "@zeo/contracts";
 
 /** Default journal configuration */
@@ -314,7 +315,7 @@ export function getJournalStats(): {
   const files = getJournalFiles();
   let totalSize = 0;
   for (const file of files) {
-    const stats = require("node:fs").statSync(file);
+    const stats = statSync(file);
     totalSize += stats.size;
   }
 
@@ -333,7 +334,6 @@ export function getJournalStats(): {
  * Compress old journal files
  */
 export function compressJournal(): void {
-  const { gzipSync } = require("node:zlib");
   const files = getJournalFiles();
 
   for (const file of files) {

@@ -360,8 +360,10 @@ export function initializeDEK(config?: {
   journalDir?: string;
   enterpriseSync?: {
     supabaseUrl?: string;
-    serviceKeyEnvVar: string;
+    serviceKeyEnvVar?: string;
+    apiKey?: string;
     tableName: string;
+    syncIntervalMs?: number;
   };
 }): void {
   if (config?.journalDir) {
