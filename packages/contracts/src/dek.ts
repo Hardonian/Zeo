@@ -276,7 +276,9 @@ export interface ZeoJournalConfig {
     /** Supabase URL */
     supabaseUrl?: string;
     /** Supabase service key (from env) */
-    serviceKeyEnvVar: string;
+    serviceKeyEnvVar?: string;
+    /** API key for authentication (passed directly, not from env) */
+    apiKey?: string;
     /** Table name for journal entries */
     tableName: string;
     /** Sync interval ms (0 = immediate) */
