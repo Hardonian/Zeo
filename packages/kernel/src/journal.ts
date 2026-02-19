@@ -12,7 +12,7 @@ import type { ZeoJournalEntry, ZeoJournalConfig, ZeoExecutionEnvelope } from "@z
 
 /** Default journal configuration */
 const DEFAULT_CONFIG: ZeoJournalConfig = {
-  journalDir: join(homedir(), ".zeo", "journal"),
+  journalDir: join(".", ".zeo", "journal"),
   maxEntriesPerFile: 1000,
   compress: false,
   retentionDays: 90,
