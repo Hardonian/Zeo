@@ -11,11 +11,11 @@ export const metadata: Metadata = {
 
 export default function SimulationsPage() {
   return (
-    <PublicShell>
+    <PublicShell title="Decision Simulations">
       {/* Hero Section */}
       <section className="relative isolate overflow-hidden bg-zeo-dark pb-24 pt-16 sm:pb-32">
         <HeroMedia
-          src="/hero/zeo-fullspread-hero.png"
+          fallbackSrc="/hero/zeo-fullspread-hero.png"
           alt="Zeo Decision Simulations"
           priority
         />
