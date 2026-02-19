@@ -117,6 +117,10 @@ Commands:
   sign-envelope <file>        Sign a job envelope
   verify-envelope <file>      Verify a job/result envelope
 
+  --- DEK: Deterministic Execution Kernel ---
+  journal list                List execution journal entries
+  replay <run_id>             Replay a run and verify determinism (PASS/MISMATCH/DEGRADED)
+
   --- Studio: Local Decision Workbench ---
   studio                       Launch Zeo Studio (local workbench UI)
   export-report <run_id>       Generate signed run report (JSON + HTML + SHA-256)
@@ -612,13 +616,18 @@ async function main(): Promise<void> {
   if (argv[0] === "replay") {
     const requested = argv[1];
     if (!requested) {
-      console.error("Usage: zeo replay <run_id|path|examples/<name>> [--report-out <dir>] [--case <id>]");
+      console.error("Usage: zeo replay <run_id|path|examples/<name>> [--report-out <dir>] [--case <id>] [--json]");
       process.exit(1);
     }
-    // v2.0: snapshot-based deterministic replay
+    // v2.0: DEK-based deterministic replay for journal entries
     if (requested.startsWith("run_")) {
-      const mod = await import("./snapshot-cli.js");
-      process.exit(await mod.runReplayFromStepCommand(requested, argv));
+      const mod = await import("./dek-replay-cli.js");
+      const args = mod.parseDekReplayArgs(argv.slice(1));
+      if (!args) {
+        console.error("Usage: zeo replay <run_id> [--json] [--strict] [--suggest-model] [--report-out <dir>]");
+        process.exit(1);
+      }
+      process.exit(await mod.runDekReplayCommand(args));
     }
     const analyzeManifest = join(process.cwd(), ".zeo", "analyze-pr", requested, "manifest.json");
     if (existsSync(analyzeManifest)) {
@@ -629,6 +638,17 @@ async function main(): Promise<void> {
     const replayPath = requested.startsWith("examples/") ? join(process.cwd(), requested, "replay.json") : requested;
     const parsed = mod.parseReplayArgs(["--replay", replayPath, ...argv.slice(2)]);
     process.exit(await mod.runReplayCommand(parsed));
+  }
+
+  if (argv[0] === "journal") {
+    const subcmd = argv[1];
+    if (subcmd === "list") {
+      const mod = await import("./dek-replay-cli.js");
+      await mod.listJournalRuns();
+      process.exit(0);
+    }
+    console.error("Usage: zeo journal <list>");
+    process.exit(1);
   }
 
   if (argv[0] === "doctor") {

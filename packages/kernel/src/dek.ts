@@ -222,6 +222,11 @@ export async function replayExecution(
     replayHash: string;
     match: boolean;
   };
+  modelAvailability: {
+    available: boolean;
+    replayModel?: string;
+    suggestedModel?: string;
+  };
 }> {
   // Get original journal entry
   const originalEntry = getJournalEntry(runId);
@@ -238,6 +243,9 @@ export async function replayExecution(
         originalHash: '',
         replayHash: '',
         match: false,
+      },
+      modelAvailability: {
+        available: false,
       },
     };
   }
@@ -269,6 +277,10 @@ export async function replayExecution(
             replayHash: '',
             match: false,
           },
+          modelAvailability: {
+            available: false,
+            suggestedModel: undefined,
+          },
         };
       }
       
@@ -297,6 +309,10 @@ export async function replayExecution(
       originalHash: originalEntry.outputHash,
       replayHash: 'reconstruction_required',
       match: false,
+    },
+    modelAvailability: {
+      available: !!getAdapterForSpec(originalSpec),
+      replayModel: replaySpec?.model,
     },
   };
 }

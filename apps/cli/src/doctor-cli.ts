@@ -239,6 +239,26 @@ export async function runDoctorCommand(args: { json: boolean; fix: boolean; perf
   // 16. Pnpm Version Check
   checks.push(runPnpmCheck());
 
+  // 17. DEK Journal Health Check
+  const { runDekJournalCheck } = await import("./doctor-dek-checks.js");
+  const journalCheck = runDekJournalCheck();
+  checks.push(journalCheck);
+
+  // 18. Model Adapter Integrity Check
+  const { runModelAdapterCheck } = await import("./doctor-dek-checks.js");
+  const adapterCheck = runModelAdapterCheck();
+  checks.push(adapterCheck);
+
+  // 19. Policy Schema Version Check
+  const { runPolicySchemaCheck } = await import("./doctor-dek-checks.js");
+  const policyCheck = runPolicySchemaCheck();
+  checks.push(policyCheck);
+
+  // 20. Enterprise Connectivity Check (Supabase)
+  const { runEnterpriseConnectivityCheck } = await import("./doctor-dek-checks.js");
+  const enterpriseCheck = await runEnterpriseConnectivityCheck();
+  checks.push(enterpriseCheck);
+
   // Auto-fix if requested
   if (args.fix && overall !== "healthy") {
     console.log("\n=== Running Fixes ===");
