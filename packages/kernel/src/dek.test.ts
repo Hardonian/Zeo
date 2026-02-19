@@ -13,9 +13,10 @@ import {
   hashValue, 
   executeWithDEK,
   initializeDEK,
+  registerModelAdapter,
   DEK_VERSION 
 } from "@zeo/kernel";
-import type { ZeoDeterminismFixture, ZeoModelSpec } from "@zeo/contracts";
+import type { ZeoDeterminismFixture, ZeoModelSpec, ZeoModelAdapter, ZeoModelInput, ZeoModelResult } from "@zeo/contracts";
 
 // Test fixture definition
 const TEST_FIXTURE: ZeoDeterminismFixture = {
@@ -35,24 +36,50 @@ const TEST_FIXTURE: ZeoDeterminismFixture = {
   tolerancePercent: 0, // Exact match required
 };
 
-// Deterministic mock executor
-async function mockExecutor(input: unknown): Promise<unknown> {
-  // Deterministic transformation - always produces same output for same input
-  const inputHash = hashValue(input);
-  return {
-    result: "success",
-    inputHash,
-    timestamp: "2024-01-01T00:00:00.000Z", // Fixed for determinism
-    computation: {
-      sum: 42 + 1 + 2 + 3,
-      product: 42 * 1 * 2 * 3,
-    },
-  };
-}
+// Deterministic mock adapter for testing
+const mockAdapter: ZeoModelAdapter = {
+  id: "test-deterministic-mock",
+  provider: "test",
+  model: "deterministic-mock",
+  capabilities: {
+    supportsStreaming: false,
+    maxTokens: 4096,
+    contextWindow: 8192,
+    supportsToolCalling: false,
+    supportsVision: false,
+  },
+  async execute(input: ZeoModelInput, params?: Record<string, unknown>): Promise<ZeoModelResult> {
+    // Deterministic transformation - always produces same output for same input
+    const content = JSON.stringify({
+      messages: input.messages,
+      params,
+      timestamp: "2024-01-01T00:00:00.000Z", // Fixed for determinism
+    });
+    return {
+      content,
+      usage: { inputTokens: 10, outputTokens: 20, totalTokens: 30 },
+      finishReason: "stop",
+      meta: { provider: "test", model: "deterministic-mock" },
+      timing: { 
+        startedAt: "2024-01-01T00:00:00.000Z", 
+        finishedAt: "2024-01-01T00:00:01.000Z", 
+        totalMs: 1000 
+      },
+      contentHash: hashValue(content),
+    };
+  },
+  canHandle(spec: ZeoModelSpec): boolean {
+    return spec.provider === "test" && spec.model === "deterministic-mock";
+  },
+  getConfigHash(): string {
+    return hashValue({ provider: this.provider, model: this.model });
+  },
+};
 
 describe("DEK Determinism", () => {
   beforeAll(() => {
     initializeDEK();
+    registerModelAdapter(mockAdapter);
   });
 
   it("should produce identical envelope hashes for identical inputs", async () => {
