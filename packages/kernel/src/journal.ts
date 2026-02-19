@@ -6,10 +6,13 @@
  */
 
 import { createHash, randomUUID } from "node:crypto";
-import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { homedir } from "node:os";
+import { statSync } from "node:fs";
+import { gzipSync } from "node:zlib";
 import type { ZeoJournalEntry, ZeoJournalConfig, ZeoExecutionEnvelope } from "@zeo/contracts";
+import { env } from "@zeo/env";
 
 /** Default journal configuration */
 const DEFAULT_CONFIG: ZeoJournalConfig = {
