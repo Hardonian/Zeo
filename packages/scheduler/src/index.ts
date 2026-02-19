@@ -343,7 +343,7 @@ export function computeSchedule(graph: ZeoExecutionGraph): DeterministicSchedule
   // 1. By depth (ascending)
   // 2. By node ID (lexicographic)
   // 3. By insertion order (ascending)
-  const sorted = stableSort(scheduledNodes, (a, b) => {
+  const sorted = stableSort(scheduledNodes, (a: ScheduledNode, b: ScheduledNode) => {
     // Primary: depth
     if (a.depth !== b.depth) return a.depth - b.depth;
     // Secondary: node ID
@@ -354,7 +354,7 @@ export function computeSchedule(graph: ZeoExecutionGraph): DeterministicSchedule
   });
 
   // Assign execution order
-  sorted.forEach((sn, idx) => {
+  sorted.forEach((sn: ScheduledNode, idx: number) => {
     sn.executionOrder = idx;
   });
 
