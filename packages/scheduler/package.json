@@ -1,0 +1,33 @@
+{
+  "name": "@zeo/scheduler",
+  "version": "0.1.0",
+  "description": "Deterministic Multi-Agent Scheduler for Zeo",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src --ext .ts"
+  },
+  "dependencies": {
+    "@zeo/contracts": "workspace:*",
+    "@zeo/kernel": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.2"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT"
+}
