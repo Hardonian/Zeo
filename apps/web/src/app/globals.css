@@ -3,10 +3,36 @@
 @tailwind utilities;
 
 :root {
+  /* Legacy RGB variables */
   --foreground-rgb: 15, 23, 42;
   --background-start-rgb: 249, 250, 251;
   --background-end-rgb: 255, 255, 255;
   --sidebar-width: 16rem;
+  
+  /* ZEO Master Pack Tokens */
+  --zeo-bg: #050B12;
+  --zeo-surface: #0B1624;
+  --zeo-surface-light: #111D2E;
+  --zeo-primary: #0B1C2D;
+  --zeo-accent: #1F6FEB;
+  --zeo-highlight: #C9A227;
+  --zeo-text-primary: #F0F4F8;
+  --zeo-text-secondary: #94A3B8;
+  --zeo-text-muted: #64748B;
+  
+  /* Spacing tokens */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  
+  /* Radius tokens */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
 }
 
 .dark {
@@ -27,8 +53,45 @@ body {
 
 @layer utilities {
   .text-balance {
-    /* text-wrap is not fully supported in older engines */
     overflow-wrap: break-word;
+  }
+  
+  /* ZEO Dark theme utilities */
+  .bg-zeo-dark {
+    background-color: var(--zeo-bg);
+  }
+  
+  .bg-zeo-surface {
+    background-color: var(--zeo-surface);
+  }
+  
+  .bg-zeo-surface-light {
+    background-color: var(--zeo-surface-light);
+  }
+  
+  .text-zeo-primary {
+    color: var(--zeo-text-primary);
+  }
+  
+  .text-zeo-secondary {
+    color: var(--zeo-text-secondary);
+  }
+  
+  .text-zeo-accent {
+    color: var(--zeo-accent);
+  }
+  
+  .text-zeo-highlight {
+    color: var(--zeo-highlight);
+  }
+  
+  /* Glow effects */
+  .glow-accent {
+    box-shadow: 0 0 40px rgba(31, 111, 235, 0.15);
+  }
+  
+  .glow-highlight {
+    box-shadow: 0 0 40px rgba(201, 162, 39, 0.15);
   }
 }
 
@@ -37,10 +100,18 @@ body {
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600;
   }
+  
+  .text-gradient-zeo {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#1F6FEB] to-[#C9A227];
+  }
 
   /* Card hover effect */
   .card-hover {
     @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md;
+  }
+  
+  .card-hover-zeo {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-glow border border-transparent hover:border-[#1F6FEB]/30;
   }
 
   /* Subtle grid background for hero sections */
@@ -49,6 +120,14 @@ body {
       linear-gradient(to right, rgba(148, 163, 184, 0.06) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
     background-size: 40px 40px;
+  }
+  
+  /* ZEO grid pattern */
+  .bg-grid-zeo {
+    background-image:
+      linear-gradient(to right, rgba(31, 111, 235, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(31, 111, 235, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
   }
 
   /* Badge variants for design consistency */
@@ -70,9 +149,39 @@ body {
   .badge-neutral {
     @apply inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700;
   }
+  
+  /* ZEO dark badges */
+  .badge-zeo-accent {
+    @apply inline-flex items-center rounded-full bg-[#1F6FEB]/10 px-2.5 py-0.5 text-xs font-medium text-[#1F6FEB] border border-[#1F6FEB]/20;
+  }
+  .badge-zeo-highlight {
+    @apply inline-flex items-center rounded-full bg-[#C9A227]/10 px-2.5 py-0.5 text-xs font-medium text-[#C9A227] border border-[#C9A227]/20;
+  }
 
   .progress-fill {
     @apply h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400;
     width: var(--progress-width, 0%);
+  }
+  
+  /* ZEO button styles */
+  .btn-zeo-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-[#1F6FEB] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1F6FEB]/90 focus:outline-none focus:ring-2 focus:ring-[#1F6FEB] focus:ring-offset-2;
+  }
+  
+  .btn-zeo-secondary {
+    @apply inline-flex items-center justify-center rounded-lg border border-[#1F6FEB]/30 bg-transparent px-4 py-2 text-sm font-medium text-[#1F6FEB] transition-colors hover:bg-[#1F6FEB]/10 focus:outline-none focus:ring-2 focus:ring-[#1F6FEB] focus:ring-offset-2;
+  }
+  
+  .btn-zeo-ghost {
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-[#94A3B8] transition-colors hover:text-[#F0F4F8] hover:bg-[#111D2E] focus:outline-none;
+  }
+  
+  /* ZEO card styles */
+  .card-zeo {
+    @apply rounded-2xl border border-[#1F6FEB]/10 bg-[#0B1624] p-6 shadow-surface;
+  }
+  
+  .card-zeo-light {
+    @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm;
   }
 }
