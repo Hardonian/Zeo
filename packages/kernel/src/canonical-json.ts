@@ -7,6 +7,13 @@ export function encodeCanonicalJson(value: unknown): Uint8Array {
     return new TextEncoder().encode(stringify(value));
 }
 
+/**
+ * Canonicalize a value to a string for hashing
+ */
+export function canonicalizeValue(value: unknown): string {
+    return stringify(value);
+}
+
 function stringify(value: unknown): string {
     if (value === null) return "null";
 
