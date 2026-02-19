@@ -191,7 +191,7 @@ export function compressJournal(): void {
 async function syncToEnterprise(entry: ZeoJournalEntry): Promise<void> {
   const sync = currentConfig.enterpriseSync;
   if (!sync?.supabaseUrl) return;
-  const apiKey = sync.apiKey;
+  const apiKey = sync.serviceKeyEnvVar ? process.env[sync.serviceKeyEnvVar] : undefined;
   if (!apiKey) return;
   try {
     const payload = {
