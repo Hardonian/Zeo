@@ -111,7 +111,13 @@ describe("DEK Determinism", () => {
         TEST_FIXTURE.name,
         TEST_FIXTURE.input,
         TEST_FIXTURE.modelSpec,
-        async () => mockExecutor(TEST_FIXTURE.input),
+        async (_ctx, input) => {
+          const modelInput: ZeoModelInput = {
+            messages: [{ role: 'user', content: JSON.stringify(input) }],
+          };
+          const result = await mockAdapter.execute(modelInput);
+          return result;
+        },
         { deterministicSeed: TEST_FIXTURE.seed }
       );
       results.push(outputHash);
