@@ -9,5 +9,5 @@ export * from "./share-bundle.js";
 export * from "./kpi.js";
 export * from "./packet-types.js";
 export * from "./connector-types.js";
-
 export * from "./dashboard.js";
+export * from "./dek.js";
