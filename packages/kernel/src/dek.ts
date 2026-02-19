@@ -21,6 +21,14 @@ import type {
 import { appendToJournal, initializeJournal, getJournalEntry } from "./journal.js";
 import { canonicalizeValue } from "./canonical-json.js";
 
+/** Build hash - injected at build time or passed at runtime */
+let BUILD_HASH = "dev";
+
+/** Set the build hash for DEK metadata */
+export function setBuildHash(hash: string): void {
+  BUILD_HASH = hash;
+}
+
 /** DEK version */
 export const DEK_VERSION = "1.0.0";
 
@@ -105,7 +113,7 @@ export function createExecutionEnvelope(
     dek: {
       kernelVersion: getKernelVersion(),
       contractVersion: "1.0.0",
-      buildHash: process.env.ZEO_BUILD_HASH || "dev",
+      buildHash: BUILD_HASH,
     },
   };
 }

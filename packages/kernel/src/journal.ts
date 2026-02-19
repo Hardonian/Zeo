@@ -6,13 +6,11 @@
  */
 
 import { createHash, randomUUID } from "node:crypto";
-import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { homedir } from "node:os";
-import { statSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 import type { ZeoJournalEntry, ZeoJournalConfig, ZeoExecutionEnvelope } from "@zeo/contracts";
-import { env } from "@zeo/env";
 
 /** Default journal configuration */
 const DEFAULT_CONFIG: ZeoJournalConfig = {
@@ -214,7 +212,6 @@ export function getJournalEntry(runId: string): ZeoJournalEntry | undefined {
  * Get journal files within date range
  */
 function getJournalFiles(startDate?: string, endDate?: string): string[] {
-  const { readdirSync } = require("node:fs");
   const journalDir = currentConfig.journalDir;
 
   if (!existsSync(journalDir)) {
@@ -248,9 +245,10 @@ async function syncToEnterprise(entry: ZeoJournalEntry): Promise<void> {
   const sync = currentConfig.enterpriseSync;
   if (!sync?.supabaseUrl) return;
 
-  const apiKey = process.env[sync.serviceKeyEnvVar];
+  // API key must be provided in config (caller reads from env)
+  const apiKey = sync.apiKey;
   if (!apiKey) {
-    console.warn(`Enterprise sync skipped: ${sync.serviceKeyEnvVar} not set`);
+    console.warn(`Enterprise sync skipped: apiKey not provided in config`);
     return;
   }
 
