@@ -1,15 +1,15 @@
 /**
  * Zeo Deterministic Execution Kernel (DEK)
- * 
+ *
  * The DEK provides a replayable, verifiable, model-agnostic execution core
  * for all Zeo workflows. It ensures deterministic behavior and maintains
  * an append-only execution journal.
  */
 
 import { createHash, randomUUID } from "node:crypto";
-import type { 
-  ZeoExecutionEnvelope, 
-  ZeoModelSpec, 
+import type {
+  ZeoExecutionEnvelope,
+  ZeoModelSpec,
   ZeoModelAdapter,
   ZeoModelInput,
   ZeoModelResult,
@@ -28,7 +28,7 @@ export function setBuildHash(hash: string): void {
 
 /** DEK version */
 export const DEK_VERSION = "1.0.0";
-export const KERNEL_VERSION = DEK_VERSION;
+
 
 /** Kernel version from package */
 export function getKernelVersion(): string {
@@ -81,10 +81,10 @@ export function createExecutionEnvelope(
   const inputHash = hashValue(input);
   const modelSpecHash = hashValue(modelSpec);
   const policyHash = options?.policyHash || hashValue({ version: "default" });
-  
+
   // Deterministic seed: combination of input hash and timestamp for uniqueness,
   // but can be overridden for full reproducibility
-  const deterministicSeed = options?.deterministicSeed || 
+  const deterministicSeed = options?.deterministicSeed ||
     createHash("sha256")
       .update(inputHash)
       .update(timestamp)
@@ -157,7 +157,7 @@ export async function executeWithDEK<TInput, TOutput>(
   let output: TOutput;
   let status: 'success' | 'error' | 'degraded' = 'success';
   let error: { code: string; message: string; details?: unknown } | undefined;
-  let modelLatency: { totalMs: number; ttftMs?: number } = { totalMs: 0 };
+  const modelLatency: { totalMs: number; ttftMs?: number } = { totalMs: 0 };
 
   try {
     // Execute the workflow
@@ -252,18 +252,18 @@ export async function replayExecution(
   }
 
   const originalSpec = originalEntry.envelope.modelSpec;
-  
+
   // Determine model spec to use for replay
   let replaySpec = options?.overrideModelSpec;
-  
+
   if (!replaySpec) {
     // Check if original model is available
     const originalAdapter = getAdapterForSpec(originalSpec);
-    
+
     if (!originalAdapter) {
       // Try to find closest compatible model
       const suggestedModel = suggestCompatibleModel(originalSpec);
-      
+
       if (!suggestedModel) {
         return {
           status: 'UNAVAILABLE',
@@ -284,7 +284,7 @@ export async function replayExecution(
           },
         };
       }
-      
+
       // Use suggested model with degradation notice
       replaySpec = suggestedModel;
     } else if (options?.strictModelMatch !== false) {
@@ -297,7 +297,7 @@ export async function replayExecution(
   // For replay, we would need to reconstruct the original input
   // This would typically come from a snapshot store
   // For now, we return degraded status indicating reconstruction needed
-  
+
   return {
     status: 'DEGRADED',
     originalEntry,
@@ -364,7 +364,7 @@ export function initializeDEK(config?: {
   }
 
   if (config?.enterpriseSync) {
-    initializeJournal({ 
+    initializeJournal({
       enterpriseSync: {
         ...config.enterpriseSync,
         syncIntervalMs: 0, // Immediate sync
