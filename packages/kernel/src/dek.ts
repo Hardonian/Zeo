@@ -7,9 +7,6 @@
  */
 
 import { createHash, randomUUID } from "node:crypto";
-import { existsSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
-import { join } from "node:path";
-import { homedir } from "node:os";
 import type { 
   ZeoExecutionEnvelope, 
   ZeoModelSpec, 
@@ -18,7 +15,7 @@ import type {
   ZeoModelResult,
   ZeoJournalEntry,
 } from "@zeo/contracts";
-import { appendToJournal, initializeJournal, getJournalEntry } from "./journal.js";
+import { appendToJournal, initializeJournal, getJournalEntry } from "./impl/journal-fs";
 import { canonicalizeValue } from "./canonical-json.js";
 
 /** Build hash - injected at build time or passed at runtime */
@@ -31,15 +28,11 @@ export function setBuildHash(hash: string): void {
 
 /** DEK version */
 export const DEK_VERSION = "1.0.0";
+export const KERNEL_VERSION = DEK_VERSION;
 
 /** Kernel version from package */
 export function getKernelVersion(): string {
-  try {
-    const pkg = JSON.parse(readFileSync(join(__dirname, "../package.json"), "utf8"));
-    return pkg.version || "0.1.0";
-  } catch {
-    return "0.1.0";
-  }
+  return BUILD_HASH;
 }
 
 /** Registered model adapters */
