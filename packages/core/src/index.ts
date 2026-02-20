@@ -252,6 +252,12 @@ export {
 // export * from "./kernel/index.js"; // Conflict with engine.js runDecision
 export * as kernel from "./kernel/index.js";
 
+// v1.0 — Trust Envelope (Control Plane Convergence)
+export * from "./trust/index.js";
+
+// v1.0 — Agent Execution Graph
+export * from "./graph/executionGraph.js";
+
 // v12 — Policy-as-Constraints Engine
 export {
   type PolicyConstraint,
