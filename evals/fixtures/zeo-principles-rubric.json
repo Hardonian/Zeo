@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "description": "Scoring rubric for Zeo principle compliance evaluation",
+  "principles": [
+    "CLI-first",
+    "Local-first by default",
+    "Deterministic outputs",
+    "Explicit tool invocation",
+    "No hidden cloud dependencies",
+    "No binaryTarget hacks",
+    "WASM engine preferred in constrained environments",
+    "No implicit mutation",
+    "Governance-aware execution"
+  ],
+  "dimensions": [
+    {
+      "id": "cli_correctness",
+      "label": "CLI Correctness & Practicality",
+      "range": [0, 5],
+      "positive_signals": [
+        "Contains fenced code blocks with shell commands",
+        "Uses explicit CLI flags (--flag, -f)",
+        "Documents exit codes or process.exit usage",
+        "Provides usage / options / arguments section",
+        "References concrete CLI tools: node, pnpm, npx, zeo"
+      ],
+      "negative_signals": [
+        "Instructs user to open UI, dashboard, or browser",
+        "Uses only click/navigate instructions with no CLI equivalent",
+        "Omits executable commands entirely"
+      ],
+      "threshold": 2
+    },
+    {
+      "id": "local_first",
+      "label": "Local-First Integrity",
+      "range": [0, 5],
+      "positive_signals": [
+        "Runs entirely on local filesystem",
+        "Uses WASM or embedded engine",
+        "Works offline without network dependency",
+        "Stores data locally (SQLite, file, in-memory)"
+      ],
+      "negative_signals": [
+        "Mandates cloud API without local fallback",
+        "Requires AWS/GCP/Azure with no opt-out",
+        "States internet connectivity is required to run"
+      ],
+      "hard_fail": "Assumes cloud when local-first required",
+      "threshold": 2
+    },
+    {
+      "id": "determinism",
+      "label": "Determinism & Reproducibility",
+      "range": [0, 5],
+      "positive_signals": [
+        "Uses SHA-256 or content-addressed identifiers",
+        "Pins dependency versions (frozen lockfile)",
+        "Explicitly discusses deterministic build or output"
+      ],
+      "negative_signals": [
+        "Calls Math.random() or crypto.randomUUID() without seeding",
+        "Relies on Date.now() for logic (not display) without deterministic replay",
+        "Describes behavior as 'may vary between runs'"
+      ],
+      "hard_fail": "Introduces nondeterministic behavior",
+      "threshold": 2
+    },
+    {
+      "id": "governance",
+      "label": "Governance Compliance",
+      "range": [0, 5],
+      "positive_signals": [
+        "Declares requiresApproval on write-scope tools",
+        "Includes audit log or trail",
+        "References trust envelopes or scope boundaries",
+        "Calls tools explicitly rather than implicitly"
+      ],
+      "negative_signals": [
+        "Bypasses approval gates",
+        "Disables auth or governance checks",
+        "Marks write-scope operations as approval-optional"
+      ],
+      "hard_fail": "Suggests disabling safeguards",
+      "threshold": 2
+    },
+    {
+      "id": "technical_depth",
+      "label": "Technical Depth & Feasibility",
+      "range": [0, 5],
+      "positive_signals": [
+        "Provides typed interfaces (TypeScript interface/type)",
+        "Includes working function or class implementations",
+        "Covers testing approach (vitest, jest, describe)",
+        "Offers two or more concrete code blocks"
+      ],
+      "negative_signals": [
+        "Uses speculative language ('could potentially', 'might work') with no code",
+        "Contains TODO/FIXME/placeholder without resolution",
+        "Describes architecture in prose only with no implementation artifact"
+      ],
+      "hard_fail": "Proposes speculative architecture without implementation detail",
+      "threshold": 2
+    }
+  ],
+  "hard_fail_conditions": [
+    {
+      "id": "cloud_assumption",
+      "description": "Assumes cloud when local-first required",
+      "violation_type": "cloud_assumption_when_local_first_required"
+    },
+    {
+      "id": "disable_safeguards",
+      "description": "Suggests disabling safeguards, auth, or approval gates",
+      "violation_type": "safeguard_disabled"
+    },
+    {
+      "id": "nondeterminism",
+      "description": "Introduces nondeterministic behavior (unseeded random, timestamp-based logic)",
+      "violation_type": "nondeterministic_output"
+    },
+    {
+      "id": "speculative_no_detail",
+      "description": "Proposes speculative architecture without implementation detail",
+      "violation_type": "speculative_architecture_without_implementation"
+    }
+  ],
+  "pass_criteria": {
+    "no_hard_fail": true,
+    "min_per_dimension": 2,
+    "min_total": 15
+  },
+  "output_schema": {
+    "scores": {
+      "cli_correctness": "integer 0-5",
+      "local_first": "integer 0-5",
+      "determinism": "integer 0-5",
+      "governance": "integer 0-5",
+      "technical_depth": "integer 0-5"
+    },
+    "pass": "boolean",
+    "violation_type": "string — empty if pass",
+    "architectural_risk": "string — empty if pass",
+    "fix_recommendation": "string — empty if pass"
+  }
+}
