@@ -61,7 +61,7 @@
     "@zeo/warehouse": "workspace:*",
     "@zeo/worlds": "workspace:*",
     "better-sqlite3": "^12.6.2",
-    "minimatch": "^10.1.2"
+    "minimatch": "^10.2.3"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
