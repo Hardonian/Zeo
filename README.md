@@ -102,3 +102,11 @@ To contribute, start with:
 - [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
 - [`GOVERNANCE.md`](GOVERNANCE.md)
 - [`ROADMAP.md`](ROADMAP.md)
+
+
+## Repository Operations Standards
+
+- Squash-only merges
+- Auto-delete merged branches
+- Weekly dependency update windows
+- Security scanning in CI
