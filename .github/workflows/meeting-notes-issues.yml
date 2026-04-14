@@ -25,7 +25,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: node scripts/meeting-notes-to-issues.mjs "${{ github.event.inputs.notes_path }}"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: issue-drafts
           path: docs/generated/issue-drafts.json

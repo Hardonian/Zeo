@@ -55,7 +55,7 @@ jobs:
           pnpm lint 2>&1 | tee lint.log
       - name: Upload lint log on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lint-log
           path: lint.log
@@ -86,7 +86,7 @@ jobs:
           pnpm typecheck 2>&1 | tee typecheck.log
       - name: Upload typecheck log on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: typecheck-log
           path: typecheck.log
@@ -110,7 +110,7 @@ jobs:
           pnpm boundary:check 2>&1 | tee boundary-check.log
       - name: Upload boundary log on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: boundary-check-log
           path: boundary-check.log
@@ -151,13 +151,13 @@ jobs:
           pnpm test:golden 2>&1 | tee golden-main.log
       - name: Upload golden artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: golden-artifacts
           path: tests/golden/artifacts/
       - name: Upload unit logs on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: unit-failure-logs
           path: |
@@ -211,7 +211,7 @@ jobs:
           pnpm bench:run 2>&1 | tee bench-main.log
       - name: Upload integration artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: integration-artifacts
           path: |
@@ -242,7 +242,7 @@ jobs:
           pnpm verify 2>&1 | tee full-lane.log
       - name: Upload full lane log on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: full-lane-log
           path: full-lane.log
