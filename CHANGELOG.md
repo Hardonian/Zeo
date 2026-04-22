@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+- Override `rollup` to `>=4.58.1` (fixes high CVE: path traversal in extract)
+
 ### Deprecated
 - `@zeo/core` generic `computeTranscriptHash` export from the core barrel is retained for compatibility, but consumers should migrate to explicit names: `computeSecurityTranscriptHash` (canonical/envelope hashing) or `computeDecisionTranscriptHash` (decision transcript hashing).
 
