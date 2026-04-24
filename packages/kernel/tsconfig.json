@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "baseUrl": ".",
+    "types": ["node"],
     "paths": {
       "@zeo/contracts": ["../../packages/contracts/dist/index.d.ts"],
       "@zeo/*": ["../../packages/*/src/index.ts", "../../packages/*/src"]

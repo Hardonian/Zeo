@@ -12,6 +12,7 @@ import {
   type Scenario,
   type DecisionSpec,
 } from './index';
+import { _resetKillSwitches } from '@zeo/contracts';
 
 const createTestDecisionSpec = (): DecisionSpec => ({
   id: 'test-decision',
@@ -27,48 +28,26 @@ const createTestDecisionSpec = (): DecisionSpec => ({
 });
 
 describe('tournaments invariant tests', () => {
+  const originalEnv = { ...process.env };
+
+  beforeEach(() => {
+    _resetKillSwitches();
+    process.env = { ...originalEnv };
+    delete process.env.ZEO_FREEZE_MARKETS;
+  });
+
+  afterEach(() => {
+    process.env = originalEnv;
+  });
+
   describe('Invariant 7: Market/Tournament Outputs Cannot Narrow Without Evidence', () => {
     it('should throw when attempting to run match with frozen markets', () => {
       // Set environment to freeze markets
-      const originalEnv = process.env.ZEO_FREEZE_MARKETS;
       process.env.ZEO_FREEZE_MARKETS = 'true';
 
       let tournament = createTournament('test-tournament', 'Test', 'Test tournament');
-      const { tournament: withStrat } = registerStrategy(tournament, {
-        name: 'Test Strategy',
-        description: 'Test',
-        decisionRule: 'maximin',
-        parameters: {},
-        creator: 'user',
-        epistemicWarnings: [],
-      });
-      tournament = withStrat;
-
-      const { tournament: withScenario } = addScenario(tournament, {
-        name: 'Test Scenario',
-        description: 'Test',
-        decisionSpec: createTestDecisionSpec(),
-        difficulty: 'medium',
-      });
-      tournament = withScenario;
-
-      tournament = startTournament(tournament);
-      const matchId = Array.from(tournament.matches.keys())[0];
-
-      // Should throw because markets are frozen
-      expect(() => runMatch(tournament, matchId)).toThrow('Markets are frozen via ZEO_FREEZE_MARKETS');
-
-      // Restore environment
-      process.env.ZEO_FREEZE_MARKETS = originalEnv;
-    });
-
-    it('should allow matches when markets are active', () => {
-      // Ensure markets are active
-      const originalEnv = process.env.ZEO_FREEZE_MARKETS;
-      process.env.ZEO_FREEZE_MARKETS = 'false';
-
-      let tournament = createTournament('test-tournament-2', 'Test', 'Test tournament');
-      const { tournament: withStrat } = registerStrategy(tournament, {
+      // Need at least 2 strategies to start tournament
+      const { tournament: withStrat1 } = registerStrategy(tournament, {
         name: 'Test Strategy A',
         description: 'Test',
         decisionRule: 'maximin',
@@ -76,7 +55,7 @@ describe('tournaments invariant tests', () => {
         creator: 'user',
         epistemicWarnings: [],
       });
-      tournament = withStrat;
+      tournament = withStrat1;
 
       const { tournament: withStrat2 } = registerStrategy(tournament, {
         name: 'Test Strategy B',
@@ -99,11 +78,58 @@ describe('tournaments invariant tests', () => {
       tournament = startTournament(tournament);
       const matchId = Array.from(tournament.matches.keys())[0];
 
+      // Should throw because markets are frozen
+      expect(() => runMatch(tournament, matchId)).toThrow('Markets are frozen via ZEO_FREEZE_MARKETS');
+    });
+
+    it('should allow matches when markets are active', () => {
+      // Ensure markets are active (default state)
+      process.env.ZEO_FREEZE_MARKETS = 'false';
+
+      let tournament = createTournament('test-tournament-2', 'Test', 'Test tournament');
+      const { tournament: withStrat1 } = registerStrategy(tournament, {
+        name: 'Test Strategy A',
+        description: 'Test',
+        decisionRule: 'maximin',
+        parameters: {},
+        creator: 'user',
+        epistemicWarnings: [],
+      });
+      tournament = withStrat1;
+
+      const { tournament: withStrat2 } = registerStrategy(tournament, {
+        name: 'Test Strategy B',
+        description: 'Test',
+        decisionRule: 'expected_value',
+        parameters: {},
+        creator: 'user',
+        epistemicWarnings: [],
+      });
+      tournament = withStrat2;
+
+      const { tournament: withStrat3 } = registerStrategy(tournament, {
+        name: 'Test Strategy C',
+        description: 'Test',
+        decisionRule: 'maximax',
+        parameters: {},
+        creator: 'user',
+        epistemicWarnings: [],
+      });
+      tournament = withStrat3;
+
+      const { tournament: withScenario } = addScenario(tournament, {
+        name: 'Test Scenario',
+        description: 'Test',
+        decisionSpec: createTestDecisionSpec(),
+        difficulty: 'medium',
+      });
+      tournament = withScenario;
+
+      tournament = startTournament(tournament);
+      const matchId = Array.from(tournament.matches.keys())[0];
+
       // Should not throw
       expect(() => runMatch(tournament, matchId)).not.toThrow();
-
-      // Restore environment
-      process.env.ZEO_FREEZE_MARKETS = originalEnv;
     });
   });
 
@@ -168,7 +194,7 @@ describe('tournaments invariant tests', () => {
       tournament = {
         ...tournament,
         standings,
-        status: 'completed',
+        status: 'completed' as const,
       };
 
       const { results } = completeTournament(tournament);
@@ -186,4 +212,3 @@ describe('tournaments invariant tests', () => {
     });
   });
 });
-
