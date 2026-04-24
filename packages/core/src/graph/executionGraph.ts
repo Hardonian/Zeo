@@ -406,7 +406,7 @@ export function formatGraphExport(exported: GraphExport): string {
 // Persistence
 // ---------------------------------------------------------------------------
 
-import { existsSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync, readFileSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 const GRAPH_DIR = ".zeo/graphs";
@@ -430,7 +430,7 @@ export function loadLatestGraphExport(baseDir?: string): GraphExport | null {
   const dir = resolve(baseDir ?? process.cwd(), GRAPH_DIR);
   if (!existsSync(dir)) return null;
 
-  const { readdirSync } = require("node:fs") as typeof import("node:fs");
+
   const files = readdirSync(dir)
     .filter((f: string) => f.endsWith(".json"))
     .sort()

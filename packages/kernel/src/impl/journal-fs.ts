@@ -129,7 +129,9 @@ export function readJournalEntries(options?: {
         if (options?.workflowId && entry.envelope.workflowId !== options.workflowId) continue;
         if (options?.status && entry.status !== options.status) continue;
         entries.push(entry);
-      } catch {}
+      } catch {
+        // Skip corrupted entries during listing
+      }
     }
   }
   return entries.sort((a, b) => 
@@ -220,5 +222,7 @@ async function syncToEnterprise(entry: ZeoJournalEntry): Promise<void> {
       },
       body: JSON.stringify(payload),
     });
-  } catch {}
+  } catch {
+    // Best-effort flush — ignore network errors
+  }
 }
