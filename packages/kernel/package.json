@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "zod": "^3.22.4",
-    "nanoid": "^5.0.7",
+    "nanoid": "^5.1.15",
     "@zeo/contracts": "workspace:*"
   },
   "devDependencies": {
