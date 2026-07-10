@@ -146,3 +146,23 @@ When new constraints/skills are added:
 1. Append new capability or rule.
 2. Refine for clarity and remove duplication.
 3. Preserve prior decisions unless superseded by verified improvements.
+
+---
+
+## Antigravity Prompt Pack
+Agents running in **Antigravity mode** (local-first, offline-capable,
+anti-entropy — see `.zeo/architecture/context/rules.json`) read the operating
+prompts under [`agents/antigravity/`](./agents/antigravity/README.md).
+
+The pack contains 8 self-contained prompts mapped to agent roles:
+- `PROMPT-01` Epistemic Integrity Gate — **all agents**
+- `PROMPT-02` Local-First / Offline Verification — Infrastructure
+- `PROMPT-03` Determinism & Ledger Immutability — Architecture
+- `PROMPT-04` Boundary & Import Enforcement — Code Quality / Architecture
+- `PROMPT-05` No Silent Failures / Graceful Degradation — **all agents**
+- `PROMPT-06` Anti-Entropy / Minimal Diff Discipline — **all agents**
+- `PROMPT-07` Webhook Fast-Ack / Async Policy — Infrastructure
+- `PROMPT-08` Release Gate — Release
+
+Prompts are idempotent operating directives grounded in the ratified
+Constitution and `rules.json`. Load the ones mapped to your role at session start.
