@@ -73,6 +73,7 @@ Commands:
   eval                        Run epistemic evaluation suite
   pack                        Zeo pack commands
   analyze-pr <target>         Accountability summary for pull-request risk
+  buyer-review <target>       Buyer-ready security review packet with evidence and rollback notes
   plugins <cmd>               Plugin extension commands (list/doctor)
   replay <dataset|example>    Run replay from explicit path or examples/<name>
   replay <run_id>             Deterministic replay of a snapshot (PASS/DRIFT)
@@ -576,6 +577,11 @@ async function main(): Promise<void> {
   if (argv[0] === "pack") {
     const mod = await import("./pack-cli.js");
     process.exit(await mod.runPackCommand(mod.parsePackArgs(argv.slice(1))));
+  }
+
+  if (argv[0] === "buyer-review") {
+    const mod = await import("./buyer-review-cli.js");
+    process.exit(await mod.runBuyerReviewCommand(argv.slice(1)));
   }
 
   if (argv[0] === "analyze-pr") {
