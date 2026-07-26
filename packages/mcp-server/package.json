@@ -1,41 +1,41 @@
 {
-    "name": "@zeo/mcp-server",
-    "version": "1.4.0",
-    "private": true,
-    "type": "module",
-    "description": "MCP (Model Context Protocol) server for Zeo — local-first integration with notes, notebooks, and LLM tooling",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "bin": {
-        "zeo-mcp": "./dist/index.js"
+  "name": "@zeo/mcp-server",
+  "version": "1.4.0",
+  "private": true,
+  "type": "module",
+  "description": "MCP (Model Context Protocol) server for Zeo \u2014 local-first integration with notes, notebooks, and LLM tooling",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "zeo-mcp": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "default": "./dist/index.js"
-        },
-        "./*": null
-    },
-    "scripts": {
-        "build": "tsc -p tsconfig.build.json",
-        "typecheck": "tsc -p tsconfig.json --noEmit",
-        "test": "vitest run",
-        "lint": "eslint src",
-        "start": "node dist/index.js",
-        "start:http": "node dist/index.js --http"
-    },
-    "dependencies": {
-        "@zeo/contracts": "workspace:*",
-        "@zeo/warehouse": "workspace:*",
-        "@zeo/audit": "workspace:*",
-        "@zeo/kpi": "workspace:*",
-        "@zeo/core": "workspace:*",
-        "@zeo/mcp-interop": "workspace:*",
-        "@zeo/replay": "workspace:*",
-        "nanoid": "^5.0.7"
-    },
-    "devDependencies": {
-        "@types/node": "^25.2.1",
-        "vitest": "^2.1.1"
-    }
+    "./*": null
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "lint": "eslint src",
+    "start": "node dist/index.js",
+    "start:http": "node dist/index.js --http"
+  },
+  "dependencies": {
+    "@zeo/contracts": "workspace:*",
+    "@zeo/warehouse": "workspace:*",
+    "@zeo/audit": "workspace:*",
+    "@zeo/kpi": "workspace:*",
+    "@zeo/core": "workspace:*",
+    "@zeo/mcp-interop": "workspace:*",
+    "@zeo/replay": "workspace:*",
+    "nanoid": "^5.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.1",
+    "vitest": "^3.2.6"
+  }
 }
