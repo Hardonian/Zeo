@@ -2,6 +2,10 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
+    "rootDir": "./src",
+    "paths": {
+      "@zeo/*": ["packages/*/dist"]
+    },
     "strictNullChecks": false,
     "exactOptionalPropertyTypes": false
   },

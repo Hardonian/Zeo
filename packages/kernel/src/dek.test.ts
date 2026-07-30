@@ -15,7 +15,7 @@ import {
   initializeDEK,
   registerModelAdapter,
   DEK_VERSION 
-} from "@zeo/kernel";
+} from "./index.js";
 import type { ZeoDeterminismFixture, ZeoModelSpec, ZeoModelAdapter, ZeoModelInput, ZeoModelResult } from "@zeo/contracts";
 
 // Test fixture definition

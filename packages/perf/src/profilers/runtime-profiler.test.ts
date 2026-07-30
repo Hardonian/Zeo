@@ -62,7 +62,7 @@ describe("Profiler", () => {
       const session = profiler.startSession("test-session");
       const measurementId = profiler.start("test-measurement", session.id);
 
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 25));
 
       const measurement = profiler.end(measurementId);
 
@@ -211,7 +211,8 @@ describe("Profiler", () => {
       profiler.end(m1);
       
       const m2 = profiler.start("slow", session.id);
-      await new Promise((resolve) => setTimeout(resolve, 50));
+      // Leave margin for timer granularity while preserving the 50ms contract.
+      await new Promise((resolve) => setTimeout(resolve, 75));
       profiler.end(m2);
 
       profiler.endSession(session.id);

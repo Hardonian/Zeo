@@ -13,12 +13,11 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "outDir": "./dist",
+    "rootDir": "./src",
     "baseUrl": "../..",
     "paths": {
       "@zeo/*": [
-        "packages/*/dist",
-        "packages/*/src/index.ts",
-        "packages/*/src"
+        "packages/*/dist"
       ],
       "@prisma/client": [
         "packages/db/src/prisma-client.d.ts"
