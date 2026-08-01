@@ -99,7 +99,7 @@ export function initKillSwitches(env?: KillSwitchEnvironment): void {
   } else {
     // Check individual switches
     state.ai_assist = environment.ZEO_DISABLE_AI_ASSIST !== 'true';
-    state.freeze_markets = environment.ZEO_FREEZE_MARKETS !== 'true';
+    state.freeze_markets = environment.ZEO_FREEZE_MARKETS === 'true';
     state.max_uncertainty = environment.ZEO_FORCE_MAX_UNCERTAINTY !== 'true';
     state.strategic_assumptions = environment.ZEO_DISABLE_STRATEGIC_ASSUMPTIONS !== 'true';
     state.external_adapters = environment.ZEO_DISABLE_EXTERNAL_ADAPTERS !== 'true';

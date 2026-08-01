@@ -17,6 +17,9 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
+import { mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { createMcpServer } from "./server.js";
 import { createDefaultConfig } from "./config.js";
 import type { McpConfig, JsonRpcRequest } from "./types.js";
@@ -30,7 +33,7 @@ function makeRequest(
         jsonrpc: "2.0",
         id,
         method,
-        params,
+        params: { sessionId: "test-session", ...(params ?? {}) },
     };
     return JSON.stringify(req);
 }
@@ -48,7 +51,7 @@ describe("MCP Server", () => {
         // Use in-memory audit for tests
         config.audit.storageType = "memory";
         // Use a temp directory for warehouse
-        config.warehouse.basePath = process.cwd();
+        config.warehouse.basePath = mkdtempSync(join(tmpdir(), "zeo-mcp-test-"));
         // Integration tests run in local-mode auth bypass.
         config.security.localMode = true;
     });
@@ -94,7 +97,7 @@ describe("MCP Server", () => {
             );
 
             expect(response.result.tools).toBeInstanceOf(Array);
-            expect(response.result.tools.length).toBe(8);
+            expect(response.result.tools.length).toBe(16);
 
             const names = response.result.tools.map(
                 (t: { name: string }) => t.name
@@ -271,8 +274,8 @@ describe("MCP Server", () => {
                 )
             );
 
-            const result = JSON.parse(response.result.content[0].text);
-            expect(result.error).toBeDefined();
+            expect(response.error).toBeDefined();
+            expect(response.error.code).toBe(-32602);
         });
 
         it("should produce deterministic hashes for same input", async () => {
@@ -360,8 +363,8 @@ describe("MCP Server", () => {
                 )
             );
 
-            const result = JSON.parse(response.result.content[0].text);
-            expect(result.error).toBeDefined();
+            expect(response.error).toBeDefined();
+            expect(response.error.code).toBe(-32602);
         });
     });
 
