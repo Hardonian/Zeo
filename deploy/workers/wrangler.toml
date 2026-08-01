@@ -1,0 +1,21 @@
+name = "zeo-api"
+main = "src/worker.js"
+compatibility_date = "2024-06-01"
+
+[vars]
+ENVIRONMENT = "production"
+APP_NAME = "zeo-api"
+SCAN_CRON = "0 3 * * *"
+LOG_LEVEL = "INFO"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "zeo"
+database_id = "1fb11651-2c73-4ab5-9e9c-4ba149711341"
+
+[triggers]
+crons = ["0 3 * * *"]
+
+[[routes]]
+pattern = "audit.example.com"
+custom_domain = true
