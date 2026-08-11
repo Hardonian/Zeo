@@ -4913,6 +4913,10 @@ packages:
         optional: true
       less:
         optional: true
+      jiti:
+        optional: true
+      less:
+        optional: true
       sass:
         optional: true
       sass-embedded:
