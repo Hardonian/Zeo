@@ -160,8 +160,8 @@ importers:
         specifier: ^16.4.5
         version: 16.6.1
       nanoid:
-        specifier: ^5.0.7
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^25.2.1
@@ -401,8 +401,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       nanoid:
-        specifier: ^5.0.0
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -494,8 +494,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       nanoid:
-        specifier: ^5.0.0
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -774,8 +774,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       nanoid:
-        specifier: ^5.0.7
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^25.2.1
@@ -816,8 +816,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       nanoid:
-        specifier: ^5.0.0
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -911,8 +911,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       nanoid:
-        specifier: ^5.0.7
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
       zod:
         specifier: ^3.22.4
         version: 3.25.76
@@ -1012,8 +1012,8 @@ importers:
         specifier: workspace:*
         version: link:../warehouse
       nanoid:
-        specifier: ^5.0.7
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^25.2.1
@@ -1066,8 +1066,8 @@ importers:
         specifier: workspace:*
         version: link:../tenant
       nanoid:
-        specifier: ^5.0.7
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^25.2.1
@@ -1085,8 +1085,8 @@ importers:
         specifier: workspace:*
         version: link:../lenses
       nanoid:
-        specifier: ^5.0.7
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^25.2.1
@@ -1111,8 +1111,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       nanoid:
-        specifier: ^5.0.0
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -1143,8 +1143,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       nanoid:
-        specifier: ^5.0.0
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -1162,8 +1162,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       nanoid:
-        specifier: ^5.0.0
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -1357,8 +1357,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       nanoid:
-        specifier: ^5.0.0
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -1408,8 +1408,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       nanoid:
-        specifier: ^5.0.0
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -1477,8 +1477,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       nanoid:
-        specifier: ^5.0.0
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -1541,8 +1541,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       nanoid:
-        specifier: ^5.0.0
-        version: 5.1.6
+        specifier: ^5.1.16
+        version: 5.1.16
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -4162,13 +4162,13 @@ packages:
     resolution: {integrity: sha512-Tz09sEL2EEuv5fFowm419c1+a/jSMiBjI9gHxVLrVdbUkkNUUfjsVYs9pVZu5oCon/kmRh9TfLEObFtkVxmY0w==}
     engines: {node: '>=8.0.0'}
 
-  nanoid@3.3.16:
-    resolution: {integrity: sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q==}
+  nanoid@3.3.18:
+    resolution: {integrity: sha512-DTg4MJbGMWkfi6VZFdNt2/caMbQy4Ou+Op/hJQvGEWcnVfoA1QA+xzRKAzw9jD6+GVOOeYr/mIcuDSdug6F6+w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  nanoid@5.1.6:
-    resolution: {integrity: sha512-c7+7RQ+dMB5dPwwCp4ee1/iV/q2P6aK1mTZcfr1BTuVlyW9hJYiMPybJCcnBlQtuSmTIWNeazm/zqNoZSSElBg==}
+  nanoid@5.1.16:
+    resolution: {integrity: sha512-kVrnsrJqMR8+oLJnGEmSWw9BivK5mt7H3FZatVRjrc5wGqFYuBxX1yG7+A7Gi5AefkX6t/oCkizcQgpu0cY1dQ==}
     engines: {node: ^18 || >=20}
     hasBin: true
 
@@ -7175,9 +7175,9 @@ snapshots:
     dependencies:
       lru.min: 1.1.4
 
-  nanoid@3.3.16: {}
+  nanoid@3.3.18: {}
 
-  nanoid@5.1.6: {}
+  nanoid@5.1.16: {}
 
   napi-build-utils@2.0.0: {}
 
@@ -7412,7 +7412,7 @@ snapshots:
 
   postcss@8.5.25:
     dependencies:
-      nanoid: 3.3.16
+      nanoid: 3.3.18
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
