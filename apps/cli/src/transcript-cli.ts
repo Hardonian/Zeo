@@ -37,6 +37,15 @@ async function loadTranscriptSecurity(): Promise<TranscriptSecurityModule> {
   }
 }
 
+async function loadTranscriptReplay() {
+  const fallback = new URL("../../../packages/core/src/transcript.js", import.meta.url).href;
+  try {
+    return await import(fallback) as typeof import("@zeo/core");
+  } catch {
+    return await import("@zeo/core");
+  }
+}
+
 function value(argv: string[], flag: string): string | null {
   const idx = argv.indexOf(flag);
   return idx >= 0 ? argv[idx + 1] ?? null : null;
@@ -70,7 +79,7 @@ function readObjections(envelope: Record<string, unknown>): ConditionalObjection
 }
 
 export function parseTranscriptArgs(argv: string[]): string[] {
-  return argv;
+  return argv[0] === "transcript" ? argv : ["transcript", ...argv];
 }
 
 export async function runTranscriptCommand(argv: string[]): Promise<number> {
@@ -97,6 +106,21 @@ export async function runTranscriptCommand(argv: string[]): Promise<number> {
       migrateTranscript,
       migrateEnvelope,
     } = mod;
+
+    if (entity === "transcript" && (action === "verify" || action === "replay")) {
+      const input = argv[2];
+      if (!input) throw new Error(`Usage: zeo transcript ${action} <transcript.json>`);
+      const content = JSON.parse(readFileSync(resolve(input), "utf8")) as Record<string, unknown>;
+      if (action === "replay" || "transcript_version" in content) {
+        const replay = await loadTranscriptReplay();
+        const verification = replay.verifyDecisionTranscript(content as never);
+        const payload = action === "replay"
+          ? { ...verification, replay: replay.normalizeTranscriptForReplay(content as never) }
+          : verification;
+        process.stdout.write(`${JSON.stringify(payload, null, 2)}\n`);
+        return verification.valid ? 0 : 1;
+      }
+    }
 
     if (entity === "transcript" && action === "migrate") {
       const input = argv[2];
