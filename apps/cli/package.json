@@ -39,7 +39,7 @@
     "@zeo/tenant": "workspace:*",
     "@zeo/trust": "workspace:*",
     "@zeo/warehouse": "workspace:*",
-    "dotenv": "^16.4.5",
+    "dotenv": "^17.4.2",
     "nanoid": "^5.1.16"
   },
   "devDependencies": {

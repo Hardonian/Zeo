@@ -158,8 +158,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/warehouse
       dotenv:
-        specifier: ^16.4.5
-        version: 16.6.1
+        specifier: ^17.4.2
+        version: 17.4.2
       nanoid:
         specifier: ^5.1.16
         version: 5.1.16
@@ -725,8 +725,8 @@ importers:
   packages/env:
     dependencies:
       dotenv:
-        specifier: ^16.4.5
-        version: 16.6.1
+        specifier: ^17.4.2
+        version: 17.4.2
       zod:
         specifier: ^3.22.4
         version: 3.25.76
