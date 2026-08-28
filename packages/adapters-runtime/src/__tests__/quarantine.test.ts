@@ -9,7 +9,7 @@ import { createAnomalyDetector } from "../anomaly-detector";
 
 describe("Quarantine Store", () => {
   const store = createQuarantineStore({ retentionHours: 24 });
-  
+
   const sampleObservation: SignalObservation = {
     observationId: "obs-test",
     signalId: "signal-test",
@@ -207,7 +207,7 @@ describe("Anomaly Detection", () => {
   describe("detectSuddenJump", () => {
     it("should detect z-score outliers", () => {
       const detector = createAnomalyDetector();
-      
+
       // Create observations with varied baseline values (need std > 0)
       // Use a wider spread of values to ensure measurable variance
       const observations: SignalObservation[] = [];
@@ -243,7 +243,7 @@ describe("Anomaly Detection", () => {
       });
 
       const result = detector.detect(observations);
-      
+
       // Should detect the sudden jump
       const jumpViolation = result.violations.find(v => v.ruleId === "sudden_jump");
       expect(jumpViolation).toBeDefined();
@@ -254,9 +254,9 @@ describe("Anomaly Detection", () => {
   describe("detectTimestampInconsistency", () => {
     it("should detect future timestamps", () => {
       const detector = createAnomalyDetector();
-      
+
       const future = new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 day in future
-      
+
       const observations: SignalObservation[] = [
         {
           observationId: "obs-1",
@@ -273,7 +273,7 @@ describe("Anomaly Detection", () => {
       ];
 
       const result = detector.detect(observations);
-      
+
       const futureViolation = result.violations.find(
         v => v.ruleId === "future_timestamp" && v.message.includes("future")
       );
@@ -284,7 +284,7 @@ describe("Anomaly Detection", () => {
   describe("detectValueBandAnomalies", () => {
     it("should detect inverted bands", () => {
       const detector = createAnomalyDetector();
-      
+
       const observations: SignalObservation[] = [
         {
           observationId: "obs-1",
@@ -301,7 +301,7 @@ describe("Anomaly Detection", () => {
       ];
 
       const result = detector.detect(observations);
-      
+
       const invertedViolation = result.violations.find(
         v => v.ruleId === "inverted_band"
       );
@@ -311,7 +311,7 @@ describe("Anomaly Detection", () => {
 
     it("should detect out of bounds values", () => {
       const detector = createAnomalyDetector();
-      
+
       const observations: SignalObservation[] = [
         {
           observationId: "obs-1",
@@ -328,7 +328,7 @@ describe("Anomaly Detection", () => {
       ];
 
       const result = detector.detect(observations);
-      
+
       // The value band anomalies rule triggers for out of bounds
       const boundsViolation = result.violations.find(
         v => v.ruleId === "out_of_bounds" && v.message.includes("outside")

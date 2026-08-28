@@ -31,7 +31,7 @@ export interface AgentManifest {
      * Permissions requested by this agent
      */
     permissions: {
-        fs?: string[]; // Allowed paths (read/write as specified?) Or just "read" capability? 
+        fs?: string[]; // Allowed paths (read/write as specified?) Or just "read" capability?
         // Let's use our Capability structure for precision.
         capabilities: Capability[];
     };

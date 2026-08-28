@@ -48,7 +48,7 @@ describe("@zeo/mcp-interop", () => {
     describe("createEmptyInterop", () => {
         it("creates a valid empty interop document", () => {
             const interop = createEmptyInterop("test-source");
-            
+
             expect(interop.version).toBe("1.4.0");
             expect(interop.source).toBe("test-source");
             expect(interop.notes).toEqual([]);
@@ -73,7 +73,7 @@ describe("@zeo/mcp-interop", () => {
                 title: "Test Decision",
                 context: "Testing the conversion",
             };
-            
+
             const result: MockDecisionResult = {
                 graph: {
                     nodes: [
@@ -106,20 +106,20 @@ describe("@zeo/mcp-interop", () => {
             };
 
             const cells = runToNotebookCells(spec as any, result as any);
-            
+
             expect(cells.length).toBeGreaterThan(0);
-            
+
             // Check header cell
             const header = cells[0];
             expect(header.type).toBe("markdown");
             expect(header.content).toContain("Test Decision");
-            
+
             // Check graph summary
             const graphCell = cells.find((c: NotebookCell) =>
                 c.type === "markdown" && c.content.includes("Branch Graph")
             );
             expect(graphCell).toBeDefined();
-            
+
             // Check next best evidence
             const evidenceCell = cells.find((c: NotebookCell) =>
                 c.type === "markdown" && c.content.includes("Next Best Evidence")
@@ -133,7 +133,7 @@ describe("@zeo/mcp-interop", () => {
                 title: "No Evidence",
                 context: "Testing empty case",
             };
-            
+
             const result: MockDecisionResult = {
                 graph: {
                     nodes: [{ label: "Start", kind: "state", notes: [] }],
@@ -145,7 +145,7 @@ describe("@zeo/mcp-interop", () => {
             };
 
             const cells = runToNotebookCells(spec as any, result as any);
-            
+
             // Should not have Next Best Evidence section
             const evidenceCell = cells.find((c: NotebookCell) =>
                 c.content.includes("Next Best Evidence")
@@ -163,7 +163,7 @@ describe("@zeo/mcp-interop", () => {
                 bundleHash: "abc123",
                 path: "/evidence/packet-123",
             };
-            
+
             const evidence: InteropEvidence[] = [
                 {
                     id: "ev-1",
@@ -178,7 +178,7 @@ describe("@zeo/mcp-interop", () => {
             ];
 
             const markdown = packetToMarkdown(packet, evidence);
-            
+
             expect(markdown).toContain("Evidence Packet: packet-123");
             expect(markdown).toContain("Received counteroffer at 7%");
             expect(markdown).toContain("counteroffer, pricing");
@@ -205,12 +205,12 @@ describe("@zeo/mcp-interop", () => {
                 type: "markdown",
                 content: "# Hello",
             };
-            
+
             const jsonCell: NotebookCell = {
                 type: "json",
                 content: '{"key": "value"}',
             };
-            
+
             expect(markdownCell.type).toBe("markdown");
             expect(jsonCell.type).toBe("json");
         });

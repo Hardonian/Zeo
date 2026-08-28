@@ -20,14 +20,14 @@ describe("Fetch Orchestrator", () => {
         { symbol: "AAPL", limit: 100 },
         60000
       );
-      
+
       const key2 = computeCacheKey(
         "adapter-1",
         "https://api.example.com/data",
         { symbol: "AAPL", limit: 100 },
         60000
       );
-      
+
       expect(key1).toBe(key2);
     });
 
@@ -38,14 +38,14 @@ describe("Fetch Orchestrator", () => {
         { symbol: "AAPL" },
         60000
       );
-      
+
       const key2 = computeCacheKey(
         "adapter-1",
         "https://api.example.com/data",
         { symbol: "GOOGL" },
         60000
       );
-      
+
       expect(key1).not.toBe(key2);
     });
 
@@ -56,14 +56,14 @@ describe("Fetch Orchestrator", () => {
         { a: 1, b: 2, c: 3 },
         60000
       );
-      
+
       const key2 = computeCacheKey(
         "adapter-1",
         "https://api.example.com/data",
         { c: 3, a: 1, b: 2 },
         60000
       );
-      
+
       expect(key1).toBe(key2);
     });
   });
@@ -99,7 +99,7 @@ describe("Fetch Orchestrator", () => {
       );
 
       const state = orchestrator.getRateLimitState("adapter-1");
-      
+
       expect(state.adapterId).toBe("adapter-1");
       expect(state.limit).toBe(60);
       expect(state.windowMs).toBe(60000);
@@ -137,7 +137,7 @@ describe("Fetch Orchestrator", () => {
 
     it("should clear cache by adapter", async () => {
       const orchestrator = createFetchOrchestrator();
-      
+
       // Should not throw
       orchestrator.clearCache("adapter-1");
       orchestrator.clearCache(); // Clear all

@@ -15,15 +15,15 @@ describe("rsl", () => {
         processNoiseCovariance: [[0.01]],
         observationNoiseCovariance: [[0.1]],
       };
-      
+
       const filter = new KalmanFilter(config);
-      
+
       // Process constant signal with noise
       for (let i = 0; i < 20; i++) {
         filter.predict();
         filter.update([1.0 + (Math.random() - 0.5) * 0.2]);
       }
-      
+
       const state = filter.getState();
       expect(state[0]).toBeGreaterThan(0.8);
       expect(state[0]).toBeLessThan(1.2);
@@ -40,12 +40,12 @@ describe("rsl", () => {
         initialStateCovariance: [[0.1]],
         numParticles: 100,
       };
-      
+
       const filter = new ParticleFilter(config);
-      
+
       filter.predict();
       filter.update([0.6]);
-      
+
       const particles = filter.getParticles();
       expect(particles.length).toBe(100);
     });
@@ -60,7 +60,7 @@ describe("rsl", () => {
 
     it("should process observations and update estimates", () => {
       const engine = new RSLEngine();
-      
+
       const obs: SignalObservation = {
         id: "obs_1",
         timestamp: new Date().toISOString(),
@@ -74,7 +74,7 @@ describe("rsl", () => {
         provenance: "test",
         variableName: "volatility_regime",
       };
-      
+
       const estimate = engine.processObservation(obs);
       expect(estimate.value).toBeDefined();
       expect(estimate.uncertaintyBand.lower).toBeLessThan(estimate.value);
@@ -83,7 +83,7 @@ describe("rsl", () => {
 
     it("should apply bias counterweights", () => {
       const engine = new RSLEngine();
-      
+
       const newsObs: SignalObservation = {
         id: "obs_1",
         timestamp: new Date().toISOString(),
@@ -97,7 +97,7 @@ describe("rsl", () => {
         provenance: "test",
         variableName: "volatility_regime",
       };
-      
+
       const estimate = engine.processObservation(newsObs);
       // News with reliability 0.6: epistemic = 0.4 * uncertainty, aleatoric = 0.6 * uncertainty
       // So epistemic should be LESS than aleatoric for medium reliability
@@ -106,7 +106,7 @@ describe("rsl", () => {
 
     it("should detect regime changes", () => {
       const engine = new RSLEngine();
-      
+
       // Add several observations
       for (let i = 0; i < 10; i++) {
         const obs: SignalObservation = {
@@ -124,7 +124,7 @@ describe("rsl", () => {
         };
         engine.processObservation(obs);
       }
-      
+
       const detection = engine.getRegimeDetection("volatility_regime");
       expect(detection.currentRegime).toBeDefined();
       expect(detection.stabilityScore).toBeGreaterThanOrEqual(0);

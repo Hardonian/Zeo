@@ -77,14 +77,14 @@ export default function AboutPage() {
             <div className="border-l-4 border-blue-500 pl-4">
               <h3 className="font-medium">Epistemic Honesty</h3>
               <p className="text-sm text-gray-600 mt-1">
-                Never convert uncertainty into false precision. Facts, beliefs, and 
+                Never convert uncertainty into false precision. Facts, beliefs, and
                 assumptions are clearly distinguished.
               </p>
             </div>
             <div className="border-l-4 border-blue-500 pl-4">
               <h3 className="font-medium">Provenance-First</h3>
               <p className="text-sm text-gray-600 mt-1">
-                Every extracted fact carries its source, timestamp, and confidence. 
+                Every extracted fact carries its source, timestamp, and confidence.
                 Without provenance, claims are marked as assumptions or beliefs.
               </p>
             </div>
@@ -111,7 +111,7 @@ export default function AboutPage() {
             <div className="border-l-4 border-blue-500 pl-4">
               <h3 className="font-medium">Privacy-First Defaults</h3>
               <p className="text-sm text-gray-600 mt-1">
-                Edge-first processing when feasible. Raw data is minimized; extracted 
+                Edge-first processing when feasible. Raw data is minimized; extracted
                 artifacts and provenance are stored instead.
               </p>
             </div>

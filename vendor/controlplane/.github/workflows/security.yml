@@ -153,7 +153,7 @@ jobs:
         with:
           script: |
             const body = `## 🔒 Security Checklist Passed\n\nAll security gates have passed:\n\n- ✅ GitHub Actions pinned\n- ✅ Dependencies audited\n- ✅ Secret scanning passed\n- ✅ SAST (CodeQL) passed\n- ✅ Security documentation exists\n- ✅ Threat model documented\n\n**Note**: This repository ships contracts and tooling only. Runtime security controls belong to the consuming services.\n\nSee [SECURITY.md](./SECURITY.md) for details.`;
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

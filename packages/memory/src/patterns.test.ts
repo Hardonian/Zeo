@@ -91,9 +91,9 @@ describe("PatternDetectionEngine", () => {
       const decisions = [
         createMockDecision("negotiation", [createOutcome("expected")]),
       ];
-      
+
       const patterns = engine.detectPatterns(decisions);
-      
+
       expect(patterns.length).toBe(0);
     });
 
@@ -102,9 +102,9 @@ describe("PatternDetectionEngine", () => {
       const decisions = Array(10).fill(null).map(() =>
         createMockDecision("negotiation", [createOutcome("significant")])
       );
-      
+
       const patterns = engine.detectPatterns(decisions);
-      
+
       const biasPattern = patterns.find(p => p.patternType === "systematic_bias");
       expect(biasPattern).toBeDefined();
       expect(biasPattern!.hypothesis).toContain("overconfident");
@@ -114,9 +114,9 @@ describe("PatternDetectionEngine", () => {
       const decisions = Array(10).fill(null).map(() =>
         createMockDecision("negotiation", [createOutcome("significant")])
       );
-      
+
       const patterns = engine.detectPatterns(decisions);
-      
+
       for (const pattern of patterns) {
         expect(["very_low", "low", "moderate", "tentative"]).toContain(pattern.confidence);
         expect(pattern.hypothesis).toBeDefined();
@@ -127,9 +127,9 @@ describe("PatternDetectionEngine", () => {
       const decisions = Array(10).fill(null).map(() =>
         createMockDecision("negotiation", [createOutcome("significant")])
       );
-      
+
       const patterns = engine.detectPatterns(decisions);
-      
+
       for (const pattern of patterns) {
         expect(pattern.evidence.decisionCount).toBeGreaterThan(0);
         expect(pattern.evidence.outcomeCount).toBeGreaterThan(0);
@@ -141,9 +141,9 @@ describe("PatternDetectionEngine", () => {
       const decisions = Array(10).fill(null).map(() =>
         createMockDecision("negotiation", [createOutcome("significant")])
       );
-      
+
       const patterns = engine.detectPatterns(decisions);
-      
+
       for (const pattern of patterns) {
         expect(pattern.falsificationConditions.length).toBeGreaterThan(0);
       }
@@ -153,9 +153,9 @@ describe("PatternDetectionEngine", () => {
       const decisions = Array(10).fill(null).map(() =>
         createMockDecision("negotiation", [createOutcome("significant")])
       );
-      
+
       const patterns = engine.detectPatterns(decisions);
-      
+
       for (const pattern of patterns) {
         expect(pattern.limitations.length).toBeGreaterThan(0);
         expect(pattern.limitations.some(l => l.includes("sample"))).toBe(true);
@@ -168,10 +168,10 @@ describe("PatternDetectionEngine", () => {
       const decisions = Array(10).fill(null).map(() =>
         createMockDecision("negotiation", [createOutcome("significant")])
       );
-      
+
       const patterns = engine.detectPatterns(decisions);
       const report = engine.generatePatternReport(patterns);
-      
+
       expect(report).toContain("HYPOTHESES");
       expect(report).toContain("not facts");
     });
@@ -180,9 +180,9 @@ describe("PatternDetectionEngine", () => {
       const decisions = Array(4).fill(null).map(() =>
         createMockDecision("negotiation", [createOutcome("significant")])
       );
-      
+
       const patterns = engine.detectPatterns(decisions, { minDecisionCount: 5 });
-      
+
       expect(patterns.length).toBe(0);
     });
 
@@ -191,9 +191,9 @@ describe("PatternDetectionEngine", () => {
       const decisions = Array(10).fill(null).map(() =>
         createMockDecision("negotiation", [createOutcome("significant")])
       );
-      
+
       const patterns = engine.detectPatterns(decisions);
-      
+
       for (const pattern of patterns) {
         expect(pattern.diversity.domainCount).toBe(1);
       }
@@ -205,17 +205,17 @@ describe("PatternDetectionEngine", () => {
       const decisions = Array(10).fill(null).map(() =>
         createMockDecision("negotiation", [createOutcome("significant")])
       );
-      
+
       const patterns = engine.detectPatterns(decisions);
       const report = engine.generatePatternReport(patterns);
-      
+
       expect(report).toContain("Cross-Decision Pattern Report");
       expect(report.length).toBeGreaterThan(100);
     });
 
     it("should handle empty patterns gracefully", () => {
       const report = engine.generatePatternReport([]);
-      
+
       expect(report).toContain("No patterns detected");
     });
 
@@ -223,10 +223,10 @@ describe("PatternDetectionEngine", () => {
       const decisions = Array(10).fill(null).map((_, i) =>
         createMockDecision(i < 5 ? "negotiation" : "ops", [createOutcome("significant")])
       );
-      
+
       const patterns = engine.detectPatterns(decisions);
       const report = engine.generatePatternReport(patterns);
-      
+
       expect(report).toContain("domains");
       expect(report).toContain("users");
     });

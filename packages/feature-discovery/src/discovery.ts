@@ -43,7 +43,7 @@ export class FeatureDiscovery {
           if (pattern.matcher(context)) {
             const partial = pattern.proposalGenerator(context);
             const proposal = this.createProposal(partial, context, pattern.name);
-            
+
             if (proposal.confidence >= this.config.minConfidence) {
               proposals.push(proposal);
             }
@@ -94,7 +94,7 @@ export class FeatureDiscovery {
       id: "temporal-analysis",
       name: "Temporal Analysis",
       matcher: (ctx) => {
-        const hasTimeData = ctx.dataSchema?.some((f) => 
+        const hasTimeData = ctx.dataSchema?.some((f) =>
           f.toLowerCase().includes("time") || f.toLowerCase().includes("date")
         );
         return hasTimeData ?? false;
@@ -132,7 +132,7 @@ export class FeatureDiscovery {
     const proposals: FeatureProposal[] = [];
 
     // Check for sentiment analysis opportunity
-    if (context.objective?.toLowerCase().includes("opinion") || 
+    if (context.objective?.toLowerCase().includes("opinion") ||
         context.objective?.toLowerCase().includes("feedback")) {
       proposals.push({
         id: uuidv4(),
@@ -185,11 +185,11 @@ export class FeatureDiscovery {
 
   private deduplicateProposals(proposals: FeatureProposal[]): FeatureProposal[] {
     const seen = new Map<string, FeatureProposal>();
-    
+
     for (const proposal of proposals) {
       const key = proposal.title.toLowerCase().trim();
       const existing = seen.get(key);
-      
+
       if (!existing || proposal.confidence > existing.confidence) {
         seen.set(key, proposal);
       }
@@ -211,7 +211,7 @@ export class FeatureDiscovery {
 
   private calculateScore(proposal: FeatureProposal, context: DiscoveryContext): number {
     let score = proposal.confidence;
-    
+
     // Priority bonus
     const priorityBonus = { high: 0.2, medium: 0.1, low: 0 };
     score += priorityBonus[proposal.priority] ?? 0;
@@ -238,7 +238,7 @@ export class FeatureDiscovery {
 
   private calculateCoverage(proposals: FeatureProposal[], context: DiscoveryContext): number {
     if (proposals.length === 0) return 0;
-    
+
     const avgConfidence = proposals.reduce((sum, p) => sum + p.confidence, 0) / proposals.length;
     return Math.min(1, avgConfidence * (proposals.length / this.config.maxProposals));
   }

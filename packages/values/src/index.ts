@@ -1,6 +1,6 @@
 /**
  * Value System Encoding
- * 
+ *
  * Makes optimization targets explicit and inspectable.
  */
 

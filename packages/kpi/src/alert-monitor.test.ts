@@ -3,11 +3,11 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { 
-  AlertMonitorService, 
+import {
+  AlertMonitorService,
   createAlertMonitorService,
   type AlertMonitorConfig,
-  type AlertEvent 
+  type AlertEvent
 } from "./alert-monitor.js";
 import type { KpiWarehouseStorage } from "@zeo/warehouse";
 import type { KpiMeasurement, KpiAlertRule, KpiAlert } from "@zeo/contracts";
@@ -72,22 +72,22 @@ describe("AlertMonitorService", () => {
   describe("Lifecycle", () => {
     it("should start and stop correctly", () => {
       expect(monitor.running).toBe(false);
-      
+
       monitor.start();
       expect(monitor.running).toBe(true);
-      
+
       monitor.stop();
       expect(monitor.running).toBe(false);
     });
 
     it("should not start twice", () => {
       const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-      
+
       monitor.start();
       monitor.start();
-      
+
       expect(consoleSpy).toHaveBeenCalledWith("AlertMonitorService is already running");
-      
+
       consoleSpy.mockRestore();
     });
   });
@@ -139,7 +139,7 @@ describe("AlertMonitorService", () => {
     it("should support multiple handlers", async () => {
       const handler1 = vi.fn();
       const handler2 = vi.fn();
-      
+
       monitor.on("check-complete", handler1);
       monitor.on("check-complete", handler2);
 
@@ -214,7 +214,7 @@ describe("AlertMonitorService", () => {
       // Immediate second check should be in cooldown
       // (but with 0 cooldown buffer in config, it should still trigger)
       // This test verifies the cooldown logic exists
-      
+
       expect(handler.mock.calls.length).toBeGreaterThanOrEqual(0);
     });
   });

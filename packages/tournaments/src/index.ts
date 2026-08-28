@@ -203,7 +203,7 @@ export function createTournament(
   config: Partial<TournamentConfig['config']> = {}
 ): Tournament {
   const now = new Date().toISOString();
-  
+
   const tournamentConfig: TournamentConfig = {
     tournamentId,
     name,

@@ -1,11 +1,11 @@
 /**
  * @zeo/quant-timeseries
- * 
+ *
  * Robust time-series toolkit for quantitative analysis:
  * - Change-point detection (BOCPD and PELT algorithms)
  * - Kalman filtering and RTS smoothing
  * - State-space modeling
- * 
+ *
  * All algorithms are deterministic and produce reproducible outputs.
  */
 

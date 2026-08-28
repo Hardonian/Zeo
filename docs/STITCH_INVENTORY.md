@@ -1,6 +1,6 @@
 # Stitch Panel Inventory
 
-**Generated:** 2026-02-12  
+**Generated:** 2026-02-12
 **Source:** Google Stitch exports from `stitch_oss_governance_dashboard.zip`
 
 ## Overview

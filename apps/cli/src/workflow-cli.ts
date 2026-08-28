@@ -176,7 +176,7 @@ function specFromWorkspace(ws: DecisionWorkspace): contracts.DecisionSpec {
       text: e.text,
       status: "fact",
       confidence: "high",
-      provenance: [{ kind: "text", sourceId: "user_note", offset: 0, length: e.text.length, capturedAt: e.assertedAt || nowIso(), checksum: e.provenance.hash }],
+      provenance: [{ kind: "text", sourceId: "user_note", offset: 0, length: e.text.length, capturedAt: e.assertedAt || ws.createdAt || "1970-01-01T00:00:00.000Z", checksum: e.provenance.hash }],
       tags: [] as string[]
     })),
     objectives: [{ id: "obj_robustness", metric: "robustness", weight: 1.0 }]
@@ -527,32 +527,36 @@ async function runDecisionInWorkspace(
   dependsOn: string[],
   informs: string[]
 ): Promise<RunResult> {
-  if (process.env.ZEO_FIXED_TIME) {
-    const seed = createHash("sha256").update(ws.decisionId).digest("hex");
-    core.activateDeterministicMode({
-      seed,
-      clock: {
-        now: () => process.env.ZEO_FIXED_TIME!,
-        timestamp: () => Date.parse(process.env.ZEO_FIXED_TIME!)
-      }
-    });
-  }
-
-  const spec = specFromWorkspace(ws);
-  const { result, transcript } = core.executeDecision({
-    spec,
-    opts: { depth: 2 }, // Default depth
-    evidence: [], // Evidence is already embedded in assumptions for this simplified view, or should be passed?
-    // The workspace "evidence" are actually "facts" in the spec assumptions.
-    // Real evidence events would be separate. For now, we map workspace evidence to assumptions.
-    dependsOn,
-    informs,
-    logicalTimestamp: process.env.ZEO_FIXED_TIME ? Date.parse(process.env.ZEO_FIXED_TIME) : Date.now()
+  const logicalIso = process.env.ZEO_FIXED_TIME ?? `${asOfDate}T00:00:00.000Z`;
+  const logicalTimestamp = Date.parse(logicalIso);
+  const seed = createHash("sha256")
+    .update(JSON.stringify({ decisionId: ws.decisionId, asOfDate, dependsOn, informs }))
+    .digest("hex");
+  core.activateDeterministicMode({
+    seed,
+    clock: {
+      now: () => logicalIso,
+      timestamp: () => logicalTimestamp
+    }
   });
 
-  if (process.env.ZEO_FIXED_TIME) {
-    core.deactivateDeterministicMode();
-  }
+  const spec = specFromWorkspace(ws);
+  const { result, transcript } = (() => {
+    try {
+      return core.executeDecision({
+        spec,
+        opts: { depth: 2 }, // Default depth
+        evidence: [], // Evidence is already embedded in assumptions for this simplified view, or should be passed?
+        // The workspace "evidence" are actually "facts" in the spec assumptions.
+        // Real evidence events would be separate. For now, we map workspace evidence to assumptions.
+        dependsOn,
+        informs,
+        logicalTimestamp
+      });
+    } finally {
+      core.deactivateDeterministicMode();
+    }
+  })();
 
   // Signing integration
   const defaultKeyPath = join(zeoRoot(), "keys", "id_ed25519.pem");
@@ -1051,6 +1055,30 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
     return 0;
   }
 
+  if (args.command === "summary") {
+    const audience = args.audience ?? "engineer";
+    const summary = buildTypeSummary(args.type, audience);
+    writeJsonOrText(args, { audience, type: args.type ?? null, rows: summary.rows }, summary.text);
+    return 0;
+  }
+
+  if (args.command === "streaks") {
+    const dirs = readdirSync(decisionsRoot(), { withFileTypes: true }).filter((d) => d.isDirectory());
+    let fragilityImproved = 0;
+    let replaysVerified = 0;
+    let signed = 0;
+    let earlyInvalidations = 0;
+    for (const dir of dirs) {
+      const local = loadWorkspace(dir.name);
+      if (local.runs.length > 1 && local.runs[local.runs.length - 1].flipDistance > local.runs[0].flipDistance) fragilityImproved += 1;
+      if (local.runs.length > 0) replaysVerified += 1;
+      if (local.runs.some((r) => r.signatureStatus === "signed")) signed += 1;
+      if (local.evidence.some((e) => e.expiresAt) && local.tasks.some((t) => t.completed)) earlyInvalidations += 1;
+    }
+    writeJsonOrText(args, { fragilityImproved, replaysVerified, signedTranscripts: signed, earlyInvalidations }, `fragility_improved=${fragilityImproved}\nreplays_verified=${replaysVerified}\nsigned_transcripts=${signed}\nearly_invalidations=${earlyInvalidations}`);
+    return 0;
+  }
+
   const decisionId = args.decision;
   if (!decisionId) throw new Error("--decision is required");
   const ws = loadWorkspace(decisionId);
@@ -1273,30 +1301,6 @@ export async function runWorkflowCommand(args: WorkflowArgs): Promise<number> {
     const ws = loadWorkspace(target);
     const explanation = explainForAudience(ws, audience, args.type);
     writeJsonOrText(args, { decision: target, audience, explanation }, explanation);
-    return 0;
-  }
-
-  if (args.command === "summary") {
-    const audience = args.audience ?? "engineer";
-    const summary = buildTypeSummary(args.type, audience);
-    writeJsonOrText(args, { audience, type: args.type ?? null, rows: summary.rows }, summary.text);
-    return 0;
-  }
-
-  if (args.command === "streaks") {
-    const dirs = readdirSync(decisionsRoot(), { withFileTypes: true }).filter((d) => d.isDirectory());
-    let fragilityImproved = 0;
-    let replaysVerified = 0;
-    let signed = 0;
-    let earlyInvalidations = 0;
-    for (const dir of dirs) {
-      const local = loadWorkspace(dir.name);
-      if (local.runs.length > 1 && local.runs[local.runs.length - 1].flipDistance > local.runs[0].flipDistance) fragilityImproved += 1;
-      if (local.runs.length > 0) replaysVerified += 1;
-      if (local.runs.some((r) => r.signatureStatus === "signed")) signed += 1;
-      if (local.evidence.some((e) => e.expiresAt) && local.tasks.some((t) => t.completed)) earlyInvalidations += 1;
-    }
-    writeJsonOrText(args, { fragilityImproved, replaysVerified, signedTranscripts: signed, earlyInvalidations }, `fragility_improved=${fragilityImproved}\nreplays_verified=${replaysVerified}\nsigned_transcripts=${signed}\nearly_invalidations=${earlyInvalidations}`);
     return 0;
   }
 

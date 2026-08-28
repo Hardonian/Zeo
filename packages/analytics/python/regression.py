@@ -26,7 +26,7 @@ warnings.filterwarnings('ignore')
 def check_leakage(df: pd.DataFrame, X_cols: List[str], y_col: str, timestamp_col: Optional[str] = None) -> List[str]:
     """Check for data leakage - features from the future."""
     errors = []
-    
+
     if timestamp_col and timestamp_col in df.columns:
         # Check if any X timestamp is after y timestamp for each row
         for col in X_cols:
@@ -34,28 +34,28 @@ def check_leakage(df: pd.DataFrame, X_cols: List[str], y_col: str, timestamp_col
                 future_mask = df[col] > df[y_col + '_timestamp'] if f'{y_col}_timestamp' in df.columns else pd.Series([False] * len(df))
                 if future_mask.any():
                     errors.append(f"LEAKAGE DETECTED: {col} has timestamps after outcome for {future_mask.sum()} rows")
-    
+
     return errors
 
 
 def compute_vif(df: pd.DataFrame, X_cols: List[str]) -> Dict[str, float]:
     """Compute Variance Inflation Factor for multicollinearity detection."""
     df_clean = df[X_cols].dropna()
-    
+
     if len(df_clean) < len(X_cols) + 1:
         return {col: float('nan') for col in X_cols}
-    
+
     try:
         # Add constant for VIF calculation
         X = sm.add_constant(df_clean)
-        
+
         vif_data = {}
         for i, col in enumerate(X_cols, start=1):
             try:
                 vif_data[col] = round(variance_inflation_factor(X.values, i), 2)
             except:
                 vif_data[col] = float('nan')
-        
+
         return vif_data
     except:
         return {col: float('nan') for col in X_cols}
@@ -66,13 +66,13 @@ def train_ols(X_train: pd.DataFrame, y_train: pd.Series) -> Dict[str, Any]:
     try:
         X_const = sm.add_constant(X_train)
         model = sm.OLS(y_train, X_const).fit(cov_type='HC3')
-        
+
         coefficients = {}
         for i, col in enumerate(X_train.columns):
             coef = model.params[i+1]  # Skip constant
             conf_int = model.conf_int(alpha=0.05).iloc[i+1]
             p_value = model.pvalues[i+1]
-            
+
             coefficients[col] = {
                 'estimate': round(coef, 6),
                 'std_error': round(model.bse[i+1], 6),
@@ -81,7 +81,7 @@ def train_ols(X_train: pd.DataFrame, y_train: pd.Series) -> Dict[str, Any]:
                 'p_value': round(p_value, 6),
                 'significant': p_value < 0.05
             }
-        
+
         return {
             'model_type': 'ols',
             'r_squared': round(model.rsquared, 4),
@@ -109,7 +109,7 @@ def train_regularized(
         # Standardize features
         scaler = StandardScaler()
         X_scaled = scaler.fit_transform(X_train)
-        
+
         if model_type == 'ridge':
             model = RidgeCV(alphas=np.logspace(-3, 3, 100), cv=cv_folds)
         elif model_type == 'lasso':
@@ -123,14 +123,14 @@ def train_regularized(
             )
         else:
             raise ValueError(f"Unknown model type: {model_type}")
-        
+
         model.fit(X_scaled, y_train)
-        
+
         # Compute metrics
         y_pred = model.predict(X_scaled)
         mae = mean_absolute_error(y_train, y_pred)
         r2 = r2_score(y_train, y_pred)
-        
+
         # Feature importance
         coefficients = {}
         for i, col in enumerate(X_train.columns):
@@ -139,12 +139,12 @@ def train_regularized(
                 coef = model.coef_[i]
             else:
                 coef = model.coef_
-            
+
             coefficients[col] = {
                 'estimate': round(coef, 6),
                 'importance': round(abs(coef), 6)
             }
-        
+
         result = {
             'model_type': model_type,
             'r_squared': round(r2, 4),
@@ -152,12 +152,12 @@ def train_regularized(
             'coefficients': coefficients,
             'intercept': round(model.intercept_, 6)
         }
-        
+
         if hasattr(model, 'alpha_'):
             result['alpha'] = round(model.alpha_, 6)
         if hasattr(model, 'l1_ratio_'):
             result['l1_ratio'] = round(model.l1_ratio_, 4)
-        
+
         return result
     except Exception as e:
         return {
@@ -175,20 +175,20 @@ def train_logistic(
     try:
         model = LogisticRegression(max_iter=1000, cv=cv_folds)
         model.fit(X_train, y_train)
-        
+
         y_pred_proba = model.predict_proba(X_train)[:, 1]
-        
+
         # Compute metrics
         try:
             auc = roc_auc_score(y_train, y_pred_proba)
         except:
             auc = None
-        
+
         try:
             logloss = log_loss(y_train, y_pred_proba)
         except:
             logloss = None
-        
+
         # Coefficients
         coefficients = {}
         for i, col in enumerate(X_train.columns):
@@ -197,7 +197,7 @@ def train_logistic(
                 'estimate': round(coef, 6),
                 'odds_ratio': round(np.exp(coef), 4)
             }
-        
+
         return {
             'model_type': 'logistic',
             'auc': round(auc, 4) if auc is not None else None,
@@ -221,7 +221,7 @@ def run_regression_analysis(
     random_seed: int = 42
 ) -> Dict[str, Any]:
     """Run complete regression analysis."""
-    
+
     # Check for leakage
     leakage_errors = check_leakage(df, feature_cols, target_col, timestamp_col)
     if leakage_errors:
@@ -230,22 +230,22 @@ def run_regression_analysis(
             'leakage_errors': leakage_errors,
             'epistemic_label': 'ERROR'
         }
-    
+
     # Prepare data
     df_clean = df[feature_cols + [target_col]].dropna()
-    
+
     if len(df_clean) < len(feature_cols) + 10:
         return {
             'error': f'Insufficient data: {len(df_clean)} rows for {len(feature_cols)} features',
             'epistemic_label': 'ERROR'
         }
-    
+
     X = df_clean[feature_cols]
     y = df_clean[target_col]
-    
+
     # Check if binary outcome
     is_binary = y.nunique() == 2 and set(y.unique()).issubset({0, 1, True, False})
-    
+
     # Time-based split if timestamp available
     if timestamp_col and timestamp_col in df.columns:
         df_sorted = df_clean.sort_values(timestamp_col)
@@ -259,13 +259,13 @@ def run_regression_analysis(
         split_idx = int(len(df_clean) * (1 - test_size))
         train_mask = df_clean.index[indices[:split_idx]]
         test_mask = df_clean.index[indices[split_idx:]]
-    
+
     X_train, X_test = X.loc[train_mask], X.loc[test_mask]
     y_train, y_test = y.loc[train_mask], y.loc[test_mask]
-    
+
     # Compute VIF
     vif_values = compute_vif(df_clean, feature_cols)
-    
+
     # Train models
     results = {
         'target': target_col,
@@ -276,12 +276,12 @@ def run_regression_analysis(
         'vif': vif_values,
         'models': {}
     }
-    
+
     # Check multicollinearity
     high_vif = {k: v for k, v in vif_values.items() if v > 10}
     if high_vif:
         results['multicollinearity_warning'] = f'High VIF (>10): {high_vif}'
-    
+
     if is_binary:
         # Logistic regression
         log_result = train_logistic(X_train, y_train)
@@ -290,29 +290,29 @@ def run_regression_analysis(
         # OLS
         ols_result = train_ols(X_train, y_train)
         results['models']['ols'] = ols_result
-        
+
         # Regularized models
         for model_type in ['ridge', 'lasso']:
             reg_result = train_regularized(X_train, y_train, model_type)
             results['models'][model_type] = reg_result
-    
+
     # Epistemic labeling
     results['epistemic_label'] = 'PREDICTIVE_HYPOTHESIS'
     results['epistemic_note'] = 'These are associations, not causal claims. Do not treat as Fact.'
-    
+
     # Add warnings
     warnings_list = []
     if len(df_clean) < 100:
         warnings_list.append(f'Small sample size (n={len(df_clean)})')
-    
+
     missing_pct = (df[feature_cols + [target_col]].isna().sum() / len(df) * 100).to_dict()
     high_missing = {k: v for k, v in missing_pct.items() if v > 20}
     if high_missing:
         warnings_list.append(f'High missingness: {high_missing}')
-    
+
     if warnings_list:
         results['warnings'] = warnings_list
-    
+
     return results
 
 
@@ -321,19 +321,19 @@ def main():
     if len(sys.argv) < 5:
         print("Usage: regression.py <input_csv> <output_json> <target_col> <feature_cols...>", file=sys.stderr)
         sys.exit(1)
-    
+
     input_csv = sys.argv[1]
     output_json = sys.argv[2]
     target_col = sys.argv[3]
     feature_cols = sys.argv[4:]
-    
+
     df = pd.read_csv(input_csv)
-    
+
     results = run_regression_analysis(df, target_col, feature_cols)
-    
+
     with open(output_json, 'w') as f:
         json.dump(results, f, indent=2)
-    
+
     print(f"Results written to {output_json}")
 
 

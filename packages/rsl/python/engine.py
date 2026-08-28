@@ -81,12 +81,12 @@ class RSLEngine:
     """
     Reality Signal Layer engine combining filters and change point detection.
     """
-    
+
     def __init__(self):
         self.filters: Dict[str, Any] = {}
         self.state_history: Dict[str, List[StateEstimate]] = {}
         self.observation_history: Dict[str, List[SignalObservation]] = {}
-    
+
     def initialize_variable(self, config: StateVariableConfig):
         """Initialize state variable with appropriate filter."""
         if config.filter_type == "kalman" and FILTERPY_AVAILABLE:
@@ -106,14 +106,14 @@ class RSLEngine:
                 "alpha": 0.3,
                 "variance": config.process_noise
             }
-        
+
         self.state_history[config.name] = []
         self.observation_history[config.name] = []
-    
+
     def process_observation(self, obs: SignalObservation) -> StateEstimate:
         """Process new observation and update state estimate."""
         var_name = obs.variable_name
-        
+
         if var_name not in self.filters:
             # Auto-initialize
             self.initialize_variable(StateVariableConfig(
@@ -123,9 +123,9 @@ class RSLEngine:
                 observation_noise=0.2,
                 filter_type="kalman" if FILTERPY_AVAILABLE else "exp_smooth"
             ))
-        
+
         filter_obj = self.filters[var_name]
-        
+
         if FILTERPY_AVAILABLE and hasattr(filter_obj, 'predict'):
             # Kalman filter
             filter_obj.predict()
@@ -139,19 +139,19 @@ class RSLEngine:
             filter_obj["variance"] = (1 - alpha) ** 2 * filter_obj["variance"] + alpha ** 2 * (obs.value - filter_obj["value"]) ** 2
             estimated_value = filter_obj["value"]
             uncertainty = np.sqrt(filter_obj["variance"])
-        
+
         # Apply bias counterweight based on source type
         bias_adjustment = self._compute_bias_adjustment(obs)
         adjusted_value = estimated_value + bias_adjustment
-        
+
         # Compute uncertainty components
         epistemic = uncertainty * (1 - obs.reliability)  # Uncertainty due to lack of knowledge
         aleatoric = uncertainty * obs.reliability  # Uncertainty due to randomness
-        
+
         # Detect regime
         regime = self._detect_regime(var_name, adjusted_value, uncertainty)
         change_prob = self._compute_change_probability(var_name)
-        
+
         estimate = StateEstimate(
             variable_name=var_name,
             timestamp=obs.timestamp,
@@ -163,12 +163,12 @@ class RSLEngine:
             regime=regime,
             change_probability=change_prob
         )
-        
+
         self.state_history[var_name].append(estimate)
         self.observation_history[var_name].append(obs)
-        
+
         return estimate
-    
+
     def _compute_bias_adjustment(self, obs: SignalObservation) -> float:
         """Compute bias adjustment based on source type."""
         adjustments = {
@@ -179,17 +179,17 @@ class RSLEngine:
             "geopolitical": -0.15  # Geopolitical news often fear-driven
         }
         return adjustments.get(obs.source_type, 0.0) * obs.value
-    
+
     def _detect_regime(self, var_name: str, value: float, uncertainty: float) -> str:
         """Detect which regime the variable is in."""
         history = self.state_history.get(var_name, [])
         if len(history) < 5:
             return "insufficient_data"
-        
+
         recent_values = [h.value for h in history[-10:]]
         mean_val = np.mean(recent_values)
         std_val = np.std(recent_values)
-        
+
         if std_val < 0.1 * abs(mean_val) if mean_val != 0 else std_val < 0.05:
             return "stable"
         elif value > mean_val + 1.5 * std_val:
@@ -198,45 +198,45 @@ class RSLEngine:
             return "depressed"
         else:
             return "normal"
-    
+
     def _compute_change_probability(self, var_name: str) -> float:
         """Compute probability of regime change."""
         history = self.state_history.get(var_name, [])
         if len(history) < 5:
             return 0.0
-        
+
         # Simple heuristic: recent volatility / historical volatility
         recent = [h.value for h in history[-5:]]
         historical = [h.value for h in history[:-5]] if len(history) > 5 else recent
-        
+
         recent_vol = np.std(recent)
         hist_vol = np.std(historical) if len(historical) > 1 else recent_vol
-        
+
         if hist_vol < 1e-10:
             return 0.0
-        
+
         ratio = recent_vol / hist_vol
         return min(1.0, max(0.0, (ratio - 1) / 2))
-    
+
     def detect_change_points(self, var_name: str) -> Optional[ChangePoint]:
         """Detect structural breaks using ruptures library."""
         history = self.state_history.get(var_name, [])
         if len(history) < 10 or not RUPTURES_AVAILABLE:
             return None
-        
+
         values = np.array([h.value for h in history])
-        
+
         # Use Pelt algorithm for change point detection
         model = rpt.Pelt(model="rbf", min_size=3, jump=1)
         change_points = model.fit_predict(values.reshape(-1, 1), pen=10)
-        
+
         if len(change_points) > 1:
             # Most recent change point
             cp_idx = change_points[-2]  # -1 is end of series
             if cp_idx < len(history):
                 cp_estimate = history[cp_idx]
                 prev_regime = history[cp_idx - 1].regime if cp_idx > 0 else "unknown"
-                
+
                 return ChangePoint(
                     timestamp=cp_estimate.timestamp,
                     variable_name=var_name,
@@ -245,9 +245,9 @@ class RSLEngine:
                     confidence=0.7,
                     detection_method="pelt"
                 )
-        
+
         return None
-    
+
     def get_regime_detection(self, var_name: str) -> RegimeDetection:
         """Get complete regime detection result."""
         history = self.state_history.get(var_name, [])
@@ -259,22 +259,22 @@ class RSLEngine:
                 change_point=None,
                 stability_score=0.0
             )
-        
+
         current = history[-1]
         change_point = self.detect_change_points(var_name)
-        
+
         # Compute regime probabilities based on recent history
         recent_regimes = [h.regime for h in history[-20:]]
         regime_counts = {}
         for r in recent_regimes:
             regime_counts[r] = regime_counts.get(r, 0) + 1
-        
+
         total = len(recent_regimes)
         regime_probs = {r: c / total for r, c in regime_counts.items()}
-        
+
         # Stability score: inverse of recent change probability
         stability = 1.0 - current.change_probability
-        
+
         return RegimeDetection(
             current_regime=current.regime,
             regime_probabilities=regime_probs,
@@ -287,10 +287,10 @@ class RSLEngine:
 def process_request(request_data: Dict[str, Any]) -> Dict[str, Any]:
     """Process RSL request."""
     start_time = time.time()
-    
+
     try:
         engine = RSLEngine()
-        
+
         # Initialize state variables
         for var_config in request_data.get("variables", []):
             engine.initialize_variable(StateVariableConfig(
@@ -300,7 +300,7 @@ def process_request(request_data: Dict[str, Any]) -> Dict[str, Any]:
                 observation_noise=var_config.get("observationNoise", 0.2),
                 filter_type=var_config.get("filterType", "kalman")
             ))
-        
+
         # Process observations
         estimates = []
         for obs_data in request_data.get("observations", []):
@@ -313,14 +313,14 @@ def process_request(request_data: Dict[str, Any]) -> Dict[str, Any]:
             )
             estimate = engine.process_observation(obs)
             estimates.append(asdict(estimate))
-        
+
         # Get regime detections
         regimes = {}
         for var_name in engine.state_history.keys():
             regimes[var_name] = asdict(engine.get_regime_detection(var_name))
-        
+
         computation_time = time.time() - start_time
-        
+
         return {
             "success": True,
             "estimates": estimates,
@@ -329,7 +329,7 @@ def process_request(request_data: Dict[str, Any]) -> Dict[str, Any]:
             "filtersUsed": "filterpy" if FILTERPY_AVAILABLE else "fallback",
             "rupturesAvailable": RUPTURES_AVAILABLE
         }
-    
+
     except Exception as e:
         return {
             "success": False,

@@ -49,11 +49,11 @@ const handleWebhook = createWebhookHandler(
 // In your Express route:
 app.post('/webhook', async (req, res) => {
   const validation = await webhookSecurity.validateRequest(req);
-  
+
   if (!validation.valid) {
     return res.status(401).json({ error: validation.error });
   }
-  
+
   const result = await handleWebhook(validation.context!);
   res.status(200).json(result.result);
 });

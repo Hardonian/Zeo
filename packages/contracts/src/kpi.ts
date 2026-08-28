@@ -1,6 +1,6 @@
 /**
  * KPI Types for Zeo Decision Intelligence
- * 
+ *
  * Provides type definitions for Key Performance Indicators,
  * measurements, dashboards, and alerts with epistemic discipline.
  */
@@ -45,30 +45,30 @@ export interface KpiContract {
   category: KpiCategory;
   formula: KpiFormula;
   unit?: string;
-  
+
   /** Target/benchmark values */
   targets?: {
     minimum?: number;
     target?: number;
     stretch?: number;
   };
-  
+
   /** Uncertainty configuration */
   uncertainty: {
     defaultWidth: number;  // Default interval width
     requiresConfidence: boolean;
   };
-  
+
   /** Provenance requirements */
   provenanceRequired: boolean;
-  
+
   /** Version for evolution tracking */
   version: string;
-  
+
   /** Creator info */
   createdBy: "system" | "user" | string;
   createdAt: string;
-  
+
   /** Tags for organization */
   tags: string[];
 }
@@ -81,14 +81,14 @@ export interface KpiMeasurement {
   kpiId: string;
   kpiVersion: string;
   category: KpiCategory;
-  
+
   /** The computed value */
   measurement: KpiValue;
-  
+
   /** Time period for the measurement */
   periodStart: string;  // ISO timestamp
   periodEnd: string;    // ISO timestamp
-  
+
   /** Computation metadata */
   computation: {
     timestamp: string;
@@ -96,7 +96,7 @@ export interface KpiMeasurement {
     formulaVersion: string;
     durationMs: number;
   };
-  
+
   /** Input data snapshot */
   inputs: {
     decisionCount?: number;
@@ -104,7 +104,7 @@ export interface KpiMeasurement {
     assumptionsCount?: number;
     customData?: Record<string, unknown>;
   };
-  
+
   /** Epistemic metadata */
   epistemic: {
     status: "fact" | "belief" | "assumption";
@@ -112,21 +112,21 @@ export interface KpiMeasurement {
     provenance: ProvenancePointer[];
     warnings: string[];
   };
-  
+
   /** Related entities */
   relatedDecisions?: UUID[];
   relatedEvidence?: UUID[];
-  
+
   /** Determinism verification */
   determinism: {
     isReproducible: boolean;
     seed?: string;
     verificationHash?: string;
   };
-  
+
   /** Tags */
   tags: string[];
-  
+
   /** Timestamp */
   createdAt: string;
 }
@@ -138,10 +138,10 @@ export interface KpiTrend {
   kpiId: string;
   periodStart: string;
   periodEnd: string;
-  
+
   /** Trend direction */
   direction: "improving" | "degrading" | "stable" | "volatile";
-  
+
   /** Change magnitude */
   change: {
     absolute: number;
@@ -149,27 +149,27 @@ export interface KpiTrend {
     fromValue: number;
     toValue: number;
   };
-  
+
   /** Statistical confidence */
   confidence: number;
-  
+
   /** Samples used */
   sampleCount: number;
-  
+
   /** Comparison to targets */
   vsTarget?: {
     gap: number;
     onTrack: boolean;
     projectedDate?: string;
   };
-  
+
   /** Contributing factors */
   factors: Array<{
     factor: string;
     impact: "positive" | "negative" | "neutral";
     magnitude: number;
   }>;
-  
+
   computedAt: string;
 }
 
@@ -181,7 +181,7 @@ export interface KpiDashboardPanel {
   title: string;
   kpiId: string;
   type: "gauge" | "sparkline" | "bar" | "table" | "number" | "trend";
-  
+
   /** Grid position */
   position: {
     x: number;
@@ -189,13 +189,13 @@ export interface KpiDashboardPanel {
     w: number;
     h: number;
   };
-  
+
   /** Panel-specific configuration */
   config: Record<string, unknown>;
-  
+
   /** Time window override */
   timeWindow?: string;  // e.g., "7d", "30d", "90d"
-  
+
   /** Comparison settings */
   comparison?: {
     vsPrevious: boolean;
@@ -211,29 +211,29 @@ export interface KpiDashboard {
   id: string;
   name: string;
   description: string;
-  
+
   /** Owner */
   owner: string;
-  
+
   /** Layout configuration */
   layout: {
     columns: number;
     rowHeight: number;
     mobileColumns?: number;
   };
-  
+
   /** Panels */
   panels: KpiDashboardPanel[];
-  
+
   /** Default time range */
   defaultTimeRange?: {
     from: string;
     to: string;
   };
-  
+
   /** Auto-refresh interval (ms) */
   refreshInterval?: number;
-  
+
   /** Metadata */
   createdAt: string;
   updatedAt: string;
@@ -247,32 +247,32 @@ export interface KpiAlertRule {
   id: string;
   name: string;
   description: string;
-  
+
   /** Target KPI */
   kpiId: string;
-  
+
   /** Condition */
   condition: {
     operator: "lt" | "gt" | "lte" | "gte" | "eq" | "between" | "outside";
     threshold: number | [number, number];
     duration?: number;  // Sustained for N seconds
   };
-  
+
   /** Severity */
   severity: "low" | "medium" | "high" | "critical";
-  
+
   /** Notification channels */
   channels: Array<{
     type: "console" | "webhook" | "email" | "ui";
     config: Record<string, unknown>;
   }>;
-  
+
   /** Cooldown between alerts */
   cooldownSeconds: number;
-  
+
   /** Enabled */
   enabled: boolean;
-  
+
   createdAt: string;
   updatedAt: string;
 }
@@ -283,13 +283,13 @@ export interface KpiAlertRule {
 export interface KpiAlert {
   id: string;
   ruleId: string;
-  
+
   /** Alert status */
   status: "active" | "triggered" | "acknowledged" | "resolved";
-  
+
   /** Severity */
   severity: "low" | "medium" | "high" | "critical";
-  
+
   /** Trigger context */
   triggered: {
     at: string;
@@ -297,32 +297,32 @@ export interface KpiAlert {
     threshold: number;
     condition: string;
   };
-  
+
   /** Acknowledgment */
   acknowledged?: {
     at: string;
     by: string;
     note?: string;
   };
-  
+
   /** Resolution */
   resolved?: {
     at: string;
     by?: string;
     reason?: string;
   };
-  
+
   /** Related KPI */
   kpiId: string;
   measurementId: string;
-  
+
   /** Notifications sent */
   notifications: Array<{
     channel: string;
     sentAt: string;
     status: "pending" | "sent" | "failed";
   }>;
-  
+
   createdAt: string;
   updatedAt: string;
 }
@@ -347,7 +347,7 @@ export interface KpiComputationResult {
     message: string;
     details?: Record<string, unknown>;
   };
-  
+
   /** Performance metrics */
   performance: {
     durationMs: number;
@@ -390,12 +390,12 @@ export const StandardKpis = {
 export interface KpiExport {
   version: string;
   exportedAt: string;
-  
+
   kpis: KpiContract[];
   measurements: KpiMeasurement[];
   dashboards: KpiDashboard[];
   alerts: KpiAlert[];
-  
+
   /** Epistemic notice */
   epistemicNotice: {
     status: "belief";

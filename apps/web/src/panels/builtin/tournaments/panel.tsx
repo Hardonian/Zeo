@@ -18,7 +18,7 @@ export default function TournamentsPanel({ manifest }: TournamentsPanelProps) {
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
         <h3 className="font-medium text-gray-900 mb-2">Active Tournament</h3>
         <p className="text-sm text-gray-600">
-          No active tournament. Run a tournament to compare decision strategies 
+          No active tournament. Run a tournament to compare decision strategies
           against each other in various scenarios.
         </p>
       </div>
@@ -53,7 +53,7 @@ export default function TournamentsPanel({ manifest }: TournamentsPanelProps) {
 
       <div className="bg-green-50 border-l-4 border-green-400 p-3">
         <p className="text-sm text-green-800">
-          <strong>Note:</strong> Tournament results are specific to test scenarios. 
+          <strong>Note:</strong> Tournament results are specific to test scenarios.
           Real-world performance may differ.
         </p>
       </div>

@@ -66,7 +66,7 @@ interface AdapterRuntime {
     params: Record<string, unknown>,
     sourceMetadata?: SourceMetadata
   ): Promise<AdapterRunResult>;
-  
+
   ingest(
     adapters: Adapter[],
     options: {
@@ -74,9 +74,9 @@ interface AdapterRuntime {
       outDir?: string;
     }
   ): Promise<IngestResult>;
-  
+
   getQuarantineStore(): ReturnType<typeof createQuarantineStore>;
-  
+
   getMetrics(): {
     totalFetched: number;
     totalQuarantined: number;
@@ -91,12 +91,12 @@ export function createAdapterRuntime(
 ): AdapterRuntime {
   // Initialize components (orchestrator initialized but not yet used - placeholder for fetch implementation)
   void createFetchOrchestrator(config.cache, config.rateLimit, config.retry);
-  
+
   const normalizer = createNormalizer(config.normalization);
   const trustScorer = createTrustScorer(config.trust);
   const anomalyDetector = createAnomalyDetector(config.anomalyRules);
   const integrityEnforcer = createIntegrityEnforcer(config.integrityRules);
-  
+
   // Initialize quarantine store
   const quarantineStore = options?.quarantineDir
     ? createFilesystemQuarantineStore({
@@ -106,7 +106,7 @@ export function createAdapterRuntime(
     : createQuarantineStore({
         retentionHours: config.quarantine.retentionHours,
       });
-  
+
   // Metrics tracking
   const metrics = {
     totalFetched: 0,
@@ -115,7 +115,7 @@ export function createAdapterRuntime(
     cacheHits: 0,
     cacheMisses: 0,
   };
-  
+
   return {
     async runAdapter(
       adapter: Adapter,
@@ -123,26 +123,26 @@ export function createAdapterRuntime(
       sourceMetadata?: SourceMetadata
     ): Promise<AdapterRunResult> {
       const startTime = Date.now();
-      
+
       // Fetch raw data
       const raw = await adapter.fetch(params);
-      
+
       // Normalize to SignalObservation
       const normalized = adapter.normalize(raw.items);
-      
+
       metrics.totalFetched += normalized.length;
-      
+
       // Compute trust scores
       const metadataMap = new Map<string, SourceMetadata>();
       if (sourceMetadata) {
         metadataMap.set(sourceMetadata.sourceId, sourceMetadata);
       }
       const trustScores = trustScorer.computeBatchScores(normalized, metadataMap);
-      
+
       // Validate integrity
       let passedIntegrity: SignalObservation[] = [];
       let integrityViolations: string[] = [];
-      
+
       try {
         integrityEnforcer.enforce(normalized);
         passedIntegrity = normalized;
@@ -158,27 +158,27 @@ export function createAdapterRuntime(
         passedIntegrity = normalized.filter(o => !invalidIds.has(o.observationId));
         integrityViolations = validation.violations.map(v => v.message);
       }
-      
+
       // Detect anomalies
       const anomalyResult = anomalyDetector.detect(passedIntegrity);
-      
+
       // Determine which observations to quarantine
       const quarantined: QuarantineEntry[] = [];
       const approved: SignalObservation[] = [];
-      
+
       for (const obs of passedIntegrity) {
         const trustScore = trustScores.get(obs.observationId);
         const relatedViolations = anomalyResult.violations.filter(v =>
           v.affectedObservations.includes(obs.observationId)
         );
-        
+
         const maxSeverity: string | null = relatedViolations.length > 0
           ? relatedViolations.reduce((max: string, v) => {
               const severities: Record<string, number> = { low: 0, medium: 1, high: 2, critical: 3 };
               return severities[v.severity] > severities[max] ? v.severity : max;
             }, "low")
           : null;
-        
+
         // Determine if should quarantine
         let shouldQuarantine = false;
         if (config.quarantine.enabled) {
@@ -190,14 +190,14 @@ export function createAdapterRuntime(
             shouldQuarantine = true;
           }
         }
-        
+
         if (shouldQuarantine) {
           const quarantineReason = relatedViolations.length > 0
             ? QUARANTINE_REASONS.ANOMALY_DETECTED
             : QUARANTINE_REASONS.LOW_TRUST_SCORE;
-          
+
           const severity: QuarantineEntry["severity"] = (maxSeverity as QuarantineEntry["severity"]) ?? "medium";
-          
+
           const entry = await quarantineStore.add({
             observation: obs,
             reason: quarantineReason,
@@ -213,29 +213,29 @@ export function createAdapterRuntime(
             },
             status: "pending",
           });
-          
+
           quarantined.push(entry);
           metrics.totalQuarantined++;
         } else {
           approved.push(obs);
         }
       }
-      
+
       // Build batch from approved observations
       const builder = createObservationBatchBuilder(
         "catalog_hash", // Would be computed from actual catalog
         "sources_hash",
         "mappings_hash"
       );
-      
+
       // Normalize approved observations
       const normalizedApproved = normalizer.normalize(approved);
       builder.addAll(normalizedApproved.data);
-      
+
       const batch = builder.build();
-      
+
       const fetchLatencyMs = Date.now() - startTime;
-      
+
       return {
         adapterId: adapter.info.id,
         observations: approved,
@@ -253,7 +253,7 @@ export function createAdapterRuntime(
         trustScores,
       };
     },
-    
+
     async ingest(
       adapters: Adapter[],
       options: {
@@ -263,18 +263,18 @@ export function createAdapterRuntime(
     ): Promise<IngestResult> {
       const batches: ObservationBatch[] = [];
       const allQuarantined: QuarantineEntry[] = [];
-      
+
       // Run each adapter
       for (const adapter of adapters) {
         const result = await this.runAdapter(adapter, {
           startISO: options.range.start,
           endISO: options.range.end,
         });
-        
+
         batches.push(result.batch);
         allQuarantined.push(...result.quarantined);
       }
-      
+
       // Build replay dataset
       const dataset = buildReplayDataset(batches, {
         datasetId: `ingest_${Date.now()}`,
@@ -285,20 +285,20 @@ export function createAdapterRuntime(
           mappings: "mappings_hash",
         },
       });
-      
+
       // Write output if directory specified
       if (options.outDir) {
         if (!existsSync(options.outDir)) {
           await mkdir(options.outDir, { recursive: true });
         }
-        
+
         const { writeFile } = await import("fs/promises");
         await writeFile(
           join(options.outDir, "dataset.json"),
           JSON.stringify(dataset, null, 2)
         );
       }
-      
+
       return {
         dataset,
         batches,
@@ -312,11 +312,11 @@ export function createAdapterRuntime(
         },
       };
     },
-    
+
     getQuarantineStore() {
       return quarantineStore;
     },
-    
+
     getMetrics() {
       const total = metrics.cacheHits + metrics.cacheMisses;
       return {

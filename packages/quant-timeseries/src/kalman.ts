@@ -1,13 +1,13 @@
 /**
  * @zeo/quant-timeseries - Kalman Filter
- * 
+ *
  * Implements Kalman filtering and RTS smoothing for time-series state estimation.
  * Supports local-level (random walk) and local-trend models.
- * 
+ *
  * References:
  * - Kalman (1960): "A New Approach to Linear Filtering and Prediction Problems"
  * - Rauch, Tung & Striebel (1965): "Maximum likelihood estimates of linear dynamic systems"
- * 
+ *
  * All implementations are deterministic and produce reproducible outputs.
  */
 

@@ -22,7 +22,7 @@ export const replayHandler: JobHandler<ReplayJobPayload, unknown> = {
     checkCancelled: () => boolean
   ) {
     const payload = job.payload as ReplayJobPayload;
-    
+
     updateProgress({
       currentOperation: 'Loading replay dataset',
       percentComplete: 10,
@@ -30,7 +30,7 @@ export const replayHandler: JobHandler<ReplayJobPayload, unknown> = {
 
     // Simulate work
     await new Promise(resolve => setTimeout(resolve, 100));
-    
+
     if (checkCancelled()) {
       throw new Error('Job cancelled');
     }
@@ -72,14 +72,14 @@ export const analyticsHandler: JobHandler<AnalyticsJobPayload, unknown> = {
     checkCancelled: () => boolean
   ) {
     const payload = job.payload as AnalyticsJobPayload;
-    
+
     updateProgress({
       currentOperation: 'Building dataset',
       percentComplete: 20,
     });
 
     await new Promise(resolve => setTimeout(resolve, 100));
-    
+
     if (checkCancelled()) throw new Error('Job cancelled');
 
     updateProgress({
@@ -119,10 +119,10 @@ export const tournamentHandler: JobHandler<TournamentJobPayload, unknown> = {
   ) {
     const payload = job.payload as TournamentJobPayload;
     const totalMatches = payload.scenarioCount * 2; // Simplified
-    
+
     for (let i = 0; i < totalMatches; i++) {
       if (checkCancelled()) throw new Error('Job cancelled');
-      
+
       updateProgress({
         currentOperation: `Running match ${i + 1} of ${totalMatches}`,
         percentComplete: Math.round((i / totalMatches) * 100),

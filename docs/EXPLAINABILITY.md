@@ -131,7 +131,7 @@ function generateExplanation(
   config: ExplanationConfig
 ): Explanation {
   const base = extractBaseExplanation(decisionResult);
-  
+
   switch (config.maxLevel) {
     case 0:
       return formatLevel0(base, config);
@@ -165,12 +165,12 @@ function verifyExplanationConsistency(
   explanations: Explanation[]
 ): ConsistencyReport {
   const issues: ConsistencyIssue[] = [];
-  
+
   // Check for contradictions
   for (let i = 1; i < explanations.length; i++) {
     const lower = explanations[i - 1];
     const higher = explanations[i];
-    
+
     if (contradicts(lower, higher)) {
       issues.push({
         type: 'contradiction',
@@ -179,7 +179,7 @@ function verifyExplanationConsistency(
       });
     }
   }
-  
+
   // Check uncertainty preservation
   for (const exp of explanations) {
     if (exp.level >= 2 && !exp.uncertaintyPreserved) {
@@ -189,7 +189,7 @@ function verifyExplanationConsistency(
       });
     }
   }
-  
+
   return {
     consistent: issues.length === 0,
     issues
@@ -229,7 +229,7 @@ function verifyExplanationConsistency(
 function formatUncertainty(interval: [number, number]): string {
   const width = interval[1] - interval[0];
   const center = (interval[0] + interval[1]) / 2;
-  
+
   if (width < 0.1) {
     return `approximately ${(center * 100).toFixed(0)}%`;
   } else if (width < 0.3) {
@@ -254,7 +254,7 @@ interface FlipCondition {
 }
 
 // Example output:
-// "If timeline pressure drops below 50% (currently 70-90%), 
+// "If timeline pressure drops below 50% (currently 70-90%),
 //    recommend counter-offer instead of acceptance"
 ```
 
@@ -303,7 +303,7 @@ function ExplanationDepthToggle(props: ExplanationDepthToggleProps) {
 ### Invariant: Consistency Across Levels
 
 ```typescript
-const explanations = [level0, level1, level2, level3, level4].map(l => 
+const explanations = [level0, level1, level2, level3, level4].map(l =>
   generateExplanation(result, { maxLevel: l })
 );
 

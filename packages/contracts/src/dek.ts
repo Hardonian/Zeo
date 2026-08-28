@@ -1,6 +1,6 @@
 /**
  * Zeo Deterministic Execution Kernel (DEK) Contracts
- * 
+ *
  * These types define the strict execution envelope for all Zeo workflows,
  * ensuring reproducibility, verifiability, and model-agnostic execution.
  */

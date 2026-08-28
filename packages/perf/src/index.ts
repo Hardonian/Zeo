@@ -1,6 +1,6 @@
 /**
  * @zeo/perf - Performance profiling and hot path identification
- * 
+ *
  * This package provides:
  * - Static analysis for identifying performance hot paths
  * - Runtime profiling with minimal overhead
@@ -13,11 +13,11 @@ export {
   // Main scanner class
   StaticHotPathScanner,
   scanHotPaths,
-  
+
   // Pattern exports
   PATTERNS,
   EXPERIMENTAL_PATTERNS,
-  
+
   // Types
   type HotPathSeverity,
   type HotPathCategory,
@@ -30,16 +30,16 @@ export {
 export {
   // Main profiler class
   Profiler,
-  
+
   // Convenience functions
   getGlobalProfiler,
   resetGlobalProfiler,
   startQuickProfile,
   endQuickProfile,
-  
+
   // Decorator
   Profiled,
-  
+
   // Types
   type ProfileSession,
   type ProfileMarker,

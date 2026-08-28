@@ -1,6 +1,6 @@
 /**
  * @zeo/quant-timeseries - Math Utilities
- * 
+ *
  * Pure mathematical functions with deterministic outputs.
  */
 

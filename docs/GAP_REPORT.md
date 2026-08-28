@@ -1,6 +1,6 @@
 # Gap Report: Marketing Site Enhancement
 
-**Date:** 2026-02-12  
+**Date:** 2026-02-12
 **Status:** Initial integration complete, gaps identified for future work
 
 ## Summary
@@ -34,7 +34,7 @@ This report documents gaps between the current marketing site implementation and
 ### 3. Navigation & Layout
 **Issue:** Basic navigation without active states or comprehensive IA.
 
-**Resolution:** 
+**Resolution:**
 - PublicShell component provides consistent header/footer
 - Navigation derived from single source of truth
 - Active link states working
@@ -55,7 +55,7 @@ This report documents gaps between the current marketing site implementation and
 - Add testimonials or case studies (requires content)
 - Create comparison pages vs alternatives
 
-**Priority:** Medium  
+**Priority:** Medium
 **Effort:** Requires content strategy and copywriting
 
 ### 2. Use Cases Page
@@ -67,7 +67,7 @@ This report documents gaps between the current marketing site implementation and
 - Open source project governance
 - Decision audit trails for compliance
 
-**Priority:** Medium  
+**Priority:** Medium
 **Effort:** Low (can reuse Stitch panels as examples)
 
 ### 3. Documentation Landing Page
@@ -78,7 +78,7 @@ This report documents gaps between the current marketing site implementation and
 - Add search functionality (could use static index)
 - Group docs by audience (developers, users, admins)
 
-**Priority:** Low-Medium  
+**Priority:** Low-Medium
 **Effort:** Medium
 
 ### 4. Security Page Content
@@ -93,7 +93,7 @@ This report documents gaps between the current marketing site implementation and
 - Vulnerability disclosure policy
 - Threat model summary
 
-**Priority:** Medium  
+**Priority:** Medium
 **Effort:** Low (content exists in docs/SECURITY.md)
 
 ---
@@ -110,7 +110,7 @@ This report documents gaps between the current marketing site implementation and
 - Lazy load images for performance
 - Add lightbox for full-size preview
 
-**Priority:** Low  
+**Priority:** Low
 **Effort:** Low
 
 ### 2. Search Functionality
@@ -121,7 +121,7 @@ This report documents gaps between the current marketing site implementation and
 - Index panel titles and descriptions
 - Could use fuse.js or similar lightweight search
 
-**Priority:** Low  
+**Priority:** Low
 **Effort:** Low
 
 ### 3. Sitemap & SEO
@@ -135,7 +135,7 @@ This report documents gaps between the current marketing site implementation and
 - Add meta tags to all pages
 - Create Open Graph images
 
-**Priority:** Low  
+**Priority:** Low
 **Effort:** Medium
 
 ### 4. Performance Optimization
@@ -153,7 +153,7 @@ This report documents gaps between the current marketing site implementation and
 - Implement virtual scrolling for large lists
 - Add loading states for panel iframes
 
-**Priority:** Low  
+**Priority:** Low
 **Effort:** High (requires panel preprocessing)
 
 ---
@@ -169,7 +169,7 @@ This report documents gaps between the current marketing site implementation and
 - Create or select a Stitch panel as hero visual
 - Options: `zeo_decision_dashboard`, `oss_governance_dashboard`, or `zeo_research_console_ui_kit`
 
-**Priority:** Medium  
+**Priority:** Medium
 **Effort:** Low (iframe embed of existing panel)
 
 ### 2. Feature Comparison Matrix
@@ -180,7 +180,7 @@ This report documents gaps between the current marketing site implementation and
 - Compare Community vs Enterprise tiers
 - Show which panels map to which features
 
-**Priority:** Low  
+**Priority:** Low
 **Effort:** Low
 
 ### 3. Interactive Demo
@@ -193,7 +193,7 @@ This report documents gaps between the current marketing site implementation and
 - Use lightweight built-in panels (not Stitch iframe)
 - Show decision branching with sample data
 
-**Priority:** Medium  
+**Priority:** Medium
 **Effort:** Medium
 
 ---
@@ -210,7 +210,7 @@ This report documents gaps between the current marketing site implementation and
 - `og:image` for key marketing pages
 - Twitter card images
 
-**Priority:** Low  
+**Priority:** Low
 **Effort:** Low (can generate or use existing screenshots)
 
 ### 2. Favicon & App Icons
@@ -218,7 +218,7 @@ This report documents gaps between the current marketing site implementation and
 
 **Action:** Check if favicon exists in `public/` directory
 
-**Priority:** Low  
+**Priority:** Low
 **Effort:** Low
 
 ### 3. Logo Assets
@@ -230,7 +230,7 @@ This report documents gaps between the current marketing site implementation and
 - Add SVG logo if available
 - Ensure logo works in both light/dark modes
 
-**Priority:** Low  
+**Priority:** Low
 **Effort:** Low
 
 ---
@@ -247,7 +247,7 @@ This report documents gaps between the current marketing site implementation and
 - Track stitch panel views
 - Track conversion to dashboard signups
 
-**Priority:** Low  
+**Priority:** Low
 **Effort:** Low (depends on analytics choice)
 
 ---

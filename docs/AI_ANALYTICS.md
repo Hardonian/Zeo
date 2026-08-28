@@ -7,7 +7,7 @@ This directory contains documentation for the AI-Augmented Analytics & Data Inte
 The AI analytics layer provides AI-assisted analytical capabilities while maintaining strict epistemic discipline:
 
 - **AI proposes** - Generates hypotheses, plans, and feature suggestions
-- **Code verifies** - All outputs validated deterministically  
+- **Code verifies** - All outputs validated deterministically
 - **Never asserts causality** - Correlation only, with caveats
 - **Full auditability** - All AI outputs logged with provenance
 
@@ -16,7 +16,7 @@ The AI analytics layer provides AI-assisted analytical capabilities while mainta
 ### @zeo/analysis-planner
 AI-driven planning for statistical analysis. Proposes analysis steps WITHOUT computing results.
 
-### @zeo/feature-discovery  
+### @zeo/feature-discovery
 AI-guided feature proposal with deterministic validation for leakage, plausibility, and constraints.
 
 ### @zeo/hypothesis-registry

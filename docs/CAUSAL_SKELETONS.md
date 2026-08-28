@@ -38,12 +38,12 @@ Determines if a causal effect can be estimated from observed data:
 ### Creating a Collection
 
 ```typescript
-import { 
-  createCollection, 
-  createSkeleton, 
-  addNode, 
+import {
+  createCollection,
+  createSkeleton,
+  addNode,
   addEdge,
-  generateProposalSkeleton 
+  generateProposalSkeleton
 } from '@zeo/causal-skeletons';
 
 // Create collection

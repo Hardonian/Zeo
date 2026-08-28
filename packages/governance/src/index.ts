@@ -1,6 +1,6 @@
 /**
  * @zeo/governance
- * 
+ *
  * Governance and risk tier evaluation for Zeo decisions.
  * Implements risk-aware decision making with tiered requirements.
  */
@@ -111,20 +111,20 @@ export const DOMAIN_RISK_MATRIX: Record<string, RiskTier> = {
   research: "informational",
   analysis: "informational",
   monitoring: "informational",
-  
+
   // Medium risk - operational
   ops: "operational",
   incident_response: "operational",
   communication: "operational",
   scheduling: "operational",
-  
+
   // High risk - strategic
   negotiation: "strategic",
   partnership: "strategic",
   procurement: "strategic",
   hiring: "strategic",
   budgeting: "strategic",
-  
+
   // Very high risk - existential
   legal: "existential",
   medical: "existential",
@@ -144,17 +144,17 @@ function extractDomain(decisionSpec: DecisionSpec): string {
   const titleLower = decisionSpec.title?.toLowerCase() || "";
   const contextLower = decisionSpec.context?.toLowerCase() || "";
   const fullText = `${titleLower} ${contextLower}`;
-  
+
   // Get entries in reverse order so higher-risk domains (defined later) are checked first
   const entries = Object.entries(DOMAIN_RISK_MATRIX).reverse();
-  
+
   // Check for domain keywords - existential first, then strategic, operational, informational
   for (const [keyword, tier] of entries) {
     if (fullText.includes(keyword)) {
       return keyword;
     }
   }
-  
+
   return "general";
 }
 
@@ -168,38 +168,38 @@ export function evaluateRiskTier(
   // Determine domain-based risk
   const domain = extractDomain(decisionSpec);
   let inferredTier = DOMAIN_RISK_MATRIX[domain] || "informational";
-  
+
   // Adjust tier based on decision characteristics
   const agentCount = decisionSpec.agents?.length || 1;
   const actionCount = decisionSpec.actions?.length || 0;
-  
+
   // Escalate tier based on complexity
   if (agentCount > 3 || actionCount > 5) {
     if (inferredTier === "informational") {
       inferredTier = "operational";
     }
   }
-  
+
   // Check for high-stakes keywords
   const titleLower = decisionSpec.title?.toLowerCase() || "";
   const contextLower = decisionSpec.context?.toLowerCase() || "";
   const fullContext = `${titleLower} ${contextLower}`;
-  
+
   const existentialKeywords = ["legal", "medical", "safety", "regulatory", "compliance", "fire", "emergency"];
   const strategicKeywords = ["partnership", "contract", "investment", "acquisition", "strategic", "major"];
-  
+
   if (existentialKeywords.some(kw => fullContext.includes(kw))) {
     inferredTier = "existential";
   } else if (strategicKeywords.some(kw => fullContext.includes(kw)) && inferredTier !== "existential") {
     inferredTier = "strategic";
   }
-  
+
   // Get tier configuration
   const config = RISK_TIER_CONFIG[inferredTier];
-  
+
   // Determine if evidence threshold is met
   const evidenceMin = Math.max(config.evidenceThreshold, evidenceCount);
-  
+
   return {
     tier: inferredTier,
     requiredEvidenceMin: evidenceMin,
@@ -222,43 +222,43 @@ export function evaluateEvidenceRisk(
 } {
   const evidenceCount = evidenceEvents.length;
   const gaps: string[] = [];
-  
+
   // Check quantity threshold
   if (evidenceCount < requiredMin) {
     gaps.push(`Insufficient evidence: ${evidenceCount}/${requiredMin} required`);
   }
-  
+
   // Check for evidence variety
   const sourceTypes = new Set<EvidenceEventType>(evidenceEvents.map(e => e.type));
   const hasDocument = sourceTypes.has("document");
   const hasText = sourceTypes.has("text");
-  
+
   if (!hasDocument && !hasText) {
     gaps.push("Missing document or text evidence");
   }
-  
+
   // Check for recent evidence
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-  
+
   const recentEvidence = evidenceEvents.filter(e => {
     const date = new Date(e.capturedAt);
     return date > oneWeekAgo;
   });
-  
+
   if (recentEvidence.length === 0 && evidenceCount > 0) {
     gaps.push("No recent evidence (past week)");
   }
-  
+
   // Determine risk level
   let riskLevel: "low" | "medium" | "high" = "low";
-  
+
   if (gaps.length >= 2) {
     riskLevel = "high";
   } else if (gaps.length === 1) {
     riskLevel = "medium";
   }
-  
+
   return {
     meetsThreshold: gaps.length === 0,
     riskLevel,
@@ -290,7 +290,7 @@ export function createAuditEntry(params: {
     provenanceRefs: params.provenanceRefs || [],
     notes: params.notes || []
   };
-  
+
   // Only add optional properties if they have values
   if (params.decisionId) {
     entry.decisionId = params.decisionId;
@@ -301,7 +301,7 @@ export function createAuditEntry(params: {
   if (params.runId) {
     entry.runId = params.runId;
   }
-  
+
   return entry;
 }
 
@@ -313,16 +313,16 @@ export function validatePolicyConfig(config: PolicyConfig): {
   errors: string[];
 } {
   const errors: string[] = [];
-  
+
   // Check required fields
   if (!config.id || typeof config.id !== "string") {
     errors.push("Policy ID is required");
   }
-  
+
   if (!config.version || typeof config.version !== "string") {
     errors.push("Policy version is required");
   }
-  
+
   // Check domain lists don't overlap
   const overlap = config.domainAllowlist.filter(
     domain => config.domainDenylist.includes(domain)
@@ -330,7 +330,7 @@ export function validatePolicyConfig(config: PolicyConfig): {
   if (overlap.length > 0) {
     errors.push(`Domains in both allowlist and denylist: ${overlap.join(", ")}`);
   }
-  
+
   // Check inference type lists don't overlap
   const infOverlap = config.inferenceTypeAllowlist.filter(
     type => config.inferenceTypeDenylist.includes(type)
@@ -338,23 +338,23 @@ export function validatePolicyConfig(config: PolicyConfig): {
   if (infOverlap.length > 0) {
     errors.push(`Inference types in both allowlist and denylist: ${infOverlap.join(", ")}`);
   }
-  
+
   // Check timestamps
   const createdAt = new Date(config.createdAt);
   const updatedAt = new Date(config.updatedAt);
-  
+
   if (isNaN(createdAt.getTime())) {
     errors.push("Invalid createdAt timestamp");
   }
-  
+
   if (isNaN(updatedAt.getTime())) {
     errors.push("Invalid updatedAt timestamp");
   }
-  
+
   if (!isNaN(createdAt.getTime()) && !isNaN(updatedAt.getTime()) && updatedAt < createdAt) {
     errors.push("updatedAt must be after createdAt");
   }
-  
+
   return {
     valid: errors.length === 0,
     errors
@@ -431,23 +431,23 @@ export function applyGovernanceRules(params: {
   approved: boolean;
 } {
   const { decisionSpec, evidenceEvents, branchGraph, policyConfig } = params;
-  
+
   // Evaluate risk tier
   const riskProfile = evaluateRiskTier(decisionSpec, evidenceEvents.length);
-  
+
   // Evaluate evidence against requirements
   const evidenceRisk = evaluateEvidenceRisk(
     evidenceEvents,
     riskProfile.requiredEvidenceMin
   );
-  
+
   // Check against policy config if provided
   const policyWarnings: string[] = [];
   let policyApproved = true;
   const decisionTypeRules = evaluateDecisionTypeRules(decisionSpec, evidenceEvents, policyConfig);
   policyWarnings.push(...decisionTypeRules.warnings);
   policyApproved = policyApproved && decisionTypeRules.approved;
-  
+
   if (policyConfig) {
     // Validate policy first
     const policyValidation = validatePolicyConfig(policyConfig);
@@ -457,19 +457,19 @@ export function applyGovernanceRules(params: {
     } else {
       // Check domain allowlist/denylist
       const domain = extractDomain(decisionSpec);
-      
-      if (policyConfig.domainDenylist.length > 0 && 
+
+      if (policyConfig.domainDenylist.length > 0 &&
           policyConfig.domainDenylist.includes(domain)) {
         policyWarnings.push(`Domain "${domain}" is in policy denylist`);
         policyApproved = false;
       }
-      
-      if (policyConfig.domainAllowlist.length > 0 && 
+
+      if (policyConfig.domainAllowlist.length > 0 &&
           !policyConfig.domainAllowlist.includes(domain)) {
         policyWarnings.push(`Domain "${domain}" is not in policy allowlist`);
         // This is a warning, not a blocker
       }
-      
+
       // Check forbidden domains from profile
       if (riskProfile.forbiddenDomains) {
         for (const forbiddenDomain of riskProfile.forbiddenDomains) {
@@ -481,7 +481,7 @@ export function applyGovernanceRules(params: {
       }
     }
   }
-  
+
   // Check branch graph for risky patterns
   const branchWarnings: string[] = [];
   if (branchGraph) {
@@ -490,24 +490,24 @@ export function applyGovernanceRules(params: {
     if (maxDepth >= 3 && riskProfile.tier === "informational") {
       branchWarnings.push("Deep branching detected in informational decision");
     }
-    
+
     // Check for many dependencies
     const dependencyCount = countDependencies(branchGraph);
     if (dependencyCount > 10 && riskProfile.tier === "informational") {
       branchWarnings.push("High dependency count in informational decision");
     }
   }
-  
+
   // Compile warnings
   const warnings = [
     ...evidenceRisk.gaps,
     ...policyWarnings,
     ...branchWarnings
   ];
-  
+
   // Determine if decision is approved
   const approved = evidenceRisk.meetsThreshold && policyApproved;
-  
+
   // Create audit entry
   const auditEntry = createAuditEntry({
     actor: "system",
@@ -521,7 +521,7 @@ export function applyGovernanceRules(params: {
       ...warnings.map(w => `Warning: ${w}`)
     ]
   });
-  
+
   return {
     riskProfile,
     auditEntry,
@@ -535,7 +535,7 @@ export function applyGovernanceRules(params: {
  */
 export function getDefaultRiskProfile(tier: RiskTier): DecisionRiskProfile {
   const config = RISK_TIER_CONFIG[tier];
-  
+
   return {
     tier,
     requiredEvidenceMin: config.evidenceThreshold,
@@ -553,14 +553,14 @@ function calculateMaxDepth(branchGraph: BranchGraph): number {
   if (!branchGraph.nodes || branchGraph.nodes.length === 0) {
     return 0;
   }
-  
+
   let maxDepth = 0;
-  
+
   for (const node of branchGraph.nodes) {
     const depth = calculateNodeDepth(node.id, branchGraph);
     maxDepth = Math.max(maxDepth, depth);
   }
-  
+
   return maxDepth;
 }
 
@@ -606,13 +606,13 @@ function hashDecisionSpec(decisionSpec: DecisionSpec): string {
   // Simple hash for audit purposes
   const str = JSON.stringify(decisionSpec);
   let hash = 0;
-  
+
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
     hash = hash & hash; // Convert to 32bit integer
   }
-  
+
   return Math.abs(hash).toString(16).padStart(8, "0");
 }
 

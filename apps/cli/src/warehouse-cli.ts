@@ -43,7 +43,7 @@ interface AnalyticsCliArgs {
 // Retention policy helper functions
 async function getRetentionConfig(cwd: string): Promise<RetentionConfig> {
   const configPath = resolve(cwd, METADATA_DIR, RETENTION_CONFIG_FILE);
-  
+
   try {
     const data = readFileSync(configPath, "utf8");
     return JSON.parse(data);
@@ -70,17 +70,17 @@ async function getRetentionConfig(cwd: string): Promise<RetentionConfig> {
 async function saveRetentionConfig(cwd: string, config: RetentionConfig): Promise<void> {
   const configPath = resolve(cwd, METADATA_DIR, RETENTION_CONFIG_FILE);
   const configDir = resolve(cwd, METADATA_DIR);
-  
+
   if (!existsSync(configDir)) {
     mkdirSync(configDir, { recursive: true });
   }
-  
+
   writeFileSync(configPath, JSON.stringify(config, null, 2), "utf8");
 }
 
 async function getPinnedRecords(cwd: string): Promise<PinnedRecords> {
   const pinnedPath = resolve(cwd, METADATA_DIR, PINNED_FILE);
-  
+
   try {
     const data = readFileSync(pinnedPath, "utf8");
     const parsed = JSON.parse(data);
@@ -99,11 +99,11 @@ async function getPinnedRecords(cwd: string): Promise<PinnedRecords> {
 async function savePinnedRecords(cwd: string, pinned: PinnedRecords): Promise<void> {
   const pinnedPath = resolve(cwd, METADATA_DIR, PINNED_FILE);
   const metadataDir = resolve(cwd, METADATA_DIR);
-  
+
   if (!existsSync(metadataDir)) {
     mkdirSync(metadataDir, { recursive: true });
   }
-  
+
   writeFileSync(pinnedPath, JSON.stringify(pinned, null, 2), "utf8");
 }
 
@@ -112,17 +112,17 @@ function isExpired(envelope: WarehouseEnvelope<unknown>, retentionDays: number, 
   if (pinnedIds.includes(envelope.id)) {
     return false;
   }
-  
+
   // Never expire if no retention days specified
   if (!retentionDays || retentionDays <= 0) {
     return false;
   }
-  
+
   const createdAt = new Date(envelope.createdAt);
   const now = new Date();
   const ageMs = now.getTime() - createdAt.getTime();
   const ageDays = ageMs / (1000 * 60 * 60 * 24);
-  
+
   return ageDays > retentionDays;
 }
 
@@ -322,24 +322,24 @@ export async function runWarehouseCommand(args: WarehouseCliArgs): Promise<numbe
       const retentionConfig = await getRetentionConfig(process.cwd());
       const pinned = await getPinnedRecords(process.cwd());
       const now = new Date();
-      
+
       // Get all records
       const allRecords = await warehouse.list({
         kinds: args.kinds,
         tags: args.tags,
         includeDeleted: false,
       });
-      
+
       const expiredRecords: Array<{ id: string; kind: WarehouseKind; ageDays: number; reason: string }> = [];
-      
+
       for (const record of allRecords.items) {
         const retentionDays = retentionConfig.perKindRetention[record.kind] || retentionConfig.defaultRetentionDays;
-        
+
         if (isExpired(record, retentionDays, pinned.pinnedIds)) {
           const createdAt = new Date(record.createdAt);
           const ageMs = now.getTime() - createdAt.getTime();
           const ageDays = Math.floor(ageMs / (1000 * 60 * 60 * 24));
-          
+
           expiredRecords.push({
             id: record.id,
             kind: record.kind,
@@ -348,7 +348,7 @@ export async function runWarehouseCommand(args: WarehouseCliArgs): Promise<numbe
           });
         }
       }
-      
+
       if (expiredRecords.length === 0) {
         console.log("No expired records found matching criteria.");
         console.log(`\nRetention settings used:`);
@@ -356,20 +356,20 @@ export async function runWarehouseCommand(args: WarehouseCliArgs): Promise<numbe
         console.log(`  Pinned records: ${pinned.pinnedIds.length}`);
         return 0;
       }
-      
+
       console.log(`Found ${expiredRecords.length} expired record(s):\n`);
-      
+
       for (const record of expiredRecords) {
         console.log(`  ${record.id} [${record.kind}]`);
         console.log(`    Age: ${record.ageDays} days - ${record.reason}`);
       }
-      
+
       if (args.dryRun) {
         console.log(`\n[Dry run] Would prune ${expiredRecords.length} record(s)`);
         console.log("No changes made.");
         return 0;
       }
-      
+
       let pruned = 0;
       for (const record of expiredRecords) {
         try {
@@ -380,7 +380,7 @@ export async function runWarehouseCommand(args: WarehouseCliArgs): Promise<numbe
           console.error(`  Failed to prune ${record.id}:`, err instanceof Error ? err.message : err);
         }
       }
-      
+
       console.log(`\nPruned ${pruned}/${expiredRecords.length} records`);
       return 0;
     }
@@ -390,27 +390,27 @@ export async function runWarehouseCommand(args: WarehouseCliArgs): Promise<numbe
         console.error("Error: --id is required for pin command");
         return 1;
       }
-      
+
       // Check if record exists
       const allRecords = await warehouse.list({ limit: 1000 });
       const record = allRecords.items.find(r => r.id === args.id);
-      
+
       if (!record) {
         console.error(`Error: Record not found: ${args.id}`);
         return 1;
       }
-      
+
       const pinned = await getPinnedRecords(process.cwd());
-      
+
       if (pinned.pinnedIds.includes(args.id!)) {
         console.log(`Record ${args.id} is already pinned`);
         return 0;
       }
-      
+
       pinned.pinnedIds.push(args.id!);
       pinned.lastUpdated = new Date().toISOString();
       await savePinnedRecords(process.cwd(), pinned);
-      
+
       console.log(`Pinned record: ${args.id} [${record.kind}]`);
       console.log(`Total pinned: ${pinned.pinnedIds.length}`);
       return 0;
@@ -421,18 +421,18 @@ export async function runWarehouseCommand(args: WarehouseCliArgs): Promise<numbe
         console.error("Error: --id is required for unpin command");
         return 1;
       }
-      
+
       const pinned = await getPinnedRecords(process.cwd());
-      
+
       if (!pinned.pinnedIds.includes(args.id!)) {
         console.log(`Record ${args.id} is not pinned`);
         return 0;
       }
-      
+
       pinned.pinnedIds = pinned.pinnedIds.filter(id => id !== args.id);
       pinned.lastUpdated = new Date().toISOString();
       await savePinnedRecords(process.cwd(), pinned);
-      
+
       console.log(`Unpinned record: ${args.id}`);
       console.log(`Total pinned: ${pinned.pinnedIds.length}`);
       return 0;
@@ -445,7 +445,7 @@ export async function runWarehouseCommand(args: WarehouseCliArgs): Promise<numbe
         config.defaultRetentionDays = retentionDays;
         config.lastUpdated = new Date().toISOString();
         await saveRetentionConfig(process.cwd(), config);
-        
+
         console.log(`Set default retention period to ${retentionDays} days`);
         console.log("\nRetention by record kind:");
         for (const [kind, days] of Object.entries(config.perKindRetention)) {
@@ -453,10 +453,10 @@ export async function runWarehouseCommand(args: WarehouseCliArgs): Promise<numbe
         }
         return 0;
       }
-      
+
       const config = await getRetentionConfig(process.cwd());
       const pinned = await getPinnedRecords(process.cwd());
-      
+
       console.log("Retention Policy Settings:");
       console.log(`  Default retention: ${config.defaultRetentionDays} days`);
       console.log(`  Pinned records: ${pinned.pinnedIds.length} (never expire)`);
@@ -464,14 +464,14 @@ export async function runWarehouseCommand(args: WarehouseCliArgs): Promise<numbe
       for (const [kind, days] of Object.entries(config.perKindRetention)) {
         console.log(`  ${kind}: ${days} days`);
       }
-      
+
       if (pinned.pinnedIds.length > 0) {
         console.log("\nPinned records:");
         for (const id of pinned.pinnedIds) {
           console.log(`  ${id}`);
         }
       }
-      
+
       return 0;
     }
 

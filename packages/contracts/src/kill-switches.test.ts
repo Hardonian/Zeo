@@ -75,7 +75,7 @@ describe('kill-switches', () => {
     it('should allow programmatic toggling', () => {
       setKillSwitch('ai_assist', false);
       expect(isFeatureEnabled('ai_assist')).toBe(false);
-      
+
       setKillSwitch('ai_assist', true);
       expect(isFeatureEnabled('ai_assist')).toBe(true);
     });

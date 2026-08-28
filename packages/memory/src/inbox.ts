@@ -73,7 +73,7 @@ export function createLocalStorageAdapter(): InboxStorage {
       const now = new Date().toISOString();
       const draftId = generateId();
       const checksum = scenario.summary + scenario.titleSuggestion;
-      
+
       const record: DecisionDraftRecord = {
         draftId,
         createdAt: now,
@@ -83,7 +83,7 @@ export function createLocalStorageAdapter(): InboxStorage {
         scenarioDraft: scenario,
         status: "new",
       };
-      
+
       drafts[draftId] = record;
       saveToStorage(drafts);
       return record;
@@ -101,28 +101,28 @@ export function createLocalStorageAdapter(): InboxStorage {
     }): Promise<DecisionDraftRecord[]> {
       const drafts = getFromStorage();
       const allDrafts = Object.values(drafts);
-      
+
       return allDrafts.filter((draft) => {
         if (options?.status && draft.status !== options.status) {
           return false;
         }
-        
+
         if (options?.tags && options.tags.length > 0) {
-          const hasMatchingTag = options.tags.some((tag) => 
+          const hasMatchingTag = options.tags.some((tag) =>
             draft.tags?.includes(tag)
           );
           if (!hasMatchingTag) return false;
         }
-        
+
         if (draft.status === "snoozed" && !options?.includeSnoozed) {
           const now = new Date().toISOString();
           if (draft.snoozeUntil && draft.snoozeUntil > now) {
             return false;
           }
         }
-        
+
         return true;
-      }).sort((a, b) => 
+      }).sort((a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
     },
@@ -134,11 +134,11 @@ export function createLocalStorageAdapter(): InboxStorage {
     ): Promise<DecisionDraftRecord> {
       const drafts = getFromStorage();
       const draft = drafts[draftId];
-      
+
       if (!draft) {
         throw new Error(`Draft ${draftId} not found`);
       }
-      
+
       const updatedBase = {
         draftId: draft.draftId,
         createdAt: draft.createdAt,
@@ -148,15 +148,15 @@ export function createLocalStorageAdapter(): InboxStorage {
         scenarioDraft: draft.scenarioDraft,
         status,
       } as DecisionDraftRecord;
-      
+
       if (draft.tags) {
         updatedBase.tags = draft.tags;
       }
-      
+
       if (options?.snoozeUntil) {
         updatedBase.snoozeUntil = options.snoozeUntil;
       }
-      
+
       drafts[draftId] = updatedBase;
       saveToStorage(drafts);
       return updatedBase;
@@ -165,11 +165,11 @@ export function createLocalStorageAdapter(): InboxStorage {
     async promoteDraft(draftId: string, options: { promotedAt: string; targetPath?: string }): Promise<DecisionDraftRecord> {
       const drafts = getFromStorage();
       const draft = drafts[draftId];
-      
+
       if (!draft) {
         throw new Error(`Draft ${draftId} not found`);
       }
-      
+
       const promotedDraft: DecisionDraftRecord = {
         ...draft,
         status: "promoted",
@@ -179,7 +179,7 @@ export function createLocalStorageAdapter(): InboxStorage {
           ...(options.targetPath ? { targetPath: options.targetPath } : {}),
         },
       };
-      
+
       drafts[draftId] = promotedDraft;
       saveToStorage(drafts);
       return promotedDraft;
@@ -201,7 +201,7 @@ export function createMemoryAdapter(): InboxStorage {
       const draftId = generateId();
       const now = new Date().toISOString();
       const checksum = scenario.summary + scenario.titleSuggestion;
-      
+
       const record: DecisionDraftRecord = {
         draftId,
         createdAt: now,
@@ -211,7 +211,7 @@ export function createMemoryAdapter(): InboxStorage {
         scenarioDraft: scenario,
         status: 'new',
       };
-      
+
       memoryStore.set(draftId, record);
       return record;
     },
@@ -226,28 +226,28 @@ export function createMemoryAdapter(): InboxStorage {
       includeSnoozed?: boolean;
     }): Promise<DecisionDraftRecord[]> {
       const allDrafts = Array.from(memoryStore.values());
-      
+
       return allDrafts.filter((draft) => {
         if (options?.status && draft.status !== options.status) {
           return false;
         }
-        
+
         if (options?.tags && options.tags.length > 0) {
-          const hasMatchingTag = options.tags.some((tag) => 
+          const hasMatchingTag = options.tags.some((tag) =>
             draft.tags?.includes(tag)
           );
           if (!hasMatchingTag) return false;
         }
-        
+
         if (draft.status === "snoozed" && !options?.includeSnoozed) {
           const now = new Date().toISOString();
           if (draft.snoozeUntil && draft.snoozeUntil > now) {
             return false;
           }
         }
-        
+
         return true;
-      }).sort((a, b) => 
+      }).sort((a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
     },
@@ -258,11 +258,11 @@ export function createMemoryAdapter(): InboxStorage {
       options?: { snoozeUntil?: string }
     ): Promise<DecisionDraftRecord> {
       const draft = memoryStore.get(draftId);
-      
+
       if (!draft) {
         throw new Error(`Draft ${draftId} not found`);
       }
-      
+
       const updatedDraft = {
         draftId: draft.draftId,
         createdAt: draft.createdAt,
@@ -272,26 +272,26 @@ export function createMemoryAdapter(): InboxStorage {
         scenarioDraft: draft.scenarioDraft,
         status,
       } as DecisionDraftRecord;
-      
+
       if (draft.tags) {
         updatedDraft.tags = draft.tags;
       }
-      
+
       if (options?.snoozeUntil) {
         updatedDraft.snoozeUntil = options.snoozeUntil;
       }
-      
+
       memoryStore.set(draftId, updatedDraft);
       return updatedDraft;
     },
 
     async promoteDraft(draftId: string, options: { promotedAt: string; targetPath?: string }): Promise<DecisionDraftRecord> {
       const draft = memoryStore.get(draftId);
-      
+
       if (!draft) {
         throw new Error(`Draft ${draftId} not found`);
       }
-      
+
       const promotedDraft: DecisionDraftRecord = {
         ...draft,
         status: "promoted",
@@ -301,7 +301,7 @@ export function createMemoryAdapter(): InboxStorage {
           ...(options.targetPath ? { targetPath: options.targetPath } : {}),
         },
       };
-      
+
       memoryStore.set(draftId, promotedDraft);
       return promotedDraft;
     },

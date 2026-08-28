@@ -17,7 +17,7 @@ export function validateNoFutureTimestamps(
   const now = context?.asOf ? new Date(context.asOf) : new Date();
   const tolerance = 60000; // 1 minute tolerance for clock skew
   const cutoff = new Date(now.getTime() + tolerance);
-  
+
   for (const obs of observations) {
     const obsTime = new Date(obs.t);
     if (obsTime > cutoff) {
@@ -26,7 +26,7 @@ export function validateNoFutureTimestamps(
       );
     }
   }
-  
+
   return violations;
 }
 
@@ -35,7 +35,7 @@ export function validateNoFutureTimestamps(
  */
 export function validateChecksums(observations: SignalObservation[]): string[] {
   const violations: string[] = [];
-  
+
   for (const obs of observations) {
     // Check provenance checksums
     for (const prov of obs.provenance) {
@@ -45,13 +45,13 @@ export function validateChecksums(observations: SignalObservation[]): string[] {
         );
       }
     }
-    
+
     // Validate observation has required identifiers
     if (!obs.observationId) {
       violations.push("Observation missing observationId");
     }
   }
-  
+
   return violations;
 }
 
@@ -60,14 +60,14 @@ export function validateChecksums(observations: SignalObservation[]): string[] {
  */
 export function validateSchema(observations: SignalObservation[]): string[] {
   const violations: string[] = [];
-  
+
   for (const obs of observations) {
     // Required fields
     if (!obs.observationId) violations.push(`Observation missing observationId`);
     if (!obs.signalId) violations.push(`Observation ${obs.observationId} missing signalId`);
     if (!obs.t) violations.push(`Observation ${obs.observationId} missing timestamp`);
     if (!obs.sourceId) violations.push(`Observation ${obs.observationId} missing sourceId`);
-    
+
     // Value band validation
     if (!obs.valueBand) {
       violations.push(`Observation ${obs.observationId} missing valueBand`);
@@ -88,21 +88,21 @@ export function validateSchema(observations: SignalObservation[]): string[] {
         violations.push(`Observation ${obs.observationId} valueBand is inverted`);
       }
     }
-    
+
     // Weight validation
     if (typeof obs.weightApplied !== "number") {
       violations.push(`Observation ${obs.observationId} weightApplied is not a number`);
     } else if (obs.weightApplied < 0 || obs.weightApplied > 1) {
       violations.push(`Observation ${obs.observationId} weightApplied out of range [0,1]`);
     }
-    
+
     // Quality score validation
     if (typeof obs.qualityScore !== "number") {
       violations.push(`Observation ${obs.observationId} qualityScore is not a number`);
     } else if (obs.qualityScore < 0 || obs.qualityScore > 1) {
       violations.push(`Observation ${obs.observationId} qualityScore out of range [0,1]`);
     }
-    
+
     // Provenance validation
     if (!Array.isArray(obs.provenance)) {
       violations.push(`Observation ${obs.observationId} provenance is not an array`);
@@ -121,7 +121,7 @@ export function validateSchema(observations: SignalObservation[]): string[] {
       }
     }
   }
-  
+
   return violations;
 }
 
@@ -130,9 +130,9 @@ export function validateSchema(observations: SignalObservation[]): string[] {
  */
 export function validateStableOrdering(observations: SignalObservation[]): string[] {
   const violations: string[] = [];
-  
+
   if (observations.length < 2) return violations;
-  
+
   // Group by signal
   const bySignal = new Map<string, SignalObservation[]>();
   for (const obs of observations) {
@@ -140,13 +140,13 @@ export function validateStableOrdering(observations: SignalObservation[]): strin
     group.push(obs);
     bySignal.set(obs.signalId, group);
   }
-  
+
   // Check each signal is sorted by time
   for (const [signalId, group] of bySignal) {
     const sorted = [...group].sort((a, b) =>
       new Date(a.t).getTime() - new Date(b.t).getTime()
     );
-    
+
     for (let i = 0; i < group.length; i++) {
       if (group[i].observationId !== sorted[i].observationId) {
         violations.push(
@@ -156,7 +156,7 @@ export function validateStableOrdering(observations: SignalObservation[]): strin
       }
     }
   }
-  
+
   return violations;
 }
 
@@ -166,14 +166,14 @@ export function validateStableOrdering(observations: SignalObservation[]): strin
 export function validateNoDuplicates(observations: SignalObservation[]): string[] {
   const violations: string[] = [];
   const seen = new Set<string>();
-  
+
   for (const obs of observations) {
     if (seen.has(obs.observationId)) {
       violations.push(`Duplicate observationId: ${obs.observationId}`);
     }
     seen.add(obs.observationId);
   }
-  
+
   return violations;
 }
 
@@ -228,19 +228,19 @@ export function createIntegrityEnforcer(
   rules: DataIntegrityRule[] = INTEGRITY_RULES
 ): IntegrityEnforcer {
   const activeRules = new Map(rules.map(r => [r.id, r]));
-  
+
   return {
     validate(
       observations: SignalObservation[],
       context?: { asOf?: string }
     ): IntegrityValidationResult {
       const violations: IntegrityValidationResult["violations"] = [];
-      
+
       for (const rule of activeRules.values()) {
         if (!rule.enabled) continue;
-        
+
         const ruleViolations = rule.validate(observations, context);
-        
+
         if (ruleViolations.length > 0) {
           violations.push({
             ruleId: rule.id,
@@ -251,30 +251,30 @@ export function createIntegrityEnforcer(
           });
         }
       }
-      
+
       return {
         valid: violations.length === 0,
         violations,
       };
     },
-    
+
     validateBatch(batch: ObservationBatch): IntegrityValidationResult {
       return this.validate(batch.items);
     },
-    
+
     enforce(observations: SignalObservation[], context?: { asOf?: string }): void {
       const result = this.validate(observations, context);
-      
+
       if (!result.valid) {
         const messages = result.violations.map(v => `${v.ruleId}: ${v.message}`);
         throw new IntegrityError("multiple_rules", messages);
       }
     },
-    
+
     addRule(rule: DataIntegrityRule): void {
       activeRules.set(rule.id, rule);
     },
-    
+
     disableRule(ruleId: string): void {
       const rule = activeRules.get(ruleId);
       if (rule) {

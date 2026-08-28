@@ -1,6 +1,6 @@
 # Zeo STRIDE Threat Model (Reality Mode)
 
-**Assessment timestamp:** 2026-02-18T03:06:21+00:00  
+**Assessment timestamp:** 2026-02-18T03:06:21+00:00
 **Method:** repository source review + local build/test evidence
 
 ## Provenance ledger

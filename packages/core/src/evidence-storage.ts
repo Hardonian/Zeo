@@ -51,11 +51,11 @@ export class PrismaEvidenceStorage implements EvidenceStorage {
                 organizationId: orgId,
                 runId: runId,
                 kind: "zip",
-                storageProvider: "db", // Storing in DB blobs is bad practice regarding size, but allowable for "db" provider if just bytes. 
-                // Schema says storageKey (string). Use blob? 
+                storageProvider: "db", // Storing in DB blobs is bad practice regarding size, but allowable for "db" provider if just bytes.
+                // Schema says storageKey (string). Use blob?
                 // Schema doesn't have Bytes field. It has storageKey.
                 // "storageProvider ('db'|'s3'|'local')".
-                // If 'db', we expect a Table to hold bytes or encode as base64 in storageKey ?? 
+                // If 'db', we expect a Table to hold bytes or encode as base64 in storageKey ??
                 // "storageKey" implies a pointer.
                 // If provider is DB, usually there's a separate Blob table. I defined generic EvidenceObject.
                 // I will assume for 'db' provider I can't store large blob in 'storageKey'.

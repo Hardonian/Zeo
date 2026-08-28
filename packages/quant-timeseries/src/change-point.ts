@@ -1,14 +1,14 @@
 /**
  * @zeo/quant-timeseries - Change-Point Detection
- * 
+ *
  * Implements BOCPD (Bayesian Online Change-Point Detection) and
  * PELT (Pruned Exact Linear Time) algorithms for detecting structural
  * changes in time series.
- * 
+ *
  * References:
  * - Adams & MacKay (2007): "Bayesian Online Changepoint Detection"
  * - Killick et al. (2012): "Optimal Detection of Changepoints with a Linear Computational Cost"
- * 
+ *
  * All implementations are deterministic and produce reproducible outputs.
  */
 
@@ -63,7 +63,7 @@ function computeSufficientStats(values: number[], start: number, end: number): {
 
 /**
  * BOCPD: Bayesian Online Change-Point Detection
- * 
+ *
  * Maintains a run-length distribution over time and detects
  * points where the probability of a new segment increases.
  */
@@ -225,7 +225,7 @@ export function detectChangePointsBOCPD(
 
 /**
  * PELT: Pruned Exact Linear Time change-point detection
- * 
+ *
  * Finds optimal segmentation by minimizing a penalized cost function.
  */
 export function detectChangePointsPELT(

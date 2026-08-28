@@ -394,11 +394,11 @@ if (!manifestResult.success) {
 ### Runner Implementation
 
 ```typescript
-import { 
-  RunnerManifest, 
-  ReportSchema, 
+import {
+  RunnerManifest,
+  ReportSchema,
   EvidencePacket,
-  ErrorEnvelope 
+  ErrorEnvelope
 } from '@controlplane/contracts';
 
 export class MyRunner {
@@ -472,10 +472,10 @@ export class MyRunner {
 ### Contract Validation
 
 ```typescript
-import { 
-  validateReport, 
+import {
+  validateReport,
   validateRunnerManifest,
-  validateEvidencePacket 
+  validateEvidencePacket
 } from '@controlplane/contract-kit';
 
 // Validate runner manifest

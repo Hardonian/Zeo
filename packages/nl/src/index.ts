@@ -180,7 +180,7 @@ function extractCandidateAssumptions(
 
   for (const sentence of sentences) {
     const textIndex = text.indexOf(sentence);
-    
+
     for (const pattern of ASSUMPTION_MODALS) {
       if (pattern.test(sentence)) {
         const prov = createProvenancePointer(text, textIndex, textIndex + sentence.length, checksum);

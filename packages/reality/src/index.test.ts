@@ -1,6 +1,6 @@
 /**
  * Reality Mode - Test Suite
- * 
+ *
  * Comprehensive tests for:
  * - Redaction correctness
  * - Signature verification
@@ -21,7 +21,7 @@ import {
   validateTenantIsolation,
   transferOwnership,
   DEFAULT_ROLE_PERMISSIONS,
-  
+
   // Redaction
   redactDecisionSpec,
   redactEvidenceEvents,
@@ -29,7 +29,7 @@ import {
   generateRedactionPreview,
   validateRedactedContent,
   DEFAULT_REDACTION_POLICIES,
-  
+
   // Crypto
   hashData,
   hashObject,
@@ -39,7 +39,7 @@ import {
   decryptData,
   signData,
   verifySignature,
-  
+
   // Share Bundle
   createShareBundle,
   verifyBundleSignature,
@@ -54,13 +54,13 @@ describe("Reality Mode", () => {
   // =============================================================================
   // CRYPTO TESTS
   // =============================================================================
-  
+
   describe("Crypto", () => {
     it("should hash data consistently", () => {
       const data = "test data";
       const hash1 = hashData(data);
       const hash2 = hashData(data);
-      
+
       expect(hash1).toBe(hash2);
       expect(hash1).toHaveLength(64); // SHA-256 hex
     });
@@ -68,14 +68,14 @@ describe("Reality Mode", () => {
     it("should canonicalize JSON deterministically", () => {
       const obj1 = { b: 2, a: 1 };
       const obj2 = { a: 1, b: 2 };
-      
+
       expect(canonicalizeJson(obj1)).toBe(canonicalizeJson(obj2));
     });
 
     it("should encrypt and decrypt data", () => {
       const key = generateEncryptionKey();
       const data = new TextEncoder().encode("secret message");
-      
+
       const encrypted = encryptData(data, key);
       const decrypted = decryptData(
         encrypted.encrypted,
@@ -83,19 +83,19 @@ describe("Reality Mode", () => {
         encrypted.iv,
         encrypted.authTag
       );
-      
+
       expect(decrypted).toEqual(data);
     });
 
     it("should sign and verify data", () => {
       const key = generateEncryptionKey();
       const data = "data to sign";
-      
+
       const signature = signData(data, key);
       const valid = verifySignature(data, signature, key);
-      
+
       expect(valid).toBe(true);
-      
+
       // Wrong key should fail
       const wrongKey = generateEncryptionKey();
       const invalid = verifySignature(data, signature, wrongKey);
@@ -106,7 +106,7 @@ describe("Reality Mode", () => {
   // =============================================================================
   // ACL TESTS
   // =============================================================================
-  
+
   describe("ACL", () => {
     const ownerId = "user-owner";
     const editorId = "user-editor";
@@ -116,7 +116,7 @@ describe("Reality Mode", () => {
 
     it("should create ACL with owner", () => {
       const acl = createACL(resourceId, "decision", ownerId, tenantId);
-      
+
       expect(acl.ownerId).toBe(ownerId);
       expect(acl.tenantId).toBe(tenantId);
       expect(acl.entries).toHaveLength(0);
@@ -125,7 +125,7 @@ describe("Reality Mode", () => {
     it("should give owner full permissions", () => {
       const acl = createACL(resourceId, "decision", ownerId, tenantId);
       const perms = getPermissions(acl, ownerId);
-      
+
       expect(perms).toEqual(DEFAULT_ROLE_PERMISSIONS.owner);
       expect(perms.canDelete).toBe(true);
       expect(perms.canShare).toBe(true);
@@ -138,7 +138,7 @@ describe("Reality Mode", () => {
         role: "editor",
         grantedBy: ownerId,
       });
-      
+
       const perms = getPermissions(acl, editorId);
       expect(perms.canRead).toBe(true);
       expect(perms.canWrite).toBe(true);
@@ -153,7 +153,7 @@ describe("Reality Mode", () => {
         role: "viewer",
         grantedBy: ownerId,
       });
-      
+
       expect(canRead(acl, viewerId)).toBe(true);
       expect(canWrite(acl, viewerId)).toBe(false);
       expect(canDelete(acl, viewerId)).toBe(false);
@@ -162,18 +162,18 @@ describe("Reality Mode", () => {
     it("should deny access to unauthorized users", () => {
       const acl = createACL(resourceId, "decision", ownerId, tenantId);
       const perms = getPermissions(acl, "unauthorized-user");
-      
+
       expect(perms.canRead).toBe(false);
       expect(perms.canWrite).toBe(false);
     });
 
     it("should enforce tenant isolation", () => {
       const acl = createACL(resourceId, "decision", ownerId, tenantId);
-      
+
       expect(() => {
         validateTenantIsolation(acl, tenantId);
       }).not.toThrow();
-      
+
       expect(() => {
         validateTenantIsolation(acl, "different-tenant");
       }).toThrow("Tenant isolation violation");
@@ -182,7 +182,7 @@ describe("Reality Mode", () => {
     it("should transfer ownership", () => {
       let acl = createACL(resourceId, "decision", ownerId, tenantId);
       acl = transferOwnership(acl, editorId, ownerId);
-      
+
       expect(acl.ownerId).toBe(editorId);
       // Old owner should be editor
       expect(canWrite(acl, ownerId)).toBe(true);
@@ -192,7 +192,7 @@ describe("Reality Mode", () => {
       const owner = DEFAULT_ROLE_PERMISSIONS.owner;
       const editor = DEFAULT_ROLE_PERMISSIONS.editor;
       const viewer = DEFAULT_ROLE_PERMISSIONS.viewer;
-      
+
       expect(owner.canDelete).toBe(true);
       expect(editor.canDelete).toBe(false);
       expect(viewer.canWrite).toBe(false);
@@ -202,7 +202,7 @@ describe("Reality Mode", () => {
   // =============================================================================
   // REDACTION TESTS
   // =============================================================================
-  
+
   describe("Redaction", () => {
     const mockDecisionSpec: DecisionSpec = {
       id: "dec-123",
@@ -246,11 +246,11 @@ describe("Reality Mode", () => {
     it("should redact text with hashes", () => {
       const policy = DEFAULT_REDACTION_POLICIES.standard;
       const redacted = redactDecisionSpec(mockDecisionSpec, policy);
-      
+
       // Title should be hashed
       expect(redacted.title).toMatch(/^\[HASH:[a-f0-9]{8}\]$/);
       expect(redacted.title).not.toBe(mockDecisionSpec.title);
-      
+
       // Context should be hashed
       expect(redacted.context).toMatch(/^\[HASH:[a-f0-9]{8}\]$/);
     });
@@ -258,7 +258,7 @@ describe("Reality Mode", () => {
     it("should anonymize agents", () => {
       const policy = DEFAULT_REDACTION_POLICIES.standard;
       const redacted = redactDecisionSpec(mockDecisionSpec, policy);
-      
+
       expect(redacted.agents[0].name).toBe("Agent_1");
       expect(redacted.agents[1].name).toBe("Agent_2");
       expect(redacted.agents[0].name).not.toBe("Alice Smith");
@@ -267,14 +267,14 @@ describe("Reality Mode", () => {
     it("should remove constraints", () => {
       const policy = DEFAULT_REDACTION_POLICIES.strict;
       const redacted = redactDecisionSpec(mockDecisionSpec, policy);
-      
+
       expect(redacted.constraints).toHaveLength(0);
     });
 
     it("should redact evidence events", () => {
       const policy = DEFAULT_REDACTION_POLICIES.standard;
       const redacted = redactEvidenceEvent(mockEvidenceEvent, policy);
-      
+
       expect(redacted.redacted).toBe(true);
       expect(redacted.sourceIdHash).toBeDefined();
       expect(redacted.sourceIdHash).not.toBe(mockEvidenceEvent.sourceId);
@@ -288,7 +288,7 @@ describe("Reality Mode", () => {
         [mockEvidenceEvent],
         policy
       );
-      
+
       expect(preview.fieldsToRedact.length).toBeGreaterThan(0);
       expect(preview.structurePreserved).toBe(true);
       expect(preview.totalOriginalSize).toBeGreaterThan(0);
@@ -298,7 +298,7 @@ describe("Reality Mode", () => {
     it("should preserve structure after redaction", () => {
       const policy = DEFAULT_REDACTION_POLICIES.standard;
       const redacted = redactDecisionSpec(mockDecisionSpec, policy);
-      
+
       // Structure should be preserved
       expect(redacted.id).toBe(mockDecisionSpec.id);
       expect(redacted.agents).toHaveLength(mockDecisionSpec.agents.length);
@@ -309,7 +309,7 @@ describe("Reality Mode", () => {
     it("should validate redacted content", () => {
       const errors: string[] = [];
       const valid = validateRedactedContent(mockDecisionSpec, errors);
-      
+
       expect(valid).toBe(true);
       expect(errors).toHaveLength(0);
     });
@@ -318,7 +318,7 @@ describe("Reality Mode", () => {
       const invalidSpec = { ...mockDecisionSpec, agents: [] };
       const errors: string[] = [];
       const valid = validateRedactedContent(invalidSpec, errors);
-      
+
       expect(valid).toBe(false);
       expect(errors.length).toBeGreaterThan(0);
     });
@@ -327,7 +327,7 @@ describe("Reality Mode", () => {
   // =============================================================================
   // SHARE BUNDLE TESTS
   // =============================================================================
-  
+
   describe("Share Bundle", () => {
     const mockDecisionSpec: DecisionSpec = {
       id: "dec-123",
@@ -380,7 +380,7 @@ describe("Reality Mode", () => {
         signingKey,
         creatorId
       );
-      
+
       expect(bundle.metadata.bundleId).toBeDefined();
       expect(bundle.metadata.createdBy).toBe(creatorId);
       expect(bundle.signature).toBeDefined();
@@ -405,10 +405,10 @@ describe("Reality Mode", () => {
         signingKey,
         creatorId
       );
-      
+
       const valid = verifyBundleSignature(bundle, signingKey);
       expect(valid).toBe(true);
-      
+
       // Wrong key should fail
       const wrongKey = generateEncryptionKey();
       const invalid = verifyBundleSignature(bundle, wrongKey);
@@ -433,7 +433,7 @@ describe("Reality Mode", () => {
         signingKey,
         creatorId
       );
-      
+
       const valid = verifyContentHashes(bundle);
       expect(valid).toBe(true);
     });
@@ -456,9 +456,9 @@ describe("Reality Mode", () => {
         signingKey,
         creatorId
       );
-      
+
       const result = validateBundle(bundle, tenantId, signingKey);
-      
+
       expect(result.valid).toBe(true);
       expect(result.signatureValid).toBe(true);
       expect(result.hashesValid).toBe(true);
@@ -484,9 +484,9 @@ describe("Reality Mode", () => {
         signingKey,
         creatorId
       );
-      
+
       const result = validateBundle(bundle, "wrong-tenant", signingKey);
-      
+
       expect(result.valid).toBe(false);
       expect(result.tenantAuthorized).toBe(false);
     });
@@ -510,9 +510,9 @@ describe("Reality Mode", () => {
         signingKey,
         creatorId
       );
-      
+
       const result = validateBundle(bundle, tenantId, signingKey);
-      
+
       expect(result.valid).toBe(false);
       expect(result.notExpired).toBe(false);
     });
@@ -535,9 +535,9 @@ describe("Reality Mode", () => {
         signingKey,
         creatorId
       );
-      
+
       const result = importBundle(bundle, creatorId, tenantId);
-      
+
       expect(result.success).toBe(true);
       expect(result.signatureValid).toBe(true);
       expect(result.importedContent.decisionSpec).toBeDefined();
@@ -561,9 +561,9 @@ describe("Reality Mode", () => {
         signingKey,
         creatorId
       );
-      
+
       const result = importBundle(bundle, "unauthorized-user", tenantId);
-      
+
       expect(result.success).toBe(false);
       expect(result.errors.length).toBeGreaterThan(0);
     });
@@ -586,10 +586,10 @@ describe("Reality Mode", () => {
         signingKey,
         creatorId
       );
-      
+
       const json = exportBundleToJson(bundle);
       const parsed = parseBundleFromJson(json);
-      
+
       expect(parsed.metadata.bundleId).toBe(bundle.metadata.bundleId);
       expect(parsed.acl.ownerId).toBe(bundle.acl.ownerId);
     });
@@ -598,7 +598,7 @@ describe("Reality Mode", () => {
   // =============================================================================
   // END-TO-END TESTS
   // =============================================================================
-  
+
   describe("End-to-End", () => {
     it("should complete full share workflow", () => {
       // Setup
@@ -606,7 +606,7 @@ describe("Reality Mode", () => {
       const viewerId = "user-viewer";
       const tenantId = "tenant-1";
       const signingKey = generateEncryptionKey();
-      
+
       const decisionSpec: DecisionSpec = {
         id: "dec-e2e",
         title: "End-to-End Test",
@@ -625,16 +625,16 @@ describe("Reality Mode", () => {
         ],
         objectives: [{ id: "obj-1", metric: "success", weight: 1.0 }],
       };
-      
+
       // Step 1: Generate redaction preview
       const preview = generateRedactionPreview(
         decisionSpec,
         undefined,
         DEFAULT_REDACTION_POLICIES.standard
       );
-      
+
       expect(preview.fieldsToRedact.length).toBeGreaterThan(0);
-      
+
       // Step 2: Create share bundle with ACL
       const bundle = createShareBundle(
         decisionSpec,
@@ -655,22 +655,22 @@ describe("Reality Mode", () => {
         signingKey,
         ownerId
       );
-      
+
       // Step 3: Verify bundle integrity
       const validation = validateBundle(bundle, tenantId, signingKey);
       expect(validation.valid).toBe(true);
-      
+
       // Step 4: Export to JSON
       const json = exportBundleToJson(bundle);
       expect(json).toContain(bundle.metadata.bundleId);
-      
+
       // Step 5: Parse and re-import
       const parsed = parseBundleFromJson(json);
       const importResult = importBundle(parsed, viewerId, tenantId);
-      
+
       expect(importResult.success).toBe(true);
       expect(importResult.importedContent.decisionSpec).toBeDefined();
-      
+
       // Step 6: Verify redaction was applied
       const importedSpec = importResult.importedContent.decisionSpec;
       expect(importedSpec?.title).toMatch(/^\[HASH:/);

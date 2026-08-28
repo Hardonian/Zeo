@@ -1,15 +1,15 @@
 /**
  * Trust Integration Module
- * 
+ *
  * Provides utilities for integrating trust and consent management
  * across Zeo packages and UI components.
- * 
+ *
  * @example
  * ```typescript
  * import { createTrustIntegration, validatePanelConsent } from '@zeo/trust/integration';
- * 
+ *
  * const integration = createTrustIntegration();
- * 
+ *
  * // Check if a panel can access sensitive data
  * const result = validatePanelConsent('trust-consent-manager', 'evidenceUpload');
  * if (!result.allowed) {
@@ -112,32 +112,32 @@ export interface TrustIntegration {
   consentScope: ConsentScope;
   /** Integration configuration */
   config: TrustIntegrationConfig;
-  
+
   /**
    * Validate if a panel can perform an operation
    */
   validatePanelConsent(panelId: string, operation: PanelOperation): PanelConsentResult;
-  
+
   /**
    * Check if panel has elevated capabilities
    */
   hasElevatedCapabilities(panelId: string, capabilities: string[]): boolean;
-  
+
   /**
    * Get human-readable trust status
    */
   getTrustStatus(): string;
-  
+
   /**
    * Update consent scope
    */
   updateConsent(updates: Partial<ConsentScope>, reason: string): ConsentScope;
-  
+
   /**
    * Get audit log
    */
   getAuditLog(): TrustAuditEntry[];
-  
+
   /**
    * Enforce consent at entry point
    */
@@ -146,7 +146,7 @@ export interface TrustIntegration {
 
 /**
  * Creates a trust integration instance
- * 
+ *
  * @param config - Integration configuration
  * @returns Trust integration context
  */
@@ -159,23 +159,23 @@ export function createTrustIntegration(
     defaultConsent: createDefaultConsentScope(),
     ...config,
   };
-  
+
   let currentScope = fullConfig.defaultConsent ?? createDefaultConsentScope();
-  
+
   return {
     consentScope: currentScope,
     config: fullConfig,
-    
+
     validatePanelConsent(panelId: string, operation: PanelOperation): PanelConsentResult {
       const category = PANEL_OPERATION_MAP[operation];
       const requiredValue = OPERATION_REQUIRED_VALUES[operation];
-      
+
       // Special handling for aiAssistanceLevel (needs minimum level)
       if (category === 'aiAssistanceLevel') {
         const levels = ['none', 'suggest', 'autocomplete', 'autonomous'];
         const currentIndex = levels.indexOf(currentScope.aiAssistanceLevel);
         const requiredIndex = levels.indexOf(requiredValue as string);
-        
+
         if (currentIndex < requiredIndex) {
           return {
             allowed: false,
@@ -184,17 +184,17 @@ export function createTrustIntegration(
             currentScope: { ...currentScope },
           };
         }
-        
+
         return {
           allowed: true,
           currentScope: { ...currentScope },
         };
       }
-      
+
       // Boolean consent checks
       const currentValue = currentScope[category];
       const permitted = currentValue === requiredValue;
-      
+
       if (!permitted) {
         return {
           allowed: false,
@@ -203,13 +203,13 @@ export function createTrustIntegration(
           currentScope: { ...currentScope },
         };
       }
-      
+
       return {
         allowed: true,
         currentScope: { ...currentScope },
       };
     },
-    
+
     hasElevatedCapabilities(_panelId: string, capabilities: string[]): boolean {
       const elevatedCapabilities = [
         'needsNetwork',
@@ -219,23 +219,23 @@ export function createTrustIntegration(
         'needsOcr',
         'needsStt',
       ];
-      
+
       return capabilities.some(cap => elevatedCapabilities.includes(cap));
     },
-    
+
     getTrustStatus(): string {
       return getConsentSummary(currentScope);
     },
-    
+
     updateConsent(updates: Partial<ConsentScope>, reason: string): ConsentScope {
       currentScope = updateConsentScope(currentScope, updates, reason, 'user');
       return currentScope;
     },
-    
+
     getAuditLog(): TrustAuditEntry[] {
       return getConsentAuditLog();
     },
-    
+
     enforceEntry(operation: string, category: keyof ConsentScope, requiredValue: ConsentScope[keyof ConsentScope]): void {
       enforceConsentAtEntry(currentScope, operation, category, requiredValue);
     },
@@ -244,7 +244,7 @@ export function createTrustIntegration(
 
 /**
  * Validates consent for a panel operation (standalone function)
- * 
+ *
  * @param scope - Current consent scope
  * @param panelId - Panel identifier
  * @param operation - Operation being performed
@@ -257,13 +257,13 @@ export function validatePanelConsent(
 ): PanelConsentResult {
   const category = PANEL_OPERATION_MAP[operation];
   const requiredValue = OPERATION_REQUIRED_VALUES[operation];
-  
+
   // Special handling for aiAssistanceLevel
   if (category === 'aiAssistanceLevel') {
     const levels = ['none', 'suggest', 'autocomplete', 'autonomous'];
     const currentIndex = levels.indexOf(scope.aiAssistanceLevel);
     const requiredIndex = levels.indexOf(requiredValue as string);
-    
+
     if (currentIndex < requiredIndex) {
       return {
         allowed: false,
@@ -272,17 +272,17 @@ export function validatePanelConsent(
         currentScope: scope,
       };
     }
-    
+
     return {
       allowed: true,
       currentScope: scope,
     };
   }
-  
+
   // Boolean checks
   const currentValue = scope[category];
   const permitted = currentValue === requiredValue;
-  
+
   if (!permitted) {
     return {
       allowed: false,
@@ -291,7 +291,7 @@ export function validatePanelConsent(
       currentScope: scope,
     };
   }
-  
+
   return {
     allowed: true,
     currentScope: scope,
@@ -300,7 +300,7 @@ export function validatePanelConsent(
 
 /**
  * Checks if a panel needs user confirmation for its capabilities
- * 
+ *
  * @param panelId - Panel identifier
  * @param capabilities - Panel capabilities
  * @returns Whether user confirmation is required
@@ -315,21 +315,21 @@ export function requiresUserConfirmation(
     'needsCamera',
     'needsMic',
   ];
-  
+
   // iframe panels with elevated capabilities always need confirmation
   const hasElevated = elevatedCapabilities.some(cap => capabilities[cap] === true);
-  
+
   if (hasElevated) {
     console.log(`Panel "${panelId}" requires user confirmation for elevated capabilities`);
     return true;
   }
-  
+
   return false;
 }
 
 /**
  * Generates a trust boundary report for debugging
- * 
+ *
  * @param scope - Current consent scope
  * @returns Formatted report
  */
@@ -346,7 +346,7 @@ export function generateTrustBoundaryReport(scope: ConsentScope): string {
     '',
     'Permitted Operations:',
   ];
-  
+
   const operations: PanelOperation[] = [
     'evidenceUpload',
     'evidenceOcr',
@@ -354,14 +354,14 @@ export function generateTrustBoundaryReport(scope: ConsentScope): string {
     'aiRecommendations',
     'biometricCapture',
   ];
-  
+
   for (const op of operations) {
     const result = validatePanelConsent(scope, 'test-panel', op);
     lines.push(`  ${op}: ${result.allowed ? '✓' : '✗'}`);
   }
-  
+
   lines.push('', '=============================');
-  
+
   return lines.join('\n');
 }
 

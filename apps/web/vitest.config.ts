@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import path from 'path';
+import path from 'node:path';
 
 export default defineConfig({
   plugins: [react()],
@@ -21,14 +21,22 @@ export default defineConfig({
   },
   resolve: {
     alias: [
-      { find: '@', replacement: path.resolve(__dirname, './src') },
+      { find: '@', replacement: path.resolve(import.meta.dirname, './src') },
+      {
+        find: 'server-only',
+        replacement: path.resolve(import.meta.dirname, './src/test/shims/server-only.ts'),
+      },
+      {
+        find: '@zeo/core/client',
+        replacement: path.resolve(import.meta.dirname, '../../packages/core/src/client.ts'),
+      },
       {
         find: '@zeo/core',
-        replacement: path.resolve(__dirname, './src/test/shims/zeo-core.ts'),
+        replacement: path.resolve(import.meta.dirname, './src/test/shims/zeo-core.ts'),
       },
       {
         find: /^@zeo\/([^/]+)$/,
-        replacement: path.resolve(__dirname, '../../packages/$1/src/index.ts'),
+        replacement: path.resolve(import.meta.dirname, '../../packages/$1/src/index.ts'),
       },
     ],
   },

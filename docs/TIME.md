@@ -52,7 +52,7 @@ interface TimeStampedEvidence {
   validUntil?: string;       // When evidence expires (if known)
   temporalContext: TemporalContext;
   decayModel: DecayModel;
-  
+
   // Computed at access time
   currentReliability: number;
   ageHours: number;
@@ -131,7 +131,7 @@ function customDecay(ageHours: number, customFunction: (hours: number) => number
 ```typescript
 function computeCurrentReliability(evidence: TimeStampedEvidence, asOf: string): number {
   const ageHours = (new Date(asOf).getTime() - new Date(evidence.capturedAt).getTime()) / (1000 * 60 * 60);
-  
+
   switch (evidence.decayModel.type) {
     case 'exponential':
       return exponentialDecay(ageHours, evidence.decayModel.halfLifeHours, evidence.decayModel.floor);
@@ -214,12 +214,12 @@ function analyzeDecisionAtTime(
   evidenceHistory: TimeStampedEvidence[],
   asOf: string
 ): DecisionResult {
-  const availableEvidence = evidenceHistory.filter(e => 
+  const availableEvidence = evidenceHistory.filter(e =>
     new Date(e.capturedAt) <= new Date(asOf)
   );
-  
+
   const weightedEvidence = weightEvidenceByReliability(availableEvidence, asOf);
-  
+
   return runDecision(decisionSpec, {
     evidence: weightedEvidence,
     temporalContext: { asOf, horizon: decisionSpec.horizon }
@@ -243,7 +243,7 @@ function widenIntervalForAge(
   const center = (interval.low + interval.high) / 2;
   const width = interval.high - interval.low;
   const newWidth = width / reliability; // Wider as reliability decreases
-  
+
   return {
     low: Math.max(0, center - newWidth / 2),
     high: Math.min(1, center + newWidth / 2)

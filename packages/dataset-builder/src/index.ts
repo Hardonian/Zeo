@@ -45,30 +45,30 @@ async function hashData(data: unknown): Promise<string> {
 
 export function createDatasetBuilder() {
   const registry = createRealityAdapterRegistry();
-  
+
   async function buildDataset(config: DatasetBuilderConfig): Promise<ReplayDataset> {
     const startTime = new Date(config.timeRange.start).getTime();
     const endTime = new Date(config.timeRange.end).getTime();
-    
+
     if (startTime >= endTime) {
       throw new Error("Time range start must be before end");
     }
-    
+
     const enabledAdapters = config.adapterIds
       ? config.adapterIds.map(id => registry.get(id)).filter((a): a is Adapter => a !== undefined)
       : registry.getEnabled();
-    
+
     const allObservations: SignalObservation[] = [];
     const allBatches: ObservationBatch[] = [];
-    
+
     for (const adapter of enabledAdapters) {
       const rawOutput = await adapter.fetch({
         startDate: config.timeRange.start,
         endDate: config.timeRange.end,
       });
-      
+
       const observations = adapter.normalize(rawOutput.items);
-      
+
       for (const obs of observations) {
         const obsTime = new Date(obs.t).getTime();
         if (obsTime >= startTime && obsTime <= endTime) {
@@ -76,11 +76,11 @@ export function createDatasetBuilder() {
         }
       }
     }
-    
-    allObservations.sort((a: SignalObservation, b: SignalObservation) => 
+
+    allObservations.sort((a: SignalObservation, b: SignalObservation) =>
       new Date(a.t).getTime() - new Date(b.t).getTime()
     );
-    
+
     const batchMap = new Map<string, SignalObservation[]>();
     for (const obs of allObservations) {
       const hourKey = new Date(obs.t).toISOString().split("T")[0] ?? "unknown";
@@ -89,7 +89,7 @@ export function createDatasetBuilder() {
       }
       batchMap.get(hourKey)!.push(obs);
     }
-    
+
     let batchIndex = 0;
     for (const [, obsList] of batchMap) {
       const batchChecksum = await hashData(obsList);
@@ -105,20 +105,20 @@ export function createDatasetBuilder() {
       allBatches.push(batch);
       batchIndex++;
     }
-    
+
     const catalogEntries = getDefaultCatalogEntries();
     const sourceDescriptors = getDefaultSourceDescriptors();
-    
+
     const catalogHash = await hashData(catalogEntries);
     const sourcesHash = await hashData(sourceDescriptors);
     const mappingsHash = await hashData({});
-    
+
     for (const batch of allBatches) {
       batch.catalogHash = catalogHash;
       batch.sourcesHash = sourcesHash;
       batch.mappingsHash = mappingsHash;
     }
-    
+
     const datasetChecksum = await hashData({
       id: `dataset_${Date.now()}`,
       version: "0.3.4",
@@ -128,7 +128,7 @@ export function createDatasetBuilder() {
       observationCount: allObservations.length,
       batchCount: allBatches.length,
     });
-    
+
     const dataset: ReplayDataset = {
       id: `dataset_${Date.now()}`,
       version: "0.3.4",
@@ -144,10 +144,10 @@ export function createDatasetBuilder() {
       adapterVersions: Object.fromEntries(enabledAdapters.map((a: Adapter) => [a.info.id, a.info.version])),
       checksum: datasetChecksum,
     };
-    
+
     return dataset;
   }
-  
+
   async function buildDatasetFromAdapter(
     adapterId: string,
     timeRange: { start: string; end: string }
@@ -157,7 +157,7 @@ export function createDatasetBuilder() {
       timeRange,
     });
   }
-  
+
   return {
     registry,
     buildDataset,
@@ -167,26 +167,26 @@ export function createDatasetBuilder() {
 
 export function validateDataset(dataset: ReplayDataset): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
-  
+
   if (!dataset.id || !dataset.id.startsWith("dataset_")) {
     errors.push("Dataset ID must start with 'dataset_'");
   }
-  
+
   if (!dataset.catalogHash) {
     errors.push("Dataset must have catalogHash");
   }
-  
+
   if (!dataset.sourcesHash) {
     errors.push("Dataset must have sourcesHash");
   }
-  
+
   const startTime = new Date(dataset.timeRange.start).getTime();
   const endTime = new Date(dataset.timeRange.end).getTime();
-  
+
   if (startTime >= endTime) {
     errors.push("Time range start must be before end");
   }
-  
+
   for (const obs of dataset.observations) {
     const obsTime = new Date(obs.t).getTime();
     if (obsTime < startTime || obsTime > endTime) {
@@ -194,7 +194,7 @@ export function validateDataset(dataset: ReplayDataset): { valid: boolean; error
       break;
     }
   }
-  
+
   for (let i = 1; i < dataset.observations.length; i++) {
     const prevObs = dataset.observations[i - 1];
     const currObs = dataset.observations[i];
@@ -206,7 +206,7 @@ export function validateDataset(dataset: ReplayDataset): { valid: boolean; error
       break;
     }
   }
-  
+
   return {
     valid: errors.length === 0,
     errors,
@@ -219,19 +219,19 @@ export function filterDatasetByTime(
 ): ReplayDataset {
   const startTime = new Date(timeRange.start).getTime();
   const endTime = new Date(timeRange.end).getTime();
-  
+
   const filteredObservations = dataset.observations.filter(
     (obs: SignalObservation) => {
       const obsTime = new Date(obs.t).getTime();
       return obsTime >= startTime && obsTime <= endTime;
     }
   );
-  
+
   const filteredBatches = dataset.batches.filter((batch: ObservationBatch) => {
     const batchTime = new Date(batch.createdAt).getTime();
     return batchTime >= startTime && batchTime <= endTime;
   });
-  
+
   return {
     ...dataset,
     timeRange,

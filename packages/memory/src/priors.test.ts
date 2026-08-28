@@ -90,7 +90,7 @@ describe("PriorUpdateEngine", () => {
   describe("initializeDefaultPriors", () => {
     it("should create default global priors", () => {
       const globalPriors = engine.getPriors("global");
-      
+
       expect(globalPriors.length).toBeGreaterThan(0);
       expect(globalPriors.some(p => p.name === "default_assumption_reliability")).toBe(true);
     });
@@ -98,7 +98,7 @@ describe("PriorUpdateEngine", () => {
     it("should include timeline pressure prior with appropriate uncertainty", () => {
       const timelinePrior = engine.getPriors("global")
         .find(p => p.name === "timeline_pressure_assumptions");
-      
+
       expect(timelinePrior).toBeDefined();
       expect(timelinePrior!.uncertainty.low).toBeLessThan(0.3);
       expect(timelinePrior!.uncertainty.high).toBeGreaterThan(0.7);
@@ -109,11 +109,11 @@ describe("PriorUpdateEngine", () => {
     it("should update priors when assumption is confirmed", () => {
       const decision = createMockDecision("negotiation");
       const outcome = createMockOutcome("expected");
-      
+
       const updates = engine.updateFromOutcome(decision, outcome, "timeline_pressure");
-      
+
       expect(updates.length).toBeGreaterThan(0);
-      
+
       // Check that domain-level prior was created/updated
       const domainPriors = engine.getPriors("domain", "negotiation");
       expect(domainPriors.length).toBeGreaterThan(0);
@@ -123,12 +123,12 @@ describe("PriorUpdateEngine", () => {
       const decision = createMockDecision("negotiation");
       const confirmedOutcome = createMockOutcome("expected");
       const violatedOutcome = createMockOutcome("significant");
-      
+
       // First, confirm assumption several times
       for (let i = 0; i < 5; i++) {
         engine.updateFromOutcome(decision, confirmedOutcome, "timeline_pressure");
       }
-      
+
       const beforeViolation = engine.getPriors("domain", "negotiation")
         .find(p => p.name === "timeline_pressure_reliability");
       if (!beforeViolation) throw new Error("beforeViolation not found");
@@ -150,12 +150,12 @@ describe("PriorUpdateEngine", () => {
     it("should create new priors for unknown assumption types", () => {
       const decision = createMockDecision("negotiation");
       const outcome = createMockOutcome("expected");
-      
+
       engine.updateFromOutcome(decision, outcome, "novel_assumption_type");
-      
+
       const domainPriors = engine.getPriors("domain", "negotiation");
       const novelPrior = domainPriors.find(p => p.name === "novel_assumption_type_reliability");
-      
+
       expect(novelPrior).toBeDefined();
       expect(novelPrior?.level).toBe("domain");
     });
@@ -163,9 +163,9 @@ describe("PriorUpdateEngine", () => {
     it("should track update history", () => {
       const decision = createMockDecision("negotiation");
       const outcome = createMockOutcome("expected");
-      
+
       engine.updateFromOutcome(decision, outcome, "timeline_pressure");
-      
+
       const updates = engine.getUpdates();
       expect(updates.length).toBeGreaterThan(0);
       expect(updates[0]).toHaveProperty("rationale");
@@ -177,18 +177,18 @@ describe("PriorUpdateEngine", () => {
     it("should widen intervals based on prior uncertainty", () => {
       const decision = createMockDecision("negotiation");
       const outcome = createMockOutcome("significant"); // Violation
-      
+
       // Create some history
       for (let i = 0; i < 10; i++) {
         engine.updateFromOutcome(decision, outcome, "timeline_pressure");
       }
-      
+
       const baseInterval = { low: 0.4, high: 0.6 };
       const result = engine.applyPriors(baseInterval, {
         domain: "negotiation",
         assumptionType: "timeline_pressure",
       });
-      
+
       // Should be widened due to unreliable prior
       expect(result.wideningFactor).toBeGreaterThan(1.0);
       expect(result.adjustedInterval.high - result.adjustedInterval.low)
@@ -200,7 +200,7 @@ describe("PriorUpdateEngine", () => {
       const result = engine.applyPriors(baseInterval, {
         domain: "negotiation",
       });
-      
+
       expect(result.sources.length).toBeGreaterThan(0);
       expect(result.rationale.length).toBeGreaterThan(0);
     });
@@ -208,37 +208,37 @@ describe("PriorUpdateEngine", () => {
     it("should cap widening factor", () => {
       const decision = createMockDecision("negotiation");
       const outcome = createMockOutcome("significant");
-      
+
       // Create lots of violations
       for (let i = 0; i < 100; i++) {
         engine.updateFromOutcome(decision, outcome, "timeline_pressure");
       }
-      
+
       const baseInterval = { low: 0.4, high: 0.6 };
       const result = engine.applyPriors(baseInterval, {
         domain: "negotiation",
         assumptionType: "timeline_pressure",
       });
-      
+
       // Should be capped at 2x
       expect(result.wideningFactor).toBeLessThanOrEqual(2.0);
     });
 
     it("should keep intervals within [0, 1]", () => {
       const baseInterval = { low: 0.01, high: 0.99 };
-      
+
       // Create high uncertainty
       const decision = createMockDecision("negotiation");
       const outcome = createMockOutcome("significant");
       for (let i = 0; i < 20; i++) {
         engine.updateFromOutcome(decision, outcome, "timeline_pressure");
       }
-      
+
       const result = engine.applyPriors(baseInterval, {
         domain: "negotiation",
         assumptionType: "timeline_pressure",
       });
-      
+
       expect(result.adjustedInterval.low).toBeGreaterThanOrEqual(0);
       expect(result.adjustedInterval.high).toBeLessThanOrEqual(1);
     });
@@ -248,16 +248,16 @@ describe("PriorUpdateEngine", () => {
     it("should only update priors, never create rules", () => {
       const decision = createMockDecision("negotiation");
       const outcome = createMockOutcome("significant");
-      
+
       engine.updateFromOutcome(decision, outcome, "timeline_pressure");
-      
+
       const updates = engine.getUpdates();
       const update = updates[0]!;
-      
+
       // Should update prior distributions
       expect(update.newPrior.alpha).toBeDefined();
       expect(update.newPrior.beta).toBeDefined();
-      
+
       // Should NOT create categorical rules
       expect(update.rationale).not.toContain("always");
       expect(update.rationale).not.toContain("never");
@@ -266,19 +266,19 @@ describe("PriorUpdateEngine", () => {
     it("should increase uncertainty for unreliable assumption types", () => {
       const decision = createMockDecision("negotiation");
       const violatedOutcome = createMockOutcome("significant");
-      
+
       // Create history of violations
       for (let i = 0; i < 10; i++) {
         engine.updateFromOutcome(decision, violatedOutcome, "timeline_pressure");
       }
-      
+
       const prior = engine.getPriors("domain", "negotiation")
         .find(p => p.name === "timeline_pressure_reliability");
-      
+
       // Reliability should be low
       const reliability = prior!.alpha / (prior!.alpha + prior!.beta);
       expect(reliability).toBeLessThan(0.5);
-      
+
       // Uncertainty should be high
       const uncertainty = prior!.uncertainty.high - prior!.uncertainty.low;
       expect(uncertainty).toBeGreaterThan(0.3);
@@ -287,12 +287,12 @@ describe("PriorUpdateEngine", () => {
     it("should track sample size and confidence level", () => {
       const decision = createMockDecision("negotiation");
       const outcome = createMockOutcome("expected");
-      
+
       engine.updateFromOutcome(decision, outcome, "timeline_pressure");
-      
+
       const updates = engine.getUpdates();
       const update = updates.find(u => u.priorId.includes("timeline_pressure"));
-      
+
       expect(update).toBeDefined();
       expect(update!.confidenceLevel).toBe("low"); // Low sample size
       expect(update!.sampleSize).toBeLessThan(5);
@@ -301,12 +301,12 @@ describe("PriorUpdateEngine", () => {
     it("should acknowledge limitations in priors", () => {
       const decision = createMockDecision("negotiation");
       const outcome = createMockOutcome("expected");
-      
+
       engine.updateFromOutcome(decision, outcome, "novel_type");
-      
+
       const prior = engine.getPriors("domain", "negotiation")
         .find(p => p.name === "novel_type_reliability");
-      
+
       expect(prior).toBeDefined();
       expect(prior!.limitations.length).toBeGreaterThan(0);
       expect(prior!.limitations[0]).toContain("limited evidence");
@@ -315,18 +315,18 @@ describe("PriorUpdateEngine", () => {
     it("should not narrow intervals even with high reliability priors", () => {
       const decision = createMockDecision("negotiation");
       const confirmedOutcome = createMockOutcome("expected");
-      
+
       // Create lots of confirmations
       for (let i = 0; i < 50; i++) {
         engine.updateFromOutcome(decision, confirmedOutcome, "timeline_pressure");
       }
-      
+
       const baseInterval = { low: 0.3, high: 0.7 };
       const result = engine.applyPriors(baseInterval, {
         domain: "negotiation",
         assumptionType: "timeline_pressure",
       });
-      
+
       // Epistemic discipline: never narrow below base
       expect(result.adjustedInterval.high - result.adjustedInterval.low)
         .toBeGreaterThanOrEqual(baseInterval.high - baseInterval.low - 0.001);
@@ -338,26 +338,26 @@ describe("PriorUpdateEngine", () => {
       const decision1 = createMockDecision("negotiation");
       const decision2 = createMockDecision("ops");
       const outcome = createMockOutcome("significant");
-      
+
       engine.updateFromOutcome(decision1, outcome, "timeline_pressure");
       engine.updateFromOutcome(decision2, outcome, "timeline_pressure");
-      
+
       const negotiationPriors = engine.getPriors("domain", "negotiation");
       const opsPriors = engine.getPriors("domain", "ops");
-      
+
       expect(negotiationPriors.length).toBeGreaterThan(0);
       expect(opsPriors.length).toBeGreaterThan(0);
     });
 
     it("should inherit from higher levels when specified", () => {
       const baseInterval = { low: 0.3, high: 0.7 };
-      
+
       // Apply with inheritance
       const withInheritance = engine.applyPriors(baseInterval, {
         domain: "negotiation",
         inheritFromHigherLevels: true,
       });
-      
+
       // Should include global priors
       expect(withInheritance.sources.some(s => s.includes("global"))).toBe(true);
     });

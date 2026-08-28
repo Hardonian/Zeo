@@ -37,13 +37,13 @@ Complete competition structure:
 ### Creating a Tournament
 
 ```typescript
-import { 
-  createTournament, 
-  registerStrategy, 
-  addScenario, 
+import {
+  createTournament,
+  registerStrategy,
+  addScenario,
   startTournament,
   runMatch,
-  completeTournament 
+  completeTournament
 } from '@zeo/tournaments';
 
 // Create tournament

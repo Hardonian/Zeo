@@ -127,10 +127,10 @@ describe("Deterministic Normalization", () => {
   describe("createNormalizer", () => {
     it("should produce deterministic output", () => {
       const normalizer = createNormalizer();
-      
+
       const result1 = normalizer.normalize(sampleObservations);
       const result2 = normalizer.normalize(sampleObservations);
-      
+
       expect(result1.checksum).toBe(result2.checksum);
       expect(result1.orderingHash).toBe(result2.orderingHash);
     });
@@ -148,9 +148,9 @@ describe("Deterministic Normalization", () => {
         sortBy: ["t"],
         deterministicHash: true,
       });
-      
+
       const result = normalizer.normalize(sampleObservations);
-      
+
       // Should be sorted by timestamp (09:00 before 10:00)
       expect(result.data[0].t).toBe("2024-01-15T09:00:00Z");
       expect(result.data[1].t).toBe("2024-01-15T10:00:00Z");
@@ -159,7 +159,7 @@ describe("Deterministic Normalization", () => {
     it("should include metadata in output", () => {
       const normalizer = createNormalizer();
       const result = normalizer.normalize(sampleObservations);
-      
+
       expect(result.metadata.count).toBe(2);
       expect(result.metadata.canonicalized).toBe(true);
       expect(result.metadata.sorted).toBe(true);

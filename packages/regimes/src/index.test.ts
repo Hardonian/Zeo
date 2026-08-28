@@ -28,7 +28,7 @@ describe("regimes detector", () => {
 
       const result = detectRegimes("market", points, [], ["test-signal"]);
 
-      const detectedEvents = result.events.filter(e => 
+      const detectedEvents = result.events.filter(e =>
         e.kind === "mean_shift" || e.kind === "distribution_shift"
       );
       expect(detectedEvents.length).toBeGreaterThan(0);

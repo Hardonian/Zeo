@@ -1,6 +1,6 @@
 /**
  * Static Analysis Service
- * 
+ *
  * Code pattern detection and rule evaluation
  * Security, quality, and style rules
  */

@@ -2,7 +2,7 @@ import { generateId } from "@zeo/kernel";
 
 /**
  * Zeo Runner
- * 
+ *
  * Orchestrates the execution of the Zeo decision engine with:
  * 1. Trust & Consent enforcement (Pre-execution)
  * 2. Core Engine execution
@@ -83,7 +83,7 @@ export class ZeoRunner {
 
     /**
      * Execute a decision with full lifecycle managment.
-     * 
+     *
      * 1. Checks Trust/Consent (if enabled)
      * 2. Runs the Decision Engine
      * 3. Computes and Stores KPIs (if storage initialized)

@@ -1,6 +1,6 @@
 /**
  * Consent Management System
- * 
+ *
  * Handles user consent scopes, validation, audit logging, and
  * enforcement at entry points.
  */
@@ -34,7 +34,7 @@ function generateId(): string {
 /**
  * Creates a default consent scope with conservative (opt-in) defaults.
  * All privacy-sensitive settings default to false/disabled.
- * 
+ *
  * @returns Default consent scope
  */
 export function createDefaultConsentScope(): ConsentScope {
@@ -66,7 +66,7 @@ const VALID_AI_LEVELS: ConsentScope["aiAssistanceLevel"][] = [
 
 /**
  * Validates a consent scope for correct types and logical consistency.
- * 
+ *
  * @param scope - The consent scope to validate
  * @returns Validation result with violations and required actions
  */
@@ -133,7 +133,7 @@ const warnings: string[] = [];
 
 /**
  * Updates the consent scope and logs the change.
- * 
+ *
  * @param currentScope - The current consent scope
  * @param updates - Partial updates to apply
  * @param reason - Human-readable reason for the change
@@ -188,7 +188,7 @@ export function updateConsentScope(
 /**
  * Enforces consent at an entry point for a specific operation.
  * Throws if the operation is not permitted under current consent.
- * 
+ *
  * @param scope - Current consent scope
  * @param operation - Description of the operation being attempted
  * @param requiredCategory - Which consent category is required
@@ -229,7 +229,7 @@ export function enforceConsentAtEntry<T extends keyof ConsentScope>(
 
 /**
  * Gets the complete consent audit log.
- * 
+ *
  * @returns Array of all audit entries
  */
 export function getConsentAuditLog(): TrustAuditEntry[] {
@@ -238,7 +238,7 @@ export function getConsentAuditLog(): TrustAuditEntry[] {
 
 /**
  * Gets the consent change history.
- * 
+ *
  * @returns Array of all consent changes
  */
 export function getConsentHistory(): ConsentChange[] {
@@ -264,7 +264,7 @@ export function clearConsentHistory(): void {
 /**
  * Checks if a specific operation is permitted under current consent.
  * Non-throwing version of enforceConsentAtEntry.
- * 
+ *
  * @param scope - Current consent scope
  * @param requiredCategory - Which consent category to check
  * @param requiredValue - What value is required
@@ -280,7 +280,7 @@ export function isOperationPermitted<T extends keyof ConsentScope>(
 
 /**
  * Gets a summary of current consent status.
- * 
+ *
  * @param scope - Current consent scope
  * @returns Human-readable summary
  */

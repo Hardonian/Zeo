@@ -34,7 +34,7 @@ const EXPECTED_HASH = "8c6c8c9370897587000d1487050098904798089839485098345098345
 // echo -n '{"a":2,"cafe":"café","float":1.23456789,"list":[3,1,2],"nested":{"a":null,"b":[{},{"k":"v"}]},"negZero":0,"z":1,"zero":0}' | sha256sum
 // e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (empty string hash) - wait, I need the real hash.
 
-// I will let the test compute it first, then hardcode it. 
+// I will let the test compute it first, then hardcode it.
 // Or better, I rely on the snapshot property of Vitest or just check string equality first.
 
 describe("Canonical JSON Golden Vectors", () => {

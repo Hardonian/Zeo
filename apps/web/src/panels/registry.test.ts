@@ -41,9 +41,9 @@ describe('Panel Registry', () => {
 
     it('should include builtin panels', () => {
       const panels = getAllRegisteredPanels();
-      const builtinIds = panels.map(p => p.id).filter(id => 
-        id === 'decision-composer' || 
-        id === 'branch-explorer' || 
+      const builtinIds = panels.map(p => p.id).filter(id =>
+        id === 'decision-composer' ||
+        id === 'branch-explorer' ||
         id === 'evidence-inbox' ||
         id === 'signals-strip'
       );

@@ -24,10 +24,10 @@ This helps identify:
 ## Usage
 
 ```typescript
-import { 
-  createCounterfactualQuery, 
-  createDecisionContext, 
-  solveCounterfactual, 
+import {
+  createCounterfactualQuery,
+  createDecisionContext,
+  solveCounterfactual,
   computeFlipDistanceVOI,
   formatCounterfactual,
 } from "@zeo/counterfactuals";
@@ -44,9 +44,9 @@ const context = createDecisionContext(
 
 // Create query
 const query = createCounterfactualQuery(
-  "decision-1", 
-  "action-a", 
-  ["var1", "var2"], 
+  "decision-1",
+  "action-a",
+  ["var1", "var2"],
   { distanceMetric: "absolute", maxDelta: 1.0 }
 );
 

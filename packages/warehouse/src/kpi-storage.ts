@@ -1,9 +1,9 @@
 /**
  * KPI Warehouse Storage Module
- * 
+ *
  * Provides deterministic storage and retrieval for KPI measurements,
  * dashboards, and alert configurations with full provenance tracking.
- * 
+ *
  * @module @zeo/warehouse/kpi-storage
  */
 
@@ -85,7 +85,7 @@ export interface KpiStorageStats {
 
 /**
  * KPI Warehouse Storage Adapter
- * 
+ *
  * Wraps a WarehouseAdapter with KPI-specific operations
  */
 export class KpiWarehouseStorage {
@@ -104,13 +104,13 @@ export class KpiWarehouseStorage {
   ): Promise<KpiRecordEnvelope<KpiMeasurement>> {
     const tenant = options.tenant || "local";
     const now = new Date().toISOString();
-    
+
     // Create deterministic ID from measurement
     const id = await this.generateMeasurementId(measurement);
-    
+
     // Compute content hash for integrity
     const contentHash = await computeContentHash(measurement);
-    
+
     const envelope: KpiRecordEnvelope<KpiMeasurement> = {
       id,
       kind: "kpi-measurement",
@@ -136,7 +136,7 @@ export class KpiWarehouseStorage {
 
     // Store using underlying warehouse
     await this.warehouse.put(this.envelopeToRecord(envelope));
-    
+
     return envelope;
   }
 
@@ -162,7 +162,7 @@ export class KpiWarehouseStorage {
     });
 
     const envelopes = result.items.map(r => this.recordToEnvelope(r) as KpiRecordEnvelope<KpiMeasurement>);
-    
+
     return this.applyFiltersAndSort(envelopes, filters);
   }
 
@@ -305,7 +305,7 @@ export class KpiWarehouseStorage {
       alerts = alerts.filter(a => a.content.kpiId === filters.kpiId);
     }
 
-    return alerts.sort((a, b) => 
+    return alerts.sort((a, b) =>
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
   }
@@ -370,7 +370,7 @@ export class KpiWarehouseStorage {
       kpisByCategory[cat] = (kpisByCategory[cat] || 0) + 1;
     }
 
-    const sortedByDate = [...allMeasurements].sort((a, b) => 
+    const sortedByDate = [...allMeasurements].sort((a, b) =>
       new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     );
 
@@ -496,14 +496,14 @@ export class KpiWarehouseStorage {
 
     // Apply decision filter
     if (filters.decisionId) {
-      results = results.filter(r => 
+      results = results.filter(r =>
         r.tags.some(t => t === `decision:${filters.decisionId}`)
       );
     }
 
     // Apply tag filters
     if (filters.tags && filters.tags.length > 0) {
-      results = results.filter(r => 
+      results = results.filter(r =>
         filters.tags!.some(t => r.tags.includes(t))
       );
     }
@@ -511,7 +511,7 @@ export class KpiWarehouseStorage {
     // Sort
     const sortBy = filters.sortBy || "createdAt";
     const sortOrder = filters.sortOrder || "desc";
-    
+
     results.sort((a, b) => {
       let comparison = 0;
       switch (sortBy) {
@@ -566,7 +566,7 @@ export function createKpiWarehouseStorage(warehouse: WarehouseAdapter): KpiWareh
  */
 export function createDefaultKpiDashboard(owner: string): KpiDashboard {
   const now = new Date().toISOString();
-  
+
   return {
     id: `default-${Date.now()}`,
     name: "Default KPI Dashboard",

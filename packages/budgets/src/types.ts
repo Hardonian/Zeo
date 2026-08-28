@@ -6,7 +6,7 @@
 /**
  * Budget scope - what the budget applies to
  */
-export type BudgetScope = 
+export type BudgetScope =
   | 'operation'    // Single operation
   | 'decision'     // Per decision
   | 'session'      // Per user session

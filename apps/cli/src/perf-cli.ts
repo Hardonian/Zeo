@@ -1,6 +1,6 @@
 /**
  * Performance CLI Module
- * 
+ *
  * Commands:
  *   zeo perf scan [--severity critical] [--paths packages/core,packages/replay]
  *   zeo perf profile --example negotiation --depth 3 [--out perf-report.json]
@@ -208,11 +208,11 @@ Examples:
  */
 function getTypeScriptFiles(dir: string, files: string[] = []): string[] {
   const items = readdirSync(dir);
-  
+
   for (const item of items) {
     const fullPath = join(dir, item);
     const stat = statSync(fullPath);
-    
+
     if (stat.isDirectory()) {
       // Skip node_modules and dist
       if (item === "node_modules" || item === "dist" || item === ".git") {
@@ -226,7 +226,7 @@ function getTypeScriptFiles(dir: string, files: string[] = []): string[] {
       }
     }
   }
-  
+
   return files;
 }
 
@@ -235,10 +235,10 @@ function getTypeScriptFiles(dir: string, files: string[] = []): string[] {
  */
 async function runScanCommand(args: PerfCliArgs): Promise<number> {
   console.log("\n=== Zeo Performance Scan ===");
-  
+
   const paths = args.paths.length > 0 ? args.paths : ["packages"];
   const fullPaths = paths.map(p => resolve(cwd(), p));
-  
+
   console.log(`Scanning paths: ${paths.join(", ")}`);
   console.log(`Severity threshold: ${args.severity}`);
   console.log(`Experimental patterns: ${args.experimental ? "enabled" : "disabled"}`);

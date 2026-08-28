@@ -1,29 +1,29 @@
 /**
  * Analysis Planner - AI-driven planning for statistical analysis
- * 
+ *
  * This module provides an AI-assisted planning layer that proposes analysis
  * strategies WITHOUT computing results or asserting causality.
- * 
+ *
  * All outputs are:
  * - Fully serializable and auditable
  * - Tagged with epistemic status
  * - Deterministic (same inputs → same plan)
  */
 
-import type { 
-  UUID, 
-  EpistemicStatus, 
+import type {
+  UUID,
+  EpistemicStatus,
   ConfidenceBand,
-  ProvenancePointer 
+  ProvenancePointer
 } from "@zeo/contracts";
 
 // =============================================================================
 // TYPES
 // =============================================================================
 
-export type AnalysisStepKind = 
+export type AnalysisStepKind =
   | "correlation"
-  | "regression" 
+  | "regression"
   | "control_check"
   | "regime_test"
   | "transformation"
@@ -114,17 +114,17 @@ export function generateAnalysisPlan(
 ): AnalysisPlan {
   const planId = generateDeterministicId(schema, metadata);
   const createdAt = new Date().toISOString();
-  
+
   const numericFields = schema.fields.filter(f => f.type === "numeric");
   const categoricalFields = schema.fields.filter(f => f.type === "categorical");
   const datetimeFields = schema.fields.filter(f => f.type === "datetime");
-  
+
   const steps: AnalysisStep[] = [];
   const risks: AnalysisRisk[] = [];
   const caveats: string[] = [];
-  
+
   steps.push(createAssumptionCheckStep(steps.length, schema, metadata));
-  
+
   if (schema.fields.some(f => f.nullable && (f.statistics?.nullCount ?? 0) > 0)) {
     steps.push(createDataQualityStep(steps.length, schema));
     risks.push({
@@ -135,10 +135,10 @@ export function generateAnalysisPlan(
       severity: "medium"
     });
   }
-  
+
   if (numericFields.length >= 2) {
     const correlationPairs = generateCorrelationPairs(
-      numericFields, 
+      numericFields,
       options.focusVariables,
       options.excludeVariables
     );
@@ -147,7 +147,7 @@ export function generateAnalysisPlan(
       steps.push(createCorrelationStep(steps.length, pair, steps.map(s => s.id)));
     }
   }
-  
+
   if (numericFields.length >= 2) {
     const regressionProposals = generateRegressionProposals(
       numericFields,
@@ -159,26 +159,26 @@ export function generateAnalysisPlan(
     const maxReg = options.maxSteps ? Math.ceil(options.maxSteps / 2) : 5;
     for (const proposal of regressionProposals.slice(0, maxReg)) {
       steps.push(createRegressionStep(
-        steps.length, 
-        proposal, 
+        steps.length,
+        proposal,
         steps.map(s => s.id),
         options.prioritizeRobustness ?? true
       ));
     }
   }
-  
+
   if (metadata.timeRange && datetimeFields.length > 0) {
     steps.push(createRegimeTestStep(steps.length, datetimeFields[0], numericFields, steps.map(s => s.id)));
     caveats.push("Time series detected: consider temporal dependencies and regime shifts");
   }
-  
+
   const transformationSteps = generateTransformationSteps(
     numericFields,
     steps.length,
     steps.map(s => s.id)
   );
   steps.push(...transformationSteps);
-  
+
   if (numericFields.length < 2) {
     risks.push({
       id: generateUUID(),
@@ -187,7 +187,7 @@ export function generateAnalysisPlan(
       severity: "high"
     });
   }
-  
+
   if (metadata.rowCount < 30) {
     risks.push({
       id: generateUUID(),
@@ -197,7 +197,7 @@ export function generateAnalysisPlan(
     });
     caveats.push("Small sample: results may not generalize");
   }
-  
+
   return {
     id: planId,
     createdAt,
@@ -246,7 +246,7 @@ function createDataQualityStep(order: number, schema: DatasetSchema): AnalysisSt
   const fieldsWithNulls = schema.fields
     .filter(f => (f.statistics?.nullCount ?? 0) > 0)
     .map(f => f.name);
-  
+
   return {
     id: generateUUID(),
     order,
@@ -296,7 +296,7 @@ function createRegressionStep(
   const controls = prioritizeRobustness && proposal.controls.length > 0
     ? proposal.controls.slice(0, 3)
     : proposal.controls;
-  
+
   return {
     id: generateUUID(),
     order,
@@ -344,22 +344,22 @@ function generateCorrelationPairs(
   const fields = numericFields
     .filter(f => !excludeVariables?.includes(f.name))
     .map(f => f.name);
-  
-  const prioritized = focusVariables 
+
+  const prioritized = focusVariables
     ? fields.sort((a, b) => {
         const aFocused = focusVariables.includes(a);
         const bFocused = focusVariables.includes(b);
         return bFocused === aFocused ? 0 : bFocused ? 1 : -1;
       })
     : fields;
-  
+
   const pairs: Array<[string, string]> = [];
   for (let i = 0; i < prioritized.length; i++) {
     for (let j = i + 1; j < prioritized.length; j++) {
       pairs.push([prioritized[i], prioritized[j]]);
     }
   }
-  
+
   return pairs;
 }
 
@@ -371,21 +371,21 @@ function generateRegressionProposals(
   requireControls = true
 ): RegressionProposal[] {
   const proposals: RegressionProposal[] = [];
-  
+
   const numericNames = numericFields
     .filter(f => !excludeVariables?.includes(f.name))
     .map(f => f.name);
-  
+
   const categoricalNames = categoricalFields.map(f => f.name);
-  
+
   for (let i = 0; i < numericNames.length && i < 5; i++) {
     const target = numericNames[i];
     const predictors = numericNames.filter((_, idx) => idx !== i).slice(0, 3);
-    
+
     if (predictors.length === 0) continue;
-    
+
     const controls = requireControls ? categoricalNames.slice(0, 2) : [];
-    
+
     proposals.push({
       target,
       predictors,
@@ -393,7 +393,7 @@ function generateRegressionProposals(
       rationale: `Model ${target} as function of ${predictors.join(", ")}${controls.length > 0 ? ` with controls for ${controls.join(", ")}` : ""}. Does not establish causality.`
     });
   }
-  
+
   return proposals;
 }
 
@@ -403,11 +403,11 @@ function generateTransformationSteps(
   prerequisites: UUID[]
 ): AnalysisStep[] {
   const steps: AnalysisStep[] = [];
-  
+
   const logCandidates = numericFields
     .filter(f => f.statistics && f.statistics.min !== undefined && f.statistics.min > 0)
     .slice(0, 2);
-  
+
   for (const field of logCandidates) {
     steps.push({
       id: generateUUID(),
@@ -422,7 +422,7 @@ function generateTransformationSteps(
       confidenceBand: "low"
     });
   }
-  
+
   if (numericFields.length >= 1) {
     steps.push({
       id: generateUUID(),
@@ -437,7 +437,7 @@ function generateTransformationSteps(
       confidenceBand: "medium"
     });
   }
-  
+
   return steps;
 }
 
@@ -447,22 +447,22 @@ function generateRationale(
   metadata: DatasetMetadata
 ): string {
   const parts: string[] = [];
-  
+
   parts.push(`Analysis plan for dataset with ${metadata.rowCount} rows and ${schema.fields.length} fields.`);
-  
+
   const correlations = steps.filter(s => s.kind === "correlation").length;
   const regressions = steps.filter(s => s.kind === "regression").length;
-  
+
   parts.push(`Proposes ${correlations} correlation tests and ${regressions} regression specifications.`);
-  
+
   const hasControls = steps.some(s => s.controls && s.controls.length > 0);
   if (hasControls) {
     parts.push("Includes control variables to address confounding concerns.");
   }
-  
+
   parts.push("All steps tagged with epistemic status (assumption/belief) and confidence bands.");
   parts.push("This plan does not compute results or assert causality.");
-  
+
   return parts.join(" ");
 }
 
@@ -489,14 +489,14 @@ function computeChecksum(schema: DatasetSchema, metadata: DatasetMetadata): stri
     rowCount: metadata.rowCount,
     tags: metadata.tags.sort()
   });
-  
+
   let hash = 0;
   for (let i = 0; i < data.length; i++) {
     const char = data.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
     hash = hash & hash;
   }
-  
+
   return Math.abs(hash).toString(16).padStart(8, "0");
 }
 

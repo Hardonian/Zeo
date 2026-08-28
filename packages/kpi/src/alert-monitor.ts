@@ -1,51 +1,51 @@
 /**
  * @zeo/kpi - Alert Monitor Service
- * 
+ *
  * Monitors KPIs at scheduled intervals, evaluates threshold conditions,
  * and triggers alerts when thresholds are breached.
- * 
+ *
  * Uses EventEmitter pattern for decoupled alert handling.
  * All evaluations are deterministic and include epistemic metadata.
- * 
+ *
  * @example
  * ```typescript
  * import { AlertMonitorService } from "@zeo/kpi";
  * import { createKpiWarehouseStorage } from "@zeo/warehouse";
- * 
+ *
  * const warehouse = new FilesystemWarehouseAdapter();
  * const storage = createKpiWarehouseStorage(warehouse);
  * const monitor = new AlertMonitorService(storage);
- * 
+ *
  * // Register alert handlers
  * monitor.on("alert", (alert) => {
  *   console.log(`Alert triggered: ${alert.message}`);
  * });
- * 
+ *
  * // Start monitoring
  * monitor.start({ intervalMs: 60000 }); // Check every minute
- * 
+ *
  * // Check a specific KPI
  * await monitor.checkKpi("decision-coverage");
- * 
+ *
  * // Stop monitoring
  * monitor.stop();
  * ```
  */
 
-import type { 
-  KpiContract, 
-  KpiMeasurement, 
-  KpiAlertRule, 
+import type {
+  KpiContract,
+  KpiMeasurement,
+  KpiAlertRule,
   KpiAlert,
   KpiValue,
-  UUID 
+  UUID
 } from "@zeo/contracts";
 import type { KpiWarehouseStorage } from "@zeo/warehouse";
 
 /**
  * Alert event types emitted by the monitor
  */
-export type AlertEventType = 
+export type AlertEventType =
   | "alert"           // Alert triggered
   | "resolved"        // Alert condition resolved
   | "error"           // Error during check
@@ -129,7 +129,7 @@ const DEFAULT_CONFIG: AlertMonitorConfig = {
 
 /**
  * AlertMonitorService - Scheduled KPI monitoring and alerting
- * 
+ *
  * Features:
  * - Scheduled interval checks using setInterval
  * - Threshold evaluation with sustained condition detection
@@ -155,7 +155,7 @@ export class AlertMonitorService {
   constructor(storage: KpiWarehouseStorage, config?: Partial<AlertMonitorConfig>) {
     this.storage = storage;
     this.config = { ...DEFAULT_CONFIG, ...config };
-    
+
     // Initialize handler sets for all event types
     for (const eventType of ["alert", "resolved", "error", "threshold-crossed", "check-complete"] as AlertEventType[]) {
       this.handlers.set(eventType, new Set());
@@ -365,7 +365,7 @@ export class AlertMonitorService {
 
     // Evaluate threshold condition
     const evaluation = this.evaluateThreshold(value, rule.condition, rule.severity);
-    
+
     // Get current alert state
     const stateKey = `${rule.kpiId}:${rule.id}`;
     const existingState = this.alertStates.get(stateKey);
@@ -399,7 +399,7 @@ export class AlertMonitorService {
 
       // Create and store the alert
       const alert = await this.createAlert(rule, measurement, evaluation);
-      
+
       // Update alert state
       this.alertStates.set(stateKey, {
         ruleId: rule.id,
@@ -500,9 +500,9 @@ export class AlertMonitorService {
   ): Promise<KpiAlert> {
     const now = new Date().toISOString();
     const id = `alert:${rule.id}:${Date.now()}`;
-    
-    const threshold = Array.isArray(evaluation.threshold) 
-      ? evaluation.threshold[0] 
+
+    const threshold = Array.isArray(evaluation.threshold)
+      ? evaluation.threshold[0]
       : evaluation.threshold;
 
     const deviation = {
@@ -548,7 +548,7 @@ export class AlertMonitorService {
       // Get the rule
       const rules = await this.getActiveAlertRules();
       const rule = rules.find(r => r.id === alert.ruleId);
-      
+
       if (!rule) {
         // Rule no longer exists, resolve the alert
         await this.resolveAlert(alert, "Rule removed");
@@ -582,7 +582,7 @@ export class AlertMonitorService {
    */
   private async resolveAlert(alert: KpiAlert, reason: string): Promise<void> {
     const now = new Date().toISOString();
-    
+
     alert.status = "resolved";
     alert.resolved = {
       at: now,
@@ -631,7 +631,7 @@ export class AlertMonitorService {
    * Get all active alert rules from storage
    */
   private async getActiveAlertRules(): Promise<KpiAlertRule[]> {
-    const alerts = await this.storage.queryAlerts({ 
+    const alerts = await this.storage.queryAlerts({
       status: "active",
       limit: 1000,
     });
@@ -646,7 +646,7 @@ export class AlertMonitorService {
    */
   private getDefaultAlertRules(): KpiAlertRule[] {
     const now = new Date().toISOString();
-    
+
     return [
       {
         id: "alert:decision-coverage-low",

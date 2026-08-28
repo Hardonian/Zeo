@@ -1,12 +1,12 @@
 /**
  * Semantic Clustering
- * 
+ *
  * AI-assisted clustering of evidence, signals, and decisions
  * with explicit confidence bands and provenance.
  */
 
-import type { 
-  UUID, 
+import type {
+  UUID,
   ProvenancePointer,
   ConfidenceBand
 } from "@zeo/contracts";
@@ -66,7 +66,7 @@ export function clusterItems(
 ): ClusteringResult {
   const resultId = generateUUID();
   const createdAt = new Date().toISOString();
-  
+
   if (items.length === 0) {
     return {
       id: resultId,
@@ -81,32 +81,32 @@ export function clusterItems(
       }
     };
   }
-  
+
   // Group by temporal proximity
   const timeGroups = groupByTimeProximity(items, options.timeWindowHours ?? 24);
-  
+
   // Group by tag overlap
   const tagGroups = groupByTagOverlap(items);
-  
+
   // Merge groups to form clusters
   const clusters = mergeGroupsToClusters(timeGroups, tagGroups, options);
-  
+
   // Find unclustered items
   const clusteredIds = new Set(clusters.flatMap(c => c.items));
   const unclustered = items.map(i => i.id).filter(id => !clusteredIds.has(id));
-  
+
   // Calculate confidence bands based on cohesion
   for (const cluster of clusters) {
     cluster.confidenceBand = calculateClusterConfidence(cluster, items);
   }
-  
+
   // Compute summary
   const confidenceDistribution = {
     low: clusters.filter(c => c.confidenceBand === "low").length,
     medium: clusters.filter(c => c.confidenceBand === "medium").length,
     high: clusters.filter(c => c.confidenceBand === "high").length
   };
-  
+
   return {
     id: resultId,
     createdAt,
@@ -115,8 +115,8 @@ export function clusterItems(
     summary: {
       totalItems: items.length,
       clusterCount: clusters.length,
-      averageClusterSize: clusters.length > 0 
-        ? clusters.reduce((sum, c) => sum + c.items.length, 0) / clusters.length 
+      averageClusterSize: clusters.length > 0
+        ? clusters.reduce((sum, c) => sum + c.items.length, 0) / clusters.length
         : 0,
       confidenceDistribution
     }
@@ -128,16 +128,16 @@ function groupByTimeProximity(
   windowHours: number
 ): Map<string, string[]> {
   const groups = new Map<string, string[]>();
-  const sorted = [...items].sort((a, b) => 
+  const sorted = [...items].sort((a, b) =>
     new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   );
-  
+
   let currentGroup: string[] = [];
   let groupStart: number | null = null;
-  
+
   for (const item of sorted) {
     const itemTime = new Date(item.timestamp).getTime();
-    
+
     if (groupStart === null || (itemTime - groupStart) / (1000 * 60 * 60) > windowHours) {
       if (currentGroup.length > 0) {
         groups.set(generateUUID(), [...currentGroup]);
@@ -148,39 +148,39 @@ function groupByTimeProximity(
       currentGroup.push(item.id);
     }
   }
-  
+
   if (currentGroup.length > 0) {
     groups.set(generateUUID(), currentGroup);
   }
-  
+
   return groups;
 }
 
 function groupByTagOverlap(items: ClusterableItem[]): Map<string, string[]> {
   const groups = new Map<string, string[]>();
   const processed = new Set<string>();
-  
+
   for (const item of items) {
     if (processed.has(item.id)) continue;
-    
+
     const group: string[] = [item.id];
     processed.add(item.id);
-    
+
     for (const other of items) {
       if (processed.has(other.id)) continue;
-      
+
       const overlap = item.tags.filter(t => other.tags.includes(t));
       if (overlap.length >= 2) {
         group.push(other.id);
         processed.add(other.id);
       }
     }
-    
+
     if (group.length > 1) {
       groups.set(generateUUID(), group);
     }
   }
-  
+
   return groups;
 }
 
@@ -192,24 +192,24 @@ function mergeGroupsToClusters(
   const clusters: Cluster[] = [];
   const minSize = options.minClusterSize ?? 2;
   const maxClusters = options.maxClusters ?? 10;
-  
+
   // Find intersections between time and tag groups
   for (const [_, timeItems] of timeGroups) {
     const timeSet = new Set(timeItems);
-    
+
     for (const [_, tagItems] of tagGroups) {
       const intersection = tagItems.filter(id => timeSet.has(id));
-      
+
       if (intersection.length >= minSize && clusters.length < maxClusters) {
         clusters.push(createCluster(intersection));
       }
     }
   }
-  
+
   // Add pure time-based clusters if needed
   for (const [_, timeItems] of timeGroups) {
     if (timeItems.length >= minSize && clusters.length < maxClusters) {
-      const alreadyInCluster = timeItems.some(id => 
+      const alreadyInCluster = timeItems.some(id =>
         clusters.some(c => c.items.includes(id))
       );
       if (!alreadyInCluster) {
@@ -217,13 +217,13 @@ function mergeGroupsToClusters(
       }
     }
   }
-  
+
   return clusters;
 }
 
 function createCluster(itemIds: string[]): Cluster {
   const now = new Date().toISOString();
-  
+
   return {
     id: generateUUID(),
     name: `Cluster-${itemIds.slice(0, 3).join("-")}`,
@@ -253,13 +253,13 @@ function calculateClusterConfidence(
   allItems: ClusterableItem[]
 ): ConfidenceBand {
   const items = allItems.filter(i => cluster.items.includes(i.id));
-  
+
   if (items.length < 2) return "low";
-  
+
   // Calculate average tag overlap
   let totalOverlap = 0;
   let pairCount = 0;
-  
+
   for (let i = 0; i < items.length; i++) {
     for (let j = i + 1; j < items.length; j++) {
       const overlap = items[i].tags.filter(t => items[j].tags.includes(t)).length;
@@ -267,9 +267,9 @@ function calculateClusterConfidence(
       pairCount++;
     }
   }
-  
+
   const avgOverlap = pairCount > 0 ? totalOverlap / pairCount : 0;
-  
+
   if (avgOverlap >= 3 && items.length >= 5) return "high";
   if (avgOverlap >= 2 && items.length >= 3) return "medium";
   return "low";

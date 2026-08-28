@@ -1,6 +1,6 @@
 /**
  * @zeo/info-theory - Entropy Functions
- * 
+ *
  * Shannon entropy and related measures.
  */
 
@@ -60,7 +60,7 @@ export function conditionalEntropy(
 /**
  * Rényi entropy of order alpha
  * H_alpha(X) = (1/(1-alpha)) * log2(sum(p(x)^alpha))
- * 
+ *
  * Special cases:
  * - alpha -> 1: Shannon entropy
  * - alpha = 0: Hartley entropy (log of support size)

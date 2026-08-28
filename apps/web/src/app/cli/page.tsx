@@ -239,13 +239,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Zeo
         run: npm install -g @zeo/cli
-      
+
       - name: Validate Decisions
         run: zeo decision run --spec ./decisions/*.json --fail-on-warning
-      
+
       - name: Run Simulations
         run: zeo simulate --spec ./decisions/critical.json --iterations 1000`}
               </pre>

@@ -1,25 +1,25 @@
 /**
  * @zeo/kpi - Key Performance Indicators for Decision Intelligence
- * 
+ *
  * Provides deterministic KPI computation with epistemic discipline.
  * All KPIs are tagged with uncertainty bands and provenance requirements.
- * 
+ *
  * @example
  * ```typescript
  * import { createKpiRegistry, registerKpi, createDecisionCoverageKpi, createKpiMeasurement } from "@zeo/kpi";
- * 
+ *
  * // Create registry and register KPI
  * const registry = createKpiRegistry();
  * const kpi = createDecisionCoverageKpi();
  * const updated = registerKpi(registry, kpi);
- * 
+ *
  * // Compute measurement
  * const result = createKpiMeasurement(kpi, data, {
  *   periodStart: "2024-01-01",
  *   periodEnd: "2024-01-31",
  *   seed: "deterministic-seed"
  * });
- * 
+ *
  * console.log(result.measurement.value);
  * console.log(result.determinism.isReproducible);
  * ```

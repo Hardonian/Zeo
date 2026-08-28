@@ -349,14 +349,14 @@ T = TypeVar('T', bound=BaseModel)
 
 def validate(model_class: Type[T], data: Dict[str, Any]) -> T:
     """Validate and parse data into a Pydantic model.
-    
+
     Args:
         model_class: The Pydantic model class to validate against
         data: Dictionary containing the data to validate
-        
+
     Returns:
         Validated model instance
-        
+
     Raises:
         ValidationError: If validation fails
     """
@@ -364,11 +364,11 @@ def validate(model_class: Type[T], data: Dict[str, Any]) -> T:
 
 def safe_validate(model_class: Type[T], data: Dict[str, Any]) -> Dict[str, Any]:
     """Safely validate data without throwing exceptions.
-    
+
     Args:
         model_class: The Pydantic model class to validate against
         data: Dictionary containing the data to validate
-        
+
     Returns:
         Dict with 'success' key. If successful, includes 'data' key.
         If failed, includes 'error' key with ValidationError.
@@ -381,7 +381,7 @@ def safe_validate(model_class: Type[T], data: Dict[str, Any]) -> Dict[str, Any]:
 
 def create_validator(model_class: Type[T]):
     """Create a reusable validator for a specific model.
-    
+
     Returns an object with validate and safe_validate methods
     pre-configured for the given model class.
     """

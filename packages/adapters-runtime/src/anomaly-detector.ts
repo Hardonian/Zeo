@@ -14,33 +14,33 @@ export function detectSuddenJump(
   threshold: number = 3
 ): AnomalyViolation[] {
   const violations: AnomalyViolation[] = [];
-  
+
   if (observations.length === 0) return violations;
-  
+
   // Combine current and history for baseline
   const allValues = [...history, ...observations].map(obs =>
     (obs.valueBand.low + obs.valueBand.high) / 2
   );
-  
+
   if (allValues.length < 10) return violations; // Not enough data
-  
+
   // Compute mean and std from history only (if available) or all data
   const baselineValues = history.length >= 10
     ? history.map(obs => (obs.valueBand.low + obs.valueBand.high) / 2)
     : allValues.slice(0, -observations.length);
   const effectiveBaseline = baselineValues.length > 0 ? baselineValues : allValues;
-  
+
   const mean = effectiveBaseline.reduce((a, b) => a + b, 0) / effectiveBaseline.length;
   const variance = effectiveBaseline.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / effectiveBaseline.length;
   const std = Math.sqrt(variance);
-  
+
   if (std === 0) return violations; // No variation to detect
-  
+
   // Check current observations for jumps
   for (const obs of observations) {
     const value = (obs.valueBand.low + obs.valueBand.high) / 2;
     const zScore = Math.abs((value - mean) / std);
-    
+
     if (zScore > threshold) {
       violations.push({
         ruleId: "sudden_jump",
@@ -51,7 +51,7 @@ export function detectSuddenJump(
       });
     }
   }
-  
+
   return violations;
 }
 
@@ -63,9 +63,9 @@ export function detectMissingnessSpike(
   threshold: number = 0.3
 ): AnomalyViolation[] {
   const violations: AnomalyViolation[] = [];
-  
+
   if (observations.length === 0) return violations;
-  
+
   // Group by signal
   const bySignal = new Map<string, SignalObservation[]>();
   for (const obs of observations) {
@@ -73,15 +73,15 @@ export function detectMissingnessSpike(
     group.push(obs);
     bySignal.set(obs.signalId, group);
   }
-  
+
   // Check missingness per signal
   for (const [signalId, group] of bySignal) {
     const missingCount = group.filter(obs =>
       obs.valueBand.low === 0 && obs.valueBand.high === 0
     ).length;
-    
+
     const missingnessRate = missingCount / group.length;
-    
+
     if (missingnessRate > threshold) {
       violations.push({
         ruleId: "missingness_spike",
@@ -92,7 +92,7 @@ export function detectMissingnessSpike(
       });
     }
   }
-  
+
   return violations;
 }
 
@@ -104,12 +104,12 @@ export function detectTimestampInconsistency(
   context?: { asOf?: string }
 ): AnomalyViolation[] {
   const violations: AnomalyViolation[] = [];
-  
+
   if (observations.length === 0) return violations;
-  
+
   const now = context?.asOf ? new Date(context.asOf) : new Date();
   const futureCutoff = new Date(now.getTime() + 60000); // 1 minute tolerance
-  
+
   // Group by signal and check ordering
   const bySignal = new Map<string, SignalObservation[]>();
   for (const obs of observations) {
@@ -117,18 +117,18 @@ export function detectTimestampInconsistency(
     group.push(obs);
     bySignal.set(obs.signalId, group);
   }
-  
+
   for (const [signalId, group] of bySignal) {
     // Sort by timestamp
     const sorted = [...group].sort((a, b) =>
       new Date(a.t).getTime() - new Date(b.t).getTime()
     );
-    
+
     // Check for future timestamps
     const futureObservations = sorted.filter(obs =>
       new Date(obs.t) > futureCutoff
     );
-    
+
     if (futureObservations.length > 0) {
       violations.push({
         ruleId: "future_timestamp",
@@ -138,7 +138,7 @@ export function detectTimestampInconsistency(
         details: { signalId, futureCount: futureObservations.length },
       });
     }
-    
+
     // Check for out-of-order timestamps
     const outOfOrder: SignalObservation[] = [];
     let lastTime = 0;
@@ -149,7 +149,7 @@ export function detectTimestampInconsistency(
       }
       lastTime = time;
     }
-    
+
     if (outOfOrder.length > 0) {
       violations.push({
         ruleId: "out_of_order",
@@ -159,23 +159,23 @@ export function detectTimestampInconsistency(
         details: { signalId, outOfOrderCount: outOfOrder.length },
       });
     }
-    
+
     // Check for duplicate timestamps
     const timestampCounts = new Map<number, number>();
     for (const obs of sorted) {
       const time = new Date(obs.t).getTime();
       timestampCounts.set(time, (timestampCounts.get(time) ?? 0) + 1);
     }
-    
+
     const duplicates = Array.from(timestampCounts.entries())
       .filter(([, count]) => count > 1)
       .map(([timestamp]) => timestamp);
-    
+
     if (duplicates.length > 0) {
       const dupObservations = sorted.filter(obs =>
         duplicates.includes(new Date(obs.t).getTime())
       );
-      
+
       violations.push({
         ruleId: "duplicate_timestamps",
         severity: "medium",
@@ -185,7 +185,7 @@ export function detectTimestampInconsistency(
       });
     }
   }
-  
+
   return violations;
 }
 
@@ -196,7 +196,7 @@ export function detectValueBandAnomalies(
   observations: SignalObservation[]
 ): AnomalyViolation[] {
   const violations: AnomalyViolation[] = [];
-  
+
   for (const obs of observations) {
     // Check for inverted bands (low > high)
     if (obs.valueBand.low > obs.valueBand.high) {
@@ -208,7 +208,7 @@ export function detectValueBandAnomalies(
         details: { valueBand: obs.valueBand },
       });
     }
-    
+
     // Check for values outside [0, 1]
     if (obs.valueBand.low < 0 || obs.valueBand.high > 1) {
       violations.push({
@@ -219,7 +219,7 @@ export function detectValueBandAnomalies(
         details: { valueBand: obs.valueBand },
       });
     }
-    
+
     // Check for extremely narrow bands (possible precision loss)
     const bandWidth = obs.valueBand.high - obs.valueBand.low;
     if (bandWidth < 0.001 && bandWidth > 0) {
@@ -232,7 +232,7 @@ export function detectValueBandAnomalies(
       });
     }
   }
-  
+
   return violations;
 }
 
@@ -280,7 +280,7 @@ interface AnomalyDetector {
 
 export function createAnomalyDetector(rules: AnomalyRule[] = DEFAULT_ANOMALY_RULES): AnomalyDetector {
   const activeRules = new Map(rules.map(r => [r.id, r]));
-  
+
   return {
     detect(
       observations: SignalObservation[],
@@ -288,20 +288,20 @@ export function createAnomalyDetector(rules: AnomalyRule[] = DEFAULT_ANOMALY_RUL
       context?: { asOf?: string }
     ): AnomalyDetectionResult {
       const allViolations: AnomalyViolation[] = [];
-      
+
       for (const rule of activeRules.values()) {
         if (!rule.enabled) continue;
-        
+
         const violations = rule.check(observations, history, context);
         allViolations.push(...violations);
       }
-      
+
       // Count by severity
       const criticalCount = allViolations.filter(v => v.severity === "critical").length;
       const highCount = allViolations.filter(v => v.severity === "high").length;
       const mediumCount = allViolations.filter(v => v.severity === "medium").length;
       const lowCount = allViolations.filter(v => v.severity === "low").length;
-      
+
       return {
         passed: criticalCount === 0 && highCount === 0,
         violations: allViolations,
@@ -311,18 +311,18 @@ export function createAnomalyDetector(rules: AnomalyRule[] = DEFAULT_ANOMALY_RUL
         lowCount,
       };
     },
-    
+
     addRule(rule: AnomalyRule): void {
       activeRules.set(rule.id, rule);
     },
-    
+
     disableRule(ruleId: string): void {
       const rule = activeRules.get(ruleId);
       if (rule) {
         rule.enabled = false;
       }
     },
-    
+
     enableRule(ruleId: string): void {
       const rule = activeRules.get(ruleId);
       if (rule) {

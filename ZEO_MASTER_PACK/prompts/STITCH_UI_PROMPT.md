@@ -2,7 +2,7 @@
 
 Design a premium dark-mode enterprise SaaS UI for **ZEO** (AI decision intelligence engine).
 
-**Palette:** deep navy base, electric blue highlights, subtle gold accents  
+**Palette:** deep navy base, electric blue highlights, subtle gold accents
 **Style:** minimal, infrastructure-grade, strong hierarchy, accessible contrast (WCAG AA), low visual noise
 
 ## Pages / Panels

@@ -92,7 +92,7 @@ export function JobProgress({
             Pause
           </button>
         )}
-        
+
         {isPaused && onResume && (
           <button
             onClick={onResume}
@@ -101,7 +101,7 @@ export function JobProgress({
             Resume
           </button>
         )}
-        
+
         {(isRunning || isPending || isPaused) && onCancel && (
           <button
             onClick={onCancel}
@@ -110,7 +110,7 @@ export function JobProgress({
             Cancel
           </button>
         )}
-        
+
         {isCompleted && (
           <span className="text-sm text-green-600">✓ Completed</span>
         )}
