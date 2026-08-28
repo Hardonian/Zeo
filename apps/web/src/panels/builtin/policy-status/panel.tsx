@@ -95,7 +95,7 @@ export default function PolicyStatusPanel() {
 
                             <div className="flex justify-between items-start mb-1">
                                 <span className="font-medium text-zinc-300 truncate pr-4">{evalItem.repo}</span>
-                                <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border 
+                                <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border
                   ${evalItem.status === 'passed' ? 'text-emerald-400 bg-emerald-500/5 border-emerald-500/20' :
                                         evalItem.status === 'blocked' ? 'text-rose-400 bg-rose-500/5 border-rose-500/20' : 'text-amber-400 bg-amber-500/5 border-amber-500/20'}`}>
                                     {evalItem.status.toUpperCase()}

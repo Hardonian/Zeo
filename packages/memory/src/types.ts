@@ -4,7 +4,7 @@ import type { UUID, DecisionSpec, BranchGraph, ProbabilityInterval, Claim, Epist
  * Resolution status for outcomes.
  * Outcomes may be partial or ambiguous - never force binary success/failure.
  */
-export type ResolutionStatus = 
+export type ResolutionStatus =
   | "resolved"           // Outcome fully determined
   | "partially_resolved" // Some aspects resolved, ambiguity remains
   | "unresolved"         // No determination possible yet
@@ -30,15 +30,15 @@ export type OutcomeRecord = {
   id: UUID;
   decisionId: UUID;
   branchId: UUID;
-  
+
   // When the outcome was recorded vs when it actually occurred
   recordedAt: string;
   resolvedAt?: string;
-  
+
   // Resolution state
   status: ResolutionStatus;
   confidence: OutcomeConfidence;
-  
+
   // The actual outcome data - may be partial
   outcomeData: {
     description: string;
@@ -46,14 +46,14 @@ export type OutcomeRecord = {
     category: string | undefined;        // Categorical outcome
     interval: ProbabilityInterval | undefined; // Uncertain numeric outcome
   };
-  
+
   // How this outcome maps to predictions
   predictionMatch: {
     branchPredicted: boolean;     // Did we predict this branch?
     probabilityRealized?: number; // What probability materialized?
     surpriseLevel: "expected" | "mild" | "significant" | "black_swan";
   };
-  
+
   // Epistemic discipline: explicit unknowns
   knownUnknowns: string[];
   assumptionsUsed: UUID[];  // Links to assumptions in the original decision
@@ -65,21 +65,21 @@ export type OutcomeRecord = {
 export type BranchRecord = {
   id: UUID;
   decisionId: UUID;
-  
+
   // The branch that was selected
   selectedActionId: UUID;
   selectedBranchId: UUID;
-  
+
   // Predicted outcomes at decision time
   predictedInterval: ProbabilityInterval;
   predictedOutcome: string;
-  
+
   // When the decision was made
   decidedAt: string;
-  
+
   // Links to actual outcome (if resolved)
   outcomeId?: UUID;
-  
+
   // Decision context preserved at the time
   contextSnapshot: {
     assumptions: Claim[];
@@ -105,32 +105,32 @@ export type TemporalContext = {
  */
 export type DecisionRecord = {
   id: UUID;
-  
+
   // Original decision specification
   spec: DecisionSpec;
-  
+
   // Generated branch graph
   branchGraph: BranchGraph;
-  
+
   // What was decided
   branchRecord: BranchRecord;
-  
+
   // Actual outcomes (may be empty if unresolved)
   outcomes: OutcomeRecord[];
-  
+
   // Metadata
   createdAt: string;
   userId: string;
   domain: string;           // e.g., "negotiation", "ops", "macro"
   tags: string[];
-  
+
   // Audit trail
   provenance: {
     version: string;
     engine: string;
     assumptionsAtTime: Claim[];
   };
-  
+
   // Epistemic integrity: never modify after creation
   readonly immutable: true;
 };

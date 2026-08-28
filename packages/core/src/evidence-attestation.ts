@@ -68,7 +68,7 @@ export function signManifest(
 
     if (mode === "ed25519") {
         // Assuming secretOrPrivateKey is a valid PEM or key object for crypto.sign
-        // For Ed25519, we usually need a specific format. 
+        // For Ed25519, we usually need a specific format.
         // Simplified strictly for this implementation: assuming key is adequate.
         return sign(null, Buffer.from(manifestHash), secretOrPrivateKey).toString("hex");
     }

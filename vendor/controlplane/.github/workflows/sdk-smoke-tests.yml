@@ -58,7 +58,7 @@ jobs:
           console.log('✓ ControlPlaneClient:', typeof sdk.ControlPlaneClient);
           console.log('✓ validate function:', typeof sdk.validate);
           console.log('✓ safeValidate function:', typeof sdk.safeValidate);
-          
+
           // Test runtime validation
           const { JobRequestSchema, safeValidate } = sdk;
           const result = safeValidate(JobRequestSchema, {
@@ -135,7 +135,7 @@ jobs:
           sys.path.insert(0, '.')
           from controlplane_sdk import ControlPlaneClient, ClientConfig, validate, JobRequest
           print('✓ SDK imports work')
-          
+
           # Test model creation
           job = JobRequest(
               id='550e8400-e29b-41d4-a716-446655440000',
@@ -146,11 +146,11 @@ jobs:
               timeoutMs=30000
           )
           print('✓ Model instantiation works')
-          
+
           # Test validation
           result = validate(JobRequest, job.model_dump())
           print('✓ Validation works')
-          
+
           # Test client
           client = ControlPlaneClient(ClientConfig(base_url='http://localhost:8080'))
           print('✓ Client instantiation works')
@@ -211,12 +211,12 @@ jobs:
         run: |
           cat > /tmp/smoke_test.go << 'EOF'
           package main
-          
+
           import (
               "fmt"
               cp "github.com/controlplane/sdk-go"
           )
-          
+
           func main() {
               // Test struct creation
               job := cp.JobRequest{
@@ -224,7 +224,7 @@ jobs:
                   Type: "test-job",
               }
               fmt.Printf("Created JobRequest: %+v\\n", job)
-              
+
               // Test client
               client := cp.NewClient(cp.ClientConfig{
                   BaseURL: "http://localhost:8080",

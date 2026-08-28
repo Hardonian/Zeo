@@ -1,14 +1,14 @@
 /**
  * Static Scanner for Hot Path Identification
- * 
+ *
  * Phase 1: Pattern-based detection of performance-critical code paths
  * without runtime instrumentation.
  */
 
 export type HotPathSeverity = "critical" | "high" | "medium" | "low";
-export type HotPathCategory = 
-  | "nested-loop" 
-  | "recursion" 
+export type HotPathCategory =
+  | "nested-loop"
+  | "recursion"
   | "algorithmic-complexity"
   | "memory-allocation"
   | "frequent-call"
@@ -217,7 +217,7 @@ function calculateComplexityScore(
   context: string
 ): number {
   let score = pattern.complexityWeight;
-  
+
   // Adjust based on context size (larger context = more complex)
   if (context.length > 500) {
     score += 5;
@@ -225,7 +225,7 @@ function calculateComplexityScore(
   if (context.length > 1000) {
     score += 10;
   }
-  
+
   // Cap at 100
   return Math.min(100, score);
 }
@@ -273,16 +273,16 @@ function scanFile(filePath: string, content: string, options: ScanOptions): HotP
   const patterns = options.enableExperimentalPatterns
     ? [...PATTERNS, ...EXPERIMENTAL_PATTERNS]
     : PATTERNS;
-  
+
   for (const pattern of patterns) {
     const flags = pattern.regex.flags.includes("g") ? pattern.regex.flags : `${pattern.regex.flags}g`;
     const regex = new RegExp(pattern.regex.source, flags);
-    
+
     let match: RegExpExecArray | null;
     while ((match = regex.exec(content)) !== null) {
       const position = getPosition(content, match.index);
       const context = extractContext(content, match.index, match[0].length);
-      
+
       // Check severity threshold
       if (options.severityThreshold) {
         const severityOrder = ["low", "medium", "high", "critical"] as const;
@@ -292,7 +292,7 @@ function scanFile(filePath: string, content: string, options: ScanOptions): HotP
           continue;
         }
       }
-      
+
       const finding: HotPathFinding = {
         id: generateFindingId(),
         filePath,
@@ -308,16 +308,16 @@ function scanFile(filePath: string, content: string, options: ScanOptions): HotP
         context: context.replace(/\s+/g, " ").trim(),
         metadata: extractMetadata(pattern, match, context),
       };
-      
+
       findings.push(finding);
-      
+
       // Avoid infinite loops with zero-length matches
       if (match.index === regex.lastIndex) {
         regex.lastIndex++;
       }
     }
   }
-  
+
   return findings;
 }
 
@@ -326,7 +326,7 @@ function scanFile(filePath: string, content: string, options: ScanOptions): HotP
  */
 function extractMetadata(pattern: Pattern, match: RegExpExecArray, context: string): HotPathFinding["metadata"] {
   const metadata: HotPathFinding["metadata"] = {};
-  
+
   switch (pattern.category) {
     case "nested-loop":
       if (pattern.name === "triple-nested-loop") {
@@ -345,7 +345,7 @@ function extractMetadata(pattern: Pattern, match: RegExpExecArray, context: stri
       metadata.recursionDepth = -1; // Unknown/unbounded
       break;
   }
-  
+
   return metadata;
 }
 
@@ -354,7 +354,7 @@ function extractMetadata(pattern: Pattern, match: RegExpExecArray, context: stri
  */
 export class StaticHotPathScanner {
   private options: ScanOptions;
-  
+
   constructor(options: ScanOptions = {}) {
     this.options = {
       maxFindings: 100,
@@ -362,14 +362,14 @@ export class StaticHotPathScanner {
       ...options,
     };
   }
-  
+
   /**
    * Scan source code string
    */
   scanSource(filePath: string, sourceCode: string): HotPathFinding[] {
     return scanFile(filePath, sourceCode, this.options);
   }
-  
+
   /**
    * Scan multiple files and return aggregated results
    */
@@ -377,13 +377,13 @@ export class StaticHotPathScanner {
     const startTime = Date.now();
     const findings: HotPathFinding[] = [];
     let totalLines = 0;
-    
+
     for (const file of files) {
       const fileFindings = this.scanSource(file.path, file.content);
       findings.push(...fileFindings);
       totalLines += file.content.split("\n").length;
     }
-    
+
     // Sort by severity and complexity
     findings.sort((a, b) => {
       const severityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
@@ -392,12 +392,12 @@ export class StaticHotPathScanner {
       }
       return b.complexityScore - a.complexityScore;
     });
-    
+
     // Limit findings
     const limitedFindings = this.options.maxFindings
       ? findings.slice(0, this.options.maxFindings)
       : findings;
-    
+
     // Build summary
     const findingsByCategory: Record<HotPathCategory, number> = {
       "nested-loop": 0,
@@ -408,21 +408,21 @@ export class StaticHotPathScanner {
       "heavy-computation": 0,
       "async-bottleneck": 0,
     };
-    
+
     const findingsBySeverity: Record<HotPathSeverity, number> = {
       critical: 0,
       high: 0,
       medium: 0,
       low: 0,
     };
-    
+
     for (const finding of limitedFindings) {
       findingsByCategory[finding.category]++;
       findingsBySeverity[finding.severity]++;
     }
-    
+
     const criticalPaths = limitedFindings.filter(f => f.severity === "critical");
-    
+
     return {
       findings: limitedFindings,
       summary: {
@@ -436,7 +436,7 @@ export class StaticHotPathScanner {
       durationMs: Date.now() - startTime,
     };
   }
-  
+
   /**
    * Get all available patterns
    */
@@ -444,7 +444,7 @@ export class StaticHotPathScanner {
     const allPatterns = this.options.enableExperimentalPatterns
       ? [...PATTERNS, ...EXPERIMENTAL_PATTERNS]
       : PATTERNS;
-    
+
     return allPatterns.map(p => ({
       name: p.name,
       category: p.category,

@@ -11,7 +11,7 @@ type CounterfactualResult = {
 
 /**
  * Evidence Planner Engine
- * 
+ *
  * Recommends evidence collection actions based on Value of Information (VOI).
  * Determines "what to measure next" to reduce decision uncertainty.
  */
@@ -52,7 +52,7 @@ function isWithinBudget(action: EvidenceAction, config: PlannerConfig): boolean 
 
 /**
  * Compute Expected Value of Information (VOI)
- * 
+ *
  * VOI ~ (Sensitivity of Variable) * (Expected Reduction in Uncertainty) / Cost
  */
 function computeVoi(
@@ -76,7 +76,7 @@ function computeVoi(
 
 /**
  * Get variable sensitivity based on counterfactual flip distance.
- * 
+ *
  * Sensitivity = 1 / (1 + flipDistance)
  * Examples:
  * - flipDistance 0.0 (knife edge) -> Sensitivity 1.0

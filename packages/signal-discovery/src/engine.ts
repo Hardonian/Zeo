@@ -14,7 +14,7 @@ import { createHash } from "crypto";
 
 /**
  * Signal Discovery Engine
- * 
+ *
  * Implements deterministic signal discovery with strong epistemic hygiene.
  */
 

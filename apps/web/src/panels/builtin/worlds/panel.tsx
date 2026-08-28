@@ -18,7 +18,7 @@ export default function WorldsPanel({ manifest }: WorldsPanelProps) {
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
         <h3 className="font-medium text-gray-900 mb-2">World Ensemble</h3>
         <p className="text-sm text-gray-600">
-          No world ensemble active. Generate worlds to compare decisions across 
+          No world ensemble active. Generate worlds to compare decisions across
           different assumption sets.
         </p>
       </div>
@@ -43,7 +43,7 @@ export default function WorldsPanel({ manifest }: WorldsPanelProps) {
 
       <div className="bg-blue-50 border-l-4 border-blue-400 p-3">
         <p className="text-sm text-blue-800">
-          <strong>Epistemic Note:</strong> No single world is &quot;true&quot;. Robust 
+          <strong>Epistemic Note:</strong> No single world is &quot;true&quot;. Robust
           decisions perform well across multiple worlds.
         </p>
       </div>

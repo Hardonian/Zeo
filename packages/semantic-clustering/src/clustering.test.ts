@@ -42,21 +42,21 @@ describe("Semantic Clustering", () => {
 
   test("clusters items by time and tags", () => {
     const result = clusterItems(mockItems);
-    
+
     expect(result.clusters.length).toBeGreaterThan(0);
     expect(result.summary.totalItems).toBe(4);
   });
 
   test("returns empty result for empty input", () => {
     const result = clusterItems([]);
-    
+
     expect(result.clusters).toEqual([]);
     expect(result.summary.totalItems).toBe(0);
   });
 
   test("assigns confidence bands to clusters", () => {
     const result = clusterItems(mockItems);
-    
+
     for (const cluster of result.clusters) {
       expect(["low", "medium", "high"]).toContain(cluster.confidenceBand);
     }
@@ -64,7 +64,7 @@ describe("Semantic Clustering", () => {
 
   test("includes provenance in clusters", () => {
     const result = clusterItems(mockItems);
-    
+
     for (const cluster of result.clusters) {
       expect(cluster.provenance.length).toBeGreaterThan(0);
       expect(cluster.provenance[0].sourceId).toBe("semantic-clustering");

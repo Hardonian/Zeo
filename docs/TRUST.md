@@ -20,20 +20,20 @@ interface DataProcessingConsent {
   consentId: string;
   grantedAt: string;
   expiresAt?: string;
-  
+
   // Scope
   dataTypes: DataType[];
   purposes: ProcessingPurpose[];
-  
+
   // Constraints
   retentionDays: number;
   allowThirdParty: boolean;
   allowModelTraining: boolean;
-  
+
   // Revocation
   revocable: boolean;
   revokedAt?: string;
-  
+
   // Provenance
   grantedBy: string;
   verificationMethod: 'explicit_click' | 'signature' | 'system_default';
@@ -47,19 +47,19 @@ What system capabilities can be used:
 interface CapabilityAuthorization {
   capabilityId: string;
   capabilityType: CapabilityType;
-  
+
   // Scope
   allowedOperations: string[];
   forbiddenOperations: string[];
-  
+
   // Constraints
   rateLimits: RateLimitConfig;
   dataScope: DataScope;
-  
+
   // Time bounds
   validFrom: string;
   validUntil?: string;
-  
+
   // Emergency override
   emergencyContact?: string;
   overrideConditions?: string[];
@@ -72,14 +72,14 @@ Requirements for evidence to be considered trustworthy:
 ```typescript
 interface ProvenanceContract {
   contractId: string;
-  
+
   // Requirements
   requiredFields: ProvenanceField[];
   verificationRules: VerificationRule[];
-  
+
   // Trust tiers
   tierDefinitions: Map<TrustTier, TierRequirements>;
-  
+
   // Escalation
   disputeResolution: DisputeProcess;
   appealWindowHours: number;
@@ -113,12 +113,12 @@ interface GranularConsent {
   evidenceUpload: boolean;
   evidenceOcr: boolean;
   evidenceStorage: boolean;
-  
+
   // Instead of "can use AI":
   aiAnalysis: boolean;
   aiRecommendations: boolean;
   aiAutoActions: boolean; // Higher bar
-  
+
   // Time and scope limited
   validForMinutes?: number;
   maxOperations?: number;
@@ -143,17 +143,17 @@ function enforceTrustBoundary(
   if (!consent) {
     return { allowed: false, reason: 'consent_required' };
   }
-  
+
   // 2. Verify consent scope covers operation
   if (!consentCoversOperation(consent, operation)) {
     return { allowed: false, reason: 'consent_scope_insufficient' };
   }
-  
+
   // 3. Check rate limits
   if (exceedsRateLimit(operation, context)) {
     return { allowed: false, reason: 'rate_limit_exceeded' };
   }
-  
+
   // 4. Log access
   auditLog.record({
     operation: operation.id,
@@ -161,7 +161,7 @@ function enforceTrustBoundary(
     consent: consent.consentId,
     timestamp: new Date().toISOString()
   });
-  
+
   return { allowed: true };
 }
 ```
@@ -191,19 +191,19 @@ interface TrustAuditEvent {
   eventId: string;
   eventType: TrustEventType;
   timestamp: string;
-  
+
   // Actor
   userId: string;
   sessionId: string;
-  
+
   // Action
   operation: string;
   consentId?: string;
-  
+
   // Outcome
   allowed: boolean;
   reason?: string;
-  
+
   // Integrity
   hash: string;          // SHA-256 of event content
   previousHash: string;  // Chain for tamper detection
@@ -245,20 +245,20 @@ function revokeConsent(
   reason?: string
 ): RevocationResult {
   const consent = getConsent(consentId);
-  
+
   // Verify ownership
   if (consent.grantedBy !== userId) {
     return { success: false, error: 'not_owner' };
   }
-  
+
   // Check if revocable
   if (!consent.revocable) {
     return { success: false, error: 'not_revocable' };
   }
-  
+
   // Revoke
   consent.revokedAt = new Date().toISOString();
-  
+
   // Log
   auditLog.record({
     eventType: 'consent_revoked',
@@ -267,10 +267,10 @@ function revokeConsent(
     reason,
     timestamp: consent.revokedAt
   });
-  
+
   // Trigger cleanup
   scheduleDataCleanup(consent);
-  
+
   return { success: true };
 }
 ```
@@ -282,7 +282,7 @@ Consent expires automatically:
 ```typescript
 function checkConsentExpiration(): void {
   const expiringSoon = getConsentsExpiringInHours(24);
-  
+
   for (const consent of expiringSoon) {
     notifyUser(consent.grantedBy, {
       type: 'consent_expiring',
@@ -290,9 +290,9 @@ function checkConsentExpiration(): void {
       expiresAt: consent.expiresAt
     });
   }
-  
+
   const expired = getExpiredConsents();
-  
+
   for (const consent of expired) {
     consent.status = 'expired';
     auditLog.record({
@@ -316,7 +316,7 @@ interface TrustVerification {
   factors: TrustFactor[];
   requiredFactorCount: number;
   verifiedFactors: TrustFactor[];
-  
+
   // Factor types
   factors: Array<{
     type: 'password' | 'biometric' | 'hardware_token' | 'time_delay' | 'human_approval';
@@ -331,14 +331,14 @@ function verifyTrustFactors(
 ): TrustVerification {
   const required = getRequiredFactors(operation.riskLevel);
   const verified = [];
-  
+
   for (const factor of required) {
     const result = verifyFactor(factor, context);
     if (result.verified) {
       verified.push(factor);
     }
   }
-  
+
   return {
     factors: required,
     requiredFactorCount: Math.ceil(required.length * 0.67), // 2/3 majority
@@ -459,16 +459,16 @@ interface BreakGlassAccess {
   requestor: string;
   authorization: string; // Emergency auth code
   justification: string;
-  
+
   // Limited scope
   allowedOperations: string[];
   maxOperations: number;
   timeLimitMinutes: number;
-  
+
   // Automatic notifications
   notifyUsers: boolean;
   notifyAdmin: boolean;
-  
+
   // Audit
   fullAuditTrail: boolean;
 }
@@ -478,7 +478,7 @@ function breakGlassAccess(request: BreakGlassAccess): AccessResult {
   if (!verifyEmergencyAuth(request.authorization)) {
     return { granted: false, reason: 'invalid_auth' };
   }
-  
+
   // Log emergency access
   auditLog.record({
     eventType: 'break_glass_activated',
@@ -486,7 +486,7 @@ function breakGlassAccess(request: BreakGlassAccess): AccessResult {
     justification: request.justification,
     timestamp: new Date().toISOString()
   });
-  
+
   // Notify
   if (request.notifyAdmin) {
     notifyAdmins({
@@ -495,7 +495,7 @@ function breakGlassAccess(request: BreakGlassAccess): AccessResult {
       justification: request.justification
     });
   }
-  
+
   // Grant limited access
   return {
     granted: true,

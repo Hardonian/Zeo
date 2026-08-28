@@ -1,6 +1,6 @@
 /**
  * DEK Replay CLI - Deterministic Execution Kernel Replay
- * 
+ *
  * Provides zeo replay <run-id> functionality for verifying
  * deterministic execution and detecting drift.
  */
@@ -169,8 +169,8 @@ function printHumanOutput(
 
   console.log(`\nReplay Comparison:`);
   console.log(`  Original Hash: ${result.comparison.originalHash.slice(0, 16)}...`);
-  console.log(`  Replay Hash: ${result.comparison.replayHash === 'reconstruction_required' 
-    ? 'N/A (reconstruction required)' 
+  console.log(`  Replay Hash: ${result.comparison.replayHash === 'reconstruction_required'
+    ? 'N/A (reconstruction required)'
     : result.comparison.replayHash.slice(0, 16) + '...'}`);
 
   console.log(`\nStatus: ${result.status}`);

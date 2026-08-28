@@ -19,7 +19,7 @@ import { createHash } from "crypto";
 
 /**
  * Radar Engine
- * 
+ *
  * Prioritizes signals based on user goals, active decisions, and uncertainty.
  */
 

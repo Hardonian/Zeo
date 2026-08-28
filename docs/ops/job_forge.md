@@ -10,7 +10,7 @@ JobForge is Zeo's deterministic background job system. It ensures that heavy tas
 
 ## 2. Determinism
 
-Unlike standard job queues (like BullMQ or Sidekiq), JobForge in Zeo is optimized for **Deterministic Ordering**. 
+Unlike standard job queues (like BullMQ or Sidekiq), JobForge in Zeo is optimized for **Deterministic Ordering**.
 - Jobs are processed based on `priority` then `createdAt`.
 - Concurrency is typically set to `1` or a low fixed number to ensure predictable execution traces.
 

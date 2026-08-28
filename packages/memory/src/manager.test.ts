@@ -76,7 +76,7 @@ describe("DecisionMemoryManager", () => {
     it("should add outcome without modifying original record", async () => {
       const spec = createMockSpec();
       const graph = createMockGraph(spec.id);
-      
+
       const record = await manager.recordDecision(spec, graph, spec.actions[0].id, graph.nodes[0].id, {
         userId: "user123",
         domain: "negotiation",
@@ -92,7 +92,7 @@ describe("DecisionMemoryManager", () => {
 
       // Original record reference unchanged
       expect(record.outcomes.length).toBe(originalOutcomeCount);
-      
+
       // But retrieved record has new outcome
       const retrieved = await manager.getDecision(record.id);
       expect(retrieved!.outcomes.length).toBe(1);
@@ -102,7 +102,7 @@ describe("DecisionMemoryManager", () => {
     it("should preserve ambiguous outcomes", async () => {
       const spec = createMockSpec();
       const graph = createMockGraph(spec.id);
-      
+
       const record = await manager.recordDecision(spec, graph, spec.actions[0].id, graph.nodes[0].id, {
         userId: "user123",
         domain: "negotiation",
@@ -122,7 +122,7 @@ describe("DecisionMemoryManager", () => {
     it("should track unknown outcomes", async () => {
       const spec = createMockSpec();
       const graph = createMockGraph(spec.id);
-      
+
       const record = await manager.recordDecision(spec, graph, spec.actions[0].id, graph.nodes[0].id, {
         userId: "user123",
         domain: "negotiation",
@@ -142,7 +142,7 @@ describe("DecisionMemoryManager", () => {
     it("should support 'at_time' replay mode", async () => {
       const spec = createMockSpec();
       const graph = createMockGraph(spec.id);
-      
+
       const record = await manager.recordDecision(spec, graph, spec.actions[0].id, graph.nodes[0].id, {
         userId: "user123",
         domain: "negotiation",
@@ -160,7 +160,7 @@ describe("DecisionMemoryManager", () => {
     it("should support 'today' replay mode", async () => {
       const spec = createMockSpec();
       const graph = createMockGraph(spec.id);
-      
+
       const record = await manager.recordDecision(spec, graph, spec.actions[0].id, graph.nodes[0].id, {
         userId: "user123",
         domain: "negotiation",
@@ -209,7 +209,7 @@ describe("DecisionMemoryManager", () => {
     it("should filter by outcome status", async () => {
       const spec = createMockSpec();
       const graph = createMockGraph(spec.id);
-      
+
       const record = await manager.recordDecision(spec, graph, spec.actions[0].id, graph.nodes[0].id, {
         userId: "user1",
         domain: "negotiation",
@@ -239,14 +239,14 @@ describe("DecisionMemoryManager", () => {
     it("should not allow mutation of stored records", async () => {
       const spec = createMockSpec();
       const graph = createMockGraph(spec.id);
-      
+
       const record = await manager.recordDecision(spec, graph, spec.actions[0].id, graph.nodes[0].id, {
         userId: "user123",
         domain: "negotiation",
       });
 
       const retrieved1 = await manager.getDecision(record.id);
-      
+
       // Attempt to mutate
       try {
         (retrieved1 as DecisionRecord).domain = "modified";
@@ -278,7 +278,7 @@ describe("InMemoryStorageAdapter", () => {
       hasOutcome: undefined,
       temporalContext: undefined,
     });
-    
+
     expect(emptyStats.totalDecisions).toBe(0);
     expect(emptyStats.averageResolutionTime).toBeUndefined();
   });

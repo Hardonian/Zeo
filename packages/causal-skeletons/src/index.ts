@@ -31,7 +31,7 @@ export function enforceNoCausalClaims(skeleton: CausalSkeleton): void {
       `Skeleton "${skeleton.name}" is missing neverBecomesFact flag`
     );
   }
-  
+
   // Verify all edges have identification requirements
   for (const [edgeId, edge] of skeleton.edges) {
     if (!edge.identificationRequirement) {

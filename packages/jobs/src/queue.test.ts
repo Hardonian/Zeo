@@ -12,16 +12,16 @@ async function processAllJobs(queue: JobQueue): Promise<void> {
       hasMoreJobs = false;
       break;
     }
-    
+
     // Trigger processing
     await queue['processNextJobs']();
-    
+
     // Wait a bit for jobs to complete
     await new Promise(r => setTimeout(r, 50));
-    
+
     // Check if we're making progress
     const newStats = queue.getStats();
-    if (newStats.byStatus.pending === stats.byStatus.pending && 
+    if (newStats.byStatus.pending === stats.byStatus.pending &&
         newStats.byStatus.running === stats.byStatus.running &&
         newStats.byStatus.pending === 0) {
       // No pending jobs, just wait for running to complete

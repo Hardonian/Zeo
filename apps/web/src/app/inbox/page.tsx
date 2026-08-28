@@ -146,18 +146,18 @@ function DraftCard({ draft, onPromote, onDelete, onSnooze, onUnsnooze }: {
 }
 
 export default function InboxPage() {
-  const { 
-    drafts, 
-    loading, 
-    error, 
-    initialize, 
-    listDrafts, 
-    promoteToDecision, 
+  const {
+    drafts,
+    loading,
+    error,
+    initialize,
+    listDrafts,
+    promoteToDecision,
     deleteDraft,
     snoozeDraft,
     unsnoozeDraft,
   } = useInboxStore();
-  
+
   const [filter, setFilter] = useState<'all' | 'new' | 'snoozed' | 'promoted'>('all');
 
   useEffect(() => {
@@ -201,8 +201,8 @@ export default function InboxPage() {
     await unsnoozeDraft(id);
   };
 
-  const filteredDrafts = filter === 'all' 
-    ? drafts 
+  const filteredDrafts = filter === 'all'
+    ? drafts
     : drafts.filter(d => d.status === filter);
 
   return (

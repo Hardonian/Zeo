@@ -1,6 +1,6 @@
 # Panel Manifest Specification
 
-**Version:** v0.6.0  
+**Version:** v0.6.0
 **Status:** Required Reading for Panel Developers
 
 This document defines the specification for Zeo panel manifests, including security requirements, capability declarations, and validation rules.
@@ -45,7 +45,7 @@ A **Panel Manifest** (`manifest.json`) is a JSON configuration file that declare
 ### Slot Types
 
 ```typescript
-type UiPanelSlot = 
+type UiPanelSlot =
   | "leftSidebar"   // 320px fixed width sidebar
   | "main"           // Flexible main content area
   | "rightInspector" // 320px right sidebar
@@ -228,7 +228,7 @@ If an iframe panel with elevated capabilities is loaded without `requireUserConf
 The `dataDeps` array declares what Zeo state the panel depends on:
 
 ```typescript
-type DataDependency = 
+type DataDependency =
   | "decision"      // Current decision specification
   | "result"       // Last decision result
   | "evidence"     // Evidence store

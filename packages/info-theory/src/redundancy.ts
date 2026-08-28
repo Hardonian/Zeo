@@ -1,9 +1,9 @@
 /**
  * @zeo/info-theory - Redundancy Control
- * 
+ *
  * Tools for detecting and controlling feature redundancy using
  * information-theoretic measures.
- * 
+ *
  * Key features:
  * - Redundancy matrix computation
  * - mRMR (minimum Redundancy Maximum Relevance) feature selection
@@ -17,7 +17,7 @@ import { computeHash, discretize } from "./utils.js";
 
 /**
  * Compute pairwise redundancy matrix for features
- * 
+ *
  * @param features - Array of feature vectors (each is a column of values)
  * @param config - MI computation config
  * @returns Matrix where M[i][j] = MI(feature_i, feature_j)
@@ -47,7 +47,7 @@ export function computeRedundancyMatrix(
 
 /**
  * Detect redundant features based on pairwise MI
- * 
+ *
  * @param features - Array of feature vectors
  * @param threshold - NMI threshold above which features are considered redundant
  * @param config - MI computation config
@@ -80,12 +80,12 @@ export function detectRedundantFeatures(
 
 /**
  * mRMR (minimum Redundancy Maximum Relevance) feature selection
- * 
+ *
  * Selects features that maximize relevance to target while minimizing
  * redundancy with already-selected features.
- * 
+ *
  * Score = Relevance - Redundancy = I(feature; target) - (1/|S|) * sum(I(feature; s)) for s in S
- * 
+ *
  * Reference: Peng et al. (2005): "Feature Selection Based on Mutual Information"
  */
 export function mrmrFeatureSelection(

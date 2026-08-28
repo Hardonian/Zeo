@@ -1,6 +1,6 @@
 /**
  * Time Semantics & Memory Decay
- * 
+ *
  * Prevents stale evidence and temporal misalignment.
  */
 

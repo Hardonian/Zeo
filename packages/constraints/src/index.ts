@@ -224,17 +224,17 @@ export function addConstraint(graph: ConstraintGraph, constraint: Constraint): v
  */
 function checkTemporalConstraint(constraint: TemporalConstraint, timestamp: string): boolean {
   const now = new Date(timestamp);
-  
+
   if (constraint.notBefore) {
     const notBefore = new Date(constraint.notBefore);
     if (now < notBefore) return false;
   }
-  
+
   if (constraint.notAfter) {
     const notAfter = new Date(constraint.notAfter);
     if (now > notAfter) return false;
   }
-  
+
   return true;
 }
 

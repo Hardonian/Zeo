@@ -149,27 +149,27 @@ export function isSafeMode(): boolean {
  */
 export function getKillSwitchStatus(): Record<KillSwitch, { enabled: boolean; envVar: string }> {
   if (!initialized) initKillSwitches();
-  
+
   return {
-    ai_assist: { 
-      enabled: state.ai_assist, 
-      envVar: 'ZEO_DISABLE_AI_ASSIST' 
+    ai_assist: {
+      enabled: state.ai_assist,
+      envVar: 'ZEO_DISABLE_AI_ASSIST'
     },
-    freeze_markets: { 
-      enabled: state.freeze_markets, 
-      envVar: 'ZEO_FREEZE_MARKETS' 
+    freeze_markets: {
+      enabled: state.freeze_markets,
+      envVar: 'ZEO_FREEZE_MARKETS'
     },
-    max_uncertainty: { 
-      enabled: state.max_uncertainty, 
-      envVar: 'ZEO_FORCE_MAX_UNCERTAINTY' 
+    max_uncertainty: {
+      enabled: state.max_uncertainty,
+      envVar: 'ZEO_FORCE_MAX_UNCERTAINTY'
     },
-    strategic_assumptions: { 
-      enabled: state.strategic_assumptions, 
-      envVar: 'ZEO_DISABLE_STRATEGIC_ASSUMPTIONS' 
+    strategic_assumptions: {
+      enabled: state.strategic_assumptions,
+      envVar: 'ZEO_DISABLE_STRATEGIC_ASSUMPTIONS'
     },
-    external_adapters: { 
-      enabled: state.external_adapters, 
-      envVar: 'ZEO_DISABLE_EXTERNAL_ADAPTERS' 
+    external_adapters: {
+      enabled: state.external_adapters,
+      envVar: 'ZEO_DISABLE_EXTERNAL_ADAPTERS'
     },
   };
 }

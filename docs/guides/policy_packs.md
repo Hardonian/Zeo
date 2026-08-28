@@ -14,7 +14,7 @@ A policy rule consists of:
 1. **Static Analysis**: Analysis services identify "Issues" in the PR diff.
 2. **Finding Reconciliation**: Issues are mapped to rule IDs.
 3. **Policy Check**: The Engine looks up the rule in the active Policy Pack.
-4. **Action**: 
+4. **Action**:
    - `block` -> PR Check fails, PR is blocked.
    - `warn`  -> PR Check passes with warnings.
    - `allow` -> Issue is ignored.

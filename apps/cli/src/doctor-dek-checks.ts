@@ -5,7 +5,7 @@ import type { DoctorCheck } from "./doctor-cli.js";
 
 export function runDekJournalCheck(): DoctorCheck {
   const journalDir = resolve(process.cwd(), ".zeo", "journal");
-  
+
   if (!existsSync(journalDir)) {
     return {
       id: "dek-journal",
@@ -17,7 +17,7 @@ export function runDekJournalCheck(): DoctorCheck {
 
   try {
     const files = readdirSync(journalDir).filter(f => f.endsWith(".jsonl"));
-    
+
     if (files.length === 0) {
       return {
         id: "dek-journal",
@@ -31,7 +31,7 @@ export function runDekJournalCheck(): DoctorCheck {
     const latestFile = files.sort().reverse()[0];
     const content = readFileSync(join(journalDir, latestFile), "utf8");
     const lines = content.trim().split("\n").filter(Boolean);
-    
+
     let corruptLines = 0;
     for (const line of lines.slice(-10)) {
       try {
@@ -74,7 +74,7 @@ export function runModelAdapterCheck(): DoctorCheck {
     // This would typically check the actual adapter registry
     // For now, we check if adapter configuration exists
     const adapterConfigPath = resolve(process.cwd(), ".zeo", "adapters.json");
-    
+
     if (!existsSync(adapterConfigPath)) {
       return {
         id: "model-adapters",
@@ -86,7 +86,7 @@ export function runModelAdapterCheck(): DoctorCheck {
 
     const config = JSON.parse(readFileSync(adapterConfigPath, "utf8"));
     const adapters = config.adapters || [];
-    
+
     if (adapters.length === 0) {
       return {
         id: "model-adapters",
@@ -98,7 +98,7 @@ export function runModelAdapterCheck(): DoctorCheck {
     }
 
     // Check each adapter has required fields
-    const validAdapters = adapters.filter((a: any) => 
+    const validAdapters = adapters.filter((a: any) =>
       a.id && a.provider && a.model && typeof a.execute === 'function'
     );
 
@@ -121,10 +121,10 @@ export function runModelAdapterCheck(): DoctorCheck {
 
 export function runPolicySchemaCheck(): DoctorCheck {
   const policyPath = resolve(process.cwd(), ".zeo", "policy.json");
-  
+
   // Default policy version
   const currentSchemaVersion = "1.0.0";
-  
+
   if (!existsSync(policyPath)) {
     return {
       id: "policy-schema",
@@ -138,10 +138,10 @@ export function runPolicySchemaCheck(): DoctorCheck {
   try {
     const policy = JSON.parse(readFileSync(policyPath, "utf8"));
     const policyVersion = policy.schemaVersion || policy.version || "unknown";
-    
+
     // Simple semver comparison
     const isCompatible = policyVersion.startsWith("1.");
-    
+
     if (!isCompatible) {
       return {
         id: "policy-schema",
@@ -173,7 +173,7 @@ export function runPolicySchemaCheck(): DoctorCheck {
 
 export async function runEnterpriseConnectivityCheck(): Promise<DoctorCheck> {
   const supabaseUrl = process.env.SUPABASE_URL;
-  
+
   if (!supabaseUrl) {
     return {
       id: "enterprise",

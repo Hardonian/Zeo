@@ -11,7 +11,7 @@
 ## Summary
 - **Total Runs:** 5
 - **Passed:** 5 ✓
-- **Failed:** 0 
+- **Failed:** 0
 
 ## Light Load - 10 Concurrent Jobs (latency-light)
 

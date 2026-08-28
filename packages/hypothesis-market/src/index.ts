@@ -228,7 +228,7 @@ export function recordOutcome(
 
   // Calculate prediction accuracy based on outcome
   const accuracy = calculatePredictionAccuracy(hypothesis, outcome);
-  
+
   // Update calibration score
   const newCalibrationScore = updateCalibrationScore(
     hypothesis.position.calibrationScore,
@@ -301,7 +301,7 @@ export function rebalanceCredence(
   }
 
   const now = new Date().toISOString();
-  
+
   // Calculate scores for each hypothesis
   const scores = new Map<HypothesisId, number>();
   for (const [id, h] of market.hypotheses) {
@@ -312,7 +312,7 @@ export function rebalanceCredence(
   // Normalize scores to get new credence allocations
   const totalScore = Array.from(scores.values()).reduce((a, b) => a + b, 0);
   const newCredences = new Map<HypothesisId, number>();
-  
+
   for (const [id, score] of scores) {
     const normalizedScore = totalScore > 0 ? score / totalScore : 1 / scores.size;
     // Apply cap
@@ -349,7 +349,7 @@ export function rebalanceCredence(
   const activeHypotheses = new Map<HypothesisId, MarketHypothesis>();
   let retiredCount = 0;
   let updatedMarket = { ...market };
-  
+
   for (const [id, h] of newHypotheses) {
     if (h.position.credenceBalance < config.minCredenceThreshold) {
       retiredCount++;
@@ -417,7 +417,7 @@ export function getMarketSummary(market: MarketState): {
   const hypotheses = Array.from(market.hypotheses.values());
   const activeCount = hypotheses.length;
   const totalCredence = hypotheses.reduce((sum, h) => sum + h.position.credenceBalance, 0);
-  const topHypothesis = hypotheses.length > 0 
+  const topHypothesis = hypotheses.length > 0
     ? hypotheses.reduce((max, h) => h.position.credenceBalance > max.position.credenceBalance ? h : max, hypotheses[0])
     : null;
   const averageCalibration = hypotheses.length > 0
@@ -465,11 +465,11 @@ function updateCalibrationScore(current: number, accuracy: number, weight: numbe
 function calculateRobustnessScore(hypothesis: MarketHypothesis): number {
   // Based on performance stability across perturbations
   if (hypothesis.performanceHistory.length < 2) return 0.5;
-  
+
   const accuracies = hypothesis.performanceHistory.map(p => p.predictionAccuracy);
   const mean = accuracies.reduce((a, b) => a + b, 0) / accuracies.length;
   const variance = accuracies.reduce((sum, a) => sum + Math.pow(a - mean, 2), 0) / accuracies.length;
-  
+
   // Lower variance = higher robustness
   return Math.max(0, 1 - variance);
 }
@@ -482,7 +482,7 @@ function calculateEvidenceStrength(hypothesis: MarketHypothesis): number {
 function calculateCompositeScore(hypothesis: MarketHypothesis, config: RebalanceConfig): number {
   const robustness = calculateRobustnessScore(hypothesis);
   const calibration = hypothesis.position.calibrationScore;
-  
+
   // Recent performance
   const recentPerformances = hypothesis.performanceHistory.slice(-5);
   const recency = recentPerformances.length > 0

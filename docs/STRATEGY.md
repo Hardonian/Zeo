@@ -18,41 +18,41 @@ The strategic world captures the multi-agent context:
 interface StrategicWorld {
   // Your position
   self: AgentState;
-  
+
   // Other agents with uncertainty
   others: Map<string, AgentModel>;
-  
+
   // Common knowledge vs private information
   informationStructure: InformationStructure;
-  
+
   // Game structure
   interactionType: 'one-shot' | 'repeated' | 'sequential' | 'coalitional';
-  
+
   // Historical context
   priorInteractions: InteractionRecord[];
-  
+
   // Uncertainty bands (strategic uncertainty is always higher)
   uncertaintyMultiplier: number; // Always >= 1.0
 }
 
 interface AgentModel {
   agentId: string;
-  
+
   // Beliefs about their objectives (intervals, not point estimates)
   inferredObjectives: Map<string, { low: number; high: number }>;
-  
+
   // Beliefs about their capabilities
   capabilityBounds: { min: number; max: number };
-  
+
   // Beliefs about their information
   informationState: 'informed' | 'uncertain' | 'uninformed';
-  
+
   // Predicted response patterns
   responseModel: ResponseModel;
-  
+
   // Confidence in this model
   modelConfidence: 'low' | 'medium' | 'high';
-  
+
   // Known failure modes
   modelWarnings: string[];
 }
@@ -88,17 +88,17 @@ interface AdversarialAssumption {
   id: string;
   assumptionType: 'worst_case' | 'best_case' | 'mixed';
   description: string;
-  
+
   // Evidence basis
   evidence: EvidencePointer[];
   evidenceStrength: 'weak' | 'moderate' | 'strong';
-  
+
   // Uncertainty quantification
   weightRange: { low: number; high: number };
-  
+
   // What would change this assumption
   flipConditions: FlipCondition[];
-  
+
   // Warnings
   epistemicWarnings: string[];
 }
@@ -116,10 +116,10 @@ Unlike standard game theory, Zeo uses interval payoffs to represent strategic un
 interface IntervalPayoff {
   // Your payoff (uncertain)
   self: { low: number; high: number };
-  
+
   // Their payoff (even more uncertain)
   other: { low: number; high: number };
-  
+
   // Joint outcomes
   joint: {
     mutualBenefit: { low: number; high: number };
@@ -181,16 +181,16 @@ For repeated interactions, Zeo models:
 interface RepeatedGameContext {
   // Probability of future interactions
   continuationProbability: { low: number; high: number };
-  
+
   // Discount factor for future payoffs
   discountFactor: { low: number; high: number };
-  
+
   // Reputation effects
   reputationImpact: {
     current: ReputationState;
     futureOptions: Map<string, ReputationEffect>;
   };
-  
+
   // Learning potential
   informationValue: { low: number; high: number };
 }
@@ -241,11 +241,11 @@ function generateStrategicBranches(
   depth: number
 ): BranchGraph {
   const branches: BranchNode[] = [];
-  
+
   for (const [agentId, agentModel] of world.others) {
     // Generate plausible responses
     const responses = generatePlausibleResponses(action, agentModel);
-    
+
     for (const response of responses) {
       branches.push({
         id: `${action.id}-${agentId}-${response.type}`,
@@ -254,13 +254,13 @@ function generateStrategicBranches(
         response,
         probabilityRange: response.probabilityRange, // Uncertain!
         dependencies: [`${action.id}`],
-        children: depth > 0 
+        children: depth > 0
           ? generateStrategicBranches(response, world, depth - 1)
           : []
       });
     }
   }
-  
+
   return { nodes: branches };
 }
 ```

@@ -1,10 +1,10 @@
 /**
  * Time Semantics & Memory Decay Types
- * 
+ *
  * Prevents stale evidence and temporal misalignment.
  */
 
-export type DecayModel = 
+export type DecayModel =
   | "none"
   | "exponential"
   | "step"

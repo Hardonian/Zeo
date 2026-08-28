@@ -1,6 +1,6 @@
 /**
  * Strategic World Modeling Functions
- * 
+ *
  * Core epistemic discipline: Strategic reasoning always widens uncertainty bands.
  */
 
@@ -124,7 +124,7 @@ export function validateStrategicAssumptions(
 /**
  * Widens uncertainty bands based on strategic context.
  * Adversarial modeling inherently increases uncertainty.
- * 
+ *
  * @param band - Original belief or deception band
  * @param wideningFactor - Factor to widen the band (default: 0.2 for adversarial contexts)
  * @returns Widened band representing increased strategic uncertainty
@@ -134,10 +134,10 @@ export function widenUncertaintyForStrategicContext(
   wideningFactor?: number
 ): { low: number; high: number } {
   const factor = wideningFactor ?? 0.2;
-  
+
   const newLow = Math.max(0, band.low - factor);
   const newHigh = Math.min(1, band.high + factor);
-  
+
   return { low: newLow, high: newHigh };
 }
 
@@ -149,7 +149,7 @@ export function applyStrategicWidening(
   wideningFactor?: number
 ): StrategicWorldModel {
   const factor = wideningFactor ?? worldModel.adversarialVolatilityWidening;
-  
+
   const widenedAgents = worldModel.agents.map(agent => ({
     ...agent,
     beliefBand: widenUncertaintyForStrategicContext(agent.beliefBand, factor),

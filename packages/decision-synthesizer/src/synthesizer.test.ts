@@ -26,7 +26,7 @@ describe("Decision Synthesizer", () => {
 
   test("marks output as non-authoritative", () => {
     const result = synthesizeImplications(mockContext);
-    
+
     expect(result.isNonAuthoritative).toBe(true);
     expect(result.isInterpretation).toBe(true);
     expect(result.warning).toContain("not authoritative");
@@ -34,7 +34,7 @@ describe("Decision Synthesizer", () => {
 
   test("generates all three implication types", () => {
     const result = synthesizeImplications(mockContext);
-    
+
     const types = new Set(result.implications.map((i: { type: string }) => i.type));
     expect(types.has("what_this_means")).toBe(true);
     expect(types.has("why_might_be_wrong")).toBe(true);
@@ -43,7 +43,7 @@ describe("Decision Synthesizer", () => {
 
   test("all implications require validation", () => {
     const result = synthesizeImplications(mockContext);
-    
+
     for (const impl of result.implications) {
       expect(impl.requiresValidation).toBe(true);
     }
@@ -51,7 +51,7 @@ describe("Decision Synthesizer", () => {
 
   test("includes caveats in implications", () => {
     const result = synthesizeImplications(mockContext);
-    
+
     for (const impl of result.implications) {
       expect(impl.caveats.length).toBeGreaterThan(0);
     }
@@ -59,13 +59,13 @@ describe("Decision Synthesizer", () => {
 
   test("respects maxImplications option", () => {
     const result = synthesizeImplications(mockContext, { maxImplications: 3 });
-    
+
     expect(result.implications.length).toBeLessThanOrEqual(3);
   });
 
   test("generates summary", () => {
     const result = synthesizeImplications(mockContext);
-    
+
     expect(result.summary).toContain(mockContext.decisionTitle);
     expect(result.summary).toContain("implications");
   });

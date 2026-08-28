@@ -47,7 +47,7 @@ export interface Adapter {
 export interface AdapterRegistry {
   adapters: Map<string, Adapter>;
   enabledIds: Set<string>;
-  
+
   register(adapter: Adapter): void;
   unregister(id: string): boolean;
   enable(id: string): boolean;
@@ -60,23 +60,23 @@ export interface AdapterRegistry {
 export function createAdapterRegistry(): AdapterRegistry {
   const adapters = new Map<string, Adapter>();
   const enabledIds = new Set<string>();
-  
+
   return {
     adapters,
     enabledIds,
-    
+
     register(adapter: Adapter) {
       this.adapters.set(adapter.info.id, adapter);
       if (adapter.info.enabled) {
         this.enabledIds.add(adapter.info.id);
       }
     },
-    
+
     unregister(id: string): boolean {
       this.enabledIds.delete(id);
       return this.adapters.delete(id);
     },
-    
+
     enable(id: string): boolean {
       if (this.adapters.has(id)) {
         this.enabledIds.add(id);
@@ -86,7 +86,7 @@ export function createAdapterRegistry(): AdapterRegistry {
       }
       return false;
     },
-    
+
     disable(id: string): boolean {
       if (this.enabledIds.has(id)) {
         this.enabledIds.delete(id);
@@ -96,15 +96,15 @@ export function createAdapterRegistry(): AdapterRegistry {
       }
       return false;
     },
-    
+
     list(): AdapterInfo[] {
       return Array.from(this.adapters.values()).map(a => ({ ...a.info }));
     },
-    
+
     get(id: string): Adapter | undefined {
       return this.adapters.get(id);
     },
-    
+
     getEnabled(): Adapter[] {
       return Array.from(this.enabledIds)
         .map(id => this.adapters.get(id))
@@ -134,7 +134,7 @@ export function computeQualityScore(
   dataFreshness: "fresh" | "stale" | "aged"
 ): number {
   let score = 0;
-  
+
   switch (reliabilityBand) {
     case "primary":
       score = 0.7;
@@ -146,9 +146,9 @@ export function computeQualityScore(
       score = 0.1;
       break;
   }
-  
+
   if (hasProvenance) score += 0.15;
-  
+
   switch (dataFreshness) {
     case "fresh":
       score += 0.15;
@@ -159,7 +159,7 @@ export function computeQualityScore(
     case "aged":
       break;
   }
-  
+
   return Math.min(1, Math.max(0, score));
 }
 
@@ -176,11 +176,11 @@ export function createProvenancePointer(
     capturedAt,
     checksum,
   } as ProvenancePointer;
-  
+
   if (extras) {
     Object.assign(pointer, extras);
   }
-  
+
   return pointer;
 }
 

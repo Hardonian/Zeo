@@ -1,6 +1,6 @@
 /**
  * Strategic Evaluation Functions
- * 
+ *
  * Evaluates strategies under uncertainty with robustness criteria.
  * Prevents naive optimization by accounting for adversarial conditions.
  */
@@ -15,7 +15,7 @@ import type {
 /**
  * Evaluates strategies across multiple robustness criteria.
  * Returns rankings for each action under worst-case, minimax regret, and dominance under deception.
- * 
+ *
  * @param actions - Array of strategic actions with scenario outcomes
  * @param scenarios - Array of possible scenarios with probabilities
  * @returns Array of robust strategy evaluations
@@ -61,7 +61,7 @@ export function evaluateRobustStrategies(
 /**
  * Computes worst-case score for an action.
  * Returns the minimum outcome across all scenarios (most pessimistic view).
- * 
+ *
  * @param action - The strategic action to evaluate
  * @param scenarios - Array of possible scenarios
  * @returns Worst-case score (minimum outcome, normalized to [0, 1])
@@ -87,10 +87,10 @@ export function computeWorstCaseScore(
 /**
  * Computes minimax regret for an action.
  * Minimizes the maximum regret (difference between best possible and chosen outcome).
- * 
+ *
  * Regret = (Best outcome in scenario) - (Actual outcome for action)
  * Lower regret is better, so we return 1 - (normalized regret) for ranking consistency.
- * 
+ *
  * @param action - The strategic action to evaluate
  * @param allActions - All available actions for comparison
  * @param scenarios - Array of possible scenarios
@@ -124,7 +124,7 @@ export function computeMinimaxRegret(
 /**
  * Computes dominance score under adversarial/deceptive conditions.
  * Evaluates how well an action performs when adversarial scenarios are more likely.
- * 
+ *
  * @param action - The strategic action to evaluate
  * @param scenarios - Array of possible scenarios
  * @returns Score weighted toward adversarial scenarios
@@ -202,7 +202,7 @@ function generateRobustnessNotes(
 /**
  * Selects the best action based on robust strategy evaluation.
  * Returns the action with highest overall score across all criteria.
- * 
+ *
  * @param actions - Array of strategic actions
  * @param scenarios - Array of possible scenarios
  * @returns Best action evaluation or null if no actions provided
@@ -222,7 +222,7 @@ export function selectBestRobustStrategy(
 /**
  * Validates that strategies account for deception.
  * Returns warnings if deception scenarios are not adequately covered.
- * 
+ *
  * @param actions - Array of strategic actions
  * @param scenarios - Array of possible scenarios
  * @returns Array of validation warnings
@@ -234,7 +234,7 @@ export function validateDeceptionCoverage(
   const warnings: string[] = [];
 
   const hasAdversarialScenarios = scenarios.some(s => s.adversarial);
-  
+
   if (!hasAdversarialScenarios) {
     warnings.push(
       "No adversarial scenarios defined. " +

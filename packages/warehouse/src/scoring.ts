@@ -27,7 +27,7 @@ const B = 0.75;
 
 /**
  * Calculate BM25 score for a single term in a document.
- * 
+ *
  * @param tf Term Frequency in the document
  * @param df Document Frequency (number of documents containing term)
  * @param docLen Length of the document (in terms)

@@ -1,12 +1,12 @@
 /**
  * Value System Encoding Types
- * 
+ *
  * Makes optimization targets explicit and inspectable.
  */
 
-export type ValueComponent = 
+export type ValueComponent =
   | "utility"
-  | "downside_penalty" 
+  | "downside_penalty"
   | "regret_penalty"
   | "irreversibility_penalty"
   | "fairness_penalty";
@@ -92,9 +92,9 @@ export interface ValueValidationResult {
   warnings: ValueValidationError[];
 }
 
-export type MeasurementScale = 
+export type MeasurementScale =
   | "ratio"
-  | "interval" 
+  | "interval"
   | "ordinal"
   | "nominal"
   | "currency_usd"

@@ -54,10 +54,10 @@ export function createTrustScorer(options: {
   defaultBand: TrustBand;
 }): TrustScorer {
   const warnings = new Map<string, string[]>();
-  
+
   function computeProvenanceQuality(provenance: ProvenancePointer[]): number {
     if (!provenance || provenance.length === 0) return 0.2;
-    
+
     let score = 0;
     for (const p of provenance) {
       // Higher score for complete provenance
@@ -66,24 +66,24 @@ export function createTrustScorer(options: {
       else if (p.kind === "audio" && p.startMs !== undefined) score += 0.8;
       else if (p.kind === "text" && p.offset !== undefined) score += 0.7;
       else score += 0.5;
-      
+
       // Checksum presence bonus
       if (p.checksum) score += 0.1;
     }
-    
+
     return Math.min(1, score / provenance.length);
   }
-  
+
   function computeRecency(timestamp: string): number {
     const now = new Date();
     const obsTime = new Date(timestamp);
     const ageHours = (now.getTime() - obsTime.getTime()) / (1000 * 60 * 60);
-    
+
     // Exponential decay with 24 hour half-life
     const recencyScore = Math.pow(0.5, ageHours / 24);
     return Math.max(0.1, recencyScore); // Floor at 0.1
   }
-  
+
   function computeConsistency(observation: SignalObservation): number {
     // Check for internal consistency
     const checks: boolean[] = [
@@ -100,11 +100,11 @@ export function createTrustScorer(options: {
       !!observation.t,
       !!observation.sourceId,
     ];
-    
+
     const passCount = checks.filter(Boolean).length;
     return passCount / checks.length;
   }
-  
+
   return {
     computeScore(observation: SignalObservation, metadata?: SourceMetadata): TrustScore {
       const components = {
@@ -113,21 +113,21 @@ export function createTrustScorer(options: {
         provenanceQuality: computeProvenanceQuality(observation.provenance),
         consistency: computeConsistency(observation),
       };
-      
+
       // Weighted average
       const overall =
         components.sourceReliability * options.provenanceWeight +
         components.recency * options.recencyWeight +
         components.provenanceQuality * options.provenanceWeight +
         components.consistency * options.consistencyWeight;
-      
+
       const score: TrustScore = {
         overall: Math.min(1, Math.max(0, overall)),
         components,
         band: computeTrustBand(overall),
         warnings: [],
       };
-      
+
       // Add warnings
       if (components.provenanceQuality < 0.5) {
         score.warnings.push("Low provenance quality");
@@ -141,34 +141,34 @@ export function createTrustScorer(options: {
       if (metadata?.knownIssues.length) {
         score.warnings.push(...metadata.knownIssues.map(i => `Known issue: ${i}`));
       }
-      
+
       // Store warnings
       warnings.set(observation.observationId, score.warnings);
-      
+
       return score;
     },
-    
+
     computeBatchScores(
       observations: SignalObservation[],
       metadataMap: Map<string, SourceMetadata>
     ): Map<string, TrustScore> {
       const scores = new Map<string, TrustScore>();
-      
+
       for (const obs of observations) {
         const metadata = metadataMap.get(obs.sourceId);
         const score = this.computeScore(obs, metadata);
         scores.set(obs.observationId, score);
       }
-      
+
       return scores;
     },
-    
+
     addWarning(observationId: string, warning: string): void {
       const existing = warnings.get(observationId) ?? [];
       existing.push(warning);
       warnings.set(observationId, existing);
     },
-    
+
     getWarnings(observationId: string): string[] {
       return warnings.get(observationId) ?? [];
     },

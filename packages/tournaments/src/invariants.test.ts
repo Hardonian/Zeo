@@ -129,7 +129,7 @@ describe('tournaments invariant tests', () => {
 
     it('should detect dominance violations in results', () => {
       let tournament = createTournament('dominance-test', 'Test', 'Test');
-      
+
       // Register strategies
       const { tournament: withStrat1 } = registerStrategy(tournament, {
         name: 'Dominant Strategy',
@@ -167,7 +167,7 @@ describe('tournaments invariant tests', () => {
       const standings = new Map(tournament.standings);
       const dominantStanding = standings.get(Array.from(standings.keys())[0])!;
       const weakStanding = standings.get(Array.from(standings.keys())[1])!;
-      
+
       dominantStanding.wins = 10;
       dominantStanding.losses = 0;
       dominantStanding.matchesPlayed = 10;

@@ -1,12 +1,12 @@
 /**
  * @zeo/bayes-shrinkage - James-Stein Shrinkage
- * 
+ *
  * Implements James-Stein and positive-part James-Stein estimators
  * for shrinking estimates toward a common mean.
- * 
+ *
  * The James-Stein estimator dominates the MLE for 3+ estimates,
  * reducing total MSE by shrinking toward the grand mean.
- * 
+ *
  * Reference:
  * - James & Stein (1961): "Estimation with Quadratic Loss"
  */
@@ -22,7 +22,7 @@ import { computeHash } from "./utils.js";
 
 /**
  * Compute James-Stein shrinkage
- * 
+ *
  * @param estimates - Array of observed estimates
  * @param config - Configuration options
  * @returns Shrinkage result with shrunk estimates

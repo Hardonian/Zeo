@@ -140,7 +140,7 @@ BENCHMARK_ITERATIONS=5 \
 
 ### Latency Measurement
 
-1. **Warmup Phase (10-20s):** 
+1. **Warmup Phase (10-20s):**
    - Allow JIT compilation to stabilize
    - Warm Redis connection pools
    - Establish runner capacity baseline
@@ -192,7 +192,7 @@ We openly document what these benchmarks do NOT capture:
 Results within these bounds are considered reproducible:
 
 - **Latency:** ±15% between runs
-- **Throughput:** ±10% between runs  
+- **Throughput:** ±10% between runs
 - **Recovery Time:** ±25% (highly variable)
 
 If variance exceeds these bounds:

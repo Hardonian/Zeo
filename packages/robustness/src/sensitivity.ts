@@ -1,11 +1,11 @@
 /**
  * @zeo/robustness - Sensitivity Analysis
- * 
+ *
  * Advanced sensitivity analysis tools:
  * - Leave-One-Out (LOO) analysis
- * - Window sensitivity analysis  
+ * - Window sensitivity analysis
  * - Robust regression with breakdown analysis
- * 
+ *
  * These tools help identify fragile estimates that depend heavily
  * on specific observations or time periods.
  */
@@ -187,7 +187,7 @@ function computeHash(content: string): string {
 
 /**
  * Compute Leave-One-Out sensitivity of an estimator
- * 
+ *
  * @param values - Array of values
  * @param estimator - Function to compute estimate (defaults to mean)
  * @returns LOO sensitivity result
@@ -282,7 +282,7 @@ export function computeLOOSensitivity(
 
 /**
  * Compute window sensitivity (estimate stability across sliding windows)
- * 
+ *
  * @param values - Time-ordered values
  * @param windowSize - Size of sliding window
  * @param stepSize - Step between windows (defaults to 1)
@@ -421,7 +421,7 @@ function simpleRegression(x: number[], y: number[]): { slope: number; intercept:
 /**
  * Robust regression using iteratively reweighted least squares (IRLS)
  * with Huber or Tukey biweight function
- * 
+ *
  * @param x - Feature matrix (each sub-array is a feature vector)
  * @param y - Target values
  * @param method - Weighting method

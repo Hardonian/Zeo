@@ -46,13 +46,13 @@ export type SliceKey = string; // Format: "dimension:value"
 export interface SliceMetrics {
   slice: Slice;
   sampleSize: number;
-  
+
   // Coverage metrics
   coverage: {
     overall: number;
     byMetricId: Record<string, number>;
   };
-  
+
   // Calibration metrics (Brier, interval scores)
   properScores: {
     overall: number;
@@ -62,20 +62,20 @@ export interface SliceMetrics {
       ordinal?: number;
     }>;
   };
-  
+
   // Regression metrics (for continuous predictions)
   regressionMetrics: {
     mae: number;        // Mean Absolute Error
     mse: number;        // Mean Squared Error
     rmse: number;       // Root Mean Squared Error
   };
-  
+
   // Brier score specifically for binary predictions
   brierScore: {
     overall: number;
     byMetricId: Record<string, number>;
   };
-  
+
   // Uncertainty band metrics
   uncertaintyBands: {
     averageWidth: number;
@@ -83,7 +83,7 @@ export interface SliceMetrics {
     tooNarrowCount: number;  // Predictions that missed due to narrow bands
     tooWideCount: number;    // Predictions with excessively wide bands
   };
-  
+
   // Epistemic metadata
   epistemicStatus: {
     confidenceLevel: "low" | "medium" | "high";
@@ -100,13 +100,13 @@ export interface SliceGatingRule {
   name: string;
   description: string;
   severity: "error" | "warning" | "info";
-  
+
   // Which slices this rule applies to
   appliesTo: {
     dimensions?: SliceDimension[];  // undefined = all dimensions
     sliceValues?: string[];         // undefined = all values
   };
-  
+
   // Threshold conditions
   conditions: {
     minSampleSize?: number;
@@ -116,7 +116,7 @@ export interface SliceGatingRule {
     maxRmse?: number;
     minUncertaintyWidth?: number;   // Check for fake precision
   };
-  
+
   // Computed result (populated during evaluation)
   result?: {
     passed: boolean;
@@ -132,7 +132,7 @@ export interface SliceGatingRule {
 export interface SliceEvaluationReport {
   version: string;
   createdAt: string;
-  
+
   // Metadata
   metadata: {
     datasetId: string;
@@ -142,13 +142,13 @@ export interface SliceEvaluationReport {
     seed: string;
     engineVersion: string;
   };
-  
+
   // All slices computed
   slices: SliceMetrics[];
-  
+
   // Slices indexed by key for lookup
   sliceIndex: Record<SliceKey, SliceMetrics>;
-  
+
   // Gating rules and results
   gatingRules: SliceGatingRule[];
   gatingResults: {
@@ -157,7 +157,7 @@ export interface SliceEvaluationReport {
     failed: string[];    // Rule IDs that failed
     warnings: string[];  // Rule IDs with warnings
   };
-  
+
   // Cross-slice analysis
   crossSliceAnalysis: {
     mostReliableSlice: SliceKey;
@@ -171,7 +171,7 @@ export interface SliceEvaluationReport {
       difference: number;
     }>;
   };
-  
+
   // Recommendations
   recommendations: Array<{
     type: "widen_bands" | "improve_calibration" | "collect_more_data" | "investigate_divergence";

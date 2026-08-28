@@ -93,7 +93,7 @@ function runPythonScript(
   return new Promise((resolve, reject) => {
     const scriptPath = join(PYTHON_DIR, scriptName);
     const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
-    
+
     const proc = spawn(pythonCmd, [scriptPath, ...args], {
       timeout,
       env: {
@@ -101,22 +101,22 @@ function runPythonScript(
         PYTHONPATH: PYTHON_DIR,
       },
     });
-    
+
     let stdout = '';
     let stderr = '';
-    
+
     proc.stdout.on('data', (data) => {
       stdout += data.toString();
     });
-    
+
     proc.stderr.on('data', (data) => {
       stderr += data.toString();
     });
-    
+
     proc.on('close', (code) => {
       resolve({ stdout, stderr, exitCode: code ?? 0 });
     });
-    
+
     proc.on('error', (err) => {
       reject(err);
     });
@@ -129,24 +129,24 @@ export async function runCorrelation(
   config: DatasetConfig
 ): Promise<AnalyticsReport['correlations']> {
   const configPath = `${outputJson}.config.json`;
-  
+
   try {
     await fs.writeFile(configPath, JSON.stringify({
       numeric_cols: config.numericCols,
       include_robust: config.includeRobust ?? true,
       partial_controls: config.partialControls,
     }));
-    
+
     const result = await runPythonScript('correlation.py', [
       inputCsv,
       outputJson,
       configPath,
     ]);
-    
+
     if (result.exitCode !== 0) {
       throw new Error(`Correlation script failed: ${result.stderr}`);
     }
-    
+
     const output = await fs.readFile(outputJson, 'utf-8');
     return JSON.parse(output);
   } finally {
@@ -167,18 +167,18 @@ export async function runRegression(
   if (!config.targetCol || !config.featureCols || config.featureCols.length === 0) {
     throw new Error('targetCol and featureCols are required for regression');
   }
-  
+
   const result = await runPythonScript('regression.py', [
     inputCsv,
     outputJson,
     config.targetCol,
     ...config.featureCols,
   ]);
-  
+
   if (result.exitCode !== 0) {
     throw new Error(`Regression script failed: ${result.stderr}`);
   }
-  
+
   const output = await fs.readFile(outputJson, 'utf-8');
   return JSON.parse(output);
 }
@@ -189,7 +189,7 @@ export async function generateReport(
   datasetHash: string
 ): Promise<string> {
   const generatedAt = new Date().toISOString();
-  
+
   let report = `# Zeo Analytics Report
 Generated: ${generatedAt}
 Dataset Hash: ${datasetHash}
@@ -211,29 +211,29 @@ Variables: ${correlations.variables.join(', ')}
 ### Top Correlations
 
 `;
-    
+
     // Sort by absolute correlation value, filter out errors
     const validCorrelations = correlations.correlations
       .filter(c => c.correlation !== null && !c.error)
       .sort((a, b) => Math.abs(b.correlation!) - Math.abs(a.correlation!))
       .slice(0, 20);
-    
+
     for (const corr of validCorrelations) {
       const sigMarker = (corr.p_value ?? 1) < 0.05 ? '*' : '';
       report += `- **${corr.x}** vs **${corr.y}**: ${corr.correlation?.toFixed(3)}${sigMarker} (${corr.method}${corr.robust ? ', robust' : ''}, n=${corr.n})\n`;
     }
-    
+
     if (validCorrelations.length === 0) {
       report += 'No valid correlations computed.\n';
     }
-    
+
     if (correlations.warnings.length > 0) {
       report += '\n### Warnings\n\n';
       for (const warning of correlations.warnings) {
         report += `- ${warning}\n`;
       }
     }
-    
+
     report += '\n---\n\n';
   }
 
@@ -282,7 +282,7 @@ Binary Outcome: ${regressions.is_binary ? 'Yes' : 'No'}
         }
 
         report += `### ${modelName.toUpperCase()}\n\n`;
-        
+
         if (model.r_squared !== undefined) {
           report += `R²: ${model.r_squared}\n`;
         }
@@ -298,11 +298,11 @@ Binary Outcome: ${regressions.is_binary ? 'Yes' : 'No'}
         if (model.alpha !== undefined) {
           report += `Alpha: ${model.alpha}\n`;
         }
-        
+
         report += '\n**Coefficients**:\n\n';
         report += '| Feature | Estimate | Std Error | p-value | Notes |\n';
         report += '|---------|----------|-----------|---------|-------|\n';
-        
+
         for (const [feat, coef] of Object.entries(model.coefficients)) {
           const sig = coef.significant ? ' *' : '';
           const stdErr = coef.std_error !== undefined ? coef.std_error.toFixed(4) : 'N/A';
@@ -310,7 +310,7 @@ Binary Outcome: ${regressions.is_binary ? 'Yes' : 'No'}
           const notes = coef.odds_ratio ? `OR: ${coef.odds_ratio}` : (coef.importance ? `Imp: ${coef.importance}` : '');
           report += `| ${feat} | ${coef.estimate.toFixed(4)}${sig} | ${stdErr} | ${pval} | ${notes} |\n`;
         }
-        
+
         report += `\nIntercept: ${model.intercept.toFixed(4)}\n\n`;
       }
 
@@ -321,7 +321,7 @@ Binary Outcome: ${regressions.is_binary ? 'Yes' : 'No'}
         }
       }
     }
-    
+
     report += '\n---\n\n';
   }
 

@@ -27,7 +27,7 @@ describe("StaticHotPathScanner", () => {
       `;
 
       const findings = scanner.scanSource("test.ts", code);
-      
+
       expect(findings.length).toBeGreaterThanOrEqual(1);
       expect(findings.some(f => f.category === "nested-loop" && f.metadata.loopDepth === 2)).toBe(true);
     });
@@ -46,7 +46,7 @@ describe("StaticHotPathScanner", () => {
       `;
 
       const findings = scanner.scanSource("test.ts", code);
-      
+
       const tripleLoop = findings.find(f => f.metadata.loopDepth === 3);
       expect(tripleLoop).toBeDefined();
       expect(tripleLoop?.severity).toBe("critical");
@@ -64,7 +64,7 @@ describe("StaticHotPathScanner", () => {
       `;
 
       const findings = scanner.scanSource("test.ts", code);
-      
+
       expect(findings.some(f => f.category === "recursion")).toBe(true);
     });
   });
@@ -84,7 +84,7 @@ describe("StaticHotPathScanner", () => {
       `;
 
       const findings = scanner.scanSource("test.ts", code);
-      
+
       expect(findings.some(f => f.category === "algorithmic-complexity")).toBe(true);
     });
 
@@ -101,7 +101,7 @@ describe("StaticHotPathScanner", () => {
       `;
 
       const findings = scanner.scanSource("test.ts", code);
-      
+
       expect(findings.some(f => f.category === "algorithmic-complexity")).toBe(true);
     });
   });
@@ -119,7 +119,7 @@ describe("StaticHotPathScanner", () => {
       `;
 
       const findings = scanner.scanSource("test.ts", code);
-      
+
       expect(findings.some(f => f.category === "memory-allocation")).toBe(true);
     });
 
@@ -135,7 +135,7 @@ describe("StaticHotPathScanner", () => {
       `;
 
       const findings = scanner.scanSource("test.ts", code);
-      
+
       expect(findings.some(f => f.category === "memory-allocation")).toBe(true);
     });
   });
@@ -154,7 +154,7 @@ describe("StaticHotPathScanner", () => {
       `;
 
       const findings = scanner.scanSource("test.ts", code);
-      
+
       expect(findings.some(f => f.category === "async-bottleneck")).toBe(true);
     });
   });
@@ -172,7 +172,7 @@ describe("StaticHotPathScanner", () => {
       `;
 
       const findings = scanner.scanSource("test.ts", code);
-      
+
       expect(findings.some(f => f.category === "heavy-computation")).toBe(true);
     });
 
@@ -191,7 +191,7 @@ describe("StaticHotPathScanner", () => {
       `;
 
       const findings = scanner.scanSource("test.ts", code);
-      
+
       expect(findings.some(f => f.category === "heavy-computation")).toBe(true);
     });
   });
@@ -265,7 +265,7 @@ describe("StaticHotPathScanner", () => {
       // Critical should come before low
       const criticalIndex = result.findings.findIndex(f => f.severity === "critical");
       const lowIndex = result.findings.findIndex(f => f.severity === "low");
-      
+
       if (criticalIndex !== -1 && lowIndex !== -1) {
         expect(criticalIndex).toBeLessThan(lowIndex);
       }

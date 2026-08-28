@@ -1,9 +1,9 @@
 /**
  * KPI Contract Types
- * 
+ *
  * Key Performance Indicators for decision quality, calibration, and outcome tracking.
  * All KPIs are tagged with epistemic status - they are beliefs/proposals, not facts.
- * 
+ *
  * @module @zeo/kpi
  * @version 0.1.0
  */
@@ -42,7 +42,7 @@ export type KpiCategory =
 
 /**
  * KPI Contract - Definition of a Key Performance Indicator
- * 
+ *
  * Note: KPIs are measurable indicators but should be treated as
  * beliefs with confidence bands, not facts. They require validation
  * and provenance where applicable.
@@ -114,7 +114,7 @@ export type KpiFormula =
 
 /**
  * KPI Measurement - A computed instance of a KPI
- * 
+ *
  * All measurements carry epistemic metadata to maintain
  * discipline about what is known vs assumed.
  */
@@ -168,7 +168,7 @@ export interface KpiMeasurement {
 
 /**
  * KPI Trend - Time series of measurements with trend analysis
- * 
+ *
  * Trend analysis helps identify whether KPIs are improving
  * or degrading over time, with appropriate uncertainty.
  */

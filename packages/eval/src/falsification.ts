@@ -1,12 +1,12 @@
 /**
  * Falsification Suite
- * 
+ *
  * Phase 2: Implements negative controls and leakage detection for validation.
  * Ensures that:
  * A) Permuted-label tests show performance collapse to chance
  * B) Placebo targets remain unpredictable
  * C) Time-shifted features don't provide leakage advantages
- * 
+ *
  * All operations are deterministic with seeded randomization.
  */
 
@@ -172,7 +172,7 @@ export function createSeededRandom(seed: string): () => number {
   for (let i = 0; i < seed.length; i++) {
     state = (state * 31 + seed.charCodeAt(i)) >>> 0;
   }
-  
+
   return () => {
     state = (state * 1664525 + 1013904223) >>> 0;
     return state / 4294967296;
@@ -185,12 +185,12 @@ export function createSeededRandom(seed: string): () => number {
 export function shuffleArray<T>(array: T[], seed: string): T[] {
   const rng = createSeededRandom(seed);
   const result = [...array];
-  
+
   for (let i = result.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
     [result[i], result[j]] = [result[j], result[i]];
   }
-  
+
   return result;
 }
 
@@ -205,33 +205,33 @@ export function runPermutedLabelTest(
 ): FalsificationTestResult[] {
   const results: FalsificationTestResult[] = [];
   const seed = deriveFalsificationSeed(dataset.datasetId, "permuted_label");
-  
+
   // Extract all outcomes
   const outcomes: OutcomeMetric[] = [];
   for (const c of dataset.cases) {
     outcomes.push(...c.outcome.metrics);
   }
-  
+
   // Shuffle outcomes deterministically
   const shuffledOutcomes = shuffleArray(outcomes, seed);
-  
+
   // Compute metrics on shuffled data
   let idx = 0;
   for (const c of dataset.cases) {
     const caseId = c.caseId;
     const originalMetric = originalMetrics.get(caseId) ?? 0.5;
-    
+
     // Get shuffled metrics for this case
     const caseOutcomes = shuffledOutcomes.slice(idx, idx + c.outcome.metrics.length);
     idx += c.outcome.metrics.length;
-    
+
     // Compute collapsed metric (would need actual predictions here)
     // For now, simulate with synthetic collapse
     const collapsedMetric = 0.25 + (Math.random() * 0.05); // Near chance for Brier
-    
+
     const collapseRatio = originalMetric > 0 ? collapsedMetric / originalMetric : 1;
     const passed = collapsedMetric <= config.expectedPerformanceCollapse + config.tolerance;
-    
+
     results.push({
       testId: `perm-${caseId}`,
       testType: "permuted_label",
@@ -250,7 +250,7 @@ export function runPermutedLabelTest(
       },
     });
   }
-  
+
   return results;
 }
 
@@ -265,13 +265,13 @@ export function runPlaceboTargetTest(
   const results: FalsificationTestResult[] = [];
   const seed = deriveFalsificationSeed(dataset.datasetId, "placebo_target");
   const rng = createSeededRandom(seed);
-  
+
   for (const c of dataset.cases) {
     // Generate placebo targets based on strategy
     const placeboOutcomes: OutcomeMetric[] = c.outcome.metrics.map((metric, idx) => {
       const placeboSeed = `${seed}:${c.caseId}:${idx}`;
       const placeboRng = createSeededRandom(placeboSeed);
-      
+
       switch (config.placeboStrategy) {
         case "random_noise":
           return {
@@ -288,7 +288,7 @@ export function runPlaceboTargetTest(
           return metric;
       }
     });
-    
+
     // Evaluate predictions against placebo targets
     // If system can predict placebos, there's leakage or overfitting
     const placeboScores = placeboOutcomes.map((outcome, idx) => {
@@ -299,10 +299,10 @@ export function runPlaceboTargetTest(
       const syntheticScore = 0.2 + (scoreRng() * 0.1);
       return syntheticScore;
     });
-    
+
     const avgPlaceboScore = placeboScores.reduce((a, b) => a + b, 0) / placeboScores.length;
     const passed = avgPlaceboScore <= config.maxPredictability;
-    
+
     results.push({
       testId: `placebo-${c.caseId}`,
       testType: "placebo_target",
@@ -321,7 +321,7 @@ export function runPlaceboTargetTest(
       },
     });
   }
-  
+
   return results;
 }
 
@@ -357,13 +357,13 @@ export function runTimeShiftLeakageTest(
 ): FalsificationTestResult[] {
   const results: FalsificationTestResult[] = [];
   const seed = deriveFalsificationSeed(dataset.datasetId, "time_shift");
-  
+
   for (const direction of config.shiftDirections) {
     for (const steps of config.shiftSteps) {
       for (const c of dataset.cases) {
         const caseId = c.caseId;
         const originalMetric = originalMetrics.get(caseId) ?? 0.5;
-        
+
         // Simulate time-shifted evaluation
         // If performance stays high, there's temporal leakage
         const shiftedMetric = simulateShiftedPerformance(
@@ -373,10 +373,10 @@ export function runTimeShiftLeakageTest(
           seed,
           c
         );
-        
+
         const retentionRatio = originalMetric > 0 ? shiftedMetric / originalMetric : 0;
         const passed = retentionRatio <= config.maxPerformanceRetention;
-        
+
         results.push({
           testId: `timeshift-${direction}-${steps}-${caseId}`,
           testType: "time_shift_leakage",
@@ -398,7 +398,7 @@ export function runTimeShiftLeakageTest(
       }
     }
   }
-  
+
   return results;
 }
 
@@ -415,7 +415,7 @@ function simulateShiftedPerformance(
 ): number {
   const seedInput = `${seed}:${c.caseId}:${direction}:${steps}`;
   const rng = createSeededRandom(seedInput);
-  
+
   // With proper temporal hygiene, performance should drop significantly
   // We simulate this as 10-30% retention with some noise
   const retentionFactor = 0.1 + (rng() * 0.2); // 10-30% retention
@@ -433,24 +433,24 @@ export function runPriorReliabilityTest(
 ): FalsificationTestResult[] {
   const results: FalsificationTestResult[] = [];
   const seed = deriveFalsificationSeed(dataset.datasetId, "prior_reliability");
-  
+
   for (const c of dataset.cases) {
     const priorInfo = learnedPriors.get(c.caseId);
     const hasEnoughSamples = priorInfo ? priorInfo.sampleSize >= config.minSampleSize : false;
-    
+
     // Calculate prior strength (capped at maxPriorStrength)
-    const priorStrength = priorInfo 
-      ? Math.min(priorInfo.reliability, config.maxPriorStrength) 
+    const priorStrength = priorInfo
+      ? Math.min(priorInfo.reliability, config.maxPriorStrength)
       : 0;
-    
+
     // Prior reliability should improve predictions if prior is strong and reliable
     // But if prior is weak, it shouldn't hurt much
     const reliabilityScore = priorStrength * (hasEnoughSamples ? 1 : 0.5);
-    
+
     // Test passes if prior is appropriately applied (not too strong, not too weak)
     const appropriateStrength = reliabilityScore <= config.maxPriorStrength;
     const passed = appropriateStrength && (hasEnoughSamples || priorStrength <= 0.3);
-    
+
     results.push({
       testId: `prior-${c.caseId}`,
       testType: "prior_reliability",
@@ -471,7 +471,7 @@ export function runPriorReliabilityTest(
       },
     });
   }
-  
+
   return results;
 }
 
@@ -486,58 +486,58 @@ export function runOverfitDetectionTest(
 ): FalsificationTestResult[] {
   const results: FalsificationTestResult[] = [];
   const seed = deriveFalsificationSeed(dataset.datasetId, "overfit_detection");
-  
+
   // Split cases into train and test sets
   const cases = [...dataset.cases];
   const shuffledCases = shuffleArray(cases, seed);
   const splitIndex = Math.floor(shuffledCases.length * config.trainTestSplit);
   const trainCases = shuffledCases.slice(0, splitIndex);
   const testCases = shuffledCases.slice(splitIndex);
-  
+
   // Calculate average performance on train vs test
   const trainMetrics = trainCases.map(c => performanceMetrics.get(c.caseId) ?? 0.5);
   const testMetrics = testCases.map(c => performanceMetrics.get(c.caseId) ?? 0.5);
-  
+
   const avgTrainPerformance = trainMetrics.reduce((a, b) => a + b, 0) / trainMetrics.length;
   const avgTestPerformance = testMetrics.reduce((a, b) => a + b, 0) / testMetrics.length;
-  
+
   // Performance ratio (train vs test)
   // If >> 1, indicates overfitting (performs much better on training)
-  const performanceRatio = avgTrainPerformance > 0 
-    ? avgTestPerformance > 0 
-      ? avgTrainPerformance / avgTestPerformance 
+  const performanceRatio = avgTrainPerformance > 0
+    ? avgTestPerformance > 0
+      ? avgTrainPerformance / avgTestPerformance
       : config.overfitThreshold + 1
     : 1;
-  
+
   // Cross-validation fold simulation
   const foldSize = Math.floor(cases.length / config.crossValidationFolds);
   const cvResults: number[] = [];
-  
+
   for (let fold = 0; fold < config.crossValidationFolds; fold++) {
     const testStart = fold * foldSize;
-    const testEnd = fold < config.crossValidationFolds - 1 
-      ? testStart + foldSize 
+    const testEnd = fold < config.crossValidationFolds - 1
+      ? testStart + foldSize
       : cases.length;
     const testFoldCases = shuffledCases.slice(testStart, testEnd);
     const trainFoldCases = shuffledCases.filter((_, idx) => idx < testStart || idx >= testEnd);
-    
+
     const testFoldMetrics = testFoldCases.map(c => performanceMetrics.get(c.caseId) ?? 0.5);
     const trainFoldMetrics = trainFoldCases.map(c => performanceMetrics.get(c.caseId) ?? 0.5);
-    
+
     const testAvg = testFoldMetrics.reduce((a, b) => a + b, 0) / testFoldMetrics.length;
     const trainAvg = trainFoldMetrics.reduce((a, b) => a + b, 0) / trainFoldMetrics.length;
-    
+
     const foldRatio = trainAvg > 0 ? testAvg / trainAvg : 1;
     cvResults.push(foldRatio);
   }
-  
+
   const avgCvRatio = cvResults.reduce((a, b) => a + b, 0) / cvResults.length;
   const cvVariance = cvResults.reduce((sum, val) => sum + Math.pow(val - avgCvRatio, 2), 0) / cvResults.length;
-  
+
   // Detect overfitting: if train performance >> test performance
   const isOverfitting = performanceRatio > config.overfitThreshold;
   const cvConsistent = cvVariance < 0.1; // Low variance = consistent
-  
+
   const caseId = `overfit-${dataset.datasetId}`;
   results.push({
     testId: caseId,
@@ -564,7 +564,7 @@ export function runOverfitDetectionTest(
       testSize: testCases.length,
     },
   });
-  
+
   return results;
 }
 
@@ -578,41 +578,41 @@ export function runFalsificationSuite(
 ): FalsificationReport {
   const datasetHash = computeDatasetHash(dataset);
   const seed = deriveFalsificationSeed(datasetHash, "suite");
-  
+
   // Use synthetic metrics if not provided
   const metrics = originalMetrics ?? createSyntheticMetrics(dataset, seed);
-  
+
   const permutedResults: FalsificationTestResult[] = [];
   const placeboResults: FalsificationTestResult[] = [];
   const timeShiftResults: FalsificationTestResult[] = [];
   // Phase 4: Learning without overfitting
   const priorReliabilityResults: FalsificationTestResult[] = [];
   const overfitResults: FalsificationTestResult[] = [];
-  
+
   // Run tests based on configuration
   if (config.permutedLabel.enabled) {
     permutedResults.push(...runPermutedLabelTest(dataset, config.permutedLabel, metrics));
   }
-  
+
   if (config.placeboTarget.enabled) {
     placeboResults.push(...runPlaceboTargetTest(dataset, config.placeboTarget));
   }
-  
+
   if (config.timeShiftLeakage.enabled) {
     timeShiftResults.push(...runTimeShiftLeakageTest(dataset, config.timeShiftLeakage, metrics));
   }
-  
+
   // Phase 4 tests
   if (config.priorReliability.enabled) {
     // Create empty learnedPriors map for now (would come from @zeo/memory in real implementation)
     const learnedPriors = new Map<string, { reliability: number; sampleSize: number }>();
     priorReliabilityResults.push(...runPriorReliabilityTest(dataset, config.priorReliability, learnedPriors));
   }
-  
+
   if (config.overfitDetection.enabled) {
     overfitResults.push(...runOverfitDetectionTest(dataset, config.overfitDetection, metrics));
   }
-  
+
   // Compute gates
   const allResults = [...permutedResults, ...placeboResults, ...timeShiftResults, ...priorReliabilityResults, ...overfitResults];
   const permutedLabelGate = permutedResults.every(r => r.passed) || permutedResults.length === 0;
@@ -621,7 +621,7 @@ export function runFalsificationSuite(
   // Phase 4 gates
   const priorReliabilityGate = priorReliabilityResults.every(r => r.passed) || priorReliabilityResults.length === 0;
   const overfitGate = overfitResults.every(r => r.passed) || overfitResults.length === 0;
-  
+
   // Detect leakage patterns
   const leakageViolations = allResults
     .filter(r => !r.passed && r.testType === "time_shift_leakage")
@@ -631,9 +631,9 @@ export function runFalsificationSuite(
       severity: "error" as const,
       evidence: r.message,
     }));
-  
+
   const failedTests = allResults.filter(r => !r.passed);
-  
+
   return {
     version: FALSIFICATION_VERSION,
     createdAt: new Date().toISOString(),
@@ -675,12 +675,12 @@ export function runFalsificationSuite(
 function createSyntheticMetrics(dataset: ReplayDataset, seed: string): Map<string, number> {
   const metrics = new Map<string, number>();
   const rng = createSeededRandom(seed);
-  
+
   for (const c of dataset.cases) {
     // Synthetic baseline metric (e.g., Brier score around 0.15 for good predictions)
     metrics.set(c.caseId, 0.1 + (rng() * 0.1));
   }
-  
+
   return metrics;
 }
 
@@ -693,7 +693,7 @@ function computeDatasetHash(dataset: ReplayDataset): string {
     caseCount: dataset.cases.length,
     caseIds: dataset.cases.map(c => c.caseId).sort(),
   });
-  
+
   return createHash("sha256").update(canonical).digest("hex");
 }
 
@@ -709,7 +709,7 @@ export function exportFalsificationReport(report: FalsificationReport): string {
  */
 export function exportFalsificationReportMd(report: FalsificationReport): string {
   const lines: string[] = [];
-  
+
   lines.push("# Falsification Report");
   lines.push("");
   lines.push(`**Dataset:** ${report.datasetId}`);
@@ -717,7 +717,7 @@ export function exportFalsificationReportMd(report: FalsificationReport): string
   lines.push(`**Generated:** ${report.createdAt}`);
   lines.push(`**Version:** ${report.version}`);
   lines.push("");
-  
+
   lines.push("## Summary");
   lines.push("");
   lines.push(`- **Total Tests:** ${report.summary.totalTests}`);
@@ -725,7 +725,7 @@ export function exportFalsificationReportMd(report: FalsificationReport): string
   lines.push(`- **Failed:** ${report.summary.failed}`);
   lines.push(`- **Warnings:** ${report.summary.warnings}`);
   lines.push("");
-  
+
   lines.push("## Gates");
   lines.push("");
   lines.push(`| Gate | Status |`);
@@ -735,7 +735,7 @@ export function exportFalsificationReportMd(report: FalsificationReport): string
   lines.push(`| Time-Shift Leakage | ${report.gates.timeShiftGate ? "✅ PASS" : "❌ FAIL"} |`);
   lines.push(`| **Overall** | **${report.gates.overallPassed ? "✅ PASS" : "❌ FAIL"}** |`);
   lines.push("");
-  
+
   if (report.leakageReport?.detected) {
     lines.push("## ⚠️ Leakage Detected");
     lines.push("");
@@ -744,7 +744,7 @@ export function exportFalsificationReportMd(report: FalsificationReport): string
     }
     lines.push("");
   }
-  
+
   if (report.permutedLabelResults.length > 0) {
     lines.push("## Permuted Label Tests");
     lines.push("");
@@ -756,7 +756,7 @@ export function exportFalsificationReportMd(report: FalsificationReport): string
     }
     lines.push("");
   }
-  
+
   if (report.placeboTargetResults.length > 0) {
     lines.push("## Placebo Target Tests");
     lines.push("");
@@ -768,7 +768,7 @@ export function exportFalsificationReportMd(report: FalsificationReport): string
     }
     lines.push("");
   }
-  
+
   if (report.timeShiftResults.length > 0) {
     lines.push("## Time-Shift Leakage Tests");
     lines.push("");
@@ -780,10 +780,10 @@ export function exportFalsificationReportMd(report: FalsificationReport): string
     }
     lines.push("");
   }
-  
+
   lines.push("---");
   lines.push("*Falsification suite ensures epistemic integrity through negative controls*");
-  
+
   return lines.join("\n");
 }
 

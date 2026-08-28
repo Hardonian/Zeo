@@ -1,18 +1,18 @@
 /**
  * Reality Mode - Access Control List (ACL)
- * 
+ *
  * Minimal ACL implementation with owner/editor/viewer roles.
  * Local-only default with optional multi-user support.
  * Never breaks tenant isolation.
  */
 
-import type { 
-  AccessControlList, 
-  AccessControlEntry, 
-  AccessRole, 
+import type {
+  AccessControlList,
+  AccessControlEntry,
+  AccessRole,
   RolePermissions,
   SecurityContext,
-  TenantContext 
+  TenantContext
 } from "./types.js";
 import { DEFAULT_ROLE_PERMISSIONS } from "./types.js";
 
@@ -26,7 +26,7 @@ export function createACL(
   tenantId: string
 ): AccessControlList {
   const now = new Date().toISOString();
-  
+
   return {
     resourceId,
     resourceType,
@@ -53,7 +53,7 @@ export function addACLEntry(
   // Check for existing entry and update if found
   const existingIndex = acl.entries.findIndex((e) => e.userId === entry.userId);
   let entries: AccessControlEntry[];
-  
+
   if (existingIndex >= 0) {
     entries = [...acl.entries];
     entries[existingIndex] = newEntry;
@@ -82,7 +82,7 @@ export function removeACLEntry(
   }
 
   const entries = acl.entries.filter((e) => e.userId !== userId);
-  
+
   return {
     ...acl,
     entries,
@@ -104,7 +104,7 @@ export function getPermissions(
 
   // Find user's entry
   const entry = acl.entries.find((e) => e.userId === userId);
-  
+
   if (!entry) {
     // No entry = no permissions
     return {
@@ -141,7 +141,7 @@ export function getRole(acl: AccessControlList, userId: string): AccessRole | nu
   }
 
   const entry = acl.entries.find((e) => e.userId === userId);
-  
+
   if (!entry) {
     return null;
   }
@@ -231,7 +231,7 @@ export function createSecurityContext(
   sessionId: string
 ): SecurityContext {
   const role = getRole(acl, userId);
-  
+
   if (!role) {
     throw new Error(`User ${userId} has no access to resource ${acl.resourceId}`);
   }
@@ -272,7 +272,7 @@ export function isMultiUserMode(tenantContext: TenantContext): boolean {
  */
 export function getAuthorizedUsers(acl: AccessControlList): string[] {
   const users = [acl.ownerId];
-  
+
   for (const entry of acl.entries) {
     // Skip expired entries
     if (entry.expiresAt && new Date(entry.expiresAt) < new Date()) {
@@ -280,7 +280,7 @@ export function getAuthorizedUsers(acl: AccessControlList): string[] {
     }
     users.push(entry.userId);
   }
-  
+
   return [...new Set(users)];
 }
 
@@ -291,7 +291,7 @@ export function listACLEntries(
   acl: AccessControlList
 ): Array<AccessControlEntry & { isExpired: boolean }> {
   const now = new Date();
-  
+
   return acl.entries.map((entry) => ({
     ...entry,
     isExpired: entry.expiresAt ? new Date(entry.expiresAt) < now : false,
@@ -306,11 +306,11 @@ export function cleanExpiredEntries(acl: AccessControlList): AccessControlList {
   const entries = acl.entries.filter(
     (e) => !e.expiresAt || new Date(e.expiresAt) >= now
   );
-  
+
   if (entries.length === acl.entries.length) {
     return acl;
   }
-  
+
   return {
     ...acl,
     entries,

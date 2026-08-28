@@ -126,11 +126,11 @@ const handleWebhook = createWebhookHandler(
 
 app.post('/webhook', async (req, res) => {
   const validation = await webhookSecurity.validateRequest(req);
-  
+
   if (!validation.valid) {
     return res.status(401).json({ error: validation.error });
   }
-  
+
   if (!validation.shouldProcess) {
     const record = webhookSecurity.getRecord(validation.context!.eventId);
     return res.status(200).json({
@@ -138,7 +138,7 @@ app.post('/webhook', async (req, res) => {
       _duplicate: true,
     });
   }
-  
+
   const result = await handleWebhook(validation.context!);
   res.status(200).json(result.result);
 });
@@ -151,13 +151,13 @@ Queue workers should implement idempotency at the message level:
 ```typescript
 const processMessage = async (message: { id: string; payload: unknown }) => {
   const security = new WebhookSecurity({ secretKey: secret });
-  
+
   // Check if already processed
   const idempotency = security.checkIdempotency(message.id);
   if (idempotency.duplicate) {
     return { duplicate: true };
   }
-  
+
   try {
     // Process message
     const result = await doWork(message.payload);

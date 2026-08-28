@@ -42,13 +42,13 @@ Zeo's meta-learning system extracts patterns across decisions without violating 
 interface MetaLearningSystem {
   // Prior engine for assumption reliability
   priorEngine: PriorEngine;
-  
+
   // Calibration tracking
   calibrationTracker: CalibrationTracker;
-  
+
   // Pattern detection across decisions
   patternDetector: PatternDetector;
-  
+
   // Decision memory for historical analysis
   memory: DecisionMemory;
 }
@@ -56,16 +56,16 @@ interface MetaLearningSystem {
 interface LearningConfig {
   // Minimum sample size for pattern detection
   minSampleSize: number;
-  
+
   // Minimum domain diversity for cross-domain patterns
   minDomainDiversity: number;
-  
+
   // Confidence threshold for hypothesis generation
   hypothesisThreshold: 'very_low' | 'low' | 'moderate' | 'tentative';
-  
+
   // Whether to auto-apply learned priors
   autoApplyPriors: boolean;
-  
+
   // Whether to notify user of new patterns
   notifyOnPatterns: boolean;
 }
@@ -110,9 +110,9 @@ function updatePrior(
   // If assumption was violated, widen reliability bounds
   // If assumption held, slightly narrow (but never below floor)
   // Always conservative - prefer false humility over false confidence
-  
+
   const wasViolated = checkAssumptionViolation(outcome, assumptionType);
-  
+
   if (wasViolated) {
     return widenPrior(prior, assumptionType, 'violation_observed');
   } else {
@@ -133,10 +133,10 @@ function applyLearnedPriors(
   priorEngine: PriorEngine
 ): ProbabilityInterval {
   const priors = priorEngine.getPriors(context.domain, context.assumptionType);
-  
+
   // Widen interval based on learned unreliability
   const widenFactor = computeWidenFactor(priors);
-  
+
   return {
     low: Math.max(0, interval.low - widenFactor),
     high: Math.min(1, interval.high + widenFactor)
@@ -157,18 +157,18 @@ interface DetectedPattern {
   id: string;
   hypothesis: string;
   confidence: 'very_low' | 'low' | 'moderate' | 'tentative';
-  
+
   // Evidence basis
   sampleSize: number;
   domainDiversity: number;
   timeSpan: { start: string; end: string };
-  
+
   // Falsification conditions
   falsificationCriteria: string[];
-  
+
   // Limitations
   limitations: string[];
-  
+
   // Never treated as fact
   neverBecomesFact: true;
   epistemicWarnings: string[];
@@ -184,7 +184,7 @@ Sample Size: 8 decisions
 Domain Diversity: 2 (procurement, partnerships)
 Time Span: 2024-01-01 to 2024-03-15
 Falsification: 15+ confirmed timeline pressure claims in similar contexts
-Limitations: 
+Limitations:
   - May reflect negotiation tactics rather than actual constraints
   - Small sample size limits generalizability
   - Possible selection bias (decisions where timeline was salient)
@@ -202,18 +202,18 @@ function detectPatterns(
   config: LearningConfig
 ): DetectedPattern[] {
   const patterns: DetectedPattern[] = [];
-  
+
   // Group decisions by assumption type
   const byAssumption = groupBy(decisions, d => d.assumptionType);
-  
+
   for (const [assumptionType, decisionsWithAssumption] of byAssumption) {
     if (decisionsWithAssumption.length < config.minSampleSize) {
       continue;
     }
-    
+
     // Check violation rate
     const violationRate = computeViolationRate(decisionsWithAssumption);
-    
+
     if (violationRate > 0.3) {
       // Pattern detected - but presented as weak hypothesis
       patterns.push({
@@ -240,7 +240,7 @@ function detectPatterns(
       });
     }
   }
-  
+
   return patterns;
 }
 ```
@@ -256,17 +256,17 @@ interface RegretAnalysis {
   decisionId: string;
   chosenAction: string;
   actualOutcome: OutcomeRecord;
-  
+
   // What other actions were available
   availableActions: string[];
-  
+
   // Counterfactual outcomes (respecting original uncertainty)
   counterfactuals: Array<{
     action: string;
     plausibleOutcomes: OutcomeDistribution;
     regretRange: { low: number; high: number };
   }>;
-  
+
   // Assessment
   wasGoodDecision: boolean; // Based on information at the time
   wasLucky: boolean;         // Outcome better than expected
@@ -280,23 +280,23 @@ function analyzeRegret(
 ): RegretAnalysis {
   // Reconstruct decision context
   const context = decision.contextAtTime;
-  
+
   // Generate counterfactuals using original uncertainty bounds
   const counterfactuals = decision.availableActions.map(action => {
     const plausibleOutcomes = simulateOutcomes(action, context);
-    
+
     return {
       action: action.id,
       plausibleOutcomes,
       regretRange: computeRegretRange(outcome, plausibleOutcomes)
     };
   });
-  
+
   // Assess decision quality (not outcome quality)
-  const wasGoodDecision = counterfactuals.every(cf => 
+  const wasGoodDecision = counterfactuals.every(cf =>
     cf.regretRange.high > -0.5 // Within reasonable range of best ex-post
   );
-  
+
   return {
     decisionId: decision.id,
     chosenAction: decision.chosenAction,
@@ -321,7 +321,7 @@ function simulateOutcomes(
 ): OutcomeDistribution {
   // Use original probability bounds, not point estimates
   // This prevents hindsight bias - "I should have known"
-  
+
   return {
     mean: action.expectedOutcome.mean,
     variance: action.expectedOutcome.variance,

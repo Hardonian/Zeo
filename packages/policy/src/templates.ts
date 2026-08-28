@@ -1,12 +1,12 @@
 
-    const logger = { 
-        info: (...args: any[]) => console.log(...args), 
+    const logger = {
+        info: (...args: any[]) => console.log(...args),
         error: (...args: any[]) => console.error(...args),
         warn: (...args: any[]) => console.warn(...args)
     };
     /**
  * Policy Engine Templates
- * 
+ *
  * Pre-built policy templates for common compliance standards:
  * - OWASP Top 10
  * - PCI-DSS

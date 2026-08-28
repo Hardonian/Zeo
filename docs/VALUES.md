@@ -54,7 +54,7 @@ interface ValueProfile {
   id: string;
   name: string;
   description: string;
-  
+
   // Core objectives
   objectives: Array<{
     id: string;
@@ -63,7 +63,7 @@ interface ValueProfile {
     weight: number; // Relative importance
     threshold?: number; // For satisficing objectives
   }>;
-  
+
   // Attribute definitions
   attributes: Array<{
     id: string;
@@ -73,14 +73,14 @@ interface ValueProfile {
     // How this attribute maps to each objective
     contributions: Map<string, number>;
   }>;
-  
+
   // Trade-off curves
   tradeOffs: Array<{
     attributeIds: [string, string];
     curveType: 'linear' | 'diminishing' | 'threshold' | 'lexicographic';
     parameters: Record<string, number>;
   }>;
-  
+
   // Hard constraints
   constraints: Array<{
     attributeId: string;
@@ -88,7 +88,7 @@ interface ValueProfile {
     value: number;
     isHard: boolean; // If false, treated as soft penalty
   }>;
-  
+
   // Metadata
   epistemicStatus: 'draft' | 'confirmed' | 'learned';
   createdAt: string;
@@ -176,12 +176,12 @@ function aggregateValue(
 ): number {
   switch (method) {
     case 'weighted_sum':
-      return sum(Object.entries(weights).map(([id, w]) => 
+      return sum(Object.entries(weights).map(([id, w]) =>
         w * (normalizedValues.get(id) ?? 0)
       ));
     case 'weighted_product':
       // Penalizes any objective doing poorly
-      return product(Object.entries(weights).map(([id, w]) => 
+      return product(Object.entries(weights).map(([id, w]) =>
         Math.pow(normalizedValues.get(id) ?? 0, w)
       ));
     case 'minimax':
@@ -204,11 +204,11 @@ function applyConstraints(
 ): { score: number; violations: ConstraintViolation[] } {
   let score = baseScore;
   const violations: ConstraintViolation[] = [];
-  
+
   for (const constraint of constraints) {
     const value = action.attributes.get(constraint.attributeId);
     const satisfied = checkConstraint(value, constraint);
-    
+
     if (!satisfied) {
       if (constraint.isHard) {
         return { score: -Infinity, violations: [{ ...constraint, value }] };
@@ -220,7 +220,7 @@ function applyConstraints(
       }
     }
   }
-  
+
   return { score, violations };
 }
 ```
@@ -239,17 +239,17 @@ function compareValueFunctions(
 ): ValueFunctionComparison {
   const rankingsA = rankActions(testActions, profileA);
   const rankingsB = rankActions(testActions, profileB);
-  
+
   // Kendall's tau for ranking correlation
   const correlation = computeKendallTau(rankingsA, rankingsB);
-  
+
   // Actions where rankings diverge
   const disagreements = testActions.filter(action => {
     const rankA = rankingsA.findIndex(r => r.id === action.id);
     const rankB = rankingsB.findIndex(r => r.id === action.id);
     return Math.abs(rankA - rankB) > testActions.length * 0.2; // >20% rank difference
   });
-  
+
   return {
     correlation,
     agreementLevel: correlation > 0.8 ? 'high' : correlation > 0.5 ? 'medium' : 'low',

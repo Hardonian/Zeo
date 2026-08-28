@@ -7,11 +7,11 @@ function sortKeys(obj: unknown): unknown {
   if (obj === null || typeof obj !== 'object') {
     return obj;
   }
-  
+
   if (Array.isArray(obj)) {
     return obj.map(sortKeys);
   }
-  
+
   const sorted: Record<string, unknown> = {};
   const keys = Object.keys(obj as Record<string, unknown>).sort();
   for (const key of keys) {
@@ -23,13 +23,13 @@ function sortKeys(obj: unknown): unknown {
 export async function computeSha256(data: string | Uint8Array): Promise<string> {
   const encoder = new TextEncoder();
   const bytes = typeof data === 'string' ? encoder.encode(data) : data;
-  
+
   if (typeof crypto !== 'undefined' && crypto.subtle) {
     const hashBuffer = await crypto.subtle.digest('SHA-256', bytes as BufferSource);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   }
-  
+
   // Fallback for Node.js
   if (typeof process !== 'undefined') {
     const { createHash } = await import('crypto');
@@ -37,7 +37,7 @@ export async function computeSha256(data: string | Uint8Array): Promise<string> 
     hash.update(bytes);
     return hash.digest('hex');
   }
-  
+
   throw new Error('No SHA-256 implementation available');
 }
 

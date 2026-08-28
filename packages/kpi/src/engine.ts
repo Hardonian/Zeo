@@ -1,9 +1,9 @@
 /**
  * KPI Engine
- * 
+ *
  * Deterministic computation of Key Performance Indicators with
  * epistemic discipline and uncertainty quantification.
- * 
+ *
  * @module @zeo/kpi/engine
  */
 

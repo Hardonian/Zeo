@@ -115,85 +115,85 @@ describe("governance", () => {
     test("returns informational for research domain", () => {
       const spec = createDecisionSpec({ title: "Market Research Analysis", context: "Analyzing market trends" });
       const result = evaluateRiskTier(spec, 0);
-      
+
       expect(result.tier).toBe("informational");
     });
 
     test("returns operational for ops domain", () => {
       const spec = createDecisionSpec({ title: "Ops Incident Response", context: "Handling production incident" });
       const result = evaluateRiskTier(spec, 0);
-      
+
       expect(result.tier).toBe("operational");
     });
 
     test("returns strategic for negotiation domain", () => {
       const spec = createDecisionSpec({ title: "Vendor Negotiation", context: "Negotiating contract terms" });
       const result = evaluateRiskTier(spec, 0);
-      
+
       expect(result.tier).toBe("strategic");
     });
 
     test("returns existential for legal domain", () => {
       const spec = createDecisionSpec({ title: "Legal Settlement", context: "Settlement agreement review" });
       const result = evaluateRiskTier(spec, 0);
-      
+
       expect(result.tier).toBe("existential");
     });
 
     test("escalates based on action count", () => {
-      const spec = createDecisionSpec({ 
-        title: "Simple Analysis", 
+      const spec = createDecisionSpec({
+        title: "Simple Analysis",
         context: "Basic analysis",
         actions: Array(6).fill({ id: "a", label: "Action", actorId: "agent1", kind: "communicate" })
       });
       const result = evaluateRiskTier(spec, 0);
-      
+
       expect(result.tier).toBe("operational"); // Escalated from informational
     });
 
     test("escalates based on agent count", () => {
-      const spec = createDecisionSpec({ 
-        title: "Team Analysis", 
+      const spec = createDecisionSpec({
+        title: "Team Analysis",
         context: "Multi-agent review",
         agents: Array(4).fill({ id: "a", name: "Agent", role: "self" }),
         actions: []
       });
       const result = evaluateRiskTier(spec, 0);
-      
+
       expect(result.tier).toBe("operational"); // Escalated from informational
     });
 
     test("detects existential keywords", () => {
-      const spec = createDecisionSpec({ 
-        title: "Emergency Protocol", 
+      const spec = createDecisionSpec({
+        title: "Emergency Protocol",
         context: "Safety compliance review required"
       });
       const result = evaluateRiskTier(spec, 0);
-      
+
       expect(result.tier).toBe("existential");
     });
 
     test("detects strategic keywords", () => {
-      const spec = createDecisionSpec({ 
-        title: "Partnership Review", 
+      const spec = createDecisionSpec({
+        title: "Partnership Review",
         context: "Strategic investment analysis"
       });
       const result = evaluateRiskTier(spec, 0);
-      
+
       expect(result.tier).toBe("strategic");
     });
 
     test("evidence count affects required minimum", () => {
-      const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });      
+      const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
       const result = evaluateRiskTier(spec, 10);
-      
+
       expect(result.requiredEvidenceMin).toBe(10); // Takes max of evidence count and threshold
     });
 
     test("respects forbidden domains for strategic tier", () => {
       const spec = createDecisionSpec({ title: "Partnership Contract", context: "Strategic partnership" });
       const result = evaluateRiskTier(spec, 0);
-      
+
       expect(result.forbiddenDomains).toContain("medical");
       expect(result.forbiddenDomains).toContain("legal");
     });
@@ -201,7 +201,7 @@ describe("governance", () => {
     test("respects forbidden domains for existential tier", () => {
       const spec = createDecisionSpec({ title: "Legal Settlement", context: "Legal review" });
       const result = evaluateRiskTier(spec, 0);
-      
+
       expect(result.forbiddenDomains).toContain("medical");
       expect(result.forbiddenDomains).toContain("legal");
       expect(result.forbiddenDomains).toContain("financial_regulated");
@@ -216,9 +216,9 @@ describe("governance", () => {
         createEvidenceEvent({ type: "document" }),
         createEvidenceEvent({ type: "text" })
       ];
-      
+
       const result = evaluateEvidenceRisk(evidence, 3);
-      
+
       expect(result.meetsThreshold).toBe(true);
       expect(result.gaps).toHaveLength(0);
     });
@@ -227,9 +227,9 @@ describe("governance", () => {
       const evidence = [
         createEvidenceEvent({ type: "text" })
       ];
-      
+
       const result = evaluateEvidenceRisk(evidence, 3);
-      
+
       expect(result.meetsThreshold).toBe(false);
       expect(result.gaps).toContain("Insufficient evidence: 1/3 required");
     });
@@ -238,9 +238,9 @@ describe("governance", () => {
       const evidence = [
         createEvidenceEvent({ type: "audio" })
       ];
-      
+
       const result = evaluateEvidenceRisk(evidence, 1);
-      
+
       expect(result.gaps).toContain("Missing document or text evidence");
     });
 
@@ -248,9 +248,9 @@ describe("governance", () => {
       const evidence = [
         createEvidenceEvent({ type: "text" })
       ];
-      
+
       const result = evaluateEvidenceRisk(evidence, 1);
-      
+
       expect(result.gaps).not.toContain("Missing document or text evidence");
     });
 
@@ -258,38 +258,38 @@ describe("governance", () => {
       const evidence = [
         createEvidenceEvent({ type: "document" })
       ];
-      
+
       const result = evaluateEvidenceRisk(evidence, 1);
-      
+
       expect(result.gaps).not.toContain("Missing document or text evidence");
     });
 
     test("checks for recent evidence", () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 10); // 10 days ago
-      
+
       const evidence = [
         createEvidenceEvent({ capturedAt: oldDate.toISOString(), type: "document" })
       ];
-      
+
       const result = evaluateEvidenceRisk(evidence, 1);
-      
+
       expect(result.gaps).toContain("No recent evidence (past week)");
     });
 
     test("allows no evidence requirement", () => {
       const evidence: EvidenceEvent[] = [];
-      
+
       const result = evaluateEvidenceRisk(evidence, 0);
-      
+
       expect(result.gaps).not.toContain("No recent evidence (past week)");
     });
 
     test("determines risk level based on gaps", () => {
       const evidence: EvidenceEvent[] = [];
-      
+
       const result = evaluateEvidenceRisk(evidence, 5);
-      
+
       expect(result.riskLevel).toBe("high");
     });
 
@@ -297,9 +297,9 @@ describe("governance", () => {
       const evidence = [
         createEvidenceEvent({ type: "text" })
       ];
-      
+
       const result = evaluateEvidenceRisk(evidence, 5);
-      
+
       expect(result.riskLevel).toBe("medium");
     });
 
@@ -309,9 +309,9 @@ describe("governance", () => {
         createEvidenceEvent({ type: "document" }),
         createEvidenceEvent({ type: "document" })
       ];
-      
+
       const result = evaluateEvidenceRisk(evidence, 3);
-      
+
       expect(result.riskLevel).toBe("low");
     });
   });
@@ -323,7 +323,7 @@ describe("governance", () => {
         action: "test_action",
         inputHash: "abc123"
       });
-      
+
       expect(entry.id).toBeDefined();
       expect(entry.createdAt).toBeDefined();
       expect(entry.actor).toBe("system");
@@ -346,7 +346,7 @@ describe("governance", () => {
         provenanceRefs: ["prov-1", "prov-2"],
         notes: ["test note"]
       });
-      
+
       expect(entry.decisionId).toBe("dec-001");
       expect(entry.draftId).toBe("draft-001");
       expect(entry.runId).toBe("run-001");
@@ -357,7 +357,7 @@ describe("governance", () => {
     test("generates unique IDs", () => {
       const entry1 = createAuditEntry({ actor: "system", action: "test", inputHash: "a" });
       const entry2 = createAuditEntry({ actor: "system", action: "test", inputHash: "a" });
-      
+
       expect(entry1.id).not.toBe(entry2.id);
     });
 
@@ -365,7 +365,7 @@ describe("governance", () => {
       const userEntry = createAuditEntry({ actor: "user", action: "test", inputHash: "a" });
       const panelEntry = createAuditEntry({ actor: "panel", action: "test", inputHash: "a" });
       const adapterEntry = createAuditEntry({ actor: "adapter", action: "test", inputHash: "a" });
-      
+
       expect(userEntry.actor).toBe("user");
       expect(panelEntry.actor).toBe("panel");
       expect(adapterEntry.actor).toBe("adapter");
@@ -385,9 +385,9 @@ describe("governance", () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
-      
+
       const result = validatePolicyConfig(config);
-      
+
       expect(result.valid).toBe(true);
       expect(result.errors).toHaveLength(0);
     });
@@ -404,9 +404,9 @@ describe("governance", () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
-      
+
       const result = validatePolicyConfig(config);
-      
+
       expect(result.valid).toBe(false);
       expect(result.errors).toContain("Policy ID is required");
     });
@@ -423,9 +423,9 @@ describe("governance", () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
-      
+
       const result = validatePolicyConfig(config);
-      
+
       expect(result.valid).toBe(false);
       expect(result.errors).toContain("Policy version is required");
     });
@@ -442,9 +442,9 @@ describe("governance", () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
-      
+
       const result = validatePolicyConfig(config);
-      
+
       expect(result.valid).toBe(false);
       expect(result.errors.some(e => e.includes("allowlist and denylist"))).toBe(true);
     });
@@ -461,9 +461,9 @@ describe("governance", () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
-      
+
       const result = validatePolicyConfig(config);
-      
+
       expect(result.valid).toBe(false);
       expect(result.errors.some(e => e.includes("Inference types"))).toBe(true);
     });
@@ -480,9 +480,9 @@ describe("governance", () => {
         createdAt: "invalid-date",
         updatedAt: new Date().toISOString()
       };
-      
+
       const result = validatePolicyConfig(config);
-      
+
       expect(result.valid).toBe(false);
       expect(result.errors).toContain("Invalid createdAt timestamp");
     });
@@ -490,7 +490,7 @@ describe("governance", () => {
     test("rejects updatedAt before createdAt", () => {
       const createdAt = new Date();
       const updatedAt = new Date(createdAt.getTime() - 1000);
-      
+
       const config: PolicyConfig = {
         id: "test-policy",
         version: "1.0.0",
@@ -502,9 +502,9 @@ describe("governance", () => {
         createdAt: createdAt.toISOString(),
         updatedAt: updatedAt.toISOString()
       };
-      
+
       const result = validatePolicyConfig(config);
-      
+
       expect(result.valid).toBe(false);
       expect(result.errors).toContain("updatedAt must be after createdAt");
     });
@@ -516,35 +516,35 @@ describe("governance", () => {
       const evidence = [
         createEvidenceEvent({ type: "document" })
       ];
-      
+
       const result = applyGovernanceRules({
         decisionSpec: spec,
         evidenceEvents: evidence
       });
-      
+
       expect(result.approved).toBe(true);
     });
 
     test("rejects decision with insufficient evidence", () => {
       const spec = createDecisionSpec({ title: "Strategic Analysis", context: "Partnership review" });
       const evidence: EvidenceEvent[] = [];
-      
+
       const result = applyGovernanceRules({
         decisionSpec: spec,
         evidenceEvents: evidence
       });
-      
+
       expect(result.approved).toBe(false);
     });
 
     test("includes risk profile in result", () => {
       const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
-      
+
       const result = applyGovernanceRules({
         decisionSpec: spec,
         evidenceEvents: []
       });
-      
+
       expect(result.riskProfile).toBeDefined();
       expect(result.riskProfile.tier).toBeDefined();
       expect(result.riskProfile.requiredEvidenceMin).toBeDefined();
@@ -552,12 +552,12 @@ describe("governance", () => {
 
     test("creates audit entry for all reviews", () => {
       const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
-      
+
       const result = applyGovernanceRules({
         decisionSpec: spec,
         evidenceEvents: []
       });
-      
+
       expect(result.auditEntry).toBeDefined();
       expect(result.auditEntry.action).toBe("governance_review");
       expect(result.auditEntry.actor).toBe("system");
@@ -565,12 +565,12 @@ describe("governance", () => {
 
     test("returns warnings for evidence gaps", () => {
       const spec = createDecisionSpec({ title: "Strategic Analysis", context: "Partnership review" });
-      
+
       const result = applyGovernanceRules({
         decisionSpec: spec,
         evidenceEvents: []
       });
-      
+
       expect(result.warnings.length).toBeGreaterThan(0);
     });
 
@@ -587,13 +587,13 @@ describe("governance", () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
-      
+
       const result = applyGovernanceRules({
         decisionSpec: spec,
         evidenceEvents: [],
         policyConfig: policy
       });
-      
+
       expect(result.approved).toBe(false);
       expect(result.warnings.some(w => w.includes("denylist"))).toBe(true);
     });
@@ -611,13 +611,13 @@ describe("governance", () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
-      
+
       const result = applyGovernanceRules({
         decisionSpec: spec,
         evidenceEvents: [],
         policyConfig: policy
       });
-      
+
       expect(result.warnings.some(w => w.includes("allowlist"))).toBe(true);
     });
 
@@ -636,13 +636,13 @@ describe("governance", () => {
           { id: "e3", from: "child1", to: "grandchild", notes: [] }
         ]
       });
-      
+
       const result = applyGovernanceRules({
         decisionSpec: spec,
         evidenceEvents: [],
         branchGraph
       });
-      
+
       expect(result.warnings.some(w => w.includes("Deep branching"))).toBe(true);
     });
 
@@ -657,24 +657,24 @@ describe("governance", () => {
           notes: []
         }))
       });
-      
+
       const result = applyGovernanceRules({
         decisionSpec: spec,
         evidenceEvents: [],
         branchGraph
       });
-      
+
       expect(result.warnings.some(w => w.includes("High dependency"))).toBe(true);
     });
 
     test("handles missing branch graph gracefully", () => {
       const spec = createDecisionSpec({ title: "Analysis", context: "Simple analysis" });
-      
+
       const result = applyGovernanceRules({
         decisionSpec: spec,
         evidenceEvents: []
       });
-      
+
       expect(result.approved).toBe(false); // No evidence
       expect(result.riskProfile).toBeDefined();
     });
@@ -692,13 +692,13 @@ describe("governance", () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
-      
+
       const result = applyGovernanceRules({
         decisionSpec: spec,
         evidenceEvents: [],
         policyConfig: invalidPolicy
       });
-      
+
       expect(result.warnings.some(w => w.includes("Invalid policy"))).toBe(true);
       expect(result.approved).toBe(false);
     });
@@ -707,7 +707,7 @@ describe("governance", () => {
   describe("getDefaultRiskProfile", () => {
     test("returns informational profile", () => {
       const profile = getDefaultRiskProfile("informational");
-      
+
       expect(profile.tier).toBe("informational");
       expect(profile.requiredEvidenceMin).toBe(GOVERNANCE_DEFAULTS.informationalEvidenceMin);
       expect(profile.requiredCoolingOffMinutes).toBe(0);
@@ -716,7 +716,7 @@ describe("governance", () => {
 
     test("returns operational profile", () => {
       const profile = getDefaultRiskProfile("operational");
-      
+
       expect(profile.tier).toBe("operational");
       expect(profile.requiredEvidenceMin).toBe(GOVERNANCE_DEFAULTS.operationalEvidenceMin);
       expect(profile.requiredCoolingOffMinutes).toBe(5);
@@ -725,7 +725,7 @@ describe("governance", () => {
 
     test("returns strategic profile with cooling off", () => {
       const profile = getDefaultRiskProfile("strategic");
-      
+
       expect(profile.tier).toBe("strategic");
       expect(profile.requiredEvidenceMin).toBe(GOVERNANCE_DEFAULTS.strategicEvidenceMin);
       expect(profile.requiredCoolingOffMinutes).toBe(GOVERNANCE_DEFAULTS.strategicCoolingOffMinutes);
@@ -734,7 +734,7 @@ describe("governance", () => {
 
     test("returns existential profile with longest cooling off", () => {
       const profile = getDefaultRiskProfile("existential");
-      
+
       expect(profile.tier).toBe("existential");
       expect(profile.requiredEvidenceMin).toBe(GOVERNANCE_DEFAULTS.existentialEvidenceMin);
       expect(profile.requiredCoolingOffMinutes).toBe(GOVERNANCE_DEFAULTS.existentialCoolingOffMinutes);

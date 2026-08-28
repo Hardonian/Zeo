@@ -17,7 +17,7 @@ describe("decision transcript", () => {
   });
 
   it("produces stable hash for identical inputs", () => {
-    // We need consistent IDs for the spec creation too, 
+    // We need consistent IDs for the spec creation too,
     // but the test cares about stability of execution given a spec.
     // So we reset strictly before execution.
     idCounter = 0; // Reset for spec

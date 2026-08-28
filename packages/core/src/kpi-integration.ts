@@ -1,19 +1,19 @@
 /**
  * KPI Integration for Decision Engine
- * 
+ *
  * Provides hooks to compute and store KPI metrics after each decision run.
  * Integrates with the warehouse storage for persistence.
- * 
+ *
  * @module @zeo/core/kpi-integration
  */
 
-import type { 
-  DecisionSpec, 
-  DecisionResult, 
-  LensEvaluation, 
+import type {
+  DecisionSpec,
+  DecisionResult,
+  LensEvaluation,
   KpiMeasurement,
   KpiValue,
-  UUID 
+  UUID
 } from "@zeo/contracts";
 import type { KpiWarehouseStorage } from "@zeo/warehouse";
 import { createHash } from "crypto";
@@ -119,38 +119,38 @@ export function computeDecisionCoverage(
 ): DecisionCoverageMetrics {
   const graph = result.graph;
   const actions = spec.actions;
-  
+
   // Calculate action coverage: how many actions have branch outcomes
   const actionsWithBranches = actions.filter(action => {
     return graph.edges.some(edge => edge.actionId === action.id);
   }).length;
   const actionCoverage = actions.length > 0 ? actionsWithBranches / actions.length : 0;
-  
+
   // Calculate assumption coverage: assumptions with provenance vs total
   const assumptionsWithProvenance = spec.assumptions.filter(
     a => a.status === "fact" || (a.provenance && a.provenance.length > 0)
   ).length;
-  const assumptionCoverage = spec.assumptions.length > 0 
-    ? assumptionsWithProvenance / spec.assumptions.length 
+  const assumptionCoverage = spec.assumptions.length > 0
+    ? assumptionsWithProvenance / spec.assumptions.length
     : 1;
-  
+
   // Determine branch depth from graph structure
   let maxDepth = 0;
   const rootId = graph.nodes[0]?.id;
   if (rootId) {
     const depthMap = new Map<string, number>();
     depthMap.set(rootId, 0);
-    
+
     // BFS to find max depth
     const queue = [rootId];
     while (queue.length > 0) {
       const currentId = queue.shift()!;
       const currentDepth = depthMap.get(currentId) || 0;
-      
+
       const children = graph.edges
         .filter(e => e.from === currentId)
         .map(e => e.to);
-      
+
       for (const childId of children) {
         if (!depthMap.has(childId)) {
           depthMap.set(childId, currentDepth + 1);
@@ -160,7 +160,7 @@ export function computeDecisionCoverage(
       }
     }
   }
-  
+
   return {
     actionCoverage,
     assumptionCoverage,
@@ -178,25 +178,25 @@ export function computeRobustnessMetrics(
   result: DecisionResult
 ): RobustnessMetrics {
   const evaluations = result.evaluations;
-  
+
   // Find robustness evaluation
   const robustnessEval = evaluations.find(e => e.lens === "robustness");
-  
+
   const robustActions = robustnessEval?.robustActions || [];
   const fragileAssumptions = robustnessEval?.fragileAssumptions || [];
   const dominatedActions = robustnessEval?.dominatedActions || [];
-  
+
   const totalActions = spec.actions.length;
-  const robustActionPercentage = totalActions > 0 
-    ? robustActions.length / totalActions 
+  const robustActionPercentage = totalActions > 0
+    ? robustActions.length / totalActions
     : 0;
-  
+
   // Compute robustness score (composite metric)
-  const robustnessScore = Math.max(0, Math.min(1, 
-    robustActionPercentage * 0.6 + 
+  const robustnessScore = Math.max(0, Math.min(1,
+    robustActionPercentage * 0.6 +
     (1 - (fragileAssumptions.length / Math.max(1, spec.assumptions.length))) * 0.4
   ));
-  
+
   return {
     robustnessScore,
     robustActionCount: robustActions.length,
@@ -233,7 +233,7 @@ export function createDecisionCoverageMeasurement(
     type: "scalar",
     value: metrics.actionCoverage,
   };
-  
+
   // Compute input hash for determinism
   const inputData = JSON.stringify({
     specId: context.spec.id,
@@ -241,7 +241,7 @@ export function createDecisionCoverageMeasurement(
     timestamp: context.timestamp,
   });
   const inputHash = createHash("sha256").update(inputData).digest("hex");
-  
+
   return {
     id: `kpi:decision-coverage:${context.spec.id}:${Date.now()}` as UUID,
     kpiId: "decision-coverage",
@@ -305,7 +305,7 @@ export function createRobustnessMeasurement(
     type: "scalar",
     value: metrics.robustnessScore,
   };
-  
+
   const inputData = JSON.stringify({
     specId: context.spec.id,
     robustActions: metrics.robustActionCount,
@@ -313,7 +313,7 @@ export function createRobustnessMeasurement(
     timestamp: context.timestamp,
   });
   const inputHash = createHash("sha256").update(inputData).digest("hex");
-  
+
   return {
     id: `kpi:robustness-score:${context.spec.id}:${Date.now()}` as UUID,
     kpiId: "robustness-score",
@@ -376,13 +376,13 @@ export function createCalibrationMeasurement(
     type: "scalar",
     value: metrics.calibrationScore,
   };
-  
+
   const inputData = JSON.stringify({
     specId: context.spec.id,
     timestamp: context.timestamp,
   });
   const inputHash = createHash("sha256").update(inputData).digest("hex");
-  
+
   return {
     id: `kpi:calibration-score:${context.spec.id}:${Date.now()}` as UUID,
     kpiId: "calibration-score",
@@ -439,7 +439,7 @@ export async function storeDecisionKpis(
   config: KpiIntegrationConfig = DEFAULT_KPI_CONFIG
 ): Promise<KpiMeasurement[]> {
   const measurements: KpiMeasurement[] = [];
-  
+
   if (config.enabledKpis.decisionCoverage) {
     const coverageMetrics = computeDecisionCoverage(context.spec, context.result);
     const coverageMeasurement = createDecisionCoverageMeasurement(context, coverageMetrics, config);
@@ -449,7 +449,7 @@ export async function storeDecisionKpis(
     });
     measurements.push(coverageMeasurement);
   }
-  
+
   if (config.enabledKpis.robustness) {
     const robustnessMetrics = computeRobustnessMetrics(context.spec, context.result);
     const robustnessMeasurement = createRobustnessMeasurement(context, robustnessMetrics, config);
@@ -459,7 +459,7 @@ export async function storeDecisionKpis(
     });
     measurements.push(robustnessMeasurement);
   }
-  
+
   if (config.enabledKpis.calibration) {
     const calibrationMetrics = computeCalibrationMetrics();
     const calibrationMeasurement = createCalibrationMeasurement(context, calibrationMetrics, config);
@@ -469,7 +469,7 @@ export async function storeDecisionKpis(
     });
     measurements.push(calibrationMeasurement);
   }
-  
+
   return measurements;
 }
 
@@ -523,7 +523,7 @@ export class KpiIntegration {
 
     const measurements = await storeDecisionKpis(this.storage, context, this.config);
     this.measurements.push(...measurements);
-    
+
     // Trim history to prevent unbounded growth
     if (this.measurements.length > 1000) {
       this.measurements = this.measurements.slice(-1000);

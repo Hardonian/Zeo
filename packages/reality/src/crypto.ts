@@ -1,6 +1,6 @@
 /**
  * Reality Mode - Cryptographic Utilities
- * 
+ *
  * Secure hashing, encryption, and signing for share bundles.
  * All operations use Node.js crypto module for production-grade security.
  */
@@ -86,10 +86,10 @@ export function encryptData(
 ): { encrypted: Uint8Array; iv: Uint8Array; authTag: Uint8Array } {
   const iv = generateIV();
   const cipher = createCipheriv(ENCRYPTION_ALGORITHM, key, iv);
-  
+
   const encrypted = Buffer.concat([cipher.update(data), cipher.final()]);
   const authTag = cipher.getAuthTag();
-  
+
   return {
     encrypted: new Uint8Array(encrypted),
     iv: new Uint8Array(iv),
@@ -108,12 +108,12 @@ export function decryptData(
 ): Uint8Array {
   const decipher = createDecipheriv(ENCRYPTION_ALGORITHM, key, iv);
   decipher.setAuthTag(authTag);
-  
+
   const decrypted = Buffer.concat([
     decipher.update(encrypted),
     decipher.final(),
   ]);
-  
+
   return new Uint8Array(decrypted);
 }
 

@@ -1,6 +1,6 @@
 /**
  * Uncertainty Ledger
- * 
+ *
  * Phase 3: Implements source accounting for different uncertainty categories.
  * Tracks:
  * - measurement_uncertainty: Uncertainty from data collection/processing
@@ -8,7 +8,7 @@
  * - regime_uncertainty: Uncertainty from regime/state changes
  * - adversarial_uncertainty: Uncertainty from strategic opponents
  * - ai_proposal_uncertainty: Uncertainty from AI-generated content
- * 
+ *
  * All ledger values are bands (low/high), deterministic, and computable
  * from existing metadata without inventing external signals.
  */

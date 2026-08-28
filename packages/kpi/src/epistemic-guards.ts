@@ -1,10 +1,10 @@
 /**
  * Epistemic Guards for KPI
- * 
+ *
  * Validates KPI measurements maintain epistemic discipline.
  * Enforces: no fact without provenance, AI outputs require validation,
  * uncertainty bands on all measurements.
- * 
+ *
  * @module @zeo/kpi/epistemic-guards
  */
 
@@ -32,14 +32,14 @@ export function isKpiMeasurementValid(
   kpi?: KpiContract
 ): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
-  
+
   // Check 1: Facts must have provenance
   if (measurement.epistemic.status === "fact") {
     if (!measurement.provenance || measurement.provenance.length === 0) {
       errors.push("Facts must have provenance pointers");
     }
   }
-  
+
   // Check 2: AI-assisted outputs must require validation
   if (measurement.aiAssisted) {
     if (!measurement.aiAssisted.requiresValidation) {
@@ -49,36 +49,36 @@ export function isKpiMeasurementValid(
       errors.push("AI-assisted measurements must have epistemic warnings");
     }
   }
-  
+
   // Check 3: Interval values must have uncertainty bands
   if (measurement.value.kind === "interval") {
     if (!measurement.epistemic.uncertainty) {
       errors.push("Interval values must have uncertainty in epistemic metadata");
     }
   }
-  
+
   // Check 4: Confidence must match status
   if (measurement.epistemic.status === "unknown" && measurement.epistemic.confidence !== "low") {
     errors.push("Unknown status should have low confidence");
   }
-  
+
   // Check 5: Sample size disclosure
   if (measurement.context.sampleSize === undefined || measurement.context.sampleSize < 0) {
     errors.push("Sample size must be disclosed");
   }
-  
+
   // Check 6: Sensitivity notes for high-stakes KPIs
   if (kpi?.category === "decision_quality" || kpi?.category === "calibration") {
     if (!measurement.epistemic.sensitivityNotes || measurement.epistemic.sensitivityNotes.length === 0) {
       errors.push("High-stakes KPIs must include sensitivity notes");
     }
   }
-  
+
   // Check 7: Determinism hash present
   if (!measurement.inputHash) {
     errors.push("Input hash required for determinism verification");
   }
-  
+
   return {
     valid: errors.length === 0,
     errors
@@ -111,7 +111,7 @@ export function formatKpiWithEpistemicNotice(
   kpi?: KpiContract
 ): string {
   const lines: string[] = [];
-  
+
   // Value formatting
   let valueStr = "";
   switch (measurement.value.kind) {
@@ -128,11 +128,11 @@ export function formatKpiWithEpistemicNotice(
       valueStr = `${measurement.value.value} (${(measurement.value.confidence.low * 100).toFixed(0)}-${(measurement.value.confidence.high * 100).toFixed(0)}% confidence)`;
       break;
   }
-  
+
   lines.push(`KPI: ${kpi?.name || measurement.kpiId}`);
   lines.push(`Value: ${valueStr}`);
   lines.push(`Status: ${measurement.epistemic.status} (${measurement.epistemic.confidence} confidence)`);
-  
+
   // Epistemic warnings
   if (measurement.aiAssisted) {
     lines.push("⚠️ AI-assisted measurement - requires validation");
@@ -140,15 +140,15 @@ export function formatKpiWithEpistemicNotice(
       lines.push(`  • ${warning}`);
     }
   }
-  
+
   // Uncertainty disclosure
   if (measurement.epistemic.uncertainty) {
     lines.push(`Uncertainty: [${measurement.epistemic.uncertainty.low.toFixed(3)}, ${measurement.epistemic.uncertainty.high.toFixed(3)}]`);
   }
-  
+
   // Sample size
   lines.push(`Sample size: ${measurement.context.sampleSize}`);
-  
+
   // Sensitivity
   if (measurement.epistemic.sensitivityNotes && measurement.epistemic.sensitivityNotes.length > 0) {
     lines.push("Sensitivity notes:");
@@ -156,10 +156,10 @@ export function formatKpiWithEpistemicNotice(
       lines.push(`  • ${note}`);
     }
   }
-  
+
   // Determinism
   lines.push(`Input hash: ${measurement.inputHash}`);
-  
+
   return lines.join("\n");
 }
 

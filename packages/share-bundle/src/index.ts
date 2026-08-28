@@ -1,6 +1,6 @@
 /**
  * Share Bundle Implementation - v0.7.0
- * 
+ *
  * Core implementation for creating, validating, and importing share bundles
  * with support for redaction, encryption, and access control.
  */
@@ -117,7 +117,7 @@ export function applyRedaction(
   }
 
   const redactedData = redactValue(data, policy, "", redactions);
-  
+
   return { redactedData, redactions };
 }
 
@@ -142,7 +142,7 @@ function redactValue(
     const result: Record<string, unknown> = {};
     for (const [key, val] of Object.entries(value as Record<string, unknown>)) {
       const newPath = path ? `${path}.${key}` : key;
-      
+
       // Check if this field should be redacted
       if (shouldRedactField(key, policy)) {
         const originalHash = sha256(String(val));
@@ -161,7 +161,7 @@ function redactValue(
   }
 
   if (Array.isArray(value)) {
-    return value.map((item, idx) => 
+    return value.map((item, idx) =>
       redactValue(item, policy, `${path}[${idx}]`, redactions)
     );
   }
@@ -186,7 +186,7 @@ function redactString(
       const regex = new RegExp(rule.pattern, "gi");
       if (regex.test(result)) {
         const originalHash = sha256(result);
-        
+
         switch (rule.replacement) {
           case "hash":
             result = result.replace(regex, `[REDACTED:${sha256(result).slice(0, 16)}]`);
@@ -198,7 +198,7 @@ function redactString(
             result = result.replace(regex, rule.placeholder || "[REDACTED]");
             break;
         }
-        
+
         redactions.push({
           field: path,
           originalHash,
@@ -260,7 +260,7 @@ function shouldRedactField(fieldName: string, policy: RedactionPolicy): boolean 
  */
 export function detectSensitiveContent(data: unknown): string[] {
   const patterns: string[] = [];
-  
+
   if (typeof data === "string") {
     // Check for various sensitive patterns
     const checks = [
@@ -296,9 +296,9 @@ export function signHeader(
     ...header,
     signature: undefined, // Exclude existing signature
   });
-  
+
   const hmac = hmacSha256(signingKey, headerString);
-  
+
   return {
     algorithm: "hmac-sha256",
     keyId: "default",
@@ -321,10 +321,10 @@ export function verifyHeaderSignature(
     ...header,
     signature: undefined,
   });
-  
+
   const expectedHmac = hmacSha256(verificationKey, headerString);
   const providedSignature = Buffer.from(signature.signature, "base64");
-  
+
   return Buffer.compare(expectedHmac, providedSignature) === 0;
 }
 
@@ -362,17 +362,17 @@ export function createShareBundle(
 
   for (const item of options.items) {
     const itemId = generateBundleId();
-    
+
     // Apply redaction
     const { redactedData, redactions } = applyRedaction(
       item.data,
       options.redactionPolicy
     );
-    
+
     if (redactions.length > 0) {
       redactedCount += redactions.length;
     }
-    
+
     // Detect sensitive content
     const sensitivePatterns = detectSensitiveContent(item.data);
     if (sensitivePatterns.length > 0) {
@@ -388,8 +388,8 @@ export function createShareBundle(
       itemType: item.type,
       data: redactedData,
       redactions: redactions.length > 0 ? redactions : undefined,
-      provenance: options.redactionPolicy.preserveProvenance 
-        ? item.provenance 
+      provenance: options.redactionPolicy.preserveProvenance
+        ? item.provenance
         : undefined,
       contentHash,
     });
@@ -404,17 +404,17 @@ export function createShareBundle(
   if (encryptionKey) {
     const plaintext = JSON.stringify(payload);
     plaintextSize = Buffer.byteLength(plaintext, "utf8");
-    
+
     const { encrypted, iv, authTag } = encryptAes256Gcm(
       Buffer.from(plaintext, "utf8"),
       encryptionKey
     );
-    
+
     // Combine IV + AuthTag + Encrypted data
     const combined = Buffer.concat([iv, authTag, encrypted]);
     encryptedPayload = combined.toString("base64");
     encryptedSize = combined.length;
-    
+
     // Payload is now the encrypted blob
     payload = { items: [] }; // Items are inside encrypted payload
   }
@@ -464,7 +464,7 @@ export function createShareBundle(
 
   return {
     header,
-    payload: encryptionKey 
+    payload: encryptionKey
       ? { encryptedData: encryptedPayload }
       : { plaintext: payload },
     headerChecksum,
@@ -533,7 +533,7 @@ export function importShareBundle(
 
   // Decrypt payload if encrypted
   let payload: ShareBundlePayload;
-  
+
   if (bundle.header.encryption && bundle.payload.encryptedData) {
     if (!decryptionKey) {
       result.items.push({
@@ -551,7 +551,7 @@ export function importShareBundle(
       const iv = combined.slice(0, 12);
       const authTag = combined.slice(12, 28);
       const encrypted = combined.slice(28);
-      
+
       const decrypted = decryptAes256Gcm(decrypted, decryptionKey, iv, authTag);
       payload = JSON.parse(decrypted.toString("utf8"));
     } catch {
