@@ -121,7 +121,7 @@ export class LearningDecisionRunner {
     };
 
     const record = await this.memoryManager.getDecision(decisionId, temporalContext);
-    
+
     if (!record) {
       return null;
     }

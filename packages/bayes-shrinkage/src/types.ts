@@ -1,6 +1,6 @@
 /**
  * @zeo/bayes-shrinkage Types
- * 
+ *
  * Type definitions for Bayesian shrinkage estimators.
  */
 

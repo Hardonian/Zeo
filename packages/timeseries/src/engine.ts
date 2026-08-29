@@ -21,28 +21,28 @@ export class TimeSeriesEngine {
     modelType: "arima" | "garch" | "auto" = "auto"
   ): Promise<TimeSeriesAnalysis> {
     const tempFile = `/tmp/zeo_ts_${createId()}.json`;
-    
+
     try {
       const request = {
         data: series.data,
         modelType,
       };
-      
+
       await writeFile(tempFile, JSON.stringify(request));
-      
+
       const result = await new Promise<Record<string, unknown>>((resolve, reject) => {
         const pythonProcess = spawn("python3", [PYTHON_SCRIPT_PATH, tempFile]);
         let output = "";
         let errorOutput = "";
-        
+
         pythonProcess.stdout.on("data", (data) => {
           output += data.toString();
         });
-        
+
         pythonProcess.stderr.on("data", (data) => {
           errorOutput += data.toString();
         });
-        
+
         pythonProcess.on("close", async (code) => {
           try {
             await unlink(tempFile);
@@ -54,7 +54,7 @@ export class TimeSeriesEngine {
             reject(new Error(`Python process exited with code ${code}: ${errorOutput}`));
             return;
           }
-          
+
           try {
             resolve(JSON.parse(output));
           } catch {
@@ -62,7 +62,7 @@ export class TimeSeriesEngine {
           }
         });
       });
-      
+
       // Transform response to TimeSeriesAnalysis
       const analysis: TimeSeriesAnalysis = {
         series,
@@ -92,7 +92,7 @@ export class TimeSeriesEngine {
           uncertaintyMultiplier: result.uncertainty_multiplier as number,
         },
       };
-      
+
       return analysis;
     } catch (error) {
       try {
@@ -125,40 +125,40 @@ export class TimeSeriesEngine {
       };
     }
   }
-  
+
   /**
    * Check if time series has sufficient data for modeling.
    */
   validateSeries(series: TimeSeries): { valid: boolean; issues: string[] } {
     const issues: string[] = [];
-    
+
     if (series.data.length < 10) {
       issues.push("Insufficient data points (minimum 10 required)");
     }
-    
+
     if (series.data.length < 30) {
       issues.push("Limited data: volatility modeling will have high uncertainty");
     }
-    
+
     // Check for missing values
     const missingCount = series.data.filter(d => !isFinite(d.value)).length;
     if (missingCount > 0) {
       issues.push(`${missingCount} missing/invalid values detected`);
     }
-    
+
     // Check for zero variance
     const values = series.data.map(d => d.value);
     const variance = this.computeVariance(values);
     if (variance < 1e-10) {
       issues.push("Zero or near-zero variance detected");
     }
-    
+
     return {
       valid: issues.length === 0 || (issues.length === 1 && issues[0]?.includes("Limited data")),
       issues,
     };
   }
-  
+
   /**
    * Compute simple variance.
    */

@@ -4,7 +4,7 @@ import type { TimeSeries } from "./types.js";
 
 describe("timeseries", () => {
   const engine = new TimeSeriesEngine();
-  
+
   describe("validateSeries", () => {
     it("should reject series with insufficient data", () => {
       const series: TimeSeries = {
@@ -16,12 +16,12 @@ describe("timeseries", () => {
         ],
         frequency: "daily",
       };
-      
+
       const result = engine.validateSeries(series);
       expect(result.valid).toBe(false);
       expect(result.issues).toContain("Insufficient data points (minimum 10 required)");
     });
-    
+
     it("should accept valid series", () => {
       const series: TimeSeries = {
         id: "ts_1",
@@ -32,11 +32,11 @@ describe("timeseries", () => {
         })),
         frequency: "daily",
       };
-      
+
       const result = engine.validateSeries(series);
       expect(result.valid).toBe(true);
     });
-    
+
     it("should detect zero variance", () => {
       const series: TimeSeries = {
         id: "ts_1",
@@ -47,7 +47,7 @@ describe("timeseries", () => {
         })),
         frequency: "daily",
       };
-      
+
       const result = engine.validateSeries(series);
       expect(result.issues).toContain("Zero or near-zero variance detected");
     });

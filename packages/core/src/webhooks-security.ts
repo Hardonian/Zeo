@@ -78,7 +78,7 @@ export class WebhookSecurity {
 
 /**
  * Simple Token Bucket Rate Limiter (In-Memory Fallback)
- * 
+ *
  * Note: Per instance. For distributed, use Redis.
  */
 class TokenBucket {

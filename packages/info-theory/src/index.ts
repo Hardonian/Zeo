@@ -1,13 +1,13 @@
 /**
  * @zeo/info-theory
- * 
+ *
  * Information-theoretic tools for quantifying dependencies and redundancy:
  * - Entropy estimation (Shannon, Rényi)
- * - Mutual Information (MI) 
+ * - Mutual Information (MI)
  * - Conditional Mutual Information (CMI)
  * - Redundancy detection and control
  * - Feature selection via mRMR (minimum Redundancy Maximum Relevance)
- * 
+ *
  * All computations are deterministic and produce reproducible outputs.
  */
 

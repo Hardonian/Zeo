@@ -1,20 +1,20 @@
 /**
  * CI Determinism Test Suite
- * 
+ *
  * This test verifies that Zeo produces deterministic outputs
  * across multiple runs with the same inputs and seeds.
- * 
+ *
  * Run in CI with: pnpm test:determinism
  */
 
 import { describe, it, expect, beforeAll } from "vitest";
-import { 
-  createExecutionEnvelope, 
-  hashValue, 
+import {
+  createExecutionEnvelope,
+  hashValue,
   executeWithDEK,
   initializeDEK,
   registerModelAdapter,
-  DEK_VERSION 
+  DEK_VERSION
 } from "./index.js";
 import type { ZeoDeterminismFixture, ZeoModelSpec, ZeoModelAdapter, ZeoModelInput, ZeoModelResult } from "@zeo/contracts";
 
@@ -60,10 +60,10 @@ const mockAdapter: ZeoModelAdapter = {
       usage: { inputTokens: 10, outputTokens: 20, totalTokens: 30 },
       finishReason: "stop",
       meta: { provider: "test", model: "deterministic-mock" },
-      timing: { 
-        startedAt: "2024-01-01T00:00:00.000Z", 
-        finishedAt: "2024-01-01T00:00:01.000Z", 
-        totalMs: 1000 
+      timing: {
+        startedAt: "2024-01-01T00:00:00.000Z",
+        finishedAt: "2024-01-01T00:00:01.000Z",
+        totalMs: 1000
       },
       contentHash: hashValue(content),
     };
@@ -89,7 +89,7 @@ describe("DEK Determinism", () => {
       TEST_FIXTURE.modelSpec,
       { deterministicSeed: TEST_FIXTURE.seed }
     );
-    
+
     const envelope2 = createExecutionEnvelope(
       TEST_FIXTURE.name,
       TEST_FIXTURE.input,
@@ -104,7 +104,7 @@ describe("DEK Determinism", () => {
 
   it("should produce identical output hashes across multiple runs", async () => {
     const results: string[] = [];
-    
+
     // Run 5 times with identical inputs
     for (let i = 0; i < 5; i++) {
       const { outputHash } = await executeWithDEK(
@@ -126,7 +126,7 @@ describe("DEK Determinism", () => {
     // All hashes should be identical
     const firstHash = results[0];
     expect(results.every(h => h === firstHash)).toBe(true);
-    
+
     // Log for CI visibility
     console.log(`Determinism test: 5 runs produced identical hash ${firstHash.slice(0, 16)}...`);
   });

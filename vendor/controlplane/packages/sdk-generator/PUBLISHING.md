@@ -71,10 +71,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Generate SDKs
         run: pnpm sdk:generate
-      
+
       - name: Check for drift
         run: |
           if [ -n "$(git status --porcelain sdks/)" ]; then

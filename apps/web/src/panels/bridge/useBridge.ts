@@ -14,10 +14,10 @@ export function useBridge(options: BridgeOptions = {}) {
 
   const sendMessage = useCallback((message: Omit<UiBridgeMessage, 'requestId' | 'direction'>, targetOrigin: string = window.location.origin): Promise<unknown> => {
     const requestId = crypto.randomUUID();
-    
+
     return new Promise((resolve, reject) => {
       pendingRequests.current.set(requestId, { resolve, reject });
-      
+
       window.parent.postMessage({
         ...message,
         direction: 'panel->host' as const,

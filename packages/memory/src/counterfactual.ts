@@ -8,17 +8,17 @@ export type CounterfactualScenario = {
   id: UUID;
   originalDecisionId: UUID;
   hypotheticalAction: Action;
-  
+
   // What would have been plausible outcomes
   plausibleOutcomes: Array<{
     description: string;
     probability: ProbabilityInterval;
     conditions: string[];
   }>;
-  
+
   // Key uncertainties in the counterfactual
   criticalUncertainties: string[];
-  
+
   // Epistemic discipline: explicit confidence bounds
   confidence: ProbabilityInterval;
   rationale: string;
@@ -29,26 +29,26 @@ export type CounterfactualScenario = {
  */
 export type RegretAnalysis = {
   decisionId: UUID;
-  
+
   // Regret metrics
   worstCaseRegret: number;  // Maximum possible regret
   medianRegret: number;     // 50th percentile
   expectedRegret: number;   // Probability-weighted
-  
+
   // Was this bad outcome or bad decision?
   outcomeQuality: "good" | "bad" | "ambiguous";
   decisionQuality: "sound" | "questionable" | "ambiguous";
-  
+
   // Key insight
   insight: string;
-  
+
   // What would have changed the decision
   criticalInformation: string[];
 };
 
 /**
  * Counterfactual and Regret Analysis Engine.
- * 
+ *
  * Epistemic discipline:
  * - Counterfactuals respect original uncertainty
  * - No hindsight bias correction
@@ -63,18 +63,18 @@ export class CounterfactualEngine {
     alternativeActions: Action[]
   ): CounterfactualScenario[] {
     const scenarios: CounterfactualScenario[] = [];
-    
+
     for (const action of alternativeActions) {
       // Skip the action that was actually taken
       if (action.id === decision.branchRecord.selectedActionId) continue;
-      
+
       const scenario = this.buildCounterfactual(decision, action);
       scenarios.push(scenario);
     }
-    
+
     return scenarios;
   }
-  
+
   /**
    * Build a single counterfactual scenario.
    */
@@ -84,12 +84,12 @@ export class CounterfactualEngine {
   ): CounterfactualScenario {
     // Use the original branch graph as basis
     // but consider alternative paths from the different action
-    
+
     const plausibleOutcomes = this.inferPlausibleOutcomes(decision, action);
-    
+
     // Calculate confidence based on similarity to original decision
     const confidence = this.calculateCounterfactualConfidence(decision, action);
-    
+
     return {
       id: `cf_${Date.now()}_${action.id}`,
       originalDecisionId: decision.id,
@@ -100,7 +100,7 @@ export class CounterfactualEngine {
       rationale: this.generateCounterfactualRationale(decision, action, confidence),
     };
   }
-  
+
   /**
    * Infer plausible outcomes for a counterfactual action.
    */
@@ -110,9 +110,9 @@ export class CounterfactualEngine {
   ): Array<{ description: string; probability: ProbabilityInterval; conditions: string[] }> {
     // In a real implementation, this would use the branch graph
     // For now, provide reasonable generic outcomes
-    
+
     const outcomes = [];
-    
+
     if (action.kind === "delay") {
       outcomes.push(
         {
@@ -148,10 +148,10 @@ export class CounterfactualEngine {
         }
       );
     }
-    
+
     return outcomes;
   }
-  
+
   /**
    * Calculate confidence in counterfactual prediction.
    */
@@ -161,19 +161,19 @@ export class CounterfactualEngine {
   ): ProbabilityInterval {
     // Confidence decreases as we move further from the actual decision
     // Base it on the original decision's uncertainty
-    
-    const originalUncertainty = decision.branchRecord.predictedInterval.high - 
+
+    const originalUncertainty = decision.branchRecord.predictedInterval.high -
                                 decision.branchRecord.predictedInterval.low;
-    
+
     // Counterfactuals are inherently more uncertain
     const counterfactualUncertainty = originalUncertainty * 1.5;
-    
+
     return {
       low: Math.max(0, 0.5 - counterfactualUncertainty / 2),
       high: Math.min(1, 0.5 + counterfactualUncertainty / 2),
     };
   }
-  
+
   /**
    * Identify critical uncertainties for counterfactual.
    */
@@ -185,7 +185,7 @@ export class CounterfactualEngine {
       "How robust was the original recommendation?",
     ];
   }
-  
+
   /**
    * Generate rationale for counterfactual.
    */
@@ -200,7 +200,7 @@ export class CounterfactualEngine {
     rationale += "Original decision constraints and uncertainties still apply.";
     return rationale;
   }
-  
+
   /**
    * Analyze regret for a decision.
    */
@@ -209,7 +209,7 @@ export class CounterfactualEngine {
     counterfactuals: CounterfactualScenario[]
   ): RegretAnalysis {
     const actualOutcome = decision.outcomes[0];
-    
+
     if (!actualOutcome) {
       return {
         decisionId: decision.id,
@@ -222,16 +222,16 @@ export class CounterfactualEngine {
         criticalInformation: [],
       };
     }
-    
+
     // Calculate regret metrics
     const regrets = this.calculateRegretMetrics(decision, counterfactuals);
-    
+
     // Assess outcome quality
     const outcomeQuality = this.assessOutcomeQuality(actualOutcome);
-    
+
     // Assess decision quality (separate from outcome)
     const decisionQuality = this.assessDecisionQuality(decision, counterfactuals);
-    
+
     // Generate insight
     const insight = this.generateRegretInsight(
       decision,
@@ -240,7 +240,7 @@ export class CounterfactualEngine {
       decisionQuality,
       regrets
     );
-    
+
     return {
       decisionId: decision.id,
       worstCaseRegret: regrets.worstCase,
@@ -252,7 +252,7 @@ export class CounterfactualEngine {
       criticalInformation: this.identifyCriticalInformation(decision, counterfactuals),
     };
   }
-  
+
   /**
    * Calculate regret metrics.
    */
@@ -263,7 +263,7 @@ export class CounterfactualEngine {
     if (counterfactuals.length === 0) {
       return { worstCase: 0, median: 0, expected: 0 };
     }
-    
+
     // Calculate value of each counterfactual outcome
     // Simplified: use probability of positive outcomes as proxy for value
     const counterfactualValues = counterfactuals.map(cf => {
@@ -273,36 +273,36 @@ export class CounterfactualEngine {
       ) / cf.plausibleOutcomes.length;
       return avgProbability;
     });
-    
+
     // Actual outcome value (simplified)
     const actualValue = decision.outcomes[0]?.predictionMatch.surpriseLevel === "expected" ? 0.7 :
                         decision.outcomes[0]?.predictionMatch.surpriseLevel === "mild" ? 0.5 :
                         decision.outcomes[0]?.predictionMatch.surpriseLevel === "significant" ? 0.3 : 0.1;
-    
+
     // Regret = max(0, counterfactual_value - actual_value)
     const regrets = counterfactualValues.map(v => Math.max(0, v - actualValue));
-    
+
     return {
       worstCase: Math.max(...regrets, 0),
       median: regrets.length > 0 ? regrets.sort((a, b) => a - b)[Math.floor(regrets.length / 2)]! : 0,
       expected: regrets.reduce((a, b) => a + b, 0) / regrets.length,
     };
   }
-  
+
   /**
    * Assess whether outcome was good, bad, or ambiguous.
    */
   private assessOutcomeQuality(outcome: OutcomeRecord): "good" | "bad" | "ambiguous" {
     if (outcome.status === "resolved" && outcome.predictionMatch.surpriseLevel === "expected") {
       return "good";
-    } else if (outcome.status === "resolved" && 
-               (outcome.predictionMatch.surpriseLevel === "significant" || 
+    } else if (outcome.status === "resolved" &&
+               (outcome.predictionMatch.surpriseLevel === "significant" ||
                 outcome.predictionMatch.surpriseLevel === "black_swan")) {
       return "bad";
     }
     return "ambiguous";
   }
-  
+
   /**
    * Assess decision quality independent of outcome.
    */
@@ -313,7 +313,7 @@ export class CounterfactualEngine {
     // Check if decision had robust reasoning
     const hasUncertaintyAcknowledgment = decision.spec.assumptions.length > 0;
     const hasMultipleBranches = decision.branchGraph.nodes.length > 3;
-    
+
     if (hasUncertaintyAcknowledgment && hasMultipleBranches) {
       return "sound";
     } else if (!hasUncertaintyAcknowledgment && !hasMultipleBranches) {
@@ -321,7 +321,7 @@ export class CounterfactualEngine {
     }
     return "ambiguous";
   }
-  
+
   /**
    * Generate insight about regret.
    */
@@ -333,7 +333,7 @@ export class CounterfactualEngine {
     regrets: { worstCase: number; median: number; expected: number }
   ): string {
     let insight = "";
-    
+
     // Distinguish bad outcome from bad decision
     if (outcomeQuality === "bad" && decisionQuality === "sound") {
       insight = "This was a bad outcome from a sound decision. The process was robust but uncertainty materialized against you. ";
@@ -347,15 +347,15 @@ export class CounterfactualEngine {
     } else {
       insight = "Outcome and decision quality are consistent. Continue monitoring.";
     }
-    
+
     // Add regret-specific insight
     if (regrets.expected > 0.3) {
       insight += ` Expected regret of ${(regrets.expected * 100).toFixed(0)}% suggests significant opportunity cost.`;
     }
-    
+
     return insight;
   }
-  
+
   /**
    * Identify what information would have changed the decision.
    */
@@ -370,7 +370,7 @@ export class CounterfactualEngine {
       "Internal stakeholder priorities",
     ];
   }
-  
+
   /**
    * Replay a decision with current knowledge.
    * Shows what would be decided "today" vs "at the time".

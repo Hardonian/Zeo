@@ -1,6 +1,6 @@
 /**
  * @zeo/eval - Quant Uncertainty Integration
- * 
+ *
  * Phase 5: Extends uncertainty ledger with integrations to quant packages:
  * - Time-series uncertainty from change-point detection
  * - Shrinkage-adjusted uncertainty

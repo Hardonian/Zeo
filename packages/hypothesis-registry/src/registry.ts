@@ -101,15 +101,15 @@ export class HypothesisRegistry implements IRegistry {
       results.sort((a, b) => {
         const aVal = a[sortField as keyof Hypothesis];
         const bVal = b[sortField as keyof Hypothesis];
-        
+
         if (typeof aVal === "number" && typeof bVal === "number") {
           return (aVal - bVal) * sortOrder;
         }
-        
+
         if (aVal instanceof Date && bVal instanceof Date) {
           return (aVal.getTime() - bVal.getTime()) * sortOrder;
         }
-        
+
         return String(aVal).localeCompare(String(bVal)) * sortOrder;
       });
     }
@@ -178,8 +178,8 @@ export class HypothesisRegistry implements IRegistry {
       totalConfidence += hypothesis.confidence;
     }
 
-    stats.avgConfidence = this.hypotheses.size > 0 
-      ? totalConfidence / this.hypotheses.size 
+    stats.avgConfidence = this.hypotheses.size > 0
+      ? totalConfidence / this.hypotheses.size
       : 0;
 
     return stats;
@@ -191,11 +191,11 @@ export class HypothesisRegistry implements IRegistry {
 
     return Array.from(this.hypotheses.values()).filter((h) => {
       if (h.id === hypothesisId) return false;
-      
+
       // Simple similarity based on tag overlap
       const commonTags = h.tags.filter((tag) => source.tags.includes(tag));
       const similarity = commonTags.length / Math.max(h.tags.length, source.tags.length);
-      
+
       return similarity >= threshold;
     });
   }

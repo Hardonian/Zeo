@@ -28,7 +28,7 @@ describe('worlds invariant tests', () => {
     it('should enforce worldId in computeWorld results', () => {
       const ensemble = createEnsemble('test-ensemble', createTestDecisionSpec());
       const worlds = generateDefaultWorlds(createTestDecisionSpec(), 3);
-      
+
       let working = ensemble;
       for (const world of worlds) {
         working = addWorld(working, world);
@@ -39,14 +39,14 @@ describe('worlds invariant tests', () => {
 
       const result = computeWorld(working, worlds[0].worldId);
       const worldState = result.worlds.get(worlds[0].worldId);
-      
+
       // Result should have worldId
       expect(worldState?.decisionResult?.worldId).toBe(worlds[0].worldId);
     });
 
     it('should throw WorldIdRequiredError for missing worldId', () => {
       // Test the enforcement function directly
-      expect(() => 
+      expect(() =>
         enforceWorldIdRequired({
           worldId: '',
           recommendedAction: 'action_1',
@@ -57,7 +57,7 @@ describe('worlds invariant tests', () => {
         })
       ).toThrow(WorldIdRequiredError);
 
-      expect(() => 
+      expect(() =>
         enforceWorldIdRequired({
           worldId: 'valid-world-id',
           recommendedAction: 'action_1',
@@ -72,7 +72,7 @@ describe('worlds invariant tests', () => {
     it('should include worldId in all world decision results', () => {
       const ensemble = createEnsemble('test-ensemble-2', createTestDecisionSpec());
       const worlds = generateDefaultWorlds(createTestDecisionSpec(), 3);
-      
+
       let working = ensemble;
       for (const world of worlds) {
         working = addWorld(working, world);

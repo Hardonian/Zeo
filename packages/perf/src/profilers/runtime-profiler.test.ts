@@ -152,7 +152,7 @@ describe("Profiler", () => {
   describe("profile function wrapper", () => {
     it("should profile synchronous function", async () => {
       const session = profiler.startSession("test-session");
-      
+
       const result = await profiler.profile(
         "sync-fn",
         session.id,
@@ -167,7 +167,7 @@ describe("Profiler", () => {
 
     it("should profile asynchronous function", async () => {
       const session = profiler.startSession("test-session");
-      
+
       const result = await profiler.profile(
         "async-fn",
         session.id,
@@ -185,7 +185,7 @@ describe("Profiler", () => {
 
     it("should handle function errors", async () => {
       const session = profiler.startSession("test-session");
-      
+
       await expect(
         profiler.profile(
           "error-fn",
@@ -205,11 +205,11 @@ describe("Profiler", () => {
   describe("report generation", () => {
     it("should generate comprehensive report", async () => {
       const session = profiler.startSession("test-session");
-      
+
       // Add some measurements
       const m1 = profiler.start("fast", session.id);
       profiler.end(m1);
-      
+
       const m2 = profiler.start("slow", session.id);
       // Leave margin for timer granularity while preserving the 50ms contract.
       await new Promise((resolve) => setTimeout(resolve, 75));
@@ -228,7 +228,7 @@ describe("Profiler", () => {
 
     it("should identify longest operations", async () => {
       const session = profiler.startSession("test-session");
-      
+
       // Add 15 measurements with varying durations
       for (let i = 0; i < 15; i++) {
         const id = profiler.start(`op-${i}`, session.id);
@@ -240,7 +240,7 @@ describe("Profiler", () => {
 
       // Should only return top 10
       expect(report.summary.longestOperations).toHaveLength(10);
-      
+
       // Should be sorted by duration (descending)
       const durations = report.summary.longestOperations.map(m => m.duration || 0);
       for (let i = 1; i < durations.length; i++) {
@@ -250,13 +250,13 @@ describe("Profiler", () => {
 
     it("should track hot path hits", () => {
       const session = profiler.startSession("test-session");
-      
+
       // Add measurements with hot path IDs
       for (let i = 0; i < 5; i++) {
         const id = profiler.start(`op-${i}`, session.id, { hotPathId: "path-1" });
         profiler.end(id);
       }
-      
+
       for (let i = 0; i < 3; i++) {
         const id = profiler.start(`op-${i}`, session.id, { hotPathId: "path-2" });
         profiler.end(id);
@@ -270,7 +270,7 @@ describe("Profiler", () => {
 
     it("should generate recommendations for long operations", async () => {
       const session = profiler.startSession("test-session");
-      
+
       const id = profiler.start("slow-op", session.id);
       await new Promise((resolve) => setTimeout(resolve, 150));
       profiler.end(id);
@@ -283,7 +283,7 @@ describe("Profiler", () => {
 
     it("should warn about unended measurements", () => {
       const session = profiler.startSession("test-session");
-      
+
       // Start but don't end
       profiler.start("unended", session.id);
 
@@ -297,7 +297,7 @@ describe("Profiler", () => {
     it("should track memory when enabled", () => {
       const memoryProfiler = new Profiler({ trackMemory: true });
       const session = memoryProfiler.startSession("test-session");
-      
+
       const id = memoryProfiler.start("test", session.id);
       const measurement = memoryProfiler.end(id);
 
@@ -308,7 +308,7 @@ describe("Profiler", () => {
     it("should skip memory tracking when disabled", () => {
       const noMemoryProfiler = new Profiler({ trackMemory: false });
       const session = noMemoryProfiler.startSession("test-session");
-      
+
       const id = noMemoryProfiler.start("test", session.id);
       const measurement = noMemoryProfiler.end(id);
 
@@ -321,7 +321,7 @@ describe("Profiler", () => {
     it("should export session to JSON", () => {
       const session = profiler.startSession("test-session");
       profiler.mark(session.id, "test-marker");
-      
+
       const json = profiler.exportSession(session.id);
       const parsed = JSON.parse(json);
 
@@ -368,7 +368,7 @@ describe("Profiler", () => {
   describe("quick profile convenience functions", () => {
     it("should start and end quick profile", async () => {
       const sessionId = startQuickProfile("quick-test");
-      
+
       // Do some work
       await new Promise(resolve => setTimeout(resolve, 10));
       const arr = [];

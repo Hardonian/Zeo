@@ -304,11 +304,11 @@ function generateContractTests(targetDir: string, config: RunnerConfig) {
   mkdirSync(testsDir, { recursive: true });
 
   const testContent = `import { describe, it, expect } from 'vitest';
-import { 
-  JobRequest, 
-  RunnerCapability, 
+import {
+  JobRequest,
+  RunnerCapability,
   HealthCheck,
-  CONTRACT_VERSION_CURRENT 
+  CONTRACT_VERSION_CURRENT
 } from '@controlplane/contracts';
 
 describe('${config.name} Contract Tests', () => {
@@ -324,7 +324,7 @@ describe('${config.name} Contract Tests', () => {
         createdAt: new Date().toISOString(),
         contractVersion: CONTRACT_VERSION_CURRENT,
       };
-      
+
       const result = JobRequest.safeParse(valid);
       expect(result.success).toBe(true);
     });
@@ -341,7 +341,7 @@ describe('${config.name} Contract Tests', () => {
         features: ${JSON.stringify(config.capabilities)},
         contractVersion: CONTRACT_VERSION_CURRENT,
       };
-      
+
       const result = RunnerCapability.safeParse(capability);
       expect(result.success).toBe(true);
     });
@@ -363,7 +363,7 @@ describe('${config.name} Contract Tests', () => {
           },
         ],
       };
-      
+
       const result = HealthCheck.safeParse(health);
       expect(result.success).toBe(true);
     });

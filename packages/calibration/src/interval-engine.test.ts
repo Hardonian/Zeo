@@ -78,10 +78,10 @@ describe("IntervalCalibrationEngine", () => {
       }
 
       const buckets = engine.testIntervalCoverage();
-      
+
       // Should have at least one bucket
       expect(buckets.length).toBeGreaterThan(0);
-      
+
       // Coverage should be close to expected
       const bucket = buckets.find((b: { expectedCoverage: number }) => b.expectedCoverage >= 0.7 && b.expectedCoverage <= 0.9);
       expect(bucket).toBeDefined();
@@ -104,7 +104,7 @@ describe("IntervalCalibrationEngine", () => {
 
       const buckets = engine.testIntervalCoverage();
       const bucket = buckets.find((b: { expectedCoverage: number }) => b.expectedCoverage >= 0.4 && b.expectedCoverage <= 0.6);
-      
+
       if (bucket) {
         // Coverage rate should be less than expected
         expect(bucket.coverageRate).toBeLessThan(bucket.expectedCoverage);
@@ -127,7 +127,7 @@ describe("IntervalCalibrationEngine", () => {
       }
 
       const adjustment = engine.computeCalibrationAdjustment();
-      
+
       // Should recommend widening due to severe undercoverage
       expect(["decrease", "maintain"]).toContain(adjustment.confidenceAdjustment);
     });
@@ -145,7 +145,7 @@ describe("IntervalCalibrationEngine", () => {
       }
 
       const adjustment = engine.computeCalibrationAdjustment();
-      
+
       // Epistemic discipline: never narrow intervals
       expect(adjustment.factor).toBe(1.0);
       expect(adjustment.confidenceAdjustment).toBe("maintain");
@@ -164,7 +164,7 @@ describe("IntervalCalibrationEngine", () => {
       }
 
       const adjustment = engine.computeCalibrationAdjustment();
-      
+
       expect(adjustment.factor).toBe(1.0);
       expect(adjustment.confidenceAdjustment).toBe("maintain");
     });
@@ -182,7 +182,7 @@ describe("IntervalCalibrationEngine", () => {
       }
 
       const adjustment = engine.computeCalibrationAdjustment();
-      
+
       // Should not make adjustments with insufficient data
       expect(adjustment.factor).toBe(1.0);
       expect(adjustment.confidenceAdjustment).toBe("maintain");
@@ -208,7 +208,7 @@ describe("IntervalCalibrationEngine", () => {
 
       // Should be wider or equal (algorithm may not trigger on borderline cases)
       expect(adjusted.high - adjusted.low).toBeGreaterThanOrEqual(original.high - original.low);
-      
+
       // Should preserve center approximately
       const originalCenter = (original.low + original.high) / 2;
       const adjustedCenter = (adjusted.low + adjusted.high) / 2;
@@ -331,7 +331,7 @@ describe("IntervalCalibrationEngine", () => {
       }
 
       const adjustment = engine.computeCalibrationAdjustment();
-      
+
       // Epistemic discipline: never narrow
       expect(adjustment.factor).toBeGreaterThanOrEqual(1.0);
     });
@@ -349,7 +349,7 @@ describe("IntervalCalibrationEngine", () => {
       }
 
       const adjustment = engine.computeCalibrationAdjustment();
-      
+
       // Should increase uncertainty or maintain (algorithm thresholds apply)
       expect(["decrease", "maintain"]).toContain(adjustment.confidenceAdjustment);
     });
@@ -363,7 +363,7 @@ describe("IntervalCalibrationEngine", () => {
         "robustness",
         ["timeline_pressure"]
       );
-      
+
       engine.addIntervalForecast(
         createMockDecision("negotiation"),
         { low: 0.4, high: 0.6 },
@@ -373,7 +373,7 @@ describe("IntervalCalibrationEngine", () => {
       );
 
       const report = engine.generateExtendedReport();
-      
+
       // Should track by assumption type
       expect(report.byAssumptionType["timeline_pressure"]).toBeDefined();
       expect(report.byAssumptionType["budget_constraint"]).toBeDefined();

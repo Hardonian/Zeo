@@ -1,15 +1,15 @@
 /**
  * Scorecards Module
- * 
+ *
  * Phase 5: Reliability diagrams, sharpness metrics, and proper scoring rules.
- * 
+ *
  * Scorecard types:
  * - Reliability diagram: Calibration quality visualization
  * - Sharpness diagram: Uncertainty band width distribution
  * - Prediction histogram: Distribution of predictions
  * - Confusion matrix: Binary prediction performance
  * - Multi-class metrics: Precision, recall, F1 per class
- * 
+ *
  * All operations are deterministic with seeded randomization.
  */
 
@@ -22,10 +22,10 @@ const SCORECARDS_VERSION = "0.5.1";
 /**
  * Types of scorecards
  */
-export type ScorecardType = 
-  | "reliability" 
-  | "sharpness" 
-  | "prediction_histogram" 
+export type ScorecardType =
+  | "reliability"
+  | "sharpness"
+  | "prediction_histogram"
   | "confusion_matrix"
   | "multiclass_metrics";
 
@@ -137,14 +137,14 @@ export interface ScorecardReport {
   datasetId: string;
   predictionCount: number;
   outcomeCount: number;
-  
+
   // Core scorecards
   reliability?: ReliabilityDiagram;
   sharpness?: SharpnessDiagram;
   histogram?: PredictionHistogram;
   confusion?: ConfusionMatrix;
   multiclass?: MultiClassMetrics;
-  
+
   // Overall scores
   overall: {
     reliabilityScore: number;
@@ -152,7 +152,7 @@ export interface ScorecardReport {
     calibrationQuality: "excellent" | "good" | "acceptable" | "poor";
     sharpnessQuality: "sharp" | "moderate" | "vague";
   };
-  
+
   // Recommendations
   recommendations: string[];
 }
@@ -234,7 +234,7 @@ function seededRng(seed: string): () => number {
   for (let i = 0; i < seed.length; i++) {
     state = (state * 31 + seed.charCodeAt(i)) >>> 0;
   }
-  
+
   return () => {
     state = (state * 1664525 + 1013904223) >>> 0;
     return state / 4294967296;
@@ -256,19 +256,19 @@ export function computeReliabilityDiagram(
     count: 0,
     confidenceInterval: { low: 0, high: 0 },
   }));
-  
+
   // Assign predictions to bins
   for (const pred of predictions) {
     const outcome = outcomes.get(pred.id);
     if (!outcome) continue;
-    
+
     // Calculate predicted probability (midpoint of band)
     const predProb = (pred.band.low + pred.band.high) / 2;
     const binIndex = Math.min(
       Math.floor(predProb * binCount),
       binCount - 1
     );
-    
+
     // Determine actual outcome (0 or 1)
     let actual = 0;
     if (outcome.value.kind === "binary" && outcome.value.occurred) {
@@ -276,19 +276,19 @@ export function computeReliabilityDiagram(
     } else if (outcome.value.kind === "continuous" && outcome.value.actual >= 0.5) {
       actual = 1;
     }
-    
+
     bins[binIndex].count++;
     bins[binIndex].actualRate += actual;
   }
-  
+
   // Calculate actual rates per bin
   let totalSquaredError = 0;
   let totalPredictions = 0;
-  
+
   for (const bin of bins) {
     if (bin.count > 0) {
       bin.actualRate /= bin.count;
-      
+
       // Confidence interval (Wilson score interval approximation)
       const z = 1.96; // 95% confidence
       const p = bin.actualRate;
@@ -298,30 +298,30 @@ export function computeReliabilityDiagram(
       const margin = (z * Math.sqrt((p * (1 - p) + z * z / (4 * n)) / n)) / denominator;
       bin.confidenceInterval.low = Math.max(0, center - margin);
       bin.confidenceInterval.high = Math.min(1, center + margin);
-      
+
       // For ECE calculation
       const predictedProb = bin.predictedProb;
       totalSquaredError += bin.count * Math.pow(bin.actualRate - predictedProb, 2);
       totalPredictions += bin.count;
     }
   }
-  
+
   // Compute calibration line via linear regression
   const regression = linearRegression(
     bins.filter(b => b.count > 0).map(b => [b.predictedProb, b.actualRate])
   );
-  
+
   // Compute reliability score (1 - normalized ECE)
   const ece = totalPredictions > 0 ? totalSquaredError / totalPredictions : 0;
   const reliabilityScore = Math.max(0, 1 - Math.sqrt(ece) * 2); // Scale to 0-1
-  
+
   // Generate calibration curve
   const calibrationCurve = [];
   for (let p = 0.05; p <= 0.95; p += 0.1) {
     const actual = Math.max(0, Math.min(1, regression.slope * p + regression.intercept));
     calibrationCurve.push({ predicted: p, actual });
   }
-  
+
   return {
     type: "reliability",
     points: bins,
@@ -340,22 +340,22 @@ function linearRegression(
   points: Array<[number, number]>
 ): { intercept: number; slope: number } {
   if (points.length === 0) return { intercept: 0.5, slope: 0 };
-  
+
   const n = points.length;
   let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
-  
+
   for (const [x, y] of points) {
     sumX += x;
     sumY += y;
     sumXY += x * y;
     sumX2 += x * x;
   }
-  
+
   const slope = n * sumXY - sumX * sumY > 0
     ? (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)
     : 0;
   const intercept = (sumY - slope * sumX) / n;
-  
+
   return { intercept, slope };
 }
 
@@ -367,7 +367,7 @@ export function computeSharpnessDiagram(
   config: ScorecardConfig["sharpness"]
 ): SharpnessDiagram {
   const widths = predictions.map(p => p.band.high - p.band.low);
-  
+
   // Calculate statistics
   const mean = widths.reduce((a, b) => a + b, 0) / widths.length;
   const sorted = [...widths].sort((a, b) => a - b);
@@ -376,22 +376,22 @@ export function computeSharpnessDiagram(
   const std = Math.sqrt(squaredDiffs.reduce((a, b) => a + b, 0) / widths.length);
   const min = sorted[0] || 0;
   const max = sorted[sorted.length - 1] || 0;
-  
+
   // Distribution of band widths
   const distribution = [];
   for (const threshold of config.widthThresholds) {
     const count = widths.filter(w => w <= threshold).length;
     distribution.push({ width: threshold, count });
   }
-  
+
   // Sharpness score (1 - mean_width, higher is sharper)
   const sharpnessScore = Math.max(0, 1 - mean);
-  
+
   // Ratio of narrow bands
   const narrowThreshold = 0.1;
   const narrowCount = widths.filter(w => w <= narrowThreshold).length;
   const narrowBandRatio = widths.length > 0 ? narrowCount / widths.length : 0;
-  
+
   return {
     type: "sharpness",
     bandWidthStats: {
@@ -423,14 +423,14 @@ export function computePredictionHistogram(
     meanPredicted: 0,
     coverage: 0,
   }));
-  
+
   let totalPredicted = 0;
   let totalActual = 0;
-  
+
   for (const pred of predictions) {
     const outcome = outcomes.get(pred.id);
     if (!outcome) continue;
-    
+
     const predictedProb = (pred.band.low + pred.band.high) / 2;
     let actual = 0;
     if (outcome.value.kind === "binary" && outcome.value.occurred) {
@@ -438,30 +438,30 @@ export function computePredictionHistogram(
     } else if (outcome.value.kind === "continuous" && outcome.value.actual >= 0.5) {
       actual = 1;
     }
-    
+
     const binIndex = Math.min(Math.floor(predictedProb * binCount), binCount - 1);
     const bin = bins[binIndex];
-    
+
     bin.count++;
     bin.meanPredicted = (bin.meanPredicted * (bin.count - 1) + predictedProb) / bin.count;
     bin.meanActual = (bin.meanActual * (bin.count - 1) + actual) / bin.count;
     bin.coverage = outcome.value.kind === "band"
       ? (actual >= pred.band.low && actual <= pred.band.high ? 1 : 0)
       : 0;
-    
+
     totalPredicted += predictedProb;
     totalActual += actual;
   }
-  
+
   const meanPrediction = predictions.length > 0 ? totalPredicted / predictions.length : 0;
   const meanAct = predictions.length > 0 ? totalActual / predictions.length : 0;
-  
+
   // Calculate skewness
   const widths = predictions.map(p => (p.band.low + p.band.high) / 2);
   const skewness = widths.length > 0
     ? computeSkewness(widths)
     : 0;
-  
+
   return {
     type: "prediction_histogram",
     bins,
@@ -476,17 +476,17 @@ export function computePredictionHistogram(
  */
 function computeSkewness(values: number[]): number {
   if (values.length < 3) return 0;
-  
+
   const mean = values.reduce((a, b) => a + b, 0) / values.length;
   const squaredDiffs = values.map(v => Math.pow(v - mean, 2));
   const cubedDiffs = values.map(v => Math.pow(v - mean, 3));
   const variance = squaredDiffs.reduce((a, b) => a + b, 0) / values.length;
-  
+
   if (variance === 0) return 0;
-  
+
   const std = Math.sqrt(variance);
   const cubedSum = cubedDiffs.reduce((a, b) => a + b, 0);
-  
+
   return (cubedSum / values.length) / Math.pow(std, 3);
 }
 
@@ -502,20 +502,20 @@ export function computeConfusionMatrix(
   let trueNegatives = 0;
   let falsePositives = 0;
   let falseNegatives = 0;
-  
+
   for (const pred of predictions) {
     const outcome = outcomes.get(pred.id);
     if (!outcome) continue;
-    
+
     const predictedPositive = pred.band.high >= config.threshold;
     let actualPositive = false;
-    
+
     if (outcome.value.kind === "binary") {
       actualPositive = outcome.value.occurred;
     } else if (outcome.value.kind === "continuous") {
       actualPositive = outcome.value.actual >= config.threshold;
     }
-    
+
     if (predictedPositive && actualPositive) {
       truePositives++;
     } else if (!predictedPositive && !actualPositive) {
@@ -526,7 +526,7 @@ export function computeConfusionMatrix(
       falseNegatives++;
     }
   }
-  
+
   const total = truePositives + trueNegatives + falsePositives + falseNegatives;
   const accuracy = total > 0 ? (truePositives + trueNegatives) / total : 0;
   const precision = truePositives + falsePositives > 0
@@ -547,7 +547,7 @@ export function computeConfusionMatrix(
   const prevalence = total > 0
     ? (truePositives + falseNegatives) / total
     : 0;
-  
+
   return {
     type: "confusion_matrix",
     truePositives,
@@ -574,30 +574,30 @@ export function computeScorecardReport(
 ): ScorecardReport {
   const datasetId = predictions.map(p => p.id).sort().join(":");
   const seed = deriveScorecardSeed(datasetId, "full");
-  
+
   const outcomeCount = Array.from(outcomes.values()).length;
-  
+
   // Compute individual scorecards
   const reliability = config.reliability.enabled
     ? computeReliabilityDiagram(predictions, outcomes, config.reliability)
     : undefined;
-  
+
   const sharpness = config.sharpness.enabled
     ? computeSharpnessDiagram(predictions, config.sharpness)
     : undefined;
-  
+
   const histogram = config.histogram.enabled
     ? computePredictionHistogram(predictions, outcomes, config.histogram)
     : undefined;
-  
+
   const confusion = config.confusion.enabled
     ? computeConfusionMatrix(predictions, outcomes, config.confusion)
     : undefined;
-  
+
   // Overall quality assessment
   const reliabilityScore = reliability?.reliabilityScore ?? 0.5;
   const sharpnessScore = sharpness?.sharpnessScore ?? 0.5;
-  
+
   let calibrationQuality: "excellent" | "good" | "acceptable" | "poor";
   if (reliabilityScore >= 0.8) {
     calibrationQuality = "excellent";
@@ -608,7 +608,7 @@ export function computeScorecardReport(
   } else {
     calibrationQuality = "poor";
   }
-  
+
   let sharpnessQuality: "sharp" | "moderate" | "vague";
   if (sharpnessScore >= 0.7) {
     sharpnessQuality = "sharp";
@@ -617,20 +617,20 @@ export function computeScorecardReport(
   } else {
     sharpnessQuality = "vague";
   }
-  
+
   // Generate recommendations
   const recommendations: string[] = [];
-  
+
   if (calibrationQuality === "poor") {
     recommendations.push("Calibration is poor - predictions are systematically over/under-confident");
     recommendations.push("Consider reviewing probability estimation methods");
   }
-  
+
   if (sharpnessQuality === "vague") {
     recommendations.push("Predictions are too uncertain - bands are very wide");
     recommendations.push("Consider whether enough information is available for tighter predictions");
   }
-  
+
   if (confusion) {
     if (confusion.precision < 0.6) {
       recommendations.push("Low precision - many false positives");
@@ -642,7 +642,7 @@ export function computeScorecardReport(
       recommendations.push("Overall F1 score is low - model needs improvement");
     }
   }
-  
+
   return {
     version: SCORECARDS_VERSION,
     createdAt: new Date().toISOString(),
@@ -680,7 +680,7 @@ export function createScorecardSummary(report: ScorecardReport): {
   keyFindings: string[];
 } {
   const findings: string[] = [];
-  
+
   // Calibration findings
   if (report.reliability) {
     if (report.reliability.reliabilityScore >= 0.8) {
@@ -693,26 +693,26 @@ export function createScorecardSummary(report: ScorecardReport): {
       findings.push("Poor calibration - review needed");
     }
   }
-  
+
   // Sharpness findings
   if (report.sharpness) {
     const narrowPct = report.sharpness.narrowBandRatio * 100;
     findings.push(`${narrowPct.toFixed(1)}% of predictions have narrow bands (<0.1)`);
   }
-  
+
   // Confusion findings
   if (report.confusion) {
     findings.push(`Accuracy: ${(report.confusion.accuracy * 100).toFixed(1)}%`);
     findings.push(`F1 Score: ${(report.confusion.f1Score * 100).toFixed(1)}%`);
   }
-  
+
   // Overall grade
   const avgScore = (
-    (report.overall.reliabilityScore + 
-     report.overall.sharpnessScore + 
+    (report.overall.reliabilityScore +
+     report.overall.sharpnessScore +
      (report.confusion?.accuracy ?? 0.5)) / 3
   );
-  
+
   let overallGrade: string;
   if (avgScore >= 0.8) {
     overallGrade = "A";
@@ -725,7 +725,7 @@ export function createScorecardSummary(report: ScorecardReport): {
   } else {
     overallGrade = "F";
   }
-  
+
   return {
     calibrationStatus: report.overall.calibrationQuality,
     sharpnessStatus: report.overall.sharpnessQuality,

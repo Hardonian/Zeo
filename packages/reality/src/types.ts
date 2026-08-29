@@ -1,6 +1,6 @@
 /**
  * Reality Mode - Secure Sharing Types
- * 
+ *
  * Types for share bundles, redaction policies, and access control.
  * All sharing operations maintain epistemic discipline and security-first principles.
  */
@@ -85,10 +85,10 @@ export interface AccessControlList {
 /**
  * Redaction rule type
  */
-export type RedactionRule = 
-  | "remove_text_keep_hash" 
-  | "remove_evidence" 
-  | "anonymize_agents" 
+export type RedactionRule =
+  | "remove_text_keep_hash"
+  | "remove_evidence"
+  | "anonymize_agents"
   | "remove_provenance_details"
   | "encrypt_blobs"
   | "remove_constraints";

@@ -1,6 +1,6 @@
 /**
  * Policy Inheritance System
- * 
+ *
  * Manages policy inheritance from organization to repository level
  * with override capabilities and conflict resolution
  */
@@ -56,11 +56,11 @@ export class PolicyInheritanceService {
   }
 
   async overrideRule(ruleId: string, level: 'team' | 'repository', enabled: boolean): Promise<void> {}
-  
+
   async validateCompliance(_code: string, policy: InheritedPolicy): Promise<Array<{ ruleId: string; severity: string; message: string }>> {
       return [];
   }
-  
+
   async suggestImprovements(_organizationId: string, _currentPolicy: InheritedPolicy): Promise<Array<{ suggestion: string; impact: string }>> {
       return [];
   }

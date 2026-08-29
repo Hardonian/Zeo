@@ -1,4 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
+import { existsSync } from 'node:fs';
+
+const port = Number(process.env.PLAYWRIGHT_PORT ?? 32105);
+const baseURL = `http://127.0.0.1:${port}`;
+const systemChrome = ['/usr/bin/google-chrome', '/usr/bin/chromium'].find(existsSync);
 
 export default defineConfig({
   testDir: './tests',
@@ -9,20 +14,23 @@ export default defineConfig({
   reporter: process.env.CI ? [['html'], ['github']] : 'html',
 
   webServer: {
-    command: 'pnpm build && PORT=3005 HOSTNAME=127.0.0.1 node .next/standalone/apps/web/server.js',
-    url: 'http://localhost:3005',
-    reuseExistingServer: !process.env.CI,
+    command: `pnpm build && PORT=${port} HOSTNAME=127.0.0.1 node .next/standalone/apps/web/server.js`,
+    url: baseURL,
+    reuseExistingServer: false,
     timeout: 120_000,
   },
   use: {
-    baseURL: 'http://localhost:3005',
+    baseURL,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        launchOptions: systemChrome ? { executablePath: systemChrome } : undefined,
+      },
     },
   ],
 });

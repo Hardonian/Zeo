@@ -34,12 +34,12 @@ Credence reallocation based on performance:
 ### Creating a Market
 
 ```typescript
-import { 
-  createMarket, 
-  registerHypothesis, 
+import {
+  createMarket,
+  registerHypothesis,
   recordOutcome,
   rebalanceCredence,
-  getTopHypotheses 
+  getTopHypotheses
 } from '@zeo/hypothesis-market';
 
 // Create market

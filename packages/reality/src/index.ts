@@ -1,9 +1,9 @@
 /**
  * Reality Mode - Secure Sharing for Zeo
- * 
+ *
  * Secure sharing of packets and datasets with redaction policies and access control.
  * Keeps OSS core usable locally; team mode is optional.
- * 
+ *
  * @module @zeo/reality
  */
 

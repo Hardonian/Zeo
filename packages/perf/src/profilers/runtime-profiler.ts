@@ -1,6 +1,6 @@
 /**
  * Runtime Profiling Utility for Zeo
- * 
+ *
  * Provides lightweight, deterministic performance measurement
  * for critical code paths without heavy instrumentation overhead.
  */
@@ -78,15 +78,15 @@ export interface ProfilerOptions {
  */
 class HighResTimer {
   private start: number;
-  
+
   constructor() {
     this.start = performance.now();
   }
-  
+
   reset(): void {
     this.start = performance.now();
   }
-  
+
   elapsed(): number {
     return performance.now() - this.start;
   }
@@ -97,16 +97,16 @@ class HighResTimer {
  */
 class MemoryTracker {
   private enabled: boolean;
-  
+
   constructor(enabled: boolean = true) {
     this.enabled = enabled;
   }
-  
+
   snapshot(): MemorySnapshot | undefined {
     if (!this.enabled || typeof process === "undefined") {
       return undefined;
     }
-    
+
     const usage = process.memoryUsage();
     return {
       heapUsed: usage.heapUsed,
@@ -116,7 +116,7 @@ class MemoryTracker {
       timestamp: Date.now(),
     };
   }
-  
+
   delta(before: MemorySnapshot, after: MemorySnapshot): number {
     return after.heapUsed - before.heapUsed;
   }
@@ -131,7 +131,7 @@ export class Profiler {
   private options: Required<ProfilerOptions>;
   private memoryTracker: MemoryTracker;
   private timer: HighResTimer;
-  
+
   constructor(options: ProfilerOptions = {}) {
     this.options = {
       trackMemory: true,
@@ -140,11 +140,11 @@ export class Profiler {
       samplingRate: 1.0,
       ...options,
     };
-    
+
     this.memoryTracker = new MemoryTracker(this.options.trackMemory);
     this.timer = new HighResTimer();
   }
-  
+
   /**
    * Start a new profiling session
    */
@@ -161,13 +161,13 @@ export class Profiler {
         arch: typeof process !== "undefined" ? process.arch : "unknown",
       },
     };
-    
+
     this.sessions.set(session.id, session);
     this.timer.reset();
-    
+
     return session;
   }
-  
+
   /**
    * End a profiling session
    */
@@ -176,11 +176,11 @@ export class Profiler {
     if (!session) {
       throw new Error(`Session not found: ${sessionId}`);
     }
-    
+
     session.endTime = Date.now();
     return session;
   }
-  
+
   /**
    * Start timing a measurement
    */
@@ -192,17 +192,17 @@ export class Profiler {
     if (Math.random() > this.options.samplingRate) {
       return ""; // Sampled out
     }
-    
+
     const session = this.sessions.get(sessionId);
     if (!session) {
       throw new Error(`Session not found: ${sessionId}`);
     }
-    
+
     if (session.measurements.length >= this.options.maxMeasurements) {
       console.warn(`Max measurements (${this.options.maxMeasurements}) reached for session ${sessionId}`);
       return "";
     }
-    
+
     const measurement: Measurement = {
       id: `measure-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       name,
@@ -211,32 +211,32 @@ export class Profiler {
       children: [],
       metadata: metadata || {},
     };
-    
+
     session.measurements.push(measurement);
     this.activeMeasurements.set(measurement.id, measurement);
-    
+
     return measurement.id;
   }
-  
+
   /**
    * End timing a measurement
    */
   end(measurementId: string): Measurement | undefined {
     if (!measurementId) return undefined;
-    
+
     const measurement = this.activeMeasurements.get(measurementId);
     if (!measurement) {
       return undefined;
     }
-    
+
     measurement.endTime = this.timer.elapsed();
     measurement.duration = measurement.endTime - measurement.startTime;
     measurement.memoryAfter = this.memoryTracker.snapshot();
-    
+
     this.activeMeasurements.delete(measurementId);
     return measurement;
   }
-  
+
   /**
    * Add a marker to a session
    */
@@ -245,7 +245,7 @@ export class Profiler {
     if (!session) {
       throw new Error(`Session not found: ${sessionId}`);
     }
-    
+
     const marker: ProfileMarker = {
       id: `marker-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       name,
@@ -253,11 +253,11 @@ export class Profiler {
       relativeTime: this.timer.elapsed(),
       data,
     };
-    
+
     session.markers.push(marker);
     return marker;
   }
-  
+
   /**
    * Profile a function execution
    */
@@ -268,7 +268,7 @@ export class Profiler {
     metadata?: Measurement["metadata"]
   ): Promise<T> {
     const measurementId = this.start(name, sessionId, metadata);
-    
+
     try {
       const result = await fn();
       return result;
@@ -276,7 +276,7 @@ export class Profiler {
       this.end(measurementId);
     }
   }
-  
+
   /**
    * Generate a profile report for a session
    */
@@ -285,23 +285,23 @@ export class Profiler {
     if (!session) {
       throw new Error(`Session not found: ${sessionId}`);
     }
-    
+
     const completedMeasurements = session.measurements.filter(m => m.duration !== undefined);
-    const totalDuration = session.endTime 
-      ? session.endTime - session.startTime 
+    const totalDuration = session.endTime
+      ? session.endTime - session.startTime
       : Date.now() - session.startTime;
-    
+
     // Calculate average duration
     const totalMeasuredTime = completedMeasurements.reduce((sum, m) => sum + (m.duration || 0), 0);
-    const averageDuration = completedMeasurements.length > 0 
-      ? totalMeasuredTime / completedMeasurements.length 
+    const averageDuration = completedMeasurements.length > 0
+      ? totalMeasuredTime / completedMeasurements.length
       : 0;
-    
+
     // Find longest operations
     const longestOperations = [...completedMeasurements]
       .sort((a, b) => (b.duration || 0) - (a.duration || 0))
       .slice(0, 10);
-    
+
     // Calculate memory growth
     let memoryGrowth = 0;
     if (completedMeasurements.length >= 2) {
@@ -311,7 +311,7 @@ export class Profiler {
         memoryGrowth = this.memoryTracker.delta(first.memoryBefore, last.memoryAfter);
       }
     }
-    
+
     // Count hot path hits
     const hotPathHits = new Map<string, number>();
     for (const m of session.measurements) {
@@ -320,7 +320,7 @@ export class Profiler {
         hotPathHits.set(m.metadata.hotPathId, count + 1);
       }
     }
-    
+
     // Generate recommendations
     const recommendations = this.generateRecommendations(
       completedMeasurements,
@@ -328,7 +328,7 @@ export class Profiler {
       hotPathHits,
       session.measurements
     );
-    
+
     return {
       session,
       summary: {
@@ -342,7 +342,7 @@ export class Profiler {
       recommendations,
     };
   }
-  
+
   /**
    * Generate performance recommendations
    */
@@ -353,7 +353,7 @@ export class Profiler {
     allMeasurements?: Measurement[]
   ): string[] {
     const recommendations: string[] = [];
-    
+
     // Check for long operations
     const longOps = measurements.filter(m => (m.duration || 0) > 100);
     if (longOps.length > 0) {
@@ -361,14 +361,14 @@ export class Profiler {
         `Found ${longOps.length} operations taking >100ms. Consider optimization or async decomposition.`
       );
     }
-    
+
     // Check for memory growth
     if (memoryGrowth > 50 * 1024 * 1024) { // 50MB
       recommendations.push(
         `Significant memory growth detected (${(memoryGrowth / 1024 / 1024).toFixed(2)}MB). Check for leaks or excessive allocations.`
       );
     }
-    
+
     // Check for frequently hit hot paths
     for (const [pathId, count] of hotPathHits.entries()) {
       if (count > 100) {
@@ -377,7 +377,7 @@ export class Profiler {
         );
       }
     }
-    
+
     // Check for unended measurements
     const measurementsToCheck = allMeasurements || measurements;
     const unended = measurementsToCheck.filter(m => m.duration === undefined);
@@ -386,21 +386,21 @@ export class Profiler {
         `${unended.length} measurements not properly ended. Ensure all start() calls have matching end() calls.`
       );
     }
-    
+
     if (recommendations.length === 0) {
       recommendations.push("No performance issues detected in this session.");
     }
-    
+
     return recommendations;
   }
-  
+
   /**
    * Get all sessions
    */
   getSessions(): ProfileSession[] {
     return Array.from(this.sessions.values());
   }
-  
+
   /**
    * Clear all sessions
    */
@@ -408,7 +408,7 @@ export class Profiler {
     this.sessions.clear();
     this.activeMeasurements.clear();
   }
-  
+
   /**
    * Export session data to JSON
    */
@@ -417,7 +417,7 @@ export class Profiler {
     if (!session) {
       throw new Error(`Session not found: ${sessionId}`);
     }
-    
+
     return JSON.stringify(session, null, 2);
   }
 }
@@ -451,7 +451,7 @@ export function endQuickProfile(sessionId: string): ProfileReport {
 
 /**
  * Decorator for profiling class methods (TypeScript experimental)
- * 
+ *
  * Usage:
  * class MyClass {
  *   @Profiled('expensive-operation')
@@ -468,16 +468,16 @@ export function Profiled(
     descriptor: PropertyDescriptor
   ): PropertyDescriptor {
     const originalMethod = descriptor.value;
-    
+
     descriptor.value = async function(...args: unknown[]) {
       const profiler = getGlobalProfiler();
       const effectiveSessionId = sessionId || `decorator-${target.constructor.name}`;
-      
+
       // Ensure session exists
       if (!profiler["sessions"].has(effectiveSessionId)) {
         profiler.startSession(effectiveSessionId);
       }
-      
+
       return profiler.profile(
         name || propertyKey.toString(),
         effectiveSessionId,
@@ -487,7 +487,7 @@ export function Profiled(
         }
       );
     };
-    
+
     return descriptor;
   };
 }

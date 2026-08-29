@@ -1,12 +1,12 @@
 /**
  * Decision Implication Synthesizer
- * 
+ *
  * AI layer that produces decision implications with explicit non-authoritative status.
  * All outputs are tagged as interpretation, never fact.
  */
 
-import type { 
-  UUID, 
+import type {
+  UUID,
   ProvenancePointer,
   EpistemicStatus
 } from "@zeo/contracts";
@@ -71,22 +71,22 @@ export function synthesizeImplications(
 ): SynthesisResult {
   const resultId = generateUUID();
   const createdAt = new Date().toISOString();
-  
+
   const implications: DecisionImplication[] = [];
-  
+
   // Generate "what this means" implications
   implications.push(...generateWhatThisMeans(context, createdAt));
-  
+
   // Generate "why this might be wrong" implications
   implications.push(...generateWhyMightBeWrong(context, createdAt));
-  
+
   // Generate "what to check next" implications
   implications.push(...generateWhatToCheckNext(context, createdAt));
-  
+
   // Limit implications
   const maxImpl = options.maxImplications ?? 6;
   const limitedImplications = implications.slice(0, maxImpl);
-  
+
   return {
     id: resultId,
     decisionId: context.decisionId,
@@ -104,11 +104,11 @@ function generateWhatThisMeans(
   timestamp: string
 ): DecisionImplication[] {
   const implications: DecisionImplication[] = [];
-  
+
   // Based on analytics results
   if (context.analyticsResults && context.analyticsResults.length > 0) {
     const strongFindings = context.analyticsResults.filter(r => r.confidence === "high");
-    
+
     for (const finding of strongFindings.slice(0, 2)) {
       implications.push({
         id: generateUUID(),
@@ -124,11 +124,11 @@ function generateWhatThisMeans(
       });
     }
   }
-  
+
   // Based on assumptions
   if (context.assumptions.length > 0) {
     const lowConfidenceAssumptions = context.assumptions.filter(a => a.confidence < 0.5);
-    
+
     if (lowConfidenceAssumptions.length > 0) {
       implications.push({
         id: generateUUID(),
@@ -144,7 +144,7 @@ function generateWhatThisMeans(
       });
     }
   }
-  
+
   // Based on regime
   if (context.regimeInfo?.stability === "transitioning") {
     implications.push({
@@ -160,7 +160,7 @@ function generateWhatThisMeans(
       provenance: [createProvenance("synthesizer", timestamp)]
     });
   }
-  
+
   return implications;
 }
 
@@ -169,7 +169,7 @@ function generateWhyMightBeWrong(
   timestamp: string
 ): DecisionImplication[] {
   const implications: DecisionImplication[] = [];
-  
+
   // Data quality concerns
   implications.push({
     id: generateUUID(),
@@ -183,7 +183,7 @@ function generateWhyMightBeWrong(
     createdAt: timestamp,
     provenance: [createProvenance("synthesizer", timestamp)]
   });
-  
+
   // Calibration concerns
   if (context.calibrationData?.historicalAccuracy !== undefined && context.calibrationData.historicalAccuracy < 0.6) {
     implications.push({
@@ -199,7 +199,7 @@ function generateWhyMightBeWrong(
       provenance: [createProvenance("synthesizer", timestamp)]
     });
   }
-  
+
   // Model misspecification
   implications.push({
     id: generateUUID(),
@@ -213,7 +213,7 @@ function generateWhyMightBeWrong(
     createdAt: timestamp,
     provenance: [createProvenance("synthesizer", timestamp)]
   });
-  
+
   return implications;
 }
 
@@ -222,7 +222,7 @@ function generateWhatToCheckNext(
   timestamp: string
 ): DecisionImplication[] {
   const implications: DecisionImplication[] = [];
-  
+
   // Check critical assumptions
   if (context.assumptions.length > 0) {
     const criticalAssumption = context.assumptions[0];
@@ -239,7 +239,7 @@ function generateWhatToCheckNext(
       provenance: [createProvenance("synthesizer", timestamp)]
     });
   }
-  
+
   // Check base rate
   if (context.calibrationData?.baseRate === undefined) {
     implications.push({
@@ -255,7 +255,7 @@ function generateWhatToCheckNext(
       provenance: [createProvenance("synthesizer", timestamp)]
     });
   }
-  
+
   // Monitor regime
   if (context.regimeInfo?.stability !== "stable") {
     implications.push({
@@ -271,7 +271,7 @@ function generateWhatToCheckNext(
       provenance: [createProvenance("synthesizer", timestamp)]
     });
   }
-  
+
   return implications;
 }
 
@@ -282,7 +282,7 @@ function generateSummary(
   const whatMeans = implications.filter(i => i.type === "what_this_means").length;
   const whyWrong = implications.filter(i => i.type === "why_might_be_wrong").length;
   const whatCheck = implications.filter(i => i.type === "what_to_check_next").length;
-  
+
   return `Analysis of "${context.decisionTitle}" generated ${implications.length} implications: ${whatMeans} interpretation(s), ${whyWrong} caution(s), ${whatCheck} recommendation(s). All require validation.`;
 }
 

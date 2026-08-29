@@ -1,6 +1,6 @@
 # Panel Security Documentation
 
-**Version:** v0.6.0  
+**Version:** v0.6.0
 **Status:** REQUIRED READING for all panel developers
 
 ## Overview
@@ -117,7 +117,7 @@ Additional headers:
 Iframe panels run with:
 
 ```html
-<iframe 
+<iframe
   sandbox="allow-scripts allow-forms"
   <!-- NO allow-same-origin -->
   <!-- NO allow-top-navigation -->
@@ -321,7 +321,7 @@ pnpm test -- --coverage src/panels/bridge/
 2. **Investigate:** Check audit logs
    ```typescript
    const events = getAuditLog(context);
-   const suspicious = events.filter(e => 
+   const suspicious = events.filter(e =>
      e.eventType === 'origin_mismatch' ||
      e.eventType === 'signature_failure'
    );

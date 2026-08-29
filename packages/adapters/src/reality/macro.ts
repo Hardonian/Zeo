@@ -51,11 +51,11 @@ function isFredApiResponse(data: unknown): data is FredApiResponse {
 async function fetchFredData(seriesId: string, startDate: string, endDate: string): Promise<FredApiResponse> {
   const apiKey = process.env["FRED_API_KEY"] || "";
   const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${apiKey}&observation_start=${startDate}&observation_end=${endDate}&file_type=json`;
-  
+
   if (!apiKey) {
     return generateMockFredData(seriesId);
   }
-  
+
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -75,13 +75,13 @@ function generateMockFredData(seriesId: string): FredApiResponse {
   const endDate = new Date();
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - 30);
-  
+
   const observations: FredApiResponse["observations"] = [];
   const current = new Date(startDate);
-  
+
   while (current <= endDate) {
     let value: number;
-    
+
     switch (seriesId) {
       case "FEDFUNDS":
         value = 4.25 + Math.random() * 0.5;
@@ -107,7 +107,7 @@ function generateMockFredData(seriesId: string): FredApiResponse {
       default:
         value = 100 + Math.random() * 10;
     }
-    
+
     const dateStr = current.toISOString().split("T")[0];
     if (dateStr) {
       observations.push({
@@ -115,35 +115,35 @@ function generateMockFredData(seriesId: string): FredApiResponse {
         value: value.toFixed(2),
       });
     }
-    
+
     current.setDate(current.getDate() + 1);
   }
-  
+
   return { observations: observations as FredApiResponse["observations"] };
 }
 
 export function createMacroAdapter(): Adapter {
   return {
     info: { ...MACRO_ADAPTER_INFO },
-    
+
     async fetch(params: Record<string, unknown>): Promise<RawAdapterOutput> {
       const indicators = (params["indicators"] as string[]) || Object.keys(MACRO_SIGNAL_MAP);
       const startDateParam = params["startDate"] as string | undefined;
       const endDateParam = params["endDate"] as string | undefined;
       const startDate = startDateParam || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0] || "2000-01-01";
       const endDate = endDateParam || new Date().toISOString().split("T")[0] || "2099-12-31";
-      
+
       const allItems: MacroPrintItem[] = [];
-      
+
       for (const indicator of indicators) {
         if (!MACRO_SIGNAL_MAP[indicator]) continue;
-        
+
         const response = await fetchFredData(indicator, startDate, endDate);
-        
+
         for (const obs of response.observations) {
           const value = parseFloat(obs.value);
           if (isNaN(value)) continue;
-          
+
         const releasedAtDate = new Date(obs.date);
         allItems.push({
           kind: "macro",
@@ -156,7 +156,7 @@ export function createMacroAdapter(): Adapter {
         });
         }
       }
-      
+
       const rawOutput: RawAdapterOutput = {
         items: allItems,
         fetchedAt: new Date().toISOString(),
@@ -167,15 +167,15 @@ export function createMacroAdapter(): Adapter {
           fetchParams: { indicators, startDate, endDate },
         },
       };
-      
+
       return rawOutput;
     },
-    
+
     normalize(rawItems: MacroPrintItem[]) {
       return rawItems.map(item => {
         const signalInfo = MACRO_SIGNAL_MAP[item.indicator];
         if (!signalInfo) return null;
-        
+
         const provenance = createProvenancePointer(
           item.sourceId,
           "text",
@@ -183,13 +183,13 @@ export function createMacroAdapter(): Adapter {
           checksum(item),
           { selector: `observation:${item.period}` }
         );
-        
+
         const qualityScore = computeQualityScore(
           this.info.metadata.reliabilityBand,
           true,
           "fresh"
         );
-        
+
         return {
           observationId: generateObservationId(signalInfo.signalId, item.releasedAt, item.sourceId),
           signalId: signalInfo.signalId,
@@ -204,7 +204,7 @@ export function createMacroAdapter(): Adapter {
         };
       }).filter((o): o is NonNullable<typeof o> => o !== null);
     },
-    
+
     getProvenance(rawItem: MacroPrintItem) {
       return [createProvenancePointer(
         rawItem.sourceId,
@@ -214,7 +214,7 @@ export function createMacroAdapter(): Adapter {
         { selector: rawItem.period }
       )];
     },
-    
+
     computeChecksum(data: unknown) {
       return checksum(data);
     },

@@ -1,6 +1,6 @@
 /**
  * Trust framework types for Zeo
- * 
+ *
  * These types define the trust contract between Zeo and its users,
  * including privacy commitments, consent scopes, and audit capabilities.
  */
@@ -12,7 +12,7 @@
 export interface TrustContract {
   /** Semantic version of the trust contract */
   version: string;
-  
+
   /** Binding commitments organized by certainty level */
   commitments: {
     /** What Zeo will NEVER do - absolute prohibitions */
@@ -22,7 +22,7 @@ export interface TrustContract {
     /** What Zeo REQUIRES to function - non-negotiable minimum */
     requires: string[];
   };
-  
+
   /** Last update timestamp */
   updatedAt: Date;
 }
@@ -34,16 +34,16 @@ export interface TrustContract {
 export interface ConsentScope {
   /** Level of analytics data collection */
   analyticsDepth: "none" | "basic" | "full";
-  
+
   /** Level of AI assistance autonomy */
   aiAssistanceLevel: "none" | "suggest" | "autocomplete" | "autonomous";
-  
+
   /** Whether biometric data (voice, face) can be used */
   biometricUsage: boolean;
-  
+
   /** Whether usage metadata can be collected */
   metadataUsage: boolean;
-  
+
   /** Whether data can be used for strategic modeling */
   strategicModeling: boolean;
 }
@@ -54,16 +54,16 @@ export interface ConsentScope {
 export interface ConsentChange {
   /** When the change occurred */
   timestamp: Date;
-  
+
   /** Previous consent settings */
   previousScope: ConsentScope;
-  
+
   /** New consent settings */
   newScope: ConsentScope;
-  
+
   /** Human-readable reason for change */
   reason: string;
-  
+
   /** Who initiated the change */
   actor: "user" | "system";
 }
@@ -75,22 +75,22 @@ export interface ConsentChange {
 export interface TrustAuditEntry {
   /** Unique identifier for this audit entry */
   id: string;
-  
+
   /** When the action occurred */
   timestamp: Date;
-  
+
   /** What action was performed */
   action: string;
-  
+
   /** Which consent scope category was affected */
   scopeCategory: keyof ConsentScope;
-  
+
   /** Previous value (if any) */
   previousValue: unknown;
-  
+
   /** New value (if any) */
   newValue: unknown;
-  
+
   /** Whether the action was authorized under current consent */
   authorized: boolean;
 }
@@ -101,10 +101,10 @@ export interface TrustAuditEntry {
 export interface ConsentValidationResult {
   /** Whether the scope is valid and authorized */
   valid: boolean;
-  
+
   /** List of violations if not valid */
   violations: string[];
-  
+
   /** Required actions to resolve violations */
   requiredActions: string[];
 }

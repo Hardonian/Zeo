@@ -35,7 +35,7 @@
 // Contract functions
 export { createDefaultTrustContract, validateTrustContract, getTrustCommitments, isActivityProhibited, mergeTrustContract, } from "./contract.js";
 // Consent functions
-export { createDefaultConsentScope, updateConsentScope, validateConsentScope, enforceConsentAtEntry, getConsentAuditLog, getConsentHistory, isOperationPermitted, getConsentSummary, 
+export { createDefaultConsentScope, updateConsentScope, validateConsentScope, enforceConsentAtEntry, getConsentAuditLog, getConsentHistory, isOperationPermitted, getConsentSummary,
 // Internal utilities for testing
 clearAuditLog, clearConsentHistory, } from "./consent.js";
 // Integration module

@@ -1,6 +1,6 @@
 /**
  * @zeo/quant-timeseries Types
- * 
+ *
  * Type definitions for time-series analysis toolkit.
  */
 

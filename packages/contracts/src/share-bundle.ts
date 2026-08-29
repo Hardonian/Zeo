@@ -1,6 +1,6 @@
 /**
  * Share Bundle Format - v0.7.0
- * 
+ *
  * Secure sharing of packets and datasets with:
  * - Optional encryption for sensitive blobs
  * - Redaction policies (remove text, keep hashes)
@@ -17,7 +17,7 @@ import type { UUID } from "./types.js";
 /**
  * Redaction mode for share bundles
  */
-export type RedactionMode = 
+export type RedactionMode =
   | "none"           // No redaction
   | "sensitive"      // Redact marked sensitive content
   | "full"           // Redact all text, keep only hashes
@@ -76,15 +76,15 @@ export interface ShareBundleHeader {
   version: string;           // Share bundle format version
   createdAt: string;
   createdBy: UUID;           // User who created the bundle
-  
+
   // Content summary (unencrypted)
   contentType: "packet" | "dataset" | "mixed";
   contentHashes: Record<string, string>;  // contentId -> hash
-  
+
   // Size info
   encryptedSize?: number;    // Size after encryption (if encrypted)
   plaintextSize?: number;     // Original size
-  
+
   // Redaction info
   redactionApplied: RedactionPolicy;
   redactionSummary: {
@@ -92,18 +92,18 @@ export interface ShareBundleHeader {
     redactedItems: number;
     itemsWithSensitiveData: number;
   };
-  
+
   // Encryption info (if encrypted)
   encryption?: EncryptionSettings;
-  
+
   // Access control
   isPublic: boolean;         // No ACL required
   ownerId: UUID;
   acl?: AccessControlEntry[];
-  
+
   // Tenancy (for tenant isolation)
   tenantId?: string;
-  
+
   // Signature (covers header + encrypted payload)
   signature: {
     algorithm: "hmac-sha256" | "ed25519";
@@ -119,7 +119,7 @@ export interface ShareBundleHeader {
 export interface ShareBundlePayload {
   // Items included in the bundle
   items: ShareBundleItem[];
-  
+
   // References to external blobs (not included, just referenced)
   externalBlobs?: Array<{
     blobId: string;
@@ -134,24 +134,24 @@ export interface ShareBundlePayload {
 export interface ShareBundleItem {
   itemId: UUID;
   itemType: "packet" | "evidence" | "signal" | "decision" | "dataset";
-  
+
   // Original data (may be redacted)
   data: unknown;
-  
+
   // Redaction metadata
   redactions?: Array<{
     field: string;
     originalHash: string;     // Hash of original content
     reason: string;
   }>;
-  
+
   // Provenance (preserved if policy allows)
   provenance?: Array<{
     sourceId: string;
     checksum: string;
     capturedAt: string;
   }>;
-  
+
   // Content hash (of the actual included data)
   contentHash: string;
 }
@@ -180,18 +180,18 @@ export interface CreateShareBundleOptions {
     data: unknown;
     provenance?: ShareBundleItem["provenance"];
   }>;
-  
+
   // Optional encryption
   encrypt?: boolean;
   encryptionKeyId?: string;
-  
+
   // Redaction
   redactionPolicy: RedactionPolicy;
-  
+
   // Access control
   isPublic?: boolean;
   initialAccess?: AccessControlEntry[];
-  
+
   // Metadata
   createdBy: UUID;
   tenantId?: string;

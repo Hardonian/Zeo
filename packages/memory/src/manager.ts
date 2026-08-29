@@ -1,8 +1,8 @@
 import type { UUID, DecisionSpec, BranchGraph, Claim } from "@zeo/contracts";
-import type { 
-  DecisionRecord, 
-  BranchRecord, 
-  OutcomeRecord, 
+import type {
+  DecisionRecord,
+  BranchRecord,
+  OutcomeRecord,
   DecisionQuery,
   ResolutionStatus,
   OutcomeConfidence,
@@ -36,7 +36,7 @@ export type RecordOutcomeOptions = {
 
 /**
  * DecisionMemoryManager - Central coordinator for decision persistence.
- * 
+ *
  * Epistemic discipline enforced:
  * - Records are immutable once created
  * - Outcomes may be partial/ambiguous
@@ -45,7 +45,7 @@ export type RecordOutcomeOptions = {
  */
 export class DecisionMemoryManager {
   constructor(private storage: DecisionStorageAdapter) {}
-  
+
   /**
    * Record a new decision with its branch graph.
    * Creates immutable record with full context snapshot.
@@ -58,7 +58,7 @@ export class DecisionMemoryManager {
     options: CreateDecisionOptions
   ): Promise<DecisionRecord> {
     const now = new Date().toISOString();
-    
+
     const branchRecord: BranchRecord = {
       id: generateId(),
       decisionId: spec.id,
@@ -74,7 +74,7 @@ export class DecisionMemoryManager {
         urgency: options.urgency || "medium",
       },
     };
-    
+
     const record: DecisionRecord = {
       id: spec.id,
       spec,
@@ -92,11 +92,11 @@ export class DecisionMemoryManager {
       },
       immutable: true,
     };
-    
+
     await this.storage.saveDecision(record);
     return record;
   }
-  
+
   /**
    * Record an outcome for a decision.
    * Preserves ambiguity - outcomes can be partial or uncertain.
@@ -107,7 +107,7 @@ export class DecisionMemoryManager {
     options: RecordOutcomeOptions
   ): Promise<OutcomeRecord> {
     const now = new Date().toISOString();
-    
+
     const outcome: OutcomeRecord = {
       id: generateId(),
       decisionId,
@@ -132,25 +132,25 @@ export class DecisionMemoryManager {
       knownUnknowns: options.knownUnknowns || [],
       assumptionsUsed: [],
     };
-    
+
     await this.storage.addOutcome(decisionId, outcome);
     return outcome;
   }
-  
+
   /**
    * Retrieve a decision for replay or analysis.
    * Supports temporal context switching.
    */
   async getDecision(
-    id: UUID, 
+    id: UUID,
     temporalContext?: TemporalContext
   ): Promise<DecisionRecord | null> {
     const record = await this.storage.getDecision(id);
-    
+
     if (!record || !temporalContext) {
       return record;
     }
-    
+
     // Apply temporal context - show decision as it was at the time
     if (temporalContext.mode === "at_time") {
       return {
@@ -161,18 +161,18 @@ export class DecisionMemoryManager {
         },
       };
     }
-    
+
     // "today" mode returns record as-is with current knowledge
     return record;
   }
-  
+
   /**
    * Query decisions with filters.
    */
   async queryDecisions(query: DecisionQuery): Promise<DecisionRecord[]> {
     return this.storage.queryDecisions(query);
   }
-  
+
   /**
    * Get decisions with resolved outcomes for calibration analysis.
    */
@@ -190,7 +190,7 @@ export class DecisionMemoryManager {
       temporalContext: undefined,
     });
   }
-  
+
   /**
    * Check storage health.
    */

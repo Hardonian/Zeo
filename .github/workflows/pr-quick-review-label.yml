@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Label tiny PRs for 2-minute review
-        uses: actions/github-script@v9
+        uses: actions/github-script@v7
         with:
           script: |
             const pr = context.payload.pull_request;

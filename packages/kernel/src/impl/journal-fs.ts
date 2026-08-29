@@ -134,7 +134,7 @@ export function readJournalEntries(options?: {
       }
     }
   }
-  return entries.sort((a, b) => 
+  return entries.sort((a, b) =>
     new Date(a.envelope.timestamp).getTime() - new Date(b.envelope.timestamp).getTime()
   );
 }

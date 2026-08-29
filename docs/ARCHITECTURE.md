@@ -50,7 +50,7 @@ The Quant Engine provides analytical rigor through dedicated packages:
   - Ranks candidate evidence by expected reduction in decision uncertainty
   - Cost-adjusted scoring accounts for time, money, and cognitive load
   - Flip relevance estimate: how likely evidence changes action dominance
-- **Epistemic Discipline**: 
+- **Epistemic Discipline**:
   - Never promotes observations to facts
   - Explicit uncertainty quantification
   - Sensitivity analysis on all inputs
@@ -94,7 +94,7 @@ The Quant Engine provides analytical rigor through dedicated packages:
 - **Purpose**: Persist decisions, assumptions, branches, and outcomes for learning
 - **Key Types**: `DecisionRecord`, `BranchRecord`, `OutcomeRecord`, `ResolutionStatus`
 - **Storage**: Immutable records, temporal context switching ("at time" vs "today")
-- **Features**: 
+- **Features**:
   - Post-hoc outcome mapping with confidence scores
   - Handles partial/ambiguous resolutions
   - Explicit "could not be resolved" state

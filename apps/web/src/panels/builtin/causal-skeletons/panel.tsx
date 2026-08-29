@@ -18,7 +18,7 @@ export default function CausalSkeletonsPanel({ manifest }: CausalSkeletonsPanelP
       <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
         <h3 className="font-medium text-orange-900 mb-2">Proposals Only</h3>
         <p className="text-sm text-orange-800">
-          These are proposed causal structures, not established causation. 
+          These are proposed causal structures, not established causation.
           All claims require identification strategy verification.
         </p>
       </div>
@@ -26,7 +26,7 @@ export default function CausalSkeletonsPanel({ manifest }: CausalSkeletonsPanelP
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
         <h3 className="font-medium text-gray-900 mb-2">Active Skeletons</h3>
         <p className="text-sm text-gray-600">
-          No causal skeletons active. Create skeletons to explore causal 
+          No causal skeletons active. Create skeletons to explore causal
           relationships between variables.
         </p>
       </div>
@@ -45,7 +45,7 @@ export default function CausalSkeletonsPanel({ manifest }: CausalSkeletonsPanelP
 
       <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3">
         <p className="text-sm text-yellow-800">
-          <strong>Warning:</strong> Correlation does not imply causation. 
+          <strong>Warning:</strong> Correlation does not imply causation.
           Unobserved confounders may invalidate causal claims.
         </p>
       </div>

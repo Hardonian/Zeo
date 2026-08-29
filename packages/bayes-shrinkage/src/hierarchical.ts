@@ -1,14 +1,14 @@
 /**
  * @zeo/bayes-shrinkage - Hierarchical Bayes Shrinkage
- * 
+ *
  * Implements empirical Bayes hierarchical shrinkage for grouped estimates.
  * Uses EM algorithm to estimate hyperparameters and computes posterior means.
- * 
+ *
  * Model:
  * - y_i | theta_i ~ N(theta_i, sigma_i^2)     [observed]
  * - theta_i | mu_g ~ N(mu_g, tau^2)            [group level]
  * - mu_g ~ N(mu_0, gamma^2)                    [population level]
- * 
+ *
  * Reference:
  * - Efron & Morris (1975): "Data Analysis Using Stein's Estimator and its Generalizations"
  * - Gelman et al. (2013): "Bayesian Data Analysis, 3rd ed."
@@ -25,7 +25,7 @@ import { computeHash, normalQuantile } from "./utils.js";
 
 /**
  * Compute hierarchical Bayes shrinkage with grouped structure
- * 
+ *
  * @param estimates - Array of observed estimates (optionally grouped)
  * @param config - Configuration options
  * @returns Shrinkage result with shrunk estimates

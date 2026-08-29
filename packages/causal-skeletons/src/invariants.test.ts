@@ -25,7 +25,7 @@ describe('causal-skeletons invariant tests', () => {
 
       // Skeleton should have neverBecomesFact: true
       expect(skeleton.proposalMetadata.neverBecomesFact).toBe(true);
-      
+
       // Should include Invariant 4 warning
       expect(skeleton.epistemicWarnings.some(w => w.includes('Invariant 4'))).toBe(true);
       expect(skeleton.epistemicWarnings.some(w => w.includes('never become facts'))).toBe(true);

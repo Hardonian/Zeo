@@ -155,7 +155,7 @@ function estimateFlipDelta(
     const maxPossibleDelta = direction > 0
       ? variableRange.max - topContribution
       : topContribution - variableRange.min;
-    
+
     if (rawDelta > maxPossibleDelta) {
       // Cannot flip by changing this variable within its range
       return null;

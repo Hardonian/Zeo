@@ -9,19 +9,19 @@ import type { ScenarioDraft, QualObservation, EvidenceCandidate } from '@zeo/con
 export default function IntakePage() {
   const router = useRouter();
   const { createDraft, loading, error, initialize } = useInboxStore();
-  
+
   const [inputText, setInputText] = useState('');
   const [draft, setDraft] = useState<ScenarioDraft | null>(null);
   const [parseError, setParseError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-  
+
   useEffect(() => {
     initialize();
   }, [initialize]);
 
   const handleParse = useCallback(async () => {
     if (!inputText.trim()) return;
-    
+
     setParseError(null);
     try {
       const parsed = parseScenario(inputText, {
@@ -35,7 +35,7 @@ export default function IntakePage() {
 
   const handleSaveToInbox = async () => {
     if (!draft) return;
-    
+
     setSaving(true);
     try {
       await createDraft(draft);
@@ -49,7 +49,7 @@ export default function IntakePage() {
 
   const handlePromoteToDecision = async () => {
     if (!draft) return;
-    
+
     setSaving(true);
     try {
       const draftId = await createDraft(draft);

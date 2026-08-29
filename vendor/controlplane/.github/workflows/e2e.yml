@@ -20,7 +20,7 @@ jobs:
     name: End-to-End Tests
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -52,7 +52,7 @@ jobs:
         run: |
           # Create mock service placeholders for E2E testing
           mkdir -p services/truthcore services/jobforge services/runner-example
-          
+
           # Create minimal mock Dockerfiles for CI
           cat > services/truthcore/Dockerfile << 'EOF'
           FROM node:20-alpine
@@ -62,7 +62,7 @@ jobs:
           CMD ["node", "server.js"]
           EXPOSE 3000
           EOF
-          
+
           cat > services/jobforge/Dockerfile << 'EOF'
           FROM node:20-alpine
           WORKDIR /app
@@ -71,7 +71,7 @@ jobs:
           CMD ["node", "server.js"]
           EXPOSE 3000
           EOF
-          
+
           cat > services/runner-example/Dockerfile << 'EOF'
           FROM node:20-alpine
           WORKDIR /app
@@ -80,10 +80,10 @@ jobs:
           CMD ["node", "server.js"]
           EXPOSE 3000
           EOF
-          
+
           # Add curl to images for health checks
           sed -i 's/FROM node:20-alpine/FROM node:20-alpine\nRUN apk add --no-cache curl/' services/*/Dockerfile
-          
+
           docker-compose up -d --build
           sleep 15
 

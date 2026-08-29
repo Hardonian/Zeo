@@ -76,8 +76,8 @@ export async function buildDataset(
         action_chosen: decision.branchRecord?.selectedActionId ?? 'unknown',
         predicted_low: decision.branchRecord?.predictedInterval?.low ?? null,
         predicted_high: decision.branchRecord?.predictedInterval?.high ?? null,
-        predicted_width: decision.branchRecord?.predictedInterval 
-          ? decision.branchRecord.predictedInterval.high - decision.branchRecord.predictedInterval.low 
+        predicted_width: decision.branchRecord?.predictedInterval
+          ? decision.branchRecord.predictedInterval.high - decision.branchRecord.predictedInterval.low
           : null,
       });
     }
@@ -124,7 +124,7 @@ export async function buildDataset(
   for (const key of allKeys) {
     const sampleValue = rows.find(r => r[key] !== null && r[key] !== undefined)?.[key];
     let type: DatasetSchema['columns'][0]['type'] = 'categorical';
-    
+
     if (typeof sampleValue === 'number') {
       type = 'numeric';
     } else if (key === 'timestamp' || key.endsWith('_at')) {

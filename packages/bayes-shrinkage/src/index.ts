@@ -1,13 +1,13 @@
 /**
  * @zeo/bayes-shrinkage
- * 
+ *
  * Bayesian shrinkage estimators for signal/KPI stabilization:
  * - James-Stein shrinkage (for multiple simultaneous estimates)
  * - Hierarchical Bayes (for grouped estimates with shared structure)
- * 
+ *
  * These methods reduce estimation error by borrowing strength across
  * related estimates, shrinking extreme values toward the group mean.
- * 
+ *
  * Key benefits:
  * - Reduces total MSE compared to raw estimates (for 3+ items)
  * - Handles small sample sizes gracefully by leveraging group information
@@ -50,7 +50,7 @@ import { hierarchicalShrinkage } from "./hierarchical.js";
 
 /**
  * Automatically select and apply the appropriate shrinkage method
- * 
+ *
  * - Uses hierarchical if estimates have groups
  * - Uses James-Stein otherwise
  */
@@ -101,7 +101,7 @@ export function shrinkValues(
 
 /**
  * Compute the "shrinkability" of a set of estimates
- * 
+ *
  * Returns a score (0-1) indicating how much shrinkage would help:
  * - High score: estimates are noisy and diverse, shrinkage will help
  * - Low score: estimates are precise or already similar, shrinkage unnecessary

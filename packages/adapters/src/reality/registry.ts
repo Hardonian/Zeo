@@ -9,15 +9,15 @@ import { createNewsAdapter, TOPIC_TAGS } from "./news";
 
 export function createRealityAdapterRegistry() {
   const registry = createAdapterRegistry();
-  
+
   const macroAdapter = createMacroAdapter();
   const marketAdapter = createMarketAdapter();
   const newsAdapter = createNewsAdapter();
-  
+
   registry.register(macroAdapter);
   registry.register(marketAdapter);
   registry.register(newsAdapter);
-  
+
   return registry;
 }
 
@@ -37,7 +37,7 @@ export function getDefaultCatalogEntries(): Array<{
     directionality: string;
     sourceIds: string[];
   }> = [];
-  
+
   for (const [indicator, info] of Object.entries(MACRO_SIGNAL_MAP)) {
     entries.push({
       signalId: info.signalId,
@@ -48,7 +48,7 @@ export function getDefaultCatalogEntries(): Array<{
       sourceIds: [`fred:${indicator}`],
     });
   }
-  
+
   for (const symbol of DEFAULT_MARKET_PAIRS) {
     entries.push({
       signalId: `price:${symbol}`,
@@ -59,7 +59,7 @@ export function getDefaultCatalogEntries(): Array<{
       sourceIds: [`yahoo:${symbol}`],
     });
   }
-  
+
   for (const topic of Object.keys(TOPIC_TAGS)) {
     entries.push({
       signalId: `news:${topic}`,
@@ -70,7 +70,7 @@ export function getDefaultCatalogEntries(): Array<{
       sourceIds: ["news-gnews"],
     });
   }
-  
+
   return entries;
 }
 

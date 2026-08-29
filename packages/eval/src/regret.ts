@@ -1,13 +1,13 @@
 /**
  * Regret Metrics Module
- * 
+ *
  * Phase 4: Implements regret-based evaluation metrics for decision quality assessment.
- * 
+ *
  * Regret types:
  * - Realized regret: What actually happened vs what could have happened
  * - Expected regret: Probability-weighted regret before decision
  * - Worst-case regret: Maximum possible regret across scenarios
- * 
+ *
  * All operations are deterministic with seeded randomization.
  */
 
@@ -80,14 +80,14 @@ export interface RegretMetrics {
   version: string;
   createdAt: string;
   predictionCount: number;
-  
+
   // Coverage metrics
   coverage: {
     actual: number; // Proportion of outcomes within bands
     expected: number; // Expected coverage based on band widths
     calibrationGap: number; // actual - expected
   };
-  
+
   // Realized regret
   realizedRegret: {
     mean: number;
@@ -100,7 +100,7 @@ export interface RegretMetrics {
       missOverRate: number;
     };
   };
-  
+
   // Expected regret (proper scoring)
   expectedRegret: {
     mean: number;
@@ -108,14 +108,14 @@ export interface RegretMetrics {
     sharpness: number; // Average band width
     calibration: number; // Brier-style calibration
   };
-  
+
   // Worst-case regret
   worstCaseRegret: {
     value: number;
     scenarioCount: number;
     dominantScenario: string | null;
   };
-  
+
   // Policy comparison
   policyComparison?: {
     baselineRegret: number;
@@ -172,7 +172,7 @@ function seededRng(seed: string): () => number {
   for (let i = 0; i < seed.length; i++) {
     state = (state * 31 + seed.charCodeAt(i)) >>> 0;
   }
-  
+
   return () => {
     state = (state * 1664525 + 1013904223) >>> 0;
     return state / 4294967296;
@@ -189,13 +189,13 @@ export function computeRealizedRegret(
 ): RealizedRegretResult {
   // Extract actual value from outcome
   const actual = extractActualValue(outcome);
-  
+
   const isCovered = actual >= prediction.band.low && actual <= prediction.band.high;
-  
+
   // Calculate distance from band if missed
   let distanceFromBand = 0;
   let regretType: "hit" | "miss_under" | "miss_over" = "hit";
-  
+
   if (actual < prediction.band.low) {
     distanceFromBand = prediction.band.low - actual;
     regretType = "miss_under";
@@ -203,11 +203,11 @@ export function computeRealizedRegret(
     distanceFromBand = actual - prediction.band.high;
     regretType = "miss_over";
   }
-  
+
   // Compute regret value based on function type
   let regretValue: number;
   const bandWidth = prediction.band.high - prediction.band.low;
-  
+
   switch (config.regretFunction) {
     case "linear":
       regretValue = isCovered ? 0 : distanceFromBand;
@@ -221,7 +221,7 @@ export function computeRealizedRegret(
     default:
       regretValue = isCovered ? 0 : distanceFromBand;
   }
-  
+
   return {
     predictionId: prediction.id,
     predicted: prediction.band,
@@ -267,7 +267,7 @@ export function computeIntervalScore(
 ): number {
   const width = prediction.high - prediction.low;
   const alpha2 = alpha / 2;
-  
+
   // Penalty for missing the interval
   let penalty = 0;
   if (actual < prediction.low) {
@@ -275,7 +275,7 @@ export function computeIntervalScore(
   } else if (actual > prediction.high) {
     penalty = (actual - prediction.high) / alpha2;
   }
-  
+
   return width + penalty;
 }
 
@@ -315,20 +315,20 @@ export function computeExpectedRegret(
 ): number {
   let totalRegret = 0;
   let totalWeight = 0;
-  
+
   for (const pred of predictions) {
     const outcome = outcomes.get(pred.id);
     if (!outcome) continue;
-    
+
     const actual = extractActualValue(outcome);
     const regret = computeProperScore(pred.band, actual, outcome.value.kind);
-    
+
     // Weight by probability and discount factor
     const weight = pred.probability * Math.pow(config.discountFactor, pred.probability);
     totalRegret += regret * weight;
     totalWeight += weight;
   }
-  
+
   return totalWeight > 0 ? totalRegret / totalWeight : 0;
 }
 
@@ -342,13 +342,13 @@ function generateCounterfactualScenarios(
 ): Array<{ band: { low: number; high: number }; probability: number }> {
   const rng = seededRng(seed);
   const scenarios: Array<{ band: { low: number; high: number }; probability: number }> = [];
-  
+
   for (let i = 0; i < count; i++) {
     // Generate perturbed prediction bands
     const perturbation = (rng() - 0.5) * 0.2; // ±10% perturbation
     const baseCenter = (basePrediction.low + basePrediction.high) / 2;
     const newWidth = Math.max(0.05, (basePrediction.high - basePrediction.low) * (1 + perturbation));
-    
+
     scenarios.push({
       band: {
         low: Math.max(0, baseCenter - newWidth / 2),
@@ -357,7 +357,7 @@ function generateCounterfactualScenarios(
       probability: 1 / count,
     });
   }
-  
+
   return scenarios;
 }
 
@@ -374,15 +374,15 @@ export function computeWorstCaseRegret(
 ): { value: number; scenarioCount: number; dominantScenario: string | null } {
   let maxRegret = 0;
   let dominantId: string | null = null;
-  
+
   for (const pred of predictions) {
     const outcome = outcomes.get(pred.id);
     if (!outcome) continue;
-    
+
     const actual = extractActualValue(outcome);
     const seed = deriveRegretSeed(pred.id, "worst_case");
     const scenarios = generateCounterfactualScenarios(pred.band, config.scenarioCount, seed);
-    
+
     // Find worst regret across scenarios for this prediction
     let predictionMaxRegret = 0;
     for (const scenario of scenarios) {
@@ -391,13 +391,13 @@ export function computeWorstCaseRegret(
         predictionMaxRegret = regret;
       }
     }
-    
+
     if (predictionMaxRegret > maxRegret) {
       maxRegret = predictionMaxRegret;
       dominantId = pred.id;
     }
   }
-  
+
   return {
     value: maxRegret,
     scenarioCount: config.scenarioCount,
@@ -420,17 +420,17 @@ export function comparePolicies(
 } {
   const baselineRegret = computeMeanRegret(policyAResults);
   const comparisonRegret = computeMeanRegret(policyBResults);
-  
-  const improvement = baselineRegret > 0 
-    ? (baselineRegret - comparisonRegret) / baselineRegret 
+
+  const improvement = baselineRegret > 0
+    ? (baselineRegret - comparisonRegret) / baselineRegret
     : 0;
-  
+
   return {
     baselineRegret,
     comparisonRegret,
     improvement,
-    winner: comparisonRegret < baselineRegret 
-      ? config.comparisonPolicy 
+    winner: comparisonRegret < baselineRegret
+      ? config.comparisonPolicy
       : config.baselinePolicy,
   };
 }
@@ -458,14 +458,14 @@ export function computeRegretMetrics(
 ): RegretMetrics {
   const datasetId = predictions.map(p => p.id).sort().join(":");
   const seed = deriveRegretSeed(datasetId, "full");
-  
+
   // Compute realized regret for all pairs
   const regretResults: RealizedRegretResult[] = [];
-  
+
   for (const pred of predictions) {
     const outcome = outcomes.get(pred.id);
     if (!outcome) continue;
-    
+
     const result = computeRealizedRegret(
       { id: pred.id, band: pred.band },
       outcome,
@@ -473,41 +473,41 @@ export function computeRegretMetrics(
     );
     regretResults.push(result);
   }
-  
+
   // Calculate coverage
   const covered = regretResults.filter(r => r.isCovered).length;
   const total = regretResults.length;
   const coverageRate = total > 0 ? covered / total : 0;
-  
+
   // Expected coverage based on band widths
-  const expectedCoverage = total > 0 
-    ? regretResults.reduce((sum, r) => sum + (1 - r.details.bandWidth), 0) / total 
+  const expectedCoverage = total > 0
+    ? regretResults.reduce((sum, r) => sum + (1 - r.details.bandWidth), 0) / total
     : 0;
-  
+
   // Compute realized regret statistics
   const regretValues = regretResults.map(r => r.regretValue);
   const meanRegret = computeMeanRegret(regretResults);
   const medianRegret = computeMedian(regretValues);
   const stdRegret = computeStd(regretValues);
   const maxRegret = regretValues.length > 0 ? Math.max(...regretValues) : 0;
-  
+
   // Distribution of outcomes
   const hits = regretResults.filter(r => r.regretType === "hit").length;
   const missUnder = regretResults.filter(r => r.regretType === "miss_under").length;
   const missOver = regretResults.filter(r => r.regretType === "miss_over").length;
-  
+
   // Expected regret
   let expectedRegretMean = 0;
   let intervalScore = 0;
   let sharpness = 0;
-  
+
   if (config.expected.enabled) {
     const predWithProb = predictions.map(p => ({
       ...p,
       probability: p.probability ?? 1 / predictions.length,
     }));
     expectedRegretMean = computeExpectedRegret(predWithProb, outcomes, config.expected);
-    
+
     // Compute interval scores and sharpness
     for (const pred of predictions) {
       const outcome = outcomes.get(pred.id);
@@ -519,16 +519,16 @@ export function computeRegretMetrics(
     intervalScore /= predictions.length;
     sharpness /= predictions.length;
   }
-  
+
   // Worst-case regret
   let worstCaseResult = { value: 0, scenarioCount: 0, dominantScenario: null as string | null };
   if (config.worstCase.enabled) {
     worstCaseResult = computeWorstCaseRegret(predictions, outcomes, config.worstCase);
   }
-  
+
   // Policy comparison (if enabled and we have comparison data)
   // In real implementation, would compare against stored baseline
-  
+
   return {
     version: REGRET_VERSION,
     createdAt: new Date().toISOString(),
@@ -566,8 +566,8 @@ function computeMedian(values: number[]): number {
   if (values.length === 0) return 0;
   const sorted = [...values].sort((a, b) => a - b);
   const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 !== 0 
-    ? sorted[mid] 
+  return sorted.length % 2 !== 0
+    ? sorted[mid]
     : (sorted[mid - 1] + sorted[mid]) / 2;
 }
 
@@ -598,7 +598,7 @@ export function createRegretSummary(metrics: RegretMetrics): {
 } {
   const coverageRate = metrics.coverage.actual * 100;
   const calibrationGap = metrics.coverage.calibrationGap;
-  
+
   let overallQuality: string;
   if (coverageRate >= 90 && Math.abs(calibrationGap) < 0.1) {
     overallQuality = "excellent";
@@ -609,20 +609,20 @@ export function createRegretSummary(metrics: RegretMetrics): {
   } else {
     overallQuality = "needs_improvement";
   }
-  
+
   const insights: string[] = [];
   if (calibrationGap < -0.1) {
     insights.push("Predictions are overconfident (bands too narrow)");
   } else if (calibrationGap > 0.1) {
     insights.push("Predictions are underconfident (bands too wide)");
   }
-  
+
   if (metrics.realizedRegret.distribution.missUnderRate > metrics.realizedRegret.distribution.missOverRate) {
     insights.push("Systematic underestimation detected");
   } else if (metrics.realizedRegret.distribution.missOverRate > metrics.realizedRegret.distribution.missUnderRate) {
     insights.push("Systematic overestimation detected");
   }
-  
+
   const recommendations: string[] = [];
   if (metrics.realizedRegret.mean > 0.1) {
     recommendations.push("Consider widening prediction bands to improve coverage");
@@ -633,7 +633,7 @@ export function createRegretSummary(metrics: RegretMetrics): {
   if (calibrationGap < -0.05) {
     recommendations.push("Review and potentially widen band widths for better calibration");
   }
-  
+
   return {
     overallQuality,
     keyInsights: insights,

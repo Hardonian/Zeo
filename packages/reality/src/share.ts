@@ -1,14 +1,14 @@
 /**
  * Reality Mode - Share Bundle
- * 
+ *
  * Create, sign, verify, and import share bundles.
  * All bundles are signed for integrity and support redaction policies.
  */
 
-import type { 
-  DecisionSpec, 
-  EvidenceEvent, 
-  ObservationBatch 
+import type {
+  DecisionSpec,
+  EvidenceEvent,
+  ObservationBatch
 } from "@zeo/contracts";
 import type {
   ShareBundle,
@@ -81,7 +81,7 @@ export function createShareBundle(
 
   if (decisionSpec) {
     content.decisionSpec = redactDecisionSpec(decisionSpec, options.redactionPolicy);
-    
+
     // Validate redacted content
     const errors: string[] = [];
     if (!validateRedactedContent(content.decisionSpec, errors)) {
@@ -100,7 +100,7 @@ export function createShareBundle(
 
   if (evidenceEvents && evidenceEvents.length > 0) {
     content.evidenceEvents = redactEvidenceEvents(evidenceEvents, options.redactionPolicy);
-    
+
     for (let i = 0; i < evidenceEvents.length; i++) {
       const original = evidenceEvents[i];
       contentHashes.push({
@@ -115,7 +115,7 @@ export function createShareBundle(
 
   if (observationBatches) {
     content.observationBatches = observationBatches;
-    
+
     for (const batch of observationBatches) {
       contentHashes.push({
         contentId: batch.batchId,
@@ -174,7 +174,7 @@ function createEncryptedBlobs(
   if (decisionSpec) {
     const data = new TextEncoder().encode(canonicalizeJson(decisionSpec));
     const encrypted = encryptData(data, key);
-    
+
     blobs.push({
       blobId: `blob-decision-${decisionSpec.id}`,
       encryptedData: toBase64(encrypted.encrypted),
@@ -189,7 +189,7 @@ function createEncryptedBlobs(
     for (const event of evidenceEvents) {
       const data = new TextEncoder().encode(canonicalizeJson(event));
       const encrypted = encryptData(data, key);
-      
+
       blobs.push({
         blobId: `blob-evidence-${event.id}`,
         encryptedData: toBase64(encrypted.encrypted),
@@ -219,7 +219,7 @@ function signBundle(
     redactionPolicy: bundle.redactionPolicy,
     contentHashes: bundle.contentHashes,
   };
-  
+
   const dataToSign = canonicalizeJson(signable);
   const signature = signData(dataToSign, key);
 
@@ -245,7 +245,7 @@ export function verifyBundleSignature(
     redactionPolicy: bundle.redactionPolicy,
     contentHashes: bundle.contentHashes,
   };
-  
+
   const dataToVerify = canonicalizeJson(signable);
   return verifySignature(dataToVerify, bundle.signature.signature, key);
 }
@@ -299,9 +299,9 @@ export function validateBundle(
   const warnings: string[] = [];
 
   // Check expiration
-  const notExpired = !bundle.metadata.expiresAt || 
+  const notExpired = !bundle.metadata.expiresAt ||
     new Date(bundle.metadata.expiresAt) > new Date();
-  
+
   if (!notExpired) {
     errors.push("Bundle has expired");
   }
@@ -358,7 +358,7 @@ export function importBundle(
 
   // Validate bundle
   const validation = validateBundle(bundle, userTenantId);
-  
+
   if (!validation.valid) {
     return {
       success: false,
@@ -457,16 +457,16 @@ export function exportBundleToJson(bundle: ShareBundle): string {
  */
 export function parseBundleFromJson(json: string): ShareBundle {
   const parsed = JSON.parse(json);
-  
+
   // Basic validation
   if (!parsed.metadata || !parsed.metadata.bundleId) {
     throw new Error("Invalid bundle: missing metadata");
   }
-  
+
   if (!parsed.signature) {
     throw new Error("Invalid bundle: missing signature");
   }
-  
+
   return parsed as ShareBundle;
 }
 
@@ -482,7 +482,7 @@ export function createExportOptions(
 ): BundleExportOptions {
   // Import policy from types
   const { DEFAULT_REDACTION_POLICIES } = require("./types");
-  
+
   return {
     redactionPolicy: DEFAULT_REDACTION_POLICIES[policyId],
     acl: {

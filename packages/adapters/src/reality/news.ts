@@ -61,27 +61,27 @@ async function fetchGNews(
   const apiKey = process.env["GNEWS_API_KEY"] || "";
   const encodedQuery = encodeURIComponent(query);
   let url = `https://gnews.io/api/v4/search?q=${encodedQuery}&lang=en&max=${limit}&apikey=${apiKey}`;
-  
+
   if (from) url += `&from=${from}`;
   if (to) url += `&to=${to}`;
-  
+
   if (!apiKey) {
     return generateMockNews(query, limit);
   }
-  
+
   try {
     const response = await fetch(url);
-    
+
     if (!response.ok) {
       return generateMockNews(query, limit);
     }
-    
+
     const data = await response.json();
-    
+
     if (isGNewsResponse(data)) {
       return data;
     }
-    
+
     return generateMockNews(query, limit);
   } catch {
     return generateMockNews(query, limit);
@@ -91,7 +91,7 @@ async function fetchGNews(
 function generateMockNews(query: string, limit: number): GNewsResponse {
   const topics = Object.keys(TOPIC_TAGS);
   const articles: GNewsResponse["articles"] = [];
-  
+
   for (let i = 0; i < limit; i++) {
     const topicRaw = topics[Math.floor(Math.random() * topics.length)];
     const topic = topicRaw ?? "general";
@@ -99,7 +99,7 @@ function generateMockNews(query: string, limit: number): GNewsResponse {
     const sourceNameRaw = sourceNames[Math.floor(Math.random() * sourceNames.length)];
     const sourceName = sourceNameRaw ?? "Unknown";
     const baseTime = Date.now() - Math.random() * 48 * 60 * 60 * 1000;
-    
+
     articles.push({
       title: `${topic.charAt(0).toUpperCase() + topic.slice(1).replace("-", " ")}: Latest developments and market impact`,
       description: `This article covers the latest ${topic} news and its potential implications for markets and the economy.`,
@@ -110,7 +110,7 @@ function generateMockNews(query: string, limit: number): GNewsResponse {
       source: { name: sourceName, url: `https://${sourceName.toLowerCase().replace(/\s+/g, "")}.com` },
     });
   }
-  
+
   return { articles, totalArticles: articles.length };
 }
 
@@ -122,7 +122,7 @@ function computeSurpriseProxy(article: { publishedAt: string }): number {
 function extractTopicTags(title: string): string[] {
   const lowerTitle = title.toLowerCase();
   const tags: string[] = [];
-  
+
   for (const [topic, keywords] of Object.entries(TOPIC_TAGS)) {
     for (const keyword of keywords) {
       if (lowerTitle.includes(keyword)) {
@@ -133,26 +133,26 @@ function extractTopicTags(title: string): string[] {
       }
     }
   }
-  
+
   if (tags.length === 0) {
     tags.push("general");
   }
-  
+
   return tags;
 }
 
 export function createNewsAdapter(): Adapter {
   return {
     info: { ...NEWS_ADAPTER_INFO },
-    
+
     async fetch(params: Record<string, unknown>): Promise<RawAdapterOutput> {
       const query = (params["query"] as string) || "economy finance markets";
       const from = params["from"] as string | undefined;
       const to = params["to"] as string | undefined;
       const limit = (params["limit"] as number) || 20;
-      
+
       const response = await fetchGNews(query, from, to, limit);
-      
+
       const rawOutput: RawAdapterOutput = {
         items: response.articles,
         fetchedAt: new Date().toISOString(),
@@ -163,13 +163,13 @@ export function createNewsAdapter(): Adapter {
           fetchParams: { query, from, to, limit },
         },
       };
-      
+
       return rawOutput;
     },
-    
+
     normalize(rawItems: unknown[]) {
       const articles = rawItems as GNewsResponse["articles"];
-      
+
       return articles.map((article, index) => {
         const provenance = createProvenancePointer(
           article.url,
@@ -178,16 +178,16 @@ export function createNewsAdapter(): Adapter {
           checksum(article),
           { selector: `article:${index}`, page: undefined }
         );
-        
+
         const qualityScore = computeQualityScore(
           this.info.metadata.reliabilityBand,
           true,
           computeSurpriseProxy(article) > 0.5 ? "fresh" : "stale"
         );
-        
+
         const topicTags = extractTopicTags(article.title);
         const surpriseProxy = computeSurpriseProxy(article);
-        
+
         return {
           observationId: generateObservationId(`news:${topicTags[0] || "general"}`, article.publishedAt, article.url),
           signalId: `news:${topicTags[0] || "general"}`,
@@ -202,7 +202,7 @@ export function createNewsAdapter(): Adapter {
         };
       });
     },
-    
+
     getProvenance(rawItem: unknown) {
       const article = rawItem as GNewsResponse["articles"][0];
       return [createProvenancePointer(
@@ -213,7 +213,7 @@ export function createNewsAdapter(): Adapter {
         { selector: "article" }
       )];
     },
-    
+
     computeChecksum(data: unknown) {
       return checksum(data);
     },

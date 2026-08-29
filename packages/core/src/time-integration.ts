@@ -1,6 +1,6 @@
 /**
  * Time Integration
- * 
+ *
  * Connects @zeo/time to evidence and signal processing.
  * Applies temporal decay to evidence and ensures temporal consistency.
  */
@@ -25,9 +25,9 @@ export function applyTemporalDecayToEvidence(
 ): Array<{ evidence: EvidenceEvent; temporalMetadata: TemporalMetadata; reliability: number; decayedWeight: number }> {
   return evidence.map(e => {
     const result = applyDecay(e.weight, e.temporalMetadata, asOf);
-    return { 
-      evidence: e.evidence, 
-      temporalMetadata: e.temporalMetadata, 
+    return {
+      evidence: e.evidence,
+      temporalMetadata: e.temporalMetadata,
       reliability: result.decayFactor,
       decayedWeight: result.decayedWeight
     };
@@ -53,15 +53,15 @@ export function enforceTemporalConsistency(
   evidence: Array<{ temporalMetadata: TemporalMetadata }>
 ): void {
   const temporalContext = createTemporalContext(decisionAsOf);
-  
+
   const items = evidence.map((e, i) => ({
     id: `evidence-${i}`,
     temporalMetadata: e.temporalMetadata,
     weight: 1
   }));
-  
+
   const validation = validateTemporalAlignment(items, temporalContext);
-  
+
   if (!validation.aligned) {
     throw new TemporalInconsistencyError(
       `Temporal consistency violation: ${validation.issues.join("; ")}`

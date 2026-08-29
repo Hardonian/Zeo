@@ -1,6 +1,6 @@
 /**
  * Values Integration
- * 
+ *
  * Integrates @zeo/values into @zeo/core decision scoring.
  * Ensures no decision is scored without explicit value function.
  */
@@ -38,11 +38,11 @@ export function requireValueFunction(
   };
 
   const result = runGuards(guardContext, [EXPLICIT_VALUE_FUNCTION_RULE]);
-  
+
   const missingValueError = result.errors.find(
     e => e.code === "MISSING_VALUE_FUNCTION"
   );
-  
+
   if (missingValueError) {
     throw new ValueFunctionRequiredError(
       `Decision "${spec.title}" requires an explicit value function. ` +

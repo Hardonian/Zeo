@@ -1,6 +1,6 @@
 /**
  * Trust Contract Management
- * 
+ *
  * Defines Zeo's binding commitments to users and provides
  * validation and introspection capabilities.
  */
@@ -16,7 +16,7 @@ const CURRENT_CONTRACT_VERSION = "1.0.0";
 /**
  * Creates a default trust contract with conservative commitments.
  * This is the baseline that all Zeo instances must honor.
- * 
+ *
  * @returns A new TrustContract with default commitments
  */
 export function createDefaultTrustContract(): TrustContract {
@@ -62,7 +62,7 @@ export interface TrustContractValidationResult {
 
 /**
  * Validates a trust contract for completeness and consistency.
- * 
+ *
  * @param contract - The trust contract to validate
  * @returns Validation result with errors and warnings
  */
@@ -142,7 +142,7 @@ export function validateTrustContract(
 /**
  * Gets the current trust commitments in an organized structure.
  * Useful for displaying to users or generating documentation.
- * 
+ *
  * @param contract - The trust contract to extract commitments from
  * @returns Organized commitment categories
  */
@@ -160,7 +160,7 @@ export function getTrustCommitments(contract: TrustContract): {
 
 /**
  * Checks if a specific activity is in the 'never' list.
- * 
+ *
  * @param contract - The trust contract to check
  * @param activity - Description of the activity to check
  * @returns True if the activity is prohibited
@@ -170,7 +170,7 @@ export function isActivityProhibited(
   activity: string
 ): boolean {
   const normalizedActivity = activity.toLowerCase().trim();
-  return contract.commitments.never.some(never => 
+  return contract.commitments.never.some(never =>
     never.toLowerCase().includes(normalizedActivity) ||
     normalizedActivity.includes(never.toLowerCase())
   );
@@ -180,7 +180,7 @@ export function isActivityProhibited(
  * Merges a custom trust contract with defaults.
  * Custom values override defaults, but missing required fields
  * fall back to defaults.
- * 
+ *
  * @param custom - Custom trust contract values
  * @returns Merged trust contract
  */
@@ -188,7 +188,7 @@ export function mergeTrustContract(
   custom: Partial<TrustContract>
 ): TrustContract {
   const defaults = createDefaultTrustContract();
-  
+
   return {
     version: custom.version ?? defaults.version,
     commitments: {

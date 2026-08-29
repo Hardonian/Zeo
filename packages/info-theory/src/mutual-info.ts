@@ -1,8 +1,8 @@
 /**
  * @zeo/info-theory - Mutual Information
- * 
+ *
  * Mutual information and conditional mutual information computations.
- * 
+ *
  * MI measures the amount of information one variable contains about another.
  * I(X; Y) = H(X) + H(Y) - H(X,Y) = H(X) - H(X|Y) = H(Y) - H(Y|X)
  */
@@ -20,7 +20,7 @@ import {
 
 /**
  * Compute mutual information between two continuous variables
- * 
+ *
  * I(X; Y) = H(X) + H(Y) - H(X,Y)
  */
 export function mutualInformation(
@@ -90,7 +90,7 @@ export function mutualInformation(
 
 /**
  * Compute conditional mutual information I(X; Y | Z)
- * 
+ *
  * Measures dependence between X and Y after controlling for Z.
  * I(X; Y | Z) = H(X|Z) + H(Y|Z) - H(X,Y|Z)
  *            = H(X,Z) + H(Y,Z) - H(Z) - H(X,Y,Z)

@@ -23,7 +23,9 @@ function hasTag(html, regex) {
 }
 
 async function fetchText(path) {
-  const res = await fetch(`${baseUrl}${path}`);
+  const res = await fetch(`${baseUrl}${path}`, {
+    headers: { 'user-agent': 'Googlebot' },
+  });
   const body = await res.text();
   return { res, body };
 }

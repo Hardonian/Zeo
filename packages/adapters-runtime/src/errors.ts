@@ -5,7 +5,7 @@
 export class AdapterRuntimeError extends Error {
   readonly code: string;
   readonly details?: Record<string, unknown>;
-  
+
   constructor(message: string, code: string, details?: Record<string, unknown>) {
     super(message);
     this.name = "AdapterRuntimeError";
@@ -17,7 +17,7 @@ export class AdapterRuntimeError extends Error {
 export class QuarantineError extends AdapterRuntimeError {
   readonly quarantineId: string;
   readonly reason: string;
-  
+
   constructor(quarantineId: string, reason: string, details?: Record<string, unknown>) {
     super(
       `Observation quarantined: ${reason}`,
@@ -33,7 +33,7 @@ export class QuarantineError extends AdapterRuntimeError {
 export class IntegrityError extends AdapterRuntimeError {
   readonly rule: string;
   readonly violations: string[];
-  
+
   constructor(rule: string, violations: string[]) {
     super(
       `Data integrity violation: ${rule}`,
@@ -49,7 +49,7 @@ export class IntegrityError extends AdapterRuntimeError {
 export class RateLimitError extends AdapterRuntimeError {
   readonly adapterId: string;
   readonly resetAt: Date;
-  
+
   constructor(adapterId: string, resetAt: Date) {
     super(
       `Rate limit exceeded for adapter ${adapterId}. Reset at ${resetAt.toISOString()}`,
@@ -64,7 +64,7 @@ export class RateLimitError extends AdapterRuntimeError {
 
 export class CacheError extends AdapterRuntimeError {
   readonly cacheKey: string;
-  
+
   constructor(cacheKey: string, message: string) {
     super(message, "CACHE_ERROR", { cacheKey });
     this.name = "CacheError";

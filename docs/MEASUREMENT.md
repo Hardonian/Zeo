@@ -32,12 +32,12 @@ Based on Stevens' four levels of measurement (nominal, ordinal, interval, ratio)
 ## Usage
 
 ```typescript
-import { 
-  scaleRegistry, 
-  assertCompatibleScales, 
+import {
+  scaleRegistry,
+  assertCompatibleScales,
   assertOperationAllowed,
   computeMean,
-  createMeasurementValue 
+  createMeasurementValue
 } from "@zeo/measurement";
 
 // Get a scale

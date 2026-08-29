@@ -78,15 +78,15 @@ class ChangePoint:
 
 class TimeSeriesEngine:
     """Time series modeling with ARIMA/GARCH for volatility-aware intervals."""
-    
+
     def __init__(self):
         self.warnings = []
-        
+
     def analyze(self, data: List[Dict[str, Any]], model_type: str = "auto") -> Dict[str, Any]:
         """Analyze time series and produce forecasts with uncertainty."""
         values = np.array([d["value"] for d in data])
         timestamps = [d["timestamp"] for d in data]
-        
+
         if len(values) < 10:
             return {
                 "usable": False,
@@ -94,19 +94,19 @@ class TimeSeriesEngine:
                 "uncertainty_multiplier": 2.0,
                 "forecasts": []
             }
-        
+
         # Check stationarity
         adf_result = self._adf_test(values)
-        
+
         # Select and fit model
         if model_type == "auto":
             model_type = self._select_model(values, adf_result)
-        
+
         model_fit = self._fit_model(values, model_type)
-        
+
         # Detect change points
         change_points = self._detect_change_points(values, timestamps)
-        
+
         # Fit GARCH if volatility clustering suspected
         volatility_regimes = []
         if ARCH_AVAILABLE and len(values) > 30:
@@ -115,14 +115,14 @@ class TimeSeriesEngine:
                 volatility_regimes = [asdict(self._extract_volatility_regime(garch_fit))]
             except Exception as e:
                 self.warnings.append(f"GARCH fitting failed: {e}")
-        
+
         # Generate forecasts
         forecasts = self._generate_forecasts(values, model_fit, volatility_regimes)
-        
+
         # Determine usability
         usable = model_fit.convergence and len(values) >= 20
         uncertainty_mult = self._compute_uncertainty_multiplier(model_fit, change_points)
-        
+
         return {
             "usable": usable,
             "rationale": f"ARIMA fit converged: {model_fit.convergence}, Change points: {len(change_points)}",
@@ -133,12 +133,12 @@ class TimeSeriesEngine:
             "volatility_regimes": volatility_regimes,
             "warnings": self.warnings
         }
-    
+
     def _adf_test(self, values: np.ndarray) -> Dict[str, Any]:
         """Augmented Dickey-Fuller test for stationarity."""
         if not STATSMODELS_AVAILABLE:
             return {"stationary": True, "p_value": 0.01}
-        
+
         try:
             result = adfuller(values)
             return {
@@ -148,13 +148,13 @@ class TimeSeriesEngine:
             }
         except:
             return {"stationary": True, "p_value": 0.01}
-    
+
     def _select_model(self, values: np.ndarray, adf_result: Dict) -> str:
         """Select appropriate model based on data characteristics."""
         if not adf_result.get("stationary", True):
             return "arima"
         return "arima"
-    
+
     def _fit_model(self, values: np.ndarray, model_type: str) -> ModelFit:
         """Fit ARIMA model."""
         if not STATSMODELS_AVAILABLE:
@@ -169,17 +169,17 @@ class TimeSeriesEngine:
                 convergence=False,
                 warnings=["statsmodels not available"]
             )
-        
+
         try:
             # Auto-select order (simple)
             if len(values) < 30:
                 order = (1, 0, 0)
             else:
                 order = (2, 0, 1)
-            
+
             model = ARIMA(values, order=order)
             fitted = model.fit()
-            
+
             return ModelFit(
                 model_type="arima",
                 parameters={
@@ -206,30 +206,30 @@ class TimeSeriesEngine:
                 convergence=False,
                 warnings=[str(e)]
             )
-    
+
     def _fit_garch(self, values: np.ndarray):
         """Fit GARCH model."""
         if not ARCH_AVAILABLE:
             return None
-        
+
         try:
             model = arch_model(values, vol='Garch', p=1, q=1)
             return model.fit(disp='off')
         except Exception as e:
             self.warnings.append(f"GARCH fitting failed: {e}")
             return None
-    
+
     def _extract_volatility_regime(self, garch_fit) -> VolatilityRegime:
         """Extract volatility regime from GARCH fit."""
         if garch_fit is None:
             return VolatilityRegime(regime="unknown", persistence=0.5, half_life=10, asymmetry=0)
-        
+
         params = garch_fit.params
         alpha = params.get("alpha[1]", 0.1)
         beta = params.get("beta[1]", 0.85)
         persistence = alpha + beta
         half_life = np.log(0.5) / np.log(persistence) if persistence < 1 else 100
-        
+
         # Classify regime
         if persistence < 0.7:
             regime = "low"
@@ -239,23 +239,23 @@ class TimeSeriesEngine:
             regime = "high"
         else:
             regime = "extreme"
-        
+
         return VolatilityRegime(
             regime=regime,
             persistence=persistence,
             half_life=half_life,
             asymmetry=params.get("gamma[1]", 0)
         )
-    
+
     def _detect_change_points(self, values: np.ndarray, timestamps: List[str]) -> List[ChangePoint]:
         """Detect structural breaks."""
         if not RUPTURES_AVAILABLE or len(values) < 20:
             return []
-        
+
         try:
             model = rpt.Pelt(model="rbf", min_size=5).fit(values.reshape(-1, 1))
             change_indices = model.predict(pen=10)
-            
+
             change_points = []
             for idx in change_indices[:-1]:  # Exclude end
                 cp = ChangePoint(
@@ -267,16 +267,16 @@ class TimeSeriesEngine:
                     cusum_score=0.0
                 )
                 change_points.append(cp)
-            
+
             return change_points
         except Exception as e:
             self.warnings.append(f"Change point detection failed: {e}")
             return []
-    
+
     def _generate_forecasts(self, values: np.ndarray, model_fit: ModelFit, vol_regimes: List[VolatilityRegime]) -> List[ForecastResult]:
         """Generate forecasts with uncertainty bands."""
         forecasts = []
-        
+
         if not model_fit.convergence:
             # Simple persistence forecast
             for i in range(3):
@@ -289,12 +289,12 @@ class TimeSeriesEngine:
                     regime=asdict(vol_regimes[0]) if vol_regimes else {"regime": "unknown"}
                 ))
             return forecasts
-        
+
         # Use model parameters for forecast
         mean_val = float(np.mean(values))
         std_val = float(np.std(values))
         vol_mult = 1.0 + len(vol_regimes) * 0.2 if vol_regimes else 1.0
-        
+
         for i in range(3):
             horizon_mult = np.sqrt(i + 1)
             forecasts.append(ForecastResult(
@@ -305,21 +305,21 @@ class TimeSeriesEngine:
                 volatility_adjusted=len(vol_regimes) > 0,
                 regime=asdict(vol_regimes[0]) if vol_regimes else {"regime": "unknown"}
             ))
-        
+
         return forecasts
-    
+
     def _compute_uncertainty_multiplier(self, model_fit: ModelFit, change_points: List[ChangePoint]) -> float:
         """Compute uncertainty multiplier based on model quality and change points."""
         base = 1.0
-        
+
         if not model_fit.convergence:
             base += 1.0
-        
+
         if model_fit.aic > 1000:
             base += 0.5
-        
+
         base += len(change_points) * 0.3
-        
+
         return min(base, 3.0)
 
 

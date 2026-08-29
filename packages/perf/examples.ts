@@ -1,6 +1,6 @@
 /**
  * @zeo/perf Usage Examples
- * 
+ *
  * This package provides static analysis and runtime profiling
  * for identifying performance hot paths in Zeo.
  */
@@ -25,7 +25,7 @@ const files = [
           }
         }
       }
-      
+
       async function fetchData(urls: string[]) {
         const results = [];
         for (const url of urls) {
@@ -122,7 +122,7 @@ import { Profiler } from "@zeo/perf";
 async function profiledDecision(spec: DecisionSpec) {
   const profiler = new Profiler();
   const session = profiler.startSession(`decision-${spec.id}`);
-  
+
   // Profile the entire decision
   const result = await profiler.profile(
     "run-decision",
@@ -130,14 +130,14 @@ async function profiledDecision(spec: DecisionSpec) {
     () => runDecision(spec),
     { functionName: "runDecision" }
   );
-  
+
   // Profile specific phases
   const voiId = profiler.start("compute-voi", session.id);
   const voi = computeValueOfInformation(spec);
   profiler.end(voiId);
-  
+
   profiler.endSession(session.id);
-  
+
   return {
     result,
     performance: profiler.generateReport(session.id),

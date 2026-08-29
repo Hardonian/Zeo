@@ -98,11 +98,11 @@ Calibration can reveal that intervals are too narrow (under-coverage), but canno
 ```typescript
 function computeWidenFactor(coverage: number): number {
   const targetCoverage = 0.9;
-  
+
   if (coverage >= targetCoverage) {
     return 1.0; // Well calibrated, no change
   }
-  
+
   // Under-coverage: widen
   const shortfall = targetCoverage - coverage;
   return 1 + shortfall * 2; // e.g., 0.7 coverage → 1.4x widen

@@ -126,7 +126,7 @@ zeo --warehouse export --out ./backup.json --kinds decision,outcome,evidence-eve
    ```bash
    # Update dependencies
    pnpm update
-   
+
    # Audit for vulnerabilities
    pnpm audit
    ```
@@ -151,7 +151,7 @@ zeo --warehouse export --out ./backup.json --kinds decision,outcome,evidence-eve
    ```bash
    # Security audit
    pnpm audit
-   
+
    # Dependency scanning
    npm audit
    ```
@@ -230,7 +230,7 @@ pnpm run build
 
 ### Target Metrics
 - **Build time**: < 5 minutes
-- **Test suite**: < 10 minutes  
+- **Test suite**: < 10 minutes
 - **Type checking**: < 2 minutes
 - **Memory usage**: < 2GB during builds
 

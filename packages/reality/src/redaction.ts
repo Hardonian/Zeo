@@ -1,23 +1,23 @@
 /**
  * Reality Mode - Redaction Engine
- * 
+ *
  * Applies redaction policies to decision data while preserving structure.
  * All redaction is deterministic and auditable.
  */
 
-import type { 
-  DecisionSpec, 
-  EvidenceEvent, 
-  Agent, 
-  Claim, 
+import type {
+  DecisionSpec,
+  EvidenceEvent,
+  Agent,
+  Claim,
   Constraint,
-  ProvenancePointer 
+  ProvenancePointer
 } from "@zeo/contracts";
-import type { 
-  RedactionPolicy, 
-  RedactionRule, 
+import type {
+  RedactionPolicy,
+  RedactionRule,
   RedactedEvidenceEvent,
-  RedactionPreview 
+  RedactionPreview
 } from "./types.js";
 import { hashObject, hashData, canonicalizeJson } from "./crypto.js";
 
@@ -137,7 +137,7 @@ function redactProvenance(pointer: ProvenancePointer): ProvenancePointer {
  */
 function anonymizeAgents(spec: DecisionSpec): DecisionSpec {
   const agentNameMap = new Map<string, string>();
-  
+
   const anonymizedAgents = spec.agents.map((agent, index) => {
     const anonymizedName = `Agent_${index + 1}`;
     agentNameMap.set(agent.name, anonymizedName);

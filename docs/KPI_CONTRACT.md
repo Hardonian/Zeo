@@ -41,21 +41,21 @@ interface KpiContract {
   id: UUID;
   name: string;
   category: KpiCategory; // decision_quality, calibration, robustness, etc.
-  
+
   // Computation logic
   formula: KpiFormula;
-  
+
   // Evaluation target
   target?: {
     type: "minimize" | "maximize" | "range" | "threshold";
     ideal: KpiValue;
   };
-  
+
   // Metadata & Context
   ownerScope: "user" | "system" | "team_shared";
   horizon: "transactional" | "tactical" | "strategic";
   goodhartWarnings?: string[];
-  
+
   // Epistemic requirements
   epistemic: {
     defaultStatus: EpistemicStatus;
@@ -74,16 +74,16 @@ interface KpiMeasurement {
   id: UUID;
   kpiId: UUID;
   value: KpiValue; // Scalar or Interval
-  
+
   epistemic: {
     status: EpistemicStatus;
     confidence: ConfidenceBand;
     uncertainty?: ProbabilityInterval;
     sensitivityNotes?: string[];
   };
-  
+
   provenance?: ProvenancePointer[];
-  
+
   // Determinism
   inputHash: string; // Hash of input data + KPI formula
   computedAt: string;

@@ -23,7 +23,7 @@ class VariableSpec:
     prior_params: Dict[str, float]
 
 
-@dataclass  
+@dataclass
 class ObservationSpec:
     evidence_id: str
     variable_id: str
@@ -62,11 +62,11 @@ class BayesianEngine:
     """
     PyMC-based Bayesian inference for Zeo world state updates.
     """
-    
+
     def __init__(self):
         self.model: Optional[pm.Model] = None
         self.trace: Optional[pm.backends.base.MultiTrace] = None
-    
+
     def _create_prior(self, var_spec: VariableSpec):
         """Create PyMC distribution from variable spec."""
         if var_spec.prior_type == "beta":
@@ -94,7 +94,7 @@ class BayesianEngine:
             )
         else:
             raise ValueError(f"Unknown prior type: {var_spec.prior_type}")
-    
+
     def _create_likelihood(self, obs: ObservationSpec, prior_var):
         """Create observation likelihood."""
         if obs.noise_type == "gaussian":
@@ -120,7 +120,7 @@ class BayesianEngine:
             )
         else:
             raise ValueError(f"Unknown noise type: {obs.noise_type}")
-    
+
     def infer(
         self,
         variables: List[VariableSpec],
@@ -151,12 +151,12 @@ class BayesianEngine:
                     prior_means[var_spec.id] = (low + high) / 2
                 else:
                     prior_means[var_spec.id] = 0.5
-            
+
             # Create likelihoods
             for obs in observations:
                 if obs.variable_id in prior_vars:
                     self._create_likelihood(obs, prior_vars[obs.variable_id])
-            
+
             # Sample
             self.trace = pm.sample(
                 draws=draws,
@@ -165,27 +165,27 @@ class BayesianEngine:
                 cores=min(chains, 4),
                 return_inferencedata=True
             )
-        
+
         # Extract posteriors
         posteriors = []
         updates = []
         timestamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-        
+
         for var_spec in variables:
             var_id = var_spec.id
             if var_id not in self.trace.posterior:
                 continue
-            
+
             samples = self.trace.posterior[var_id].values.flatten()
-            
+
             # Compute diagnostics
             ess = float(pm.ess(self.trace, var_names=[var_id])[var_id].values)
             r_hat = float(pm.rhat(self.trace, var_names=[var_id])[var_id].values)
             divergences = int(self.trace.sample_stats.diverging.sum().values)
-            
+
             # Credible interval
             ci_low, ci_high = np.percentile(samples, [2.5, 97.5])
-            
+
             posterior = PosteriorSummary(
                 variable_id=var_id,
                 mean=float(np.mean(samples)),
@@ -199,12 +199,12 @@ class BayesianEngine:
                 divergences=divergences
             )
             posteriors.append(posterior)
-            
+
             # Compute KL divergence (approximate)
             prior_mean = prior_means[var_id]
             posterior_mean = posterior.mean
             kl_div = 0.5 * ((posterior_mean - prior_mean) / max(posterior.std, 0.001)) ** 2
-            
+
             # Check if uncertainty widened
             if var_spec.prior_type == "beta":
                 alpha = var_spec.prior_params.get("alpha", 1.0)
@@ -214,9 +214,9 @@ class BayesianEngine:
                 prior_var = var_spec.prior_params.get("sigma", 1.0) ** 2
             else:
                 prior_var = 0.1
-            
+
             uncertainty_widened = posterior.std ** 2 > prior_var
-            
+
             update = BeliefUpdateResult(
                 id=f"update_{var_id}_{int(time.time())}",
                 timestamp=timestamp,
@@ -228,27 +228,27 @@ class BayesianEngine:
                 uncertainty_widened=uncertainty_widened
             )
             updates.append(update)
-        
+
         return posteriors, updates
 
 
 def process_request(request_data: Dict[str, Any]) -> Dict[str, Any]:
     """Process an inference request and return results."""
     start_time = time.time()
-    
+
     try:
         # Parse request
         world_state = request_data.get("worldState", {})
         new_evidence = request_data.get("newEvidence", [])
         method = request_data.get("method", "mcmc")
         mcmc_config = request_data.get("mcmcConfig", {})
-        
+
         # Build variable specs
         variables = []
         for var in world_state.get("variables", []):
             dist = var.get("distribution", {})
             prior_type = dist.get("kind", "uniform")
-            
+
             if prior_type == "beta":
                 prior_params = {
                     "alpha": dist.get("alpha", 1.0),
@@ -268,28 +268,28 @@ def process_request(request_data: Dict[str, Any]) -> Dict[str, Any]:
                 }
             else:
                 prior_params = {"lower": 0.0, "upper": 1.0}
-            
+
             variables.append(VariableSpec(
                 id=var["id"],
                 name=var["name"],
                 prior_type=prior_type,
                 prior_params=prior_params
             ))
-        
+
         # Build observation specs
         observations = []
         for ev in new_evidence:
             likelihood = ev.get("likelihood", {})
             noise_type = "gaussian"
             noise_params = {"sigma": 0.1}
-            
+
             if likelihood.get("likelihoodFunction") == "gaussian":
                 noise_type = "gaussian"
                 noise_params = {"sigma": likelihood.get("parameters", {}).get("sigma", 0.1)}
             elif likelihood.get("likelihoodFunction") == "bernoulli":
                 noise_type = "bernoulli"
                 noise_params = {}
-            
+
             observations.append(ObservationSpec(
                 evidence_id=ev["evidenceId"],
                 variable_id=ev.get("variableId", ""),
@@ -297,13 +297,13 @@ def process_request(request_data: Dict[str, Any]) -> Dict[str, Any]:
                 noise_type=noise_type,
                 noise_params=noise_params
             ))
-        
+
         # Run inference
         engine = BayesianEngine()
         chains = mcmc_config.get("chains", 4)
         draws = mcmc_config.get("draws", 1000)
         tune = mcmc_config.get("tune", 500)
-        
+
         posteriors, updates = engine.infer(
             variables=variables,
             observations=observations,
@@ -311,9 +311,9 @@ def process_request(request_data: Dict[str, Any]) -> Dict[str, Any]:
             draws=draws,
             tune=tune
         )
-        
+
         computation_time = time.time() - start_time
-        
+
         return {
             "success": True,
             "updates": [asdict(u) for u in updates],
@@ -321,7 +321,7 @@ def process_request(request_data: Dict[str, Any]) -> Dict[str, Any]:
             "computationTime": computation_time,
             "modelEvidence": None
         }
-    
+
     except Exception as e:
         return {
             "success": False,

@@ -19,20 +19,20 @@ interface LogEntry {
   timestamp: string;           // ISO 8601
   level: 'debug' | 'info' | 'warn' | 'error' | 'fatal';
   message: string;
-  
+
   // Context fields
   service: string;             // Service name
   version: string;             // Service version
   correlationId: string;       // Request correlation ID
   causationId?: string;        // Causal chain ID
-  
+
   // Optional fields
   traceId?: string;           // Distributed trace ID
   spanId?: string;            // Span ID within trace
   component?: string;         // Component within service
   operation?: string;         // Operation being performed
   duration?: number;          // Duration in milliseconds
-  
+
   // Error context (for error/fatal levels)
   error?: {
     code: string;              // Standard error code
@@ -40,7 +40,7 @@ interface LogEntry {
     stack?: string;           // Stack trace (dev only)
     details?: Record<string, unknown>;
   };
-  
+
   // Additional context
   context?: Record<string, unknown>;
 }
@@ -194,7 +194,7 @@ app.post('/execute', (req, res) => {
   const logger = createLogger({
     correlationId: req.correlationId
   });
-  
+
   logger.info('Processing job', { jobId: req.body.jobId });
 });
 ```
@@ -264,7 +264,7 @@ rate(jobs_failed_total[5m]) / rate(jobs_received_total[5m])
 ### P99 Latency
 
 ```promql
-histogram_quantile(0.99, 
+histogram_quantile(0.99,
   sum(rate(job_duration_seconds_bucket[5m])) by (le, job_type)
 )
 ```

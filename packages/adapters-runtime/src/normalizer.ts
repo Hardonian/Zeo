@@ -20,19 +20,19 @@ export function canonicalize<T>(obj: T): T {
   if (obj === null || typeof obj !== "object") {
     return obj;
   }
-  
+
   if (Array.isArray(obj)) {
     return obj.map(canonicalize) as unknown as T;
   }
-  
+
   const sorted: Record<string, unknown> = {};
   const keys = Object.keys(obj).sort();
-  
+
   for (const key of keys) {
     const value = (obj as Record<string, unknown>)[key];
     sorted[key] = canonicalize(value);
   }
-  
+
   return sorted as T;
 }
 
@@ -47,12 +47,12 @@ export function stableSort<T extends Record<string, unknown>>(
     for (const field of sortBy) {
       const aVal = a[field];
       const bVal = b[field];
-      
+
       if (aVal === bVal) continue;
-      
+
       if (aVal === undefined) return 1;
       if (bVal === undefined) return -1;
-      
+
       if (typeof aVal === "string" && typeof bVal === "string") {
         const cmp = aVal.localeCompare(bVal);
         if (cmp !== 0) return cmp;
@@ -110,24 +110,24 @@ export function createNormalizer(
   return {
     normalize(observations: SignalObservation[]): NormalizedOutput<SignalObservation> {
       let data = [...observations];
-      
+
       // Canonicalize each observation
       if (options.canonicalizeKeys) {
         data = data.map(canonicalize<SignalObservation>);
       }
-      
+
       // Stable sort
       if (options.stableSort) {
         data = stableSort(data as unknown as Record<string, unknown>[], options.sortBy) as unknown as SignalObservation[];
       }
-      
+
       // Compute checksums
       const checksum = options.deterministicHash
         ? computeDeterministicHash(data)
         : createHash("sha256").update(JSON.stringify(data)).digest("hex");
-      
+
       const orderingHash = computeOrderingHash(data);
-      
+
       return {
         data,
         checksum,
@@ -139,22 +139,22 @@ export function createNormalizer(
         },
       };
     },
-    
+
     normalizeBatch(batch: ObservationBatch): ObservationBatch {
       const normalized = this.normalize(batch.items);
-      
+
       return {
         ...batch,
         items: normalized.data,
         inputChecksum: normalized.checksum,
       };
     },
-    
+
     verifyDeterminism(observations: SignalObservation[]): boolean {
       // Run normalization twice and verify same result
       const first = this.normalize(observations);
       const second = this.normalize(observations);
-      
+
       return (
         first.checksum === second.checksum &&
         first.orderingHash === second.orderingHash &&

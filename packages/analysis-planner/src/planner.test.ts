@@ -35,7 +35,7 @@ describe("Analysis Planner", () => {
 
   test("generates plan with correct structure", () => {
     const plan = generateAnalysisPlan(mockSchema, mockMetadata);
-    
+
     expect(plan).toBeDefined();
     expect(plan.id).toBeDefined();
     expect(plan.createdAt).toBeDefined();
@@ -48,7 +48,7 @@ describe("Analysis Planner", () => {
 
   test("includes assumption check as first step", () => {
     const plan = generateAnalysisPlan(mockSchema, mockMetadata);
-    
+
     expect(plan.steps.length).toBeGreaterThan(0);
     expect(plan.steps[0].kind).toBe("assumption_check");
     expect(plan.steps[0].order).toBe(0);
@@ -57,10 +57,10 @@ describe("Analysis Planner", () => {
 
   test("generates correlation steps for numeric fields", () => {
     const plan = generateAnalysisPlan(mockSchema, mockMetadata);
-    
+
     const correlationSteps = plan.steps.filter(s => s.kind === "correlation");
     expect(correlationSteps.length).toBeGreaterThan(0);
-    
+
     const numericFields = mockSchema.fields.filter(f => f.type === "numeric");
     const expectedPairs = (numericFields.length * (numericFields.length - 1)) / 2;
     expect(correlationSteps.length).toBeLessThanOrEqual(expectedPairs);
@@ -68,10 +68,10 @@ describe("Analysis Planner", () => {
 
   test("generates regression steps", () => {
     const plan = generateAnalysisPlan(mockSchema, mockMetadata);
-    
+
     const regressionSteps = plan.steps.filter(s => s.kind === "regression");
     expect(regressionSteps.length).toBeGreaterThan(0);
-    
+
     for (const step of regressionSteps) {
       expect(step.variables.length).toBeGreaterThan(1);
       expect(step.rationale).toContain("Does not establish causality");
@@ -81,21 +81,21 @@ describe("Analysis Planner", () => {
 
   test("includes regime test for time series data", () => {
     const plan = generateAnalysisPlan(mockSchema, mockMetadata);
-    
+
     const regimeSteps = plan.steps.filter(s => s.kind === "regime_test");
     expect(regimeSteps.length).toBe(1);
   });
 
   test("includes transformation recommendations", () => {
     const plan = generateAnalysisPlan(mockSchema, mockMetadata);
-    
+
     const transformationSteps = plan.steps.filter(s => s.kind === "transformation");
     expect(transformationSteps.length).toBeGreaterThan(0);
   });
 
   test("identifies risks appropriately", () => {
     const plan = generateAnalysisPlan(mockSchema, mockMetadata);
-    
+
     const sampleSizeRisks = plan.risks.filter(r => r.category === "sample_size");
     expect(sampleSizeRisks.length).toBe(0);
   });
@@ -105,9 +105,9 @@ describe("Analysis Planner", () => {
       ...mockMetadata,
       rowCount: 20
     };
-    
+
     const plan = generateAnalysisPlan(mockSchema, smallMetadata);
-    
+
     const sampleSizeRisks = plan.risks.filter(r => r.category === "sample_size");
     expect(sampleSizeRisks.length).toBeGreaterThan(0);
     expect(sampleSizeRisks[0].severity).toBe("high");
@@ -115,19 +115,19 @@ describe("Analysis Planner", () => {
 
   test("respects maxSteps option", () => {
     const plan = generateAnalysisPlan(mockSchema, mockMetadata, { maxSteps: 5 });
-    
-    const analysisSteps = plan.steps.filter(s => 
+
+    const analysisSteps = plan.steps.filter(s =>
       s.kind === "correlation" || s.kind === "regression"
     );
     expect(analysisSteps.length).toBeLessThanOrEqual(6);
   });
 
   test("respects focusVariables option", () => {
-    const plan = generateAnalysisPlan(mockSchema, mockMetadata, { 
+    const plan = generateAnalysisPlan(mockSchema, mockMetadata, {
       focusVariables: ["revenue"],
       maxSteps: 10
     });
-    
+
     const correlationSteps = plan.steps.filter(s => s.kind === "correlation");
     expect(correlationSteps.length).toBeGreaterThan(0);
     const hasRevenue = correlationSteps.some(s => s.variables.includes("revenue"));
@@ -135,11 +135,11 @@ describe("Analysis Planner", () => {
   });
 
   test("respects excludeVariables option", () => {
-    const plan = generateAnalysisPlan(mockSchema, mockMetadata, { 
+    const plan = generateAnalysisPlan(mockSchema, mockMetadata, {
       excludeVariables: ["customer_count"]
     });
-    
-    const analysisSteps = plan.steps.filter(s => 
+
+    const analysisSteps = plan.steps.filter(s =>
       s.kind === "correlation" || s.kind === "regression"
     );
     for (const step of analysisSteps) {
@@ -148,35 +148,35 @@ describe("Analysis Planner", () => {
   });
 
   test("includes controls when requireControls is true", () => {
-    const plan = generateAnalysisPlan(mockSchema, mockMetadata, { 
+    const plan = generateAnalysisPlan(mockSchema, mockMetadata, {
       requireControls: true,
       prioritizeRobustness: true
     });
-    
+
     const regressionSteps = plan.steps.filter(s => s.kind === "regression");
     const withControls = regressionSteps.filter(s => s.controls && s.controls.length > 0);
-    
+
     expect(withControls.length).toBeGreaterThan(0);
   });
 
   test("generates deterministic plans for same inputs", () => {
     const plan1 = generateAnalysisPlan(mockSchema, mockMetadata);
     const plan2 = generateAnalysisPlan(mockSchema, mockMetadata);
-    
+
     expect(plan1.steps.length).toBe(plan2.steps.length);
-    
+
     for (let i = 0; i < plan1.steps.length; i++) {
       expect(plan1.steps[i].kind).toBe(plan2.steps[i].kind);
       expect(plan1.steps[i].variables).toEqual(plan2.steps[i].variables);
     }
-    
+
     expect(plan1.risks.length).toBe(plan2.risks.length);
     expect(plan1.caveats).toEqual(plan2.caveats);
   });
 
   test("provenance is included in plan", () => {
     const plan = generateAnalysisPlan(mockSchema, mockMetadata);
-    
+
     expect(plan.provenance.length).toBeGreaterThan(0);
     expect(plan.provenance[0].kind).toBe("text");
     expect(plan.provenance[0].sourceId).toBe("analysis-planner");
@@ -185,7 +185,7 @@ describe("Analysis Planner", () => {
 
   test("rationale is comprehensive", () => {
     const plan = generateAnalysisPlan(mockSchema, mockMetadata);
-    
+
     expect(plan.rationale).toContain("rows");
     expect(plan.rationale).toContain("fields");
     expect(plan.rationale).toContain("correlation");
@@ -199,9 +199,9 @@ describe("Analysis Planner", () => {
         { name: "category", type: "categorical", nullable: false, statistics: { count: 100, nullCount: 0, uniqueCount: 5 } }
       ]
     };
-    
+
     const plan = generateAnalysisPlan(limitedSchema, mockMetadata);
-    
+
     const sampleSizeRisk = plan.risks.find(r => r.description.includes("Insufficient numeric fields"));
     expect(sampleSizeRisk).toBeDefined();
     expect(sampleSizeRisk?.severity).toBe("high");
@@ -209,7 +209,7 @@ describe("Analysis Planner", () => {
 
   test("steps have correct epistemic status", () => {
     const plan = generateAnalysisPlan(mockSchema, mockMetadata);
-    
+
     for (const step of plan.steps) {
       expect(["assumption", "belief"]).toContain(step.epistemicStatus);
       expect(["low", "medium", "high"]).toContain(step.confidenceBand);
@@ -219,7 +219,7 @@ describe("Analysis Planner", () => {
   test("prerequisites reference valid step IDs", () => {
     const plan = generateAnalysisPlan(mockSchema, mockMetadata);
     const allStepIds = new Set(plan.steps.map(s => s.id));
-    
+
     for (const step of plan.steps) {
       for (const prereq of step.prerequisites) {
         expect(allStepIds.has(prereq)).toBe(true);

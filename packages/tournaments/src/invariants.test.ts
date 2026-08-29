@@ -12,6 +12,7 @@ import {
   type Scenario,
   type DecisionSpec,
 } from './index';
+import { _resetKillSwitches } from '@zeo/contracts';
 
 const createTestDecisionSpec = (): DecisionSpec => ({
   id: 'test-decision',
@@ -27,6 +28,9 @@ const createTestDecisionSpec = (): DecisionSpec => ({
 });
 
 describe('tournaments invariant tests', () => {
+  beforeEach(() => _resetKillSwitches());
+  afterEach(() => _resetKillSwitches());
+
   describe('Invariant 7: Market/Tournament Outputs Cannot Narrow Without Evidence', () => {
     it('should throw when attempting to run match with frozen markets', () => {
       // Set environment to freeze markets
@@ -43,6 +47,16 @@ describe('tournaments invariant tests', () => {
         epistemicWarnings: [],
       });
       tournament = withStrat;
+
+      const { tournament: withSecondStrat } = registerStrategy(tournament, {
+        name: 'Control Strategy',
+        description: 'Control',
+        decisionRule: 'expected_value',
+        parameters: {},
+        creator: 'user',
+        epistemicWarnings: [],
+      });
+      tournament = withSecondStrat;
 
       const { tournament: withScenario } = addScenario(tournament, {
         name: 'Test Scenario',
@@ -115,7 +129,7 @@ describe('tournaments invariant tests', () => {
 
     it('should detect dominance violations in results', () => {
       let tournament = createTournament('dominance-test', 'Test', 'Test');
-      
+
       // Register strategies
       const { tournament: withStrat1 } = registerStrategy(tournament, {
         name: 'Dominant Strategy',
@@ -153,7 +167,7 @@ describe('tournaments invariant tests', () => {
       const standings = new Map(tournament.standings);
       const dominantStanding = standings.get(Array.from(standings.keys())[0])!;
       const weakStanding = standings.get(Array.from(standings.keys())[1])!;
-      
+
       dominantStanding.wins = 10;
       dominantStanding.losses = 0;
       dominantStanding.matchesPlayed = 10;

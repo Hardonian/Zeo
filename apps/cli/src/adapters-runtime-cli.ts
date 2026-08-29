@@ -187,7 +187,7 @@ async function runAdapterCommand(args: AdaptersRuntimeCliArgs): Promise<number> 
   // Write output
   if (args.out) {
     const outPath = resolve(process.cwd(), args.out);
-    
+
     if (args.format === "json") {
       const output = {
         adapterId: result.adapterId,
@@ -198,10 +198,10 @@ async function runAdapterCommand(args: AdaptersRuntimeCliArgs): Promise<number> 
         quarantined: result.quarantined,
         batch: result.batch,
       };
-      
+
       await writeFile(outPath, JSON.stringify(output, null, 2));
     }
-    
+
     console.log(`\nOutput written to: ${outPath}`);
   }
 

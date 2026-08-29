@@ -20,20 +20,20 @@ export class KalmanFilter {
   constructor(config: FilterConfig) {
     this.config = config;
     this.state = config.initialStateMean ?? new Array(config.stateDimension).fill(0);
-    this.covariance = config.initialStateCovariance ?? 
-      Array(config.stateDimension).fill(0).map(() => 
+    this.covariance = config.initialStateCovariance ??
+      Array(config.stateDimension).fill(0).map(() =>
         Array(config.stateDimension).fill(0).map((_, i, row) => i === row.indexOf(0) ? 1 : 0)
       );
   }
 
   predict(): void {
     const F = this.config.transitionMatrix ?? this.identityMatrix(this.config.stateDimension);
-    const Q = this.config.processNoiseCovariance ?? 
+    const Q = this.config.processNoiseCovariance ??
       Array(this.config.stateDimension).fill(0).map(() => Array(this.config.stateDimension).fill(0.01));
 
     // x = F * x
     this.state = this.matrixVectorMultiply(F, this.state);
-    
+
     // P = F * P * F' + Q
     const FP = this.matrixMultiply(F, this.covariance);
     const FPFt = this.matrixMultiply(FP, this.transpose(F));
@@ -42,7 +42,7 @@ export class KalmanFilter {
 
   update(observation: number[]): FilterResult {
     const H = this.config.observationMatrix ?? this.identityMatrix(this.config.observationDimension, this.config.stateDimension);
-    const R = this.config.observationNoiseCovariance ?? 
+    const R = this.config.observationNoiseCovariance ??
       Array(this.config.observationDimension).fill(0).map(() => Array(this.config.observationDimension).fill(0.1));
 
     // Innovation: y = z - H * x
@@ -97,7 +97,7 @@ export class KalmanFilter {
   private identityMatrix(n: number, m?: number): number[][] {
     const rows = n;
     const cols = m ?? n;
-    return Array(rows).fill(0).map((_, i) => 
+    return Array(rows).fill(0).map((_, i) =>
       Array(cols).fill(0).map((__, j) => i === j ? 1 : 0)
     );
   }
@@ -110,7 +110,7 @@ export class KalmanFilter {
     const rows = A.length;
     const cols = B[0]?.length ?? 0;
     const inner = B.length;
-    
+
     return Array(rows).fill(0).map((_, i) =>
       Array(cols).fill(0).map((__, j) =>
         Array(inner).fill(0).reduce((sum, ___, k) => sum + (A[i]?.[k] ?? 0) * (B[k]?.[j] ?? 0), 0)
@@ -137,28 +137,28 @@ export class KalmanFilter {
   private matrixInverse(A: number[][]): number[][] {
     // Simplified 2x2 and 1x1 matrix inverse for RSL use case
     const n = A.length;
-    
+
     if (n === 1) {
       return [[1 / (A[0]?.[0] ?? 1)]];
     }
-    
+
     if (n === 2) {
       const a = A[0]?.[0] ?? 1;
       const b = A[0]?.[1] ?? 0;
       const c = A[1]?.[0] ?? 0;
       const d = A[1]?.[1] ?? 1;
       const det = a * d - b * c;
-      
+
       if (Math.abs(det) < 1e-10) {
         return [[1, 0], [0, 1]];
       }
-      
+
       return [
         [d / det, -b / det],
         [-c / det, a / det],
       ];
     }
-    
+
     // For larger matrices, return pseudo-identity
     return this.identityMatrix(n);
   }
@@ -178,9 +178,9 @@ export class ParticleFilter {
     this.config = config;
     const numParticles = config.numParticles ?? 1000;
     const initialMean = config.initialStateMean ?? new Array(config.stateDimension).fill(0);
-    const initialCov = config.initialStateCovariance ?? 
+    const initialCov = config.initialStateCovariance ??
       Array(config.stateDimension).fill(0).map(() => Array(config.stateDimension).fill(0.1));
-    
+
     // Initialize particles from prior
     this.particles = Array(numParticles).fill(0).map(() =>
       initialMean.map((m, i) => m + this.gaussianRandom() * Math.sqrt(initialCov[i]?.[i] ?? 0.1))
@@ -190,9 +190,9 @@ export class ParticleFilter {
 
   predict(): void {
     const F = this.config.transitionMatrix ?? this.identityMatrix(this.config.stateDimension);
-    const Q = this.config.processNoiseCovariance ?? 
+    const Q = this.config.processNoiseCovariance ??
       Array(this.config.stateDimension).fill(0).map(() => Array(this.config.stateDimension).fill(0.01));
-    
+
     this.particles = this.particles.map(particle => {
       // x = F * x + noise
       const mean = this.matrixVectorMultiply(F, particle);
@@ -202,9 +202,9 @@ export class ParticleFilter {
 
   update(observation: number[]): FilterResult {
     const H = this.config.observationMatrix ?? this.identityMatrix(this.config.observationDimension, this.config.stateDimension);
-    const R = this.config.observationNoiseCovariance ?? 
+    const R = this.config.observationNoiseCovariance ??
       Array(this.config.observationDimension).fill(0).map(() => Array(this.config.observationDimension).fill(0.1));
-    
+
     // Update weights based on likelihood
     this.weights = this.particles.map(particle => {
       const predictedObs = this.matrixVectorMultiply(H, particle);
@@ -212,24 +212,24 @@ export class ParticleFilter {
       const likelihood = this.multivariateGaussianLikelihood(innovation, R);
       return likelihood;
     });
-    
+
     // Normalize weights
     const sumWeights = this.weights.reduce((a, b) => a + b, 0);
     this.weights = this.weights.map(w => w / (sumWeights || 1));
-    
+
     // Calculate effective sample size
     const ess = 1 / this.weights.reduce((sum, w) => sum + w * w, 0);
     const resampleThreshold = this.config.resamplingThreshold ?? (this.particles.length / 2);
     const resampled = ess < resampleThreshold;
-       
+
     if (resampled) {
       this.resample();
     }
-    
+
     // Compute state estimate (weighted mean)
     const stateEstimate = this.computeWeightedMean();
     const covariance = this.computeCovariance(stateEstimate);
-    
+
     const result: FilterResult = {
       timestamp: new Date().toISOString(),
       stateEstimate,
@@ -239,7 +239,7 @@ export class ParticleFilter {
       effectiveSampleSize: ess,
       resampled,
     };
-    
+
     this.history.push(result);
     return result;
   }
@@ -251,13 +251,13 @@ export class ParticleFilter {
       acc.push((acc[i - 1] ?? 0) + w);
       return acc;
     }, [] as number[]);
-    
+
     for (let i = 0; i < numParticles; i++) {
       const u = Math.random();
       const idx = cumulativeWeights.findIndex(cw => cw >= u);
       newParticles.push([...this.particles[Math.max(0, idx)] ?? this.particles[0] ?? []]);
     }
-    
+
     this.particles = newParticles;
     this.weights = new Array(numParticles).fill(1 / numParticles);
   }
@@ -276,7 +276,7 @@ export class ParticleFilter {
     const cov = Array(this.config.stateDimension).fill(0).map(() =>
       Array(this.config.stateDimension).fill(0)
     );
-    
+
     for (let i = 0; i < this.particles.length; i++) {
       for (let j = 0; j < this.config.stateDimension; j++) {
         for (let k = 0; k < this.config.stateDimension; k++) {
@@ -286,7 +286,7 @@ export class ParticleFilter {
         }
       }
     }
-    
+
     return cov;
   }
 
@@ -294,14 +294,14 @@ export class ParticleFilter {
     const n = innovation.length;
     const det = cov.reduce((acc, row, i) => acc * (row[i] ?? 1), 1);
     const invCov = cov.map((row, i) => row.map((val, j) => i === j ? 1 / (val || 1) : 0));
-    
+
     let exponent = 0;
     for (let i = 0; i < n; i++) {
       for (let j = 0; j < n; j++) {
         exponent += innovation[i] * (invCov[i]?.[j] ?? 0) * innovation[j];
       }
     }
-    
+
     return Math.exp(-0.5 * exponent) / Math.sqrt(Math.pow(2 * Math.PI, n) * Math.abs(det) + 1e-10);
   }
 

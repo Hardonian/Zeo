@@ -1,22 +1,22 @@
 /**
  * Value Function Implementation
- * 
+ *
  * Creates and manages value functions with explicit, auditable optimization targets.
  */
 
-import type { 
-  ValueFunction, 
-  ValueWeights, 
+import type {
+  ValueFunction,
+  ValueWeights,
   ValueComponent,
   ValueValidationResult,
   ValueValidationError,
-  MeasurementScale 
+  MeasurementScale
 } from "./types.js";
 
 const VALID_COMPONENTS: ValueComponent[] = [
   "utility",
   "downside_penalty",
-  "regret_penalty", 
+  "regret_penalty",
   "irreversibility_penalty",
   "fairness_penalty"
 ];
@@ -39,7 +39,7 @@ export function createValueFunction(
   description?: string
 ): ValueFunction {
   const now = new Date();
-  
+
   const weights: ValueWeights = {
     utility: components.utility ?? 1.0,
     downside_penalty: components.downside_penalty ?? 0.0,
@@ -68,9 +68,9 @@ export function normalizeWeights(weights: ValueWeights): ValueWeights {
     weights.irreversibility_penalty,
     weights.fairness_penalty ?? 0
   ];
-  
+
   const sum = values.reduce((a, b) => a + b, 0);
-  
+
   if (sum === 0) {
     return {
       utility: 1.0,
@@ -80,7 +80,7 @@ export function normalizeWeights(weights: ValueWeights): ValueWeights {
       fairness_penalty: 0
     };
   }
-  
+
   return {
     utility: weights.utility / sum,
     downside_penalty: weights.downside_penalty / sum,
@@ -141,14 +141,14 @@ export function validateValueFunction(
     weights.fairness_penalty ?? 0
   );
   const totalWeight = Object.values(weights).reduce((a, b) => a + (b ?? 0), 0);
-  
+
   if (totalWeight > 0 && maxWeight / totalWeight > 0.8) {
     warnings.push({
       code: "WEIGHT_DOMINANCE",
       message: `Single component dominates with ${(maxWeight/totalWeight * 100).toFixed(1)}% of weight. Outcome sensitivity may be reduced.`,
       severity: "warning",
       valueFunctionId: valueFunction.id,
-      details: { 
+      details: {
         maxWeightRatio: maxWeight / totalWeight,
         dominantComponent: Object.entries(weights)
           .find(([_, v]) => v === maxWeight)?.[0]
@@ -164,27 +164,27 @@ export function computeValueScore(
   componentValues: Record<ValueComponent, number>
 ): number {
   const weights = valueFunction.components;
-  
+
   let score = 0;
   score += (componentValues.utility ?? 0) * weights.utility;
   score += (componentValues.downside_penalty ?? 0) * weights.downside_penalty;
   score += (componentValues.regret_penalty ?? 0) * weights.regret_penalty;
   score += (componentValues.irreversibility_penalty ?? 0) * weights.irreversibility_penalty;
   score += (componentValues.fairness_penalty ?? 0) * (weights.fairness_penalty ?? 0);
-  
+
   return score;
 }
 
 export function getActiveComponents(valueFunction: ValueFunction): ValueComponent[] {
   const active: ValueComponent[] = [];
   const weights = valueFunction.components;
-  
+
   if (weights.utility > 0) active.push("utility");
   if (weights.downside_penalty > 0) active.push("downside_penalty");
   if (weights.regret_penalty > 0) active.push("regret_penalty");
   if (weights.irreversibility_penalty > 0) active.push("irreversibility_penalty");
   if (weights.fairness_penalty && weights.fairness_penalty > 0) active.push("fairness_penalty");
-  
+
   return active;
 }
 
@@ -193,20 +193,20 @@ export function compareValueFunctions(
   vf2: ValueFunction
 ): { compatible: boolean; differences: string[] } {
   const differences: string[] = [];
-  
+
   const components1 = getActiveComponents(vf1);
   const components2 = getActiveComponents(vf2);
-  
+
   const onlyIn1 = components1.filter(c => !components2.includes(c));
   const onlyIn2 = components2.filter(c => !components1.includes(c));
-  
+
   if (onlyIn1.length > 0) {
     differences.push(`vf1 has components not in vf2: ${onlyIn1.join(", ")}`);
   }
   if (onlyIn2.length > 0) {
     differences.push(`vf2 has components not in vf1: ${onlyIn2.join(", ")}`);
   }
-  
+
   const sharedComponents = components1.filter(c => components2.includes(c));
   for (const component of sharedComponents) {
     const w1 = vf1.components[component] ?? 0;
@@ -215,7 +215,7 @@ export function compareValueFunctions(
       differences.push(`Weight differs for ${component}: ${w1.toFixed(3)} vs ${w2.toFixed(3)}`);
     }
   }
-  
+
   return {
     compatible: differences.length === 0,
     differences

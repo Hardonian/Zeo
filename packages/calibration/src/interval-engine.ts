@@ -31,7 +31,7 @@ export type ExtendedCalibrationResult = {
     reliability: number;
     resolution: number;
   };
-  
+
   // Interval prediction calibration (new in v0.3.0)
   intervalCalibration: {
     buckets: IntervalCalibrationBucket[];
@@ -39,12 +39,12 @@ export type ExtendedCalibrationResult = {
     coverageBias: number;     // Positive = overcoverage, negative = undercoverage
     avgIntervalWidth: number;
   };
-  
+
   // Granular breakdowns
   byLens: Record<string, ScoreResult>;
   byDomain: Record<string, ScoreResult>;
   byAssumptionType: Record<string, ScoreResult>;
-  
+
   // Epistemic discipline indicators
   miscalibrationPenalty: number;  // Factor to widen future intervals by
   confidenceAdjustment: "increase" | "decrease" | "maintain";
@@ -67,7 +67,7 @@ const defaultOptions: CalibrationOptions = {
 
 /**
  * Interval-aware calibration engine.
- * 
+ *
  * Epistemic discipline:
  * - Calibration adjusts interval WIDTH, not mean beliefs
  * - Poor calibration never narrows future intervals
@@ -141,7 +141,7 @@ export class IntervalCalibrationEngine {
 
   /**
    * Test interval coverage: did X% intervals contain the outcome ~X% of the time?
-   * 
+   *
    * This is the key test for interval calibration.
    */
   testIntervalCoverage(
@@ -194,10 +194,10 @@ export class IntervalCalibrationEngine {
 
   /**
    * Compute calibration adjustment factor.
-   * 
+   *
    * If we're systematically overconfident (intervals too narrow),
    * this returns a factor > 1 to widen future intervals.
-   * 
+   *
    * Epistemic discipline: Never returns factor < 1 (never narrow intervals).
    */
   computeCalibrationAdjustment(): {
@@ -206,7 +206,7 @@ export class IntervalCalibrationEngine {
     rationale: string;
   } {
     const buckets = this.testIntervalCoverage();
-    
+
     if (buckets.length === 0 || this.intervalForecasts.length < 10) {
       return {
         factor: 1.0,
@@ -328,7 +328,7 @@ export class IntervalCalibrationEngine {
    */
   applyCalibrationAdjustment(interval: ProbabilityInterval): ProbabilityInterval {
     const adjustment = this.computeCalibrationAdjustment();
-    
+
     if (adjustment.factor <= 1.0) {
       return interval;
     }
