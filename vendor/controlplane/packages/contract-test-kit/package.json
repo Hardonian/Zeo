@@ -39,7 +39,7 @@
     "@controlplane/observability": "workspace:*",
     "zod": "^3.22.4",
     "chalk": "^5.3.0",
-    "glob": "^10.3.10"
+    "glob": "^13.0.6"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
