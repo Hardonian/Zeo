@@ -19,7 +19,7 @@
     "@zeo/analysis": "workspace:*",
     "@zeo/policy-types": "workspace:*",
     "js-yaml": "^4.1.0",
-    "zod": "^3.22.4"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
