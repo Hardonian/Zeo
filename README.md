@@ -1,5 +1,9 @@
 # Zeo
 
+<!-- BEGIN: REPO HERO -->
+![Zeo — hero generated locally on the GPU stack](assets/repo-hero.png)
+<!-- END: REPO HERO -->
+
 **Zeo is a local-first, composable agent system for deterministic AI pipelines.**
 
 Zeo helps teams run reproducible decision workflows on local infrastructure first, then scale to shared environments without changing core contracts.
