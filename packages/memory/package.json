@@ -22,7 +22,7 @@
     "@zeo/id": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^26.5.1",
     "typescript": "^5.6.3",
     "vitest": "^5.0.0"
   }
