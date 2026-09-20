@@ -28,7 +28,7 @@
     
     <!-- Documentation -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <NoWarn>$(NoWarn);CS1591;NU1903</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
