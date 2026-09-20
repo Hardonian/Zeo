@@ -42,13 +42,6 @@ jobs:
                   git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
                   BRANCH="upstream-sync-auto"
-                  TITLE="Upstream Sync: Policy & Core Hardening"
-                  BODY="Automated upstream sync from ReadyLayer and ControlPlane.
-
-                  This PR incorporates the latest transformations for:
-                  - PolicyEngine Service abstraction (StorageProvider)
-                  - OTEL Tracing integration
-                  - Security hardening"
 
                   # Check for changes
                   if git diff --quiet && git diff --cached --quiet; then
@@ -61,17 +54,15 @@ jobs:
                   git add -A
                   git commit -m "chore: upstream sync for policy engine and core"
                   git push --force-with-lease origin "$BRANCH"
+                  echo "Sync branch pushed to origin/$BRANCH"
 
-                  # Ensure labels exist
-                  gh label create upstream --description "Upstream sync changes" --color "0075ca" 2>/dev/null || true
-                  gh label create automated-pr --description "Created by automation" --color "ededed" 2>/dev/null || true
-
-                  # Create or update PR
-                  EXISTING_PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
-                  if [ -n "$EXISTING_PR" ]; then
-                    gh pr edit "$EXISTING_PR" --title "$TITLE" --body "$BODY"
-                    echo "Updated existing PR #$EXISTING_PR"
+                  # Attempt PR creation (may fail if repo setting blocks it)
+                  # Enable "Allow GitHub Actions to create and approve pull requests" in repo Settings > Actions
+                  if gh pr create --base main --head "$BRANCH" \
+                    --title "Upstream Sync: Policy & Core Hardening" \
+                    --body "Automated upstream sync from ReadyLayer and ControlPlane." \
+                    --label "upstream,automated-pr" 2>/dev/null; then
+                    echo "Pull request created successfully."
                   else
-                    gh pr create --base main --head "$BRANCH" --title "$TITLE" --body "$BODY" --label "upstream,automated-pr"
-                    echo "Created new PR"
+                    echo "::warning::Could not create PR automatically. Enable 'Allow GitHub Actions to create and approve pull requests' in repo Settings > Actions, or create the PR manually from branch '$BRANCH'."
                   fi
