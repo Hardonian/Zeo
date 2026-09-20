@@ -43,15 +43,12 @@ jobs:
 
                   BRANCH="upstream-sync-auto"
                   TITLE="Upstream Sync: Policy & Core Hardening"
-                  BODY=$(cat <<'EOF'
-                  Automated upstream sync from ReadyLayer and ControlPlane.
+                  BODY="Automated upstream sync from ReadyLayer and ControlPlane.
 
                   This PR incorporates the latest transformations for:
                   - PolicyEngine Service abstraction (StorageProvider)
                   - OTEL Tracing integration
-                  - Security hardening
-                  EOF
-                  )
+                  - Security hardening"
 
                   # Check for changes
                   if git diff --quiet && git diff --cached --quiet; then
@@ -64,6 +61,10 @@ jobs:
                   git add -A
                   git commit -m "chore: upstream sync for policy engine and core"
                   git push --force-with-lease origin "$BRANCH"
+
+                  # Ensure labels exist
+                  gh label create upstream --description "Upstream sync changes" --color "0075ca" 2>/dev/null || true
+                  gh label create automated-pr --description "Created by automation" --color "ededed" 2>/dev/null || true
 
                   # Create or update PR
                   EXISTING_PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
