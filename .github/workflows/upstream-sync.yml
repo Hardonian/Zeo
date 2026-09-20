@@ -34,20 +34,43 @@ jobs:
               env:
                   SKIP_GIT_PULL: "false"
 
-            - name: Create Pull Request
-              uses: peter-evans/create-pull-request@v6
-              with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  commit-message: "chore: upstream sync for policy engine and core"
-                  branch: upstream-sync-auto
-                  title: "Upstream Sync: Policy & Core Hardening"
-                  body: |
-                      Automated upstream sync from ReadyLayer and ControlPlane.
+            - name: Commit and Push Changes
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-                      This PR incorporates the latest transformations for:
-                      - PolicyEngine Service abstraction (StorageProvider)
-                      - OTEL Tracing integration
-                      - Security hardening
-                  labels: |
-                      upstream
-                      automated-pr
+                  BRANCH="upstream-sync-auto"
+                  TITLE="Upstream Sync: Policy & Core Hardening"
+                  BODY=$(cat <<'EOF'
+                  Automated upstream sync from ReadyLayer and ControlPlane.
+
+                  This PR incorporates the latest transformations for:
+                  - PolicyEngine Service abstraction (StorageProvider)
+                  - OTEL Tracing integration
+                  - Security hardening
+                  EOF
+                  )
+
+                  # Check for changes
+                  if git diff --quiet && git diff --cached --quiet; then
+                    echo "No changes to sync."
+                    exit 0
+                  fi
+
+                  # Commit and push
+                  git checkout -B "$BRANCH"
+                  git add -A
+                  git commit -m "chore: upstream sync for policy engine and core"
+                  git push --force-with-lease origin "$BRANCH"
+
+                  # Create or update PR
+                  EXISTING_PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+                  if [ -n "$EXISTING_PR" ]; then
+                    gh pr edit "$EXISTING_PR" --title "$TITLE" --body "$BODY"
+                    echo "Updated existing PR #$EXISTING_PR"
+                  else
+                    gh pr create --base main --head "$BRANCH" --title "$TITLE" --body "$BODY" --label "upstream,automated-pr"
+                    echo "Created new PR"
+                  fi
