@@ -22,6 +22,6 @@
         "@zeo/contracts": "workspace:*"
     },
     "devDependencies": {
-        "@types/node": "^25.2.1"
+        "@types/node": "^26.6.1"
     }
 }

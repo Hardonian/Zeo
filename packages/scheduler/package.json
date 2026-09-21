@@ -23,7 +23,7 @@
     "@zeo/kernel": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^20.11.0",
+    "@types/node": "^26.6.1",
     "typescript": "^5.3.3",
     "vitest": "^5.0.0"
   },
