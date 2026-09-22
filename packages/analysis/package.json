@@ -17,7 +17,7 @@
   "dependencies": {
     "zod": "^4.6.5",
     "js-yaml": "^5.4.2",
-    "@babel/parser": "^7.28.6",
+    "@babel/parser": "^7.29.9",
     "@babel/types": "^7.28.6"
   },
   "devDependencies": {
