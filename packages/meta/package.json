@@ -20,7 +20,7 @@
   "dependencies": {
     "@zeo/contracts": "workspace:*",
     "@zeo/lenses": "workspace:*",
-    "nanoid": "^5.0.7"
+    "nanoid": "^6.0.1"
   },
   "devDependencies": {
     "@types/node": "^26.6.1"
