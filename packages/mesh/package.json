@@ -14,7 +14,7 @@
     "@zeo/kernel": "workspace:*",
     "@zeo/contracts": "workspace:*",
     "@zeo/tenant": "workspace:*",
-    "nanoid": "^5.0.7"
+    "nanoid": "^6.0.1"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
