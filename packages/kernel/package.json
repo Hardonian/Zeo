@@ -22,13 +22,13 @@
   },
   "dependencies": {
     "zod": "^4.6.5",
-    "nanoid": "^5.0.7",
+    "nanoid": "^6.0.1",
     "@zeo/contracts": "workspace:*"
   },
   "devDependencies": {
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",
-    "vitest": "^5.0.1",
-    "@types/node": "^26.6.1"
+    "vitest": "^5.0.0",
+    "@types/node": "^26.6.2"
   }
 }

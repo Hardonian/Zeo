@@ -43,3 +43,6 @@ target/
 .coverage
 htmlcov/
 .pytest_cache/
+
+# Regenerable build artifacts (do not track)
+.turbo/
