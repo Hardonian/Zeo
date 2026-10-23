@@ -31,11 +31,18 @@ try {
   process.exit(1);
 }
 
-const lint = spawnSync(
-  'pnpm',
-  ['-C', repoRoot, 'exec', 'eslint', '--max-warnings=0', target],
-  { stdio: 'inherit', shell: true }
-);
+const pnpmEntrypoint = process.env.npm_execpath;
+const lint = pnpmEntrypoint
+  ? spawnSync(
+    process.execPath,
+    [pnpmEntrypoint, '-C', repoRoot, 'exec', 'eslint', '--max-warnings=0', target],
+    { stdio: 'inherit', shell: false }
+  )
+  : spawnSync(
+    process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm',
+    ['-C', repoRoot, 'exec', 'eslint', '--max-warnings=0', target],
+    { stdio: 'inherit', shell: process.platform === 'win32' }
+  );
 
 if (lint.status !== 0) {
   process.exit(lint.status ?? 1);

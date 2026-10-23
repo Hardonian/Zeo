@@ -14,11 +14,15 @@ if (!Number.isSafeInteger(heapSize) || heapSize < 256) {
   console.error("Usage: node scripts/run-pnpm-with-node-options.mjs <pnpm arguments>");
   process.exitCode = 1;
 } else {
-  const executable = process.platform === "win32" ? "pnpm.cmd" : "pnpm";
-  const child = spawn(executable, args, {
+  const pnpmEntrypoint = process.env.npm_execpath;
+  const command = pnpmEntrypoint === undefined
+    ? (process.platform === "win32" ? "pnpm.cmd" : "pnpm")
+    : process.execPath;
+  const commandArguments = pnpmEntrypoint === undefined ? args : [pnpmEntrypoint, ...args];
+  const child = spawn(command, commandArguments, {
     cwd: process.cwd(),
     env: { ...process.env, NODE_OPTIONS: `--max-old-space-size=${heapSize}` },
-    shell: process.platform === "win32",
+    shell: pnpmEntrypoint === undefined && process.platform === "win32",
     stdio: "inherit",
   });
   child.once("error", (error) => {
