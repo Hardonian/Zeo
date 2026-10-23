@@ -84,6 +84,21 @@ status() {
   printf '%s\n' "zeo-dynamo: router is not running. Use $0 start after setting ZEO_DYNAMO_MODEL and ZEO_LOCAL_ENGINE_URL."
 }
 
+health() {
+  check_environment
+  require_command curl
+  dynamo_url="${ZEO_DYNAMO_URL:-http://127.0.0.1:8000}"
+  case "$dynamo_url" in
+    http://*|https://*) ;;
+    *) fail "ZEO_DYNAMO_URL must start with http:// or https://." ;;
+  esac
+  if curl --fail --silent --show-error --max-time 3 "$dynamo_url/health" >/dev/null; then
+    printf '%s\n' "zeo-dynamo: router health check passed at $dynamo_url/health."
+    return
+  fi
+  fail "router health check failed at $dynamo_url/health. Inspect $log_file or run $0 status."
+}
+
 stop() {
   ensure_runtime_dir
   if ! is_running; then
@@ -100,6 +115,7 @@ stop() {
 case "$command_name" in
   start) start ;;
   status) status ;;
+  health) health ;;
   stop) stop ;;
-  *) fail "usage: $0 [start|status|stop]" ;;
+  *) fail "usage: $0 [start|status|health|stop]" ;;
 esac

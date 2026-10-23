@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Fact — Added deterministic Dynamo cache-mesh routing with immutable context stabilization, bounded task-DAG concurrency, local circuit breaking, cloud fallback, and operational startup documentation.
+
 ### Security
 - Override `rollup` to `>=4.58.1` (fixes high CVE: path traversal in extract)
 

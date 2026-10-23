@@ -18,7 +18,6 @@ const DEFAULT_CIRCUIT_FAILURE_THRESHOLD = 3;
 const DEFAULT_CIRCUIT_COOLDOWN_MS = 15_000;
 const DEFAULT_PREFIX_REGISTRY_LIMIT = 2_048;
 const PREFILL_TIMEOUT_MS = 1_500;
-const MAX_ERROR_BODY_LENGTH = 1_024;
 
 type FetchImplementation = (
   input: string,
@@ -164,18 +163,17 @@ export class ZeoCacheMesh extends EventEmitter {
     role: ZeoSubagentRole,
     sessionId: string,
   ): Promise<boolean> {
-    if (this.isLocalCircuitOpen()) return false;
-
-    const { messages, prefixHash } = this.stabilizeContext(systemPrompt, toolManifests, history, role);
-    const envelope = freezeEnvelope({
-      model: this.config.localModelName,
-      messages,
-      ...(toolManifests.length > 0 ? { tools: freezeTools(toolManifests) } : {}),
-      max_tokens: 1,
-      nvext: Object.freeze({ agent_hints: this.synthesizeHints(role, sessionId, 1, true) }),
-    });
-
     try {
+      if (this.isLocalCircuitOpen()) return false;
+
+      const { messages, prefixHash } = this.stabilizeContext(systemPrompt, toolManifests, history, role);
+      const envelope = freezeEnvelope({
+        model: this.config.localModelName,
+        messages,
+        ...(toolManifests.length > 0 ? { tools: freezeTools(toolManifests) } : {}),
+        max_tokens: 1,
+        nvext: Object.freeze({ agent_hints: this.synthesizeHints(role, sessionId, 1, true) }),
+      });
       const response = await this.postCompletion(
         this.config.localDynamoUrl,
         this.config.localAuthToken,
@@ -188,9 +186,11 @@ export class ZeoCacheMesh extends EventEmitter {
         return true;
       }
       this.recordLocalFailure();
+      this.emit("speculative_prefill_failed", Object.freeze({ reason: `Dynamo node responded with HTTP ${response.status}` }));
       return false;
-    } catch {
+    } catch (error: unknown) {
       this.recordLocalFailure();
+      this.emit("speculative_prefill_failed", Object.freeze({ reason: describeFailure(error) }));
       return false;
     }
   }
@@ -331,8 +331,8 @@ export class ZeoCacheMesh extends EventEmitter {
   ): Promise<CompletionPayload> {
     const response = await this.postCompletion(baseUrl, token, envelope, timeoutMs);
     if (!response.ok) {
-      const body = (await response.text()).slice(0, MAX_ERROR_BODY_LENGTH);
-      throw new Error(`${provider} responded with HTTP ${response.status}${body === "" ? "" : `: ${body}`}`);
+      await response.text();
+      throw new Error(`${provider} responded with HTTP ${response.status}.`);
     }
     return parseCompletionPayload(await response.json());
   }
@@ -384,6 +384,7 @@ export class ZeoCacheMesh extends EventEmitter {
     if (this.localCircuitReopensAt === null) return false;
     if (this.now() < this.localCircuitReopensAt) return true;
     this.localCircuitReopensAt = null;
+    this.localFailures = 0;
     return false;
   }
 
@@ -546,7 +547,10 @@ function parseCompletionPayload(payload: unknown): CompletionPayload {
     throw new Error("Inference provider returned an invalid completion payload.");
   }
   const firstChoice = payload.choices[0];
-  const message = isRecord(firstChoice) ? firstChoice.message : undefined;
+  if (!isRecord(firstChoice)) {
+    throw new Error("Inference provider returned no completion choices.");
+  }
+  const message = firstChoice.message;
   const content = isRecord(message) && typeof message.content === "string" ? message.content : "";
   const usage = isRecord(payload.usage) ? payload.usage : {};
   return Object.freeze({
@@ -570,5 +574,8 @@ function elapsedMs(start: number, end: number): number {
 }
 
 function describeFailure(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
+  const message = error instanceof Error ? error.message : String(error);
+  return message
+    .replace(/Bearer\s+[^\s]+/giu, "Bearer [redacted]")
+    .replace(/https?:\/\/([^\s/@:]+):([^\s/@]+)@/giu, "https://[redacted]@[host]");
 }

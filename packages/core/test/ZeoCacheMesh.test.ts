@@ -110,27 +110,87 @@ describe("ZeoCacheMesh", () => {
     expect(mesh.getCircuitState().localCircuitOpen).toBe(true);
     now = 101;
     expect(mesh.getCircuitState().localCircuitOpen).toBe(false);
+    expect(mesh.getCircuitState().localFailures).toBe(0);
   });
 
-  it("runs a dependency DAG and records a typed degraded result", async () => {
+  it("does not include provider response bodies in a dual-route failure", async () => {
     const mesh = new ZeoCacheMesh(config, {
       fetchImplementation: async (input) => {
-        if (input.startsWith("http://local.test")) return completion("local response");
-        return completion("cloud response");
+        if (input.startsWith("http://local.test")) {
+          return new Response("Bearer local-token should not escape", { status: 503 });
+        }
+        throw new Error("Bearer cloud-token should not escape");
       },
     });
-    const harness = new ZeoTaskHarness(mesh);
+
+    await expect(mesh.executeSessionTurn(
+      "lead_architect",
+      "session-3",
+      "system",
+      [],
+      [{ role: "user", content: "inspect" }],
+    )).rejects.toThrow("Bearer [redacted]");
+    await expect(mesh.executeSessionTurn(
+      "lead_architect",
+      "session-4",
+      "system",
+      [],
+      [{ role: "user", content: "inspect" }],
+    )).rejects.not.toThrow("cloud-token");
+  });
+
+  it("runs independent DAG tasks concurrently while preserving input result order", async () => {
+    let active = 0;
+    let peakActive = 0;
+    let started = 0;
+    let releaseBoth: (() => void) | undefined;
+    const bothStarted = new Promise<void>((resolve) => {
+      releaseBoth = resolve;
+    });
+    const mesh = new ZeoCacheMesh(config, {
+      fetchImplementation: async () => {
+        active += 1;
+        peakActive = Math.max(peakActive, active);
+        started += 1;
+        if (started === 2) releaseBoth?.();
+        await bothStarted;
+        active -= 1;
+        return completion("local response");
+      },
+    });
+    const harness = new ZeoTaskHarness(mesh, { maxConcurrency: 2 });
     const run = await harness.run({
       sessionId: "session-2",
       tasks: [
         { id: "explore", role: "ast_explorer", systemPrompt: "system", prompt: "find usage" },
-        { id: "patch", role: "patch_synthesizer", systemPrompt: "system", prompt: "write patch", dependsOn: ["explore"] },
+        { id: "verify", role: "security_verifier", systemPrompt: "system", prompt: "review boundary" },
+        { id: "patch", role: "patch_synthesizer", systemPrompt: "system", prompt: "write patch", dependsOn: ["explore", "verify"] },
       ],
     });
 
-    expect(run.completed).toBe(2);
+    expect(run.completed).toBe(3);
     expect(run.failed).toBe(0);
-    expect(run.results.map((result) => result.taskId)).toEqual(["explore", "patch"]);
+    expect(peakActive).toBe(2);
+    expect(run.results.map((result) => result.taskId)).toEqual(["explore", "verify", "patch"]);
+  });
+
+  it("emits a non-silent speculative-prefill failure", async () => {
+    const mesh = new ZeoCacheMesh(config, {
+      fetchImplementation: async () => new Response("not available", { status: 503 }),
+    });
+    const failures: string[] = [];
+    mesh.on("speculative_prefill_failed", (event: { readonly reason: string }) => failures.push(event.reason));
+
+    const warmed = await mesh.triggerSpeculativePrefill(
+      "system",
+      [],
+      [{ role: "user", content: "tool pending" }],
+      "patch_synthesizer",
+      "session-5",
+    );
+
+    expect(warmed).toBe(false);
+    expect(failures).toEqual(["Dynamo node responded with HTTP 503"]);
   });
 });
 

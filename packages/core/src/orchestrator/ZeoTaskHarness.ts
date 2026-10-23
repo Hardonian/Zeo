@@ -47,65 +47,39 @@ export interface ZeoTaskRun {
   readonly failed: number;
 }
 
+export interface ZeoTaskHarnessConfig {
+  readonly maxConcurrency?: number;
+}
+
 /**
  * Executes a validated dependency DAG in deterministic topological order.
  * Individual inference failures become typed task failures so a caller can
  * render a degraded result instead of propagating a user-facing 500.
  */
 export class ZeoTaskHarness {
-  public constructor(private readonly cacheMesh: ZeoCacheMesh) {}
+  private readonly maxConcurrency: number;
+
+  public constructor(
+    private readonly cacheMesh: ZeoCacheMesh,
+    config: ZeoTaskHarnessConfig = {},
+  ) {
+    this.maxConcurrency = config.maxConcurrency ?? 4;
+    if (!Number.isSafeInteger(this.maxConcurrency) || this.maxConcurrency <= 0) {
+      throw new Error("Zeo task harness maxConcurrency must be a positive integer.");
+    }
+  }
 
   public async run(plan: ZeoTaskPlan): Promise<ZeoTaskRun> {
     validatePlan(plan);
-    const orderedTasks = topologicalOrder(plan.tasks);
+    const executionLayers = buildExecutionLayers(plan.tasks);
     const results = new Map<string, ZeoTaskResult>();
 
-    for (const task of orderedTasks) {
-      const dependencies = (task.dependsOn ?? []).map((dependencyId) => results.get(dependencyId));
-      const failedDependency = dependencies.find((dependency): dependency is ZeoTaskFailure => dependency?.status === "failed");
-      if (failedDependency !== undefined) {
-        results.set(task.id, Object.freeze({
-          status: "failed",
-          taskId: task.id,
-          role: task.role,
-          error: `Dependency ${failedDependency.taskId} did not complete: ${failedDependency.error}`,
-        }));
-        continue;
-      }
-
-      const history = buildHistory(task, dependencies);
-      const pendingTool = task.pendingTool;
-      if (pendingTool !== undefined && this.cacheMesh.shouldSpeculativelyPrefill(pendingTool.estimatedDurationMs)) {
-        void this.cacheMesh.triggerSpeculativePrefill(
-          task.systemPrompt,
-          task.toolManifests ?? [],
-          history,
-          task.role,
-          plan.sessionId,
-        );
-      }
-
-      try {
-        const result = await this.cacheMesh.executeSessionTurn(
-          task.role,
-          plan.sessionId,
-          task.systemPrompt,
-          task.toolManifests ?? [],
-          history,
-          {
-            expectedTokens: task.expectedTokens,
-            isPendingToolReturn: pendingTool !== undefined,
-            forceCloudFrontier: task.forceCloudFrontier,
-          },
-        );
-        results.set(task.id, Object.freeze({ status: "completed", taskId: task.id, role: task.role, result }));
-      } catch (error: unknown) {
-        results.set(task.id, Object.freeze({
-          status: "failed",
-          taskId: task.id,
-          role: task.role,
-          error: describeFailure(error),
-        }));
+    for (const layer of executionLayers) {
+      for (const batch of partition(layer, this.maxConcurrency)) {
+        const batchResults = await Promise.all(batch.map((task) => this.executeTask(task, plan.sessionId, results)));
+        for (const result of batchResults) {
+          results.set(result.taskId, result);
+        }
       }
     }
 
@@ -119,6 +93,57 @@ export class ZeoTaskHarness {
     });
   }
 
+  private async executeTask(
+    task: ZeoTaskDefinition,
+    sessionId: string,
+    priorResults: ReadonlyMap<string, ZeoTaskResult>,
+  ): Promise<ZeoTaskResult> {
+    const dependencies = (task.dependsOn ?? []).map((dependencyId) => priorResults.get(dependencyId));
+    const failedDependency = dependencies.find((dependency): dependency is ZeoTaskFailure => dependency?.status === "failed");
+    if (failedDependency !== undefined) {
+      return Object.freeze({
+        status: "failed",
+        taskId: task.id,
+        role: task.role,
+        error: `Dependency ${failedDependency.taskId} did not complete: ${failedDependency.error}`,
+      });
+    }
+
+    const history = buildHistory(task, dependencies);
+    const pendingTool = task.pendingTool;
+    if (pendingTool !== undefined && this.cacheMesh.shouldSpeculativelyPrefill(pendingTool.estimatedDurationMs)) {
+      void this.cacheMesh.triggerSpeculativePrefill(
+        task.systemPrompt,
+        task.toolManifests ?? [],
+        history,
+        task.role,
+        sessionId,
+      );
+    }
+
+    try {
+      const result = await this.cacheMesh.executeSessionTurn(
+        task.role,
+        sessionId,
+        task.systemPrompt,
+        task.toolManifests ?? [],
+        history,
+        {
+          expectedTokens: task.expectedTokens,
+          isPendingToolReturn: pendingTool !== undefined,
+          forceCloudFrontier: task.forceCloudFrontier,
+        },
+      );
+      return Object.freeze({ status: "completed", taskId: task.id, role: task.role, result });
+    } catch (error: unknown) {
+      return Object.freeze({
+        status: "failed",
+        taskId: task.id,
+        role: task.role,
+        error: describeFailure(error),
+      });
+    }
+  }
 }
 
 function validatePlan(plan: ZeoTaskPlan): void {
@@ -148,26 +173,42 @@ function validatePlan(plan: ZeoTaskPlan): void {
   }
 }
 
-function topologicalOrder(tasks: readonly ZeoTaskDefinition[]): readonly ZeoTaskDefinition[] {
+function buildExecutionLayers(tasks: readonly ZeoTaskDefinition[]): readonly (readonly ZeoTaskDefinition[])[] {
   const byId = new Map(tasks.map((task) => [task.id, task] as const));
+  const depths = new Map<string, number>();
   const visiting = new Set<string>();
-  const visited = new Set<string>();
-  const ordered: ZeoTaskDefinition[] = [];
 
-  const visit = (taskId: string): void => {
-    if (visited.has(taskId)) return;
+  const depthFor = (taskId: string): number => {
+    const knownDepth = depths.get(taskId);
+    if (knownDepth !== undefined) return knownDepth;
     if (visiting.has(taskId)) throw new Error(`Zeo task plan has a dependency cycle at ${taskId}.`);
     const task = byId.get(taskId);
     if (task === undefined) throw new Error(`Zeo task plan is missing task ${taskId}.`);
     visiting.add(taskId);
-    for (const dependencyId of task.dependsOn ?? []) visit(dependencyId);
+    const depth = (task.dependsOn ?? []).reduce((maximum, dependencyId) => Math.max(maximum, depthFor(dependencyId) + 1), 0);
     visiting.delete(taskId);
-    visited.add(taskId);
-    ordered.push(task);
+    depths.set(taskId, depth);
+    return depth;
   };
 
-  for (const task of tasks) visit(task.id);
-  return Object.freeze(ordered);
+  for (const task of tasks) depthFor(task.id);
+  const layers: ZeoTaskDefinition[][] = [];
+  for (const task of tasks) {
+    const depth = depths.get(task.id);
+    if (depth === undefined) throw new Error(`Zeo task plan did not resolve depth for ${task.id}.`);
+    const layer = layers[depth] ?? [];
+    layer.push(task);
+    layers[depth] = layer;
+  }
+  return Object.freeze(layers.map((layer) => Object.freeze(layer)));
+}
+
+function partition<T>(items: readonly T[], size: number): readonly (readonly T[])[] {
+  const partitions: T[][] = [];
+  for (let index = 0; index < items.length; index += size) {
+    partitions.push(items.slice(index, index + size));
+  }
+  return Object.freeze(partitions.map((partition) => Object.freeze(partition)));
 }
 
 function buildHistory(
