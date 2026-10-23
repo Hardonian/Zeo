@@ -14,7 +14,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run",
+    "test": "pnpm --filter @zeo/adapters build && pnpm --filter @zeo/warehouse build && vitest run",
     "lint": "eslint ."
   },
   "dependencies": {

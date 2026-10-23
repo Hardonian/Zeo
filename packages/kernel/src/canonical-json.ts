@@ -14,6 +14,14 @@ export function canonicalizeValue(value: unknown): string {
     return stringify(value);
 }
 
+type JsonConvertible = {
+    toJSON(): unknown;
+};
+
+function hasToJson(value: object): value is JsonConvertible {
+    return "toJSON" in value && typeof (value as Record<string, unknown>).toJSON === "function";
+}
+
 function stringify(value: unknown): string {
     if (value === null) return "null";
 
@@ -46,19 +54,19 @@ function stringify(value: unknown): string {
     }
 
     if (typeof value === "object") {
-        const keys = Object.keys(value as Record<string, unknown>).sort();
+        if (hasToJson(value)) {
+            return stringify(value.toJSON());
+        }
+
+        const record = value as Record<string, unknown>;
+        const keys = Object.keys(record).sort();
         const pairs = keys.map(k => {
-            const v = (value as Record<string, unknown>)[k];
+            const v = record[k];
             if (v === undefined) return null;
             return `${JSON.stringify(k)}:${stringify(v)}`;
         }).filter(x => x !== null);
 
         return `{${pairs.join(",")}}`;
-    }
-
-    // ToJSON support
-    if (value && typeof (value as any).toJSON === "function") {
-        return stringify((value as any).toJSON());
     }
 
     throw new Error(`Unsupported type for Canonical JSON: ${typeof value}`);
