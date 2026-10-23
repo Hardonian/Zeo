@@ -21,7 +21,7 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "zod": "^4.6.5",
+    "zod": "^4.6.6",
     "nanoid": "^6.0.1",
     "@zeo/contracts": "workspace:*"
   },
