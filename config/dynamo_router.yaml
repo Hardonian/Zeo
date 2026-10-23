@@ -1,0 +1,45 @@
+# ZEO's Dynamo deployment contract. Secrets are injected by the runtime and
+# never written to this file. The local OpenAI-compatible endpoint is consumed
+# exclusively through ZeoCacheMesh.
+apiVersion: dynamo.nvidia.com/v1alpha1
+kind: DynamoGraphDeployment
+metadata:
+  name: zeo-agentic-inference
+spec:
+  frontend:
+    protocol: openai-chat-completions
+    listen:
+      host: 0.0.0.0
+      port: 8000
+    requestLimits:
+      maxConcurrentRequests: 32
+      requestTimeoutMs: 30000
+  router:
+    type: kv-aware
+    indexer:
+      type: flash
+      radixPrefixCache: true
+      cacheKeyHeader: x-zeo-radix-prefix-hash
+      evictionPolicy: lru
+      maxPrefixEntries: 2048
+    scheduling:
+      agentHintsField: nvext.agent_hints
+      prioritizeBy: priority
+      enableSpeculativePrefill: true
+  kvBlockManager:
+    lifecycle: ephemeral-aware
+    ephemeralBlockType: thinking
+    reclaimClosedEphemeralBlocks: true
+    preserveToolCallBlocks: true
+  workers:
+    - name: local-inference
+      engine: sglang
+      model: ${ZEO_DYNAMO_MODEL}
+      endpoint: ${ZEO_LOCAL_ENGINE_URL}
+      health:
+        path: /health
+        intervalMs: 5000
+        timeoutMs: 1500
+      cache:
+        kvReuse: true
+        cacheLocality: prefer

@@ -5,6 +5,10 @@ export * from "./canonicalize.js"; // This file seems to use node:crypto, need t
 export * from "./evidence.js";
 export * from "./packets.js";
 export * from "./regime-integration.js";
+export * from "./types/cache-mesh.js";
+export * from "./cache/ZeoCacheMesh.js";
+export * from "./config/zeo-cache.config.js";
+export * from "./orchestrator/ZeoTaskHarness.js";
 
 // Re-exports from Kernel (formerly local files)
 export {
