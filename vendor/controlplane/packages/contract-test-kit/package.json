@@ -37,7 +37,7 @@
   "dependencies": {
     "@controlplane/contracts": "workspace:*",
     "@controlplane/observability": "workspace:*",
-    "zod": "^4.6.5",
+    "zod": "^3.25.76",
     "chalk": "^5.3.0",
     "glob": "^13.0.6"
   },

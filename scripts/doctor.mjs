@@ -83,8 +83,8 @@ if (!existsSync(resolve(root, 'apps/web/src/app/not-found.tsx'))) {
   fail('config', 'apps/web/src/app/not-found.tsx is missing');
 }
 
-runStep('quality', 'Typecheck config loads', 'pnpm -r typecheck --help > /dev/null');
-runStep('quality', 'Lint config loads', 'pnpm -r lint --help > /dev/null');
+runStep('quality', 'Typecheck config loads', 'pnpm -r typecheck --help');
+runStep('quality', 'Lint config loads', 'pnpm -r lint --help');
 
 console.log('\nStaged checks:');
 runStep('quality', 'lint', 'pnpm lint');
