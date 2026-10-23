@@ -1,17 +1,15 @@
 ## Summary
+Describe what changed and why.
 
-## Type
-- [ ] Bug fix
-- [ ] Feature
-- [ ] Refactor
-- [ ] Docs
-- [ ] Security
+## Epistemic integrity checklist
+- [ ] No false precision added; uncertainty is represented as ranges where appropriate.
+- [ ] Any new Facts include provenance pointers and checksums.
+- [ ] Assumptions introduced are explicit and surfaced.
 
-## Validation
-- [ ] CI passed
-- [ ] Security impact reviewed
-- [ ] Backward compatibility reviewed
+## Verification
+- [ ] pnpm -r typecheck
+- [ ] pnpm -r test
+- [ ] pnpm -r lint
 
-## AI-assisted changes (if used)
-- [ ] Reviewed by human
-- [ ] No secrets in prompts
+## Notes
+Anything reviewers should pay attention to (assumption changes, new dependencies, etc.).
