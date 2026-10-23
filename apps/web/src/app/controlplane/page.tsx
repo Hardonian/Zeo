@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
+import type { JSX } from "react";
 
 export const metadata = {
   title: 'Control Plane | Zeo',

@@ -13,6 +13,24 @@ function run(command, args, options = {}) {
   }
 }
 
+function runPnpm(args, options = {}) {
+  const pnpmEntrypoint = process.env.npm_execpath;
+  if (pnpmEntrypoint) {
+    const result = spawnSync(process.execPath, [pnpmEntrypoint, ...args], {
+      stdio: 'inherit',
+      shell: false,
+      ...options,
+    });
+
+    if (result.status !== 0) {
+      process.exit(result.status ?? 1);
+    }
+    return;
+  }
+
+  run('pnpm', args, options);
+}
+
 function getRepoRoot() {
   const git = spawnSync('git', ['rev-parse', '--show-toplevel'], {
     encoding: 'utf8',
@@ -46,7 +64,7 @@ try {
 }
 
 for (const dep of deps) {
-  run('pnpm', ['--filter', dep, 'build'], { cwd: repoRoot });
+  runPnpm(['--filter', dep, 'build'], { cwd: repoRoot });
 }
 
 const [command, ...args] = commandArgs;
