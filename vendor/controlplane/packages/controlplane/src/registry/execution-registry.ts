@@ -10,7 +10,7 @@
  * failures are surfaced as structured diagnostics so the operator can fix them.
  */
 import { existsSync } from 'node:fs';
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { listRunners, type RunnerRecord } from './index.js';
@@ -88,7 +88,8 @@ const checkEntrypointExists = (runner: RunnerRecord): PreflightCheck => {
 const checkCommandAvailable = (runner: RunnerRecord): PreflightCheck => {
   const cmd = runner.entrypoint.command;
   try {
-    execSync(`which ${cmd}`, { stdio: 'pipe', encoding: 'utf-8' });
+    const lookupCommand = process.platform === 'win32' ? 'where.exe' : 'which';
+    execFileSync(lookupCommand, [cmd], { stdio: 'pipe', encoding: 'utf-8' });
     return {
       check: 'command-available',
       passed: true,

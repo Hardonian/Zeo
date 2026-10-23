@@ -2,15 +2,23 @@
 
 import { spawn } from "node:child_process";
 
-const args = process.argv.slice(2);
-if (args.length === 0) {
+const suppliedArgs = process.argv.slice(2);
+const heapSizeArgument = suppliedArgs.find((argument) => argument.startsWith("--heap-mb="));
+const args = suppliedArgs.filter((argument) => argument !== heapSizeArgument);
+const heapSize = heapSizeArgument === undefined ? 4096 : Number(heapSizeArgument.slice("--heap-mb=".length));
+
+if (!Number.isSafeInteger(heapSize) || heapSize < 256) {
+  console.error("--heap-mb must be an integer of at least 256.");
+  process.exitCode = 1;
+} else if (args.length === 0) {
   console.error("Usage: node scripts/run-pnpm-with-node-options.mjs <pnpm arguments>");
   process.exitCode = 1;
 } else {
   const executable = process.platform === "win32" ? "pnpm.cmd" : "pnpm";
   const child = spawn(executable, args, {
     cwd: process.cwd(),
-    env: { ...process.env, NODE_OPTIONS: "--max-old-space-size=4096" },
+    env: { ...process.env, NODE_OPTIONS: `--max-old-space-size=${heapSize}` },
+    shell: process.platform === "win32",
     stdio: "inherit",
   });
   child.once("error", (error) => {
