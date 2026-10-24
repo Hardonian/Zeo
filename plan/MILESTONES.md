@@ -3,7 +3,7 @@
 ## Completion map
 
 | Version | Project-plan milestone | Status | Implementation evidence |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | v0.1.0 | M0 — Scaffold | [Fact] Implemented | `packages/contracts`, `packages/core`, `apps/cli`, repository docs, and CI configuration |
 | v0.2.0 | M1 — Core engine loop | [Fact] Implemented | `packages/core/src/engine.ts`, `graph.ts`, `packages/robustness`, and `packages/explain` |
 | v0.3.0 | M2 — Evidence ingestion | [Fact] Implemented | `packages/core/src/evidence.ts`, `packages/warehouse`, and evidence adapters in `packages/adapters` |
@@ -20,7 +20,7 @@ valid after future changes.
 ## Priority completion
 
 | Priority item | Status | Evidence |
-|---|---|---|
+| --- | --- | --- |
 | Deterministic repro-pack output | [Fact] Implemented | `packages/repro-pack/src/pack-builder.ts` derives manifest time from supplied or run evidence; regression test compares complete archives. |
 | License compliance gate | [Fact] Implemented, fail-closed | `scripts/license-check.mjs` accepts both current grouped and legacy flat pnpm JSON. Unapproved licenses continue to block the gate. |
 
