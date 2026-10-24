@@ -45,8 +45,9 @@ export async function exportScenarioPack(
         };
         files[`scenarios/${s.id}/meta.json`] = JSON.stringify(meta, null, 2);
 
-        // TODO: Include eval fixtures if options.includeEvalFixtures is true
-        // This would require fetching run results or separate fixture objects.
+        if (options.includeEvalFixtures && (s as { evalFixtures?: unknown }).evalFixtures) {
+            files[`scenarios/${s.id}/eval-fixtures.json`] = JSON.stringify((s as { evalFixtures?: unknown }).evalFixtures, null, 2);
+        }
     }
 
     const manifest: ScenarioPackManifest = {

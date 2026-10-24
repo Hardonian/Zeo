@@ -15,52 +15,62 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 /**
  * Model Organization
- *
+ * 
  */
 export type Organization = $Result.DefaultSelection<Prisma.$OrganizationPayload>
 /**
+ * Model OrganizationMember
+ * 
+ */
+export type OrganizationMember = $Result.DefaultSelection<Prisma.$OrganizationMemberPayload>
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
+/**
  * Model Repository
- *
+ * 
  */
 export type Repository = $Result.DefaultSelection<Prisma.$RepositoryPayload>
 /**
  * Model Project
- *
+ * 
  */
 export type Project = $Result.DefaultSelection<Prisma.$ProjectPayload>
 /**
  * Model ReadyLayerRun
- *
+ * 
  */
 export type ReadyLayerRun = $Result.DefaultSelection<Prisma.$ReadyLayerRunPayload>
 /**
  * Model EvidenceAttestation
- *
+ * 
  */
 export type EvidenceAttestation = $Result.DefaultSelection<Prisma.$EvidenceAttestationPayload>
 /**
  * Model EvidenceObject
- *
+ * 
  */
 export type EvidenceObject = $Result.DefaultSelection<Prisma.$EvidenceObjectPayload>
 /**
  * Model PolicyPack
- *
+ * 
  */
 export type PolicyPack = $Result.DefaultSelection<Prisma.$PolicyPackPayload>
 /**
  * Model PolicyPackAssignment
- *
+ * 
  */
 export type PolicyPackAssignment = $Result.DefaultSelection<Prisma.$PolicyPackAssignmentPayload>
 /**
  * Model WebhookReceipt
- *
+ * 
  */
 export type WebhookReceipt = $Result.DefaultSelection<Prisma.$WebhookReceiptPayload>
 /**
  * Model DeadLetterJob
- *
+ * 
  */
 export type DeadLetterJob = $Result.DefaultSelection<Prisma.$DeadLetterJobPayload>
 
@@ -70,7 +80,9 @@ export type DeadLetterJob = $Result.DefaultSelection<Prisma.$DeadLetterJobPayloa
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
- * const prisma = new PrismaClient()
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
  * // Fetch zero or more Organizations
  * const organizations = await prisma.organization.findMany()
  * ```
@@ -91,7 +103,9 @@ export class PrismaClient<
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
-   * const prisma = new PrismaClient()
+   * const prisma = new PrismaClient({
+   *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+   * })
    * // Fetch zero or more Organizations
    * const organizations = await prisma.organization.findMany()
    * ```
@@ -100,7 +114,7 @@ export class PrismaClient<
    * Read more in our [docs](https://pris.ly/d/client).
    */
 
-  constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
+  constructor(optionsArg ?: Prisma.PrismaClientConstructorArgs<ClientOptions>);
   $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): PrismaClient;
 
   /**
@@ -170,10 +184,10 @@ export class PrismaClient<
    *   prisma.user.create({ data: { name: 'Alice' } }),
    * ])
    * ```
-   *
-   * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
+   * 
+   * Read more in our [docs](https://www.prisma.io/docs/orm/prisma-client/queries/transactions).
    */
-  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
+  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
   $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<R>
 
@@ -190,6 +204,26 @@ export class PrismaClient<
     * ```
     */
   get organization(): Prisma.OrganizationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.organizationMember`: Exposes CRUD operations for the **OrganizationMember** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more OrganizationMembers
+    * const organizationMembers = await prisma.organizationMember.findMany()
+    * ```
+    */
+  get organizationMember(): Prisma.OrganizationMemberDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.auditLog`: Exposes CRUD operations for the **AuditLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AuditLogs
+    * const auditLogs = await prisma.auditLog.findMany()
+    * ```
+    */
+  get auditLog(): Prisma.AuditLogDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.repository`: Exposes CRUD operations for the **Repository** model.
@@ -330,8 +364,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.4.0
-   * Query Engine version: ab56fe763f921d033a6c195e7ddeb3e255bdbb57
+   * Prisma Client JS version: 7.10.0
+   * Query Engine version: 0edf323efd1d98336f3f0a68684b56f689b900d3
    */
   export type PrismaVersion = {
     client: string
@@ -466,6 +500,19 @@ export namespace Prisma {
   };
 
   /**
+   * Resolved type of the argument passed to the `PrismaClient` constructor.
+   *
+   * When called without a narrower options type (the common case), this resolves
+   * to `PrismaClientOptions` directly, which produces a clear TypeScript error
+   * message (`not assignable to parameter of type 'PrismaClientOptions'`) when
+   * the argument is missing or incomplete. When the user supplies a narrower
+   * options type (e.g. via a literal), it falls back to `Subset` to keep
+   * filtering out unknown properties.
+   */
+  export type PrismaClientConstructorArgs<Options extends PrismaClientOptions> =
+    [PrismaClientOptions] extends [Options] ? PrismaClientOptions : Subset<Options, PrismaClientOptions>;
+
+  /**
    * SelectSubset
    * @desc From `T` pick properties that exist in `U`. Simple version of Intersection.
    * Additionally, it validates, if both select and include are present. If the case, it errors.
@@ -497,7 +544,7 @@ export namespace Prisma {
   type XOR<T, U> =
     T extends object ?
     U extends object ?
-      (Without<T, U> & U) | (Without<U, T> & T)
+      ((Without<T, U> & U) | (Without<U, T> & T)) & object
     : U : T
 
 
@@ -715,6 +762,8 @@ export namespace Prisma {
 
   export const ModelName: {
     Organization: 'Organization',
+    OrganizationMember: 'OrganizationMember',
+    AuditLog: 'AuditLog',
     Repository: 'Repository',
     Project: 'Project',
     ReadyLayerRun: 'ReadyLayerRun',
@@ -739,7 +788,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "organization" | "repository" | "project" | "readyLayerRun" | "evidenceAttestation" | "evidenceObject" | "policyPack" | "policyPackAssignment" | "webhookReceipt" | "deadLetterJob"
+      modelProps: "organization" | "organizationMember" | "auditLog" | "repository" | "project" | "readyLayerRun" | "evidenceAttestation" | "evidenceObject" | "policyPack" | "policyPackAssignment" | "webhookReceipt" | "deadLetterJob"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -814,6 +863,154 @@ export namespace Prisma {
           count: {
             args: Prisma.OrganizationCountArgs<ExtArgs>
             result: $Utils.Optional<OrganizationCountAggregateOutputType> | number
+          }
+        }
+      }
+      OrganizationMember: {
+        payload: Prisma.$OrganizationMemberPayload<ExtArgs>
+        fields: Prisma.OrganizationMemberFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.OrganizationMemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.OrganizationMemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
+          }
+          findFirst: {
+            args: Prisma.OrganizationMemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.OrganizationMemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
+          }
+          findMany: {
+            args: Prisma.OrganizationMemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>[]
+          }
+          create: {
+            args: Prisma.OrganizationMemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
+          }
+          createMany: {
+            args: Prisma.OrganizationMemberCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.OrganizationMemberCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>[]
+          }
+          delete: {
+            args: Prisma.OrganizationMemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
+          }
+          update: {
+            args: Prisma.OrganizationMemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
+          }
+          deleteMany: {
+            args: Prisma.OrganizationMemberDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.OrganizationMemberUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.OrganizationMemberUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>[]
+          }
+          upsert: {
+            args: Prisma.OrganizationMemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
+          }
+          aggregate: {
+            args: Prisma.OrganizationMemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOrganizationMember>
+          }
+          groupBy: {
+            args: Prisma.OrganizationMemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OrganizationMemberGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.OrganizationMemberCountArgs<ExtArgs>
+            result: $Utils.Optional<OrganizationMemberCountAggregateOutputType> | number
+          }
+        }
+      }
+      AuditLog: {
+        payload: Prisma.$AuditLogPayload<ExtArgs>
+        fields: Prisma.AuditLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AuditLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AuditLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          findFirst: {
+            args: Prisma.AuditLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AuditLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          findMany: {
+            args: Prisma.AuditLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          create: {
+            args: Prisma.AuditLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          createMany: {
+            args: Prisma.AuditLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AuditLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          delete: {
+            args: Prisma.AuditLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          update: {
+            args: Prisma.AuditLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.AuditLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AuditLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AuditLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.AuditLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          aggregate: {
+            args: Prisma.AuditLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAuditLog>
+          }
+          groupBy: {
+            args: Prisma.AuditLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AuditLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AuditLogCountArgs<ExtArgs>
+            result: $Utils.Optional<AuditLogCountAggregateOutputType> | number
           }
         }
       }
@@ -1520,7 +1717,7 @@ export namespace Prisma {
      * ```
      * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
-     *
+     * 
      * // Emit as events only
      * log: [
      *   { emit: 'event', level: 'query' },
@@ -1528,14 +1725,14 @@ export namespace Prisma {
      *   { emit: 'event', level: 'warn' }
      *   { emit: 'event', level: 'error' }
      * ]
-     *
+     * 
      * / Emit as events and log to stdout
      * og: [
      *  { emit: 'stdout', level: 'query' },
      *  { emit: 'stdout', level: 'info' },
      *  { emit: 'stdout', level: 'warn' }
      *  { emit: 'stdout', level: 'error' }
-     *
+     * 
      * ```
      * Read more in our [docs](https://pris.ly/d/logging).
      */
@@ -1551,16 +1748,31 @@ export namespace Prisma {
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
     /**
-     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
+     * A driver adapter that PrismaClient uses to connect to your database, such as the ones provided by `@prisma/adapter-pg`, `@prisma/adapter-libsql`, `@prisma/adapter-planetscale`, etc.
+     * 
+     * A driver adapter is **required** unless you connect to your database through Prisma Accelerate (in which case use `accelerateUrl` instead).
+     * 
+     * Learn more: https://pris.ly/d/driver-adapters
+     * 
+     * @example
+     * ```ts
+     * import { PrismaPg } from '@prisma/adapter-pg'
+     * import { PrismaClient } from './generated/prisma/client'
+     * 
+     * const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+     * const prisma = new PrismaClient({ adapter })
+     * ```
      */
     adapter?: runtime.SqlDriverAdapterFactory
     /**
-     * Prisma Accelerate URL allowing the client to connect through Accelerate instead of a direct database.
+     * The Prisma Accelerate connection URL. Use this option to connect to your database through Prisma Accelerate instead of using a driver adapter to connect directly.
+     * 
+     * Learn more: https://pris.ly/d/accelerate
      */
     accelerateUrl?: string
     /**
      * Global configuration for omitting model fields by default.
-     *
+     * 
      * @example
      * ```
      * const prisma = new PrismaClient({
@@ -1576,7 +1788,7 @@ export namespace Prisma {
     /**
      * SQL commenter plugins that add metadata to SQL queries as comments.
      * Comments follow the sqlcommenter format: https://google.github.io/sqlcommenter/
-     *
+     * 
      * @example
      * ```
      * const prisma = new PrismaClient({
@@ -1592,6 +1804,8 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     organization?: OrganizationOmit
+    organizationMember?: OrganizationMemberOmit
+    auditLog?: AuditLogOmit
     repository?: RepositoryOmit
     project?: ProjectOmit
     readyLayerRun?: ReadyLayerRunOmit
@@ -1688,6 +1902,8 @@ export namespace Prisma {
     policyPacks: number
     policyAssignments: number
     webhookReceipts: number
+    members: number
+    auditLogs: number
   }
 
   export type OrganizationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1698,6 +1914,8 @@ export namespace Prisma {
     policyPacks?: boolean | OrganizationCountOutputTypeCountPolicyPacksArgs
     policyAssignments?: boolean | OrganizationCountOutputTypeCountPolicyAssignmentsArgs
     webhookReceipts?: boolean | OrganizationCountOutputTypeCountWebhookReceiptsArgs
+    members?: boolean | OrganizationCountOutputTypeCountMembersArgs
+    auditLogs?: boolean | OrganizationCountOutputTypeCountAuditLogsArgs
   }
 
   // Custom InputTypes
@@ -1758,6 +1976,20 @@ export namespace Prisma {
    */
   export type OrganizationCountOutputTypeCountWebhookReceiptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WebhookReceiptWhereInput
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrganizationMemberWhereInput
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
   }
 
 
@@ -1941,43 +2173,43 @@ export namespace Prisma {
     where?: OrganizationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Organizations to fetch.
      */
     orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: OrganizationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Organizations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Organizations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Organizations
     **/
     _count?: true | OrganizationCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: OrganizationMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: OrganizationMaxAggregateInputType
@@ -2040,6 +2272,8 @@ export namespace Prisma {
     policyPacks?: boolean | Organization$policyPacksArgs<ExtArgs>
     policyAssignments?: boolean | Organization$policyAssignmentsArgs<ExtArgs>
     webhookReceipts?: boolean | Organization$webhookReceiptsArgs<ExtArgs>
+    members?: boolean | Organization$membersArgs<ExtArgs>
+    auditLogs?: boolean | Organization$auditLogsArgs<ExtArgs>
     _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["organization"]>
 
@@ -2070,6 +2304,8 @@ export namespace Prisma {
     policyPacks?: boolean | Organization$policyPacksArgs<ExtArgs>
     policyAssignments?: boolean | Organization$policyAssignmentsArgs<ExtArgs>
     webhookReceipts?: boolean | Organization$webhookReceiptsArgs<ExtArgs>
+    members?: boolean | Organization$membersArgs<ExtArgs>
+    auditLogs?: boolean | Organization$auditLogsArgs<ExtArgs>
     _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2085,6 +2321,8 @@ export namespace Prisma {
       policyPacks: Prisma.$PolicyPackPayload<ExtArgs>[]
       policyAssignments: Prisma.$PolicyPackAssignmentPayload<ExtArgs>[]
       webhookReceipts: Prisma.$WebhookReceiptPayload<ExtArgs>[]
+      members: Prisma.$OrganizationMemberPayload<ExtArgs>[]
+      auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2169,13 +2407,13 @@ export namespace Prisma {
      * @example
      * // Get all Organizations
      * const organizations = await prisma.organization.findMany()
-     *
+     * 
      * // Get first 10 Organizations
      * const organizations = await prisma.organization.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const organizationWithIdOnly = await prisma.organization.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends OrganizationFindManyArgs>(args?: SelectSubset<T, OrganizationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -2189,7 +2427,7 @@ export namespace Prisma {
      *     // ... data to create a Organization
      *   }
      * })
-     *
+     * 
      */
     create<T extends OrganizationCreateArgs>(args: SelectSubset<T, OrganizationCreateArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2203,7 +2441,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends OrganizationCreateManyArgs>(args?: SelectSubset<T, OrganizationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2217,7 +2455,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Organizations and only return the `id`
      * const organizationWithIdOnly = await prisma.organization.createManyAndReturn({
      *   select: { id: true },
@@ -2227,7 +2465,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends OrganizationCreateManyAndReturnArgs>(args?: SelectSubset<T, OrganizationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -2241,7 +2479,7 @@ export namespace Prisma {
      *     // ... filter to delete one Organization
      *   }
      * })
-     *
+     * 
      */
     delete<T extends OrganizationDeleteArgs>(args: SelectSubset<T, OrganizationDeleteArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2258,7 +2496,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends OrganizationUpdateArgs>(args: SelectSubset<T, OrganizationUpdateArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2272,7 +2510,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends OrganizationDeleteManyArgs>(args?: SelectSubset<T, OrganizationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2291,7 +2529,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends OrganizationUpdateManyArgs>(args: SelectSubset<T, OrganizationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2308,7 +2546,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Organizations and only return the `id`
      * const organizationWithIdOnly = await prisma.organization.updateManyAndReturn({
      *   select: { id: true },
@@ -2321,7 +2559,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends OrganizationUpdateManyAndReturnArgs>(args: SelectSubset<T, OrganizationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -2410,7 +2648,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends OrganizationGroupByArgs,
@@ -2491,6 +2729,8 @@ export namespace Prisma {
     policyPacks<T extends Organization$policyPacksArgs<ExtArgs> = {}>(args?: Subset<T, Organization$policyPacksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PolicyPackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     policyAssignments<T extends Organization$policyAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$policyAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PolicyPackAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     webhookReceipts<T extends Organization$webhookReceiptsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$webhookReceiptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebhookReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    members<T extends Organization$membersArgs<ExtArgs> = {}>(args?: Subset<T, Organization$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    auditLogs<T extends Organization$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2524,7 +2764,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Organization", 'String'>
     readonly createdAt: FieldRef<"Organization", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -2593,31 +2833,31 @@ export namespace Prisma {
     where?: OrganizationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Organizations to fetch.
      */
     orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Organizations.
      */
     cursor?: OrganizationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Organizations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Organizations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Organizations.
      */
     distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
@@ -2645,31 +2885,31 @@ export namespace Prisma {
     where?: OrganizationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Organizations to fetch.
      */
     orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Organizations.
      */
     cursor?: OrganizationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Organizations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Organizations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Organizations.
      */
     distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
@@ -2697,28 +2937,33 @@ export namespace Prisma {
     where?: OrganizationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Organizations to fetch.
      */
     orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Organizations.
      */
     cursor?: OrganizationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Organizations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Organizations.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Organizations.
+     */
     distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
   }
 
@@ -3077,6 +3322,54 @@ export namespace Prisma {
   }
 
   /**
+   * Organization.members
+   */
+  export type Organization$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    where?: OrganizationMemberWhereInput
+    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    cursor?: OrganizationMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+  }
+
+  /**
+   * Organization.auditLogs
+   */
+  export type Organization$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    cursor?: AuditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
    * Organization without action
    */
   export type OrganizationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3092,6 +3385,2154 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: OrganizationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model OrganizationMember
+   */
+
+  export type AggregateOrganizationMember = {
+    _count: OrganizationMemberCountAggregateOutputType | null
+    _min: OrganizationMemberMinAggregateOutputType | null
+    _max: OrganizationMemberMaxAggregateOutputType | null
+  }
+
+  export type OrganizationMemberMinAggregateOutputType = {
+    id: string | null
+    organizationId: string | null
+    userId: string | null
+    role: string | null
+    createdAt: Date | null
+  }
+
+  export type OrganizationMemberMaxAggregateOutputType = {
+    id: string | null
+    organizationId: string | null
+    userId: string | null
+    role: string | null
+    createdAt: Date | null
+  }
+
+  export type OrganizationMemberCountAggregateOutputType = {
+    id: number
+    organizationId: number
+    userId: number
+    role: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type OrganizationMemberMinAggregateInputType = {
+    id?: true
+    organizationId?: true
+    userId?: true
+    role?: true
+    createdAt?: true
+  }
+
+  export type OrganizationMemberMaxAggregateInputType = {
+    id?: true
+    organizationId?: true
+    userId?: true
+    role?: true
+    createdAt?: true
+  }
+
+  export type OrganizationMemberCountAggregateInputType = {
+    id?: true
+    organizationId?: true
+    userId?: true
+    role?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type OrganizationMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OrganizationMember to aggregate.
+     */
+    where?: OrganizationMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrganizationMembers to fetch.
+     */
+    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: OrganizationMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrganizationMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrganizationMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned OrganizationMembers
+    **/
+    _count?: true | OrganizationMemberCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: OrganizationMemberMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: OrganizationMemberMaxAggregateInputType
+  }
+
+  export type GetOrganizationMemberAggregateType<T extends OrganizationMemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateOrganizationMember]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOrganizationMember[P]>
+      : GetScalarType<T[P], AggregateOrganizationMember[P]>
+  }
+
+
+
+
+  export type OrganizationMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrganizationMemberWhereInput
+    orderBy?: OrganizationMemberOrderByWithAggregationInput | OrganizationMemberOrderByWithAggregationInput[]
+    by: OrganizationMemberScalarFieldEnum[] | OrganizationMemberScalarFieldEnum
+    having?: OrganizationMemberScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: OrganizationMemberCountAggregateInputType | true
+    _min?: OrganizationMemberMinAggregateInputType
+    _max?: OrganizationMemberMaxAggregateInputType
+  }
+
+  export type OrganizationMemberGroupByOutputType = {
+    id: string
+    organizationId: string
+    userId: string
+    role: string
+    createdAt: Date
+    _count: OrganizationMemberCountAggregateOutputType | null
+    _min: OrganizationMemberMinAggregateOutputType | null
+    _max: OrganizationMemberMaxAggregateOutputType | null
+  }
+
+  type GetOrganizationMemberGroupByPayload<T extends OrganizationMemberGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<OrganizationMemberGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof OrganizationMemberGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], OrganizationMemberGroupByOutputType[P]>
+            : GetScalarType<T[P], OrganizationMemberGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type OrganizationMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    organizationId?: boolean
+    userId?: boolean
+    role?: boolean
+    createdAt?: boolean
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["organizationMember"]>
+
+  export type OrganizationMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    organizationId?: boolean
+    userId?: boolean
+    role?: boolean
+    createdAt?: boolean
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["organizationMember"]>
+
+  export type OrganizationMemberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    organizationId?: boolean
+    userId?: boolean
+    role?: boolean
+    createdAt?: boolean
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["organizationMember"]>
+
+  export type OrganizationMemberSelectScalar = {
+    id?: boolean
+    organizationId?: boolean
+    userId?: boolean
+    role?: boolean
+    createdAt?: boolean
+  }
+
+  export type OrganizationMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organizationId" | "userId" | "role" | "createdAt", ExtArgs["result"]["organizationMember"]>
+  export type OrganizationMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }
+  export type OrganizationMemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }
+  export type OrganizationMemberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }
+
+  export type $OrganizationMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "OrganizationMember"
+    objects: {
+      organization: Prisma.$OrganizationPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      organizationId: string
+      userId: string
+      role: string
+      createdAt: Date
+    }, ExtArgs["result"]["organizationMember"]>
+    composites: {}
+  }
+
+  type OrganizationMemberGetPayload<S extends boolean | null | undefined | OrganizationMemberDefaultArgs> = $Result.GetResult<Prisma.$OrganizationMemberPayload, S>
+
+  type OrganizationMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<OrganizationMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: OrganizationMemberCountAggregateInputType | true
+    }
+
+  export interface OrganizationMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OrganizationMember'], meta: { name: 'OrganizationMember' } }
+    /**
+     * Find zero or one OrganizationMember that matches the filter.
+     * @param {OrganizationMemberFindUniqueArgs} args - Arguments to find a OrganizationMember
+     * @example
+     * // Get one OrganizationMember
+     * const organizationMember = await prisma.organizationMember.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends OrganizationMemberFindUniqueArgs>(args: SelectSubset<T, OrganizationMemberFindUniqueArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one OrganizationMember that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {OrganizationMemberFindUniqueOrThrowArgs} args - Arguments to find a OrganizationMember
+     * @example
+     * // Get one OrganizationMember
+     * const organizationMember = await prisma.organizationMember.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends OrganizationMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, OrganizationMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OrganizationMember that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberFindFirstArgs} args - Arguments to find a OrganizationMember
+     * @example
+     * // Get one OrganizationMember
+     * const organizationMember = await prisma.organizationMember.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends OrganizationMemberFindFirstArgs>(args?: SelectSubset<T, OrganizationMemberFindFirstArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OrganizationMember that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberFindFirstOrThrowArgs} args - Arguments to find a OrganizationMember
+     * @example
+     * // Get one OrganizationMember
+     * const organizationMember = await prisma.organizationMember.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends OrganizationMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, OrganizationMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more OrganizationMembers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all OrganizationMembers
+     * const organizationMembers = await prisma.organizationMember.findMany()
+     * 
+     * // Get first 10 OrganizationMembers
+     * const organizationMembers = await prisma.organizationMember.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const organizationMemberWithIdOnly = await prisma.organizationMember.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends OrganizationMemberFindManyArgs>(args?: SelectSubset<T, OrganizationMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a OrganizationMember.
+     * @param {OrganizationMemberCreateArgs} args - Arguments to create a OrganizationMember.
+     * @example
+     * // Create one OrganizationMember
+     * const OrganizationMember = await prisma.organizationMember.create({
+     *   data: {
+     *     // ... data to create a OrganizationMember
+     *   }
+     * })
+     * 
+     */
+    create<T extends OrganizationMemberCreateArgs>(args: SelectSubset<T, OrganizationMemberCreateArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many OrganizationMembers.
+     * @param {OrganizationMemberCreateManyArgs} args - Arguments to create many OrganizationMembers.
+     * @example
+     * // Create many OrganizationMembers
+     * const organizationMember = await prisma.organizationMember.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends OrganizationMemberCreateManyArgs>(args?: SelectSubset<T, OrganizationMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many OrganizationMembers and returns the data saved in the database.
+     * @param {OrganizationMemberCreateManyAndReturnArgs} args - Arguments to create many OrganizationMembers.
+     * @example
+     * // Create many OrganizationMembers
+     * const organizationMember = await prisma.organizationMember.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many OrganizationMembers and only return the `id`
+     * const organizationMemberWithIdOnly = await prisma.organizationMember.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends OrganizationMemberCreateManyAndReturnArgs>(args?: SelectSubset<T, OrganizationMemberCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a OrganizationMember.
+     * @param {OrganizationMemberDeleteArgs} args - Arguments to delete one OrganizationMember.
+     * @example
+     * // Delete one OrganizationMember
+     * const OrganizationMember = await prisma.organizationMember.delete({
+     *   where: {
+     *     // ... filter to delete one OrganizationMember
+     *   }
+     * })
+     * 
+     */
+    delete<T extends OrganizationMemberDeleteArgs>(args: SelectSubset<T, OrganizationMemberDeleteArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one OrganizationMember.
+     * @param {OrganizationMemberUpdateArgs} args - Arguments to update one OrganizationMember.
+     * @example
+     * // Update one OrganizationMember
+     * const organizationMember = await prisma.organizationMember.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends OrganizationMemberUpdateArgs>(args: SelectSubset<T, OrganizationMemberUpdateArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more OrganizationMembers.
+     * @param {OrganizationMemberDeleteManyArgs} args - Arguments to filter OrganizationMembers to delete.
+     * @example
+     * // Delete a few OrganizationMembers
+     * const { count } = await prisma.organizationMember.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends OrganizationMemberDeleteManyArgs>(args?: SelectSubset<T, OrganizationMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OrganizationMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many OrganizationMembers
+     * const organizationMember = await prisma.organizationMember.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends OrganizationMemberUpdateManyArgs>(args: SelectSubset<T, OrganizationMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OrganizationMembers and returns the data updated in the database.
+     * @param {OrganizationMemberUpdateManyAndReturnArgs} args - Arguments to update many OrganizationMembers.
+     * @example
+     * // Update many OrganizationMembers
+     * const organizationMember = await prisma.organizationMember.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more OrganizationMembers and only return the `id`
+     * const organizationMemberWithIdOnly = await prisma.organizationMember.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends OrganizationMemberUpdateManyAndReturnArgs>(args: SelectSubset<T, OrganizationMemberUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one OrganizationMember.
+     * @param {OrganizationMemberUpsertArgs} args - Arguments to update or create a OrganizationMember.
+     * @example
+     * // Update or create a OrganizationMember
+     * const organizationMember = await prisma.organizationMember.upsert({
+     *   create: {
+     *     // ... data to create a OrganizationMember
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the OrganizationMember we want to update
+     *   }
+     * })
+     */
+    upsert<T extends OrganizationMemberUpsertArgs>(args: SelectSubset<T, OrganizationMemberUpsertArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of OrganizationMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberCountArgs} args - Arguments to filter OrganizationMembers to count.
+     * @example
+     * // Count the number of OrganizationMembers
+     * const count = await prisma.organizationMember.count({
+     *   where: {
+     *     // ... the filter for the OrganizationMembers we want to count
+     *   }
+     * })
+    **/
+    count<T extends OrganizationMemberCountArgs>(
+      args?: Subset<T, OrganizationMemberCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], OrganizationMemberCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a OrganizationMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends OrganizationMemberAggregateArgs>(args: Subset<T, OrganizationMemberAggregateArgs>): Prisma.PrismaPromise<GetOrganizationMemberAggregateType<T>>
+
+    /**
+     * Group by OrganizationMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends OrganizationMemberGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: OrganizationMemberGroupByArgs['orderBy'] }
+        : { orderBy?: OrganizationMemberGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, OrganizationMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOrganizationMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the OrganizationMember model
+   */
+  readonly fields: OrganizationMemberFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for OrganizationMember.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__OrganizationMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the OrganizationMember model
+   */
+  interface OrganizationMemberFieldRefs {
+    readonly id: FieldRef<"OrganizationMember", 'String'>
+    readonly organizationId: FieldRef<"OrganizationMember", 'String'>
+    readonly userId: FieldRef<"OrganizationMember", 'String'>
+    readonly role: FieldRef<"OrganizationMember", 'String'>
+    readonly createdAt: FieldRef<"OrganizationMember", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * OrganizationMember findUnique
+   */
+  export type OrganizationMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganizationMember to fetch.
+     */
+    where: OrganizationMemberWhereUniqueInput
+  }
+
+  /**
+   * OrganizationMember findUniqueOrThrow
+   */
+  export type OrganizationMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganizationMember to fetch.
+     */
+    where: OrganizationMemberWhereUniqueInput
+  }
+
+  /**
+   * OrganizationMember findFirst
+   */
+  export type OrganizationMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganizationMember to fetch.
+     */
+    where?: OrganizationMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrganizationMembers to fetch.
+     */
+    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OrganizationMembers.
+     */
+    cursor?: OrganizationMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrganizationMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrganizationMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OrganizationMembers.
+     */
+    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+  }
+
+  /**
+   * OrganizationMember findFirstOrThrow
+   */
+  export type OrganizationMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganizationMember to fetch.
+     */
+    where?: OrganizationMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrganizationMembers to fetch.
+     */
+    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OrganizationMembers.
+     */
+    cursor?: OrganizationMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrganizationMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrganizationMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OrganizationMembers.
+     */
+    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+  }
+
+  /**
+   * OrganizationMember findMany
+   */
+  export type OrganizationMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganizationMembers to fetch.
+     */
+    where?: OrganizationMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrganizationMembers to fetch.
+     */
+    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing OrganizationMembers.
+     */
+    cursor?: OrganizationMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrganizationMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrganizationMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OrganizationMembers.
+     */
+    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+  }
+
+  /**
+   * OrganizationMember create
+   */
+  export type OrganizationMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to create a OrganizationMember.
+     */
+    data: XOR<OrganizationMemberCreateInput, OrganizationMemberUncheckedCreateInput>
+  }
+
+  /**
+   * OrganizationMember createMany
+   */
+  export type OrganizationMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many OrganizationMembers.
+     */
+    data: OrganizationMemberCreateManyInput | OrganizationMemberCreateManyInput[]
+  }
+
+  /**
+   * OrganizationMember createManyAndReturn
+   */
+  export type OrganizationMemberCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * The data used to create many OrganizationMembers.
+     */
+    data: OrganizationMemberCreateManyInput | OrganizationMemberCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * OrganizationMember update
+   */
+  export type OrganizationMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to update a OrganizationMember.
+     */
+    data: XOR<OrganizationMemberUpdateInput, OrganizationMemberUncheckedUpdateInput>
+    /**
+     * Choose, which OrganizationMember to update.
+     */
+    where: OrganizationMemberWhereUniqueInput
+  }
+
+  /**
+   * OrganizationMember updateMany
+   */
+  export type OrganizationMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update OrganizationMembers.
+     */
+    data: XOR<OrganizationMemberUpdateManyMutationInput, OrganizationMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which OrganizationMembers to update
+     */
+    where?: OrganizationMemberWhereInput
+    /**
+     * Limit how many OrganizationMembers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * OrganizationMember updateManyAndReturn
+   */
+  export type OrganizationMemberUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * The data used to update OrganizationMembers.
+     */
+    data: XOR<OrganizationMemberUpdateManyMutationInput, OrganizationMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which OrganizationMembers to update
+     */
+    where?: OrganizationMemberWhereInput
+    /**
+     * Limit how many OrganizationMembers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * OrganizationMember upsert
+   */
+  export type OrganizationMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * The filter to search for the OrganizationMember to update in case it exists.
+     */
+    where: OrganizationMemberWhereUniqueInput
+    /**
+     * In case the OrganizationMember found by the `where` argument doesn't exist, create a new OrganizationMember with this data.
+     */
+    create: XOR<OrganizationMemberCreateInput, OrganizationMemberUncheckedCreateInput>
+    /**
+     * In case the OrganizationMember was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<OrganizationMemberUpdateInput, OrganizationMemberUncheckedUpdateInput>
+  }
+
+  /**
+   * OrganizationMember delete
+   */
+  export type OrganizationMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * Filter which OrganizationMember to delete.
+     */
+    where: OrganizationMemberWhereUniqueInput
+  }
+
+  /**
+   * OrganizationMember deleteMany
+   */
+  export type OrganizationMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OrganizationMembers to delete
+     */
+    where?: OrganizationMemberWhereInput
+    /**
+     * Limit how many OrganizationMembers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * OrganizationMember without action
+   */
+  export type OrganizationMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrganizationMember
+     */
+    omit?: OrganizationMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AuditLog
+   */
+
+  export type AggregateAuditLog = {
+    _count: AuditLogCountAggregateOutputType | null
+    _min: AuditLogMinAggregateOutputType | null
+    _max: AuditLogMaxAggregateOutputType | null
+  }
+
+  export type AuditLogMinAggregateOutputType = {
+    id: string | null
+    organizationId: string | null
+    actorId: string | null
+    action: string | null
+    resourceId: string | null
+    metadata: string | null
+    createdAt: Date | null
+  }
+
+  export type AuditLogMaxAggregateOutputType = {
+    id: string | null
+    organizationId: string | null
+    actorId: string | null
+    action: string | null
+    resourceId: string | null
+    metadata: string | null
+    createdAt: Date | null
+  }
+
+  export type AuditLogCountAggregateOutputType = {
+    id: number
+    organizationId: number
+    actorId: number
+    action: number
+    resourceId: number
+    metadata: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AuditLogMinAggregateInputType = {
+    id?: true
+    organizationId?: true
+    actorId?: true
+    action?: true
+    resourceId?: true
+    metadata?: true
+    createdAt?: true
+  }
+
+  export type AuditLogMaxAggregateInputType = {
+    id?: true
+    organizationId?: true
+    actorId?: true
+    action?: true
+    resourceId?: true
+    metadata?: true
+    createdAt?: true
+  }
+
+  export type AuditLogCountAggregateInputType = {
+    id?: true
+    organizationId?: true
+    actorId?: true
+    action?: true
+    resourceId?: true
+    metadata?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AuditLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditLog to aggregate.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AuditLogs
+    **/
+    _count?: true | AuditLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AuditLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AuditLogMaxAggregateInputType
+  }
+
+  export type GetAuditLogAggregateType<T extends AuditLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateAuditLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAuditLog[P]>
+      : GetScalarType<T[P], AggregateAuditLog[P]>
+  }
+
+
+
+
+  export type AuditLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithAggregationInput | AuditLogOrderByWithAggregationInput[]
+    by: AuditLogScalarFieldEnum[] | AuditLogScalarFieldEnum
+    having?: AuditLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AuditLogCountAggregateInputType | true
+    _min?: AuditLogMinAggregateInputType
+    _max?: AuditLogMaxAggregateInputType
+  }
+
+  export type AuditLogGroupByOutputType = {
+    id: string
+    organizationId: string
+    actorId: string
+    action: string
+    resourceId: string
+    metadata: string
+    createdAt: Date
+    _count: AuditLogCountAggregateOutputType | null
+    _min: AuditLogMinAggregateOutputType | null
+    _max: AuditLogMaxAggregateOutputType | null
+  }
+
+  type GetAuditLogGroupByPayload<T extends AuditLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AuditLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AuditLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AuditLogGroupByOutputType[P]>
+            : GetScalarType<T[P], AuditLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AuditLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    organizationId?: boolean
+    actorId?: boolean
+    action?: boolean
+    resourceId?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    organizationId?: boolean
+    actorId?: boolean
+    action?: boolean
+    resourceId?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    organizationId?: boolean
+    actorId?: boolean
+    action?: boolean
+    resourceId?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectScalar = {
+    id?: boolean
+    organizationId?: boolean
+    actorId?: boolean
+    action?: boolean
+    resourceId?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+  }
+
+  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organizationId" | "actorId" | "action" | "resourceId" | "metadata" | "createdAt", ExtArgs["result"]["auditLog"]>
+  export type AuditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }
+  export type AuditLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }
+  export type AuditLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }
+
+  export type $AuditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AuditLog"
+    objects: {
+      organization: Prisma.$OrganizationPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      organizationId: string
+      actorId: string
+      action: string
+      resourceId: string
+      metadata: string
+      createdAt: Date
+    }, ExtArgs["result"]["auditLog"]>
+    composites: {}
+  }
+
+  type AuditLogGetPayload<S extends boolean | null | undefined | AuditLogDefaultArgs> = $Result.GetResult<Prisma.$AuditLogPayload, S>
+
+  type AuditLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AuditLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AuditLogCountAggregateInputType | true
+    }
+
+  export interface AuditLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AuditLog'], meta: { name: 'AuditLog' } }
+    /**
+     * Find zero or one AuditLog that matches the filter.
+     * @param {AuditLogFindUniqueArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AuditLogFindUniqueArgs>(args: SelectSubset<T, AuditLogFindUniqueArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AuditLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AuditLogFindUniqueOrThrowArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AuditLogFindUniqueOrThrowArgs>(args: SelectSubset<T, AuditLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AuditLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindFirstArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AuditLogFindFirstArgs>(args?: SelectSubset<T, AuditLogFindFirstArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AuditLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindFirstOrThrowArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AuditLogFindFirstOrThrowArgs>(args?: SelectSubset<T, AuditLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AuditLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AuditLogs
+     * const auditLogs = await prisma.auditLog.findMany()
+     * 
+     * // Get first 10 AuditLogs
+     * const auditLogs = await prisma.auditLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AuditLogFindManyArgs>(args?: SelectSubset<T, AuditLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AuditLog.
+     * @param {AuditLogCreateArgs} args - Arguments to create a AuditLog.
+     * @example
+     * // Create one AuditLog
+     * const AuditLog = await prisma.auditLog.create({
+     *   data: {
+     *     // ... data to create a AuditLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends AuditLogCreateArgs>(args: SelectSubset<T, AuditLogCreateArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AuditLogs.
+     * @param {AuditLogCreateManyArgs} args - Arguments to create many AuditLogs.
+     * @example
+     * // Create many AuditLogs
+     * const auditLog = await prisma.auditLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AuditLogCreateManyArgs>(args?: SelectSubset<T, AuditLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AuditLogs and returns the data saved in the database.
+     * @param {AuditLogCreateManyAndReturnArgs} args - Arguments to create many AuditLogs.
+     * @example
+     * // Create many AuditLogs
+     * const auditLog = await prisma.auditLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AuditLogs and only return the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AuditLogCreateManyAndReturnArgs>(args?: SelectSubset<T, AuditLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AuditLog.
+     * @param {AuditLogDeleteArgs} args - Arguments to delete one AuditLog.
+     * @example
+     * // Delete one AuditLog
+     * const AuditLog = await prisma.auditLog.delete({
+     *   where: {
+     *     // ... filter to delete one AuditLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AuditLogDeleteArgs>(args: SelectSubset<T, AuditLogDeleteArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AuditLog.
+     * @param {AuditLogUpdateArgs} args - Arguments to update one AuditLog.
+     * @example
+     * // Update one AuditLog
+     * const auditLog = await prisma.auditLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AuditLogUpdateArgs>(args: SelectSubset<T, AuditLogUpdateArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AuditLogs.
+     * @param {AuditLogDeleteManyArgs} args - Arguments to filter AuditLogs to delete.
+     * @example
+     * // Delete a few AuditLogs
+     * const { count } = await prisma.auditLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AuditLogDeleteManyArgs>(args?: SelectSubset<T, AuditLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AuditLogs
+     * const auditLog = await prisma.auditLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AuditLogUpdateManyArgs>(args: SelectSubset<T, AuditLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditLogs and returns the data updated in the database.
+     * @param {AuditLogUpdateManyAndReturnArgs} args - Arguments to update many AuditLogs.
+     * @example
+     * // Update many AuditLogs
+     * const auditLog = await prisma.auditLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AuditLogs and only return the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AuditLogUpdateManyAndReturnArgs>(args: SelectSubset<T, AuditLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AuditLog.
+     * @param {AuditLogUpsertArgs} args - Arguments to update or create a AuditLog.
+     * @example
+     * // Update or create a AuditLog
+     * const auditLog = await prisma.auditLog.upsert({
+     *   create: {
+     *     // ... data to create a AuditLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AuditLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AuditLogUpsertArgs>(args: SelectSubset<T, AuditLogUpsertArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogCountArgs} args - Arguments to filter AuditLogs to count.
+     * @example
+     * // Count the number of AuditLogs
+     * const count = await prisma.auditLog.count({
+     *   where: {
+     *     // ... the filter for the AuditLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends AuditLogCountArgs>(
+      args?: Subset<T, AuditLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AuditLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AuditLogAggregateArgs>(args: Subset<T, AuditLogAggregateArgs>): Prisma.PrismaPromise<GetAuditLogAggregateType<T>>
+
+    /**
+     * Group by AuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AuditLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AuditLogGroupByArgs['orderBy'] }
+        : { orderBy?: AuditLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AuditLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuditLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AuditLog model
+   */
+  readonly fields: AuditLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AuditLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AuditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AuditLog model
+   */
+  interface AuditLogFieldRefs {
+    readonly id: FieldRef<"AuditLog", 'String'>
+    readonly organizationId: FieldRef<"AuditLog", 'String'>
+    readonly actorId: FieldRef<"AuditLog", 'String'>
+    readonly action: FieldRef<"AuditLog", 'String'>
+    readonly resourceId: FieldRef<"AuditLog", 'String'>
+    readonly metadata: FieldRef<"AuditLog", 'String'>
+    readonly createdAt: FieldRef<"AuditLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AuditLog findUnique
+   */
+  export type AuditLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog findUniqueOrThrow
+   */
+  export type AuditLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog findFirst
+   */
+  export type AuditLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog findFirstOrThrow
+   */
+  export type AuditLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog findMany
+   */
+  export type AuditLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLogs to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog create
+   */
+  export type AuditLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AuditLog.
+     */
+    data: XOR<AuditLogCreateInput, AuditLogUncheckedCreateInput>
+  }
+
+  /**
+   * AuditLog createMany
+   */
+  export type AuditLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AuditLogs.
+     */
+    data: AuditLogCreateManyInput | AuditLogCreateManyInput[]
+  }
+
+  /**
+   * AuditLog createManyAndReturn
+   */
+  export type AuditLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many AuditLogs.
+     */
+    data: AuditLogCreateManyInput | AuditLogCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AuditLog update
+   */
+  export type AuditLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AuditLog.
+     */
+    data: XOR<AuditLogUpdateInput, AuditLogUncheckedUpdateInput>
+    /**
+     * Choose, which AuditLog to update.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog updateMany
+   */
+  export type AuditLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AuditLogs.
+     */
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditLogs to update
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Limit how many AuditLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditLog updateManyAndReturn
+   */
+  export type AuditLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * The data used to update AuditLogs.
+     */
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditLogs to update
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Limit how many AuditLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AuditLog upsert
+   */
+  export type AuditLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AuditLog to update in case it exists.
+     */
+    where: AuditLogWhereUniqueInput
+    /**
+     * In case the AuditLog found by the `where` argument doesn't exist, create a new AuditLog with this data.
+     */
+    create: XOR<AuditLogCreateInput, AuditLogUncheckedCreateInput>
+    /**
+     * In case the AuditLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AuditLogUpdateInput, AuditLogUncheckedUpdateInput>
+  }
+
+  /**
+   * AuditLog delete
+   */
+  export type AuditLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter which AuditLog to delete.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog deleteMany
+   */
+  export type AuditLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditLogs to delete
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Limit how many AuditLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditLog without action
+   */
+  export type AuditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
   }
 
 
@@ -3157,43 +5598,43 @@ export namespace Prisma {
     where?: RepositoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Repositories to fetch.
      */
     orderBy?: RepositoryOrderByWithRelationInput | RepositoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: RepositoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Repositories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Repositories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Repositories
     **/
     _count?: true | RepositoryCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: RepositoryMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: RepositoryMaxAggregateInputType
@@ -3391,13 +5832,13 @@ export namespace Prisma {
      * @example
      * // Get all Repositories
      * const repositories = await prisma.repository.findMany()
-     *
+     * 
      * // Get first 10 Repositories
      * const repositories = await prisma.repository.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const repositoryWithIdOnly = await prisma.repository.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends RepositoryFindManyArgs>(args?: SelectSubset<T, RepositoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepositoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -3411,7 +5852,7 @@ export namespace Prisma {
      *     // ... data to create a Repository
      *   }
      * })
-     *
+     * 
      */
     create<T extends RepositoryCreateArgs>(args: SelectSubset<T, RepositoryCreateArgs<ExtArgs>>): Prisma__RepositoryClient<$Result.GetResult<Prisma.$RepositoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3425,7 +5866,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends RepositoryCreateManyArgs>(args?: SelectSubset<T, RepositoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3439,7 +5880,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Repositories and only return the `id`
      * const repositoryWithIdOnly = await prisma.repository.createManyAndReturn({
      *   select: { id: true },
@@ -3449,7 +5890,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends RepositoryCreateManyAndReturnArgs>(args?: SelectSubset<T, RepositoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepositoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -3463,7 +5904,7 @@ export namespace Prisma {
      *     // ... filter to delete one Repository
      *   }
      * })
-     *
+     * 
      */
     delete<T extends RepositoryDeleteArgs>(args: SelectSubset<T, RepositoryDeleteArgs<ExtArgs>>): Prisma__RepositoryClient<$Result.GetResult<Prisma.$RepositoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3480,7 +5921,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends RepositoryUpdateArgs>(args: SelectSubset<T, RepositoryUpdateArgs<ExtArgs>>): Prisma__RepositoryClient<$Result.GetResult<Prisma.$RepositoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3494,7 +5935,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends RepositoryDeleteManyArgs>(args?: SelectSubset<T, RepositoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3513,7 +5954,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends RepositoryUpdateManyArgs>(args: SelectSubset<T, RepositoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3530,7 +5971,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Repositories and only return the `id`
      * const repositoryWithIdOnly = await prisma.repository.updateManyAndReturn({
      *   select: { id: true },
@@ -3543,7 +5984,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends RepositoryUpdateManyAndReturnArgs>(args: SelectSubset<T, RepositoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepositoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -3632,7 +6073,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends RepositoryGroupByArgs,
@@ -3745,7 +6186,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Repository", 'String'>
     readonly createdAt: FieldRef<"Repository", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -3814,31 +6255,31 @@ export namespace Prisma {
     where?: RepositoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Repositories to fetch.
      */
     orderBy?: RepositoryOrderByWithRelationInput | RepositoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Repositories.
      */
     cursor?: RepositoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Repositories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Repositories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Repositories.
      */
     distinct?: RepositoryScalarFieldEnum | RepositoryScalarFieldEnum[]
@@ -3866,31 +6307,31 @@ export namespace Prisma {
     where?: RepositoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Repositories to fetch.
      */
     orderBy?: RepositoryOrderByWithRelationInput | RepositoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Repositories.
      */
     cursor?: RepositoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Repositories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Repositories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Repositories.
      */
     distinct?: RepositoryScalarFieldEnum | RepositoryScalarFieldEnum[]
@@ -3918,28 +6359,33 @@ export namespace Prisma {
     where?: RepositoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Repositories to fetch.
      */
     orderBy?: RepositoryOrderByWithRelationInput | RepositoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Repositories.
      */
     cursor?: RepositoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Repositories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Repositories.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Repositories.
+     */
     distinct?: RepositoryScalarFieldEnum | RepositoryScalarFieldEnum[]
   }
 
@@ -4308,43 +6754,43 @@ export namespace Prisma {
     where?: ProjectWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Projects to fetch.
      */
     orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: ProjectWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Projects from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Projects.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Projects
     **/
     _count?: true | ProjectCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ProjectMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: ProjectMaxAggregateInputType
@@ -4522,13 +6968,13 @@ export namespace Prisma {
      * @example
      * // Get all Projects
      * const projects = await prisma.project.findMany()
-     *
+     * 
      * // Get first 10 Projects
      * const projects = await prisma.project.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const projectWithIdOnly = await prisma.project.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends ProjectFindManyArgs>(args?: SelectSubset<T, ProjectFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -4542,7 +6988,7 @@ export namespace Prisma {
      *     // ... data to create a Project
      *   }
      * })
-     *
+     * 
      */
     create<T extends ProjectCreateArgs>(args: SelectSubset<T, ProjectCreateArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4556,7 +7002,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends ProjectCreateManyArgs>(args?: SelectSubset<T, ProjectCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4570,7 +7016,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Projects and only return the `id`
      * const projectWithIdOnly = await prisma.project.createManyAndReturn({
      *   select: { id: true },
@@ -4580,7 +7026,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends ProjectCreateManyAndReturnArgs>(args?: SelectSubset<T, ProjectCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -4594,7 +7040,7 @@ export namespace Prisma {
      *     // ... filter to delete one Project
      *   }
      * })
-     *
+     * 
      */
     delete<T extends ProjectDeleteArgs>(args: SelectSubset<T, ProjectDeleteArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4611,7 +7057,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends ProjectUpdateArgs>(args: SelectSubset<T, ProjectUpdateArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4625,7 +7071,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends ProjectDeleteManyArgs>(args?: SelectSubset<T, ProjectDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4644,7 +7090,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends ProjectUpdateManyArgs>(args: SelectSubset<T, ProjectUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4661,7 +7107,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Projects and only return the `id`
      * const projectWithIdOnly = await prisma.project.updateManyAndReturn({
      *   select: { id: true },
@@ -4674,7 +7120,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends ProjectUpdateManyAndReturnArgs>(args: SelectSubset<T, ProjectUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -4763,7 +7209,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends ProjectGroupByArgs,
@@ -4871,7 +7317,7 @@ export namespace Prisma {
     readonly repositoryId: FieldRef<"Project", 'String'>
     readonly name: FieldRef<"Project", 'String'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -4940,31 +7386,31 @@ export namespace Prisma {
     where?: ProjectWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Projects to fetch.
      */
     orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Projects.
      */
     cursor?: ProjectWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Projects from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Projects.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Projects.
      */
     distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
@@ -4992,31 +7438,31 @@ export namespace Prisma {
     where?: ProjectWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Projects to fetch.
      */
     orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Projects.
      */
     cursor?: ProjectWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Projects from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Projects.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Projects.
      */
     distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
@@ -5044,28 +7490,33 @@ export namespace Prisma {
     where?: ProjectWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Projects to fetch.
      */
     orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Projects.
      */
     cursor?: ProjectWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Projects from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Projects.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Projects.
+     */
     distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
   }
 
@@ -5350,43 +7801,43 @@ export namespace Prisma {
     where?: ReadyLayerRunWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of ReadyLayerRuns to fetch.
      */
     orderBy?: ReadyLayerRunOrderByWithRelationInput | ReadyLayerRunOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: ReadyLayerRunWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` ReadyLayerRuns from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` ReadyLayerRuns.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned ReadyLayerRuns
     **/
     _count?: true | ReadyLayerRunCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ReadyLayerRunMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: ReadyLayerRunMaxAggregateInputType
@@ -5588,13 +8039,13 @@ export namespace Prisma {
      * @example
      * // Get all ReadyLayerRuns
      * const readyLayerRuns = await prisma.readyLayerRun.findMany()
-     *
+     * 
      * // Get first 10 ReadyLayerRuns
      * const readyLayerRuns = await prisma.readyLayerRun.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const readyLayerRunWithIdOnly = await prisma.readyLayerRun.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends ReadyLayerRunFindManyArgs>(args?: SelectSubset<T, ReadyLayerRunFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReadyLayerRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -5608,7 +8059,7 @@ export namespace Prisma {
      *     // ... data to create a ReadyLayerRun
      *   }
      * })
-     *
+     * 
      */
     create<T extends ReadyLayerRunCreateArgs>(args: SelectSubset<T, ReadyLayerRunCreateArgs<ExtArgs>>): Prisma__ReadyLayerRunClient<$Result.GetResult<Prisma.$ReadyLayerRunPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5622,7 +8073,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends ReadyLayerRunCreateManyArgs>(args?: SelectSubset<T, ReadyLayerRunCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5636,7 +8087,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many ReadyLayerRuns and only return the `id`
      * const readyLayerRunWithIdOnly = await prisma.readyLayerRun.createManyAndReturn({
      *   select: { id: true },
@@ -5646,7 +8097,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends ReadyLayerRunCreateManyAndReturnArgs>(args?: SelectSubset<T, ReadyLayerRunCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReadyLayerRunPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -5660,7 +8111,7 @@ export namespace Prisma {
      *     // ... filter to delete one ReadyLayerRun
      *   }
      * })
-     *
+     * 
      */
     delete<T extends ReadyLayerRunDeleteArgs>(args: SelectSubset<T, ReadyLayerRunDeleteArgs<ExtArgs>>): Prisma__ReadyLayerRunClient<$Result.GetResult<Prisma.$ReadyLayerRunPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5677,7 +8128,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends ReadyLayerRunUpdateArgs>(args: SelectSubset<T, ReadyLayerRunUpdateArgs<ExtArgs>>): Prisma__ReadyLayerRunClient<$Result.GetResult<Prisma.$ReadyLayerRunPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5691,7 +8142,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends ReadyLayerRunDeleteManyArgs>(args?: SelectSubset<T, ReadyLayerRunDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5710,7 +8161,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends ReadyLayerRunUpdateManyArgs>(args: SelectSubset<T, ReadyLayerRunUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5727,7 +8178,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more ReadyLayerRuns and only return the `id`
      * const readyLayerRunWithIdOnly = await prisma.readyLayerRun.updateManyAndReturn({
      *   select: { id: true },
@@ -5740,7 +8191,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends ReadyLayerRunUpdateManyAndReturnArgs>(args: SelectSubset<T, ReadyLayerRunUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReadyLayerRunPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -5829,7 +8280,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends ReadyLayerRunGroupByArgs,
@@ -5941,7 +8392,7 @@ export namespace Prisma {
     readonly status: FieldRef<"ReadyLayerRun", 'String'>
     readonly createdAt: FieldRef<"ReadyLayerRun", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -6010,31 +8461,31 @@ export namespace Prisma {
     where?: ReadyLayerRunWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of ReadyLayerRuns to fetch.
      */
     orderBy?: ReadyLayerRunOrderByWithRelationInput | ReadyLayerRunOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for ReadyLayerRuns.
      */
     cursor?: ReadyLayerRunWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` ReadyLayerRuns from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` ReadyLayerRuns.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of ReadyLayerRuns.
      */
     distinct?: ReadyLayerRunScalarFieldEnum | ReadyLayerRunScalarFieldEnum[]
@@ -6062,31 +8513,31 @@ export namespace Prisma {
     where?: ReadyLayerRunWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of ReadyLayerRuns to fetch.
      */
     orderBy?: ReadyLayerRunOrderByWithRelationInput | ReadyLayerRunOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for ReadyLayerRuns.
      */
     cursor?: ReadyLayerRunWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` ReadyLayerRuns from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` ReadyLayerRuns.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of ReadyLayerRuns.
      */
     distinct?: ReadyLayerRunScalarFieldEnum | ReadyLayerRunScalarFieldEnum[]
@@ -6114,28 +8565,33 @@ export namespace Prisma {
     where?: ReadyLayerRunWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of ReadyLayerRuns to fetch.
      */
     orderBy?: ReadyLayerRunOrderByWithRelationInput | ReadyLayerRunOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing ReadyLayerRuns.
      */
     cursor?: ReadyLayerRunWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` ReadyLayerRuns from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` ReadyLayerRuns.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReadyLayerRuns.
+     */
     distinct?: ReadyLayerRunScalarFieldEnum | ReadyLayerRunScalarFieldEnum[]
   }
 
@@ -6480,43 +8936,43 @@ export namespace Prisma {
     where?: EvidenceAttestationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of EvidenceAttestations to fetch.
      */
     orderBy?: EvidenceAttestationOrderByWithRelationInput | EvidenceAttestationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: EvidenceAttestationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` EvidenceAttestations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` EvidenceAttestations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned EvidenceAttestations
     **/
     _count?: true | EvidenceAttestationCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: EvidenceAttestationMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: EvidenceAttestationMaxAggregateInputType
@@ -6756,13 +9212,13 @@ export namespace Prisma {
      * @example
      * // Get all EvidenceAttestations
      * const evidenceAttestations = await prisma.evidenceAttestation.findMany()
-     *
+     * 
      * // Get first 10 EvidenceAttestations
      * const evidenceAttestations = await prisma.evidenceAttestation.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const evidenceAttestationWithIdOnly = await prisma.evidenceAttestation.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends EvidenceAttestationFindManyArgs>(args?: SelectSubset<T, EvidenceAttestationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidenceAttestationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -6776,7 +9232,7 @@ export namespace Prisma {
      *     // ... data to create a EvidenceAttestation
      *   }
      * })
-     *
+     * 
      */
     create<T extends EvidenceAttestationCreateArgs>(args: SelectSubset<T, EvidenceAttestationCreateArgs<ExtArgs>>): Prisma__EvidenceAttestationClient<$Result.GetResult<Prisma.$EvidenceAttestationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6790,7 +9246,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends EvidenceAttestationCreateManyArgs>(args?: SelectSubset<T, EvidenceAttestationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6804,7 +9260,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many EvidenceAttestations and only return the `id`
      * const evidenceAttestationWithIdOnly = await prisma.evidenceAttestation.createManyAndReturn({
      *   select: { id: true },
@@ -6814,7 +9270,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends EvidenceAttestationCreateManyAndReturnArgs>(args?: SelectSubset<T, EvidenceAttestationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidenceAttestationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -6828,7 +9284,7 @@ export namespace Prisma {
      *     // ... filter to delete one EvidenceAttestation
      *   }
      * })
-     *
+     * 
      */
     delete<T extends EvidenceAttestationDeleteArgs>(args: SelectSubset<T, EvidenceAttestationDeleteArgs<ExtArgs>>): Prisma__EvidenceAttestationClient<$Result.GetResult<Prisma.$EvidenceAttestationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6845,7 +9301,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends EvidenceAttestationUpdateArgs>(args: SelectSubset<T, EvidenceAttestationUpdateArgs<ExtArgs>>): Prisma__EvidenceAttestationClient<$Result.GetResult<Prisma.$EvidenceAttestationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6859,7 +9315,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends EvidenceAttestationDeleteManyArgs>(args?: SelectSubset<T, EvidenceAttestationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6878,7 +9334,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends EvidenceAttestationUpdateManyArgs>(args: SelectSubset<T, EvidenceAttestationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6895,7 +9351,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more EvidenceAttestations and only return the `id`
      * const evidenceAttestationWithIdOnly = await prisma.evidenceAttestation.updateManyAndReturn({
      *   select: { id: true },
@@ -6908,7 +9364,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends EvidenceAttestationUpdateManyAndReturnArgs>(args: SelectSubset<T, EvidenceAttestationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidenceAttestationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -6997,7 +9453,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends EvidenceAttestationGroupByArgs,
@@ -7115,7 +9571,7 @@ export namespace Prisma {
     readonly publicKeyId: FieldRef<"EvidenceAttestation", 'String'>
     readonly createdAt: FieldRef<"EvidenceAttestation", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -7184,31 +9640,31 @@ export namespace Prisma {
     where?: EvidenceAttestationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of EvidenceAttestations to fetch.
      */
     orderBy?: EvidenceAttestationOrderByWithRelationInput | EvidenceAttestationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for EvidenceAttestations.
      */
     cursor?: EvidenceAttestationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` EvidenceAttestations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` EvidenceAttestations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of EvidenceAttestations.
      */
     distinct?: EvidenceAttestationScalarFieldEnum | EvidenceAttestationScalarFieldEnum[]
@@ -7236,31 +9692,31 @@ export namespace Prisma {
     where?: EvidenceAttestationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of EvidenceAttestations to fetch.
      */
     orderBy?: EvidenceAttestationOrderByWithRelationInput | EvidenceAttestationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for EvidenceAttestations.
      */
     cursor?: EvidenceAttestationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` EvidenceAttestations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` EvidenceAttestations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of EvidenceAttestations.
      */
     distinct?: EvidenceAttestationScalarFieldEnum | EvidenceAttestationScalarFieldEnum[]
@@ -7288,28 +9744,33 @@ export namespace Prisma {
     where?: EvidenceAttestationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of EvidenceAttestations to fetch.
      */
     orderBy?: EvidenceAttestationOrderByWithRelationInput | EvidenceAttestationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing EvidenceAttestations.
      */
     cursor?: EvidenceAttestationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` EvidenceAttestations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` EvidenceAttestations.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EvidenceAttestations.
+     */
     distinct?: EvidenceAttestationScalarFieldEnum | EvidenceAttestationScalarFieldEnum[]
   }
 
@@ -7636,55 +10097,55 @@ export namespace Prisma {
     where?: EvidenceObjectWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of EvidenceObjects to fetch.
      */
     orderBy?: EvidenceObjectOrderByWithRelationInput | EvidenceObjectOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: EvidenceObjectWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` EvidenceObjects from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` EvidenceObjects.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned EvidenceObjects
     **/
     _count?: true | EvidenceObjectCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: EvidenceObjectAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: EvidenceObjectSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: EvidenceObjectMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: EvidenceObjectMaxAggregateInputType
@@ -7902,13 +10363,13 @@ export namespace Prisma {
      * @example
      * // Get all EvidenceObjects
      * const evidenceObjects = await prisma.evidenceObject.findMany()
-     *
+     * 
      * // Get first 10 EvidenceObjects
      * const evidenceObjects = await prisma.evidenceObject.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const evidenceObjectWithIdOnly = await prisma.evidenceObject.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends EvidenceObjectFindManyArgs>(args?: SelectSubset<T, EvidenceObjectFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidenceObjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -7922,7 +10383,7 @@ export namespace Prisma {
      *     // ... data to create a EvidenceObject
      *   }
      * })
-     *
+     * 
      */
     create<T extends EvidenceObjectCreateArgs>(args: SelectSubset<T, EvidenceObjectCreateArgs<ExtArgs>>): Prisma__EvidenceObjectClient<$Result.GetResult<Prisma.$EvidenceObjectPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7936,7 +10397,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends EvidenceObjectCreateManyArgs>(args?: SelectSubset<T, EvidenceObjectCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7950,7 +10411,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many EvidenceObjects and only return the `id`
      * const evidenceObjectWithIdOnly = await prisma.evidenceObject.createManyAndReturn({
      *   select: { id: true },
@@ -7960,7 +10421,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends EvidenceObjectCreateManyAndReturnArgs>(args?: SelectSubset<T, EvidenceObjectCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidenceObjectPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -7974,7 +10435,7 @@ export namespace Prisma {
      *     // ... filter to delete one EvidenceObject
      *   }
      * })
-     *
+     * 
      */
     delete<T extends EvidenceObjectDeleteArgs>(args: SelectSubset<T, EvidenceObjectDeleteArgs<ExtArgs>>): Prisma__EvidenceObjectClient<$Result.GetResult<Prisma.$EvidenceObjectPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7991,7 +10452,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends EvidenceObjectUpdateArgs>(args: SelectSubset<T, EvidenceObjectUpdateArgs<ExtArgs>>): Prisma__EvidenceObjectClient<$Result.GetResult<Prisma.$EvidenceObjectPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8005,7 +10466,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends EvidenceObjectDeleteManyArgs>(args?: SelectSubset<T, EvidenceObjectDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8024,7 +10485,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends EvidenceObjectUpdateManyArgs>(args: SelectSubset<T, EvidenceObjectUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8041,7 +10502,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more EvidenceObjects and only return the `id`
      * const evidenceObjectWithIdOnly = await prisma.evidenceObject.updateManyAndReturn({
      *   select: { id: true },
@@ -8054,7 +10515,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends EvidenceObjectUpdateManyAndReturnArgs>(args: SelectSubset<T, EvidenceObjectUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidenceObjectPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -8143,7 +10604,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends EvidenceObjectGroupByArgs,
@@ -8257,7 +10718,7 @@ export namespace Prisma {
     readonly contentHash: FieldRef<"EvidenceObject", 'String'>
     readonly createdAt: FieldRef<"EvidenceObject", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -8326,31 +10787,31 @@ export namespace Prisma {
     where?: EvidenceObjectWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of EvidenceObjects to fetch.
      */
     orderBy?: EvidenceObjectOrderByWithRelationInput | EvidenceObjectOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for EvidenceObjects.
      */
     cursor?: EvidenceObjectWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` EvidenceObjects from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` EvidenceObjects.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of EvidenceObjects.
      */
     distinct?: EvidenceObjectScalarFieldEnum | EvidenceObjectScalarFieldEnum[]
@@ -8378,31 +10839,31 @@ export namespace Prisma {
     where?: EvidenceObjectWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of EvidenceObjects to fetch.
      */
     orderBy?: EvidenceObjectOrderByWithRelationInput | EvidenceObjectOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for EvidenceObjects.
      */
     cursor?: EvidenceObjectWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` EvidenceObjects from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` EvidenceObjects.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of EvidenceObjects.
      */
     distinct?: EvidenceObjectScalarFieldEnum | EvidenceObjectScalarFieldEnum[]
@@ -8430,28 +10891,33 @@ export namespace Prisma {
     where?: EvidenceObjectWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of EvidenceObjects to fetch.
      */
     orderBy?: EvidenceObjectOrderByWithRelationInput | EvidenceObjectOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing EvidenceObjects.
      */
     cursor?: EvidenceObjectWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` EvidenceObjects from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` EvidenceObjects.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EvidenceObjects.
+     */
     distinct?: EvidenceObjectScalarFieldEnum | EvidenceObjectScalarFieldEnum[]
   }
 
@@ -8766,43 +11232,43 @@ export namespace Prisma {
     where?: PolicyPackWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of PolicyPacks to fetch.
      */
     orderBy?: PolicyPackOrderByWithRelationInput | PolicyPackOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: PolicyPackWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` PolicyPacks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` PolicyPacks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned PolicyPacks
     **/
     _count?: true | PolicyPackCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: PolicyPackMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: PolicyPackMaxAggregateInputType
@@ -9027,13 +11493,13 @@ export namespace Prisma {
      * @example
      * // Get all PolicyPacks
      * const policyPacks = await prisma.policyPack.findMany()
-     *
+     * 
      * // Get first 10 PolicyPacks
      * const policyPacks = await prisma.policyPack.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const policyPackWithIdOnly = await prisma.policyPack.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends PolicyPackFindManyArgs>(args?: SelectSubset<T, PolicyPackFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PolicyPackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -9047,7 +11513,7 @@ export namespace Prisma {
      *     // ... data to create a PolicyPack
      *   }
      * })
-     *
+     * 
      */
     create<T extends PolicyPackCreateArgs>(args: SelectSubset<T, PolicyPackCreateArgs<ExtArgs>>): Prisma__PolicyPackClient<$Result.GetResult<Prisma.$PolicyPackPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9061,7 +11527,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends PolicyPackCreateManyArgs>(args?: SelectSubset<T, PolicyPackCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9075,7 +11541,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many PolicyPacks and only return the `id`
      * const policyPackWithIdOnly = await prisma.policyPack.createManyAndReturn({
      *   select: { id: true },
@@ -9085,7 +11551,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends PolicyPackCreateManyAndReturnArgs>(args?: SelectSubset<T, PolicyPackCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PolicyPackPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -9099,7 +11565,7 @@ export namespace Prisma {
      *     // ... filter to delete one PolicyPack
      *   }
      * })
-     *
+     * 
      */
     delete<T extends PolicyPackDeleteArgs>(args: SelectSubset<T, PolicyPackDeleteArgs<ExtArgs>>): Prisma__PolicyPackClient<$Result.GetResult<Prisma.$PolicyPackPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9116,7 +11582,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends PolicyPackUpdateArgs>(args: SelectSubset<T, PolicyPackUpdateArgs<ExtArgs>>): Prisma__PolicyPackClient<$Result.GetResult<Prisma.$PolicyPackPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9130,7 +11596,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends PolicyPackDeleteManyArgs>(args?: SelectSubset<T, PolicyPackDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9149,7 +11615,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends PolicyPackUpdateManyArgs>(args: SelectSubset<T, PolicyPackUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9166,7 +11632,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more PolicyPacks and only return the `id`
      * const policyPackWithIdOnly = await prisma.policyPack.updateManyAndReturn({
      *   select: { id: true },
@@ -9179,7 +11645,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends PolicyPackUpdateManyAndReturnArgs>(args: SelectSubset<T, PolicyPackUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PolicyPackPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -9268,7 +11734,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends PolicyPackGroupByArgs,
@@ -9384,7 +11850,7 @@ export namespace Prisma {
     readonly signingMode: FieldRef<"PolicyPack", 'String'>
     readonly createdAt: FieldRef<"PolicyPack", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -9453,31 +11919,31 @@ export namespace Prisma {
     where?: PolicyPackWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of PolicyPacks to fetch.
      */
     orderBy?: PolicyPackOrderByWithRelationInput | PolicyPackOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for PolicyPacks.
      */
     cursor?: PolicyPackWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` PolicyPacks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` PolicyPacks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of PolicyPacks.
      */
     distinct?: PolicyPackScalarFieldEnum | PolicyPackScalarFieldEnum[]
@@ -9505,31 +11971,31 @@ export namespace Prisma {
     where?: PolicyPackWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of PolicyPacks to fetch.
      */
     orderBy?: PolicyPackOrderByWithRelationInput | PolicyPackOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for PolicyPacks.
      */
     cursor?: PolicyPackWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` PolicyPacks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` PolicyPacks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of PolicyPacks.
      */
     distinct?: PolicyPackScalarFieldEnum | PolicyPackScalarFieldEnum[]
@@ -9557,28 +12023,33 @@ export namespace Prisma {
     where?: PolicyPackWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of PolicyPacks to fetch.
      */
     orderBy?: PolicyPackOrderByWithRelationInput | PolicyPackOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing PolicyPacks.
      */
     cursor?: PolicyPackWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` PolicyPacks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` PolicyPacks.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PolicyPacks.
+     */
     distinct?: PolicyPackScalarFieldEnum | PolicyPackScalarFieldEnum[]
   }
 
@@ -9899,43 +12370,43 @@ export namespace Prisma {
     where?: PolicyPackAssignmentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of PolicyPackAssignments to fetch.
      */
     orderBy?: PolicyPackAssignmentOrderByWithRelationInput | PolicyPackAssignmentOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: PolicyPackAssignmentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` PolicyPackAssignments from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` PolicyPackAssignments.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned PolicyPackAssignments
     **/
     _count?: true | PolicyPackAssignmentCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: PolicyPackAssignmentMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: PolicyPackAssignmentMaxAggregateInputType
@@ -10151,13 +12622,13 @@ export namespace Prisma {
      * @example
      * // Get all PolicyPackAssignments
      * const policyPackAssignments = await prisma.policyPackAssignment.findMany()
-     *
+     * 
      * // Get first 10 PolicyPackAssignments
      * const policyPackAssignments = await prisma.policyPackAssignment.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const policyPackAssignmentWithIdOnly = await prisma.policyPackAssignment.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends PolicyPackAssignmentFindManyArgs>(args?: SelectSubset<T, PolicyPackAssignmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PolicyPackAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -10171,7 +12642,7 @@ export namespace Prisma {
      *     // ... data to create a PolicyPackAssignment
      *   }
      * })
-     *
+     * 
      */
     create<T extends PolicyPackAssignmentCreateArgs>(args: SelectSubset<T, PolicyPackAssignmentCreateArgs<ExtArgs>>): Prisma__PolicyPackAssignmentClient<$Result.GetResult<Prisma.$PolicyPackAssignmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10185,7 +12656,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends PolicyPackAssignmentCreateManyArgs>(args?: SelectSubset<T, PolicyPackAssignmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10199,7 +12670,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many PolicyPackAssignments and only return the `id`
      * const policyPackAssignmentWithIdOnly = await prisma.policyPackAssignment.createManyAndReturn({
      *   select: { id: true },
@@ -10209,7 +12680,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends PolicyPackAssignmentCreateManyAndReturnArgs>(args?: SelectSubset<T, PolicyPackAssignmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PolicyPackAssignmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -10223,7 +12694,7 @@ export namespace Prisma {
      *     // ... filter to delete one PolicyPackAssignment
      *   }
      * })
-     *
+     * 
      */
     delete<T extends PolicyPackAssignmentDeleteArgs>(args: SelectSubset<T, PolicyPackAssignmentDeleteArgs<ExtArgs>>): Prisma__PolicyPackAssignmentClient<$Result.GetResult<Prisma.$PolicyPackAssignmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10240,7 +12711,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends PolicyPackAssignmentUpdateArgs>(args: SelectSubset<T, PolicyPackAssignmentUpdateArgs<ExtArgs>>): Prisma__PolicyPackAssignmentClient<$Result.GetResult<Prisma.$PolicyPackAssignmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10254,7 +12725,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends PolicyPackAssignmentDeleteManyArgs>(args?: SelectSubset<T, PolicyPackAssignmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10273,7 +12744,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends PolicyPackAssignmentUpdateManyArgs>(args: SelectSubset<T, PolicyPackAssignmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10290,7 +12761,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more PolicyPackAssignments and only return the `id`
      * const policyPackAssignmentWithIdOnly = await prisma.policyPackAssignment.updateManyAndReturn({
      *   select: { id: true },
@@ -10303,7 +12774,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends PolicyPackAssignmentUpdateManyAndReturnArgs>(args: SelectSubset<T, PolicyPackAssignmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PolicyPackAssignmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -10392,7 +12863,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends PolicyPackAssignmentGroupByArgs,
@@ -10506,7 +12977,7 @@ export namespace Prisma {
     readonly enabled: FieldRef<"PolicyPackAssignment", 'Boolean'>
     readonly createdAt: FieldRef<"PolicyPackAssignment", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -10575,31 +13046,31 @@ export namespace Prisma {
     where?: PolicyPackAssignmentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of PolicyPackAssignments to fetch.
      */
     orderBy?: PolicyPackAssignmentOrderByWithRelationInput | PolicyPackAssignmentOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for PolicyPackAssignments.
      */
     cursor?: PolicyPackAssignmentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` PolicyPackAssignments from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` PolicyPackAssignments.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of PolicyPackAssignments.
      */
     distinct?: PolicyPackAssignmentScalarFieldEnum | PolicyPackAssignmentScalarFieldEnum[]
@@ -10627,31 +13098,31 @@ export namespace Prisma {
     where?: PolicyPackAssignmentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of PolicyPackAssignments to fetch.
      */
     orderBy?: PolicyPackAssignmentOrderByWithRelationInput | PolicyPackAssignmentOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for PolicyPackAssignments.
      */
     cursor?: PolicyPackAssignmentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` PolicyPackAssignments from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` PolicyPackAssignments.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of PolicyPackAssignments.
      */
     distinct?: PolicyPackAssignmentScalarFieldEnum | PolicyPackAssignmentScalarFieldEnum[]
@@ -10679,28 +13150,33 @@ export namespace Prisma {
     where?: PolicyPackAssignmentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of PolicyPackAssignments to fetch.
      */
     orderBy?: PolicyPackAssignmentOrderByWithRelationInput | PolicyPackAssignmentOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing PolicyPackAssignments.
      */
     cursor?: PolicyPackAssignmentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` PolicyPackAssignments from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` PolicyPackAssignments.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PolicyPackAssignments.
+     */
     distinct?: PolicyPackAssignmentScalarFieldEnum | PolicyPackAssignmentScalarFieldEnum[]
   }
 
@@ -11034,43 +13510,43 @@ export namespace Prisma {
     where?: WebhookReceiptWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of WebhookReceipts to fetch.
      */
     orderBy?: WebhookReceiptOrderByWithRelationInput | WebhookReceiptOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: WebhookReceiptWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` WebhookReceipts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` WebhookReceipts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned WebhookReceipts
     **/
     _count?: true | WebhookReceiptCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: WebhookReceiptMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: WebhookReceiptMaxAggregateInputType
@@ -11290,13 +13766,13 @@ export namespace Prisma {
      * @example
      * // Get all WebhookReceipts
      * const webhookReceipts = await prisma.webhookReceipt.findMany()
-     *
+     * 
      * // Get first 10 WebhookReceipts
      * const webhookReceipts = await prisma.webhookReceipt.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const webhookReceiptWithIdOnly = await prisma.webhookReceipt.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends WebhookReceiptFindManyArgs>(args?: SelectSubset<T, WebhookReceiptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebhookReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -11310,7 +13786,7 @@ export namespace Prisma {
      *     // ... data to create a WebhookReceipt
      *   }
      * })
-     *
+     * 
      */
     create<T extends WebhookReceiptCreateArgs>(args: SelectSubset<T, WebhookReceiptCreateArgs<ExtArgs>>): Prisma__WebhookReceiptClient<$Result.GetResult<Prisma.$WebhookReceiptPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11324,7 +13800,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends WebhookReceiptCreateManyArgs>(args?: SelectSubset<T, WebhookReceiptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11338,7 +13814,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many WebhookReceipts and only return the `id`
      * const webhookReceiptWithIdOnly = await prisma.webhookReceipt.createManyAndReturn({
      *   select: { id: true },
@@ -11348,7 +13824,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends WebhookReceiptCreateManyAndReturnArgs>(args?: SelectSubset<T, WebhookReceiptCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebhookReceiptPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -11362,7 +13838,7 @@ export namespace Prisma {
      *     // ... filter to delete one WebhookReceipt
      *   }
      * })
-     *
+     * 
      */
     delete<T extends WebhookReceiptDeleteArgs>(args: SelectSubset<T, WebhookReceiptDeleteArgs<ExtArgs>>): Prisma__WebhookReceiptClient<$Result.GetResult<Prisma.$WebhookReceiptPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11379,7 +13855,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends WebhookReceiptUpdateArgs>(args: SelectSubset<T, WebhookReceiptUpdateArgs<ExtArgs>>): Prisma__WebhookReceiptClient<$Result.GetResult<Prisma.$WebhookReceiptPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11393,7 +13869,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends WebhookReceiptDeleteManyArgs>(args?: SelectSubset<T, WebhookReceiptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11412,7 +13888,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends WebhookReceiptUpdateManyArgs>(args: SelectSubset<T, WebhookReceiptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11429,7 +13905,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more WebhookReceipts and only return the `id`
      * const webhookReceiptWithIdOnly = await prisma.webhookReceipt.updateManyAndReturn({
      *   select: { id: true },
@@ -11442,7 +13918,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends WebhookReceiptUpdateManyAndReturnArgs>(args: SelectSubset<T, WebhookReceiptUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebhookReceiptPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -11531,7 +14007,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends WebhookReceiptGroupByArgs,
@@ -11646,7 +14122,7 @@ export namespace Prisma {
     readonly processed: FieldRef<"WebhookReceipt", 'Boolean'>
     readonly correlationId: FieldRef<"WebhookReceipt", 'String'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -11715,31 +14191,31 @@ export namespace Prisma {
     where?: WebhookReceiptWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of WebhookReceipts to fetch.
      */
     orderBy?: WebhookReceiptOrderByWithRelationInput | WebhookReceiptOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for WebhookReceipts.
      */
     cursor?: WebhookReceiptWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` WebhookReceipts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` WebhookReceipts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of WebhookReceipts.
      */
     distinct?: WebhookReceiptScalarFieldEnum | WebhookReceiptScalarFieldEnum[]
@@ -11767,31 +14243,31 @@ export namespace Prisma {
     where?: WebhookReceiptWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of WebhookReceipts to fetch.
      */
     orderBy?: WebhookReceiptOrderByWithRelationInput | WebhookReceiptOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for WebhookReceipts.
      */
     cursor?: WebhookReceiptWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` WebhookReceipts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` WebhookReceipts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of WebhookReceipts.
      */
     distinct?: WebhookReceiptScalarFieldEnum | WebhookReceiptScalarFieldEnum[]
@@ -11819,28 +14295,33 @@ export namespace Prisma {
     where?: WebhookReceiptWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of WebhookReceipts to fetch.
      */
     orderBy?: WebhookReceiptOrderByWithRelationInput | WebhookReceiptOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing WebhookReceipts.
      */
     cursor?: WebhookReceiptWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` WebhookReceipts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` WebhookReceipts.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WebhookReceipts.
+     */
     distinct?: WebhookReceiptScalarFieldEnum | WebhookReceiptScalarFieldEnum[]
   }
 
@@ -12173,55 +14654,55 @@ export namespace Prisma {
     where?: DeadLetterJobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of DeadLetterJobs to fetch.
      */
     orderBy?: DeadLetterJobOrderByWithRelationInput | DeadLetterJobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: DeadLetterJobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` DeadLetterJobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` DeadLetterJobs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned DeadLetterJobs
     **/
     _count?: true | DeadLetterJobCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: DeadLetterJobAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: DeadLetterJobSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: DeadLetterJobMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: DeadLetterJobMaxAggregateInputType
@@ -12431,13 +14912,13 @@ export namespace Prisma {
      * @example
      * // Get all DeadLetterJobs
      * const deadLetterJobs = await prisma.deadLetterJob.findMany()
-     *
+     * 
      * // Get first 10 DeadLetterJobs
      * const deadLetterJobs = await prisma.deadLetterJob.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const deadLetterJobWithIdOnly = await prisma.deadLetterJob.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends DeadLetterJobFindManyArgs>(args?: SelectSubset<T, DeadLetterJobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeadLetterJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -12451,7 +14932,7 @@ export namespace Prisma {
      *     // ... data to create a DeadLetterJob
      *   }
      * })
-     *
+     * 
      */
     create<T extends DeadLetterJobCreateArgs>(args: SelectSubset<T, DeadLetterJobCreateArgs<ExtArgs>>): Prisma__DeadLetterJobClient<$Result.GetResult<Prisma.$DeadLetterJobPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12465,7 +14946,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends DeadLetterJobCreateManyArgs>(args?: SelectSubset<T, DeadLetterJobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12479,7 +14960,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many DeadLetterJobs and only return the `id`
      * const deadLetterJobWithIdOnly = await prisma.deadLetterJob.createManyAndReturn({
      *   select: { id: true },
@@ -12489,7 +14970,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends DeadLetterJobCreateManyAndReturnArgs>(args?: SelectSubset<T, DeadLetterJobCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeadLetterJobPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -12503,7 +14984,7 @@ export namespace Prisma {
      *     // ... filter to delete one DeadLetterJob
      *   }
      * })
-     *
+     * 
      */
     delete<T extends DeadLetterJobDeleteArgs>(args: SelectSubset<T, DeadLetterJobDeleteArgs<ExtArgs>>): Prisma__DeadLetterJobClient<$Result.GetResult<Prisma.$DeadLetterJobPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12520,7 +15001,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends DeadLetterJobUpdateArgs>(args: SelectSubset<T, DeadLetterJobUpdateArgs<ExtArgs>>): Prisma__DeadLetterJobClient<$Result.GetResult<Prisma.$DeadLetterJobPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12534,7 +15015,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends DeadLetterJobDeleteManyArgs>(args?: SelectSubset<T, DeadLetterJobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12553,7 +15034,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends DeadLetterJobUpdateManyArgs>(args: SelectSubset<T, DeadLetterJobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12570,7 +15051,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more DeadLetterJobs and only return the `id`
      * const deadLetterJobWithIdOnly = await prisma.deadLetterJob.updateManyAndReturn({
      *   select: { id: true },
@@ -12583,7 +15064,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends DeadLetterJobUpdateManyAndReturnArgs>(args: SelectSubset<T, DeadLetterJobUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeadLetterJobPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -12672,7 +15153,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends DeadLetterJobGroupByArgs,
@@ -12786,7 +15267,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"DeadLetterJob", 'DateTime'>
     readonly lastFailedAt: FieldRef<"DeadLetterJob", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -12843,31 +15324,31 @@ export namespace Prisma {
     where?: DeadLetterJobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of DeadLetterJobs to fetch.
      */
     orderBy?: DeadLetterJobOrderByWithRelationInput | DeadLetterJobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for DeadLetterJobs.
      */
     cursor?: DeadLetterJobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` DeadLetterJobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` DeadLetterJobs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of DeadLetterJobs.
      */
     distinct?: DeadLetterJobScalarFieldEnum | DeadLetterJobScalarFieldEnum[]
@@ -12891,31 +15372,31 @@ export namespace Prisma {
     where?: DeadLetterJobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of DeadLetterJobs to fetch.
      */
     orderBy?: DeadLetterJobOrderByWithRelationInput | DeadLetterJobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for DeadLetterJobs.
      */
     cursor?: DeadLetterJobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` DeadLetterJobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` DeadLetterJobs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of DeadLetterJobs.
      */
     distinct?: DeadLetterJobScalarFieldEnum | DeadLetterJobScalarFieldEnum[]
@@ -12939,28 +15420,33 @@ export namespace Prisma {
     where?: DeadLetterJobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of DeadLetterJobs to fetch.
      */
     orderBy?: DeadLetterJobOrderByWithRelationInput | DeadLetterJobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing DeadLetterJobs.
      */
     cursor?: DeadLetterJobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` DeadLetterJobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` DeadLetterJobs.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DeadLetterJobs.
+     */
     distinct?: DeadLetterJobScalarFieldEnum | DeadLetterJobScalarFieldEnum[]
   }
 
@@ -13169,6 +15655,30 @@ export namespace Prisma {
   export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
 
 
+  export const OrganizationMemberScalarFieldEnum: {
+    id: 'id',
+    organizationId: 'organizationId',
+    userId: 'userId',
+    role: 'role',
+    createdAt: 'createdAt'
+  };
+
+  export type OrganizationMemberScalarFieldEnum = (typeof OrganizationMemberScalarFieldEnum)[keyof typeof OrganizationMemberScalarFieldEnum]
+
+
+  export const AuditLogScalarFieldEnum: {
+    id: 'id',
+    organizationId: 'organizationId',
+    actorId: 'actorId',
+    action: 'action',
+    resourceId: 'resourceId',
+    metadata: 'metadata',
+    createdAt: 'createdAt'
+  };
+
+  export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
   export const RepositoryScalarFieldEnum: {
     id: 'id',
     organizationId: 'organizationId',
@@ -13317,35 +15827,35 @@ export namespace Prisma {
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
-
+    
 
 
   /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-
+    
 
 
   /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-
+    
 
 
   /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-
+    
 
 
   /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-
+    
   /**
    * Deep Input Types
    */
@@ -13365,6 +15875,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackListRelationFilter
     policyAssignments?: PolicyPackAssignmentListRelationFilter
     webhookReceipts?: WebhookReceiptListRelationFilter
+    members?: OrganizationMemberListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
   }
 
   export type OrganizationOrderByWithRelationInput = {
@@ -13378,6 +15890,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackOrderByRelationAggregateInput
     policyAssignments?: PolicyPackAssignmentOrderByRelationAggregateInput
     webhookReceipts?: WebhookReceiptOrderByRelationAggregateInput
+    members?: OrganizationMemberOrderByRelationAggregateInput
+    auditLogs?: AuditLogOrderByRelationAggregateInput
   }
 
   export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
@@ -13394,6 +15908,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackListRelationFilter
     policyAssignments?: PolicyPackAssignmentListRelationFilter
     webhookReceipts?: WebhookReceiptListRelationFilter
+    members?: OrganizationMemberListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
   }, "id">
 
   export type OrganizationOrderByWithAggregationInput = {
@@ -13412,6 +15928,127 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Organization"> | string
     name?: StringWithAggregatesFilter<"Organization"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Organization"> | Date | string
+  }
+
+  export type OrganizationMemberWhereInput = {
+    AND?: OrganizationMemberWhereInput | OrganizationMemberWhereInput[]
+    OR?: OrganizationMemberWhereInput[]
+    NOT?: OrganizationMemberWhereInput | OrganizationMemberWhereInput[]
+    id?: StringFilter<"OrganizationMember"> | string
+    organizationId?: StringFilter<"OrganizationMember"> | string
+    userId?: StringFilter<"OrganizationMember"> | string
+    role?: StringFilter<"OrganizationMember"> | string
+    createdAt?: DateTimeFilter<"OrganizationMember"> | Date | string
+    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+  }
+
+  export type OrganizationMemberOrderByWithRelationInput = {
+    id?: SortOrder
+    organizationId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+    organization?: OrganizationOrderByWithRelationInput
+  }
+
+  export type OrganizationMemberWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    organizationId_userId?: OrganizationMemberOrganizationIdUserIdCompoundUniqueInput
+    AND?: OrganizationMemberWhereInput | OrganizationMemberWhereInput[]
+    OR?: OrganizationMemberWhereInput[]
+    NOT?: OrganizationMemberWhereInput | OrganizationMemberWhereInput[]
+    organizationId?: StringFilter<"OrganizationMember"> | string
+    userId?: StringFilter<"OrganizationMember"> | string
+    role?: StringFilter<"OrganizationMember"> | string
+    createdAt?: DateTimeFilter<"OrganizationMember"> | Date | string
+    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+  }, "id" | "organizationId_userId">
+
+  export type OrganizationMemberOrderByWithAggregationInput = {
+    id?: SortOrder
+    organizationId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+    _count?: OrganizationMemberCountOrderByAggregateInput
+    _max?: OrganizationMemberMaxOrderByAggregateInput
+    _min?: OrganizationMemberMinOrderByAggregateInput
+  }
+
+  export type OrganizationMemberScalarWhereWithAggregatesInput = {
+    AND?: OrganizationMemberScalarWhereWithAggregatesInput | OrganizationMemberScalarWhereWithAggregatesInput[]
+    OR?: OrganizationMemberScalarWhereWithAggregatesInput[]
+    NOT?: OrganizationMemberScalarWhereWithAggregatesInput | OrganizationMemberScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"OrganizationMember"> | string
+    organizationId?: StringWithAggregatesFilter<"OrganizationMember"> | string
+    userId?: StringWithAggregatesFilter<"OrganizationMember"> | string
+    role?: StringWithAggregatesFilter<"OrganizationMember"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"OrganizationMember"> | Date | string
+  }
+
+  export type AuditLogWhereInput = {
+    AND?: AuditLogWhereInput | AuditLogWhereInput[]
+    OR?: AuditLogWhereInput[]
+    NOT?: AuditLogWhereInput | AuditLogWhereInput[]
+    id?: StringFilter<"AuditLog"> | string
+    organizationId?: StringFilter<"AuditLog"> | string
+    actorId?: StringFilter<"AuditLog"> | string
+    action?: StringFilter<"AuditLog"> | string
+    resourceId?: StringFilter<"AuditLog"> | string
+    metadata?: StringFilter<"AuditLog"> | string
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+  }
+
+  export type AuditLogOrderByWithRelationInput = {
+    id?: SortOrder
+    organizationId?: SortOrder
+    actorId?: SortOrder
+    action?: SortOrder
+    resourceId?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+    organization?: OrganizationOrderByWithRelationInput
+  }
+
+  export type AuditLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AuditLogWhereInput | AuditLogWhereInput[]
+    OR?: AuditLogWhereInput[]
+    NOT?: AuditLogWhereInput | AuditLogWhereInput[]
+    organizationId?: StringFilter<"AuditLog"> | string
+    actorId?: StringFilter<"AuditLog"> | string
+    action?: StringFilter<"AuditLog"> | string
+    resourceId?: StringFilter<"AuditLog"> | string
+    metadata?: StringFilter<"AuditLog"> | string
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+  }, "id">
+
+  export type AuditLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    organizationId?: SortOrder
+    actorId?: SortOrder
+    action?: SortOrder
+    resourceId?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+    _count?: AuditLogCountOrderByAggregateInput
+    _max?: AuditLogMaxOrderByAggregateInput
+    _min?: AuditLogMinOrderByAggregateInput
+  }
+
+  export type AuditLogScalarWhereWithAggregatesInput = {
+    AND?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
+    OR?: AuditLogScalarWhereWithAggregatesInput[]
+    NOT?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AuditLog"> | string
+    organizationId?: StringWithAggregatesFilter<"AuditLog"> | string
+    actorId?: StringWithAggregatesFilter<"AuditLog"> | string
+    action?: StringWithAggregatesFilter<"AuditLog"> | string
+    resourceId?: StringWithAggregatesFilter<"AuditLog"> | string
+    metadata?: StringWithAggregatesFilter<"AuditLog"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"AuditLog"> | Date | string
   }
 
   export type RepositoryWhereInput = {
@@ -14076,6 +16713,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateInput = {
@@ -14089,6 +16728,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUncheckedCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUpdateInput = {
@@ -14102,6 +16743,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateInput = {
@@ -14115,6 +16758,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUncheckedUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationCreateManyInput = {
@@ -14132,6 +16777,130 @@ export namespace Prisma {
   export type OrganizationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganizationMemberCreateInput = {
+    id?: string
+    userId: string
+    role: string
+    createdAt?: Date | string
+    organization: OrganizationCreateNestedOneWithoutMembersInput
+  }
+
+  export type OrganizationMemberUncheckedCreateInput = {
+    id?: string
+    organizationId: string
+    userId: string
+    role: string
+    createdAt?: Date | string
+  }
+
+  export type OrganizationMemberUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type OrganizationMemberUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganizationMemberCreateManyInput = {
+    id?: string
+    organizationId: string
+    userId: string
+    role: string
+    createdAt?: Date | string
+  }
+
+  export type OrganizationMemberUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganizationMemberUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogCreateInput = {
+    id?: string
+    actorId: string
+    action: string
+    resourceId: string
+    metadata: string
+    createdAt?: Date | string
+    organization: OrganizationCreateNestedOneWithoutAuditLogsInput
+  }
+
+  export type AuditLogUncheckedCreateInput = {
+    id?: string
+    organizationId: string
+    actorId: string
+    action: string
+    resourceId: string
+    metadata: string
+    createdAt?: Date | string
+  }
+
+  export type AuditLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actorId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resourceId?: StringFieldUpdateOperationsInput | string
+    metadata?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneRequiredWithoutAuditLogsNestedInput
+  }
+
+  export type AuditLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    actorId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resourceId?: StringFieldUpdateOperationsInput | string
+    metadata?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogCreateManyInput = {
+    id?: string
+    organizationId: string
+    actorId: string
+    action: string
+    resourceId: string
+    metadata: string
+    createdAt?: Date | string
+  }
+
+  export type AuditLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actorId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resourceId?: StringFieldUpdateOperationsInput | string
+    metadata?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    actorId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resourceId?: StringFieldUpdateOperationsInput | string
+    metadata?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -14885,6 +17654,18 @@ export namespace Prisma {
     none?: WebhookReceiptWhereInput
   }
 
+  export type OrganizationMemberListRelationFilter = {
+    every?: OrganizationMemberWhereInput
+    some?: OrganizationMemberWhereInput
+    none?: OrganizationMemberWhereInput
+  }
+
+  export type AuditLogListRelationFilter = {
+    every?: AuditLogWhereInput
+    some?: AuditLogWhereInput
+    none?: AuditLogWhereInput
+  }
+
   export type RepositoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -14910,6 +17691,14 @@ export namespace Prisma {
   }
 
   export type WebhookReceiptOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type OrganizationMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AuditLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14965,6 +17754,65 @@ export namespace Prisma {
   export type OrganizationScalarRelationFilter = {
     is?: OrganizationWhereInput
     isNot?: OrganizationWhereInput
+  }
+
+  export type OrganizationMemberOrganizationIdUserIdCompoundUniqueInput = {
+    organizationId: string
+    userId: string
+  }
+
+  export type OrganizationMemberCountOrderByAggregateInput = {
+    id?: SortOrder
+    organizationId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type OrganizationMemberMaxOrderByAggregateInput = {
+    id?: SortOrder
+    organizationId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type OrganizationMemberMinOrderByAggregateInput = {
+    id?: SortOrder
+    organizationId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AuditLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    organizationId?: SortOrder
+    actorId?: SortOrder
+    action?: SortOrder
+    resourceId?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AuditLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    organizationId?: SortOrder
+    actorId?: SortOrder
+    action?: SortOrder
+    resourceId?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AuditLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    organizationId?: SortOrder
+    actorId?: SortOrder
+    action?: SortOrder
+    resourceId?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type ProjectListRelationFilter = {
@@ -15438,6 +18286,20 @@ export namespace Prisma {
     connect?: WebhookReceiptWhereUniqueInput | WebhookReceiptWhereUniqueInput[]
   }
 
+  export type OrganizationMemberCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput> | OrganizationMemberCreateWithoutOrganizationInput[] | OrganizationMemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutOrganizationInput | OrganizationMemberCreateOrConnectWithoutOrganizationInput[]
+    createMany?: OrganizationMemberCreateManyOrganizationInputEnvelope
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+  }
+
+  export type AuditLogCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<AuditLogCreateWithoutOrganizationInput, AuditLogUncheckedCreateWithoutOrganizationInput> | AuditLogCreateWithoutOrganizationInput[] | AuditLogUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutOrganizationInput | AuditLogCreateOrConnectWithoutOrganizationInput[]
+    createMany?: AuditLogCreateManyOrganizationInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
   export type RepositoryUncheckedCreateNestedManyWithoutOrganizationInput = {
     create?: XOR<RepositoryCreateWithoutOrganizationInput, RepositoryUncheckedCreateWithoutOrganizationInput> | RepositoryCreateWithoutOrganizationInput[] | RepositoryUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: RepositoryCreateOrConnectWithoutOrganizationInput | RepositoryCreateOrConnectWithoutOrganizationInput[]
@@ -15485,6 +18347,20 @@ export namespace Prisma {
     connectOrCreate?: WebhookReceiptCreateOrConnectWithoutOrganizationInput | WebhookReceiptCreateOrConnectWithoutOrganizationInput[]
     createMany?: WebhookReceiptCreateManyOrganizationInputEnvelope
     connect?: WebhookReceiptWhereUniqueInput | WebhookReceiptWhereUniqueInput[]
+  }
+
+  export type OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput> | OrganizationMemberCreateWithoutOrganizationInput[] | OrganizationMemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutOrganizationInput | OrganizationMemberCreateOrConnectWithoutOrganizationInput[]
+    createMany?: OrganizationMemberCreateManyOrganizationInputEnvelope
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+  }
+
+  export type AuditLogUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<AuditLogCreateWithoutOrganizationInput, AuditLogUncheckedCreateWithoutOrganizationInput> | AuditLogCreateWithoutOrganizationInput[] | AuditLogUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutOrganizationInput | AuditLogCreateOrConnectWithoutOrganizationInput[]
+    createMany?: AuditLogCreateManyOrganizationInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -15593,6 +18469,34 @@ export namespace Prisma {
     deleteMany?: WebhookReceiptScalarWhereInput | WebhookReceiptScalarWhereInput[]
   }
 
+  export type OrganizationMemberUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput> | OrganizationMemberCreateWithoutOrganizationInput[] | OrganizationMemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutOrganizationInput | OrganizationMemberCreateOrConnectWithoutOrganizationInput[]
+    upsert?: OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput | OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: OrganizationMemberCreateManyOrganizationInputEnvelope
+    set?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    disconnect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    delete?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    update?: OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput | OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput | OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+  }
+
+  export type AuditLogUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<AuditLogCreateWithoutOrganizationInput, AuditLogUncheckedCreateWithoutOrganizationInput> | AuditLogCreateWithoutOrganizationInput[] | AuditLogUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutOrganizationInput | AuditLogCreateOrConnectWithoutOrganizationInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutOrganizationInput | AuditLogUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: AuditLogCreateManyOrganizationInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutOrganizationInput | AuditLogUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutOrganizationInput | AuditLogUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
   export type RepositoryUncheckedUpdateManyWithoutOrganizationNestedInput = {
     create?: XOR<RepositoryCreateWithoutOrganizationInput, RepositoryUncheckedCreateWithoutOrganizationInput> | RepositoryCreateWithoutOrganizationInput[] | RepositoryUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: RepositoryCreateOrConnectWithoutOrganizationInput | RepositoryCreateOrConnectWithoutOrganizationInput[]
@@ -15689,6 +18593,62 @@ export namespace Prisma {
     update?: WebhookReceiptUpdateWithWhereUniqueWithoutOrganizationInput | WebhookReceiptUpdateWithWhereUniqueWithoutOrganizationInput[]
     updateMany?: WebhookReceiptUpdateManyWithWhereWithoutOrganizationInput | WebhookReceiptUpdateManyWithWhereWithoutOrganizationInput[]
     deleteMany?: WebhookReceiptScalarWhereInput | WebhookReceiptScalarWhereInput[]
+  }
+
+  export type OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput> | OrganizationMemberCreateWithoutOrganizationInput[] | OrganizationMemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutOrganizationInput | OrganizationMemberCreateOrConnectWithoutOrganizationInput[]
+    upsert?: OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput | OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: OrganizationMemberCreateManyOrganizationInputEnvelope
+    set?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    disconnect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    delete?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    update?: OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput | OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput | OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<AuditLogCreateWithoutOrganizationInput, AuditLogUncheckedCreateWithoutOrganizationInput> | AuditLogCreateWithoutOrganizationInput[] | AuditLogUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutOrganizationInput | AuditLogCreateOrConnectWithoutOrganizationInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutOrganizationInput | AuditLogUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: AuditLogCreateManyOrganizationInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutOrganizationInput | AuditLogUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutOrganizationInput | AuditLogUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
+  export type OrganizationCreateNestedOneWithoutMembersInput = {
+    create?: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutMembersInput
+    connect?: OrganizationWhereUniqueInput
+  }
+
+  export type OrganizationUpdateOneRequiredWithoutMembersNestedInput = {
+    create?: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutMembersInput
+    upsert?: OrganizationUpsertWithoutMembersInput
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutMembersInput, OrganizationUpdateWithoutMembersInput>, OrganizationUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type OrganizationCreateNestedOneWithoutAuditLogsInput = {
+    create?: XOR<OrganizationCreateWithoutAuditLogsInput, OrganizationUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutAuditLogsInput
+    connect?: OrganizationWhereUniqueInput
+  }
+
+  export type OrganizationUpdateOneRequiredWithoutAuditLogsNestedInput = {
+    create?: XOR<OrganizationCreateWithoutAuditLogsInput, OrganizationUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutAuditLogsInput
+    upsert?: OrganizationUpsertWithoutAuditLogsInput
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutAuditLogsInput, OrganizationUpdateWithoutAuditLogsInput>, OrganizationUncheckedUpdateWithoutAuditLogsInput>
   }
 
   export type OrganizationCreateNestedOneWithoutRepositoriesInput = {
@@ -16507,6 +19467,56 @@ export namespace Prisma {
     data: WebhookReceiptCreateManyOrganizationInput | WebhookReceiptCreateManyOrganizationInput[]
   }
 
+  export type OrganizationMemberCreateWithoutOrganizationInput = {
+    id?: string
+    userId: string
+    role: string
+    createdAt?: Date | string
+  }
+
+  export type OrganizationMemberUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    userId: string
+    role: string
+    createdAt?: Date | string
+  }
+
+  export type OrganizationMemberCreateOrConnectWithoutOrganizationInput = {
+    where: OrganizationMemberWhereUniqueInput
+    create: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type OrganizationMemberCreateManyOrganizationInputEnvelope = {
+    data: OrganizationMemberCreateManyOrganizationInput | OrganizationMemberCreateManyOrganizationInput[]
+  }
+
+  export type AuditLogCreateWithoutOrganizationInput = {
+    id?: string
+    actorId: string
+    action: string
+    resourceId: string
+    metadata: string
+    createdAt?: Date | string
+  }
+
+  export type AuditLogUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    actorId: string
+    action: string
+    resourceId: string
+    metadata: string
+    createdAt?: Date | string
+  }
+
+  export type AuditLogCreateOrConnectWithoutOrganizationInput = {
+    where: AuditLogWhereUniqueInput
+    create: XOR<AuditLogCreateWithoutOrganizationInput, AuditLogUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type AuditLogCreateManyOrganizationInputEnvelope = {
+    data: AuditLogCreateManyOrganizationInput | AuditLogCreateManyOrganizationInput[]
+  }
+
   export type RepositoryUpsertWithWhereUniqueWithoutOrganizationInput = {
     where: RepositoryWhereUniqueInput
     update: XOR<RepositoryUpdateWithoutOrganizationInput, RepositoryUncheckedUpdateWithoutOrganizationInput>
@@ -16717,6 +19727,206 @@ export namespace Prisma {
     correlationId?: StringNullableFilter<"WebhookReceipt"> | string | null
   }
 
+  export type OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: OrganizationMemberWhereUniqueInput
+    update: XOR<OrganizationMemberUpdateWithoutOrganizationInput, OrganizationMemberUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: OrganizationMemberWhereUniqueInput
+    data: XOR<OrganizationMemberUpdateWithoutOrganizationInput, OrganizationMemberUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput = {
+    where: OrganizationMemberScalarWhereInput
+    data: XOR<OrganizationMemberUpdateManyMutationInput, OrganizationMemberUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type OrganizationMemberScalarWhereInput = {
+    AND?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+    OR?: OrganizationMemberScalarWhereInput[]
+    NOT?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+    id?: StringFilter<"OrganizationMember"> | string
+    organizationId?: StringFilter<"OrganizationMember"> | string
+    userId?: StringFilter<"OrganizationMember"> | string
+    role?: StringFilter<"OrganizationMember"> | string
+    createdAt?: DateTimeFilter<"OrganizationMember"> | Date | string
+  }
+
+  export type AuditLogUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: AuditLogWhereUniqueInput
+    update: XOR<AuditLogUpdateWithoutOrganizationInput, AuditLogUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<AuditLogCreateWithoutOrganizationInput, AuditLogUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type AuditLogUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: AuditLogWhereUniqueInput
+    data: XOR<AuditLogUpdateWithoutOrganizationInput, AuditLogUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type AuditLogUpdateManyWithWhereWithoutOrganizationInput = {
+    where: AuditLogScalarWhereInput
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type AuditLogScalarWhereInput = {
+    AND?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    OR?: AuditLogScalarWhereInput[]
+    NOT?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    id?: StringFilter<"AuditLog"> | string
+    organizationId?: StringFilter<"AuditLog"> | string
+    actorId?: StringFilter<"AuditLog"> | string
+    action?: StringFilter<"AuditLog"> | string
+    resourceId?: StringFilter<"AuditLog"> | string
+    metadata?: StringFilter<"AuditLog"> | string
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+  }
+
+  export type OrganizationCreateWithoutMembersInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    repositories?: RepositoryCreateNestedManyWithoutOrganizationInput
+    runs?: ReadyLayerRunCreateNestedManyWithoutOrganizationInput
+    evidenceAttestations?: EvidenceAttestationCreateNestedManyWithoutOrganizationInput
+    evidenceObjects?: EvidenceObjectCreateNestedManyWithoutOrganizationInput
+    policyPacks?: PolicyPackCreateNestedManyWithoutOrganizationInput
+    policyAssignments?: PolicyPackAssignmentCreateNestedManyWithoutOrganizationInput
+    webhookReceipts?: WebhookReceiptCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutMembersInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    repositories?: RepositoryUncheckedCreateNestedManyWithoutOrganizationInput
+    runs?: ReadyLayerRunUncheckedCreateNestedManyWithoutOrganizationInput
+    evidenceAttestations?: EvidenceAttestationUncheckedCreateNestedManyWithoutOrganizationInput
+    evidenceObjects?: EvidenceObjectUncheckedCreateNestedManyWithoutOrganizationInput
+    policyPacks?: PolicyPackUncheckedCreateNestedManyWithoutOrganizationInput
+    policyAssignments?: PolicyPackAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
+    webhookReceipts?: WebhookReceiptUncheckedCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutMembersInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+  }
+
+  export type OrganizationUpsertWithoutMembersInput = {
+    update: XOR<OrganizationUpdateWithoutMembersInput, OrganizationUncheckedUpdateWithoutMembersInput>
+    create: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutMembersInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutMembersInput, OrganizationUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type OrganizationUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    repositories?: RepositoryUpdateManyWithoutOrganizationNestedInput
+    runs?: ReadyLayerRunUpdateManyWithoutOrganizationNestedInput
+    evidenceAttestations?: EvidenceAttestationUpdateManyWithoutOrganizationNestedInput
+    evidenceObjects?: EvidenceObjectUpdateManyWithoutOrganizationNestedInput
+    policyPacks?: PolicyPackUpdateManyWithoutOrganizationNestedInput
+    policyAssignments?: PolicyPackAssignmentUpdateManyWithoutOrganizationNestedInput
+    webhookReceipts?: WebhookReceiptUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    repositories?: RepositoryUncheckedUpdateManyWithoutOrganizationNestedInput
+    runs?: ReadyLayerRunUncheckedUpdateManyWithoutOrganizationNestedInput
+    evidenceAttestations?: EvidenceAttestationUncheckedUpdateManyWithoutOrganizationNestedInput
+    evidenceObjects?: EvidenceObjectUncheckedUpdateManyWithoutOrganizationNestedInput
+    policyPacks?: PolicyPackUncheckedUpdateManyWithoutOrganizationNestedInput
+    policyAssignments?: PolicyPackAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
+    webhookReceipts?: WebhookReceiptUncheckedUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationCreateWithoutAuditLogsInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    repositories?: RepositoryCreateNestedManyWithoutOrganizationInput
+    runs?: ReadyLayerRunCreateNestedManyWithoutOrganizationInput
+    evidenceAttestations?: EvidenceAttestationCreateNestedManyWithoutOrganizationInput
+    evidenceObjects?: EvidenceObjectCreateNestedManyWithoutOrganizationInput
+    policyPacks?: PolicyPackCreateNestedManyWithoutOrganizationInput
+    policyAssignments?: PolicyPackAssignmentCreateNestedManyWithoutOrganizationInput
+    webhookReceipts?: WebhookReceiptCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutAuditLogsInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    repositories?: RepositoryUncheckedCreateNestedManyWithoutOrganizationInput
+    runs?: ReadyLayerRunUncheckedCreateNestedManyWithoutOrganizationInput
+    evidenceAttestations?: EvidenceAttestationUncheckedCreateNestedManyWithoutOrganizationInput
+    evidenceObjects?: EvidenceObjectUncheckedCreateNestedManyWithoutOrganizationInput
+    policyPacks?: PolicyPackUncheckedCreateNestedManyWithoutOrganizationInput
+    policyAssignments?: PolicyPackAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
+    webhookReceipts?: WebhookReceiptUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutAuditLogsInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutAuditLogsInput, OrganizationUncheckedCreateWithoutAuditLogsInput>
+  }
+
+  export type OrganizationUpsertWithoutAuditLogsInput = {
+    update: XOR<OrganizationUpdateWithoutAuditLogsInput, OrganizationUncheckedUpdateWithoutAuditLogsInput>
+    create: XOR<OrganizationCreateWithoutAuditLogsInput, OrganizationUncheckedCreateWithoutAuditLogsInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutAuditLogsInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutAuditLogsInput, OrganizationUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type OrganizationUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    repositories?: RepositoryUpdateManyWithoutOrganizationNestedInput
+    runs?: ReadyLayerRunUpdateManyWithoutOrganizationNestedInput
+    evidenceAttestations?: EvidenceAttestationUpdateManyWithoutOrganizationNestedInput
+    evidenceObjects?: EvidenceObjectUpdateManyWithoutOrganizationNestedInput
+    policyPacks?: PolicyPackUpdateManyWithoutOrganizationNestedInput
+    policyAssignments?: PolicyPackAssignmentUpdateManyWithoutOrganizationNestedInput
+    webhookReceipts?: WebhookReceiptUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    repositories?: RepositoryUncheckedUpdateManyWithoutOrganizationNestedInput
+    runs?: ReadyLayerRunUncheckedUpdateManyWithoutOrganizationNestedInput
+    evidenceAttestations?: EvidenceAttestationUncheckedUpdateManyWithoutOrganizationNestedInput
+    evidenceObjects?: EvidenceObjectUncheckedUpdateManyWithoutOrganizationNestedInput
+    policyPacks?: PolicyPackUncheckedUpdateManyWithoutOrganizationNestedInput
+    policyAssignments?: PolicyPackAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
+    webhookReceipts?: WebhookReceiptUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
   export type OrganizationCreateWithoutRepositoriesInput = {
     id?: string
     name: string
@@ -16727,6 +19937,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutRepositoriesInput = {
@@ -16739,6 +19951,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUncheckedCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutRepositoriesInput = {
@@ -16873,6 +20087,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutRepositoriesInput = {
@@ -16885,6 +20101,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUncheckedUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type ProjectUpsertWithWhereUniqueWithoutRepositoryInput = {
@@ -17026,6 +20244,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutRunsInput = {
@@ -17038,6 +20258,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUncheckedCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutRunsInput = {
@@ -17126,6 +20348,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutRunsInput = {
@@ -17138,6 +20362,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUncheckedUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type RepositoryUpsertWithoutRunsInput = {
@@ -17197,6 +20423,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutEvidenceAttestationsInput = {
@@ -17209,6 +20437,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUncheckedCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutEvidenceAttestationsInput = {
@@ -17283,6 +20513,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutEvidenceAttestationsInput = {
@@ -17295,6 +20527,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUncheckedUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type RepositoryUpsertWithoutEvidenceAttestationsInput = {
@@ -17365,6 +20599,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutEvidenceObjectsInput = {
@@ -17377,6 +20613,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUncheckedCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutEvidenceObjectsInput = {
@@ -17405,6 +20643,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutEvidenceObjectsInput = {
@@ -17417,6 +20657,8 @@ export namespace Prisma {
     policyPacks?: PolicyPackUncheckedUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationCreateWithoutPolicyPacksInput = {
@@ -17429,6 +20671,8 @@ export namespace Prisma {
     evidenceObjects?: EvidenceObjectCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutPolicyPacksInput = {
@@ -17441,6 +20685,8 @@ export namespace Prisma {
     evidenceObjects?: EvidenceObjectUncheckedCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutPolicyPacksInput = {
@@ -17496,6 +20742,8 @@ export namespace Prisma {
     evidenceObjects?: EvidenceObjectUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutPolicyPacksInput = {
@@ -17508,6 +20756,8 @@ export namespace Prisma {
     evidenceObjects?: EvidenceObjectUncheckedUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type PolicyPackAssignmentUpsertWithWhereUniqueWithoutPolicyPackInput = {
@@ -17536,6 +20786,8 @@ export namespace Prisma {
     evidenceObjects?: EvidenceObjectCreateNestedManyWithoutOrganizationInput
     policyPacks?: PolicyPackCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutPolicyAssignmentsInput = {
@@ -17548,6 +20800,8 @@ export namespace Prisma {
     evidenceObjects?: EvidenceObjectUncheckedCreateNestedManyWithoutOrganizationInput
     policyPacks?: PolicyPackUncheckedCreateNestedManyWithoutOrganizationInput
     webhookReceipts?: WebhookReceiptUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutPolicyAssignmentsInput = {
@@ -17632,6 +20886,8 @@ export namespace Prisma {
     evidenceObjects?: EvidenceObjectUpdateManyWithoutOrganizationNestedInput
     policyPacks?: PolicyPackUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutPolicyAssignmentsInput = {
@@ -17644,6 +20900,8 @@ export namespace Prisma {
     evidenceObjects?: EvidenceObjectUncheckedUpdateManyWithoutOrganizationNestedInput
     policyPacks?: PolicyPackUncheckedUpdateManyWithoutOrganizationNestedInput
     webhookReceipts?: WebhookReceiptUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type RepositoryUpsertWithoutPolicyAssignmentsInput = {
@@ -17724,6 +20982,8 @@ export namespace Prisma {
     evidenceObjects?: EvidenceObjectCreateNestedManyWithoutOrganizationInput
     policyPacks?: PolicyPackCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutWebhookReceiptsInput = {
@@ -17736,6 +20996,8 @@ export namespace Prisma {
     evidenceObjects?: EvidenceObjectUncheckedCreateNestedManyWithoutOrganizationInput
     policyPacks?: PolicyPackUncheckedCreateNestedManyWithoutOrganizationInput
     policyAssignments?: PolicyPackAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutWebhookReceiptsInput = {
@@ -17764,6 +21026,8 @@ export namespace Prisma {
     evidenceObjects?: EvidenceObjectUpdateManyWithoutOrganizationNestedInput
     policyPacks?: PolicyPackUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutWebhookReceiptsInput = {
@@ -17776,6 +21040,8 @@ export namespace Prisma {
     evidenceObjects?: EvidenceObjectUncheckedUpdateManyWithoutOrganizationNestedInput
     policyPacks?: PolicyPackUncheckedUpdateManyWithoutOrganizationNestedInput
     policyAssignments?: PolicyPackAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type RepositoryCreateManyOrganizationInput = {
@@ -17846,6 +21112,22 @@ export namespace Prisma {
     replayBlocked: boolean
     processed: boolean
     correlationId?: string | null
+  }
+
+  export type OrganizationMemberCreateManyOrganizationInput = {
+    id?: string
+    userId: string
+    role: string
+    createdAt?: Date | string
+  }
+
+  export type AuditLogCreateManyOrganizationInput = {
+    id?: string
+    actorId: string
+    action: string
+    resourceId: string
+    metadata: string
+    createdAt?: Date | string
   }
 
   export type RepositoryUpdateWithoutOrganizationInput = {
@@ -18068,6 +21350,54 @@ export namespace Prisma {
     replayBlocked?: BoolFieldUpdateOperationsInput | boolean
     processed?: BoolFieldUpdateOperationsInput | boolean
     correlationId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type OrganizationMemberUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganizationMemberUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganizationMemberUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actorId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resourceId?: StringFieldUpdateOperationsInput | string
+    metadata?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actorId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resourceId?: StringFieldUpdateOperationsInput | string
+    metadata?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actorId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resourceId?: StringFieldUpdateOperationsInput | string
+    metadata?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProjectCreateManyRepositoryInput = {

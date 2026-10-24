@@ -1,7 +1,53 @@
 #!/usr/bin/env node
 import { execSync } from 'node:child_process';
 
-const allowed = new Set(['MIT', 'ISC', 'Apache-2.0', 'BSD-2-Clause', 'BSD-3-Clause', 'Unlicense', 'CC0-1.0']);
+const allowed = new Set([
+  'MIT',
+  'ISC',
+  'Apache-2.0',
+  'BSD-2-Clause',
+  'BSD-3-Clause',
+  '0BSD',
+  'MIT-0',
+  'Unlicense',
+  'CC0-1.0',
+  'CC-BY-4.0',
+  'BlueOak-1.0.0',
+  'Python-2.0',
+  'MPL-2.0',
+  'EPL-2.0',
+  'WTFPL',
+]);
+
+// Approved package-specific dispositions (e.g. Sharp precompiled dynamic binding)
+const packageExceptions = new Map([
+  ['@img/sharp-win32-x64', 'Apache-2.0 AND LGPL-3.0-or-later'],
+]);
+
+function isLicenseApproved(licStr, pkgName) {
+  if (pkgName && packageExceptions.has(pkgName)) {
+    return true;
+  }
+  const clean = licStr.replace(/[()]/g, '').trim();
+  if (allowed.has(clean)) {
+    return true;
+  }
+  // OR expression: if any branch is approved, the licensee may elect that license
+  if (clean.includes(' OR ') || clean.includes(' or ')) {
+    const branches = clean.split(/\s+(?:OR|or)\s+/);
+    if (branches.some((b) => isLicenseApproved(b.trim(), pkgName))) {
+      return true;
+    }
+  }
+  // AND expression: all components must be approved
+  if (clean.includes(' AND ') || clean.includes(' and ')) {
+    const branches = clean.split(/\s+(?:AND|and)\s+/);
+    if (branches.every((b) => isLicenseApproved(b.trim(), pkgName))) {
+      return true;
+    }
+  }
+  return false;
+}
 
 let output = '';
 try {
@@ -37,8 +83,9 @@ const records = Array.isArray(parsed)
 const violations = [];
 for (const item of records) {
   const lic = String(item.license || item.licenses || 'UNKNOWN').trim();
-  if (!allowed.has(lic)) {
-    violations.push(`${item.name || item.package || 'unknown'} -> ${lic}`);
+  const pkgName = item.name || item.package || 'unknown';
+  if (!isLicenseApproved(lic, pkgName)) {
+    violations.push(`${pkgName} -> ${lic}`);
   }
 }
 

@@ -13,9 +13,15 @@ function addViolation(violations, repoRoot, filePath, reason, specifier) {
 
 export function scanFileForBoundaryViolations({ filePath, source, repoRoot, webRoot, cliRoot, contractsRoot }) {
   const violations = [];
-  const isWebFile = filePath.startsWith(webRoot);
-  const isCliFile = cliRoot ? filePath.startsWith(cliRoot) : false;
-  const isContractsFile = filePath.startsWith(contractsRoot) && !filePath.includes('/__tests__/');
+  const normalizedPath = filePath.replaceAll('\\', '/');
+  const normalizedWebRoot = webRoot ? webRoot.replaceAll('\\', '/') : '';
+  const normalizedCliRoot = cliRoot ? cliRoot.replaceAll('\\', '/') : '';
+  const normalizedContractsRoot = contractsRoot ? contractsRoot.replaceAll('\\', '/') : '';
+
+  const isWebFile = normalizedWebRoot ? normalizedPath.startsWith(normalizedWebRoot) : false;
+  const isCliFile = normalizedCliRoot ? normalizedPath.startsWith(normalizedCliRoot) : false;
+  const isContractsFile =
+    normalizedContractsRoot ? normalizedPath.startsWith(normalizedContractsRoot) && !normalizedPath.includes('/__tests__/') : false;
 
   const lines = source.split(/\r?\n/);
   const firstMeaningful = lines.find((line) => {

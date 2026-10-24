@@ -1,0 +1,42 @@
+{
+  "decision_id": "33071c5451d3f91f",
+  "input_hash": "33071c5451d3f91f743ea40b1a2a0b3a5f985a948a05353e719dcb28b9172b93",
+  "model_parameters": {
+    "depth": 3,
+    "example": "ops",
+    "traceId": "e06b1d82-9ab4-4cfb-826c-ad389d3eeee0"
+  },
+  "timestamp": "2026-10-24T02:17:33.251Z",
+  "execution_duration_ms": 16,
+  "assumptions": [
+    {
+      "id": "id-15218a61771d",
+      "text": "The incident is correlated with the most recent deployment.",
+      "status": "belief"
+    },
+    {
+      "id": "id-a3c77cf51049",
+      "text": "Rollback will restore service quickly with low side effects.",
+      "status": "assumption"
+    }
+  ],
+  "reasoning_summary": "Zeo generated a conservative branch map emphasizing plausible counterparty responses. Recommendations prioritize robustness: actions that retain value across uncertain assumptions. Uncertainty is represented as probability ranges and explicit dependencies.",
+  "flip_distance_summary": [
+    {
+      "assumption_id": "id-15218a61771d",
+      "distance": "1.0000",
+      "boundary": "Actual probability drops below 35%. Current interval [35%-65%] centers above 50%. If the true value falls below the lower bound, the assumption no longer supports the current robust action set."
+    },
+    {
+      "assumption_id": "id-a3c77cf51049",
+      "distance": "2.0000",
+      "boundary": "Obtain evidence that contradicts this assumption. This assumption has low confidence without a probability interval. Gathering direct evidence for or against it is the primary way to test whether the action set changes."
+    }
+  ],
+  "confidence_band": {
+    "lower": "0.0000",
+    "upper": "1.0000",
+    "method": "unknown"
+  },
+  "sensitivity_summary": "Decision sensitive to 2 assumptions."
+}

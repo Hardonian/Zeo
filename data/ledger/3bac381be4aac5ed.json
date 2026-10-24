@@ -1,0 +1,52 @@
+{
+  "decision_id": "3bac381be4aac5ed",
+  "input_hash": "3bac381be4aac5edce7a8fb96ee874cdeec382859fb3d6638f9c5afb678935e0",
+  "model_parameters": {
+    "depth": 3,
+    "example": "negotiation",
+    "traceId": "b7cae7d3-ee4d-45a9-9164-f61d04ea444d"
+  },
+  "timestamp": "2026-10-24T02:17:32.478Z",
+  "execution_duration_ms": 15,
+  "assumptions": [
+    {
+      "id": "id-e2d32258373c",
+      "text": "Counterparty is more sensitive to timeline than to price.",
+      "status": "assumption"
+    },
+    {
+      "id": "id-70e9e62eb223",
+      "text": "Exclusivity is a bargaining anchor rather than a strict requirement.",
+      "status": "assumption"
+    },
+    {
+      "id": "id-a0d1f025d580",
+      "text": "A brief delay will not materially reduce trust or momentum.",
+      "status": "belief"
+    }
+  ],
+  "reasoning_summary": "Zeo generated a conservative branch map emphasizing plausible counterparty responses. Recommendations prioritize robustness: actions that retain value across uncertain assumptions. Uncertainty is represented as probability ranges and explicit dependencies.",
+  "flip_distance_summary": [
+    {
+      "assumption_id": "id-e2d32258373c",
+      "distance": "1.0000",
+      "boundary": "Obtain evidence moving confidence to low or contradicting the assumption. This assumption has medium confidence without a probability interval. Gathering direct evidence for or against it is the primary way to test whether the action set changes."
+    },
+    {
+      "assumption_id": "id-70e9e62eb223",
+      "distance": "2.0000",
+      "boundary": "Obtain evidence that contradicts this assumption. This assumption has low confidence without a probability interval. Gathering direct evidence for or against it is the primary way to test whether the action set changes."
+    },
+    {
+      "assumption_id": "id-a0d1f025d580",
+      "distance": "3.0000",
+      "boundary": "Actual probability drops below 40%. Current interval [40%-70%] centers above 50%. If the true value falls below the lower bound, the assumption no longer supports the current robust action set."
+    }
+  ],
+  "confidence_band": {
+    "lower": "0.0000",
+    "upper": "1.0000",
+    "method": "unknown"
+  },
+  "sensitivity_summary": "Decision sensitive to 3 assumptions."
+}
