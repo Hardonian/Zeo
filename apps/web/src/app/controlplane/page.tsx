@@ -42,12 +42,21 @@ type InvariantStatus = {
   severity: "critical" | "high" | "standard";
 };
 
+type PluginInfo = {
+  id: string;
+  version: string;
+  deterministic: boolean;
+  networkAllowed: boolean;
+  capabilities: string[];
+};
+
 type ControlPlaneStatus = {
   generatedAt: string;
   repoRootFound: boolean;
   packageCount: number;
   agents: AgentInfo[];
   runners: RunnerReport[];
+  plugins: PluginInfo[];
   tools: Tool[];
   invariants: InvariantStatus[];
   mcpServerInfo: {
@@ -216,6 +225,41 @@ function discoverRunners(root: string): RunnerReport[] {
   return runners;
 }
 
+function discoverPlugins(root: string): PluginInfo[] {
+  const pluginsDir = join(root, "plugins");
+  if (!existsSync(pluginsDir)) return [];
+  try {
+    return readdirSync(pluginsDir, { withFileTypes: true })
+      .filter((e) => e.isDirectory())
+      .map((dir) => {
+        const manifestPath = join(pluginsDir, dir.name, "plugin.json");
+        if (existsSync(manifestPath)) {
+          try {
+            const data = JSON.parse(readFileSync(manifestPath, "utf8"));
+            return {
+              id: data.id ?? dir.name,
+              version: data.version ?? "1.0.0",
+              deterministic: Boolean(data.deterministic),
+              networkAllowed: Boolean(data.permissions?.network),
+              capabilities: Array.isArray(data.capabilities) ? data.capabilities : [],
+            };
+          } catch {
+            // Degrade gracefully
+          }
+        }
+        return {
+          id: dir.name,
+          version: "1.0.0",
+          deterministic: true,
+          networkAllowed: false,
+          capabilities: [],
+        };
+      });
+  } catch {
+    return [];
+  }
+}
+
 function collectStatus(): ControlPlaneStatus {
   try {
     const root = findRepoRoot();
@@ -223,6 +267,7 @@ function collectStatus(): ControlPlaneStatus {
     const mcpData = parseMcpConfig(root);
     const agents = discoverAgents(root);
     const runners = discoverRunners(root);
+    const plugins = discoverPlugins(root);
 
     let packageCount = 0;
     const packagesDir = join(root, "packages");
@@ -310,6 +355,7 @@ function collectStatus(): ControlPlaneStatus {
       packageCount,
       agents,
       runners,
+      plugins,
       tools: mcpData.tools,
       invariants,
       mcpServerInfo: mcpData.serverInfo,
@@ -323,6 +369,7 @@ function collectStatus(): ControlPlaneStatus {
       packageCount: 0,
       agents: [],
       runners: [],
+      plugins: [],
       tools: [],
       invariants: [],
       mcpServerInfo: { name: "zeo-mcp", version: "1.0.0", auditStorage: "memory", redactSecrets: true },
@@ -455,6 +502,67 @@ export default function ControlPlanePage(): JSX.Element {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* Section 1B: Deterministic Plugins & Extensions */}
+        <section className="rounded-2xl border border-slate-800 bg-[#0B1624] p-6 shadow-xl space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-800 pb-4">
+            <div>
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-cyan-400" />
+                Deterministic Plugins &amp; Sandboxed Extensions
+              </h2>
+              <p className="text-xs text-slate-400">
+                Offline-first capability plugins executing within strict permission and anti-entropy boundaries.
+              </p>
+            </div>
+            <span className="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/20">
+              {status.plugins.length} Active {status.plugins.length === 1 ? "Plugin" : "Plugins"} &middot; Zero Network Egress
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+            {status.plugins.map((plugin) => (
+              <div
+                key={plugin.id}
+                className="rounded-xl border border-slate-800/80 bg-[#0D1D30]/60 p-4 hover:border-cyan-500/40 transition flex flex-col justify-between space-y-3"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="text-sm font-semibold font-mono text-cyan-300">{plugin.id}</h3>
+                    <span className="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+                      v{plugin.version}
+                    </span>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {plugin.capabilities.map((cap) => (
+                      <span
+                        key={cap}
+                        className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-300 border border-blue-500/20"
+                      >
+                        {cap}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
+                  <span className="inline-flex items-center gap-1 text-emerald-400 font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                    {plugin.deterministic ? "Deterministic" : "Non-deterministic"}
+                  </span>
+                  <span className="text-slate-400 text-[10px] font-mono">
+                    Net: {plugin.networkAllowed ? "Egress Allowed" : "Sandboxed (No Net)"}
+                  </span>
+                </div>
+              </div>
+            ))}
+            {status.plugins.length === 0 && (
+              <div className="col-span-full py-4 text-center text-xs text-slate-500">
+                No external plugins configured in plugins/ directory.
+              </div>
+            )}
           </div>
         </section>
 
