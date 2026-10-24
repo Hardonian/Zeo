@@ -16,6 +16,8 @@ build/
 # Node
 node_modules/
 .next/
+data/
+**/data/
 deterministic-index.json
 
 # Terraform
