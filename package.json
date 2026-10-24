@@ -2,7 +2,7 @@
   "name": "zeo",
   "private": true,
   "version": "1.0.0",
-  "description": "Zeo \u2014 Decision intelligence under uncertainty",
+  "description": "Zeo — Decision intelligence under uncertainty",
   "license": "MIT",
   "packageManager": "pnpm@9.15.5",
   "engines": {
@@ -17,6 +17,7 @@
     "doctor": "node scripts/doctor.mjs",
     "zeo": "node scripts/zeo.mjs",
     "smoke": "node scripts/smoke-test.mjs",
+    "smoke:cache-mesh:live": "node scripts/cache-mesh-live-smoke.mjs",
     "benchmark": "node scripts/benchmark.mjs",
     "doctor:secrets": "node scripts/doctor.mjs",
     "build": "pnpm -r --workspace-concurrency=3 build",

@@ -1,0 +1,36 @@
+name: Cache Mesh Live Smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Dynamo local and cloud fallback
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      ZEO_LIVE_SMOKE_REQUIRED: "true"
+      ZEO_DYNAMO_URL: ${{ secrets.ZEO_DYNAMO_URL }}
+      ZEO_DYNAMO_AUTH_TOKEN: ${{ secrets.ZEO_DYNAMO_AUTH_TOKEN }}
+      ZEO_DYNAMO_MODEL: ${{ secrets.ZEO_DYNAMO_MODEL }}
+      ZEO_CLOUD_GATEWAY_URL: ${{ secrets.ZEO_CLOUD_GATEWAY_URL }}
+      ZEO_CLOUD_AUTH_TOKEN: ${{ secrets.ZEO_CLOUD_AUTH_TOKEN }}
+      ZEO_CLOUD_MODEL: ${{ secrets.ZEO_CLOUD_MODEL }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.5
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20.19.0
+          cache: pnpm
+      - name: Install frozen workspace
+        run: pnpm install --frozen-lockfile
+      - name: Build Cache Mesh dependencies
+        run: pnpm -C packages/core build
+      - name: Verify Dynamo and fallback routes
+        run: pnpm smoke:cache-mesh:live
