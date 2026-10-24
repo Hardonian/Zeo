@@ -25,8 +25,8 @@
     "test": "pnpm -C packages/contracts build && node scripts/run-pnpm-with-node-options.mjs -r --workspace-concurrency=1 test",
     "test:ci": "echo 'Running fast tests...' && node scripts/run-pnpm-with-node-options.mjs -r --filter !@zeo/core --filter !@zeo/warehouse --filter !@zeo/repro-pack test && echo 'Running heavy tests sequentially...' && node scripts/run-pnpm-with-node-options.mjs -r --filter @zeo/core --filter @zeo/warehouse --filter @zeo/repro-pack --workspace-concurrency=1 test",
     "lint": "pnpm -r lint",
-    "verify": "pnpm lint && pnpm typecheck && pnpm build && pnpm test:seo && pnpm test:a11y && pnpm test:security && pnpm test:perf && pnpm test:db",
-    "verify:fast": "pnpm run doctor && pnpm run typecheck && pnpm run test && pnpm run lint",
+    "verify": "pnpm check:imports && pnpm lint && pnpm typecheck && pnpm build && pnpm test:seo && pnpm test:a11y && pnpm test:security && pnpm test:perf && pnpm test:db",
+    "verify:fast": "pnpm run doctor && pnpm check:imports && pnpm run typecheck && pnpm run test && pnpm run lint",
     "verify:full": "pnpm install --frozen-lockfile && pnpm run build && pnpm run verify && pnpm audit && pnpm doctor:secrets",
     "audit": "pnpm audit --audit-level=moderate",
     "audit:fix": "pnpm audit --fix",
@@ -77,6 +77,7 @@
     "bench:run": "node bench/run-benchmarks.mjs --lane=main",
     "bench:run:pr": "node bench/run-benchmarks.mjs --lane=pr",
     "boundary:check": "node scripts/boundary-check.mjs",
+    "check:imports": "pnpm boundary:check",
     "eval:principles": "node scripts/eval-zeo-principles.mjs"
   },
   "devDependencies": {

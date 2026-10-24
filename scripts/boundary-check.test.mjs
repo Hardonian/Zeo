@@ -11,6 +11,7 @@ test('flags CLI import from web source fixtures', () => {
   const violations = collectBoundaryViolations({
     repoRoot: fixtureRoot,
     webRoot: join(fixtureRoot, 'apps/web/src'),
+    cliRoot: join(fixtureRoot, 'apps/cli/src'),
     contractsRoot: join(fixtureRoot, 'packages/contracts/src'),
   });
 
@@ -21,8 +22,20 @@ test('flags CLI import from contracts source fixtures', () => {
   const violations = collectBoundaryViolations({
     repoRoot: fixtureRoot,
     webRoot: join(fixtureRoot, 'apps/web/src'),
+    cliRoot: join(fixtureRoot, 'apps/cli/src'),
     contractsRoot: join(fixtureRoot, 'packages/contracts/src'),
   });
 
   assert(violations.some((violation) => violation.reason === 'contracts-imports-cli' && violation.specifier === '@zeo/cli/runtime'));
+});
+
+test('flags web import from CLI source fixtures', () => {
+  const violations = collectBoundaryViolations({
+    repoRoot: fixtureRoot,
+    webRoot: join(fixtureRoot, 'apps/web/src'),
+    cliRoot: join(fixtureRoot, 'apps/cli/src'),
+    contractsRoot: join(fixtureRoot, 'packages/contracts/src'),
+  });
+
+  assert(violations.some((violation) => violation.reason === 'cli-imports-web-package' && violation.specifier === '@zeo/web'));
 });

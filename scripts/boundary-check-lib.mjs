@@ -11,9 +11,10 @@ function addViolation(violations, repoRoot, filePath, reason, specifier) {
   violations.push({ filePath: relative(repoRoot, filePath), reason, specifier });
 }
 
-export function scanFileForBoundaryViolations({ filePath, source, repoRoot, webRoot, contractsRoot }) {
+export function scanFileForBoundaryViolations({ filePath, source, repoRoot, webRoot, cliRoot, contractsRoot }) {
   const violations = [];
   const isWebFile = filePath.startsWith(webRoot);
+  const isCliFile = cliRoot ? filePath.startsWith(cliRoot) : false;
   const isContractsFile = filePath.startsWith(contractsRoot) && !filePath.includes('/__tests__/');
 
   const lines = source.split(/\r?\n/);
@@ -34,6 +35,15 @@ export function scanFileForBoundaryViolations({ filePath, source, repoRoot, webR
       }
       if (specifier === '@zeo/mcp-server' || specifier.startsWith('@zeo/mcp-server/')) {
         addViolation(violations, repoRoot, filePath, 'web-imports-mcp', specifier);
+      }
+    }
+
+    if (isCliFile) {
+      if (specifier.startsWith('next') || specifier === 'react' || specifier.startsWith('@/app/') || specifier.startsWith('apps/web/')) {
+        addViolation(violations, repoRoot, filePath, 'cli-imports-web-runtime', specifier);
+      }
+      if (specifier === '@zeo/web' || specifier.startsWith('@zeo/web/')) {
+        addViolation(violations, repoRoot, filePath, 'cli-imports-web-package', specifier);
       }
     }
 
@@ -73,16 +83,17 @@ function walk(dir, visitor) {
   }
 }
 
-export function collectBoundaryViolations({ repoRoot, webRoot, contractsRoot }) {
+export function collectBoundaryViolations({ repoRoot, webRoot, cliRoot, contractsRoot }) {
   const violations = [];
   const scan = (filePath) => {
     const source = readFileSync(filePath, 'utf8');
     violations.push(
-      ...scanFileForBoundaryViolations({ filePath, source, repoRoot, webRoot, contractsRoot }),
+      ...scanFileForBoundaryViolations({ filePath, source, repoRoot, webRoot, cliRoot, contractsRoot }),
     );
   };
 
   walk(webRoot, scan);
+  if (cliRoot) walk(cliRoot, scan);
   walk(contractsRoot, scan);
   return violations;
 }
