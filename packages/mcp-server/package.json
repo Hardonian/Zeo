@@ -1,9 +1,9 @@
 {
   "name": "@zeo/mcp-server",
-  "version": "1.4.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "MCP (Model Context Protocol) server for Zeo \u2014 local-first integration with notes, notebooks, and LLM tooling",
+  "description": "MCP (Model Context Protocol) server for Zeo — local-first integration with notes, notebooks, and LLM tooling",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {

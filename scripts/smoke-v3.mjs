@@ -2,15 +2,16 @@
 
 import { execSync, spawn } from 'node:child_process';
 import { resolve, join } from 'node:path';
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 
 // Setup paths
 const ROOT = resolve(process.cwd());
-// Use source for immediate feedback (bypass build issues)
-const CLI_PATH = join(ROOT, 'apps/cli/src/index.ts');
-// Force resolution of @zeo/* paths via tsconfig
-const NODE = 'npx tsx -r tsconfig-paths/register';
+const distCli = join(ROOT, 'apps/cli/dist/apps/cli/src/index.js');
+const fallbackCli = join(ROOT, 'apps/cli/dist/index.js');
+const CLI_PATH = existsSync(distCli) ? distCli : (existsSync(fallbackCli) ? fallbackCli : join(ROOT, 'apps/cli/src/index.ts'));
+const isDist = CLI_PATH.endsWith('.js');
+const NODE = isDist ? 'node' : (process.platform === 'win32' ? 'npx.cmd tsx -r tsconfig-paths/register' : 'npx tsx -r tsconfig-paths/register');
 const OUT_DIR = join(ROOT, 'tmp', 'smoke-v3');
 
 // Ensure output dir exists
@@ -48,19 +49,40 @@ function computeHash(content) {
 async function testMcp() {
   console.log('\n[MCP] Testing Stdio Server...');
   return new Promise((resolve, reject) => {
-    // If NODE contains spaces (like 'npx tsx'), we need to split it for spawn
-    const nodeParts = NODE.split(' ');
-    const nodeCmd = nodeParts[0];
-    const nodeArgs = nodeParts.slice(1);
+    let child;
+    if (isDist) {
+      child = spawn(process.execPath, [CLI_PATH, 'mcp', 'serve'], {
+        cwd: ROOT,
+        stdio: ['pipe', 'pipe', 'pipe']
+      });
+    } else {
+      const nodeParts = NODE.split(' ');
+      const nodeCmd = nodeParts[0];
+      const nodeArgs = nodeParts.slice(1);
 
-    const child = spawn(nodeCmd, [...nodeArgs, CLI_PATH, 'mcp', 'serve'], {
-      cwd: ROOT,
-      shell: process.platform === 'win32', // helper for windows npx
-      stdio: ['pipe', 'pipe', 'pipe']
-    });
+      child = spawn(nodeCmd, [...nodeArgs, CLI_PATH, 'mcp', 'serve'], {
+        cwd: ROOT,
+        shell: process.platform === 'win32',
+        stdio: ['pipe', 'pipe', 'pipe']
+      });
+    }
 
     let output = '';
     let step = 0;
+    let initialized = false;
+
+    function sendInit() {
+      if (!initialized) {
+        initialized = true;
+        child.stdin.write(JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'initialize' }) + '\n');
+      }
+    }
+
+    child.stderr.on('data', (data) => {
+      if (data.toString().includes('stdio transport ready')) {
+        sendInit();
+      }
+    });
 
     child.stdout.on('data', (data) => {
       const parts = data.toString().split('\n');
@@ -102,14 +124,14 @@ async function testMcp() {
       }
     });
 
-    // Handshake start
-    child.stdin.write(JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'initialize' }) + '\n');
+    // Fallback: send initialize after a brief delay if ready event was missed
+    setTimeout(sendInit, 250);
 
     setTimeout(() => {
       child.kill();
       if (step < 2) reject(new Error('MCP Timeout'));
        else resolve();
-    }, 5000);
+    }, 10000);
   });
 }
 

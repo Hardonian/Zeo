@@ -1,6 +1,6 @@
 {
   "name": "@zeo/constraints",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Constraint propagation engine - prevent infeasible decisions",
   "type": "module",
   "main": "./dist/index.js",

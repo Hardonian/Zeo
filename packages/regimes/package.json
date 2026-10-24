@@ -1,6 +1,6 @@
 {
   "name": "@zeo/regimes",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Deterministic regime detection and change-point analysis",
   "type": "module",
   "main": "./dist/index.js",

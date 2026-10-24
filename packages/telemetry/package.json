@@ -1,6 +1,6 @@
 {
   "name": "@zeo/telemetry",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Intelligence telemetry and meta-telemetry - observe epistemic behavior",
   "type": "module",
   "main": "./dist/index.js",

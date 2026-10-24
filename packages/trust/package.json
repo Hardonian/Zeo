@@ -1,6 +1,6 @@
 {
   "name": "@zeo/trust",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Trust, consent, and privacy management for Zeo",
   "type": "module",
   "exports": {

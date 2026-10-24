@@ -1,6 +1,6 @@
 {
   "name": "@zeo/modules",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "Extension module system with manifest validation, sandboxed execution, and dependency graph",
   "type": "module",
   "main": "./dist/index.js",

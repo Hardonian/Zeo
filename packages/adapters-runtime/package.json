@@ -1,6 +1,6 @@
 {
   "name": "@zeo/adapters-runtime",
-  "version": "0.5.2",
+  "version": "1.0.0",
   "description": "Adapter runtime with fetch orchestration, caching, rate limiting, and data poisoning defense",
   "type": "module",
   "main": "./dist/index.js",

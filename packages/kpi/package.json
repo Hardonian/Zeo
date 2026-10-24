@@ -1,6 +1,6 @@
 {
   "name": "@zeo/kpi",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "Key Performance Indicators for decision quality, calibration, and outcome tracking with epistemic discipline",

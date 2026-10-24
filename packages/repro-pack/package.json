@@ -1,6 +1,6 @@
 {
   "name": "@zeo/repro-pack",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Reproducibility pack builder, replay verifier, assumptions tracking, and sanitization for Zeo runs",
   "type": "module",
   "main": "./dist/index.js",

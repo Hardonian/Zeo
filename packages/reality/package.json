@@ -1,6 +1,6 @@
 {
   "name": "@zeo/reality",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "description": "Reality Mode: Secure sharing of packets and datasets with redaction policies and access control",
   "type": "module",
   "main": "./dist/index.js",

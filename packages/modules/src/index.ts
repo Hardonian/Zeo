@@ -216,8 +216,47 @@ export function computeManifestHash(manifest: ModuleManifest): string {
 
 export class ModuleRegistry {
   private modules = new Map<string, ModuleManifest>();
+  private storagePath?: string;
+
+  constructor(options?: { storagePath?: string }) {
+    this.storagePath = options?.storagePath;
+    this.load();
+  }
+
+  private load(): void {
+    if (this.storagePath && existsSync(this.storagePath)) {
+      try {
+        const raw = readFileSync(this.storagePath, "utf8");
+        const list = JSON.parse(raw);
+        if (Array.isArray(list)) {
+          this.modules.clear();
+          for (const m of list) {
+            this.modules.set(m.moduleId, m);
+          }
+        }
+      } catch {
+        // ignore malformed storage
+      }
+    }
+  }
+
+  private save(): void {
+    if (this.storagePath) {
+      try {
+        mkdirSync(dirname(this.storagePath), { recursive: true });
+        writeFileSync(
+          this.storagePath,
+          JSON.stringify(Array.from(this.modules.values()), null, 2),
+          "utf8"
+        );
+      } catch {
+        // ignore write errors
+      }
+    }
+  }
 
   register(manifest: ModuleManifest): void {
+    this.load();
     // Validate manifest
     const errors = validateManifest(manifest);
     if (errors.length > 0) {
@@ -234,24 +273,33 @@ export class ModuleRegistry {
 
     manifest.hash = expectedHash;
     this.modules.set(manifest.moduleId, manifest);
+    this.save();
   }
 
   get(moduleId: string): ModuleManifest | null {
+    this.load();
     return this.modules.get(moduleId) ?? null;
   }
 
   list(): ModuleManifest[] {
+    this.load();
     return Array.from(this.modules.values());
   }
 
   listByTenant(tenantId: string): ModuleManifest[] {
+    this.load();
     return Array.from(this.modules.values()).filter(
       (m) => m.tenantId === tenantId
     );
   }
 
   unregister(moduleId: string): boolean {
-    return this.modules.delete(moduleId);
+    this.load();
+    const result = this.modules.delete(moduleId);
+    if (result) {
+      this.save();
+    }
+    return result;
   }
 
   // ── Dependency Graph ──
@@ -709,8 +757,7 @@ export function validatePipelineCompatibility(
   return errors;
 }
 
-// =============================================================================
-// SINGLETON
-// =============================================================================
-
-export const moduleRegistry = new ModuleRegistry();
+const defaultStoragePath = resolve(homedir(), ".zeo", "registry-modules.json");
+export const moduleRegistry = new ModuleRegistry({
+  storagePath: process.env.ZEO_MODULES_FILE ?? defaultStoragePath,
+});

@@ -7,19 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] — Stable Release (2026-10-24)
+
 ### Added
-- Fact — Added deterministic Dynamo cache-mesh routing with immutable context stabilization, bounded task-DAG concurrency, local circuit breaking, cloud fallback, and operational startup documentation.
+- **Monorepo Package Synchronization**
+  - All 86 workspace packages unified to fixed SemVer `1.0.0`
+  - Deterministic version stamping in `@zeo/core` (`VERSION_INFO`)
+- **Governed Multi-Tenant Decision Engine & Modules**
+  - Tenant namespace layer and capability-gated module registry persistence
+  - Deterministic What-If and date-pinned forecasting engines with seed stabilization
+  - Dynamic cache-mesh routing with immutable context stabilization and bounded DAG concurrency
+- **Model Context Protocol (MCP) Stdio Server**
+  - Stdio transport with tools discovery, parameter inspection, and deterministic execution
+- **Quickstart Commands**
+  - `pnpm quickstart:web` — One command to run web app with all dependencies
+  - `pnpm quickstart:cli` — One command to build and run CLI with examples
+  - `pnpm quickstart:demo` — Offline replay demo using sample dataset
+  - `pnpm quickstart:all` — Run full verification and quickstart suite
 
 ### Security
-- Override `rollup` to `>=4.58.1` (fixes high CVE: path traversal in extract)
+- Override `rollup` to `>=4.59.0` (fixes high CVE: path traversal in extract)
+- Secret scanning integrated into `pnpm doctor` and CI gates
+- Epistemic invariants verified across all public APIs and boundary checks
 
 ### Deprecated
 - `@zeo/core` generic `computeTranscriptHash` export from the core barrel is retained for compatibility, but consumers should migrate to explicit names: `computeSecurityTranscriptHash` (canonical/envelope hashing) or `computeDecisionTranscriptHash` (decision transcript hashing).
 
-## [1.0.0] — Release Engineering + OSS Distribution (2026-02-08)
-
-### Added
-- **Quickstart Commands**
   - `pnpm quickstart:web` — One command to run web app with all dependencies
   - `pnpm quickstart:cli` — One command to build and run CLI with examples
   - `pnpm quickstart:demo` — Offline replay demo using sample dataset

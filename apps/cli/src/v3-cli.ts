@@ -12,6 +12,8 @@
  *   outcome <cmd>      Outcome registration / regret / optimization
  */
 
+import { createHash } from "node:crypto";
+
 // =============================================================================
 // ARGS PARSING
 // =============================================================================
@@ -386,6 +388,7 @@ async function runSimulateCommand(args: V3Args): Promise<number> {
     case "what-if": {
       const name = args.positionals[0] ?? "default-scenario";
       const baseDecisionId = (args.flags["decision"] as string) ?? "decision-0";
+      const seed = (args.flags["seed"] as string) ?? undefined;
 
       // Create a demo scenario
       const tenantId = args.flags["tenant"] as string | undefined;
@@ -396,7 +399,10 @@ async function runSimulateCommand(args: V3Args): Promise<number> {
           { assumptionId: "market_stress", originalValue: 0.5, modifiedValue: 0.8 },
           { assumptionId: "timeline_pressure", originalValue: 0.3, modifiedValue: 0.6 },
         ],
-        { tenantId }
+        {
+          tenantId,
+          id: seed ? `sim_${createHash("sha256").update(`${seed}:${name}`).digest("hex").slice(0, 12)}` : undefined,
+        }
       );
 
       // Simulate with deterministic runners
@@ -416,10 +422,14 @@ async function runSimulateCommand(args: V3Args): Promise<number> {
           risk: 0.2,
           robustness: 0.72,
         }),
-        (args.flags["seed"] as string) ?? undefined
+        seed
       );
 
-      console.log(formatWhatIfResult(result));
+      if (args.flags["json-only"] || args.flags["json"]) {
+        console.log(JSON.stringify(result, null, 2));
+      } else {
+        console.log(formatWhatIfResult(result));
+      }
       return 0;
     }
 

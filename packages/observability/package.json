@@ -1,6 +1,6 @@
 {
   "name": "@zeo/observability",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "Metrics registry, trace correlation, health checks, and drift monitoring",
   "type": "module",
   "main": "./dist/index.js",

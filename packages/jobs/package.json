@@ -1,6 +1,6 @@
 {
   "name": "@zeo/jobs",
-  "version": "0.5.3",
+  "version": "1.0.0",
   "description": "Deterministic background job queue for long-running Zeo operations",
   "type": "module",
   "main": "./dist/index.js",

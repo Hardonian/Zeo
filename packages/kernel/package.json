@@ -1,6 +1,6 @@
 {
   "name": "@zeo/kernel",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Pure logic kernel for Zeo — Decision Engine, Probability, and State Machines. Runtime-agnostic.",
   "type": "module",
   "main": "./dist/index.js",

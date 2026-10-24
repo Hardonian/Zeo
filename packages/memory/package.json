@@ -1,6 +1,6 @@
 {
   "name": "@zeo/memory",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Decision memory system for persisting decisions, assumptions, branches, and outcomes",
   "type": "module",
   "main": "./dist/index.js",

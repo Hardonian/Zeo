@@ -1,6 +1,6 @@
 {
   "name": "@zeo/tenant",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "Multi-tenant namespace isolation, RBAC, policy enforcement, and usage metering",
   "type": "module",
   "main": "./dist/index.js",

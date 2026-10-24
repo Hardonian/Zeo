@@ -1,6 +1,6 @@
 {
   "name": "@zeo/simulation",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "Simulation layers, forecast engine, confidence tracking, and what-if analysis",
   "type": "module",
   "main": "./dist/index.js",

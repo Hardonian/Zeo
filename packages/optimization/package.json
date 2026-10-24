@@ -1,6 +1,6 @@
 {
   "name": "@zeo/optimization",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "Closed-loop optimization: outcome registration, regret computation, and feedback loops",
   "type": "module",
   "main": "./dist/index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@zeo/compliance",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "Enterprise hardening: compliance reports, retention policies, secret scanning, and attestation",
   "type": "module",
   "main": "./dist/index.js",

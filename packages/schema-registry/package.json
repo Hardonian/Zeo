@@ -1,6 +1,6 @@
 {
   "name": "@zeo/schema-registry",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "Versioned schemas, contract enforcement, migration engine, and lineage tracking",
   "type": "module",
   "main": "./dist/index.js",

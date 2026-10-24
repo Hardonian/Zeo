@@ -1,6 +1,6 @@
 # Zeo CLI Command Cheatsheet
 
-Generated on: 2026-10-24T03:31:45.535Z  
+Generated on: 2026-10-24T17:17:23.835Z  
 CLI Version: v1.0.0 &middot; Epistemic Decision Engine
 
 ---

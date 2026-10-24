@@ -1,6 +1,6 @@
 {
   "name": "@zeo/scheduler",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Deterministic Multi-Agent Scheduler for Zeo",
   "type": "module",
   "main": "dist/index.js",

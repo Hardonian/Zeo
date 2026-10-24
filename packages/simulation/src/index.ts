@@ -127,12 +127,13 @@ export class WhatIfEngine {
     baseDecisionId: string,
     modifiedAssumptions: WhatIfScenario["modifiedAssumptions"],
     options?: {
+      id?: string;
       modifiedConstraints?: WhatIfScenario["modifiedConstraints"];
       tenantId?: string;
     }
   ): WhatIfScenario {
     const scenario: WhatIfScenario = {
-      id: `sim_${nanoid(12)}`,
+      id: options?.id ?? `sim_${nanoid(12)}`,
       name,
       baseDecisionId,
       modifiedAssumptions,
@@ -276,7 +277,7 @@ export class ForecastEngine {
     }
 
     return {
-      id: `forecast_${nanoid(12)}`,
+      id: seed ? `forecast_${createHash("sha256").update(seed).digest("hex").slice(0, 12)}` : `forecast_${nanoid(12)}`,
       decisionId,
       timeHorizon: timeHorizonDays,
       projections,

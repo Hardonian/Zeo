@@ -1,6 +1,6 @@
 {
   "name": "@zeo/budgets",
-  "version": "0.5.3",
+  "version": "1.0.0",
   "description": "Compute budgeting and resource limits for Zeo operations",
   "type": "module",
   "main": "./dist/index.js",

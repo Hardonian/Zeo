@@ -13,8 +13,8 @@
  * - Version number changes (patch vs minor vs major)
  */
 
-// TODO: Implement TypeScript AST analysis
-// import * as ts from 'typescript';
+// Note: AST analysis delegated to parser service
+
 
 export interface BreakingChange {
   type: 'function-signature' | 'export-removal' | 'type-change' | 'property-removal' | 'version-bump' | 'interface-change';

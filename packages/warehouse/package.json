@@ -1,6 +1,6 @@
 {
   "name": "@zeo/warehouse",
-  "version": "0.3.3",
+  "version": "1.0.0",
   "description": "Local warehouse for persisting decisions, evidence, signals, and outcomes",
   "type": "module",
   "main": "./dist/index.js",
