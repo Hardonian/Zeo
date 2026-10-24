@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] — Stable Release (2026-10-24)
 
 ### Added
+
 - **Monorepo Package Synchronization**
   - All 86 workspace packages unified to fixed SemVer `1.0.0`
   - Deterministic version stamping in `@zeo/core` (`VERSION_INFO`)
@@ -24,46 +25,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `pnpm quickstart:cli` — One command to build and run CLI with examples
   - `pnpm quickstart:demo` — Offline replay demo using sample dataset
   - `pnpm quickstart:all` — Run full verification and quickstart suite
-
-### Security
-- Override `rollup` to `>=4.59.0` (fixes high CVE: path traversal in extract)
-- Secret scanning integrated into `pnpm doctor` and CI gates
-- Epistemic invariants verified across all public APIs and boundary checks
-
-### Deprecated
-- `@zeo/core` generic `computeTranscriptHash` export from the core barrel is retained for compatibility, but consumers should migrate to explicit names: `computeSecurityTranscriptHash` (canonical/envelope hashing) or `computeDecisionTranscriptHash` (decision transcript hashing).
-
-  - `pnpm quickstart:web` — One command to run web app with all dependencies
-  - `pnpm quickstart:cli` — One command to build and run CLI with examples
-  - `pnpm quickstart:demo` — Offline replay demo using sample dataset
-  - `pnpm quickstart:all` — Run full verification and quickstart suite
-
 - **Release Infrastructure**
   - Comprehensive release checklist (`docs/RELEASE_CHECKLIST.md`)
   - Semantic versioning rules (`docs/VERSIONING.md`)
   - Version-locked toolchain via `volta` (Node 20.11.0, pnpm 9.15.5)
   - Deterministic build verification scripts
-
 - **Enhanced Verification Gates**
   - `pnpm doctor` — Environment and structure verification
   - `pnpm verify:fast` — Typecheck + lint + unit tests
   - `pnpm verify:full` — Complete CI simulation including audit
   - Secret scanning in verification pipeline
   - Reproducible build verification
-
 - **Offline Demo Support**
   - Sample replay dataset works without external dependencies
   - Self-contained CLI examples (negotiation, ops)
   - No vendor API keys required for basic operation
 
 ### Changed
+
 - Root `package.json` now includes `volta` configuration for automatic toolchain management
 - All packages synchronized to version 1.0.0 for initial release
 - `pnpm doctor` enhanced with secret scanning and reproducibility checks
 - CLI and Web apps now expose version flags (`--version`)
 
+### Deprecated
+
+- `@zeo/core` generic `computeTranscriptHash` export from the core barrel is retained for compatibility, but consumers should migrate to explicit names: `computeSecurityTranscriptHash` (canonical/envelope hashing) or `computeDecisionTranscriptHash` (decision transcript hashing).
+
 ### Security
-- Secret scanning integrated into `pnpm doctor`
+
+- Override `rollup` to `>=4.59.0` (fixes high CVE: path traversal in extract)
+- Secret scanning integrated into `pnpm doctor` and CI gates
+- Epistemic invariants verified across all public APIs and boundary checks
 - `.env.example` template standardized
 - No secrets committed to repository (verified)
 - All dependencies audited and documented
@@ -71,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.7] — Hardening Pass (2026-02-07)
 
 ### Added
+
 - **Deterministic Execution**
   - `canonicalizeDecisionSpec()`: Stable sorting for actions, assumptions, agents, constraints
   - `canonicalizeObservationBatch()`: Stable sorting by (signalId, t, sourceId, observationId)
@@ -78,18 +72,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `hashObservationBatch()`: SHA-256 of canonicalized observations
   - `createRng(seed)`: Deterministic RNG (xoroshiro/xorshift128+) for sampling
   - `computeDeterministicSeed()`: Combines decisionHash + observationHash + depth
-
 - **Typed Error Taxonomy** (`@zeo/contracts/errors.ts`)
   - `ZeoError` base class with codes, messages, details, and cause
   - Error codes: `INVALID_INTERVAL`, `MISSING_PROVENANCE`, `WEIGHT_OUT_OF_BOUNDS`, `UNMAPPED_SIGNAL`, `UNSAFE_PANEL`, `NON_DETERMINISTIC_INPUT`, `INTERNAL_ASSERTION`, `DECISION_ERROR`, `UNKNOWN_MESSAGE_TYPE`, `VALIDATION_ERROR`
-
 - **Invariant Guards**
   - `assertProbabilityInterval()`: Validates 0 ≤ low ≤ high ≤ 1
   - `assertValueBand()`: Validates low ≤ high, finite numbers
   - `assertNoFactWithoutProvenance()`: Rejects facts without provenance
   - `assertObservationValid()`: Validates weight bounds and provenance
   - `assertBranchGraphValid()`: Validates node/edge limits
-
 - **Evidence Packets** (`@zeo/core/packets.ts`)
   - `buildEvidencePacket()`: JSON output with full determinism info
   - `buildEvidencePacketMarkdown()`: Human-readable report with:
@@ -101,21 +92,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Determinism (hashes + seed)
     - Provenance
     - Errors
-
 - **CLI Hardening** (`apps/cli`)
   - `--seed <string>`: Override deterministic seed
   - `--strict`: Exit non-zero on invariant violations (default: true)
   - `--packet-out <path>`: Write evidence packet (JSON + MD)
   - Structured error output with code + message
   - Always produces packet even on failure
-
 - **Web Hardening** (`apps/web`)
   - Error boundaries for `/` and `/demo` routes
   - Panel-level error boundary wrapper (`PanelErrorBoundary`)
   - Bridge message validation (`isUiBridgeMessage()`)
   - Rate limiting per panel (100 msgs/second)
   - Determinism display in UI (decision hash, observation hash, seed)
-
 - **Fuzz Tests** (`packages/core/src/fuzz.test.ts`)
   - Boundary interval validation (NaN, Infinity, out-of-range)
   - Hash stability under random reordering
@@ -123,12 +111,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Unicode and special character handling
 
 ### Changed
+
 - `@zeo/contracts`: Added runtime validation functions for all invariant checks
 - `@zeo/core`: All sampling uses seeded RNG from `createRng()`
 - `apps/cli`: Error handling returns exit code 1 with ZeoError codes
 - `apps/web`: Bridge handlers validate all incoming messages
 
 ### Security
+
 - Iframe panels with elevated capabilities require `requireUserConfirm: true`
 - All bridge messages validated before processing
 - Rate limiting prevents panel spam
@@ -136,21 +126,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.2] — External Signals Scaffold (2026-02-07)
 
 ### Added
+
 - **External Signals Layer** (`external/`): Production-grade external data integration surface
   - `external/catalog/`: YAML-based catalog for signals, sources, and mappings
   - `external/pipelines/`: Normalize, weight, provenance, and validate pipelines
   - `external/adapters/`: Adapter interfaces for market, news, macro, geopolitics
   - `external/examples/sample_payloads/`: Example input files
-
 - **@zeo/contracts**: New types for external signals
   - `SourceDescriptor`, `SignalCatalogEntry`, `RawSourceItem` unions
   - `SignalObservation`, `ObservationBatch` with full provenance
   - Runtime guards: `enforceObservationProvenance`, `enforceWeightBounds`
-
 - **CLI Signals Command**: New `--signals` flag for processing external data
   - `pnpm -C apps/cli start -- --signals ./external/examples/...`
   - Outputs ObservationBatch and RSL aggregate estimates
-
 - **Pipeline Features**:
   - Deterministic normalization (market, macro, news, geopolitics)
   - Explicit bias counterweights (trust tier, recency, sensationalism, single-source)
