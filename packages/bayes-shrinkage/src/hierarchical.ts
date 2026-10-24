@@ -74,7 +74,8 @@ export function hierarchicalShrinkage(
 
         for (let i = 0; i < n; i++) {
             const sigma2_i = stdErrors[i] ** 2;
-            const w_i = tau2 / (tau2 + sigma2_i); // Shrinkage weight
+            const raw_w_i = tau2 / (tau2 + sigma2_i); // Shrinkage weight
+            const w_i = Math.min(0.999, Math.max(0.001, raw_w_i));
             const groupKey = estimates[i].group ?? "default";
             const groupMean = computeGroupMean(groups.get(groupKey) || [], grandMean);
 
@@ -123,7 +124,8 @@ export function hierarchicalShrinkage(
     for (let i = 0; i < n; i++) {
         const e = estimates[i];
         const sigma2_i = stdErrors[i] ** 2;
-        const w_i = tau2 / (tau2 + sigma2_i);
+        const raw_w_i = tau2 / (tau2 + sigma2_i);
+        const w_i = Math.min(0.999, Math.max(0.001, raw_w_i));
         const groupKey = e.group ?? "default";
         const groupMean = groupMeansMap.get(groupKey) ?? grandMean;
 

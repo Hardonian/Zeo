@@ -46,9 +46,41 @@ export async function computeContentHash<T>(content: T): Promise<string> {
   return computeSha256(canonical);
 }
 
-export function generateStableId(): string {
-  const timestamp = Date.now().toString(36);
-  const random = Math.random().toString(36).substring(2, 10);
-  return `${timestamp}-${random}`;
+let monotonicCounter = 0;
+let lastTimestamp = 0;
+
+/**
+ * Generates a strictly monotonic, time-ordered identifier (UUIDv7/ULID style).
+ * Ensures subsequent calls produce lexicographically greater IDs even in the same millisecond.
+ */
+export function generateMonotonicId(prefix?: string): string {
+  const now = Date.now();
+  if (now === lastTimestamp) {
+    monotonicCounter++;
+  } else {
+    lastTimestamp = now;
+    monotonicCounter = 0;
+  }
+
+  const timePart = now.toString(36).padStart(8, '0');
+  const countPart = monotonicCounter.toString(36).padStart(4, '0');
+  const randomPart = Math.random().toString(36).substring(2, 8);
+  const id = `${timePart}-${countPart}-${randomPart}`;
+  return prefix ? `${prefix}_${id}` : id;
 }
+
+/**
+ * Computes a deterministic content-addressable storage path for a given SHA-256 hash.
+ */
+export function computeContentAddress(hash: string, baseDir = "objects"): string {
+  const cleanHash = hash.replace(/[^0-9a-fA-F]/g, "").toLowerCase();
+  const prefix = cleanHash.slice(0, 2);
+  const remainder = cleanHash.slice(2);
+  return `${baseDir}/sha256/${prefix}/${remainder}`;
+}
+
+export function generateStableId(): string {
+  return generateMonotonicId();
+}
+
 

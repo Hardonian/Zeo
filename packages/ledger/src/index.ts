@@ -103,3 +103,64 @@ export function listRecentArtifacts(limit: number = 10, baseDir: string = proces
 
   return files.map(f => JSON.parse(readFileSync(join(ledgerDir, f.name), 'utf8')));
 }
+
+export interface LedgerChainBlock {
+  block_index: number;
+  timestamp: string;
+  data_hash: string;
+  previous_hash: string;
+  block_hash: string;
+}
+
+/**
+ * Computes block hash linking to previous block.
+ */
+export function computeBlockHash(
+  block_index: number,
+  timestamp: string,
+  data_hash: string,
+  previous_hash: string
+): string {
+  return sha256(`${block_index}:${timestamp}:${data_hash}:${previous_hash}`);
+}
+
+/**
+ * Validates cryptographic chain integrity across an array of ledger blocks.
+ * Enforces Non-negotiable Invariant: Ledger Immutability & Determinism.
+ */
+export function verifyChainIntegrity(
+  blocks: LedgerChainBlock[]
+): { valid: boolean; brokenAtIndex?: number; error?: string } {
+  if (blocks.length === 0) return { valid: true };
+
+  for (let i = 0; i < blocks.length; i++) {
+    const block = blocks[i];
+    const expectedPrev = i === 0 ? "0".repeat(64) : blocks[i - 1].block_hash;
+
+    if (block.previous_hash !== expectedPrev) {
+      return {
+        valid: false,
+        brokenAtIndex: i,
+        error: `Invalid previous_hash at block ${i}. Expected ${expectedPrev}, found ${block.previous_hash}`,
+      };
+    }
+
+    const calculatedHash = computeBlockHash(
+      block.block_index,
+      block.timestamp,
+      block.data_hash,
+      block.previous_hash
+    );
+
+    if (block.block_hash !== calculatedHash) {
+      return {
+        valid: false,
+        brokenAtIndex: i,
+        error: `Tampered block_hash at block ${i}. Expected ${calculatedHash}, found ${block.block_hash}`,
+      };
+    }
+  }
+
+  return { valid: true };
+}
+

@@ -115,3 +115,52 @@ export function checkRateLimit(orgId: string, capacity = 100, fillRate = 10): bo
     }
     return limiters.get(orgId)!.consume();
 }
+
+export interface WebhookFastAckResponse {
+    status: 202;
+    body: {
+        accepted: true;
+        deliveryId: string;
+        timestamp: string;
+        status: "queued";
+    };
+    headers: Record<string, string>;
+}
+
+/**
+ * Creates an immediate Fast-Ack response (PROMPT-07 / DEVX-08).
+ * Ensures webhooks acknowledge providers within milliseconds before heavy processing.
+ */
+export function createFastAckResponse(deliveryId: string): WebhookFastAckResponse {
+    return {
+        status: 202,
+        body: {
+            accepted: true,
+            deliveryId,
+            timestamp: new Date().toISOString(),
+            status: "queued",
+        },
+        headers: {
+            "Content-Type": "application/json",
+            "X-Zeo-Webhook-Ack": "fast-ack-202",
+        },
+    };
+}
+
+/**
+ * Dispatches heavy webhook processing asynchronously to prevent timeout violations.
+ */
+export async function processWebhookAsync(
+    deliveryId: string,
+    handler: () => Promise<void>,
+    onError?: (error: unknown) => void
+): Promise<void> {
+    setImmediate(async () => {
+        try {
+            await handler();
+        } catch (err) {
+            if (onError) onError(err);
+            else console.error(`[webhook-async] Processing failed for ${deliveryId}:`, err);
+        }
+    });
+}

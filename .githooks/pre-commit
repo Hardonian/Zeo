@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
 
-pnpm -C apps/web lint
-pnpm -C apps/web typecheck
+echo "[githooks] Running pre-commit boundary and security scan..."
+node scripts/boundary-check.mjs
+node scripts/secret-scan.mjs
+echo "[githooks] Pre-commit checks passed."

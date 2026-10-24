@@ -8,7 +8,7 @@ import type {
   ExportOptions,
 } from '@zeo/contracts';
 import type { WarehouseAdapter, BlobStorage } from './interfaces';
-import { computeContentHash, generateStableId } from './hashing';
+import { computeContentHash, generateStableId, computeSha256, computeContentAddress } from './hashing';
 import { promises as fs } from 'fs';
 import { join, dirname } from 'path';
 
@@ -312,6 +312,39 @@ export class FilesystemBlobStorage implements BlobStorage {
       return true;
     } catch {
       return false;
+    }
+  }
+
+  async saveContentAddressed(
+    data: Uint8Array,
+    metadata: { filename: string; mimeType: string }
+  ): Promise<{ hash: string; relativePath: string }> {
+    const hash = await computeSha256(data);
+    const relativePath = computeContentAddress(hash);
+    const fullPath = join(this.basePath, relativePath);
+    await this.ensureDir(fullPath);
+
+    const entry = {
+      hash,
+      data: Buffer.from(data).toString('base64'),
+      ...metadata,
+      createdAt: new Date().toISOString(),
+    };
+
+    await fs.writeFile(fullPath, JSON.stringify(entry), 'utf-8');
+    return { hash, relativePath };
+  }
+
+  async getContentAddressed(hash: string): Promise<Uint8Array | null> {
+    const relativePath = computeContentAddress(hash);
+    const fullPath = join(this.basePath, relativePath);
+
+    try {
+      const data = await fs.readFile(fullPath, 'utf-8');
+      const entry = JSON.parse(data);
+      return new Uint8Array(Buffer.from(entry.data, 'base64'));
+    } catch {
+      return null;
     }
   }
 

@@ -5,8 +5,12 @@ import {
   validateDataset,
   validateDatasetAsync,
   computeDatasetChecksumSync,
+  deduplicateObservations,
+  alignTemporalResolution,
+  exportDatasetGzip,
+  importDatasetGzip,
 } from "./index.js";
-import type { DecisionSpec } from "@zeo/contracts";
+import type { DecisionSpec, SignalObservation } from "@zeo/contracts";
 
 describe("dataset builder", () => {
   it("rejects an inverted time range before invoking a source adapter", async () => {
@@ -199,5 +203,97 @@ describe("dataset builder", () => {
     expect(validation.valid).toBe(true);
     expect(validation.errors).toEqual([]);
     expect(narrowed.checksum).toBe(computeDatasetChecksumSync(narrowed));
+  });
+
+  it("deduplicates observations by signalId and timestamp keeping highest qualityScore", () => {
+    const raw: SignalObservation[] = [
+      {
+        observationId: "obs_1",
+        signalId: "sig_fx_eur_usd",
+        t: "2026-02-18T10:00:00.000Z",
+        valueBand: { low: 1.05, high: 1.05 },
+        weightApplied: 1.0,
+        qualityScore: 0.8,
+        biasAdjustmentsApplied: [],
+        provenance: [],
+        sourceId: "mock",
+        rawRef: { kind: "mock", id: "1" },
+      },
+      {
+        observationId: "obs_2",
+        signalId: "sig_fx_eur_usd",
+        t: "2026-02-18T10:00:00.000Z",
+        valueBand: { low: 1.052, high: 1.052 },
+        weightApplied: 1.0,
+        qualityScore: 0.95,
+        biasAdjustmentsApplied: [],
+        provenance: [],
+        sourceId: "mock",
+        rawRef: { kind: "mock", id: "2" },
+      },
+      {
+        observationId: "obs_3",
+        signalId: "sig_macro_gdp",
+        t: "2026-02-18T10:00:00.000Z",
+        valueBand: { low: 2.8, high: 2.8 },
+        weightApplied: 1.0,
+        qualityScore: 0.9,
+        biasAdjustmentsApplied: [],
+        provenance: [],
+        sourceId: "mock",
+        rawRef: { kind: "mock", id: "3" },
+      },
+    ];
+
+    const deduped = deduplicateObservations(raw);
+    expect(deduped.length).toBe(2);
+    const fxObs = deduped.find((o) => o.signalId === "sig_fx_eur_usd");
+    expect(fxObs).toBeDefined();
+    expect(fxObs?.valueBand.low).toBe(1.052);
+    expect(fxObs?.qualityScore).toBe(0.95);
+  });
+
+  it("aligns temporal timestamps to hourly and daily resolution buckets", () => {
+    const observations: SignalObservation[] = [
+      {
+        observationId: "obs_1",
+        signalId: "sig_fx",
+        t: "2026-02-18T10:37:42.123Z",
+        valueBand: { low: 1.1, high: 1.1 },
+        weightApplied: 1.0,
+        qualityScore: 1.0,
+        biasAdjustmentsApplied: [],
+        provenance: [],
+        sourceId: "mock",
+        rawRef: { kind: "mock", id: "1" },
+      },
+    ];
+
+    const hourly = alignTemporalResolution(observations, "hourly");
+    expect(hourly[0].t).toBe("2026-02-18T10:00:00.000Z");
+
+    const daily = alignTemporalResolution(observations, "daily");
+    expect(daily[0].t).toBe("2026-02-18T00:00:00.000Z");
+  });
+
+  it("exports and imports replay dataset via gzip streams without loss", async () => {
+    const builder = createDatasetBuilder();
+    const original = await builder.buildDataset({
+      timeRange: {
+        start: "2026-01-01T00:00:00.000Z",
+        end: "2026-01-03T00:00:00.000Z",
+      },
+      cadence: "daily",
+    });
+
+    const compressed = exportDatasetGzip(original);
+    expect(compressed.length).toBeGreaterThan(0);
+    expect(compressed.length).toBeLessThan(JSON.stringify(original).length);
+
+    const reimported = importDatasetGzip(compressed);
+    expect(reimported.id).toBe(original.id);
+    expect(reimported.checksum).toBe(original.checksum);
+    expect(reimported.observations.length).toBe(original.observations.length);
+    expect(reimported.batches.length).toBe(original.batches.length);
   });
 });

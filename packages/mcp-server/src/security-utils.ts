@@ -63,4 +63,35 @@ export class SecurityUtils {
   static sanitizeFilename(filename: string): string {
     return filename.replace(/[^a-z0-9_\-.]/gi, "_").replace(/\.\.+/g, ".");
   }
+
+  /**
+   * Enforces inbound payload byte limits (default 10MB).
+   */
+  static validatePayloadSize(byteLength: number, maxBytes = 10 * 1024 * 1024): boolean {
+    return byteLength <= maxBytes;
+  }
+
+  /**
+   * Enforces tool execution timeout (default 30 seconds).
+   */
+  static async enforceTimeout<T>(
+    operation: (signal: AbortSignal) => Promise<T>,
+    timeoutMs = 30000,
+    label = "Tool execution"
+  ): Promise<T> {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      return await operation(controller.signal);
+    } catch (error) {
+      if (controller.signal.aborted) {
+        throw new Error(`${label} timed out after ${timeoutMs}ms`);
+      }
+      throw error;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
 }
+

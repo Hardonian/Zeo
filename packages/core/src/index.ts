@@ -281,3 +281,12 @@ export {
   formatPolicyDiff,
   tenantPolicyToConstraintSet,
 } from "./policy-constraints.js";
+
+// Webhooks security & Fast-Ack policy
+export {
+  WebhookSecurity,
+  checkRateLimit,
+  createFastAckResponse,
+  processWebhookAsync,
+  type WebhookFastAckResponse,
+} from "./webhooks-security.js";

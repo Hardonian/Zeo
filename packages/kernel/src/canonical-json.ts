@@ -1,17 +1,17 @@
 /**
  * Canonical JSON Encoder v1 - Pure JS Version
- * Replaces Buffer with Uint8Array/TextEncoder
+ * Deterministic JSON serialization with cycle detection and NFC normalization.
  */
 
 export function encodeCanonicalJson(value: unknown): Uint8Array {
-    return new TextEncoder().encode(stringify(value));
+    return new TextEncoder().encode(stringify(value, new WeakSet<object>()));
 }
 
 /**
  * Canonicalize a value to a string for hashing
  */
 export function canonicalizeValue(value: unknown): string {
-    return stringify(value);
+    return stringify(value, new WeakSet<object>());
 }
 
 type JsonConvertible = {
@@ -22,7 +22,7 @@ function hasToJson(value: object): value is JsonConvertible {
     return "toJSON" in value && typeof (value as Record<string, unknown>).toJSON === "function";
 }
 
-function stringify(value: unknown): string {
+function stringify(value: unknown, seen: WeakSet<object>): string {
     if (value === null) return "null";
 
     if (value === undefined) {
@@ -48,25 +48,33 @@ function stringify(value: unknown): string {
         return JSON.stringify(value.normalize("NFC"));
     }
 
-    if (Array.isArray(value)) {
-        const items = value.map(stringify);
-        return `[${items.join(",")}]`;
-    }
-
     if (typeof value === "object") {
-        if (hasToJson(value)) {
-            return stringify(value.toJSON());
+        if (seen.has(value)) {
+            throw new TypeError("Converting circular structure to Canonical JSON");
         }
+        seen.add(value);
+        try {
+            if (hasToJson(value)) {
+                return stringify(value.toJSON(), seen);
+            }
 
-        const record = value as Record<string, unknown>;
-        const keys = Object.keys(record).sort();
-        const pairs = keys.map(k => {
-            const v = record[k];
-            if (v === undefined) return null;
-            return `${JSON.stringify(k)}:${stringify(v)}`;
-        }).filter(x => x !== null);
+            if (Array.isArray(value)) {
+                const items = value.map(v => stringify(v, seen));
+                return `[${items.join(",")}]`;
+            }
 
-        return `{${pairs.join(",")}}`;
+            const record = value as Record<string, unknown>;
+            const keys = Object.keys(record).sort();
+            const pairs = keys.map(k => {
+                const v = record[k];
+                if (v === undefined) return null;
+                return `${JSON.stringify(k.normalize("NFC"))}:${stringify(v, seen)}`;
+            }).filter((x): x is string => x !== null);
+
+            return `{${pairs.join(",")}}`;
+        } finally {
+            seen.delete(value);
+        }
     }
 
     throw new Error(`Unsupported type for Canonical JSON: ${typeof value}`);

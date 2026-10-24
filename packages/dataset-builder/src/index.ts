@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { gzipSync, gunzipSync } from "node:zlib";
 import type { ObservationBatch, SignalObservation, DecisionSpec } from "@zeo/contracts";
 import type { Adapter } from "@zeo/adapters";
 import {
@@ -513,3 +514,73 @@ export function filterDatasetByTime(
     checksum: newChecksum,
   };
 }
+
+/**
+ * Deduplicate observations by (signalId, timestamp), keeping the highest qualityScore.
+ * If qualityScores are equal or undefined, later occurrences take precedence.
+ */
+export function deduplicateObservations(
+  observations: SignalObservation[]
+): SignalObservation[] {
+  const map = new Map<string, SignalObservation>();
+
+  for (const obs of observations) {
+    const key = `${obs.signalId}::${obs.t}`;
+    const existing = map.get(key);
+    if (!existing) {
+      map.set(key, obs);
+      continue;
+    }
+
+    const existingScore = (existing as { qualityScore?: number }).qualityScore ?? 0;
+    const currentScore = (obs as { qualityScore?: number }).qualityScore ?? 0;
+
+    if (currentScore >= existingScore) {
+      map.set(key, obs);
+    }
+  }
+
+  return Array.from(map.values()).sort((a, b) => {
+    const timeDelta = new Date(a.t).getTime() - new Date(b.t).getTime();
+    if (timeDelta !== 0) return timeDelta;
+    return a.signalId.localeCompare(b.signalId);
+  });
+}
+
+/**
+ * Align temporal timestamps to fixed resolution buckets ('hourly' | 'daily').
+ * Deterministically aligns timestamp t to the start of the hourly or daily interval.
+ */
+export function alignTemporalResolution(
+  observations: SignalObservation[],
+  cadence: "hourly" | "daily"
+): SignalObservation[] {
+  const bucketMs = cadence === "hourly" ? 3600000 : 86400000;
+
+  return observations.map((obs) => {
+    const timeMs = new Date(obs.t).getTime();
+    if (Number.isNaN(timeMs)) return obs;
+    const alignedMs = Math.floor(timeMs / bucketMs) * bucketMs;
+    return {
+      ...obs,
+      t: new Date(alignedMs).toISOString(),
+    };
+  });
+}
+
+/**
+ * Export replay dataset to compressed gzip buffer (.replay.json.gz)
+ */
+export function exportDatasetGzip(dataset: ReplayDataset): Buffer {
+  const jsonStr = JSON.stringify(dataset);
+  return gzipSync(Buffer.from(jsonStr, "utf-8"));
+}
+
+/**
+ * Decompress and parse gzip replay dataset (.replay.json.gz)
+ */
+export function importDatasetGzip(compressed: Buffer | Uint8Array): ReplayDataset {
+  const decompressed = gunzipSync(compressed);
+  return JSON.parse(decompressed.toString("utf-8")) as ReplayDataset;
+}
+

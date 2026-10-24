@@ -780,3 +780,79 @@ function createEmptyRobustResult(x: number[][], y: number[]): RobustRegressionRe
         },
     };
 }
+
+export interface ClaimSensitivityInput {
+    id: string;
+    description: string;
+    baselineWeight: number;
+    impactDirection: "positive" | "negative";
+    thresholdToInvert?: number;
+}
+
+export interface InversionReportItem {
+    id: string;
+    description: string;
+    baselineWeight: number;
+    thresholdDeltaToFlip: number;
+    flipDirection: "increase" | "decrease";
+    isInversionVulnerable: boolean;
+    criticalityRank: number;
+}
+
+export interface SensitivityInversionReport {
+    topCriticalClaims: InversionReportItem[];
+    summary: string;
+    mostFragileClaimId: string | null;
+}
+
+/**
+ * Identify critical claims whose perturbation would flip the decision.
+ * Calculates the sensitivity threshold delta for top critical claims.
+ */
+export function findSensitivityInversions(
+    claims: ClaimSensitivityInput[],
+    decisionThreshold = 0.5
+): SensitivityInversionReport {
+    if (claims.length === 0) {
+        return {
+            topCriticalClaims: [],
+            summary: "No claims provided for sensitivity inversion analysis",
+            mostFragileClaimId: null,
+        };
+    }
+
+    const items: InversionReportItem[] = claims.map((c) => {
+        const target = c.thresholdToInvert ?? decisionThreshold;
+        const delta = Math.abs(c.baselineWeight - target);
+        const flipDirection: "increase" | "decrease" = c.baselineWeight < target ? "increase" : "decrease";
+        const isInversionVulnerable = delta <= 0.15;
+
+        return {
+            id: c.id,
+            description: c.description,
+            baselineWeight: c.baselineWeight,
+            thresholdDeltaToFlip: Number(delta.toFixed(4)),
+            flipDirection,
+            isInversionVulnerable,
+            criticalityRank: 0,
+        };
+    });
+
+    items.sort((a, b) => a.thresholdDeltaToFlip - b.thresholdDeltaToFlip);
+
+    const topCriticalClaims = items.slice(0, 3).map((item, idx) => ({
+        ...item,
+        criticalityRank: idx + 1,
+    }));
+
+    const mostFragile = topCriticalClaims[0];
+    const summary = mostFragile
+        ? `Top critical claim "${mostFragile.id}" flips conclusion with delta of ${mostFragile.thresholdDeltaToFlip} (${mostFragile.flipDirection})`
+        : "All claims robust across assumption perturbations";
+
+    return {
+        topCriticalClaims,
+        summary,
+        mostFragileClaimId: mostFragile ? mostFragile.id : null,
+    };
+}

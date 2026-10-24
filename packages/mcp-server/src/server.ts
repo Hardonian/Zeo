@@ -42,6 +42,7 @@ import { mcpPolicyEngine } from "./policy.js";
 import { StructuredLogger, Tracer, MetricsRegistry } from "./observability.js";
 import { DeterministicCache } from "./deterministic-cache.js";
 import { TokenBucketRateLimiter } from "./rate-limiter.js";
+import { SecurityUtils } from "./security-utils.js";
 import { randomUUID, createHash } from "node:crypto";
 
 // Tool implementations
@@ -549,11 +550,15 @@ export function createMcpServer(config: McpConfig): McpServer {
                 };
             }
 
-            const result = await tool.handler(
-                toolArgs,
-                warehouse,
-                auditBridge,
-                config.warehouse.basePath
+            const result = await SecurityUtils.enforceTimeout(
+                () => Promise.resolve(tool.handler(
+                    toolArgs,
+                    warehouse,
+                    auditBridge,
+                    config.warehouse.basePath
+                )),
+                30000,
+                `Tool "${params.name}"`
             );
 
             const suspiciousPatterns = detectSuspiciousOutput(result);

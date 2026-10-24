@@ -12,6 +12,7 @@ import {
   assessSampleAdequacy,
   assessHypothesisRobustness,
   runAllRobustnessChecks,
+  findSensitivityInversions,
   type NumericDataPoint,
 } from "./index.js";
 
@@ -518,6 +519,26 @@ describe("Integration Tests", () => {
       expect(result.category).toBeDefined();
       expect(result.score).toBeGreaterThanOrEqual(0);
       expect(result.score).toBeLessThanOrEqual(1);
+    });
+  });
+
+  describe("findSensitivityInversions (EPISTEMIC-07)", () => {
+    test("identifies top critical claims and calculates flip threshold deltas", () => {
+      const claims = [
+        { id: "claim-stable", description: "Firm consumer confidence", baselineWeight: 0.95, impactDirection: "positive" as const },
+        { id: "claim-fragile", description: "Transient supply disruption", baselineWeight: 0.52, impactDirection: "positive" as const },
+        { id: "claim-moderate", description: "Mild rate cut expectation", baselineWeight: 0.65, impactDirection: "positive" as const },
+        { id: "claim-noncritical", description: "Regional logistics lag", baselineWeight: 0.85, impactDirection: "positive" as const },
+      ];
+
+      const report = findSensitivityInversions(claims, 0.5);
+
+      expect(report.topCriticalClaims).toHaveLength(3);
+      expect(report.mostFragileClaimId).toBe("claim-fragile");
+      expect(report.topCriticalClaims[0].thresholdDeltaToFlip).toBe(0.02);
+      expect(report.topCriticalClaims[0].isInversionVulnerable).toBe(true);
+      expect(report.topCriticalClaims[0].criticalityRank).toBe(1);
+      expect(report.summary).toContain("claim-fragile");
     });
   });
 });

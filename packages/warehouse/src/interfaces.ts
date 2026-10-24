@@ -26,6 +26,8 @@ export interface BlobStorage {
   getBlob(id: string): Promise<Uint8Array | null>;
   deleteBlob(id: string): Promise<boolean>;
   listBlobs(): Promise<Array<{ id: string; size: number; createdAt: string }>>;
+  saveContentAddressed?(data: Uint8Array, metadata: { filename: string; mimeType: string }): Promise<{ hash: string; relativePath: string }>;
+  getContentAddressed?(hash: string): Promise<Uint8Array | null>;
 }
 
 export interface EmbeddingProvider {

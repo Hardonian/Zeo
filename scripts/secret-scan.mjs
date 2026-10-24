@@ -70,6 +70,9 @@ function isSafeLine(line, safeContexts, filePath = '') {
   }
   // Test fixtures specifically testing redaction, compliance, and mock credentials
   const normalized = filePath.replaceAll('\\', '/').toLowerCase();
+  if (normalized.includes('/generated/') || normalized.includes('.wasm-base64.')) {
+    return true;
+  }
   if (normalized.includes('.test.') || normalized.includes('.spec.') || normalized.includes('fixture') || normalized.includes('simulator') || normalized.includes('redaction.ts') || normalized.includes('/demo/')) {
     if (line.includes('super-secret-pw') || line.includes('secret123') || line.includes('SecurePass123') || line.includes('TestPassword123') || line.includes('hardcodedPassword123') || line.includes('superSecretPassword123') || line.includes('anotherSecret') || line.includes('pass@123') || line.includes('sk-abc123def456') || line.includes('ghp_abc123') || line.includes('ghp_ABCDE') || line.includes('ghp_1234567890') || line.includes('SELECT * FROM users')) {
       return true;

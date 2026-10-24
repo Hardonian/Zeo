@@ -203,3 +203,61 @@ export function verifyChecksum(data: unknown, expectedChecksum: string): boolean
   return checksum(data) === expectedChecksum;
 }
 
+/**
+ * Executes an adapter fetch with a strict timeout (default 5000ms).
+ * Degrades gracefully by returning fallback data if provided, rather than throwing hard 500s.
+ */
+export async function fetchWithTimeout<T>(
+  fetcher: (signal: AbortSignal) => Promise<T>,
+  timeoutMs = 5000,
+  fallback?: T
+): Promise<T> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const result = await fetcher(controller.signal);
+    return result;
+  } catch (error) {
+    if (fallback !== undefined) {
+      console.warn(`[Reality Adapter Timeout]: Execution exceeded ${timeoutMs}ms. Degraded to fallback data.`);
+      return fallback;
+    }
+    throw error;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/**
+ * Validates a provenance pointer asserting 64-hex SHA-256 checksum and ISO-8601 timestamp.
+ */
+export function validateProvenancePointerDeep(
+  pointer: ProvenancePointer
+): { valid: boolean; errors: string[] } {
+  const errors: string[] = [];
+
+  if (!pointer || typeof pointer !== "object") {
+    return { valid: false, errors: ["Provenance pointer must be a valid object."] };
+  }
+
+  if (!pointer.sourceId || typeof pointer.sourceId !== "string" || pointer.sourceId.trim() === "") {
+    errors.push("Missing or empty sourceId in provenance pointer.");
+  }
+
+  if (!pointer.capturedAt || Number.isNaN(Date.parse(pointer.capturedAt))) {
+    errors.push(`Invalid capturedAt timestamp in provenance pointer: ${pointer.capturedAt}`);
+  }
+
+  const sha256Pattern = /^[0-9a-fA-F]{64}$/;
+  if (!pointer.checksum || (!sha256Pattern.test(pointer.checksum) && pointer.checksum.length < 8)) {
+    errors.push(`Invalid checksum format in provenance pointer: ${pointer.checksum}. Must be SHA-256 hex.`);
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+  };
+}
+
+

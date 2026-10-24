@@ -19,3 +19,4 @@ export * from "./utils/sha256.js";
 export * from "./determinism-validator.js";
 export * from "./impl/journal-fs.js";
 export * from "./dek.js";
+export * from "./epistemic-guards.js";

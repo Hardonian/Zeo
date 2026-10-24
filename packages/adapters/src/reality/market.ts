@@ -57,6 +57,7 @@ interface YahooHistorical {
   Close: number;
   AdjClose: number;
   Volume: number;
+  interpolated?: boolean;
 }
 
 function isYahooQuote(data: unknown): data is YahooQuote {
@@ -222,6 +223,49 @@ function computeVolatilityRegime(high: number, low: number, close: number): "low
   return "high";
 }
 
+export function interpolateHistoryGaps(
+  history: YahooHistorical[]
+): Array<YahooHistorical & { interpolated?: boolean }> {
+  if (history.length <= 1) return history;
+
+  const sorted = [...history].sort(
+    (a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime()
+  );
+
+  const filled: Array<YahooHistorical & { interpolated?: boolean }> = [];
+
+  for (let i = 0; i < sorted.length; i++) {
+    const current = sorted[i];
+    filled.push(current);
+
+    if (i < sorted.length - 1) {
+      const next = sorted[i + 1];
+      const curMs = new Date(current.Date).getTime();
+      const nextMs = new Date(next.Date).getTime();
+      const diffDays = Math.round((nextMs - curMs) / (24 * 60 * 60 * 1000));
+
+      if (diffDays > 1) {
+        for (let dayOffset = 1; dayOffset < diffDays; dayOffset++) {
+          const filledDate = new Date(curMs + dayOffset * 24 * 60 * 60 * 1000);
+          const dateStr = filledDate.toISOString().split("T")[0] || "2000-01-01";
+          filled.push({
+            Date: dateStr,
+            Open: current.Close,
+            High: current.Close,
+            Low: current.Close,
+            Close: current.Close,
+            AdjClose: current.AdjClose,
+            Volume: 0,
+            interpolated: true,
+          });
+        }
+      }
+    }
+  }
+
+  return filled;
+}
+
 export function createMarketAdapter(): Adapter {
   return {
     info: { ...MARKET_ADAPTER_INFO },
@@ -266,8 +310,10 @@ export function createMarketAdapter(): Adapter {
           }
         }
       } else {
+        const interpolate = (params["interpolateGaps"] as boolean | undefined) ?? true;
         for (const symbol of symbols) {
-          const history = await fetchYahooHistory(symbol, startDate, endDate);
+          const rawHistory = await fetchYahooHistory(symbol, startDate, endDate);
+          const history = interpolate ? interpolateHistoryGaps(rawHistory) : rawHistory;
 
           for (const bar of history) {
             allItems.push({
@@ -282,6 +328,7 @@ export function createMarketAdapter(): Adapter {
                 low: bar.Low,
                 volume: bar.Volume,
                 regimeHint: computeVolatilityRegime(bar.High, bar.Low, bar.Close),
+                interpolated: Boolean(bar.interpolated),
               },
             });
           }

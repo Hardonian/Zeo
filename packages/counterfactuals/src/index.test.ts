@@ -12,6 +12,8 @@ import {
   createDecisionContext,
   formatCounterfactual,
   batchSolveCounterfactuals,
+  pruneDeadBranches,
+  type CounterfactualTreeNode,
   type CounterfactualQuery,
   type DecisionContext,
   type ActionCandidate,
@@ -794,6 +796,55 @@ describe("Integration Tests", () => {
     results.forEach((result) => {
       expect(result.confidenceBand.low).toBeGreaterThanOrEqual(0);
       expect(result.confidenceBand.high).toBeLessThanOrEqual(1);
+    });
+  });
+
+  describe("Dead Branch Pruning (EPISTEMIC-08)", () => {
+    test("prunes branches with cumulative probability below threshold", () => {
+      const tree: CounterfactualTreeNode = {
+        id: "root",
+        probability: 1.0,
+        cumulativeProbability: 1.0,
+        children: [
+          {
+            id: "plausible-branch",
+            probability: 0.8,
+            cumulativeProbability: 0.8,
+            children: [
+              {
+                id: "high-prob-leaf",
+                probability: 0.5,
+                cumulativeProbability: 0.4,
+              },
+              {
+                id: "low-prob-leaf",
+                probability: 0.005,
+                cumulativeProbability: 0.004,
+              },
+            ],
+          },
+          {
+            id: "implausible-branch",
+            probability: 0.002,
+            cumulativeProbability: 0.002,
+            children: [
+              {
+                id: "nested-leaf",
+                probability: 0.9,
+                cumulativeProbability: 0.0018,
+              },
+            ],
+          },
+        ],
+      };
+
+      const result = pruneDeadBranches(tree, { minProbabilityThreshold: 0.01 });
+
+      expect(result.prunedCount).toBe(3); // low-prob-leaf, implausible-branch + nested-leaf
+      expect(result.retainedCount).toBe(3); // root, plausible-branch, high-prob-leaf
+      expect(result.prunedTree.children?.[0].children?.[0].pruned).toBe(false);
+      expect(result.prunedTree.children?.[0].children?.[1].pruned).toBe(true);
+      expect(result.prunedTree.children?.[1].pruned).toBe(true);
     });
   });
 });

@@ -37,6 +37,25 @@ const MACRO_SIGNAL_MAP: Record<string, { signalId: string; units: string; direct
   "M2": { signalId: "money_supply", units: "billions", directionality: "neutral" },
 };
 
+const MACRO_RANGE_SCHEMAS: Record<string, { min: number; max: number }> = {
+  FEDFUNDS: { min: -5, max: 30 },
+  CPIAUCSL: { min: 0, max: 1000 },
+  UNRATE: { min: 0, max: 50 },
+  GDP: { min: -50, max: 50 },
+  PCE: { min: -20, max: 50 },
+  TB10Y: { min: -5, max: 30 },
+  M2: { min: 0, max: 100000 },
+};
+
+export function validateMacroValue(indicator: string, value: number): boolean {
+  if (typeof value !== "number" || !Number.isFinite(value) || Number.isNaN(value)) {
+    return false;
+  }
+  const schema = MACRO_RANGE_SCHEMAS[indicator];
+  if (!schema) return true;
+  return value >= schema.min && value <= schema.max;
+}
+
 interface FredApiResponse {
   observations: Array<{
     date: string;
@@ -142,7 +161,7 @@ export function createMacroAdapter(): Adapter {
 
         for (const obs of response.observations) {
           const value = parseFloat(obs.value);
-          if (isNaN(value)) continue;
+          if (isNaN(value) || !validateMacroValue(indicator, value)) continue;
 
         const releasedAtDate = new Date(obs.date);
         allItems.push({

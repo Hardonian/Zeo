@@ -581,7 +581,11 @@ export {
   type LOOResult,
   type WindowSensitivityResult,
   type RobustRegressionResult,
+  type ClaimSensitivityInput,
+  type InversionReportItem,
+  type SensitivityInversionReport,
   computeLOOSensitivity,
   computeWindowSensitivity,
   robustRegression,
+  findSensitivityInversions,
 } from "./sensitivity.js";

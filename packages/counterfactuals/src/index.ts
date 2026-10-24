@@ -449,3 +449,93 @@ export function batchSolveCounterfactuals(
   return results;
 }
 
+export interface CounterfactualTreeNode {
+  id: string;
+  assumptionId?: string;
+  probability: number;
+  cumulativeProbability: number;
+  state?: Record<string, unknown>;
+  children?: CounterfactualTreeNode[];
+  pruned?: boolean;
+  pruneReason?: string;
+}
+
+export interface PruneTreeOptions {
+  minProbabilityThreshold?: number;
+  maxDepth?: number;
+}
+
+export interface PruneTreeResult {
+  prunedTree: CounterfactualTreeNode;
+  prunedCount: number;
+  retainedCount: number;
+}
+
+/**
+ * Prune dead counterfactual branches whose cumulative probability falls below the threshold.
+ * Eliminates impossible or implausible subtrees to maintain epistemic discipline and clean decision trees.
+ */
+export function pruneDeadBranches(
+  root: CounterfactualTreeNode,
+  options: PruneTreeOptions = {}
+): PruneTreeResult {
+  const minThreshold = options.minProbabilityThreshold ?? 0.01;
+  const maxDepth = options.maxDepth ?? 20;
+
+  let prunedCount = 0;
+  let retainedCount = 0;
+
+  function countSubtree(node: CounterfactualTreeNode): number {
+    let count = 1;
+    if (node.children) {
+      for (const child of node.children) {
+        count += countSubtree(child);
+      }
+    }
+    return count;
+  }
+
+  function processNode(node: CounterfactualTreeNode, depth: number, parentCumProb: number): CounterfactualTreeNode {
+    const cumProb = parentCumProb * node.probability;
+    const isBelowThreshold = cumProb < minThreshold;
+    const isPastDepth = depth > maxDepth;
+
+    if (isBelowThreshold || isPastDepth) {
+      prunedCount += countSubtree(node);
+      return {
+        ...node,
+        cumulativeProbability: cumProb,
+        children: [],
+        pruned: true,
+        pruneReason: isBelowThreshold
+          ? `Cumulative probability ${cumProb.toFixed(4)} < threshold ${minThreshold}`
+          : `Depth ${depth} > maxDepth ${maxDepth}`,
+      };
+    }
+
+    retainedCount++;
+
+    const children: CounterfactualTreeNode[] = [];
+    if (node.children && node.children.length > 0) {
+      for (const child of node.children) {
+        children.push(processNode(child, depth + 1, cumProb));
+      }
+    }
+
+    return {
+      ...node,
+      cumulativeProbability: cumProb,
+      children,
+      pruned: false,
+    };
+  }
+
+  const prunedTree = processNode(root, 0, 1.0);
+
+  return {
+    prunedTree,
+    prunedCount,
+    retainedCount,
+  };
+}
+
