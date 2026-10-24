@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import Link from 'next/link';
 
 export default function ControlPlaneError({
   error,
@@ -150,7 +149,7 @@ export default function ControlPlaneError({
             Retry Telemetry Sync
           </button>
 
-          <Link
+          <a
             href="/"
             style={{
               backgroundColor: '#1E293B',
@@ -166,7 +165,7 @@ export default function ControlPlaneError({
             }}
           >
             Return to Root
-          </Link>
+          </a>
         </div>
       </div>
     </div>

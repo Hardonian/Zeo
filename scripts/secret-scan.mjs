@@ -103,7 +103,7 @@ function scanFile(filePath) {
         }
       }
     }
-  } catch (e) {
+  } catch {
     // Skip files that can't be read
   }
 }
