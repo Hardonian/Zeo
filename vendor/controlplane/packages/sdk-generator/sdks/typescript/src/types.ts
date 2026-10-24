@@ -1,7 +1,7 @@
 // Auto-generated TypeScript types from ControlPlane contracts
 // DO NOT EDIT MANUALLY - regenerate from source
 
-import { z } from 'zod';
+import { z } from 'zod/v3';
 import * as schemas from './schemas.js';
 
 // ERRORS types

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v3';
 import { ContractVersion, ContractRange } from '../versioning/index.js';
 import { RunnerCapability, RunnerMetadata } from './runners.js';
 

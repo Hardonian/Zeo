@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v3';
 import { ErrorEnvelope, RetryPolicy } from '../errors/index.js';
 
 export const JobId = z.string().uuid();

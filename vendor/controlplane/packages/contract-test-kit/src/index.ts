@@ -1,5 +1,5 @@
-import { z, ZodObject } from 'zod';
-import type { ZodSchema, ZodIssue } from 'zod';
+import { z, ZodObject } from 'zod/v3';
+import type { ZodSchema, ZodIssue } from 'zod/v3';
 import {
   JobRequest,
   JobResponse,

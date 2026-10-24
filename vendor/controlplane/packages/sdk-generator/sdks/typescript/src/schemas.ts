@@ -1,7 +1,7 @@
 // Auto-generated Zod schemas from ControlPlane contracts
 // DO NOT EDIT MANUALLY - regenerate from source
 
-import { z } from 'zod';
+import { z } from 'zod/v3';
 
 // ERRORS schemas
 

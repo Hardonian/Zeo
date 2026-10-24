@@ -1,7 +1,7 @@
 // Auto-generated ControlPlane SDK Client
 // DO NOT EDIT MANUALLY - regenerate from source
 
-import { z } from 'zod';
+import { z } from 'zod/v3';
 import { ContractVersionSchema, ContractVersion } from './schemas.js';
 
 export interface ClientConfig {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import type { z } from 'zod';
+import type { z } from 'zod/v3';
 import { extractSchemas, validateSchemas, DEFAULT_CONFIG } from '../core.js';
 import { generateTypeScriptSDK } from '../generators/typescript.js';
 import { generatePythonSDK } from '../generators/python.js';

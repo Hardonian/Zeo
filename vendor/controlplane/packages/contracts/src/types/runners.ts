@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v3';
 import { ContractVersion } from '../versioning/index.js';
 import { ErrorEnvelope } from '../errors/index.js';
 

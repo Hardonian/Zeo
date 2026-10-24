@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v3';
 import { ContractVersion } from '../versioning/index.js';
 
 export const ErrorSeverity = z.enum(['fatal', 'error', 'warning', 'info']);

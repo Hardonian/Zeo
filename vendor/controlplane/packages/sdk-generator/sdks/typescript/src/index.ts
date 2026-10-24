@@ -14,4 +14,4 @@ export { ControlPlaneClient, type ClientConfig } from './client.js';
 export { validate, safeValidate } from './validation.js';
 
 // Re-export z for convenience
-export { z } from 'zod';
+export { z } from 'zod/v3';

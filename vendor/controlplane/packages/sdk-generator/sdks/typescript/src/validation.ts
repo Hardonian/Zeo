@@ -1,7 +1,7 @@
 // Auto-generated validation utilities
 // DO NOT EDIT MANUALLY - regenerate from source
 
-import { z } from 'zod';
+import { z } from 'zod/v3';
 
 /**
  * Validates data against a Zod schema

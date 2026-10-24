@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v3';
 
 export const DistributionModeSchema = z.enum(['oss', 'cloud']);
 export type DistributionMode = z.infer<typeof DistributionModeSchema>;
