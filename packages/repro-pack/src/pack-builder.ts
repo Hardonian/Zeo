@@ -63,11 +63,16 @@ export function buildReproPackContents(
     appVersion: string = "0.0.0",
     gitSha: string = "unknown",
 ): ReproPackContents {
+    const createdAt = params.createdAt
+        ?? runData.events
+            .map((event) => event.timestamp)
+            .sort((left, right) => left.localeCompare(right))[0]
+        ?? "1970-01-01T00:00:00.000Z";
     const manifest: ReproPackManifest = {
         schemaVersion: "1.0.0",
         appVersion,
         gitSha,
-        createdAt: new Date().toISOString(),
+        createdAt,
         tenantId: params.tenantId,
         actor: params.actor,
         requestId: params.requestId,

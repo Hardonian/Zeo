@@ -146,6 +146,11 @@ export interface BuildReproPackParams {
     tenantId: string;
     actor: string;
     requestId: string;
+    /**
+     * Timestamp captured at run creation. When omitted, the builder derives a
+     * stable value from the event stream rather than reading the wall clock.
+     */
+    createdAt?: string;
 }
 
 export interface RunData {

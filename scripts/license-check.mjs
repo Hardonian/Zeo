@@ -10,12 +10,29 @@ try {
   output = error.stdout || '[]';
 }
 
-let records = [];
+let parsed = {};
 try {
-  records = JSON.parse(output);
+  parsed = JSON.parse(output);
 } catch {
-  records = [];
+  parsed = {};
 }
+
+/**
+ * `pnpm licenses list --json` groups package records by license. Older pnpm
+ * releases returned a flat array, so accept both shapes and fail closed for
+ * malformed values instead of treating them as an empty successful scan.
+ */
+const records = Array.isArray(parsed)
+  ? parsed
+  : Object.entries(parsed).flatMap(([license, entries]) => {
+      if (!Array.isArray(entries)) {
+        return [{ name: `invalid license group: ${license}`, license: 'UNKNOWN' }];
+      }
+      return entries.map((entry) => ({
+        ...entry,
+        license: entry.license || license,
+      }));
+    });
 
 const violations = [];
 for (const item of records) {

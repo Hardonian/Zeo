@@ -158,6 +158,18 @@ describe("pack-builder", () => {
         }
     });
 
+    it("produces byte-identical contents and archives for identical inputs", () => {
+        const params = { runId: "r", tenantId: "t", actor: "a", requestId: "request" };
+        const runData = makeFixtureRunData();
+
+        const first = buildReproPackContents(params, runData, "1.0.0", "abc1234");
+        const second = buildReproPackContents(params, runData, "1.0.0", "abc1234");
+
+        expect(second).toEqual(first);
+        expect(buildReproPackZip(second)).toEqual(buildReproPackZip(first));
+        expect(JSON.parse(first["manifest.json"]).createdAt).toBe("2026-01-01T00:00:00Z");
+    });
+
     it("produces a valid zip", () => {
         const runData = makeFixtureRunData();
         const contents = buildReproPackContents(
