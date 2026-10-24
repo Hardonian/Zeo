@@ -150,6 +150,20 @@ const nextConfig = {
       '.js': ['.ts', '.tsx', '.js'],
     };
 
+    if (isServer) {
+      const externalizeBetterSqlite = ({ request }, callback) => {
+        if (request === 'better-sqlite3') {
+          callback(null, 'commonjs better-sqlite3');
+          return;
+        }
+        callback();
+      };
+      config.externals = [
+        ...(Array.isArray(config.externals) ? config.externals : config.externals ? [config.externals] : []),
+        externalizeBetterSqlite,
+      ];
+    }
+
     // Server-only packages
     if (!isServer) {
       const serverOnlyPackages = [
