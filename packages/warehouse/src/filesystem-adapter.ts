@@ -9,6 +9,7 @@ import type {
 } from '@zeo/contracts';
 import type { WarehouseAdapter, BlobStorage } from './interfaces';
 import { computeContentHash, generateStableId, computeSha256, computeContentAddress } from './hashing';
+import { normalizeWarehouseRecord } from './records';
 import { promises as fs } from 'fs';
 import { join, dirname } from 'path';
 
@@ -65,10 +66,10 @@ export class FilesystemWarehouseAdapter implements WarehouseAdapter {
     await this.ensureDir(this.getRecordsPath(envelope.kind));
 
     const now = new Date().toISOString();
-    const updatedEnvelope: WarehouseEnvelope<T> = {
+    const updatedEnvelope = normalizeWarehouseRecord({
       ...envelope,
       updatedAt: now,
-    };
+    });
 
     // Write record
     const recordPath = this.getRecordPath(envelope.kind, envelope.id);
@@ -110,9 +111,10 @@ export class FilesystemWarehouseAdapter implements WarehouseAdapter {
 
     try {
       const data = await fs.readFile(recordPath, 'utf-8');
-      return JSON.parse(data) as WarehouseEnvelope<T>;
-    } catch {
-      return null;
+      return normalizeWarehouseRecord(JSON.parse(data) as WarehouseEnvelope<T>);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') return null;
+      throw error;
     }
   }
 
@@ -383,4 +385,3 @@ export class FilesystemBlobStorage implements BlobStorage {
     return results;
   }
 }
-

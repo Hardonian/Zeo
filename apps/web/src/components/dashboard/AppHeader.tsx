@@ -35,8 +35,8 @@ export function AppHeader({ sidebarCollapsed }: { sidebarCollapsed: boolean }) {
 
   return (
     <header
-      className={`fixed top-0 right-0 z-20 flex h-14 items-center justify-between border-b border-gray-200 bg-white/95 px-6 backdrop-blur-sm transition-[left] duration-200 dark:border-gray-700 dark:bg-gray-900/95 ${
-        sidebarCollapsed ? 'left-16' : 'left-64'
+      className={`fixed top-0 right-0 z-20 flex h-14 items-center justify-between border-b border-slate-200/80 bg-white/80 px-5 backdrop-blur-xl transition-[left] duration-300 sm:px-6 dark:border-gray-700 dark:bg-gray-900/95 ${
+        sidebarCollapsed ? 'left-16' : 'left-16 lg:left-64'
       }`}
     >
       <div className="flex items-center gap-3">

@@ -157,14 +157,21 @@ Codex's work across PRs #84 through #92 established the following architectural 
 - **`CP-08` (Robots & Sitemap Protection):** Added `Disallow: /controlplane` rule in `apps/web/src/app/robots.ts`.
 
 ### Track D: MCP Server & Tooling Hardening
+- **`MCP-01` (JSON Schema 2020-12):** The server normalizes every advertised tool input schema with the 2020-12 declaration and `additionalProperties: false`.
+- **`MCP-02` (Signed Write Confirmation):** Remote write calls require a five-minute, single-use HMAC confirmation bound to the tool, arguments, session, issuance time, and nonce. Tool calls bypass neither confirmation nor state through the response cache.
 - **`MCP-03` & `MCP-04` (Output Masking & 10MB Inbound Payload Limits):** Integrated `SecurityUtils.redactOutgoingPayload` and `validateRequestSize` into `packages/mcp-server/src/server.ts`.
 - **`MCP-05` (Stdio Transport Smoke Client):** Verified via `scripts/mcp-smoke.mjs` (8 tools verified, exit 0).
 - **`MCP-08` (30s Tool Execution Safeguard):** Wrapped all tool executions with `SecurityUtils.enforceTimeout(fn, 30_000)` in `server.ts`.
+- **`MCP-06` & `MCP-07` (Remote Auth & Audit):** HTTP transport now fails closed without `ZEO_MCP_HTTP_BEARER_TOKEN`; audited tool invocation events remain available through the Zeo audit bridge.
 
 ### Track E: Warehouse & Ledger Integrity
 - **`WH-01` (Content-Addressable Storage):** Added `saveContentAddressed` and `getContentAddressed` storing immutable objects by `objects/sha256/xx/hash` in `packages/warehouse/src/filesystem-adapter.ts`.
 - **`WH-02` (Monotonic ID Guarantee):** Implemented `generateMonotonicId` with timestamp millisecond ordering and collision sequence counters in `packages/warehouse/src/hashing.ts`.
 - **`WH-03` (Storage Corruption Scrubber):** Created `scripts/storage-scrubber.mjs` verifying disk payload hashes against content addresses.
+- **`WH-04` (Bounded LRU):** Added `LruCache` with a 256 MiB default cap, deterministic access-order eviction, and observable statistics.
+- **`WH-05` (Streaming Serialization):** Added incremental JSON-lines encode/decode APIs with line-level malformed-record diagnostics.
+- **`WH-06` (Envelope Encryption):** Added AES-256-GCM envelope encryption behind a provider-neutral key wrapper, including a local environment-key provider.
+- **`WH-07` (Versioned Records):** Warehouse reads normalize legacy records to `warehouse-envelope.v1` and reject unknown future versions with an actionable error.
 - **`WH-08` (Ledger Blockchain Cryptographic Verification):** Added `verifyChainIntegrity` in `packages/ledger/src/index.ts` verifying chain hashes.
 
 ### Track F: DevX & Tooling Automation
@@ -172,6 +179,7 @@ Codex's work across PRs #84 through #92 established the following architectural 
 - **`DEVX-02` (Git Hooks Setup):** Created automated hook installer in `scripts/setup-git-hooks.mjs`.
 - **`DEVX-03` (Cold Start Profiler):** Verified CLI startup latency < 200ms in `scripts/startup-profiler.mjs` (measured 183.70ms avg).
 - **`DEVX-04` (Dead Code Audit):** Created orphaned file and export audit in `scripts/dead-code-audit.mjs` (0 orphaned files).
+- **`DEVX-05`, `DEVX-06` & `DEVX-09` (Dependency, CI, Boundaries):** Dependency dry-run verification, ESLint boundary restrictions, and a CI clean-working-tree build gate protect reproducibility and package isolation.
 - **`DEVX-07` (Command Cheatsheet Generator):** Built CLI documentation generator in `scripts/generate-command-cheatsheet.mjs` generating `docs/COMMAND_CHEATSHEET.md` (94 commands).
 - **`DEVX-08` (Fast-Ack Webhooks):** Implemented `createFastAckResponse` and `processWebhookAsync` for PROMPT-07 compliance in `packages/core/src/webhooks-security.ts`.
 - **`DEVX-10` (Conventional Changelog Generator):** Created release highlights aggregator in `scripts/generate-changelog-section.mjs`.
@@ -189,4 +197,3 @@ Codex's work across PRs #84 through #92 established the following architectural 
 | License Check | `node scripts/license-check.mjs` | **PASSED** | SPDX allowlist compliant |
 | Startup Profiler | `node scripts/startup-profiler.mjs` | **PASSED** | Average startup: 183.70ms (< 800ms budget) |
 | Storage Integrity | `node scripts/storage-scrubber.mjs` | **PASSED** | 100% healthy storage objects |
-

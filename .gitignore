@@ -37,6 +37,16 @@ Thumbs.db
 
 # Logs
 *.log
+# Ad-hoc tool output dumps (lint/typecheck/build/test captures)
+*_error*.txt
+*lint*.txt
+*typecheck*.txt
+*_results*.txt
+output*.txt
+out.txt
+errors*.txt
+test_output.txt
+cli_out.txt
 # --- Hardonian bootstrap kit ---
 # Hardonian standard ignores
 !.env.template

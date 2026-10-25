@@ -58,28 +58,32 @@ function computeMetrics(
 ): SignalMetrics {
     const r = computePearson(signalData, targetData);
     const n = signalData.length;
+    // Clamp r away from ±1 so t and Fisher z stay finite (|r| = 1 otherwise
+    // yields Infinity / NaN in the band).
+    const rSafe = clamp(r, -0.999999, 0.999999);
 
     // Approximate p-value (very simple t-distribution approx)
     // t = r * sqrt(n-2) / sqrt(1-r^2)
-    const t = r * Math.sqrt(n - 2) / Math.sqrt(1 - r * r);
+    const t = n > 2 ? rSafe * Math.sqrt(n - 2) / Math.sqrt(1 - rSafe * rSafe) : 0;
     // Simple heuristic for p-value (not accurate for production stats)
-    const pValue = Math.exp(-0.7 * t * t);
+    const pValue = n > 2 ? Math.exp(-0.7 * t * t) : 1;
 
-    // Uncertainty band (Fisher transformation)
-    const z = 0.5 * Math.log((1 + r) / (1 - r));
-    const se = 1 / Math.sqrt(n - 3);
-    const zLow = z - 1.96 * se;
-    const zHigh = z + 1.96 * se;
-    const rLow = (Math.exp(2 * zLow) - 1) / (Math.exp(2 * zLow) + 1);
-    const rHigh = (Math.exp(2 * zHigh) - 1) / (Math.exp(2 * zHigh) + 1);
+    // Uncertainty band (Fisher transformation). Undefined for n <= 3:
+    // report the widest honest band rather than a NaN or false precision.
+    let band = { low: -1, high: 1 };
+    if (n > 3) {
+        const z = 0.5 * Math.log((1 + rSafe) / (1 - rSafe));
+        const se = 1 / Math.sqrt(n - 3);
+        band = { low: clamp(Math.tanh(z - 1.96 * se), -1, 1), high: clamp(Math.tanh(z + 1.96 * se), -1, 1) };
+    }
 
     return {
         effectSize: r,
-        pValue: Math.abs(r) > 0.99 ? 0 : pValue, // Handle perfect correlation case
+        pValue: Math.abs(r) > 0.99 && n > 2 ? 0 : pValue, // Handle perfect correlation case
         sampleSize: n,
         effectiveSampleSize: Math.floor(n * 0.8), // Placeholder for autocorrelation adjustment
         stabilityScore: Math.abs(r) > 0.5 ? 0.8 : 0.4, // Placeholder for window stability
-        uncertaintyBand: { low: clamp(rLow, -1, 1), high: clamp(rHigh, -1, 1) }
+        uncertaintyBand: band
     };
 }
 
@@ -151,8 +155,13 @@ export function runSignalDiscovery(
         }
     }
 
-    // Sort pairs deterministically for FDR
-    pairs.sort((a, b) => Math.abs(b.r) - Math.abs(a.r));
+    // Sort pairs deterministically for FDR (explicit, locale-independent tie-break on ids)
+    const cmp = (x: string, y: string) => (x < y ? -1 : x > y ? 1 : 0);
+    pairs.sort((a, b) =>
+        Math.abs(b.r) - Math.abs(a.r) ||
+        cmp(a.targetId, b.targetId) ||
+        cmp(a.signalId, b.signalId)
+    );
 
     // Create Candidate Signals
     for (const pair of pairs) {

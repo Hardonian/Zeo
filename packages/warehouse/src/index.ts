@@ -36,6 +36,10 @@ export {
 } from './indexes';
 export type { EnhancedWarehouseConfig } from './indexed-adapter';
 export { EnhancedIndexedWarehouseAdapter } from './indexed-adapter';
+export { LruCache, type LruCacheStats } from './cache';
+export { serializeJsonLines, deserializeJsonLines, RecordSerializationError } from './serialization';
+export { EnvironmentKeyProvider, encryptBlob, decryptBlob, type EnvelopeKeyProvider, type EncryptedBlob, type WrappedKey } from './encryption';
+export { WAREHOUSE_SCHEMA_VERSION, normalizeWarehouseRecord } from './records';
 
 // KPI Storage (v0.6.0)
 export type {
@@ -48,4 +52,3 @@ export {
   createKpiWarehouseStorage,
   createDefaultKpiDashboard,
 } from './kpi-storage';
-

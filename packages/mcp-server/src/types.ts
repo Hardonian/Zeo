@@ -52,9 +52,11 @@ export interface McpToolDefinition {
     name: string;
     description: string;
     inputSchema: {
+        $schema?: "https://json-schema.org/draft/2020-12/schema";
         type: "object";
         properties: Record<string, SchemaProperty>;
         required?: string[];
+        additionalProperties?: boolean;
     };
 }
 
@@ -79,6 +81,11 @@ export interface McpToolCallParams {
     arguments?: Record<string, unknown>;
     sessionId?: string;
     correlationId?: string;
+    confirmation?: {
+        issuedAt: string;
+        nonce: string;
+        signature: string;
+    };
 }
 
 export interface McpToolResult {
@@ -145,6 +152,8 @@ export interface McpConfig {
         requireAuthContext: boolean;
         localMode: boolean;
         maxArgumentDepth: number;
+        /** Environment-only secret for remote write-confirmation HMACs. */
+        confirmationSecret?: string;
     };
 }
 

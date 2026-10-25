@@ -12,6 +12,15 @@
 import { createHash } from "node:crypto";
 import { stableSort, hashInputPayload } from "@zeo/kernel";
 
+/**
+ * Locale-independent string ordering (UTF-16 code units).
+ * `localeCompare` depends on host locale/ICU data, which would make
+ * schedules and hashes differ across machines.
+ */
+function compareIds(a: string, b: string): number {
+  return a < b ? -1 : a > b ? 1 : 0;
+}
+
 // =============================================================================
 // CORE TYPES
 // =============================================================================
@@ -237,7 +246,7 @@ export function detectCycles(graph: ZeoExecutionGraph): string[] | null {
   }
 
   // Also check any unvisited nodes (disconnected components)
-  const sortedNodes = [...graph.nodes].sort((a, b) => a.id.localeCompare(b.id));
+  const sortedNodes = [...graph.nodes].sort((a, b) => compareIds(a.id, b.id));
   for (const node of sortedNodes) {
     if (!visited.has(node.id)) {
       const cycle = dfs(node.id);
@@ -347,7 +356,7 @@ export function computeSchedule(graph: ZeoExecutionGraph): DeterministicSchedule
     // Primary: depth
     if (a.depth !== b.depth) return a.depth - b.depth;
     // Secondary: node ID
-    const idCmp = a.node.id.localeCompare(b.node.id);
+    const idCmp = compareIds(a.node.id, b.node.id);
     if (idCmp !== 0) return idCmp;
     // Tertiary: insertion order
     return a.node._insertionOrder - b.node._insertionOrder;
@@ -412,7 +421,7 @@ export function computeGraphHash(graph: ZeoExecutionGraph): string {
         dependsOn: n.dependsOn,
         insertionOrder: n._insertionOrder,
       }))
-      .sort((a, b) => a.id.localeCompare(b.id)),
+      .sort((a, b) => compareIds(a.id, b.id)),
     entryPoints: [...graph.entryPoints].sort(),
   };
   return hashInputPayload(canonical);
@@ -548,7 +557,7 @@ export function aggregateInputs(
       payload: payloads.get(nodeId),
       order: index,
     }))
-    .sort((a, b) => a.nodeId.localeCompare(b.nodeId));
+    .sort((a, b) => compareIds(a.nodeId, b.nodeId));
 
   // Compute combined hash
   const combinedHash = hashInputPayload(

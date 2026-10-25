@@ -61,7 +61,7 @@ export function PublicShell({ title, children, hero }: { title: string; children
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(219,234,254,0.65),transparent_32rem),linear-gradient(180deg,#f8fbff_0%,#f8fafc_36%,#ffffff_100%)] text-slate-900">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-blue-700 focus:shadow"
@@ -69,7 +69,7 @@ export function PublicShell({ title, children, hero }: { title: string; children
         Skip to content
       </a>
 
-      <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/95 backdrop-blur-md">
+      <header className="sticky top-0 z-20 border-b border-slate-200/70 bg-white/75 backdrop-blur-xl">
         <div className={`${uiTokens.container} py-3`}>
           <div className="flex items-center justify-between gap-4">
             <Link href="/" className="group flex items-center gap-2.5" aria-label="Zeo home">
@@ -80,12 +80,12 @@ export function PublicShell({ title, children, hero }: { title: string; children
               type="button"
               aria-expanded={mobileOpen}
               aria-controls="mobile-nav"
-              className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 md:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600 hover:bg-slate-50"
+              className="rounded-xl border border-slate-200 bg-white/80 px-3 py-2 text-sm font-medium text-slate-700 shadow-sm lg:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600 hover:bg-white"
               onClick={() => setMobileOpen((open) => !open)}
             >
               Menu
             </button>
-            <nav className="hidden items-center gap-3 md:flex" aria-label="Primary">
+            <nav className="hidden items-center gap-2 lg:flex" aria-label="Primary">
               {HEADER_LINKS.map((link) => (
                 <NavLink key={link.href} href={link.href} label={link.label} pathname={pathname} />
               ))}
@@ -97,7 +97,7 @@ export function PublicShell({ title, children, hero }: { title: string; children
             </nav>
           </div>
           {mobileOpen ? (
-            <nav id="mobile-nav" className="mt-3 flex flex-col gap-3 border-t border-slate-100 pt-3 md:hidden" aria-label="Mobile primary">
+            <nav id="mobile-nav" className="mt-3 flex flex-col gap-3 border-t border-slate-200/70 pt-3 lg:hidden" aria-label="Mobile primary">
               {HEADER_LINKS.map((link) => (
                 <NavLink key={link.href} href={link.href} label={link.label} pathname={pathname} />
               ))}
@@ -117,7 +117,7 @@ export function PublicShell({ title, children, hero }: { title: string; children
         {children}
       </main>
 
-      <footer className="border-t border-slate-200 bg-white">
+      <footer className="border-t border-slate-200/80 bg-white/80 backdrop-blur">
         <div className={`${uiTokens.container} py-8`}>
           <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
             <div className="flex max-w-xs flex-col gap-2">

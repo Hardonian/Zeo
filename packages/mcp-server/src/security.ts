@@ -9,6 +9,7 @@
 import type { McpConfig, McpToolCallParams, JsonRpcError, SchemaProperty } from "./types.js";
 import { isToolAllowed } from "./config.js";
 import { SecurityUtils } from "./security-utils.js";
+import { createHmac, timingSafeEqual } from "node:crypto";
 
 const SECRET_PATTERNS = [
     /token/i,
@@ -56,6 +57,48 @@ export function validateToolPermission(
             code: -32600,
             message: `Tool "${params.name}" is not enabled in the allowlist. Add it to zeo.mcp.json tools.allowlist.`,
         };
+    }
+    return null;
+}
+
+const CONFIRMATION_MAX_AGE_MS = 5 * 60_000;
+
+/**
+ * Confirms an explicitly approved remote write. The signed payload binds the
+ * tool, complete arguments, session, issuance time, and single-use nonce.
+ * The HMAC key is environment-only and never appears in MCP configuration.
+ */
+export function validateWriteConfirmation(
+    config: McpConfig,
+    params: McpToolCallParams
+): JsonRpcError | null {
+    const permission = config.tools.allowlist[params.name];
+    if (!permission?.requireConfirmation || config.security.localMode) return null;
+
+    const secret = config.security.confirmationSecret;
+    const confirmation = params.confirmation;
+    if (!secret || !confirmation) {
+        return {
+            code: -32600,
+            message: `Write tool "${params.name}" requires a signed user confirmation. Set ZEO_MCP_CONFIRMATION_SECRET and provide confirmation.`,
+        };
+    }
+    const issuedAt = Date.parse(confirmation.issuedAt);
+    if (!Number.isFinite(issuedAt) || Math.abs(Date.now() - issuedAt) > CONFIRMATION_MAX_AGE_MS || !confirmation.nonce) {
+        return { code: -32600, message: "Write confirmation is missing a valid issuedAt or has expired. Obtain a new user confirmation." };
+    }
+    const payload = JSON.stringify({
+        tool: params.name,
+        arguments: params.arguments ?? {},
+        sessionId: params.sessionId ?? "",
+        issuedAt: confirmation.issuedAt,
+        nonce: confirmation.nonce,
+    });
+    const expected = createHmac("sha256", secret).update(payload).digest("hex");
+    const provided = Buffer.from(confirmation.signature, "hex");
+    const expectedBytes = Buffer.from(expected, "hex");
+    if (provided.length !== expectedBytes.length || !timingSafeEqual(provided, expectedBytes)) {
+        return { code: -32600, message: "Write confirmation signature is invalid. Obtain a new user confirmation." };
     }
     return null;
 }

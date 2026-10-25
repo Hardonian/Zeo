@@ -12,6 +12,7 @@
 
 import { createInterface } from "readline";
 import { createServer as createHttpServer } from "http";
+import { timingSafeEqual } from "node:crypto";
 import { loadConfig, validateConfig } from "./config.js";
 import { createMcpServer } from "./server.js";
 
@@ -53,11 +54,26 @@ function startHttpTransport(
     host: string,
     port: number
 ) {
+    const bearerToken = process.env["ZEO_MCP_HTTP_BEARER_TOKEN"];
     const httpServer = createHttpServer(async (req, res) => {
         // Only accept POST to /mcp
         if (req.method !== "POST" || req.url !== "/mcp") {
             res.writeHead(404, { "Content-Type": "application/json" });
             res.end(JSON.stringify({ error: "Not found. POST to /mcp" }));
+            return;
+        }
+        if (!bearerToken) {
+            res.writeHead(503, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ error: "HTTP MCP transport is unavailable: set ZEO_MCP_HTTP_BEARER_TOKEN and restart." }));
+            return;
+        }
+        const authorization = req.headers.authorization ?? "";
+        const supplied = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
+        const expectedBytes = Buffer.from(bearerToken);
+        const suppliedBytes = Buffer.from(supplied);
+        if (suppliedBytes.length !== expectedBytes.length || !timingSafeEqual(suppliedBytes, expectedBytes)) {
+            res.writeHead(401, { "Content-Type": "application/json", "WWW-Authenticate": "Bearer" });
+            res.end(JSON.stringify({ error: "Unauthorized. Provide Authorization: Bearer <token>." }));
             return;
         }
 
@@ -88,6 +104,13 @@ async function main() {
 
     const config = await loadConfig();
 
+    // HTTP is a remote transport even when bound to loopback: do not inherit
+    // local stdio's consent/auth bypass.
+    if (useHttp) {
+        config.transport.http.enabled = true;
+        config.security.localMode = false;
+    }
+
     // Validate config
     const issues = validateConfig(config);
     if (issues.length > 0) {
@@ -101,10 +124,6 @@ async function main() {
     const toolCount = server.getToolDefinitions().length;
 
     if (useHttp) {
-        if (!config.transport.http.enabled) {
-            // Override for explicit --http flag
-            config.transport.http.enabled = true;
-        }
         process.stderr.write(
             `[zeo-mcp] Starting HTTP transport (${toolCount} tools enabled)\n`
         );

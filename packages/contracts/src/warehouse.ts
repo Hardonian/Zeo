@@ -63,6 +63,8 @@ export interface WarehouseHashes {
 }
 
 export interface WarehouseEnvelope<T = unknown> {
+  /** Storage schema; legacy v0 records are normalized to v1 on read. */
+  schemaVersion?: 'warehouse-envelope.v1';
   id: string;
   kind: WarehouseKind;
   createdAt: string;
@@ -120,4 +122,3 @@ export interface ExportOptions {
   tags?: string[];
   includeDeleted?: boolean;
 }
-

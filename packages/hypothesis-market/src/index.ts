@@ -163,6 +163,9 @@ export function registerHypothesis(
   if (market.hypotheses.has(hypothesis.id)) {
     throw new Error(`Hypothesis ${hypothesis.id} already registered in market`);
   }
+  if (!Number.isFinite(initialCredence) || initialCredence < 0 || initialCredence > 1) {
+    throw new Error(`initialCredence must be within [0, 1] (got ${initialCredence})`);
+  }
 
   const now = new Date().toISOString();
   const position: MarketPosition = {
@@ -309,23 +312,17 @@ export function rebalanceCredence(
     scores.set(id, score);
   }
 
-  // Normalize scores to get new credence allocations
+  // Normalize scores, then enforce the cap via water-filling: excess above the
+  // cap is redistributed proportionally among uncapped hypotheses. Unlike a
+  // cap-then-renormalize pass, this never pushes a value back above the cap.
+  // If hypotheses * cap < 1 the cap is unsatisfiable at total = 1; the cap
+  // invariant wins and the remainder stays unallocated.
   const totalScore = Array.from(scores.values()).reduce((a, b) => a + b, 0);
-  const newCredences = new Map<HypothesisId, number>();
-
+  const weights = new Map<HypothesisId, number>();
   for (const [id, score] of scores) {
-    const normalizedScore = totalScore > 0 ? score / totalScore : 1 / scores.size;
-    // Apply cap
-    const cappedCredence = Math.min(normalizedScore, config.maxCredenceCap);
-    newCredences.set(id, cappedCredence);
+    weights.set(id, totalScore > 0 ? score : 1);
   }
-
-  // Re-normalize after capping
-  const totalAfterCap = Array.from(newCredences.values()).reduce((a, b) => a + b, 0);
-  const finalCredences = new Map<HypothesisId, number>();
-  for (const [id, credence] of newCredences) {
-    finalCredences.set(id, credence / totalAfterCap);
-  }
+  const finalCredences = allocateWithCap(weights, config.maxCredenceCap);
 
   // Apply new credences and decay
   const newHypotheses = new Map<HypothesisId, MarketHypothesis>();
@@ -443,6 +440,36 @@ export function getMarketSummary(market: MarketState): {
 
 function generateEventId(): string {
   return `evt_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+}
+
+/**
+ * Distribute a total of 1 proportionally to weights, with no entry above `cap`.
+ * Invariant: every output <= cap; sum <= 1 (equals 1 when weights.size * cap >= 1).
+ */
+function allocateWithCap(weights: Map<HypothesisId, number>, cap: number): Map<HypothesisId, number> {
+  const result = new Map<HypothesisId, number>();
+  let open = new Map(weights);
+  let remaining = 1;
+
+  while (open.size > 0 && remaining > 1e-12) {
+    const openWeight = Array.from(open.values()).reduce((a, b) => a + b, 0);
+    const share = (w: number) => (openWeight > 0 ? (w / openWeight) * remaining : remaining / open.size);
+    const overCap = Array.from(open).filter(([, w]) => share(w) > cap);
+
+    if (overCap.length === 0) {
+      for (const [id, w] of open) result.set(id, share(w));
+      return result;
+    }
+    const next = new Map(open);
+    for (const [id] of overCap) {
+      result.set(id, cap);
+      remaining -= cap;
+      next.delete(id);
+    }
+    open = next;
+  }
+  for (const id of open.keys()) result.set(id, 0);
+  return result;
 }
 
 function calculatePredictionAccuracy(hypothesis: MarketHypothesis, outcome: OutcomeRecord): number {

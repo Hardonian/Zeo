@@ -52,18 +52,21 @@ export default function Home() {
       <div className={`${uiTokens.pageStack} py-10`}>
         <section className="grid gap-4 md:grid-cols-3">
           {capabilities.map((cap) => (
-            <article key={cap.title} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm card-hover">
+            <article key={cap.title} className="group rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-sm backdrop-blur card-hover">
               <div className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg ${cap.color}`}>
                 <cap.icon className="h-5 w-5" />
               </div>
-              <h2 className="font-semibold text-gray-900">{cap.title}</h2>
+              <h2 className="font-semibold tracking-tight text-gray-950">{cap.title}</h2>
               <p className="text-sm text-gray-700 mt-1">{cap.description}</p>
             </article>
           ))}
         </section>
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900">In the workspace</h2>
+        <section className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[var(--shadow-soft)] md:p-8">
+          <div className="zeo-orb -right-48 -top-56 bg-indigo-300 animate-float" />
+          <div className="relative">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-800">Decision cockpit <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /></div>
+          <h2 className="text-2xl font-semibold tracking-tight text-gray-950">In the workspace</h2>
           <p className="mt-2 text-sm text-gray-600">Branching analysis, evidence ledgers, and governance health in one deterministic workspace.</p>
           <div className="mt-4 overflow-hidden rounded-lg border border-gray-100">
             <Image
@@ -79,10 +82,11 @@ export default function Home() {
             <Link href="/docs" className={uiTokens.buttonSecondary}>Read docs</Link>
             <Link href="/studio" className={uiTokens.buttonPrimary}>Open studio</Link>
           </div>
+          </div>
         </section>
 
         <section className="grid gap-6 md:grid-cols-2">
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="rounded-3xl border border-slate-200/80 bg-white/85 p-6 shadow-sm backdrop-blur card-hover">
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Governance at a glance</h2>
             <p className="text-sm text-gray-600 mb-4">Policy compliance, drift detection, and health dashboards — all in one view.</p>
             <div className="overflow-hidden rounded-lg border border-gray-100">
@@ -96,7 +100,7 @@ export default function Home() {
               />
             </div>
           </div>
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="rounded-3xl border border-slate-200/80 bg-white/85 p-6 shadow-sm backdrop-blur card-hover">
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Signal tracking</h2>
             <p className="text-sm text-gray-600 mb-4">Monitor evidence signals and confidence shifts as new data arrives.</p>
             <div className="overflow-hidden rounded-lg border border-gray-100">

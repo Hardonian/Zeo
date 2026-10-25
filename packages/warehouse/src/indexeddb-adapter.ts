@@ -12,6 +12,7 @@ import type { WarehouseAdapter, BlobStorage } from './interfaces';
 // Declare browser global for indexedDB
 declare const indexedDB: IDBFactory;
 import { computeContentHash, generateStableId } from './hashing';
+import { normalizeWarehouseRecord } from './records';
 
 const DB_NAME = 'zeo_warehouse';
 const DB_VERSION = 1;
@@ -78,10 +79,10 @@ export class IndexedDBWarehouseAdapter implements WarehouseAdapter {
     const db = this.db!;
 
     const now = new Date().toISOString();
-    const updatedEnvelope: WarehouseEnvelope<T> = {
+    const updatedEnvelope = normalizeWarehouseRecord({
       ...envelope,
       updatedAt: now,
-    };
+    });
 
     const indexEntry: RecordIndex = {
       id: envelope.id,
@@ -123,7 +124,7 @@ export class IndexedDBWarehouseAdapter implements WarehouseAdapter {
           resolve(null);
           return;
         }
-        resolve(result);
+        resolve(normalizeWarehouseRecord(result));
       };
       request.onerror = () => reject(request.error);
     });
@@ -147,10 +148,14 @@ export class IndexedDBWarehouseAdapter implements WarehouseAdapter {
           return;
         }
 
-        const envelope = cursor.value as WarehouseEnvelope<T>;
-
-        if (this.matchesQuery(envelope, query)) {
-          results.push(envelope);
+        try {
+          const envelope = normalizeWarehouseRecord(cursor.value as WarehouseEnvelope<T>);
+          if (this.matchesQuery(envelope, query)) {
+            results.push(envelope);
+          }
+        } catch (error) {
+          reject(error);
+          return;
         }
 
         cursor.continue();
@@ -401,4 +406,3 @@ export class IndexedDBBlobStorage implements BlobStorage {
     });
   }
 }
-

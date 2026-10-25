@@ -247,9 +247,34 @@ jobs:
           name: full-lane-log
           path: full-lane.log
 
+  clean-worktree:
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck, unit-tests, integration-smoke]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - name: Install
+        run: pnpm run ci:install
+      - name: Build deterministically
+        run: pnpm build
+      - name: Enforce clean working tree
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Build changed the working tree; generated artifacts must be deterministic and committed or ignored."
+            git status --short
+            git diff --exit-code
+            exit 1
+          fi
+
   ci-gate:
     runs-on: ubuntu-latest
-    needs: [lint, typecheck, boundary-check, unit-tests, integration-smoke, full-lane]
+    needs: [lint, typecheck, boundary-check, unit-tests, integration-smoke, full-lane, clean-worktree]
     if: always()
     steps:
       - name: Enforce lane success
@@ -258,7 +283,8 @@ jobs:
              [ "${{ needs.typecheck.result }}" != "success" ] || \
              [ "${{ needs.boundary-check.result }}" != "success" ] || \
              [ "${{ needs.unit-tests.result }}" != "success" ] || \
-             [ "${{ needs.integration-smoke.result }}" != "success" ]; then
+             [ "${{ needs.integration-smoke.result }}" != "success" ] || \
+             [ "${{ needs.clean-worktree.result }}" != "success" ]; then
             echo "PR lane failed"
             exit 1
           fi

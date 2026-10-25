@@ -20,6 +20,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { createHmac } from "node:crypto";
 import { createMcpServer } from "./server.js";
 import { createDefaultConfig } from "./config.js";
 import type { McpConfig, JsonRpcRequest } from "./types.js";
@@ -143,6 +144,32 @@ describe("MCP Server", () => {
     });
 
     describe("Security", () => {
+        it("advertises JSON Schema 2020-12 tool definitions", async () => {
+            const server = createMcpServer(config);
+            const response = parseResponse(await server.handleRequest(makeRequest("tools/list", 13)));
+            expect(response.result.tools.every((tool: { inputSchema: { $schema?: string; additionalProperties?: boolean } }) =>
+                tool.inputSchema.$schema === "https://json-schema.org/draft/2020-12/schema" && tool.inputSchema.additionalProperties === false
+            )).toBe(true);
+        });
+
+        it("requires a signed, single-use confirmation for remote write tools", async () => {
+            config.security.localMode = false;
+            config.security.confirmationSecret = "test-confirmation-secret";
+            const server = createMcpServer(config);
+            const arguments_ = { title: "Confirmed", body: "Body" };
+            const unsigned = parseResponse(await server.handleRequest(makeRequest("tools/call", 131, { name: "notes.ingest", arguments: arguments_ })));
+            expect(unsigned.error.message).toContain("signed user confirmation");
+
+            const issuedAt = new Date().toISOString();
+            const nonce = "approval-1";
+            const signature = createHmac("sha256", config.security.confirmationSecret)
+                .update(JSON.stringify({ tool: "notes.ingest", arguments: arguments_, sessionId: "test-session", issuedAt, nonce }))
+                .digest("hex");
+            const approved = makeRequest("tools/call", 132, { name: "notes.ingest", arguments: arguments_, confirmation: { issuedAt, nonce, signature } });
+            expect(parseResponse(await server.handleRequest(approved)).error).toBeUndefined();
+            expect(parseResponse(await server.handleRequest(approved)).error.message).toContain("already been used");
+        });
+
         it("rejects oversized tool payloads", async () => {
             config.security.maxToolArgsBytes = 64;
             const server = createMcpServer(config);

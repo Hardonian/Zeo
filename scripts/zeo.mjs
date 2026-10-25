@@ -18,9 +18,10 @@ const COMMANDS = {
   'jobs retry <id>': 'Retry a specific job id (requires management API).',
 };
 
-function runNodeScript(scriptPath) {
+function runNodeScript(scriptPath, extraArgs = []) {
   try {
-    execSync(`node ${scriptPath}`, { stdio: 'inherit', cwd: root });
+    const argsStr = extraArgs.length > 0 ? ' ' + extraArgs.map(a => `"${a}"`).join(' ') : '';
+    execSync(`node ${scriptPath}${argsStr}`, { stdio: 'inherit', cwd: root });
   } catch {
     process.exit(1);
   }
@@ -74,7 +75,7 @@ if (command === 'smoke') {
 
 if (command === 'benchmark') {
   console.log('Running Zeo Benchmarks...');
-  runNodeScript('scripts/benchmark.mjs');
+  runNodeScript('scripts/benchmark.mjs', process.argv.slice(3));
   process.exit(0);
 }
 

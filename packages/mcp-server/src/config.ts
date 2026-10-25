@@ -111,7 +111,9 @@ export function createDefaultConfig(): McpConfig {
             quarantineFailureThreshold: 3,
             quarantineWindowMs: 15 * 60_000,
             requireAuthContext: true,
-            localMode: false,
+            // Stdio is local-first by default. The HTTP entry point explicitly
+            // switches this off before validating its remote security posture.
+            localMode: true,
             maxArgumentDepth: 10,
         },
     };
@@ -233,6 +235,9 @@ function applyEnvOverrides(config: McpConfig): McpConfig {
     const maxArgumentDepth = process.env["ZEO_MCP_MAX_ARGUMENT_DEPTH"];
     if (maxArgumentDepth) config.security.maxArgumentDepth = parseInt(maxArgumentDepth, 10);
 
+    const confirmationSecret = process.env["ZEO_MCP_CONFIRMATION_SECRET"];
+    if (confirmationSecret) config.security.confirmationSecret = confirmationSecret;
+
     return config;
 }
 
@@ -268,6 +273,13 @@ export function validateConfig(config: McpConfig): string[] {
         if (!config.transport.http.host) {
             issues.push("transport.http.host is required when HTTP is enabled");
         }
+    }
+
+    if (config.transport.http.enabled && !process.env["ZEO_MCP_HTTP_BEARER_TOKEN"]) {
+        issues.push("ZEO_MCP_HTTP_BEARER_TOKEN is required when HTTP transport is enabled");
+    }
+    if (!config.security.localMode && Object.values(config.tools.allowlist).some(tool => tool.enabled && tool.requireConfirmation) && !config.security.confirmationSecret) {
+        issues.push("ZEO_MCP_CONFIRMATION_SECRET is required for remote write tools");
     }
 
     const enabledTools = Object.values(config.tools.allowlist).filter(t => t.enabled);

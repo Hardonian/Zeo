@@ -37,7 +37,9 @@ import {
     sanitizeToolOutput,
     validateObjectDepth,
     detectSuspiciousOutput,
+    validateWriteConfirmation,
 } from "./security.js";
+import { requiresConfirmation } from "./config.js";
 import { mcpPolicyEngine } from "./policy.js";
 import { StructuredLogger, Tracer, MetricsRegistry } from "./observability.js";
 import { DeterministicCache } from "./deterministic-cache.js";
@@ -192,9 +194,17 @@ export function createMcpServer(config: McpConfig): McpServer {
     );
     const internalToolNames = new Set(enabledTools.map((t) => t.definition.name));
     const quarantineByTool = new Map<string, { failures: number; quarantinedUntil?: number; reason?: string; lastEvent?: string }>();
+    const consumedConfirmationNonces = new Set<string>();
 
     function getToolDefinitions(): McpToolDefinition[] {
-        return enabledTools.map(t => t.definition);
+        return enabledTools.map(({ definition }) => ({
+            ...definition,
+            inputSchema: {
+                ...definition.inputSchema,
+                $schema: "https://json-schema.org/draft/2020-12/schema",
+                additionalProperties: false,
+            },
+        }));
     }
 
     function getAuditBridge(): AuditBridge {
@@ -289,17 +299,20 @@ export function createMcpServer(config: McpConfig): McpServer {
 
         const reqHash = createHash("sha256").update(raw).digest("hex");
         const cacheKey = cache.makeKey(request, "mcp", { method: request.method }, config.server.version);
-        if (config.security.cacheMode !== "off") {
+        // Tool calls can mutate state and may carry single-use write consent;
+        // never satisfy them from cache or coalesce them across callers.
+        const cacheable = request.method !== "tools/call";
+        if (cacheable && config.security.cacheMode !== "off") {
             const cached = cache.get(cacheKey.key);
             if (cached) {
                 metrics.inc("cache_hit");
                 logger.log({ level: "debug", msg: "mcp cache hit", run_id: runId, trace_id: tracer.traceId, action: request.method, cache_hit: true });
-                return JSON.stringify(cached);
+                return JSON.stringify({ ...cached, id: request.id });
             }
             metrics.inc("cache_miss");
         }
 
-        const existing = singleFlight.get(reqHash);
+        const existing = cacheable ? singleFlight.get(reqHash) : undefined;
         if (existing) return JSON.stringify(await existing);
 
         const requestPromise = (async () => {
@@ -312,10 +325,10 @@ export function createMcpServer(config: McpConfig): McpServer {
             return Promise.race([work, timeout]);
         })();
 
-        singleFlight.set(reqHash, requestPromise);
+        if (cacheable) singleFlight.set(reqHash, requestPromise);
         try {
             const response = await requestPromise;
-            if (config.security.cacheMode === "write" && !response.error) {
+            if (cacheable && config.security.cacheMode === "write" && !response.error) {
                 cache.set(cacheKey.key, cacheKey.inputHash, response, config.security.cacheTtlMs);
             }
             return JSON.stringify(response);
@@ -324,7 +337,7 @@ export function createMcpServer(config: McpConfig): McpServer {
             return JSON.stringify({ jsonrpc: "2.0", id: request.id, error: { code: -32603, message, data: { run_id: runId } } });
         } finally {
             inFlight = Math.max(0, inFlight - 1);
-            singleFlight.delete(reqHash);
+            if (cacheable) singleFlight.delete(reqHash);
             const summary = tracer.summarize();
             logger.log({ level: "info", msg: "run summary", run_id: runId, trace_id: summary.trace_id, cmd: "mcp", action: request.method, duration_ms: summary.total_duration_ms });
             if (process.env.ZEO_TRACE_VERBOSE === "1") logger.log({ level: "info", msg: "trace summary", run_id: runId, trace_id: summary.trace_id, spans: summary.spans });
@@ -464,6 +477,20 @@ export function createMcpServer(config: McpConfig): McpServer {
                 id: request.id,
                 error: permError,
             };
+        }
+
+        if (requiresConfirmation(config, params.name)) {
+            const confirmationError = validateWriteConfirmation(config, params);
+            if (confirmationError) {
+                metrics.inc("confirmation_denied");
+                return { jsonrpc: "2.0", id: request.id, error: confirmationError };
+            }
+            const nonce = params.confirmation?.nonce;
+            if (!config.security.localMode && nonce && consumedConfirmationNonces.has(nonce)) {
+                metrics.inc("confirmation_denied");
+                return { jsonrpc: "2.0", id: request.id, error: { code: -32600, message: "Write confirmation has already been used. Obtain a new user confirmation." } };
+            }
+            if (!config.security.localMode && nonce) consumedConfirmationNonces.add(nonce);
         }
 
         // Policy check (v0.7.0)

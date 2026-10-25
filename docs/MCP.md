@@ -141,11 +141,13 @@ Config is loaded from `zeo.mcp.json` in the project root (tracked, no secrets). 
 | `ZEO_MCP_HTTP_PORT` | Override HTTP port |
 | `ZEO_MCP_HTTP_HOST` | Override HTTP host |
 | `ZEO_MCP_WAREHOUSE_PATH` | Override warehouse base path |
+| `ZEO_MCP_HTTP_BEARER_TOKEN` | Required bearer token for the HTTP transport; never place it in `zeo.mcp.json` |
+| `ZEO_MCP_CONFIRMATION_SECRET` | Required HMAC key for signed remote write confirmations |
 
 ## Security Model
 
 1. **Default-deny**: Every tool must be explicitly enabled in `tools.allowlist`
-2. **Write confirmation**: Write-scope tools have `requireConfirmation: true` by default
+2. **Write confirmation**: Local stdio is explicit local-first mode. Remote write-scope tools require a short-lived, single-use HMAC confirmation that binds the tool, arguments, session, time, and nonce.
 3. **Secret redaction**: All logged values are scanned for keys matching secret patterns
 4. **Request size limits**: Configurable max request size (default: 10MB)
 5. **No secret storage**: Config files contain no secrets; env vars only for sensitive values

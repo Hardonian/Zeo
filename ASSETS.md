@@ -15,15 +15,15 @@ Where each `zeo-images/` source asset is used across the site.
 | `zeo-images/zeo-landscape-nologo.png`| (source only)                         | High-res source for landscape crops                  |
 | `zeo-images/zeo-4x5.png`           | (source only)                          | Portrait-ratio source for future use                 |
 
-## Web-sized derivatives (root level)
+## Web-sized derivatives (`assets/screenshots/`)
 
-| File                          | Deployed to                              | Used in                              |
-| ----------------------------- | ---------------------------------------- | ------------------------------------ |
-| `zeo_website_hero.png`        | `apps/web/public/brand/zeo/hero.png`     | Platform page hero banner            |
-| `zeo_website_governance.png`  | `apps/web/public/brand/zeo/governance.png`| Homepage governance section          |
-| `zeo_website_signals.png`     | `apps/web/public/brand/zeo/signals.png`  | Homepage signal tracking section     |
-| `zeo_website_governance2.png` | (not deployed)                           | Alternative governance visual        |
-| `zeo_website_cli_assist.png`  | (not deployed)                           | CLI assist visual (available)        |
+| File                                               | Deployed to                              | Used in                              |
+| -------------------------------------------------- | ---------------------------------------- | ------------------------------------ |
+| `assets/screenshots/zeo_website_hero.png`          | `apps/web/public/brand/zeo/hero.png`     | Platform page hero banner            |
+| `assets/screenshots/zeo_website_governance.png`    | `apps/web/public/brand/zeo/governance.png`| Homepage governance section          |
+| `assets/screenshots/zeo_website_signals.png`       | `apps/web/public/brand/zeo/signals.png`  | Homepage signal tracking section     |
+| `assets/screenshots/zeo_website_governance2.png`   | (not deployed)                           | Alternative governance visual        |
+| `assets/screenshots/zeo_website_cli_assist.png`    | (not deployed)                           | CLI assist visual (available)        |
 
 ## Generated assets
 

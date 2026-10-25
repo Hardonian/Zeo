@@ -1,8 +1,0 @@
-packages/core/src/engine.ts(1,28): error TS2307: Cannot find module '@zeo/id' or its corresponding type declarations.
-packages/core/src/evidence.ts(1,28): error TS2307: Cannot find module '@zeo/id' or its corresponding type declarations.
-packages/core/src/examples.ts(1,28): error TS2307: Cannot find module '@zeo/id' or its corresponding type declarations.
-packages/core/src/index.exports.typecheck.ts(3,3): error TS2724: '"./index.js"' has no exported member named 'computeSecurityTranscriptHash'. Did you mean 'computeDecisionTranscriptHash'?
-packages/core/src/index.exports.typecheck.ts(4,3): error TS2305: Module '"./index.js"' has no exported member 'computeTranscriptHash'.
-packages/core/src/index.exports.typecheck.ts(7,10): error TS2459: Module '"./transcript-security.js"' declares 'computeTranscriptHash' locally, but it is not exported.
-packages/core/src/quant-engine.ts(15,28): error TS2307: Cannot find module '@zeo/id' or its corresponding type declarations.
-packages/core/src/scenarios.ts(2,28): error TS2307: Cannot find module '@zeo/id' or its corresponding type declarations.
