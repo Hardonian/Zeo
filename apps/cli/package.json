@@ -40,10 +40,10 @@
     "@zeo/trust": "workspace:*",
     "@zeo/warehouse": "workspace:*",
     "dotenv": "^16.4.5",
-    "nanoid": "^6.0.1"
+    "nanoid": "^6.0.2"
   },
   "devDependencies": {
-    "@types/node": "^26.6.2",
+    "@types/node": "^26.6.5",
     "vitest": "^5.0.0"
   }
 }

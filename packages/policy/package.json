@@ -15,14 +15,14 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@opentelemetry/api": "^1.9.1",
+    "@opentelemetry/api": "^1.10.0",
     "@zeo/analysis": "workspace:*",
     "@zeo/policy-types": "workspace:*",
-    "js-yaml": "^5.4.2",
+    "js-yaml": "^5.5.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@types/node": "^26.6.2",
+    "@types/node": "^26.6.5",
     "typescript": "^5.3.3",
     "vitest": "^5.0.1"
   }
