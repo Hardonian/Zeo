@@ -62,10 +62,10 @@
     "@zeo/worlds": "workspace:*",
     "better-sqlite3": "^12.6.2",
     "brace-expansion": "5.0.12",
-    "minimatch": "^10.2.6"
+    "minimatch": "^11.0.3"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
-    "@types/node": "^26.6.5"
+    "@types/node": "^26.6.6"
   }
 }
