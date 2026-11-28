@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 
-FROM node:20.11.0-bookworm-slim AS builder
+FROM node:20.19.0-bookworm-slim AS builder
 ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
 RUN corepack enable && corepack prepare pnpm@9.15.5 --activate
@@ -24,7 +24,7 @@ RUN pnpm -r --filter @zeo/cli... build
 RUN pnpm --filter @zeo/cli deploy --prod /opt/zeo-runtime
 RUN install -D -m 0644 /repo/zeo.mcp.json /opt/zeo-runtime/zeo.mcp.json
 
-FROM node:20.11.0-bookworm-slim AS runtime
+FROM node:20.19.0-bookworm-slim AS runtime
 ENV NODE_ENV=production
 ENV ZEO_HOME=/work
 
