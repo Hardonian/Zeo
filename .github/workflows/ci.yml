@@ -135,6 +135,8 @@ jobs:
             ${{ runner.os }}-turbo-
       - name: Install
         run: pnpm run ci:install
+      - name: Build contracts
+        run: pnpm -C packages/contracts build && pnpm -C vendor/controlplane/packages/contracts build
       - name: Unit tests
         run: |
           set -o pipefail
