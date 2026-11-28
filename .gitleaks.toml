@@ -1,0 +1,26 @@
+title = "Zeo gitleaks config"
+
+# Synthetic credential-shaped strings in test fixtures, docs examples, and
+# editor config are allowlisted by exact path. All other paths are scanned.
+
+[allowlist]
+description = "Synthetic credential fixtures are not live secrets"
+paths = [
+  '''^apps/web/src/panels/bridge/secure\-bridge\.test\.ts$''',
+  '''^docs/PANELS_SECURITY\.md$''',
+  '''^opencode\.json$''',
+  '''^packages/mesh/src/mesh\.test\.ts$''',
+  '''^packages/repro\-pack/src/repro\-pack\.test\.ts$''',
+  '''^packages/repro\-pack/src/sanitizer\.test\.ts$''',
+  '''^vendor/readylayer/__tests__/api/sad\-paths\.test\.ts$''',
+  '''^vendor/readylayer/app/\(public\)/docs/api\-reference/page\.tsx$''',
+  '''^vendor/readylayer/docs/FIRST_GOVERNED_PR_IN_10_MINUTES\.md$''',
+  '''^vendor/readylayer/docs/QUICK\-START\-SETUP\.md$''',
+  '''^vendor/readylayer/docs/SECURITY_HARDENING_SUMMARY\.md$''',
+  '''^vendor/readylayer/docs/ops/smoke\-test\.md$''',
+  '''^vendor/readylayer/e2e/complete\-flow\.spec\.ts$''',
+  '''^vendor/readylayer/e2e/llm\-async\-timeout\.spec\.ts$''',
+  '''^vendor/readylayer/e2e/secrets\-redaction\.spec\.ts$''',
+  '''^vendor/readylayer/services/review\-guard/__tests__/async\-processing\.test\.ts$''',
+  '''^vendor/readylayer/tests/invariants/enforcement\-invariants\.test\.ts$''',
+]
