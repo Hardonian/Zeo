@@ -9,6 +9,7 @@ WORKDIR /repo
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY apps ./apps
 COPY packages ./packages
+COPY vendor ./vendor
 COPY scripts ./scripts
 COPY docs ./docs
 COPY external ./external
